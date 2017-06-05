@@ -1,0 +1,60 @@
+{
+    "id": "bundle--cbd730f2-b1ef-4d42-b379-7854191ea563",
+    "objects": [
+        {
+            "created": "2017-05-31T21:31:13.447529Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "description": "Windows Security Support Provider (SSP) DLLs are loaded into the Local Security Authority (LSA) process at system start. Once loaded into the LSA, SSP DLLs have access to encrypted and plaintext passwords that are stored in Windows, such as any logged-on user's Domain password or smart card PINs. The SSP configuration is stored in two Registry keys: <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\Security Packages</code> and <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\OSConfig\\Security Packages</code>. An adversary may modify these Registry keys to add new SSPs, which will be loaded the next time the system boots, or when the AddSecurityPackage Windows API function is called.\n[[Citation: Graeber 2014]]\n\nDetection: Monitor the Registry for changes to the SSP Registry keys. Monitor the LSA process for DLL loads. Windows 8.1 and Windows Server 2012 R2 may generate events when unsigned SSP DLLs try to load into the LSA by setting the Registry key <code>HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\LSASS.exe</code> with AuditLevel = 8.[[Citation: Graeber 2014]][[Citation: Microsoft Configure LSA]]\n\nPlatforms: Windows Server 2003, Windows Server 2008, Windows Server 2012, Windows XP, Windows 7, Windows 8, Windows Server 2003 R2, Windows Server 2008 R2, Windows Server 2012 R2, Windows Vista, Windows 8.1\n\nData Sources: DLL monitoring, Windows Registry, Loaded DLLs",
+            "external_references": [
+                {
+                    "external_id": "T1101",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1101"
+                },
+                {
+                    "description": "Microsoft. (2013, July 31). Configuring Additional LSA Protection. Retrieved June 24, 2015.",
+                    "source_name": "Microsoft Configure LSA",
+                    "url": "https://technet.microsoft.com/en-us/library/dn408187.aspx"
+                },
+                {
+                    "description": "Graeber, M. (2014, October). Analysis of Malicious Security Support Provider DLLs. Retrieved March 1, 2017.",
+                    "source_name": "Graeber 2014",
+                    "url": "http://docplayer.net/20839173-Analysis-of-malicious-security-support-provider-dlls.html"
+                }
+            ],
+            "id": "attack-pattern--6c174520-beea-43d9-aac6-28fb77f3e446",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "modified": "2017-05-31T21:31:13.447529Z",
+            "name": "Security Support Provider",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "x_mitre_data_sources": [
+                "DLL monitoring",
+                "Windows Registry",
+                "Loaded DLLs"
+            ],
+            "x_mitre_platforms": [
+                "Windows Server 2003",
+                "Windows Server 2008",
+                "Windows Server 2012",
+                "Windows XP",
+                "Windows 7",
+                "Windows 8",
+                "Windows Server 2003 R2",
+                "Windows Server 2008 R2",
+                "Windows Server 2012 R2",
+                "Windows Vista",
+                "Windows 8.1"
+            ]
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

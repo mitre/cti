@@ -1,0 +1,73 @@
+{
+    "id": "bundle--afae5a81-b7c4-4720-a0f7-f7228da92104",
+    "objects": [
+        {
+            "created": "2017-05-31T21:31:15.409973Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "description": "DLLs that are specified in the AppInit_DLLs value in the Registry key <code>HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows</code> are loaded by user32.dll into every process that loads user32.dll. In practice this is nearly every program. This value can be abused to obtain persistence by causing a DLL to be loaded into most processes on the computer.[[Citation: AppInit Registry]]\n\nThe AppInit DLL functionality is disabled in Windows 8 and later versions when secure boot is enabled.[[Citation: AppInit Secure Boot]]\n\nDetection: Monitor DLL loads by processes that load user32.dll and look for DLLs that are not recognized or not normally loaded into a process. Monitor the AppInit_DLLs Registry value for modifications that do not correlate with known software, patch cycles, etc. Tools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current AppInit DLLs.[[Citation: TechNet Autoruns]] \n\nLook for abnormal process behavior that may be due to a process loading a malicious DLL. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as making network connections for [[Command and Control]], learning details about the environment through [[Discovery]], and conducting [[Lateral Movement]].\n\nPlatforms: Windows Server 2003, Windows Server 2008, Windows Server 2012, Windows XP, Windows 7, Windows 8, Windows Server 2003 R2, Windows Server 2008 R2, Windows Server 2012 R2, Windows Vista, Windows 8.1\n\nData Sources: Loaded DLLs, Process monitoring, Windows Registry\n\nEffective Permissions: Administrator, SYSTEM",
+            "external_references": [
+                {
+                    "external_id": "T1103",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1103"
+                },
+                {
+                    "description": "Microsoft. (2006, October). Working with the AppInit_DLLs registry value. Retrieved July 15, 2015.",
+                    "source_name": "AppInit Registry",
+                    "url": "https://support.microsoft.com/en-us/kb/197571"
+                },
+                {
+                    "description": "Microsoft. (n.d.). AppInit DLLs and Secure Boot. Retrieved July 15, 2015.",
+                    "source_name": "AppInit Secure Boot",
+                    "url": "https://msdn.microsoft.com/en-us/library/dn280412"
+                },
+                {
+                    "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
+                    "source_name": "TechNet Autoruns",
+                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902"
+                }
+            ],
+            "id": "attack-pattern--317fefa6-46c7-4062-adb6-2008cf6bcb41",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2017-05-31T21:31:15.409973Z",
+            "name": "AppInit DLLs",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "x_mitre_data_sources": [
+                "Loaded DLLs",
+                "Process monitoring",
+                "Windows Registry"
+            ],
+            "x_mitre_effective_permissions": [
+                "Administrator",
+                "SYSTEM"
+            ],
+            "x_mitre_platforms": [
+                "Windows Server 2003",
+                "Windows Server 2008",
+                "Windows Server 2012",
+                "Windows XP",
+                "Windows 7",
+                "Windows 8",
+                "Windows Server 2003 R2",
+                "Windows Server 2008 R2",
+                "Windows Server 2012 R2",
+                "Windows Vista",
+                "Windows 8.1"
+            ]
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}
