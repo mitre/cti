@@ -6,11 +6,6 @@ ATT&CK is a catalog of techniques and tactics that describe post-compromise adve
 
 https://attack.mitre.org/wiki/Main_Page
 
-## CAPEC
-CAPEC is a catalog of the types of patterns used to carry out attacks. The core use cases involve using the catalog of to identify relevant security requirements, provide guidance for security architecture and security policy, triage review efforts and penetration testing, and leverage/contextualize security incidents into preventive efforts. 
-
-https://capec.mitre.org/
-
 ## STIX
 Structured Threat Information Expression (STIX™) is a language and serialization format used to exchange cyber threat intelligence (CTI).
 
