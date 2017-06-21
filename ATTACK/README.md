@@ -3,6 +3,7 @@ The STIX content found here is the unabridged conversion of the MITRE ATT&CK cat
 
 ## ATT&CK -> STIX 2.0 Mapping (High-Level)
 * ATT&CK Technique -> STIX Attack-Pattern
+* ATT&CK Tactic -> STIX Attack-Pattern.Kill-Chain-Phase
 * ATT&CK Group -> STIX Intrusion-Set
 * ATT&CK Software -> STIX Malware (OR) STIX Tool
 * ATT&CK Mitigation -> STIX Course-of-Action
