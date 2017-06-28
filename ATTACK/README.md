@@ -14,7 +14,7 @@ The STIX content found here is the unabridged conversion of the MITRE ATT&CK cat
 
 **(Custom)** signifies STIX object properties that are not apart of the standard STIX 2.0 data model but were added for further fidelity in the mapping from ATT&CK.
 
-#### ATT&CK Technique -> STIX Attack-Pattern
+### ATT&CK Technique -> STIX Attack-Pattern
 
 Attack-Pattern.type = *"attack-pattern"*  
 Attack-Pattern.id = *"attack-pattern-uuid"*  
@@ -29,14 +29,14 @@ Attack-Pattern.x_mitre_contributors **(Custom)** = **ATT&CK Technique.Contributo
 Attack-Pattern.x_mitre_data_sources **(Custom)** = **ATT&CK Technique.Data Sources**  
 Attack-Pattern.x-mitre_platforms **(Custom)** = **ATT&CK Technique.Platforms**  
 
-#### ATT&CK Tactic -> STIX Attack-Pattern.Kill-Chain-Phase, STIX Tool.Kill-Chain-Phase, STIX Malware.Kill-Chain-Phase
+### ATT&CK Tactic -> STIX Attack-Pattern.Kill-Chain-Phase, STIX Tool.Kill-Chain-Phase, STIX Malware.Kill-Chain-Phase
 Attack-Pattern.kill_chain_phases = **ATT&CK Tactic**
 
 Malware.kill_chain_phases = **ATT&CK Tactic**
 
 Tool.kill_chain_phases = **ATT&CK Tactic**
 
-#### ATT&CK Group -> STIX Intrusion-Set
+### ATT&CK Group -> STIX Intrusion-Set
 
 Intrusion-Set.type = *"intrusion-set"*  
 Intrusion-Set.id = *"intrusion-set-uuid"*  
@@ -47,7 +47,7 @@ Intrusion-Set.aliases = **List of ATT&CK Group.aliases**
 Intrusion-Set.description = **Taken from ATT&CK page entry**  
 Intrusion-Set.external_references = **References from ATT&CK**  
 
-#### ATT&CK Software -> STIX Malware (OR) STIX Tool
+### ATT&CK Software -> STIX Malware (OR) STIX Tool
 
 Malware.type = *"malware"*  
 Malware.id = *"malware-uuid"*  
@@ -69,7 +69,7 @@ Tool.description = **Taken from ATT&CK page entry**
 Tool.external_references = **References from ATT&CK**  
 Tool.kill_chain_phases = **Taken from ATT&CK page entry: backtracked from technique to tactic** 
 
-#### ATT&CK Mitigation -> STIX Course-of-Action
+### ATT&CK Mitigation -> STIX Course-of-Action
 
 Course-of-Action.type = *"course-of-action"*  
 Course-of-Action.id = *"course-of-action-uuid"*  
