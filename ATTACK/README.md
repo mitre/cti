@@ -94,11 +94,11 @@ All translated ATT&CK - STIX objects are tagged with an external reference linki
              "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",  
              "description": "pwdump is a credential dumper.[[Citation: Wikipedia pwdump]]",  
              "external_references": [  
-            <pre>**{  
+                 ```**```{  
                      "external_id": "S0006",  
                      "source_name": "mitre-attack",  
                      "url": "https://attack.mitre.org/wiki/Software/S0006"  
-                 }**</pre>  
+                 }```**```
              ],  
              "id": "tool--9de2308e-7bed-43a3-8e58-f194b3586700",  
              "labels": [  
