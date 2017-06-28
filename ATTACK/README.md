@@ -15,11 +15,12 @@ The STIX content found here is the unabridged conversion of the MITRE ATT&CK cat
 **(Custom)** signifies STIX object properties that are not apart of the standard STIX 2.0 data model but were added for further fidelity in the mapping from ATT&CK.
 
 #### ATT&CK Technique -> STIX Attack-Pattern
+
 Attack-Pattern.type = *"attack-pattern"*
 Attack-Pattern.id = *"attack-pattern-uuid"*
 Attack-Pattern.created = date created
 Attack-Pattern.modified = date modified
-<span>Attack-Pattern.name</span> = **Name of ATT&CK software**
+Attack-Pattern.name = **Name of ATT&CK software**
 Attack-Pattern.labels = (Hand selected)
 Attack-Pattern.description = **Taken from ATT&CK page - also includes ATT&CK fields for effective permissions, data sources, requires network, supports remote, and detection**
 Attack-Pattern.external_references = **References from ATT&CK**
