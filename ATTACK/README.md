@@ -89,28 +89,28 @@ All translated ATT&CK - STIX objects are tagged with an external reference linki
     "id": "bundle--b72f49c0-cd74-42df-bbcd-3ef053685cd7",  
     "objects": [  
         {  
-            "created": "2017-05-31T21:32:13.051026Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "description": "pwdump is a credential dumper.[[Citation: Wikipedia pwdump]]",
-            **"external_references": [
-                {
-                    "external_id": "S0006",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/wiki/Software/S0006"
-                }
-            ]**,
-            "id": "tool--9de2308e-7bed-43a3-8e58-f194b3586700",
-            "labels": [
-                "tool"
-            ],
-            "modified": "2017-05-31T21:32:13.051026Z",
-            "name": "pwdump",
-            "type": "tool"
-        }
-    ],
-    "spec_version": "2.0",
-    "type": "bundle"
-}
+            "created": "2017-05-31T21:32:13.051026Z",  
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",  
+            "description": "pwdump is a credential dumper.[[Citation: Wikipedia pwdump]]",  
+            **"external_references": [  
+                {  
+                    "external_id": "S0006",  
+                    "source_name": "mitre-attack",  
+                    "url": "https://attack.mitre.org/wiki/Software/S0006"  
+                }  
+            ]**,  
+            "id": "tool--9de2308e-7bed-43a3-8e58-f194b3586700",  
+            "labels": [  
+                "tool"  
+            ],  
+            "modified": "2017-05-31T21:32:13.051026Z",  
+            "name": "pwdump",  
+            "type": "tool"  
+        }  
+    ],  
+    "spec_version": "2.0",  
+    "type": "bundle"  
+}  
 
 
 
