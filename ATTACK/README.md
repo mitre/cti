@@ -29,7 +29,7 @@ Attack-Pattern.x_mitre_contributors **(Custom)** = **ATT&CK Technique.Contributo
 Attack-Pattern.x_mitre_data_sources **(Custom)** = **ATT&CK Technique.Data Sources**  
 Attack-Pattern.x-mitre_platforms **(Custom)** = **ATT&CK Technique.Platforms**  
 
-### ATT&CK Tactic -> STIX Attack-Pattern.Kill-Chain-Phase, STIX Tool.Kill-Chain-Phase, STIX Malware.Kill-Chain-Phase
+### ATT&CK Tactic -> STIX Attack-Pattern.Kill-Chain-Phase (OR) STIX Tool.Kill-Chain-Phase (OR) STIX Malware.Kill-Chain-Phase
 Attack-Pattern.kill_chain_phases = **ATT&CK Tactic**
 
 Malware.kill_chain_phases = **ATT&CK Tactic**
