@@ -85,6 +85,7 @@ Course-of-Action.external_references = **References from ATT&CK**
 All translated ATT&CK - STIX objects are tagged with an external reference linking to the corresponding ATT&CK object (Tactic, Technique, Software, Group) and webpage that it stems from. For example:
 
 '''
+
 {  
         "id": "bundle--b72f49c0-cd74-42df-bbcd-3ef053685cd7",  
         "objects": [  
@@ -112,7 +113,7 @@ All translated ATT&CK - STIX objects are tagged with an external reference linki
     "type": "bundle"  
 }  
 
-
+'''
 
 
 ## Life Cycle
