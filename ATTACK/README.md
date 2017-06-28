@@ -18,8 +18,8 @@ The STIX content found here is the unabridged conversion of the MITRE ATT&CK cat
 
 Attack-Pattern.type = *"attack-pattern"*  
 Attack-Pattern.id = *"attack-pattern-uuid"*  
-Attack-Pattern.created = date created  
-Attack-Pattern.modified = date modified  
+Attack-Pattern.created = [date created]  
+Attack-Pattern.modified = [date modified]  
 Attack-Pattern.name = **Name of ATT&CK software**  
 Attack-Pattern.labels = (Hand selected)  
 Attack-Pattern.description = **Taken from ATT&CK page - also includes ATT&CK fields for effective permissions, data sources, requires network, supports remote, and detection**  
