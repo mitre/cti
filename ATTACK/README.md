@@ -58,6 +58,7 @@ Malware.labels = (hand selected)
 Malware.description = **Taken from ATT&CK page entry**  
 Malware.external_references = **References from ATT&CK**  
 Malware.kill_chain_phases = **Taken from ATT&CK page entry: backtracked from technique to tactic**  
+Malware.x_mitre-aliases **(custom)** = **Fill in**  
 
 Tool.type = *"tool"*  
 Tool.id = *"tool-uuid"*  
@@ -68,6 +69,7 @@ Tool.labels = (hand selected)
 Tool.description = **Taken from ATT&CK page entry**  
 Tool.external_references = **References from ATT&CK**  
 Tool.kill_chain_phases = **Taken from ATT&CK page entry: backtracked from technique to tactic** 
+Tool.x_mitre_aliases **(custom)** = ** Fill In**
 
 ### ATT&CK Mitigation -> STIX Course-of-Action
 
