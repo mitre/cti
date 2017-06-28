@@ -58,7 +58,7 @@ Malware.labels = (hand selected)
 Malware.description = **Taken from ATT&CK page entry**  
 Malware.external_references = **References from ATT&CK**  
 Malware.kill_chain_phases = **Taken from ATT&CK page entry: backtracked from technique to tactic**  
-Malware.x_mitre-aliases **(custom)** = **Fill in**  
+Malware.x_mitre-aliases **(custom)** = **ATT&CK Software.aliases**  
 
 Tool.type = *"tool"*  
 Tool.id = *"tool-uuid"*  
@@ -69,7 +69,7 @@ Tool.labels = (hand selected)
 Tool.description = **Taken from ATT&CK page entry**  
 Tool.external_references = **References from ATT&CK**  
 Tool.kill_chain_phases = **Taken from ATT&CK page entry: backtracked from technique to tactic** 
-Tool.x_mitre_aliases **(custom)** = ** Fill In**
+Tool.x_mitre_aliases **(custom)** = **ATT&CK Software.aliases**
 
 ### ATT&CK Mitigation -> STIX Course-of-Action
 
@@ -80,6 +80,48 @@ Course-of-Action.modified = [date modified]
 Course-of-Action.name = **Name of ATT&CK software**  
 Course-of-Action.description = **Taken from ATT&CK page entry**  
 Course-of-Action.external_references = **References from ATT&CK**  
+
+## External References
+All translated ATT&CK - STIX objects are tagged with an external reference linking to the corresponding ATT&CK object (Tactic, Technique, Software, Group) and webpage that it stems from. For example:
+
+'''
+{
+    "id": "bundle--b72f49c0-cd74-42df-bbcd-3ef053685cd7",
+    "objects": [
+        {
+            "created": "2017-05-31T21:32:13.051026Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "description": "pwdump is a credential dumper.[[Citation: Wikipedia pwdump]]",
+            **"external_references": [
+                {
+                    "external_id": "S0006",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/wiki/Software/S0006"
+                },
+                {
+                    "description": "Wikipedia. (1985, June 22). pwdump. Retrieved June 22, 2016.",
+                    "source_name": "Wikipedia pwdump",
+                    "url": "https://en.wikipedia.org/wiki/Pwdump"
+                }
+            ]**,
+            "id": "tool--9de2308e-7bed-43a3-8e58-f194b3586700",
+            "labels": [
+                "tool"
+            ],
+            "modified": "2017-05-31T21:32:13.051026Z",
+            "name": "pwdump",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "tool"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}
+
+
+
 
 ## Life Cycle
 As the MITRE ATT&CK catalog - to include Tactics, Techniques, Groups, Software, and Mitigations - is further developed and expanded, so to will this repository of translated STIX content. Any modification to the ATT&CK catalog triggers an immediate process to assess and update the existing STIX content found here. 
