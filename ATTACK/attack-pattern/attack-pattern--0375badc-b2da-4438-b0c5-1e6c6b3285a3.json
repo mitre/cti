@@ -1,0 +1,57 @@
+{
+    "id": "bundle--0d2bb591-029a-4bcf-9845-54205f6a66ad",
+    "objects": [
+        {
+            "created": "2017-07-28T15:03:06.645Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "description": "macOS and OS X use a common method to look for required dynamic libraries (dylib) to load into a program based on search paths. Adversaries can take advantage of ambiguous paths to plant dylibs to gain privilege escalation or persistence.\n\nA common method is to see what dylibs an application uses, then plant a malicious version with the same name higher up in the search path. This typically results in the dylib being in the same folder as the application itself[[Citation: Writing Bad Malware for OSX]][[Citation: Malware Persistence on OS X]].\nIf the program is configured to run at a higher privilege level than the current user, then when the dylib is loaded into the application, the dylib will also run at that elevated level. This can be used by adversaries as a privilege escalation technique.\n\nDetection: Objective-See's Dylib Hijacking Scanner can be used to detect potential cases of dylib hijacking. Monitor file systems for moving, renaming, replacing, or modifying dylibs. Changes in the set of dylibs that are loaded by a process (compared to past behavior) that do not correlate with known software, patches, etc., are suspicious. Check the system for multiple dylibs with the same name and monitor which versions have historically been loaded into a process.\n\nPlatforms: MacOS, OS X\n\nData Sources: File monitoring\n\nEffective Permissions: Administrator, root",
+            "external_references": [
+                {
+                    "external_id": "T1157",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1157"
+                },
+                {
+                    "description": "Patrick Wardle. (2015). Writing Bad @$$ Malware for OS X. Retrieved July 10, 2017.",
+                    "source_name": "Writing Bad Malware for OSX",
+                    "url": "https://www.blackhat.com/docs/us-15/materials/us-15-Wardle-Writing-Bad-A-Malware-For-OS-X.pdf"
+                },
+                {
+                    "description": "Patrick Wardle. (2015). Malware Persistence on OS X Yosemite. Retrieved July 10, 2017.",
+                    "source_name": "Malware Persistence on OS X",
+                    "url": "https://www.rsaconference.com/writable/presentations/file%20upload/ht-r03-malware-persistence-on-os-x-yosemite%20final.pdf"
+                }
+            ],
+            "id": "attack-pattern--0375badc-b2da-4438-b0c5-1e6c6b3285a3",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2017-07-28T15:03:06.645Z",
+            "name": "Dylib Hijacking",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "x_mitre_data_sources": [
+                "File monitoring"
+            ],
+            "x_mitre_effective_permissions": [
+                "Administrator",
+                "root"
+            ],
+            "x_mitre_platforms": [
+                "MacOS",
+                "OS X"
+            ]
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}
