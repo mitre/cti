@@ -1,10 +1,10 @@
 {
-    "id": "bundle--ff9f2691-aa18-4ef7-bba5-e5c76cd87b12",
+    "id": "bundle--7b5b42e9-99a2-490d-a130-cc80aed7485f",
     "objects": [
         {
-            "created": "2017-05-31T21:30:26.946173Z",
+            "created": "2017-05-31T21:30:26.946Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "description": "Windows contains accessibility features that may be launched with a key combination before a user has logged in (for example, when the user is on the Windows logon screen). An adversary can modify the way these programs are launched to get a command prompt or backdoor without logging in to the system.\n\nTwo of these accessibility programs are <code>C:\\Windows\\System32\\utilman.exe</code>, launched when the Windows + U key combination is pressed, and <code>C:\\Windows\\System32\\sethc.exe</code>, launched when the shift key is pressed five times. The program \"sethc.exe\" is often referred to as sticky keys, and has been used by adversaries for unauthenticated access through a remote desktop login screen.Remote Desktop Protocol will cause the replaced file to be executed with SYSTEM privileges.[[Citation: Tilbury 2014]]\n\nOn Windows Vista and later as well as Windows Server 2008 and later, a Registry key may be modified that configures \"cmd.exe,\" or another program that provides backdoor access, as a \"debugger\" for the accessibility program (e.g., \"utilman.exe\"). After the Registry is modified, pressing the appropriate key combination at the login screen while at the keyboard or when connected with RDP will cause the \"debugger\" program to be executed with SYSTEM privileges.[[Citation: Tilbury 2014]]\n\nDetection: Changes to accessibility utility binaries or binary paths that do not correlate with known software, patch cycles, etc., are suspicious. Command line invocation of tools capable of modifying the Registry for associated keys are also suspicious. Utility arguments and the binaries themselves should be monitored for changes. Monitor Registry keys within <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options</code>.\n\nPlatforms: Windows Server 2003, Windows Server 2008, Windows Server 2012, Windows XP, Windows 7, Windows 8, Windows Server 2003 R2, Windows Server 2008 R2, Windows Server 2012 R2, Windows Vista, Windows 8.1\n\nData Sources: Windows Registry, File monitoring, Process monitoring\n\nEffective Permissions: SYSTEM",
+            "description": "Windows contains accessibility features that may be launched with a key combination before a user has logged in (for example, when the user is on the Windows logon screen). An adversary can modify the way these programs are launched to get a command prompt or backdoor without logging in to the system.\n\nTwo common accessibility programs are <code>C:\\Windows\\System32\\sethc.exe</code>, launched when the shift key is pressed five times and <code>C:\\Windows\\System32\\utilman.exe</code>, launched when the Windows + U key combination is pressed. The sethc.exe program is often referred to as \"sticky keys\", and has been used by adversaries for unauthenticated access through a remote desktop login screen.Remote Desktop Protocol will cause the replaced file to be executed with SYSTEM privileges.[[Citation: Tilbury 2014]]\n\nFor the debugger method on Windows Vista and later as well as Windows Server 2008 and later, for example, a Registry key may be modified that configures \"cmd.exe,\" or another program that provides backdoor access, as a \"debugger\" for the accessibility program (e.g., \"utilman.exe\"). After the Registry is modified, pressing the appropriate key combination at the login screen while at the keyboard or when connected with RDP will cause the \"debugger\" program to be executed with SYSTEM privileges.[[Citation: Tilbury 2014]]\n\nOther accessibility features exist that may also be leveraged in a similar fashion:[[Citation: DEFCON2016 Sticky Keys]]\n\n*On-Screen Keyboard: <code>C:\\Windows\\System32\\osk.exe</code>\n*Magnifier: <code>C:\\Windows\\System32\\Magnify.exe</code>\n*Narrator: <code>C:\\Windows\\System32\\Narrator.exe</code>\n*Display Switcher: <code>C:\\Windows\\System32\\DisplaySwitch.exe</code>\n*App Switcher: <code>C:\\Windows\\System32\\AtBroker.exe</code>\n\nDetection: Changes to accessibility utility binaries or binary paths that do not correlate with known software, patch cycles, etc., are suspicious. Command line invocation of tools capable of modifying the Registry for associated keys are also suspicious. Utility arguments and the binaries themselves should be monitored for changes. Monitor Registry keys within <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options</code>.\n\nPlatforms: Windows Server 2003, Windows Server 2008, Windows Server 2012, Windows XP, Windows 7, Windows 8, Windows Server 2003 R2, Windows Server 2008 R2, Windows Server 2012 R2, Windows Vista, Windows 8.1, Windows 10\n\nData Sources: Windows Registry, File monitoring, Process monitoring\n\nEffective Permissions: SYSTEM\n\nContributors: Paul Speulstra, AECOM Global Security Operations Center",
             "external_references": [
                 {
                     "external_id": "T1015",
@@ -12,14 +12,19 @@
                     "url": "https://attack.mitre.org/wiki/Technique/T1015"
                 },
                 {
-                    "description": "Glyer, C., Kazanciyan, R. (2012, August 20). THE \u201cHIKIT\u201d ROOTKIT: ADVANCED AND PERSISTENT ATTACK TECHNIQUES (PART 1). Retrieved June 6, 2016.",
-                    "source_name": "FireEye Hikit Rootkit",
-                    "url": "https://www.fireeye.com/blog/threat-research/2012/08/hikit-rootkit-advanced-persistent-attack-techniques-part-1.html"
-                },
-                {
                     "description": "Tilbury, C. (2014, August 28). Registry Analysis with CrowdResponse. Retrieved November 12, 2014.",
                     "source_name": "Tilbury 2014",
                     "url": "http://blog.crowdstrike.com/registry-analysis-with-crowdresponse/"
+                },
+                {
+                    "description": "Maldonado, D., McGuffin, T. (2016, August 6). Sticky Keys to the Kingdom. Retrieved July 5, 2017.",
+                    "source_name": "DEFCON2016 Sticky Keys",
+                    "url": "https://www.slideshare.net/DennisMaldonado5/sticky-keys-to-the-kingdom"
+                },
+                {
+                    "description": "Glyer, C., Kazanciyan, R. (2012, August 20). THE \u201cHIKIT\u201d ROOTKIT: ADVANCED AND PERSISTENT ATTACK TECHNIQUES (PART 1). Retrieved June 6, 2016.",
+                    "source_name": "FireEye Hikit Rootkit",
+                    "url": "https://www.fireeye.com/blog/threat-research/2012/08/hikit-rootkit-advanced-persistent-attack-techniques-part-1.html"
                 }
             ],
             "id": "attack-pattern--9b99b83a-1aac-4e29-b975-b374950551a3",
@@ -33,12 +38,15 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2017-05-31T21:30:26.946173Z",
+            "modified": "2017-07-28T15:03:03.818Z",
             "name": "Accessibility Features",
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "type": "attack-pattern",
+            "x_mitre_contributors": [
+                "Paul Speulstra, AECOM Global Security Operations Center"
+            ],
             "x_mitre_data_sources": [
                 "Windows Registry",
                 "File monitoring",
@@ -58,7 +66,8 @@
                 "Windows Server 2008 R2",
                 "Windows Server 2012 R2",
                 "Windows Vista",
-                "Windows 8.1"
+                "Windows 8.1",
+                "Windows 10"
             ]
         }
     ],

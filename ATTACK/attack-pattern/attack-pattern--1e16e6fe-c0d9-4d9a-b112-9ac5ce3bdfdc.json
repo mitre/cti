@@ -1,0 +1,67 @@
+{
+    "id": "bundle--c7c1c590-f0ff-494f-8845-ea34601f25d7",
+    "objects": [
+        {
+            "created": "2017-07-28T15:03:16.067Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "description": "The Microsoft Windows Application Compatibility Infrastructure/Framework (Application Shim) was created to allow compatibility of programs as Windows updates and changes its code. For example, application shimming feature that allows programs that were created for Windows XP to work with Windows 10. Within the framework, shims are created to act as a buffer between the program (or more specifically, the Import Address Table) and the Windows OS. When a program is executed, the shim cache is referenced to determine if the program requires the use of the shim database (.sdb). If so, the shim database uses API hooking to redirect the code as necessary in order to communicate with the OS. A list of all shims currently installed by the default Windows installer (sdbinst.exe) is kept in:\n\n* <code>%WINDIR%\\AppPatch\\sysmain.sdb</code>\n* <code>hklm\\software\\microsoft\\windows nt\\currentversion\\appcompatflags\\installedsdb</code>\n\nCustom databases are stored in:\n\n* <code>%WINDIR%\\AppPatch\\custom & %WINDIR%\\AppPatch\\AppPatch64\\Custom</code>\n* <code>hklm\\software\\microsoft\\windows nt\\currentversion\\appcompatflags\\custom</code>\n\nTo keep shims secure, Windows designed them to run in user mode so they cannot modify the kernel and you must have administrator privileges to install a shim. However, certain shims can be used to Bypass User Account Control (UAC) (RedirectEXE), inject DLLs into processes (InjectDll), and intercept memory addresses (GetProcAddress). Utilizing these shims, an adversary can perform several malicious acts, such as elevate privileges, install backdoors, disable defenses like Windows Defender, etc.\n\nDetection: There are several public tools available that will detect shims that are currently available[[Citation: Black Hat 2015 App Shim]]:\n\n* Shim-Process-Scanner - checks memory of every running process for any Shim flags\n* Shim-Detector-Lite - detects installation of custom shim databases\n* Shim-Guard - monitors registry for any shim installations\n* ShimScanner - forensic tool to find active shims in memory\n* ShimCacheMem - Volatility plug-in that pulls shim cache from memory (note: shims are only cached after reboot)\n\nMonitor process execution for sdbinst.exe and command-line arguments for potential indications of application shim abuse.\n\nPlatforms: Windows Server 2003, Windows Server 2008, Windows Server 2012, Windows XP, Windows 7, Windows 8, Windows Server 2003 R2, Windows Server 2008 R2, Windows Server 2012 R2, Windows Vista, Windows 8.1, Windows 10\n\nData Sources: Loaded DLLs, System calls, Windows Registry, Process Monitoring, Process command-line parameters",
+            "external_references": [
+                {
+                    "external_id": "T1138",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1138"
+                },
+                {
+                    "description": "Pierce, Sean. (2015, November). Defending Against Malicious Application Compatibility Shims. Retrieved June 22, 2017.",
+                    "source_name": "Black Hat 2015 App Shim",
+                    "url": "https://www.blackhat.com/docs/eu-15/materials/eu-15-Pierce-Defending-Against-Malicious-Application-Compatibility-Shims-wp.pdf"
+                }
+            ],
+            "id": "attack-pattern--1e16e6fe-c0d9-4d9a-b112-9ac5ce3bdfdc",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "execution"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2017-07-28T15:03:16.067Z",
+            "name": "Application Shimming",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "x_mitre_data_sources": [
+                "Loaded DLLs",
+                "System calls",
+                "Windows Registry",
+                "Process Monitoring",
+                "Process command-line parameters"
+            ],
+            "x_mitre_platforms": [
+                "Windows Server 2003",
+                "Windows Server 2008",
+                "Windows Server 2012",
+                "Windows XP",
+                "Windows 7",
+                "Windows 8",
+                "Windows Server 2003 R2",
+                "Windows Server 2008 R2",
+                "Windows Server 2012 R2",
+                "Windows Vista",
+                "Windows 8.1",
+                "Windows 10"
+            ],
+            "x_mitre_remote_support": false
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}
