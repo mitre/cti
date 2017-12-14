@@ -1,0 +1,64 @@
+{
+    "type": "bundle",
+    "id": "bundle--ac2f2688-0850-4b16-805b-0c99bc1b8353",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--53bfc8bf-8f76-4cd7-8958-49a884ddb3ee",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "created": "2017-12-14T16:46:06.044Z",
+            "modified": "2017-12-14T16:55:59.600Z",
+            "name": "Launchctl",
+            "description": "Launchctl controls the macOS launchd process which handles things like launch agents and launch daemons, but can execute other commands or programs itself. Launchctl supports taking subcommands on the command-line, interactively, or even redirected from standard input. By loading or reloading launch agents or launch daemons, adversaries can install persistence or execute changes they made  (Citation: Sofacy Komplex Trojan). Running a command from launchctl is as simple as <code>launchctl submit -l <labelName> -- /Path/to/thing/to/execute \"arg\" \"arg\" \"arg\"</code>. Loading, unloading, or reloading launch agents or launch daemons can require elevated privileges. \n\nAdversaries can abuse this functionality to execute code or even bypass whitelisting if launchctl is an allowed process.\n\nDetection: Knock Knock can be used to detect persistent programs such as those installed via launchctl as launch agents or launch daemons. Additionally, every launch agent or launch daemon must have a corresponding plist file on disk somewhere which can be monitored. Monitor process execution from launchctl/launchd for unusual or unknown processes.\n\nPlatforms: MacOS, OS X\n\nData Sources: File monitoring, Process Monitoring, Process command-line parameters\n\nDefense Bypassed: Application whitelisting, Process whitelisting, Whitelisting by file name or path\n\nPermissions Required: User, Administrator\n\nRemote Support: No",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "execution"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1152",
+                    "external_id": "T1152"
+                },
+                {
+                    "source_name": "Sofacy Komplex Trojan",
+                    "description": "Dani Creus, Tyler Halfpop, Robert Falcone. (2016, September 26). Sofacy's 'Komplex' OS X Trojan. Retrieved July 8, 2017.",
+                    "url": "https://researchcenter.paloaltonetworks.com/2016/09/unit42-sofacys-komplex-os-x-trojan/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_data_sources": [
+                "File monitoring",
+                "Process Monitoring",
+                "Process command-line parameters"
+            ],
+            "x_mitre_defense_bypassed": [
+                "Application whitelisting",
+                "Process whitelisting",
+                "Whitelisting by file name or path"
+            ],
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
+            ],
+            "x_mitre_platforms": [
+                "MacOS",
+                "OS X"
+            ],
+            "x_mitre_remote_support": false
+        }
+    ]
+}

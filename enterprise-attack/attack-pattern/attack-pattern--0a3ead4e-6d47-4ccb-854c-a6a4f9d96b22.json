@@ -1,0 +1,84 @@
+{
+    "type": "bundle",
+    "id": "bundle--d744adb7-59df-46a4-a9ca-6633169e23df",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--0a3ead4e-6d47-4ccb-854c-a6a4f9d96b22",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "created": "2017-05-31T21:30:19.735Z",
+            "modified": "2017-12-14T16:55:59.600Z",
+            "name": "Credential Dumping",
+            "description": "Credential dumping is the process of obtaining account login and password information from the operating system and software. Credentials can be used to perform Lateral Movement and access restricted information.\n\nTools may dump credentials in many different ways: extracting credential hashes for offline cracking, extracting plaintext passwords, and extracting Kerberos tickets, among others. Examples of credential dumpers include pwdump7, Windows Credential Editor, Mimikatz, and gsecdump. These tools are in use by both professional security testers and adversaries.\n\nPlaintext passwords can be obtained using tools such as Mimikatz to extract passwords stored by the Local Security Authority (LSA). If smart cards are used to authenticate to a domain using a personal identification number (PIN), then that PIN is also cached as a result and may be dumped. (Citation: Github Mimikatz Module sekurlsa)\n\nDCSync is a variation on credential dumping which can be used to acquire sensitive information from a domain controller. The action works by simulating a domain controller replication process from a remote domain controller, which may contain various pieces of information included in Active Directory such as passwords, historical hashes, and current hashes of potentially useful accounts, such as the KRBTGT account NTLM hash. Any members of the Administrators, Domain Admins, Enterprise Admin groups or computer accounts on the domain controller are able to run DCSync to pull password data. (Citation: ADSecurity Mimikatz DCSync) The hashes can then in turn be used to create a Golden Ticket for use in Pass the Ticket. (Citation: Harmj0y Mimikatz and DCSync) DCSync functionality has been included in the \"lsadump\" module in Mimikatz. (Citation: GitHub Mimikatz lsadump Module)\n\nDetection: Common credential dumpers such as Mimikatz access the LSA Subsystem Service (LSASS) process by opening the process, locating the LSA secrets key, and decrypting the sections in memory where credential details are stored. Credential dumpers may also use methods for reflective DLL Injection to reduce potential indicators of malicious activity.\n\nNTLM hash dumpers open the Security Accounts Manager (SAM) on the local file system (%SystemRoot%/system32/config/SAM) or create a dump of the Registry SAM key to access stored account password hashes. Some hash dumpers will open the local file system as a device and parse to the SAM table to avoid file access defenses. Others will make an in-memory copy of the SAM table before reading hashes. Detection of compromised Valid Accounts in-use by adversaries may help as well. \n\nOn Windows 8.1 and Windows Server 2012 R2, monitor Windows Logs for LSASS.exe creation to verify that LSASS started as a protected process.\n\nMonitor processes and command-line arguments for program execution that may be indicative of credential dumping. Remote access tools may contain built-in features or incorporate existing tools like Mimikatz. PowerShell scripts also exist that contain credential dumping functionality, such as PowerSploit's Invoke-Mimikatz module, (Citation: Powersploit) which may require additional logging features to be configured in the operating system to collect necessary information for analysis.\n\nPlatforms: Windows Server 2003, Windows Server 2008, Windows Server 2012, Windows XP, Windows 7, Windows 8, Windows Server 2003 R2, Windows Server 2008 R2, Windows Server 2012 R2, Windows Vista, Windows 8.1, Windows 10\n\nData Sources: API monitoring, Process command-line parameters, Process monitoring, PowerShell logs\n\nPermissions Required: Administrator, SYSTEM\n\nContributors: Vincent Le Toux",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "credential-access"
+                }
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1003",
+                    "external_id": "T1003"
+                },
+                {
+                    "source_name": "Github Mimikatz Module sekurlsa",
+                    "description": "Delpy, B. (2014, September 14). Mimikatz module ~ sekurlsa. Retrieved January 10, 2016.",
+                    "url": "https://github.com/gentilkiwi/mimikatz/wiki/module-~-sekurlsa"
+                },
+                {
+                    "source_name": "Powersploit",
+                    "description": "PowerSploit. (n.d.).  Retrieved December 4, 2014.",
+                    "url": "https://github.com/mattifestation/PowerSploit"
+                },
+                {
+                    "source_name": "ADSecurity Mimikatz DCSync",
+                    "description": "Metcalf, S. (2015, September 25). Mimikatz DCSync Usage, Exploitation, and Detection. Retrieved August 7, 2017.",
+                    "url": "https://adsecurity.org/?p=1729"
+                },
+                {
+                    "source_name": "Harmj0y Mimikatz and DCSync",
+                    "description": "Schroeder, W. (2015, September 22). Mimikatz and DCSync and ExtraSids, Oh My. Retrieved August 7, 2017.",
+                    "url": "http://www.harmj0y.net/blog/redteaming/mimikatz-and-dcsync-and-extrasids-oh-my/"
+                },
+                {
+                    "source_name": "GitHub Mimikatz lsadump Module",
+                    "description": "Deply, B., Le Toux, V. (2016, June 5). module ~ lsadump. Retrieved August 7, 2017.",
+                    "url": "https://github.com/gentilkiwi/mimikatz/wiki/module-~-lsadump"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_contributors": [
+                "Vincent Le Toux"
+            ],
+            "x_mitre_data_sources": [
+                "API monitoring",
+                "Process command-line parameters",
+                "Process monitoring",
+                "PowerShell logs"
+            ],
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "SYSTEM"
+            ],
+            "x_mitre_platforms": [
+                "Windows Server 2003",
+                "Windows Server 2008",
+                "Windows Server 2012",
+                "Windows XP",
+                "Windows 7",
+                "Windows 8",
+                "Windows Server 2003 R2",
+                "Windows Server 2008 R2",
+                "Windows Server 2012 R2",
+                "Windows Vista",
+                "Windows 8.1",
+                "Windows 10"
+            ]
+        }
+    ]
+}

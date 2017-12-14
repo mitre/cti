@@ -1,0 +1,56 @@
+{
+    "type": "bundle",
+    "id": "bundle--e04e82ab-0c31-422a-8ddf-681415feb141",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--e2907cea-4b43-4ed7-a570-0fdf0fbeea00",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "created": "2017-12-14T16:46:06.044Z",
+            "modified": "2017-12-14T16:55:59.600Z",
+            "name": "Space after Filename",
+            "description": "Adversaries can hide a program's true filetype by changing the extension of a file. With certain file types (specifically this does not work with .app extensions), appending a space to the end of a filename will change how the file is processed by the operating system. For example, if there is a Mach-O executable file called evil.bin, when it is double clicked by a user, it will launch Terminal.app and execute. If this file is renamed to evil.txt, then when double clicked by a user, it will launch with the default text editing application (not executing the binary). However, if the file is renamed to \"evil.txt \" (note the space at the end), then when double clicked by a user, the true file type is determined by the OS and handled appropriately and the binary will be executed (Citation: Mac Backdoors are back). \n\nAdversaries can use this feature to trick users into double clicking benign-looking files of any format and ultimately executing something malicious.\n\nDetection: It's not common for spaces to be at the end of filenames, so this is something that can easily be checked with file monitoring. From the user's perspective though, this is very hard to notice from within the Finder.app or on the command-line in Terminal.app. Processes executed from binaries containing non-standard extensions in the filename are suspicious.\n\nPlatforms: Linux, MacOS, OS X\n\nData Sources: File monitoring, Process Monitoring\n\nPermissions Required: User\n\nContributors: Erye Hernandez, Palo Alto Networks",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "execution"
+                }
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1151",
+                    "external_id": "T1151"
+                },
+                {
+                    "source_name": "Mac Backdoors are back",
+                    "description": "Dan Goodin. (2016, July 6). After hiatus, in-the-wild Mac backdoors are suddenly back. Retrieved July 8, 2017.",
+                    "url": "https://arstechnica.com/security/2016/07/after-hiatus-in-the-wild-mac-backdoors-are-suddenly-back/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_contributors": [
+                "Erye Hernandez, Palo Alto Networks"
+            ],
+            "x_mitre_data_sources": [
+                "File monitoring",
+                "Process Monitoring"
+            ],
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "MacOS",
+                "OS X"
+            ]
+        }
+    ]
+}

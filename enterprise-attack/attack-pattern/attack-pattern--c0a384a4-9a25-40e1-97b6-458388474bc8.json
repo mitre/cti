@@ -1,0 +1,63 @@
+{
+    "type": "bundle",
+    "id": "bundle--97a9befc-51b2-4570-a01d-26909b9eb1c8",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--c0a384a4-9a25-40e1-97b6-458388474bc8",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "created": "2017-12-14T16:46:06.044Z",
+            "modified": "2017-12-14T16:55:59.600Z",
+            "name": "Cron Job",
+            "description": "Per Apple\u2019s developer documentation, there are two supported methods for creating periodic background jobs: launchd and cron (Citation: AppleDocs Scheduling Timed Jobs).\n\n===Launchd===\n\nEach Launchd job is described by a different configuration property list (plist) file similar to Launch Daemons or Launch Agents, except there is an additional key called <code>StartCalendarInterval</code> with a dictionary of time values  (Citation: AppleDocs Scheduling Timed Jobs). This only works on macOS and OS X.\n\n===cron===\n\nSystem-wide cron jobs are installed by modifying <code>/etc/crontab</code> while per-user cron jobs are installed using crontab with specifically formatted crontab files  (Citation: AppleDocs Scheduling Timed Jobs). This works on Mac and Linux systems.\n\nBoth methods allow for commands or scripts to be executed at specific, periodic intervals in the background without user interaction. An adversary may use task scheduling to execute programs at system startup or on a scheduled basis for persistence (Citation: Janicab) (Citation: Methods of Mac Malware Persistence) (Citation: Malware Persistence on OS X), to conduct Execution as part of Lateral Movement, to gain root privileges, or to run a process under the context of a specific account.\n\nDetection: Legitimate scheduled jobs may be created during installation of new software or through administration functions. Tasks scheduled with launchd and cron can be monitored from their respective utilities to list out detailed information about the jobs. Monitor process execution resulting from launchd and cron tasks to look for unusual or unknown applications and behavior.\n\nPlatforms: Linux, MacOS\n\nData Sources: File monitoring, Process Monitoring\n\nPermissions Required: Administrator",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1168",
+                    "external_id": "T1168"
+                },
+                {
+                    "source_name": "AppleDocs Scheduling Timed Jobs",
+                    "description": "Apple. (n.d.).  Retrieved July 17, 2017.",
+                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/ScheduledJobs.html"
+                },
+                {
+                    "source_name": "Janicab",
+                    "description": "Thomas. (2013, July 15). New signed malware called Janicab. Retrieved July 17, 2017.",
+                    "url": "http://www.thesafemac.com/new-signed-malware-called-janicab/"
+                },
+                {
+                    "source_name": "Methods of Mac Malware Persistence",
+                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
+                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf"
+                },
+                {
+                    "source_name": "Malware Persistence on OS X",
+                    "description": "Patrick Wardle. (2015). Malware Persistence on OS X Yosemite. Retrieved July 10, 2017.",
+                    "url": "https://www.rsaconference.com/writable/presentations/file%20upload/ht-r03-malware-persistence-on-os-x-yosemite%20final.pdf"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_data_sources": [
+                "File monitoring",
+                "Process Monitoring"
+            ],
+            "x_mitre_permissions_required": [
+                "Administrator"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "MacOS"
+            ]
+        }
+    ]
+}
