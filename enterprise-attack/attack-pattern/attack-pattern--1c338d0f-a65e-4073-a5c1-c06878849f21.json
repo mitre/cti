@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--6cae353a-c1b7-4784-ae68-213c425a8e3c",
+    "id": "bundle--4f662559-2fd0-4819-bc7a-cc2ef5cc7dc6",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,17 +8,13 @@
             "id": "attack-pattern--1c338d0f-a65e-4073-a5c1-c06878849f21",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "created": "2017-05-31T21:31:09.815Z",
-            "modified": "2017-12-14T16:55:59.600Z",
+            "modified": "2018-01-17T12:56:55.080Z",
             "name": "Process Hollowing",
-            "description": "Process hollowing occurs when a process is created in a suspended state and the process's memory is replaced with the code of a second program so that the second program runs instead of the original program. Windows and process monitoring tools believe the original process is running, whereas the actual program running is different. (Citation: Leitch Hollowing)\n\nProcess hollowing may be used similarly to DLL Injection to evade defenses and detection analysis of malicious process execution by launching adversary-controlled code under the context of a legitimate process.\n\nDetection: Monitoring API calls may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances for known bad sequences of calls, since benign use of API functions may be common and difficult to distinguish from malicious behavior.\n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior.\n\nPlatforms: Windows Server 2003, Windows Server 2008, Windows Server 2012, Windows XP, Windows 7, Windows 8, Windows Server 2003 R2, Windows Server 2008 R2, Windows Server 2012 R2, Windows Vista, Windows 8.1, Windows 10\n\nData Sources: Process monitoring, API monitoring\n\nDefense Bypassed: Process whitelisting, Anti-virus, Whitelisting by file name or path, Signature-based detection\n\nPermissions Required: User\n\nRemote Support: No",
+            "description": "Process hollowing occurs when a process is created in a suspended state then its memory is unmapped and replaced with malicious code. Similar to Process Injection, execution of the malicious code is masked under a legitimate process and may evade defenses and detection analysis. (Citation: Leitch Hollowing) (Citation: Engame Process Injection July 2017)\n\nDetection: Monitoring API calls may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances for known bad sequences of calls, since benign use of API functions may be common and difficult to distinguish from malicious behavior. API calls that unmap process memory, such as ZwUnmapViewOfSection or NtUnmapViewOfSection, and those that can be used to modify memory within another process, such as WriteProcessMemory, may be used for this technique. (Citation: Engame Process Injection July 2017)\n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior.\n\nPlatforms: Windows\n\nData Sources: Process monitoring, API monitoring\n\nDefense Bypassed: Process whitelisting, Anti-virus, Whitelisting by file name or path, Signature-based detection\n\nPermissions Required: User",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "execution"
                 }
             ],
             "external_references": [
@@ -31,6 +27,11 @@
                     "source_name": "Leitch Hollowing",
                     "description": "Leitch, J. (n.d.). Process Hollowing. Retrieved November 12, 2014.",
                     "url": "http://www.autosectools.com/process-hollowing.pdf"
+                },
+                {
+                    "source_name": "Engame Process Injection July 2017",
+                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
+                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process"
                 }
             ],
             "object_marking_refs": [
@@ -50,20 +51,8 @@
                 "User"
             ],
             "x_mitre_platforms": [
-                "Windows Server 2003",
-                "Windows Server 2008",
-                "Windows Server 2012",
-                "Windows XP",
-                "Windows 7",
-                "Windows 8",
-                "Windows Server 2003 R2",
-                "Windows Server 2008 R2",
-                "Windows Server 2012 R2",
-                "Windows Vista",
-                "Windows 8.1",
-                "Windows 10"
-            ],
-            "x_mitre_remote_support": false
+                "Windows"
+            ]
         }
     ]
 }

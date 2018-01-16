@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--c9948fb5-ac69-4572-89af-daa1daca13d9",
+    "id": "bundle--ae3e9104-731a-4822-a600-697cafc43caa",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,9 +8,9 @@
             "id": "attack-pattern--0a5231ec-41af-4a35-83d0-6bdf11f28c65",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "created": "2017-05-31T21:31:40.542Z",
-            "modified": "2017-12-14T16:55:59.600Z",
+            "modified": "2018-01-17T12:56:55.080Z",
             "name": "Execution through Module Load",
-            "description": "The Windows module loader can be instructed to load DLLs from arbitrary local paths and arbitrary Universal Naming Convention (UNC) network paths. This functionality resides in NTDLL.dll and is part of the Windows Native API which is called from functions like CreateProcess(), LoadLibrary(), etc. of the Win32 API. (Citation: Wikipedia Windows Library Files)\n\nThe module loader can load DLLs:\n\n*via specification of the (fully-qualified or relative) DLL pathname in the IMPORT directory;\n    \n*via EXPORT forwarded to another DLL, specified with (fully-qualified or relative) pathname (but without extension);\n    \n*via an NTFS junction or symlink program.exe.local with the fully-qualified or relative pathname of a directory containing the DLLs specified in the IMPORT directory or forwarded EXPORTs;\n    \n*via <code><file name=\"filename.extension\" loadFrom=\"fully-qualified or relative pathname\"></code> in an embedded or external \"application manifest\". The file name refers to an entry in the IMPORT directory or a forwarded EXPORT.\n\nAdversaries can use this functionality as a way to execute arbitrary code on a system.\n\nDetection: Monitoring DLL module loads may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances, since benign use of Windows modules load functions are common and may be difficult to distinguish from malicious behavior. Legitimate software will likely only need to load routine, bundled DLL modules or Windows system DLLs such that deviation from known module loads may be suspicious. Limiting DLL module loads to <code>%SystemRoot%</code> and <code>%ProgramFiles%</code> directories will protect against module loads from unsafe paths. \n\nCorrelation of other events with behavior surrounding module loads using API monitoring and suspicious DLLs written to disk will provide additional context to an event that may assist in determining if it is due to malicious behavior.\n\nPlatforms: Windows Server 2003, Windows Server 2008, Windows Server 2012, Windows XP, Windows 7, Windows 8, Windows Server 2003 R2, Windows Server 2008 R2, Windows Server 2012 R2, Windows Vista, Windows 8.1, Windows 10\n\nData Sources: Process Monitoring, API monitoring, File monitoring, DLL monitoring\n\nPermissions Required: User\n\nContributors: Stefan Kanthak",
+            "description": "The Windows module loader can be instructed to load DLLs from arbitrary local paths and arbitrary Universal Naming Convention (UNC) network paths. This functionality resides in NTDLL.dll and is part of the Windows Native API which is called from functions like CreateProcess(), LoadLibrary(), etc. of the Win32 API. (Citation: Wikipedia Windows Library Files)\n\nThe module loader can load DLLs:\n\n*via specification of the (fully-qualified or relative) DLL pathname in the IMPORT directory;\n    \n*via EXPORT forwarded to another DLL, specified with (fully-qualified or relative) pathname (but without extension);\n    \n*via an NTFS junction or symlink program.exe.local with the fully-qualified or relative pathname of a directory containing the DLLs specified in the IMPORT directory or forwarded EXPORTs;\n    \n*via <code><file name=\"filename.extension\" loadFrom=\"fully-qualified or relative pathname\"></code> in an embedded or external \"application manifest\". The file name refers to an entry in the IMPORT directory or a forwarded EXPORT.\n\nAdversaries can use this functionality as a way to execute arbitrary code on a system.\n\nDetection: Monitoring DLL module loads may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances, since benign use of Windows modules load functions are common and may be difficult to distinguish from malicious behavior. Legitimate software will likely only need to load routine, bundled DLL modules or Windows system DLLs such that deviation from known module loads may be suspicious. Limiting DLL module loads to <code>%SystemRoot%</code> and <code>%ProgramFiles%</code> directories will protect against module loads from unsafe paths. \n\nCorrelation of other events with behavior surrounding module loads using API monitoring and suspicious DLLs written to disk will provide additional context to an event that may assist in determining if it is due to malicious behavior.\n\nPlatforms: Windows\n\nData Sources: Process Monitoring, API monitoring, File monitoring, DLL monitoring\n\nPermissions Required: User\n\nContributors: Stefan Kanthak",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -45,18 +45,7 @@
                 "User"
             ],
             "x_mitre_platforms": [
-                "Windows Server 2003",
-                "Windows Server 2008",
-                "Windows Server 2012",
-                "Windows XP",
-                "Windows 7",
-                "Windows 8",
-                "Windows Server 2003 R2",
-                "Windows Server 2008 R2",
-                "Windows Server 2012 R2",
-                "Windows Vista",
-                "Windows 8.1",
-                "Windows 10"
+                "Windows"
             ]
         }
     ]

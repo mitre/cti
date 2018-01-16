@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--56c87914-b757-45aa-b677-a430b33919f6",
+    "id": "bundle--a43fc0ea-f019-48bc-aa87-569180ea0754",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,9 +8,9 @@
             "id": "attack-pattern--1f47e2fd-fa77-4f2f-88ee-e85df308f125",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "created": "2017-05-31T21:30:26.057Z",
-            "modified": "2017-12-14T16:55:59.600Z",
-            "name": "Local Port Monitor",
-            "description": "A port monitor can be set through the  (Citation: AddMonitor) API call to set a DLL to be loaded at startup. (Citation: AddMonitor) This DLL can be located in <code>C:\\Windows\\System32</code> and will be loaded by the print spooler service, spoolsv.exe, on boot. (Citation: Bloxham) Alternatively, an arbitrary DLL can be loaded if permissions allow writing a fully-qualified pathname for that DLL to <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Monitors</code>. (Citation: Bloxham) The spoolsv.exe process also runs under SYSTEM level permissions.\n\nAdversaries can use this technique to load malicious code at startup that will persist on system reboot and execute as SYSTEM.\n\nDetection: * Monitor process API calls to  (Citation: AddMonitor).\n* Monitor DLLs that are loaded by spoolsv.exe for DLLs that are abnormal.\n* New DLLs written to the System32 directory that do not correlate with known good software or patching may be suspicious.\n* Monitor registry writes to <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Monitors</code>.\n* Run the Autoruns utility, which checks for this Registry key as a persistence mechanism (Citation: TechNet Autoruns)\n\nPlatforms: Windows Server 2003, Windows Server 2008, Windows Server 2012, Windows XP, Windows 7, Windows 8, Windows Server 2003 R2, Windows Server 2008 R2, Windows Server 2012 R2, Windows Vista, Windows 8.1, Windows 10\n\nData Sources: File monitoring, API monitoring, DLL monitoring, Windows Registry, Process monitoring\n\nEffective Permissions: SYSTEM\n\nPermissions Required: Administrator, SYSTEM\n\nContributors: Stefan Kanthak",
+            "modified": "2018-01-17T12:56:55.080Z",
+            "name": "Port Monitors",
+            "description": "A port monitor can be set through the  (Citation: AddMonitor) API call to set a DLL to be loaded at startup. (Citation: AddMonitor) This DLL can be located in <code>C:\\Windows\\System32</code> and will be loaded by the print spooler service, spoolsv.exe, on boot. The spoolsv.exe process also runs under SYSTEM level permissions. (Citation: Bloxham) Alternatively, an arbitrary DLL can be loaded if permissions allow writing a fully-qualified pathname for that DLL to <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Monitors</code>. The Registry key contains entries for the following:\n*Local Port\n*Standard TCP/IP Port\n*USB Monitor\n*WSD Port\n\nAdversaries can use this technique to load malicious code at startup that will persist on system reboot and execute as SYSTEM.\n\nDetection: * Monitor process API calls to  (Citation: AddMonitor).\n* Monitor DLLs that are loaded by spoolsv.exe for DLLs that are abnormal.\n* New DLLs written to the System32 directory that do not correlate with known good software or patching may be suspicious.\n* Monitor Registry writes to <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Monitors</code>.\n* Run the Autoruns utility, which checks for this Registry key as a persistence mechanism (Citation: TechNet Autoruns)\n\nPlatforms: Windows\n\nData Sources: File monitoring, API monitoring, DLL monitoring, Windows Registry, Process monitoring\n\nEffective Permissions: SYSTEM\n\nPermissions Required: Administrator, SYSTEM\n\nContributors: Stefan Kanthak, Travis Smith, Tripwire",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -47,7 +47,8 @@
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "x_mitre_contributors": [
-                "Stefan Kanthak"
+                "Stefan Kanthak",
+                "Travis Smith, Tripwire"
             ],
             "x_mitre_data_sources": [
                 "File monitoring",
@@ -64,18 +65,7 @@
                 "SYSTEM"
             ],
             "x_mitre_platforms": [
-                "Windows Server 2003",
-                "Windows Server 2008",
-                "Windows Server 2012",
-                "Windows XP",
-                "Windows 7",
-                "Windows 8",
-                "Windows Server 2003 R2",
-                "Windows Server 2008 R2",
-                "Windows Server 2012 R2",
-                "Windows Vista",
-                "Windows 8.1",
-                "Windows 10"
+                "Windows"
             ]
         }
     ]
