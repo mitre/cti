@@ -254,7 +254,7 @@ def get_techniques_by_platform(src, platform):
         Filter('x_mitre_platforms', '=', platform)
     ], allow_custom=True)
     
-get_techniques_for_platform(fs, 'Windows 8')
+get_techniques_by_platform(fs, 'Windows 8')
 ```
 
 ### Get all Techniques for specific Tactic
