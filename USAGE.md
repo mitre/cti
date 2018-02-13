@@ -222,7 +222,7 @@ get_techniques_by_group_software(fs, group)
 Notice the difference between the directions of the relationships. For groups, the relationships are defined as "`intrusion-set` `uses` `attack-pattern`" (where the relationship is of the form "`source_ref relationship_type target_ref`"). For software, the relationships are defined as "`attack-pattern` `uses` `malware` or `tool`". This may be unintuitive, but this is how the STIX 2.0 specification has defined the usage of the `relationship_type` "uses".
 
 ```python
- def get_technique_users(src, tech_stix_id):
+def get_technique_users(src, tech_stix_id):
     groups = [
         r.source_ref
         for r in src.relationships(tech_stix_id, 'uses', target_only=True)
@@ -280,7 +280,7 @@ get_tactic_techniques(fs, 'defense-evasion')
 The mitigations for a technique are stored in objects separate from the technique. These objects are found through a `mitigates` relationship.
 
 ```python
- def get_mitigations_by_technique(src, tech_stix_id):
+def get_mitigations_by_technique(src, tech_stix_id):
     relations = src.relationships(tech_stix_id, 'mitigates', target_only=True)
     return src.query([
         Filter('type', '=', 'course-of-action'),
