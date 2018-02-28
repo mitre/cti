@@ -232,11 +232,11 @@ def get_technique_users(src, tech_stix_id):
     software = [
         r.target_ref
         for r in src.relationships(tech_stix_id, 'uses', source_only=True)
-        if get_type_from_id(r.target_ref) in ['tool', 'malware']
+        if get_type_from_id(r.source_ref) in ['tool', 'malware']
     ]
 
     return src.query([
-        Filter('type', 'in', ['intrusion-set', 'malware', 'tools']),
+        Filter('type', 'in', ['intrusion-set', 'malware', 'tool']),
         Filter('id', 'in', groups + software)
     ], allow_custom=True)
     
