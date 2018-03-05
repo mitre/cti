@@ -1,0 +1,34 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--b939cc13-b474-4c2c-87a2-2afc5533643b",
+    "created_by_ref": "identity--8641df51-0f59-4a4d-a300-7f11ca320ba2",
+    "created": "2018-03-05T19:11:06.715Z",
+    "modified": "2018-03-05T19:11:06.715Z",
+    "name": "Leveraging Active Man in the Middle Attacks to Bypass Same Origin Policy",
+    "description": "An attacker leverages a man in the middle attack in order to bypass the same origin policy protection in the victim's browser. This active man in the middle attack could be launched, for instance, when the victim is connected to a public WIFI hot spot. An attacker is able to intercept requests and responses between the victim's browser and some non-sensitive website that does not use TLS. For instance, the victim may be checking flight or weather information.\nWhen an attacker intercepts a response bound to the victim, an attacker adds an iFrame (which is possibly invisible) to the response referencing some domain with sensitive functionality and forwards the response to the victim. The victim's browser than automatically initiates an unauthorized request to the site with sensitive functionality. The same origin policy would prevent making these requests to a site other than the one from which the Java Script came, but the attacker once again uses active man in the middle to intercept these automatic requests and redirect them to the domain / service with sensitive functionality. Any persistent cookies that the victim has in his or her browser would be used for these unauthorized requests. The attacker thus actively directs the victim to a site with sensitive functionality.\nWhen the site with sensitive functionality responds back to the victim's request, an active man in the middle attacker intercepts these responses, injects his or her own malicious Java Script into these responses, and forwards to the victim's browser. In the victim's browser, that Java Script executes under the restrictions of the site with sensitive functionality and can essentially be used to continue to interact with the sensitive site. So an attacker can execute scripts within the victim's browser on any domains the attacker desires.\nThe attacker is able to use this technique to steal cookies from the victim's browser for whatever site the attacker wants. This applies to both persistent cookies and HTTP only cookies (unlike traditional XSS attacks).\nAn attacker is also able to use this technique to steal authentication credentials for sites that only encrypt the login form, but do not require a secure channel for the initial request to get to the page with the login form. Further the attacker is also able to steal any autocompletion information. This attack pattern can also be used to enable session fixation and cache poisoning attacks. Additional attacks can be enabled as well.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/466.html",
+            "external_id": "CAPEC-466"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/300.html",
+            "external_id": "CWE-300"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--127d62dd-9993-48ef-9ef1-a9c686da9914"
+    ],
+    "x_capec_abstraction": "Meta",
+    "x_capec_prerequisites": [
+        "The victim and the attacker are both in an environment where an active man in the middle attack is possible (e.g., public WIFI hot spot)\nThe victim visits at least one website that does not use TLS / SSL"
+    ],
+    "x_capec_skills_required": {
+        "Solid understanding of the HTTP protocol": "Medium",
+        "Ability to intercept and modify requests / responses": "Low",
+        "Ability to create iFrame and JavaScript code that would initiate unauthorized requests to sensitive sites from the victim's browser": "Medium"
+    },
+    "x_capec_typical_severity": "Medium"
+}

@@ -1,0 +1,60 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--e0db324b-fe9e-45c9-972b-df8fd8c879bd",
+    "created_by_ref": "identity--2888a06a-5541-4bad-8066-df6f196f70ff",
+    "created": "2018-03-05T19:00:33.820Z",
+    "modified": "2018-03-05T19:00:33.820Z",
+    "name": "Session Sidejacking",
+    "description": "Session sidejacking takes advantage of an unencrypted communication channel between a victim and target system. The attacker sniffs traffic on a network looking for session tokens in unencrypted traffic. Once a session token is captured, the attacker performs malicious actions by using the stolen token with the targeted application to impersonate the victim.\nThis attack is a specific method of session hijacking, which is exploiting a valid session token to gain unauthorized access to a target system or information. Other methods to perform a session hijacking are session fixation, cross-site scripting, or compromising a user or server machine and stealing the session token.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/102.html",
+            "external_id": "CAPEC-102"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/294.html",
+            "external_id": "CWE-294"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/522.html",
+            "external_id": "CWE-522"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/523.html",
+            "external_id": "CWE-523"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/319.html",
+            "external_id": "CWE-319"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/614.html",
+            "external_id": "CWE-614"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--ad91480b-92ca-4958-92fe-407f4493dcb9"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_example_instances": [
+        "The attacker and the victim are using the same WiFi public hotspot. When the victim connects to the hotspot, he has a hosted e-mail account open. This e-mail account uses AJAX on the client side which periodically asynchronously connects to the server side and transfers, amongst other things, the user's session token to the server. The communication is supposed to happen over HTTPS. However, the configuration in the public hotspot initially disallows the HTTPS connection (or any other connection) between the victim and the hosted e-mail servers because the victim first needs to register with the hotspot. The victim does so, but his e-mail client already defaulted to using a connection without HTTPS, since it was denied access the first time. Victim's session token is now flowing unencrypted between the victim's browser and the hosted e-mail servers. The attacker leverages this opportunity to capture the session token and gain access to the victim's hosted e-mail account."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "An attacker and the victim are both using the same WiFi network.",
+        "The victim has an active session with a target system.",
+        "The victim is not using a secure channel to communicate with the target system (e.g. SSL, VPN, etc.)",
+        "The victim initiated communication with a target system that requires transfer of the session token or the target application uses AJAX and thereby periodically \"rings home\" asynchronously using the session token"
+    ],
+    "x_capec_skills_required": {
+        "Easy to use tools exist to automate this attack.": "Low"
+    },
+    "x_capec_typical_severity": "High",
+    "x_resources_required": "A packet sniffing tool, such as wireshark, can be used to capture session information."
+}

@@ -1,0 +1,48 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--66ec4c3b-26bf-43a6-9648-a9929a43b1bd",
+    "created_by_ref": "identity--8641df51-0f59-4a4d-a300-7f11ca320ba2",
+    "created": "2018-03-05T19:11:05.631Z",
+    "modified": "2018-03-05T19:11:05.631Z",
+    "name": "Flash Parameter Injection",
+    "description": "An adversary injects values to global parameters into a Flash movie embedded in an HTML document. These injected parameters are controlled through arguments in the URL used to access the embedding HTML document. As such, this is a form of HTTP parameter injection, but the abilities granted to the Flash document (such as access to a page's document model, including associated cookies) make this attack more flexible. The injected parameters can allow the adversary to control other objects within the Flash movie as well as full control over the parent document's DOM model.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/174.html",
+            "external_id": "CAPEC-174"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/184.html",
+            "external_id": "CWE-184"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/185.html",
+            "external_id": "CWE-185"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/697.html",
+            "external_id": "CWE-697"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--127d62dd-9993-48ef-9ef1-a9c686da9914"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_consequences": {
+        "Run Arbitrary Code": "Execute unauthorized code or commands",
+        "Information Leakage": "\"Varies by context\""
+    },
+    "x_capec_example_instances": [
+        "The following are examples for different types of parameters passed to the Flash movie.\n\t\nIf an unsuspecting user is lured by an attacker to click on link like this: http://example.com/vulnerable.swf?flashfile=javascript:alert(document.domain)\n\t<object type=\"application/x-shockwave-flash\" data=\"myMovie.swf?globalVar=e-v-i-l\" ></object>\nThe result will be not merely a one-time execution of the JavaScript code in the victim's browser in the context of the domain with the vulnerable Flash file, but every time the Flash is loaded, whether by direct reference or embedded inside the same domain, the JavaScript will be executed again.\n\t<object type=\"application/x-shockwaMovie.swf\" ve-flash\" data=\"my flashvars=\"language=English&globalVar=e-v-i-l\"></object>\n\tmySharedObject = SharedObject.getLocal(\"flashToLoad\");\n\tif (_root.flashfile == undefined) {\n\t}\n\tmySharedObject.data.flash = _root.flashfile;\n\tgetURL(_root.flashfile);"
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_skills_required": {
+        "The attacker need inject values into the global parameters to the Flash movie and understand the parent HTML document DOM structure. The attacker need be smart enough to convince the victim to his crafted link.": "Medium"
+    },
+    "x_capec_typical_severity": "Medium",
+    "x_resources_required": "The attacker must convince the victim to click their crafted link."
+}

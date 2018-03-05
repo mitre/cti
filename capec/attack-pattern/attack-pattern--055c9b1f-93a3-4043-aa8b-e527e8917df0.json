@@ -1,0 +1,50 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--055c9b1f-93a3-4043-aa8b-e527e8917df0",
+    "created_by_ref": "identity--2888a06a-5541-4bad-8066-df6f196f70ff",
+    "created": "2018-03-05T19:00:36.505Z",
+    "modified": "2018-03-05T19:00:36.505Z",
+    "name": "Violating Implicit Assumptions Regarding XML Content (aka XML Denial of Service (XDoS))",
+    "description": "XML Denial of Service (XDoS) can be applied to any technology that utilizes XML data. This is, of course, most distributed systems technology including Java, .Net, databases, and so on. XDoS is most closely associated with web services, SOAP, and Rest, because remote service requesters can post malicious XML payloads to the service provider designed to exhaust the service provider's memory, CPU, and/or disk space. The main weakness in XDoS is that the service provider generally must inspect, parse, and validate the XML messages to determine routing, workflow, security considerations, and so on. It is exactly these inspection, parsing, and validation routines that XDoS targets.\nThere are three primary attack vectors that XDoS can navigate\nAll of the above attacks exploit the loosely coupled nature of web services, where the service provider has little to no control over the service requester and any messages the service requester sends.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/82.html",
+            "external_id": "CAPEC-82"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/674.html",
+            "external_id": "CWE-674"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/400.html",
+            "external_id": "CWE-400"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/770.html",
+            "external_id": "CWE-770"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--ad91480b-92ca-4958-92fe-407f4493dcb9"
+    ],
+    "x_capec_abstraction": "Standard",
+    "x_capec_consequences": {
+        "Denial of Service": "DoS: resource consumption (memory)"
+    },
+    "x_capec_example_instances": [
+        "Several commercial XML parsers were found to be vulnerable to XDoS through XML recursion attacks. The code fragment below is self-referencing and can result in the parser exhausting all CPU and/or memory available to it.\n\t<!DOCTYPE evildoc [\n\t<!ENTITY x0 hello XDoS\">\n\t<!ENTITY xevilparam &x99;&x99;\"> ]>\n\t<foobar>&xevilparam;</foobar>\nBy the time the service provider validates the DTD elements it is too late, because the validation routines references itself. SOAP messages are no longer allowed to accept DTDs, however there is nothing to stop developers of other applications or custom SOAP implementations from bypassing this concern."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "Attacker must be able to send a malicious XML payload to host, such as SOAP or REST web service."
+    ],
+    "x_capec_skills_required": {
+        "Crafting malicious XML content and injecting it through standard interfaces": "Low"
+    },
+    "x_capec_typical_severity": "Very High",
+    "x_resources_required": ""
+}

@@ -1,0 +1,32 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--b7d0a5f2-4f4d-4105-92f4-750b5e28f409",
+    "created_by_ref": "identity--2888a06a-5541-4bad-8066-df6f196f70ff",
+    "created": "2018-03-05T19:00:35.488Z",
+    "modified": "2018-03-05T19:00:35.488Z",
+    "name": "Transparent Proxy Abuse",
+    "description": "A transparent proxy serves as an intermediate between the client and the internet at large. It intercepts all requests originating from the client and forwards them to the correct location. The proxy also intercepts all responses to the client and forwards these to the client. All of this is done in a manner transparent to the client. Transparent proxies are often used by enterprises and ISPs.\nFor requests originating at the client transparent proxies need to figure out the final destination of the client's data packet. Two ways are available to do that: either by looking at the layer three (network) IP address or by examining layer seven (application) HTTP header destination.\nA browser has same origin policy that typically prevents scripts coming from one domain initiating requests to other websites from which they did not come. To circumvent that, however, malicious Flash or an Applet that is executing in the user's browser can attempt to create a cross-domain socket connection from the client to the remote domain. The transparent proxy will examine the HTTP header of the request and direct it to the remote site thereby partially bypassing the browser's same origin policy. This can happen if the transparent proxy uses the HTTP host header information for addressing rather than the IP address information at the network layer. This attack allows malicious scripts inside the victim's browser to issue cross-domain requests to any hosts accessible to the transparent proxy.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/465.html",
+            "external_id": "CAPEC-465"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/441.html",
+            "external_id": "CWE-441"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--ad91480b-92ca-4958-92fe-407f4493dcb9"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_prerequisites": [
+        "Transparent proxy is used\nVulnerable configuration of network topology involving the transparent proxy (e.g., no NAT happening between the client and the proxy)\nExecution of malicious Flash or Applet in the victim's browser"
+    ],
+    "x_capec_skills_required": {
+        "Creating malicious Flash or Applet to open a cross-domain socket connection to a remote system": "Medium"
+    },
+    "x_capec_typical_severity": "Medium"
+}

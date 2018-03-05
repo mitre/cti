@@ -1,0 +1,55 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--ae8cfa84-0f57-4503-9a68-5d594b0302ee",
+    "created_by_ref": "identity--d922e967-ff9b-4f27-97e6-2fc5f54aac51",
+    "created": "2018-03-05T19:06:10.694Z",
+    "modified": "2018-03-05T19:06:10.694Z",
+    "name": "Leveraging/Manipulating Configuration File Search Paths",
+    "description": "This attack loads a malicious resource into a program's standard path used to bootstrap and/or provide contextual information for a program like a path variable or classpath. J2EE applications and other component based applications that are built from multiple binaries can have very long list of dependencies to execute. If one of these libraries and/or references is controllable by the attacker then application controls can be circumvented by the attacker.\nA standard UNIX path looks similar to this\nIf the attacker modifies the path variable to point to a locale that includes malicious resources then the user unwittingly can execute commands on the attackers' behalf:\nThis is a form of usurping control of the program and the attack can be done on the classpath, database resources, or any other resources built from compound parts. At runtime detection and blocking of this attack is nearly impossible, because the configuration allows execution.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/38.html",
+            "external_id": "CAPEC-38"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/426.html",
+            "external_id": "CWE-426"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/427.html",
+            "external_id": "CWE-427"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/428.html",
+            "external_id": "CWE-428"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/706.html",
+            "external_id": "CWE-706"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--068ab041-90bb-4e30-9394-d306c62765a6"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_consequences": {
+        "Run Arbitrary Code": "Execute unauthorized code or commands"
+    },
+    "x_capec_example_instances": [
+        "This attack can be accomplished in two ways. An attacker can insert a malicious program into the path or classpath so that when a known command is executed then the system instead executes the trojans. Another method is to redirect commands by aliasing one legitimate command to another to create unexpected results. the Unix command \"rm\" could be aliased to \"mv\" and move all files the victim thinks they are deleting to a directory the attacker controls. In a Unix shell .profile setting\n\talias rm=mv /usr/home/attacker\nIn this case the attacker retains a copy of all the files the victim attempts to remove."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "The attacker must be able to write to redirect search paths on the victim host."
+    ],
+    "x_capec_skills_required": {
+        "To identify and execute against an over-privileged system interface": "Low"
+    },
+    "x_capec_typical_severity": "Very High",
+    "x_resources_required": ""
+}

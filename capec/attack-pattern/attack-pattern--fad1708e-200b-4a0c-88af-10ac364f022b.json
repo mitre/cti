@@ -1,0 +1,82 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--fad1708e-200b-4a0c-88af-10ac364f022b",
+    "created_by_ref": "identity--8641df51-0f59-4a4d-a300-7f11ca320ba2",
+    "created": "2018-03-05T19:11:06.732Z",
+    "modified": "2018-03-05T19:11:06.732Z",
+    "name": "Buffer Overflow via Parameter Expansion",
+    "description": "In this attack, the target software is given input that the attacker knows will be modified and expanded in size during processing. This attack relies on the target software failing to anticipate that the expanded data may exceed some internal limit, thereby creating a buffer overflow.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/47.html",
+            "external_id": "CAPEC-47"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/120.html",
+            "external_id": "CWE-120"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/119.html",
+            "external_id": "CWE-119"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/118.html",
+            "external_id": "CWE-118"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/130.html",
+            "external_id": "CWE-130"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/131.html",
+            "external_id": "CWE-131"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/74.html",
+            "external_id": "CWE-74"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/20.html",
+            "external_id": "CWE-20"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/680.html",
+            "external_id": "CWE-680"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/697.html",
+            "external_id": "CWE-697"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--127d62dd-9993-48ef-9ef1-a9c686da9914"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_consequences": {
+        "Run Arbitrary Code": "Execute unauthorized code or commands"
+    },
+    "x_capec_example_instances": [
+        "Attack Example: FTP glob()\nThe glob() function in FTP servers has been susceptible to attack as a result of incorrect resizing. This is an ftpd glob() Expansion LIST Heap Overflow Vulnerability. ftp daemon contains a heap-based buffer overflow condition. The overflow occurs when the LIST command is issued with an argument that expands into an oversized string after being processed by glob().\nThis buffer overflow occurs in memory that is dynamically allocated. It may be possible for attackers to exploit this vulnerability and execute arbitrary code on the affected host.\nTo exploit this, the attacker must be able to create directories on the target host.\nThe glob() function is used to expand short-hand notation into complete file names. By sending to the FTP server a request containing a tilde (~) and other wildcard characters in the pathname string, a remote attacker can overflow a buffer and execute arbitrary code on the FTP server to gain root privileges. Once the request is processed, the glob() function expands the user input, which could exceed the expected length. In order to exploit this vulnerability, the attacker must be able to create directories on the FTP server.\n[R.47.1][REF-2]",
+        "Buffer overflow in the glob implementation in libc in NetBSD-current before 20050914, and NetBSD 2.* and 3.* before 20061203, as used by the FTP daemon, allows remote authenticated users to execute arbitrary code via a long pathname that results from path expansion.\nThe limit computation of an internal buffer was done incorrectly. The size of the buffer in byte was used as element count, even though the elements of the buffer are 2 bytes long. Long expanded path names would therefore overflow the buffer."
+    ],
+    "x_capec_likelihood_of_attack": "Medium",
+    "x_capec_prerequisites": [
+        "The program expands one of the parameters passed to a function with input controlled by the user, but a later function making use of the expanded parameter erroneously considers the original, not the expanded size of the parameter.",
+        "The expanded parameter is used in the context where buffer overflow may become possible due to the incorrect understanding of the parameter size (i.e. thinking that it is smaller than it really is)."
+    ],
+    "x_capec_skills_required": {
+        "Finding this particular buffer overflow may not be trivial. Also, stack and especially heap based buffer overflows require a lot of knowledge if the intended goal is arbitrary code execution. Not only that the attacker needs to write the shell code to accomplish his or her goals, but the attacker also needs to find a way to get the program execution to jump to the planted shell code. There also needs to be sufficient room for the payload. So not every buffer overflow will be exploitable, even by a skilled attacker.": "High"
+    },
+    "x_capec_typical_severity": "High",
+    "x_resources_required": "Access to the program source or binary. If the program is only available in binary then a disassembler and other reverse engineering tools will be helpful."
+}

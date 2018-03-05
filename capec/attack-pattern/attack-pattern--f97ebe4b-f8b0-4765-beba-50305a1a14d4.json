@@ -1,0 +1,55 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--f97ebe4b-f8b0-4765-beba-50305a1a14d4",
+    "created_by_ref": "identity--8641df51-0f59-4a4d-a300-7f11ca320ba2",
+    "created": "2018-03-05T19:11:07.429Z",
+    "modified": "2018-03-05T19:11:07.429Z",
+    "name": "Target Programs with Elevated Privileges",
+    "description": "This attack targets programs running with elevated privileges. The attacker would try to leverage a bug in the running program and get arbitrary code to execute with elevated privileges. For instance an attacker would look for programs that write to the system directories or registry keys (such as HKLM, which stores a number of critical Windows environment variables). These programs are typically running with elevated privileges and have usually not been designed with security in mind. Such programs are excellent exploit targets because they yield lots of power when they break. The malicious user try to execute its code at the same level as a privileged system call.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/69.html",
+            "external_id": "CAPEC-69"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/250.html",
+            "external_id": "CWE-250"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/264.html",
+            "external_id": "CWE-264"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/15.html",
+            "external_id": "CWE-15"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--127d62dd-9993-48ef-9ef1-a9c686da9914"
+    ],
+    "x_capec_abstraction": "Standard",
+    "x_capec_consequences": {
+        "Denial of Service": "DoS: resource consumption (memory)",
+        "Run Arbitrary Code": "Execute unauthorized code or commands"
+    },
+    "x_capec_likelihood_of_attack": "Very High",
+    "x_capec_prerequisites": [
+        "The targeted program runs with elevated OS privileges.",
+        "The targeted program accepts input data from the user or from another program.",
+        "The targeted program does not perform input validation properly.",
+        "The targeted program does not fail safely. For instance when a program fails it may authorize restricted access to anyone.",
+        "The targeted program has a vulnerability such as buffer overflow which may be exploited if a malicious user can inject unvalidated data. For instance a buffer overflow interrupts the program as it executes, and makes it run additional code supplied by the attacker. If the program under attack has elevated privileges to the OS, the attacker can elevate its privileges (such as having root level access).",
+        "The targeted program is giving away information about itself. Before performing such attack, an eventual attacker may need to gather information about the services running on the host target. The more the host target is verbose about the services that are running (version number of application, etc.) the more information can be gather by an attacker.",
+        "This attack often requires communicating with the host target services directly. For instance Telnet may be enough to communicate with the host target."
+    ],
+    "x_capec_skills_required": {
+        "More advanced attack may require knowledge of the protocol spoken by the host service.": "Medium",
+        "An attacker can use a tool to scan and automatically launch an attack against known issues. A tool can also repeat a sequence of instructions and try to brute force the service on the host target, an example of that would be the flooding technique.": "Low"
+    },
+    "x_capec_typical_severity": "Very High",
+    "x_resources_required": ""
+}

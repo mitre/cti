@@ -1,0 +1,50 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--7146154b-c4fc-4719-9f34-3050c2ed8b52",
+    "created_by_ref": "identity--2888a06a-5541-4bad-8066-df6f196f70ff",
+    "created": "2018-03-05T19:00:35.676Z",
+    "modified": "2018-03-05T19:00:35.676Z",
+    "name": "Poison Web Service Registry",
+    "description": "SOA and Web Services often use a registry to perform look up, get schema information, and metadata about services. A poisoned registry can redirect (think phishing for servers) the service requester to a malicious service provider, provide incorrect information in schema or metadata (to effect a denial of service), and delete information about service provider interfaces.\nWS-Addressing is used to virtualize services, provide return addresses and other routing information, however, unless the WS-Addressing headers are protected they are vulnerable to rewriting. The attacker that can rewrite WS-addressing information gains the ability to route service requesters to any service providers, and the ability to route service provider response to any service.\nContent in a registry is deployed by the service provider. The registry in an SOA or Web Services system can be accessed by the service requester via UDDI or other protocol. The basic flow for the attacker consists of either altering the data at rest in the registry or uploading malicious content by spoofing a service provider. The service requester is then redirected to send its requests and/or responses to services the attacker controls.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/51.html",
+            "external_id": "CAPEC-51"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/285.html",
+            "external_id": "CWE-285"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/74.html",
+            "external_id": "CWE-74"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/693.html",
+            "external_id": "CWE-693"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--ad91480b-92ca-4958-92fe-407f4493dcb9"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_consequences": {
+        "Run Arbitrary Code": "Execute unauthorized code or commands"
+    },
+    "x_capec_example_instances": [
+        "WS-Addressing provides location and metadata about the service endpoints. An extremely hard to detect attack is an attacker who updates the WS-Addressing header, leaves the standard service request and service provider addressing and header information intact, but adds an additional WS-Addressing Replyto header. In this case the attacker is able to send a copy (like a cc in mail) of every result the service provider generates. So every query to the bank account service, would generate a reply message of the transaction status to both the authorized service requester and an attacker service. This would be extremely hard to detect at runtime.\n\t<S:Header>\n\t</S:Header>\nIn this example \"evilsite\" is an additional reply to address with full access to all the messages that the authorized (validClient) has access to. Since this is registered with ReplyTo header it will not generate a Soap fault."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "The attacker must be able to write to resources or redirect access to the service registry."
+    ],
+    "x_capec_skills_required": {
+        "To identify and execute against an over-privileged system interface": "Low"
+    },
+    "x_capec_typical_severity": "Very High",
+    "x_resources_required": "Capability to directly or indirectly modify registry resources"
+}

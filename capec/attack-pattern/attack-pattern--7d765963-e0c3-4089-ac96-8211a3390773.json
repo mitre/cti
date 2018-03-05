@@ -1,0 +1,44 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--7d765963-e0c3-4089-ac96-8211a3390773",
+    "created_by_ref": "identity--8641df51-0f59-4a4d-a300-7f11ca320ba2",
+    "created": "2018-03-05T19:11:05.274Z",
+    "modified": "2018-03-05T19:11:05.274Z",
+    "name": "Cause Web Server Misclassification",
+    "description": "An attack of this type exploits a Web server's decision to take action based on filename or file extension. Because different file types are handled by different server processes, misclassification may force the Web server to take unexpected action, or expected actions in an unexpected sequence. This may cause the server to exhaust resources, supply debug or system data to the attacker, or bind an attacker to a remote process.\nThis type of vulnerability has been found in many widely used servers including IIS, Lotus Domino, and Orion. The attacker's job in this case is straightforward, standard communication protocols and methods are used and are generally appended with malicious information at the tail end of an otherwise legitimate request. The attack payload varies, but it could be special characters like a period or simply appending a tag that has a special meaning for operations on the server side like .jsp for a java application server. The essence of this attack is that the attacker deceives the server into executing functionality based on the name of the request, i.e. login.jsp, not the contents.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/11.html",
+            "external_id": "CAPEC-11"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/69.html",
+            "external_id": "CWE-69"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/77.html",
+            "external_id": "CWE-77"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--127d62dd-9993-48ef-9ef1-a9c686da9914"
+    ],
+    "x_capec_abstraction": "Standard",
+    "x_capec_example_instances": [
+        "J2EE application servers are supposed to execute Java Server Pages (JSP). There have been disclosure issues relating to Orion Application Server, where an attacker that appends either a period (.) or space characters to the end of a legitimate Http request, then the server displays the full source code in the attackers' web browser.\n\thttp://victim.site/login.jsp.\nSince remote data and directory access may be accessed directly from the JSP, this is a potentially very serious issue.\n[R.11.2]"
+    ],
+    "x_capec_likelihood_of_attack": "Medium",
+    "x_capec_prerequisites": [
+        "Web server software must rely on file name or file extension for processing.",
+        "The attacker must be able to make HTTP requests to the web server."
+    ],
+    "x_capec_skills_required": {
+        "To modify file name or file extension": "Low",
+        "To use misclassification to force the Web server to disclose configuration information, source, or binary data": "Medium"
+    },
+    "x_capec_typical_severity": "High",
+    "x_resources_required": "None: No specialized resources are required to execute this type of attack."
+}

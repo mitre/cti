@@ -1,0 +1,55 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--0430407f-d015-442c-905f-f04b1c8bd7f7",
+    "created_by_ref": "identity--d922e967-ff9b-4f27-97e6-2fc5f54aac51",
+    "created": "2018-03-05T19:06:12.059Z",
+    "modified": "2018-03-05T19:06:12.059Z",
+    "name": "Log Injection-Tampering-Forging",
+    "description": "This attack targets the log files of the target host. The attacker injects, manipulates or forges malicious log entries in the log file, allowing him to mislead a log audit, cover traces of attack, or perform other malicious actions. The target host is not properly controlling log access. As a result tainted data is resulting in the log files leading to a failure in accountability, non-repudiation and incident forensics capability.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/93.html",
+            "external_id": "CAPEC-93"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/117.html",
+            "external_id": "CWE-117"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/75.html",
+            "external_id": "CWE-75"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/150.html",
+            "external_id": "CWE-150"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/713.html",
+            "external_id": "CWE-713"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--068ab041-90bb-4e30-9394-d306c62765a6"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_example_instances": [
+        "Dave Nielsen and Patrick Breitenbach PayPal Web Services (aka PHP Toolkit) 0.50, and possibly earlier versions, allows remote attackers to enter false payment entries into the log file via HTTP POST requests to ipn_success.php.",
+        "If a user submits the string \"twenty-one\" for val, the following entry is logged:\n\tINFO: Failed to parse val=twenty-one\nHowever, if an attacker submits the string\n\ttwenty-one%0a%0aINFO:+User+logged+out%3dbadguy\nthe following entry is logged:\n\tINFO: Failed to parse val=twenty-one\n\tINFO: User logged out=badguy\nClearly, attackers can use this same mechanism to insert arbitrary log entries.\n[R.93.2]"
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "The target host is logging the action and data of the user.",
+        "The target host insufficiently protects access to the logs or logging mechanisms."
+    ],
+    "x_capec_skills_required": {
+        "A more sophisticated attack can try to defeat the input validation mechanism.": "Medium",
+        "This attack can be as simple as adding extra characters to the logged data (e.g. username). Adding entries is typically easier than removing entries.": "Low"
+    },
+    "x_capec_typical_severity": "High",
+    "x_resources_required": ""
+}

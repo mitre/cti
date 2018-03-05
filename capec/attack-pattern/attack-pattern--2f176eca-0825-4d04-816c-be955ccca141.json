@@ -1,0 +1,25 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--2f176eca-0825-4d04-816c-be955ccca141",
+    "created_by_ref": "identity--d922e967-ff9b-4f27-97e6-2fc5f54aac51",
+    "created": "2018-03-05T19:06:10.523Z",
+    "modified": "2018-03-05T19:06:10.523Z",
+    "name": "UDP Scan",
+    "description": "An attacker engages in UDP scanning to gather information about UDP port status. UDP scanning methods involve sending a UDP datagram to the target port and looking for evidence that the port is closed. Open UDP ports usually do not respond to UDP datagrams as there is no stateful mechanism within the protocol that requires building or establishing a session. Responses to UDP datagrams are therefore application specific and cannot be relied upon as a method of detecting an open port. UDP scanning relies heavily upon ICMP diagnostic messages in order to determine the status of a remote port. Firewalls or ACLs which block egress ICMP error types effectively prevent UDP scans from returning any useful information. UDP scanning is further complicated by rate limiting mechanisms governing ICMP error messages. During a UDP scan, a datagram is sent to a target port. If an ICMP Type 3 Port unreachable error message is returned then the port is considered closed. Different types of ICMP messages can indicate a filtered port.\nThe protocol characteristics of UDP make port scanning inherently more difficult than with TCP, as well as dependent upon ICMP for accurate scanning. Due to ambiguities that can arise between open ports and filtered ports, UDP scanning results often require a high degree of interpretation and further testing to refine. In general, UDP scanning results are less reliable or accurate than TCP-based scanning.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/308.html",
+            "external_id": "CAPEC-308"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--068ab041-90bb-4e30-9394-d306c62765a6"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_prerequisites": [
+        "The ability to send UDP datagrams to a host and receive ICMP error messages from that host. In cases where particular types of ICMP messaging is disallowed, the reliability of UDP scanning drops off sharply."
+    ],
+    "x_capec_typical_severity": "Low",
+    "x_resources_required": "The ability to craft custom UDP Packets for use during network reconnaissance. This can be accomplished via the use of a port scanner, or via socket manipulation in a programming or scripting language. Packet injection tools are also useful. It is also necessary to trap ICMP diagnostic messages during this process. Depending upon the method used it may be necessary to sniff the network in order to see the response."
+}

@@ -1,0 +1,92 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--119d2fee-d5d6-4aaa-88da-9a8d94433faa",
+    "created_by_ref": "identity--2888a06a-5541-4bad-8066-df6f196f70ff",
+    "created": "2018-03-05T19:00:36.483Z",
+    "modified": "2018-03-05T19:00:36.483Z",
+    "name": "Using UTF-8 Encoding to Bypass Validation Logic",
+    "description": "This attack is a specific variation on leveraging alternate encodings to bypass validation logic. This attack leverages the possibility to encode potentially harmful input in UTF-8 and submit it to applications not expecting or effective at validating this encoding standard making input filtering difficult. UTF-8 (8-bit UCS/Unicode Transformation Format) is a variable-length character encoding for Unicode. Legal UTF-8 characters are one to four bytes long. However, early version of the UTF-8 specification got some entries wrong (in some cases it permitted overlong characters). UTF-8 encoders are supposed to use the \"shortest possible\" encoding, but naive decoders may accept encodings that are longer than necessary. According to the RFC 3629, a particularly subtle form of this attack can be carried out against a parser which performs security-critical validity checks against the UTF-8 encoded form of its input, but interprets certain illegal octet sequences as characters.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/80.html",
+            "external_id": "CAPEC-80"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/173.html",
+            "external_id": "CWE-173"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/172.html",
+            "external_id": "CWE-172"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/180.html",
+            "external_id": "CWE-180"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/181.html",
+            "external_id": "CWE-181"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/171.html",
+            "external_id": "CWE-171"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/73.html",
+            "external_id": "CWE-73"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/21.html",
+            "external_id": "CWE-21"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/74.html",
+            "external_id": "CWE-74"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/20.html",
+            "external_id": "CWE-20"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/697.html",
+            "external_id": "CWE-697"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/692.html",
+            "external_id": "CWE-692"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--ad91480b-92ca-4958-92fe-407f4493dcb9"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_consequences": {
+        "Run Arbitrary Code": "Execute unauthorized code or commands"
+    },
+    "x_capec_example_instances": [
+        "Perhaps the most famous UTF-8 attack was against unpatched Microsoft Internet Information Server (IIS) 4 and IIS 5 servers. If an attacker made a request that looked like this\n\thttp://servername/scripts/..%c0%af../winnt/system32/ cmd.exe\nthe server didn't correctly handle %c0%af in the URL. What do you think %c0%af means? It's 11000000 10101111 in binary; and if it's broken up using the UTF-8 mapping rules, we get this: 11000000 10101111. Therefore, the character is 00000101111, or 0x2F, the slash (/) character! The %c0%af is an invalid UTF-8 representation of the / character. Such an invalid UTF-8 escape is often referred to as an overlong sequence.\n\thttp://servername/scripts/../../winnt/system32/cmd.exe\nSo when the attacker requested the tainted URL, he accessed\nIn other words, he walked out of the script's virtual directory, which is marked to allow program execution, up to the root and down into the system32 directory, where he could pass commands to the command shell, Cmd.exe."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "The application's UTF-8 decoder accepts and interprets illegal UTF-8 characters or non-shortest format of UTF-8 encoding.",
+        "Input filtering and validating is not done properly leaving the door open to harmful characters for the target host."
+    ],
+    "x_capec_skills_required": {
+        "An attacker can inject different representation of a filtered character in UTF-8 format.": "Low",
+        "An attacker may craft subtle encoding of input data by using the knowledge that she has gathered about the target host.": "Medium"
+    },
+    "x_capec_typical_severity": "High",
+    "x_resources_required": ""
+}

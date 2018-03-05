@@ -1,0 +1,43 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--e20216dd-b8a1-4139-b886-6a7187a8aee5",
+    "created_by_ref": "identity--8641df51-0f59-4a4d-a300-7f11ca320ba2",
+    "created": "2018-03-05T19:11:07.659Z",
+    "modified": "2018-03-05T19:11:07.659Z",
+    "name": "XSS Through HTTP Headers",
+    "description": "An adversary exploits web applications that generate web content, such as links in a HTML page, based on unvalidated or improperly validated data submitted by other actors. XSS in HTTP Headers attacks target the HTTP headers which are hidden from most users and may not be validated by web applications.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/86.html",
+            "external_id": "CAPEC-86"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/80.html",
+            "external_id": "CWE-80"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--127d62dd-9993-48ef-9ef1-a9c686da9914"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_consequences": {
+        "Run Arbitrary Code": "Execute unauthorized code or commands"
+    },
+    "x_capec_example_instances": [
+        "Utilize a remote style sheet set in the HTTP header for XSS attack. When the attacker is able to point to a remote stylesheet, any of the variables set in that stylesheet are controllable on the client side by the remote attacker. Like most XSS attacks, results vary depending on browser that is used.\n\t<META HTTP-EQUIV=\"Link\" Content=\"<http://ha.ckers.org/xss.css>; REL=stylesheet\">\n[R.86.2]",
+        "Google's 404 redirection script was found vulnerable to this attack vector.\nGoogle's 404 file not found page read\n* Response headers: \"Content-Type: text/html; charset=[encoding]\".\n* Response body: <META http-equiv=\"Content-Type\" (...) charset=[encoding]/>\nIf the response sends an unexpected encoding type such as UTF-7, then no enforcement is done on the payload and arbitrary XSS code will be transported along with the standard HTTP response. [R.86.3]",
+        "XSS can be used in variety of ways, because it is scripted and executes in a distributed, asynchronous fashion it can create its own vector and openings. For example, the attacker can use XSS to mount a DDoS attack by having series of different computers unknowingly executing requests against a single host."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "Target software must be a client that allows scripting communication from remote hosts."
+    ],
+    "x_capec_skills_required": {
+        "Exploiting a client side vulnerability to inject malicious scripts into the browser's executable process.": "High",
+        "To achieve a redirection and use of less trusted source, an attacker can simply edit HTTP Headers that are sent to client machine.": "Low"
+    },
+    "x_capec_typical_severity": "Very High",
+    "x_resources_required": "The adversary must have the ability to deploy a custom hostile service for access by targeted clients and the abbility to communicate synchronously or asynchronously with client machine. The adversary must also control a remote site of some sort to redirect client and data to."
+}

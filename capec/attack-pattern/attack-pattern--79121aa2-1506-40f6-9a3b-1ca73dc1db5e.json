@@ -1,0 +1,52 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--79121aa2-1506-40f6-9a3b-1ca73dc1db5e",
+    "created_by_ref": "identity--2888a06a-5541-4bad-8066-df6f196f70ff",
+    "created": "2018-03-05T19:00:35.642Z",
+    "modified": "2018-03-05T19:00:35.642Z",
+    "name": "Password Recovery Exploitation",
+    "description": "An attacker may take advantage of the application feature to help users recover their forgotten passwords in order to gain access into the system with the same privileges as the original user. Generally password recovery schemes tend to be weak and insecure. Most of them use only one security question . For instance, mother's maiden name tends to be a fairly popular one. Unfortunately in many cases this information is not very hard to find, especially if the attacker knows the legitimate user.\nThese generic security questions are also re-used across many applications, thus making them even more insecure. An attacker could for instance overhear a coworker talking to a bank representative at the work place and supplying their mother's maiden name for verification purposes. An attacker can then try to log in into one of the victim's accounts, click on \"forgot password\" and there is a good chance that the security question there will be to provide mother's maiden name.\nA weak password recovery scheme totally undermines the effectiveness of a strong password scheme.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/50.html",
+            "external_id": "CAPEC-50"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/522.html",
+            "external_id": "CWE-522"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/640.html",
+            "external_id": "CWE-640"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/718.html",
+            "external_id": "CWE-718"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--ad91480b-92ca-4958-92fe-407f4493dcb9"
+    ],
+    "x_capec_abstraction": "Standard",
+    "x_capec_example_instances": [
+        "An attacker clicks on the \"forgot password\" and is presented with a single security question. The question is regarding the name of the first dog of the user. The system does not limit the number of attempts to provide the dog's name. An attacker goes through a list of 100 most popular dog names and finds the right name, thus getting the ability to reset the password and access the system.",
+        "phpBanner Exchange is a PHP script (using the mySQL database) that facilitates the running of a banner exchange without extensive knowledge of PHP or mySQL.\n\tif(!eregi(\"^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*\nA SQL injection was discovered in the password recovery module of the system that allows recovering an arbitrary user's password and taking over his account. The problem is due to faulty input sanitization in the phpBannerExchange, specifically the e-mail address of the user which is requested by the password recovery module.\n\t$get_info=mysql_query(\"select * from banneruser where\nThe e-mail address requested by the password recovery module on the resetpw.php page. That e-mail address is validated with the following regular expression:\nA bug in the implementation of eregi() allows to pass additional character using a null byte \"\\0\". Since eregi() is implemented in C, the variable $email is treated as a zero-terminated string. All characters following the Null Byte will not be recognized by the regular expression. So an e-mail address can be provided that includes the special character \" ' \" to break the SQL query below (and it will not be rejected by the regular expression because of the null byte trick). So a SQL injection becomes possible:\nThis query will return a non-zero result set even though the email supplied (attacker's email) is not in the database.\nThen a new password for the user is generated and sent to the $email address, an e-mail address controlled by the attacker. An attacker can then log in into the system."
+    ],
+    "x_capec_likelihood_of_attack": "Medium",
+    "x_capec_prerequisites": [
+        "The system allows users to recover their passwords and gain access back into the system.",
+        "Password recovery mechanism has been designed or implemented insecurely.",
+        "Password recovery mechanism relies only on something the user knows and not something the user has.",
+        "No third party intervention is required to use the password recovery mechanism."
+    ],
+    "x_capec_skills_required": {
+        "Brute force attack": "Low",
+        "Social engineering and more sophisticated technical attacks.": "Medium"
+    },
+    "x_capec_typical_severity": "High",
+    "x_resources_required": "For a brute force attack one would need a machine with sufficient CPU, RAM and HD."
+}

@@ -1,0 +1,25 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--c01babc9-e032-462b-8403-2e6187d195d7",
+    "created_by_ref": "identity--d922e967-ff9b-4f27-97e6-2fc5f54aac51",
+    "created": "2018-03-05T19:06:10.481Z",
+    "modified": "2018-03-05T19:06:10.481Z",
+    "name": "TCP ACK Ping",
+    "description": "An attacker sends a TCP segment with the ACK flag set to a remote host for the purpose of determining if the host is alive. This is one of several TCP 'ping' types. The RFC 793 expected behavior for a service is to respond with a RST 'reset' packet to any unsolicited ACK segment that is not part of an existing connection. So by sending an ACK segment to a port, an attacker identify that the host is alive by looking for a RST packet. Typically a remote server will respond with a RST regardless of whether a port is open or closed. In either case, the attacker can determine that the host is alive. TCP ACK pings cannot discover the state of a remote port because the behavior is the same in either case. TCP ACK pings are most likely to fail in cases where a stateful firewall is present. The firewall will look up the ACK packet in its state-table and discard the segment because it does not correspond to any active connection. A TCP ACK Ping has the following characteristics:\nThe tool nmap will send TCP ACK pings when the command line \"-PA\" switch is used. Sending an ACK ping requires the ability to access \"raw sockets\" in order to create the packets with direct access to the packet header.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/297.html",
+            "external_id": "CAPEC-297"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--068ab041-90bb-4e30-9394-d306c62765a6"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_prerequisites": [
+        "The ability to send an ACK packet to a remote host and identify the response. Creating the ACK packet without building a full connection requires the use of raw sockets. As a result, it is not possible to send a TCP ACK ping from some systems (Windows XP SP 2) without the use of third-party packet drivers like Winpcap. On other systems (BSD, Linux) administrative privileges are required in order to write to the raw socket."
+    ],
+    "x_capec_typical_severity": "Low",
+    "x_resources_required": "The ability to craft custom TCP ACK segments for use during network reconnaissance. ACK scanning can be performed via the use of a port scanner or by raw socket manipulation using a scripting or programming language. Packet injection tools are also useful for this purpose. Depending upon the technique used it may also be necessary to sniff the network in order to see the response."
+}

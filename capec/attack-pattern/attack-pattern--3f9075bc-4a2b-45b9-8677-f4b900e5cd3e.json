@@ -1,0 +1,41 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--3f9075bc-4a2b-45b9-8677-f4b900e5cd3e",
+    "created_by_ref": "identity--8641df51-0f59-4a4d-a300-7f11ca320ba2",
+    "created": "2018-03-05T19:11:06.238Z",
+    "modified": "2018-03-05T19:11:06.238Z",
+    "name": "Hijacking a Privileged Thread of Execution",
+    "description": "Adversaries can sometimes hijack a privileged thread from the underlying system through synchronous (calling a privileged function that returns incorrectly) or asynchronous (callbacks, signal handlers, and similar) means. This can allow the adversary may to access functionality the system's designer didn't intend for them to, but they may also go undetected or deny other users essential service in a catastrophic (or insidiously subtle) way.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/30.html",
+            "external_id": "CAPEC-30"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/270.html",
+            "external_id": "CWE-270"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--127d62dd-9993-48ef-9ef1-a9c686da9914"
+    ],
+    "x_capec_abstraction": "Standard",
+    "x_capec_consequences": {
+        "Run Arbitrary Code": "Execute unauthorized code or commands"
+    },
+    "x_capec_example_instances": [
+        "Adversary targets an application written using Java's AWT, with the 1.2.2 era event model. In this circumstance, any AWTEvent originating in the underlying OS (such as a mouse click) would return a privileged thread. The adversary could choose to not return the AWT-generated thread upon consuming the event, but instead leveraging its privilege to conduct privileged operations."
+    ],
+    "x_capec_likelihood_of_attack": "Low",
+    "x_capec_prerequisites": [
+        "The application in question employs a threaded model of execution with the threads operating at, or having the ability to switch to, a higher privilege level than normal users",
+        "In order to feasibly execute this class of attacks, the adversary must have the ability to hijack a privileged thread.\nThis ability includes, but is not limited to, modifying environment variables that affect the process the thread belongs to, or providing malformed user-controllable input that causes the executing thread to fault and return to a higher privilege level or such.\nThis does not preclude network-based attacks, but makes them conceptually more difficult to identify and execute."
+    ],
+    "x_capec_skills_required": {
+        "Hijacking a thread involves knowledge of how processes and threads function on the target platform, the design of the target application as well as the ability to identify the primitives to be used or manipulated to hijack the thread.": "High"
+    },
+    "x_capec_typical_severity": "Very High",
+    "x_resources_required": "None: No specialized resources are required to execute this type of attack. The adversary needs to be able to latch onto a privileged thread.\nThe adversary does, however, need to be able to program, compile, and link to the victim binaries being executed so that it will turn control of a privileged thread over to the adversary's malicious code. This is the case even if the adversary conducts the attack remotely."
+}

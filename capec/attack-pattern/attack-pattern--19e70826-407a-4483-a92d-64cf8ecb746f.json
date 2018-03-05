@@ -1,0 +1,57 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--19e70826-407a-4483-a92d-64cf8ecb746f",
+    "created_by_ref": "identity--8641df51-0f59-4a4d-a300-7f11ca320ba2",
+    "created": "2018-03-05T19:11:06.703Z",
+    "modified": "2018-03-05T19:11:06.703Z",
+    "name": "Padding Oracle Crypto Attack",
+    "description": "An adversary is able to efficiently decrypt data without knowing the decryption key if a target system leaks data on whether or not a padding error happened while decrypting the ciphertext. A target system that leaks this type of information becomes the padding oracle and an adversary is able to make use of that oracle to efficiently decrypt data without knowing the decryption key by issuing on average 128*b calls to the padding oracle (where b is the number of bytes in the ciphertext block). In addition to performing decryption, an adversary is also able to produce valid ciphertexts (i.e., perform encryption) by using the padding oracle, all without knowing the encryption key.\nAny cryptosystem can be vulnerable to padding oracle attacks if the encrypted messages are not authenticated to ensure their validity prior to decryption, and then the information about padding error is leaked to the adversary. This attack technique may be used, for instance, to break CAPTCHA systems or decrypt/modify state information stored in client side objects (e.g., hidden fields or cookies).\nThis attack technique is a side-channel attack on the cryptosystem that uses a data leak from an improperly implemented decryption routine to completely subvert the cryptosystem. The one bit of information that tells the adversary whether a padding error during decryption has occurred, in whatever form it comes, is sufficient for the adversary to break the cryptosystem. That bit of information can come in a form of an explicit error message about a padding error, a returned blank page, or even the server taking longer to respond (a timing attack).\nThis attack can be launched cross domain where an adversary is able to use cross-domain information leaks to get the bits of information from the padding oracle from a target system / service with which the victim is communicating. To do so an adversary sends a request containing ciphertext to the target system. Due to the browser's same origin policy, the adversary is not able to see the response directly, but can use cross-domain information leak techniques to still get the information needed (i.e., information on whether or not a padding error has occurred). For instance, this can be done using \"img\" tag plus the onerror()/onload() events. The adversary's JavaScript can make web browsers to load an image on the target site, and know if the image is loaded or not. This is 1-bit information needed for the padding oracle attack to work: if the image is loaded, then it is valid padding, otherwise it is not.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/463.html",
+            "external_id": "CAPEC-463"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/209.html",
+            "external_id": "CWE-209"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/514.html",
+            "external_id": "CWE-514"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/649.html",
+            "external_id": "CWE-649"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/347.html",
+            "external_id": "CWE-347"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/354.html",
+            "external_id": "CWE-354"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/696.html",
+            "external_id": "CWE-696"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--127d62dd-9993-48ef-9ef1-a9c686da9914"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_prerequisites": [
+        "The decryption routine does not properly authenticate the message / does not verify its integrity prior to performing the decryption operation",
+        "The target system leaks data (in some way) on whether a padding error has occurred when attempting to decrypt the ciphertext.",
+        "The padding oracle remains available for enough time / for as many requests as needed for the adversary to decrypt the ciphertext."
+    ],
+    "x_capec_typical_severity": "High",
+    "x_resources_required": "Ability to detect instances where a target system is vulnerable to an oracle padding attack\nSufficient cryptography knowledge and tools needed to take advantage of the presence of the padding oracle to perform decryption / encryption of data without a key"
+}

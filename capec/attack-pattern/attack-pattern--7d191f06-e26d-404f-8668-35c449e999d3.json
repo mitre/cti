@@ -1,0 +1,37 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--7d191f06-e26d-404f-8668-35c449e999d3",
+    "created_by_ref": "identity--2888a06a-5541-4bad-8066-df6f196f70ff",
+    "created": "2018-03-05T19:00:35.521Z",
+    "modified": "2018-03-05T19:00:35.521Z",
+    "name": "DLL Search Order Hijacking",
+    "description": "The attacker exploits the functionality of the Windows DLL loader where the process loading the DLL searches for the DLL to be loaded first in the same directory in which the process binary resides and then in other directories (e.g., System32). Exploitation of this preferential search order can allow an attacker to make the loading process load the attackers' rogue DLL rather than the legitimate DLL.\nFor instance, an attacker with access to the file system may place a malicious ntshrui.dll in the C:\\Windows directory. This DLL normally resides in the System32 folder. Process explorer.exe which also resides in C:\\Windows, upon trying to load the ntshrui.dll from the System32 folder will actually load the DLL supplied by the attacker simply because of the preferential search order. Since the attacker has placed its malicious ntshrui.dll in the same directory as the loading explorer.exe process, the DLL supplied by the attacker will be found first and thus loaded in lieu of the legitimate DLL. Since explorer.exe is loaded during the boot cycle, the attackers' malware is guaranteed to execute.\nThis attack can be leveraged with many different DLLs and with many different loading processes. No forensic trails are left in the system's registry or file system that an incorrect DLL had been loaded.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/471.html",
+            "external_id": "CAPEC-471"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/427.html",
+            "external_id": "CWE-427"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/706.html",
+            "external_id": "CWE-706"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--ad91480b-92ca-4958-92fe-407f4493dcb9"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_prerequisites": [
+        "Windows system is used\nAttacker has a mechanism to place its malicious DLLs in the needed location on the file system"
+    ],
+    "x_capec_skills_required": {
+        "Ability to create a malicious DLL and get it to the right location on the victim's file system": "Medium"
+    },
+    "x_capec_typical_severity": "Medium"
+}

@@ -1,0 +1,42 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--79c0555f-8558-4c3f-b1d8-ae22bb4808c8",
+    "created_by_ref": "identity--8641df51-0f59-4a4d-a300-7f11ca320ba2",
+    "created": "2018-03-05T19:11:06.767Z",
+    "modified": "2018-03-05T19:11:06.767Z",
+    "name": "Passing Local Filenames to Functions That Expect a URL",
+    "description": "This attack relies on client side code to access local files and resources instead of URLs. When the client browser is expecting \n                  a URL string, but instead receives a request for a local file, that execution is likely to occur in the browser process space with \n                  the browser's authority to local files. The attacker can send the results of this request to the local files out to a site that they control. \n                  This attack may be used to steal sensitive authentication data (either local or remote), or to gain system profile information to launch further attacks.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/48.html",
+            "external_id": "CAPEC-48"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/241.html",
+            "external_id": "CWE-241"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/706.html",
+            "external_id": "CWE-706"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--127d62dd-9993-48ef-9ef1-a9c686da9914"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_example_instances": [
+        "J2EE applications frequently use .properties files to store configuration information including JDBC connections, LDAP connection strings, proxy information, system passwords and other system metadata that is valuable to attackers looking to probe the system or bypass policy enforcement points. When these files are stored in publicly accessible directories and are allowed to be read by the public user, then an attacker can list the directory identify a .properties file and simply load its contents in the browser listing its contents. A standard Hibernate properties file contains\n\thibernate.connection.driver_class = org.postgresql.Driver\n\thibernate.connection.url = jdbc:postgresql://localhost/mydatabase\n\thibernate.connection.username = username\n\thibernate.connection.password = password\n\thibernate.c3p0.min_size=5\n\thibernate.c3p0.max_size=20\nEven if the attacker cannot write this file, there is plenty of information to leverage to gain further access."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "The victim's software must not differentiate between the location and type of reference passed the client software, e.g. browser"
+    ],
+    "x_capec_skills_required": {
+        "Attacker identifies known local files to exploit": "Medium"
+    },
+    "x_capec_typical_severity": "High",
+    "x_resources_required": ""
+}

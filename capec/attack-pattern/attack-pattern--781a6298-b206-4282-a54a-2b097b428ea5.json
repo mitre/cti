@@ -1,0 +1,90 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--781a6298-b206-4282-a54a-2b097b428ea5",
+    "created_by_ref": "identity--d922e967-ff9b-4f27-97e6-2fc5f54aac51",
+    "created": "2018-03-05T19:06:10.648Z",
+    "modified": "2018-03-05T19:06:10.648Z",
+    "name": "Leverage Executable Code in Non-Executable Files",
+    "description": "An attack of this type exploits a system's trust in configuration and resource files, when the executable loads the resource (such as an image file or configuration file) the attacker has modified the file to either execute malicious code directly or manipulate the target process (e.g. application server) to execute based on the malicious configuration parameters. Since systems are increasingly interrelated mashing up resources from local and remote sources the possibility of this attack occurring is high.\nThe attack can be directed at a client system, such as causing buffer overrun through loading seemingly benign image files, as in Microsoft Security Bulletin MS04-028 where specially crafted JPEG files could cause a buffer overrun once loaded into the browser. Another example targets clients reading pdf files. In this case the attacker simply appends javascript to the end of a legitimate url for a pdf (http://www.gnucitizen.org/blog/danger-danger-danger/)\nhttp://path/to/pdf/file.pdf#whatever_name_you_want=javascript:your_code_here\nThe client assumes that they are reading a pdf, but the attacker has modified the resource and loaded executable javascript into the client's browser process.\nThe attack can also target server processes. The attacker edits the resource or configuration file, for example a web.xml file used to configure security permissions for a J2EE app server, adding role name \"public\" grants all users with the public role the ability to use the administration functionality.\nThe server trusts its configuration file to be correct, but when they are manipulated, the attacker gains full control.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/35.html",
+            "external_id": "CAPEC-35"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/94.html",
+            "external_id": "CWE-94"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/96.html",
+            "external_id": "CWE-96"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/95.html",
+            "external_id": "CWE-95"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/97.html",
+            "external_id": "CWE-97"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/272.html",
+            "external_id": "CWE-272"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/59.html",
+            "external_id": "CWE-59"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/282.html",
+            "external_id": "CWE-282"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/275.html",
+            "external_id": "CWE-275"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/264.html",
+            "external_id": "CWE-264"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/270.html",
+            "external_id": "CWE-270"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/714.html",
+            "external_id": "CWE-714"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--068ab041-90bb-4e30-9394-d306c62765a6"
+    ],
+    "x_capec_abstraction": "Standard",
+    "x_capec_consequences": {
+        "Run Arbitrary Code": "Execute unauthorized code or commands"
+    },
+    "x_capec_example_instances": [
+        "Virtually any system that relies on configuration files for runtime behavior is open to this attack vector. The configuration files are frequently stored in predictable locations, so an attacker that can fingerprint a server process such as a web server or database server can quickly identify the likely locale where the configuration is stored. And this is of course not limited to server processes. Unix shells rely on profile files to store environment variables, search paths for programs and so on. If the aliases are changed, then a standard Unix \"cp\" command can be rerouted to \"rm\" or other standard command so the user's intention is subverted."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "The attacker must have the ability to modify non-executable files consumed by the target software."
+    ],
+    "x_capec_skills_required": {
+        "To identify and execute against an over-privileged system interface": "Low"
+    },
+    "x_capec_typical_severity": "Very High",
+    "x_resources_required": "Ability to communicate synchronously or asynchronously with server that publishes an over-privileged directory, program, or interface. Optionally, ability to capture output directly through synchronous communication or other method such as FTP."
+}
