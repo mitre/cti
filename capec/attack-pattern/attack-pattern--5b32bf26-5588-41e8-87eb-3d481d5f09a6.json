@@ -1,0 +1,45 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--5b32bf26-5588-41e8-87eb-3d481d5f09a6",
+    "created_by_ref": "identity--8f6c4831-6b8a-469b-b654-9dcaeede2d35",
+    "created": "2018-03-06T15:56:01.219Z",
+    "modified": "2018-03-06T15:56:01.219Z",
+    "name": "XML Entity Expansion",
+    "description": "An attacker submits an XML document to a target application where the XML document uses nested entity expansion to produce an excessively large output XML. XML allows the definition of macro-like structures that can be used to simplify the creation of complex structures. However, this capability can be abused to create excessive demands on a processor's CPU and memory. A small number of nested expansions can result in an exponential growth in demands on memory.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/197.html",
+            "external_id": "CAPEC-197"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/400.html",
+            "external_id": "CWE-400"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/770.html",
+            "external_id": "CWE-770"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--aee86263-8856-421f-b382-457d8408db7d"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_consequences": {
+        "Denial of Service": "DoS: amplification"
+    },
+    "x_capec_example_instances": [
+        "The most common example of this type of attack is the \"many laughs\" attack (sometimes called the 'billion laughs' attack). For example:\n\t<?xml version=\"1.0\"?>\n\t<!DOCTYPE lolz [\n\t]>\n\t<lolz>&lol9;</lolz>\nThis is well formed and valid XML according to the DTD. Each entity increases the number entities by a factor of 10. The line of XML containing lol9; expands out exponentially to a message with 10^9 entities. A small message of a few KBs in size can easily be expanded into a few GB of memory in the parser. By including 3 more entities similar to the lol9 entity in the above code to the DTD, the program could expand out over a TB as there will now be 10^12 entities. Depending on the robustness of the target machine, this can lead to resource depletion, application crash, or even the execution of arbitrary code through a buffer overflow."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "This type of attack requires that the target must receive XML input but either fail to provide an upper limit for entity expansion or provide a limit that is so large that it does not preclude significant resource consumption."
+    ],
+    "x_capec_skills_required": {
+        "To send recursive entity expansion XML messages.": "Low"
+    },
+    "x_capec_typical_severity": "Medium",
+    "x_resources_required": "None: No specialized resources are required to execute this type of attack."
+}

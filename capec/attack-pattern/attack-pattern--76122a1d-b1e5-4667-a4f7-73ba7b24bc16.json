@@ -1,0 +1,25 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--76122a1d-b1e5-4667-a4f7-73ba7b24bc16",
+    "created_by_ref": "identity--8f6c4831-6b8a-469b-b654-9dcaeede2d35",
+    "created": "2018-03-06T15:56:01.717Z",
+    "modified": "2018-03-06T15:56:01.717Z",
+    "name": "TCP FIN scan",
+    "description": "An attacker uses a TCP FIN scan to determine if ports are closed on the target machine. This scan type is accomplished by sending TCP segments with the FIN bit set in the packet header. The RFC 793 expected behavior is that any TCP segment with an out-of-state Flag sent to an open port is discarded, whereas segments with out-of-state flags sent to closed ports should be handled with a RST in response. This behavior should allow an attacker to scan for closed ports by sending certain types of rule-breaking packets (out of sync or disallowed by the TCB) and detect closed ports via RST packets. The major advantage of this scan type is its ability to scan through stateless firewall or ACL filters. Such filters are configured to block access to ports usually by preventing SYN packets, thus stopping any attempt to 'build' a connection. FIN packets, like out-of-state ACK packets, tend to pass through such devices undetected. Many operating systems, however, do not implement RFC 793 exactly and for this reason FIN scans do not work as expected against these devices. Some operating systems, like Microsoft Windows, send a RST packet in response to any out-of-sync (or malformed) TCP segments received by a listening socket (rather than dropping the packet via RFC 793), thus preventing an attacker from distinguishing between open and closed ports.\nFIN scans are limited by the range of platforms against which they work. Additionally, because open ports are inferred via no responses being generated, one cannot distinguish an open port from a filtered port without further analysis. For instance, FIN scanning a system protected by a stateful firewall may indicate all ports being open. For these reasons, FIN scanning results must always be interpreted as part of a larger scanning strategy. FIN scanning is still relatively stealthy as the packets tend to blend in with the background noise on a network link. FIN scans are detected via heuristic (non-signature) based algorithms, much in the same way as other scan types are detected.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/302.html",
+            "external_id": "CAPEC-302"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--aee86263-8856-421f-b382-457d8408db7d"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_prerequisites": [
+        "FIN scanning requires the use of raw sockets, and thus cannot be performed from some Windows systems (Windows XP SP 2, for example). On Unix and Linux, raw socket manipulations require root privileges."
+    ],
+    "x_capec_typical_severity": "Low",
+    "x_resources_required": "The ability to send TCP FIN segments to a host during network reconnaissance. This can be achieved via the use of a network mapper or scanner, or via raw socket programming in a scripting language. Packet injection tools are also useful for this purpose. Depending upon the method used it may be necessary to sniff the network in order to see the response."
+}

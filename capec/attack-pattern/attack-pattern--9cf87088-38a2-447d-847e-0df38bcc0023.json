@@ -1,0 +1,41 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--9cf87088-38a2-447d-847e-0df38bcc0023",
+    "created_by_ref": "identity--8f6c4831-6b8a-469b-b654-9dcaeede2d35",
+    "created": "2018-03-06T15:56:00.922Z",
+    "modified": "2018-03-06T15:56:00.922Z",
+    "name": "Relative Path Traversal",
+    "description": "An attacker exploits a weakness in input validation on the target by supplying a specially constructed path utilizing dot and slash characters for the purpose of obtaining access to arbitrary files or resources. An attacker modifies a known path on the target in order to reach material that is not available through intended channels. These attacks normally involve adding additional path separators (/ or \\) and/or dots (.), or encodings thereof, in various combinations in order to reach parent directories or entirely separate trees of the target's directory structure.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/139.html",
+            "external_id": "CAPEC-139"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/23.html",
+            "external_id": "CWE-23"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--aee86263-8856-421f-b382-457d8408db7d"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_consequences": {
+        "Run Arbitrary Code": "Execute unauthorized code or commands"
+    },
+    "x_capec_example_instances": [
+        "The attacker uses relative path traversal to access files in the application. This is an example of accessing user's password file.\n\thttp://www.example.com/getProfile.jsp?filename=../../../../etc/passwd\nHowever, the target application employs regular expressions to make sure no relative path sequences are being passed through the application to the web page. The application would replace all matches from this regex with the empty string.\n\thttp://www.example.com/getProfile.jsp?filename=%2e%2e/%2e%2e/%2e%2e/%2e%2e /etc/passwd\nThen an attacker creates special payloads to bypass this filter:\nWhen the application gets this input string, it will be the desired vector by the attacker."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "The target application must accept a string as user input, fail to sanitize combinations of characters in the input that have a special meaning in the context of path navigation, and insert the user-supplied string into path navigation commands."
+    ],
+    "x_capec_skills_required": {
+        "To inject the malicious payload in a web page": "Low",
+        "To bypass non trivial filters in the application": "High"
+    },
+    "x_capec_typical_severity": "High",
+    "x_resources_required": ""
+}

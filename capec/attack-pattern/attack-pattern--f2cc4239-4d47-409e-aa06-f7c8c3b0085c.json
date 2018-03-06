@@ -1,0 +1,33 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--f2cc4239-4d47-409e-aa06-f7c8c3b0085c",
+    "created_by_ref": "identity--8f6c4831-6b8a-469b-b654-9dcaeede2d35",
+    "created": "2018-03-06T15:56:01.387Z",
+    "modified": "2018-03-06T15:56:01.387Z",
+    "name": "XML Attribute Blowup",
+    "description": "This attack exploits certain XML parsers which manage data in an inefficient manner. The attacker crafts an \n                  XML document with many attributes in the same XML node. In a vulnerable parser, this results in a denial of service condition \n                  owhere CPU resources are exhausted because of the parsing algorithm.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/229.html",
+            "external_id": "CAPEC-229"
+        },
+        {
+            "source_name": "cwe",
+            "url": "http://cwe.mitre.org/data/definitions/770.html",
+            "external_id": "CWE-770"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--aee86263-8856-421f-b382-457d8408db7d"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_example_instances": [
+        "In this example, assume that the victim is running a vulnerable parser such as .NET framework 1.0. This results in a quadratic runtime of O(n^2).\n\t<?xml version=\"1.0\"?>\n\t<foo\n\taaa=\"\"\n\tZZZ=\"\"\n\t...\n\t999=\"\"\n\t/>\nA document with n attributes results in (n^2)/2 operations to be performed. If an operation takes 100 nanoseconds then a document with 100,000 operations would take 500s to process. In this fashion a small message of less than 1MB causes a denial of service condition on the CPU resources."
+    ],
+    "x_capec_likelihood_of_attack": "High",
+    "x_capec_prerequisites": [
+        "The server accepts XML input and is using a parser with a runtime longer than O(n) for the insertion of a new attribute in the data container.(examples are .NET framework 1.0 and 1.1)"
+    ],
+    "x_capec_typical_severity": "High"
+}

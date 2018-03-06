@@ -1,0 +1,25 @@
+{
+    "type": "attack-pattern",
+    "id": "attack-pattern--4d580d4f-a070-4054-bcc8-9e45ea7986ee",
+    "created_by_ref": "identity--8f6c4831-6b8a-469b-b654-9dcaeede2d35",
+    "created": "2018-03-06T15:56:01.653Z",
+    "modified": "2018-03-06T15:56:01.653Z",
+    "name": "TCP SYN Scan",
+    "description": "An attacker uses a SYN scan to determine the status of ports on the remote target. SYN scanning is the most common type of port scanning that is used because of its enormous advantages and few drawbacks. As a result, novice attackers tend to overly rely on the SYN scan while performing system reconnaissance. As a scanning method the primary advantages of SYN scanning are its universality and speed. RFC 793 defines the required behavior of any TCP/IP device in that an incoming connection request begins with a SYN packet, which in turn must be followed by a SYN/ACK packet from the receiving service. For this reason, like TCP Connect scanning, SYN scanning works against any TCP stack. Unlike TCP Connect scanning, it is possible to scan thousands of ports per second using this method. This type of scanning is usually referred to as 'half-open' scanning because it does not complete the three-way handshake. The scanning rate is extremely fast because no time is wasted completing the handshake or tearing down the connection. TCP SYN scanning can also immediately detect 3 of the 4 important types of port status: open, closed, and filtered. When a SYN is sent to an open port and unfiltered port, a SYN/ACK will be generated. This technique allows an attacker to scan through stateful firewalls due to the common configuration that TCP SYN segments for a new connection will be allowed for almost any port. When a SYN packet is sent to a closed port a RST is generated, indicating the port is closed. When SYN scanning to a particular port generates no response, or when the request triggers ICMP Type 3 unreachable errors, the port is filtered. A TCP Connect scan has the following characteristics:\nSYN scanning is fast and provides the attacker with a wealth of information. The primary drawback is that SYN scanning requires the ability to access \"raw sockets\" in order to create the packets. As a result, it is not possible to perform a SYN scan from some systems (Windows XP SP 2). On other systems (BSD, Linux) administrative privileges are required in order to write to the raw socket.",
+    "external_references": [
+        {
+            "source_name": "capec",
+            "url": "https://capec.mitre.org/data/definitions/287.html",
+            "external_id": "CAPEC-287"
+        }
+    ],
+    "object_marking_refs": [
+        "marking-definition--aee86263-8856-421f-b382-457d8408db7d"
+    ],
+    "x_capec_abstraction": "Detailed",
+    "x_capec_prerequisites": [
+        "This scan type is not possible with some operating systems (Windows XP SP 2). On Linux and Unix systems it requires root privileges to use raw sockets."
+    ],
+    "x_capec_typical_severity": "Low",
+    "x_resources_required": "The ability to send TCP SYN segments to a host during network reconnaissance. This can be achieved via the use of a network mapper or scanner, or via raw socket programming in a scripting language. Packet injection tools are also useful for this purpose. Depending upon the method used it may be necessary to sniff the network in order to see the response."
+}
