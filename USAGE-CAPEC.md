@@ -51,7 +51,7 @@ from stix2 import FileSystemStore
 fs = FileSystemStore('./CAPEC', allow_custom=True)
 ```
 
-As of this writing, `allow_custom` must be set to `True`. This is because the CAPEC data uses several custom properties which are not part of the STIX 2.0 specification (`x_capec_prerequisites`, `x_capec_example_instances`, etc).
+When creating the DataSource, the keyword agrument `allow_custom` must be set to `True`. This is because the CAPEC data uses several custom properties which are not part of the STIX 2.0 specification (`x_capec_prerequisites`, `x_capec_example_instances`, etc).
 
 To perform a query, we must define a [Filter](http://stix2.readthedocs.io/en/latest/guide/datastore.html#Filters). As of this writing, a filter must, at a minimum, specify object `id`'s or an object `type`.  The following filter can be used to retrieve all CAPEC attack patterns:
 
