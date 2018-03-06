@@ -1,0 +1,34 @@
+{
+    "type": "bundle",
+    "id": "bundle--de982758-a9d0-4787-b9d3-2fb10ad2a616",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--76c97c08-1ce0-4779-bb77-42c0d5f52d3b",
+            "created_by_ref": "identity--31f421d4-bb36-4dbf-9dfc-c116a91de14b",
+            "created": "2018-03-06T17:19:01.135Z",
+            "modified": "2018-03-06T17:19:01.135Z",
+            "name": "Create files with the same name as files protected with a higher classification",
+            "description": "An attacker exploits file location algorithms in an operating system or application by creating a file with the same name as a protected or privileged file. The attacker could manipulate the system if the attacker-created file is trusted by the operating system or an application component that attempts to load the original file. Applications often load or include external files, such as libraries or configuration files. These files should be protected against malicious manipulation. However, if the application only uses the name of the file when locating it, an attacker may be able to create a file with the same name and place it in a directory that the application will search before the directory with the legitimate file is searched. Because the attackers' file is discovered first, it would be used by the target application. This attack can be extremely destructive if the referenced file is executable and/or is granted special privileges based solely on having a particular name.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/177.html",
+                    "external_id": "CAPEC-177"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--b345b2a9-b539-4d88-8a9a-1ebcc9f77507"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_prerequisites": [
+                "The target application must exclude external files. Most non-trivial applications meet this criterion.",
+                "The target application does not verify that a located file is the one it was looking for through means other than the name. Many applications fail to perform checks of this type.",
+                "The directories the target application searches to find the included file include directories writable by the attacker which are searched before the protected directory containing the actual files. It is much less common for applications to meet this criterion, but if an attacker can manipulate the application's search path (possibly by controlling environmental variables) then they can force this criterion to be met."
+            ],
+            "x_capec_typical_severity": "Very High",
+            "x_resources_required": "The attacker must have sufficient access to place an arbitrarily named file somewhere early in the application's search path."
+        }
+    ]
+}
