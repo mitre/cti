@@ -16,9 +16,9 @@ The STIX types are found as literal strings assigned to the `type` property of t
 The following is a table mapping of CAPEC properties to STIX properties. Some of these properties are standard STIX properties, while others were custom-created for compatibility with CAPEC. These properties are accessed from STIX objects as JSON properties.
 
 ### Attack Pattern
-CAPEC 3.0 Property | CAPEC 2.7.1 Property | STIX Properties | STIX type
---------------- | ---------------
-**Name** |  **Name** | `name` | string
+| CAPEC 3.0 Property | CAPEC 2.7.1 Property | STIX Properties | STIX type |
+| --------------- | --------------- | --------------- | --------------- |
+**Name** |  **Name** | `name` | string |
 **Description** | **Description/Summary**    | `description` | string
 **Abstraction** | **Pattern\_Abstraction** |`x_capec_abstraction` | enumeration(`Meta, Standard, Detailed`)
 **Alternate\_Terms** | **Alternate\_Terms** | `x_capec_alternate_terms` | list(string)
