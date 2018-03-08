@@ -95,10 +95,10 @@ filt = Filter('type', '=', 'attack-pattern')
 Once this filter is defined, you can pass it to the DataSource `query` function in order to actually query the data:
 
 ```python
-techniques = fs.query([filt], allow_custom=True)
+techniques = fs.query([filt])
 ```
 
-Notice that the `query` function takes a **list** of filters.  These filters are logically AND'd together during the query. As of this writing, `allow_custom` must be set to `True` in order to query ATT&CK data. This is because the ATT&CK data uses several custom properties which are not part of the STIX 2.0 specification (`x_mitre_platforms`, `x_mitre_contributors`, etc).
+Notice that the `query` function takes a **list** of filters.  These filters are logically AND'd together during the query. As of this writing, `allow_custom` must be set to `True` in order to query ATT&CK data. This is because the ATT&CK data uses several custom properties which are not part of the STIX 2.0 specification (`x_mitre_platforms`, `x_mitre_contributors`, etc). **UPDATE(8-March-2018)**: Python STIX-2 has moved 'allow_custom' to be set at the DataStore/Source level, not within each API call (i.e. get(), query() etc...). Also, all DataStores/Sources by default now set 'allow_custom' to True.
 
 **For the remaining examples, these imports and the FileSystemStore initialization will be omitted.**
 
@@ -114,7 +114,7 @@ def get_all_software(src):
         [Filter('type', '=', 'tool')]
     ]
     return list(chain.from_iterable(
-        src.query(f, allow_custom=True) for f in filts
+        src.query(f) for f in filts
     ))
     
 get_all_software(fs)
@@ -126,14 +126,14 @@ Here we query the same technique in two different ways. In addition to the `Rund
 ```python
 def get_all_techniques(src):
     filt = [Filter('type', '=', 'attack-pattern')]
-    return src.query(filt, allow_custom=True)
+    return src.query(filt)
     
 def get_technique_by_name(src, name):
     filt = [
         Filter('type', '=', 'attack-pattern'),
         Filter('name', '=', name)
     ]
-    return src.query(filt, allow_custom=True)
+    return src.query(filt)
 
 def get_techniques_by_content(src, content):
     techniques = get_all_techniques(src)
@@ -155,7 +155,7 @@ def get_object_by_attack_id(src, typ, attack_id):
         Filter('type', '=', typ),
         Filter('external_references.external_id', '=', attack_id)
     ]
-    return src.query(filt, allow_custom=True)
+    return src.query(filt)
 
 get_object_by_attack_id(fs, 'intrusion-set', 'G0016')
 ```
@@ -168,7 +168,7 @@ def get_group_by_alias(src, alias):
     return src.query([
         Filter('type', '=', 'intrusion-set'),
         Filter('aliases', '=', alias)
-    ], allow_custom=True)
+    ])
     
 get_group_by_alias(fs, 'Cozy Bear')[0]
 ```
@@ -182,7 +182,7 @@ def get_technique_by_group(src, stix_id):
     return src.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('id', 'in', [r.target_ref for r in relations])
-    ], allow_custom=True)
+    ])
 
 group = get_group_by_alias(fs, 'Cozy Bear')[0]
 get_technique_by_group(fs, group)
@@ -206,13 +206,13 @@ def get_techniques_by_group_software(src, group_stix_id):
         Filter('type', '=', 'relationship'),
         Filter('relationship_type', '=', 'uses'),
         Filter('target_ref', 'in', [r.target_ref for r in group_uses])
-    ], allow_custom=True)
+    ])
 
     #get the techniques themselves
     return src.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('id', 'in', [r.source_ref for r in software_uses])
-    ], allow_custom=True)
+    ])
 
 group = get_group_by_alias(fs, 'Cozy Bear')[0]
 get_techniques_by_group_software(fs, group)
@@ -238,7 +238,7 @@ def get_technique_users(src, tech_stix_id):
     return src.query([
         Filter('type', 'in', ['intrusion-set', 'malware', 'tool']),
         Filter('id', 'in', groups + software)
-    ], allow_custom=True)
+    ])
     
 tech = get_technique_by_name(fs, 'Rundll32')[0]
 get_technique_users(fs, tech.id)
@@ -252,7 +252,7 @@ def get_techniques_by_platform(src, platform):
     return src.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('x_mitre_platforms', '=', platform)
-    ], allow_custom=True)
+    ])
     
 get_techniques_by_platform(fs, 'Windows 8')
 ```
@@ -265,7 +265,7 @@ def get_tactic_techniques(src, tactic):
     techs =  src.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('kill_chain_phases.phase_name', '=', tactic)
-    ], allow_custom=True)
+    ])
 
     # double checking the kill chain is MITRE ATT&CK
     return [t for t in techs if {
@@ -285,7 +285,7 @@ def get_mitigations_by_technique(src, tech_stix_id):
     return src.query([
         Filter('type', '=', 'course-of-action'),
         Filter('id', 'in', [r.source_ref for r in relations])
-    ], allow_custom=True)
+    ])
 
 tech = get_technique_by_name(fs, 'Rundll32')[0]
 get_mitigations_by_technique(fs, tech.id)
