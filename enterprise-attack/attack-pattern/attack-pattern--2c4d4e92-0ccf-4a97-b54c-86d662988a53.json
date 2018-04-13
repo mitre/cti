@@ -1,14 +1,6 @@
 {
-    "type": "bundle",
-    "id": "bundle--a0dee793-dced-4e48-bbc5-20a0504d671e",
-    "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "id": "attack-pattern--2c4d4e92-0ccf-4a97-b54c-86d662988a53",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "created": "2017-12-14T16:46:06.044Z",
-            "modified": "2018-01-17T12:56:55.080Z",
             "name": "Office Application Startup",
             "description": "Microsoft Office is a fairly common application suite on Windows-based operating systems within an enterprise network. There are multiple mechanisms that can be used with Office for persistence when an Office-based application is started.\n\n===Office Template Macros===\n\nMicrosoft Office contains templates that are part of common Office applications and are used to customize styles. The base templates within the application are used each time an application starts. (Citation: Microsoft Change Normal Template)\n\nOffice Visual Basic for Applications (VBA) macros (Citation: MSDN VBA in Office) can inserted into the base templated and used to execute code when the respective Office application starts in order to obtain persistence. Examples for both Word and Excel have been discovered and published. By default, Word has a Normal.dotm template created that can be modified to include a malicious macro. Excel does not have a template file created by default, but one can be added that will automatically be loaded. (Citation: enigma0x3 normal.dotm) (Citation: Hexacorn Office Template Macros)\n\nWord Normal.dotm location:<code>C:\\Users\\(username)\\AppData\\Roaming\\Microsoft\\Templates\\Normal.dotm</code>\n\nExcel Personal.xlsb location:<code>C:\\Users\\(username)\\AppData\\Roaming\\Microsoft\\Excel\\XLSTART\\PERSONAL.XLSB</code>\n\nAn adversary may need to enable macros to execute unrestricted depending on the system or enterprise security policy on use of macros.\n\n===Office Test===\n\nA Registry location was found that when a DLL reference was placed within it the corresponding DLL pointed to by the binary path would be executed every time an Office application is started (Citation: Hexacorn Office Test)\n\n<code>HKEY_CURRENT_USER\\Software\\Microsoft\\Office test\\Special\\Perf</code>\n\n===Add-ins===\n\nOffice add-ins can be used to add functionality to Office programs. (Citation: Microsoft Office Add-ins)\n\nAdd-ins can also be used to obtain persistence because they can be set to execute code when an Office application starts. There are different types of add-ins that can be used by the various Office products; including Word/Excel add-in Libraries (WLL/XLL), VBA add-ins, Office Component Object Model (COM) add-ins, automation add-ins, VBA Editor (VBE), and Visual Studio Tools for Office (VSTO) add-ins. (Citation: MRWLabs Office Persistence Add-ins)\n\nDetection: Many Office-related persistence mechanisms require changes to the Registry and for binaries, files, or scripts to be written to disk or existing files modified to include malicious scripts. Collect events related to Registry key creation and modification for keys that could be used for Office-based persistence. Modification to base templated, like Normal.dotm, should also be investigated since the base templates should likely not contain VBA macros. Changes to the Office macro security settings should also be investigated.\n\nMonitor and validate the Office trusted locations on the file system and audit the Registry entries relevant for enabling add-ins. (Citation: MRWLabs Office Persistence Add-ins)\n\nNon-standard process execution trees may also indicate suspicious or malicious behavior. Collect process execution information including process IDs (PID) and parent process IDs (PPID) and look for abnormal chains of activity resulting from Office processes. If winword.exe is the parent process for suspicious processes and activity relating to other adversarial techniques, then it could indicate that the application was used maliciously.\n\nPlatforms: Windows\n\nData Sources: Process monitoring, Process command-line parameters, Windows Registry, File monitoring\n\nPermissions Required: User, Administrator\n\nSystem Requirements: Office Test technique: Office 2007, 2010, 2013, 2015 and 2016\nAdd-ins: some require administrator permissions\n\nContributors: Ricardo Dias, Loic Jaquemet",
             "kill_chain_phases": [
@@ -19,52 +11,53 @@
             ],
             "external_references": [
                 {
-                    "source_name": "mitre-attack",
                     "url": "https://attack.mitre.org/wiki/Technique/T1137",
+                    "source_name": "mitre-attack",
                     "external_id": "T1137"
                 },
                 {
-                    "source_name": "Microsoft Change Normal Template",
                     "description": "Microsoft. (n.d.). Change the Normal template (Normal.dotm). Retrieved July 3, 2017.",
+                    "source_name": "Microsoft Change Normal Template",
                     "url": "https://support.office.com/article/Change-the-Normal-template-Normal-dotm-06de294b-d216-47f6-ab77-ccb5166f98ea"
                 },
                 {
-                    "source_name": "MSDN VBA in Office",
                     "description": "Austin, J. (2017, June 6). Getting Started with VBA in Office. Retrieved July 3, 2017.",
+                    "source_name": "MSDN VBA in Office",
                     "url": "https://msdn.microsoft.com/en-us/vba/office-shared-vba/articles/getting-started-with-vba-in-office"
                 },
                 {
-                    "source_name": "enigma0x3 normal.dotm",
                     "description": "Nelson, M. (2014, January 23). Maintaining Access with normal.dotm. Retrieved July 3, 2017.",
+                    "source_name": "enigma0x3 normal.dotm",
                     "url": "https://enigma0x3.net/2014/01/23/maintaining-access-with-normal-dotm/comment-page-1/"
                 },
                 {
-                    "source_name": "Hexacorn Office Template Macros",
                     "description": "Hexacorn. (2017, April 17). Beyond good ol\u2019 Run key, Part 62. Retrieved July 3, 2017.",
+                    "source_name": "Hexacorn Office Template Macros",
                     "url": "http://www.hexacorn.com/blog/2017/04/19/beyond-good-ol-run-key-part-62/"
                 },
                 {
-                    "source_name": "Hexacorn Office Test",
                     "description": "Hexacorn. (2014, April 16). Beyond good ol\u2019 Run key, Part 10. Retrieved July 3, 2017.",
+                    "source_name": "Hexacorn Office Test",
                     "url": "http://www.hexacorn.com/blog/2014/04/16/beyond-good-ol-run-key-part-10/"
                 },
                 {
-                    "source_name": "Microsoft Office Add-ins",
                     "description": "Microsoft. (n.d.). Add or remove add-ins. Retrieved July 3, 2017.",
+                    "source_name": "Microsoft Office Add-ins",
                     "url": "https://support.office.com/article/Add-or-remove-add-ins-0af570c4-5cf3-4fa9-9b88-403625a0b460"
                 },
                 {
-                    "source_name": "MRWLabs Office Persistence Add-ins",
                     "description": "Knowles, W. (2017, April 21). Add-In Opportunities for Office Persistence. Retrieved July 3, 2017.",
+                    "source_name": "MRWLabs Office Persistence Add-ins",
                     "url": "https://labs.mwrinfosecurity.com/blog/add-in-opportunities-for-office-persistence/"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_contributors": [
-                "Ricardo Dias",
-                "Loic Jaquemet"
+            "created": "2017-12-14T16:46:06.044Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
             ],
             "x_mitre_data_sources": [
                 "Process monitoring",
@@ -76,12 +69,19 @@
                 "User",
                 "Administrator"
             ],
-            "x_mitre_platforms": [
-                "Windows"
-            ],
             "x_mitre_system_requirements": [
                 "Office Test technique: Office 2007, 2010, 2013, 2015 and 2016\nAdd-ins: some require administrator permissions"
-            ]
+            ],
+            "x_mitre_contributors": [
+                "Ricardo Dias",
+                "Loic Jaquemet"
+            ],
+            "id": "attack-pattern--2c4d4e92-0ccf-4a97-b54c-86d662988a53",
+            "modified": "2018-04-13T17:05:30.756Z",
+            "type": "attack-pattern"
         }
-    ]
+    ],
+    "type": "bundle",
+    "id": "bundle--d66feda4-da95-4edd-864b-a68986989ebb",
+    "spec_version": "2.0"
 }

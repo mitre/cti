@@ -1,14 +1,6 @@
 {
-    "type": "bundle",
-    "id": "bundle--23a727c7-eec2-4079-85e0-160659b21a0c",
-    "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "id": "attack-pattern--dcaa092b-7de9-4a21-977f-7fcb77e89c48",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "created": "2017-12-14T16:46:06.044Z",
-            "modified": "2018-01-17T12:56:55.080Z",
             "name": "Access Token Manipulation",
             "description": "Windows uses access tokens to determine the ownership of a running process.  A user can manipulate access tokens to make a running process appear as though it belongs to someone other than the user that started the process.  When this occurs, the process also takes on the security context associated with the new token.  For example, Microsoft promotes the use of access tokens as a security best practice.  Administrators should log in as a standard user but run their tools with administrator privileges using the built-in access token manipulation command <code>runas</code>.  (Citation: Microsoft runas)\n  \nAdversaries may use access tokens to operate under a different user or system security context to perform actions and evade detection. An adversary can use built-in Windows API functions to copy access tokens from existing processes; this is known as token stealing.  An adversary must already be in a privileged user context (i.e. administrator) to steal a token.  However, adversaries commonly use token stealing to elevate their security context from the administrator level to the SYSTEM level. An adversary can use a token to authenticate to a remote system as the account for that token if the account has appropriate permissions on the remote system. (Citation: Pentestlab Token Manipulation)\n\nAccess tokens can be leveraged by adversaries through three methods: (Citation: BlackHat Atkinson Winchester Token Manipulation)\n\n'''Token Impersonation/Theft''' - An adversary creates a new access token that duplicates an existing token using <code>DuplicateToken(Ex)</code>. The token can then be used with <code>ImpersonateLoggedOnUser</code> to allow the calling thread to impersonate a logged on user's security context, or with <code>SetThreadToken</code> to assign the impersonated token to a thread. This is useful for when the target user has a non-network logon session on the system.\n\n'''Create Process with a Token''' - An adversary creates a new access token with <code>DuplicateToken(Ex)</code> and uses it with <code>CreateProcessWithTokenW</code> to create a new process running under the security context of the impersonated user. This is useful for creating a new process under the security context of a different user.\n\n'''Make and Impersonate Token''' - An adversary has a username and password but the user is not logged onto the system. The adversary can then create a logon session for the user using the <code>LogonUser</code> function. The function will return a copy of the new session's access token and the adversary can use <code>SetThreadToken</code> to assign the token to a thread.\n\nAny standard user can use the <code>runas</code> command, and the Windows API functions, to create impersonation tokens; it does not require access to an administrator account.\n\nMetasploit\u2019s Meterpreter payload allows arbitrary token manipulation and uses token impersonation to escalate privileges.  (Citation: Metasploit access token)  The Cobalt Strike beacon payload allows arbitrary token impersonation and can also create tokens.  (Citation: Cobalt Strike Access Token)\n\nDetection: If an adversary is using a standard command-line shell, analysts can detect token manipulation by auditing command-line activity.  Specifically, analysts should look for use of the <code>runas</code> command. Detailed command-line logging is not enabled by default in Windows. (Citation: Microsoft Command-line Logging)\n\nIf an adversary is using a payload that calls the Windows token APIs directly, analysts can detect token manipulation only through careful analysis of user network activity, examination of running processes, and correlation with other endpoint and network behavior.  \n\nThere are many Windows API calls a payload can take advantage of to manipulate access tokens (e.g., <code>LogonUser</code> (Citation: Microsoft LogonUser), <code>DuplicateTokenEx</code> (Citation: Microsoft DuplicateTokenEx), and <code>ImpersonateLoggedOnUser</code> (Citation: Microsoft ImpersonateLoggedOnUser)).  Please see the referenced Windows API pages for more information.\n\nQuery systems for process and thread token information and look for inconsistencies such as user owns processes impersonating the local SYSTEM account. (Citation: BlackHat Atkinson Winchester Token Manipulation)\n\nPlatforms: Windows\n\nData Sources: API monitoring, Access Tokens\n\nEffective Permissions: SYSTEM\n\nPermissions Required: User, Administrator\n\nContributors: Tom Ueltschi @c_APT_ure, Travis Smith, Tripwire, Jared Atkinson, @jaredcatkinson, Robby Winchester, @robwinchester3",
             "kill_chain_phases": [
@@ -23,64 +15,63 @@
             ],
             "external_references": [
                 {
-                    "source_name": "mitre-attack",
                     "url": "https://attack.mitre.org/wiki/Technique/T1134",
+                    "source_name": "mitre-attack",
                     "external_id": "T1134"
                 },
                 {
-                    "source_name": "Microsoft runas",
                     "description": "Microsoft TechNet. (n.d.). Runas. Retrieved April 21, 2017.",
+                    "source_name": "Microsoft runas",
                     "url": "https://technet.microsoft.com/en-us/library/bb490994.aspx"
                 },
                 {
-                    "source_name": "Pentestlab Token Manipulation",
                     "description": "netbiosX. (2017, April 3). Token Manipulation. Retrieved April 21, 2017.",
+                    "source_name": "Pentestlab Token Manipulation",
                     "url": "https://pentestlab.blog/2017/04/03/token-manipulation/"
                 },
                 {
-                    "source_name": "Metasploit access token",
                     "description": "Offensive Security. (n.d.). What is Incognito. Retrieved April 21, 2017.",
+                    "source_name": "Metasploit access token",
                     "url": "https://www.offensive-security.com/metasploit-unleashed/fun-incognito/"
                 },
                 {
-                    "source_name": "Cobalt Strike Access Token",
                     "description": "Mudge, R. (n.d.). Windows Access Tokens and Alternate Credentials. Retrieved April 21, 2017.",
+                    "source_name": "Cobalt Strike Access Token",
                     "url": "https://blog.cobaltstrike.com/2015/12/16/windows-access-tokens-and-alternate-credentials/"
                 },
                 {
-                    "source_name": "Microsoft Command-line Logging",
                     "description": "Mathers, B. (2017, March 7). Command line process auditing. Retrieved April 21, 2017.",
+                    "source_name": "Microsoft Command-line Logging",
                     "url": "https://technet.microsoft.com/en-us/windows-server-docs/identity/ad-ds/manage/component-updates/command-line-process-auditing"
                 },
                 {
-                    "source_name": "Microsoft LogonUser",
                     "description": "Microsoft TechNet. (n.d.).  Retrieved April 25, 2017.",
+                    "source_name": "Microsoft LogonUser",
                     "url": "https://msdn.microsoft.com/en-us/library/windows/desktop/aa378184(v=vs.85).aspx"
                 },
                 {
-                    "source_name": "Microsoft DuplicateTokenEx",
                     "description": "Microsoft TechNet. (n.d.).  Retrieved April 25, 2017.",
+                    "source_name": "Microsoft DuplicateTokenEx",
                     "url": "https://msdn.microsoft.com/en-us/library/windows/desktop/aa446617(v=vs.85).aspx"
                 },
                 {
-                    "source_name": "Microsoft ImpersonateLoggedOnUser",
                     "description": "Microsoft TechNet. (n.d.).  Retrieved April 25, 2017.",
+                    "source_name": "Microsoft ImpersonateLoggedOnUser",
                     "url": "https://msdn.microsoft.com/en-us/library/windows/desktop/aa378612(v=vs.85).aspx"
                 },
                 {
-                    "source_name": "BlackHat Atkinson Winchester Token Manipulation",
                     "description": "Atkinson, J., Winchester, R. (2017, December 7). A Process is No One: Hunting for Token Manipulation. Retrieved December 21, 2017.",
+                    "source_name": "BlackHat Atkinson Winchester Token Manipulation",
                     "url": "https://www.blackhat.com/docs/eu-17/materials/eu-17-Atkinson-A-Process-Is-No-One-Hunting-For-Token-Manipulation.pdf"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_contributors": [
-                "Tom Ueltschi @c_APT_ure",
-                "Travis Smith, Tripwire",
-                "Jared Atkinson, @jaredcatkinson",
-                "Robby Winchester, @robwinchester3"
+            "created": "2017-12-14T16:46:06.044Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
             ],
             "x_mitre_data_sources": [
                 "API monitoring",
@@ -93,9 +84,18 @@
                 "User",
                 "Administrator"
             ],
-            "x_mitre_platforms": [
-                "Windows"
-            ]
+            "x_mitre_contributors": [
+                "Tom Ueltschi @c_APT_ure",
+                "Travis Smith, Tripwire",
+                "Jared Atkinson, @jaredcatkinson",
+                "Robby Winchester, @robwinchester3"
+            ],
+            "id": "attack-pattern--dcaa092b-7de9-4a21-977f-7fcb77e89c48",
+            "modified": "2018-04-13T17:05:30.756Z",
+            "type": "attack-pattern"
         }
-    ]
+    ],
+    "type": "bundle",
+    "id": "bundle--b2aa8dc5-3fc5-44ea-8758-6aa03561aa60",
+    "spec_version": "2.0"
 }

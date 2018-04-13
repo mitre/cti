@@ -1,0 +1,108 @@
+{
+    "type": "bundle",
+    "id": "bundle--51ab75dd-a077-433f-b805-13782d7c15ca",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--e2f806c0-b6b3-4491-ad87-2b427c05416f",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "created": "2018-04-13T15:22:18.886Z",
+            "modified": "2018-04-13T15:22:18.886Z",
+            "name": "Kernel Modules and Extensions",
+            "description": "Loadable Kernel Modules (or LKMs) are pieces of code that can be loaded and unloaded into the kernel upon demand. They extend the functionality of the kernel without the need to reboot the system. For example, one type of module is the device driver, which allows the kernel to access hardware connected to the system. (Citation: Linux Kernel Programming)\u00a0When used maliciously, Loadable Kernel Modules (LKMs) can be a type of kernel-mode Rootkit that run with the highest operating system privilege (Ring 0). (Citation: Linux Kernel Module Programming Guide)\u00a0Adversaries can use loadable kernel modules to covertly persist on a system and evade defenses. Examples have been found in the wild and there are some open source projects. (Citation: Volatility Phalanx2) (Citation: CrowdStrike Linux Rootkit) (Citation: GitHub Reptile) (Citation: GitHub Diamorphine)\n\nCommon features of LKM based rootkits include: hiding itself, selective hiding of files, processes and network activity, as well as log tampering, providing authenticated backdoors and enabling root access to non-privileged users. (Citation: iDefense Rootkit Overview)\n\nKernel extensions, also called kext, are used for macOS to load functionality onto a system similar to LKMs for Linux. They are loaded and unloaded through <code>kextload</code> and <code>kextunload</code> commands. Several examples have been found where this can be used. (Citation: RSAC 2015 San Francisco Patrick Wardle) (Citation: Synack Secure Kernel Extension Broken) Examples have been found in the wild. (Citation: Securelist Ventir)\n\nDetection: LKMs are typically loaded into <code>/lib/modules</code> and have had the extension .ko (\"kernel object\") since version 2.6 of the Linux kernel. (Citation: Wikipedia Loadable Kernel Module)\n\nMany LKMs require Linux headers (specific to the target kernel) in order to compile properly.\u00a0\nThese are typically obtained through the operating systems package manager and installed like a normal package.\n\nAdversaries will likely run these commands on the target system before loading a malicious module in order to ensure that it is properly compiled. (Citation: iDefense Rootkit Overview)\n\nOn Ubuntu and Debian based systems this can be accomplished by running: <code>apt-get install linux-headers-$(uname -r)</code>\n\nOn RHEL and CentOS based systems this can be accomplished by running: <code>yum install kernel-devel-$(uname -r)</code>\n\nLoading, unloading, and manipulating modules on Linux systems can be detected by monitoring for the following commands:<code>modprobe insmod lsmod rmmod modinfo</code> (Citation: Linux Loadable Kernel Module Insert and Remove LKMs)\n\nFor macOS, monitor for execution of <code>kextload</code> commands and correlate with other unknown or suspicious activity.\n\nPlatforms: Linux, macOS\n\nData Sources: System calls, Process Monitoring, Process command-line parameters\n\nPermissions Required: root\n\nContributors: Jeremy Galloway, Red Canary",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack-farm.mitre.org/wiki/Technique/T1215",
+                    "external_id": "T1215"
+                },
+                {
+                    "source_name": "Linux Kernel Programming",
+                    "description": "Pomerantz, O., Salzman, P. (2003, April 4). The Linux Kernel Module Programming Guide. Retrieved April 6, 2018.",
+                    "url": "https://www.tldp.org/LDP/lkmpg/2.4/lkmpg.pdf"
+                },
+                {
+                    "source_name": "Linux Kernel Module Programming Guide",
+                    "description": "Pomerantz, O., Salzman, P. (2003, April 4). Modules vs Programs. Retrieved April 6, 2018.",
+                    "url": "http://www.tldp.org/LDP/lkmpg/2.4/html/x437.html"
+                },
+                {
+                    "source_name": "iDefense Rootkit Overview",
+                    "description": "Chuvakin, A. (2003, February). An Overview of Rootkits. Retrieved April 6, 2018.",
+                    "url": "http://www.megasecurity.org/papers/Rootkits.pdf"
+                },
+                {
+                    "source_name": "RSAC 2015 San Francisco Patrick Wardle",
+                    "description": "Wardle, P. (2015, April). Malware Persistence on OS X Yosemite. Retrieved April 6, 2018.",
+                    "url": "https://www.rsaconference.com/writable/presentations/file%20upload/ht-r03-malware-persistence-on-os-x-yosemite%20final.pdf"
+                },
+                {
+                    "source_name": "Synack Secure Kernel Extension Broken",
+                    "description": "Wardle, P. (2017, September 8). High Sierra\u2019s \u2018Secure Kernel Extension Loading\u2019 is Broken. Retrieved April 6, 2018.",
+                    "url": "https://www.synack.com/2017/09/08/high-sierras-secure-kernel-extension-loading-is-broken/"
+                },
+                {
+                    "source_name": "Securelist Ventir",
+                    "description": "Mikhail, K. (2014, October 16). The Ventir Trojan: assemble your MacOS spy. Retrieved April 6, 2018.",
+                    "url": "https://securelist.com/the-ventir-trojan-assemble-your-macos-spy/67267/"
+                },
+                {
+                    "source_name": "Wikipedia Loadable Kernel Module",
+                    "description": "Wikipedia. (2018, March 17). Loadable kernel module. Retrieved April 9, 2018.",
+                    "url": "https://en.wikipedia.org/wiki/Loadable%20kernel%20module#Linux"
+                },
+                {
+                    "source_name": "Linux Loadable Kernel Module Insert and Remove LKMs",
+                    "description": "Henderson, B. (2006, September 24). How To Insert And Remove LKMs. Retrieved April 9, 2018.",
+                    "url": "http://tldp.org/HOWTO/Module-HOWTO/x197.html"
+                },
+                {
+                    "source_name": "CrowdStrike Linux Rootkit",
+                    "description": "Kurtz, G. (2012, November 19). HTTP iframe Injecting Linux Rootkit. Retrieved December 21, 2017.",
+                    "url": "https://www.crowdstrike.com/blog/http-iframe-injecting-linux-rootkit/"
+                },
+                {
+                    "source_name": "GitHub Reptile",
+                    "description": "Augusto, I. (2018, March 8). Reptile - LMK Linux rootkit. Retrieved April 9, 2018.",
+                    "url": "https://github.com/f0rb1dd3n/Reptile"
+                },
+                {
+                    "source_name": "GitHub Diamorphine",
+                    "description": "Mello, V. (2018, March 8). Diamorphine - LMK rootkit for Linux Kernels 2.6.x/3.x/4.x (x86 and x86_64). Retrieved April 9, 2018.",
+                    "url": "https://github.com/m0nad/Diamorphine"
+                },
+                {
+                    "source_name": "Volatility Phalanx2",
+                    "description": "Case, A. (2012, October 10). Phalanx 2 Revealed: Using Volatility to Analyze an Advanced Linux Rootkit. Retrieved April 9, 2018.",
+                    "url": "https://volatility-labs.blogspot.com/2012/10/phalanx-2-revealed-using-volatility-to.html"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_contributors": [
+                "Jeremy Galloway",
+                "Red Canary"
+            ],
+            "x_mitre_data_sources": [
+                "System calls",
+                "Process Monitoring",
+                "Process command-line parameters"
+            ],
+            "x_mitre_permissions_required": [
+                "root"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS"
+            ]
+        }
+    ]
+}
