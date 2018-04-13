@@ -1,0 +1,79 @@
+{
+    "objects": [
+        {
+            "name": "DCShadow",
+            "description": "DCShadow is a method of manipulating Active Directory (AD) data, including objects and schemas, by registering (or reusing an inactive registration) and simulating the behavior of a Domain Controller (DC). (Citation: DCShadow Blog) (Citation: BlueHat DCShadow Jan 2018) Once registered, a rogue DC may be able to inject and replicate changes into AD infrastructure for any domain object, including credentials and keys.\n\nRegistering a rogue DC involves creating a new server and nTDSDSA objects in the Configuration partition of the AD schema, which requires Administrator privileges (either Domain or local to the DC) or the KRBTGT hash. (Citation: Adsecurity Mimikatz Guide)\n\nThis technique may bypass system logging and security monitors such as security information and event management (SIEM) products (since actions taken on a rogue DC may not be reported to these sensors). (Citation: DCShadow Blog) The technique may also be used to alter and delete replication and other associated metadata to obstruct forensic analysis. Adversaries may also utilize this technique to perform SID-History Injection and/or manipulate AD objects (such as accounts, access control lists, schemas) to establish backdoors for Persistence. (Citation: DCShadow Blog) (Citation: BlueHat DCShadow Jan 2018)\n\nDetection: Monitor and analyze network traffic associated with data replication (such as calls to DrsAddEntry, DrsReplicaAdd, and especially GetNCChanges) between DCs as well as to/from non DC hosts. (Citation: GitHub DCSYNCMonitor) (Citation: DCShadow Blog) (Citation: BlueHat DCShadow Jan 2018) DC replication will naturally take place every 15 minutes but can be triggered by an attacker or by legitimate urgent changes (ex: passwords). (Citation: BlueHat DCShadow Jan 2018) Also consider monitoring and alerting on the replication of AD objects (Audit Detailed Directory Service Replication Events 4928 and 4929). (Citation: DCShadow Blog)\n\nLeverage AD directory synchronization (DirSync) to monitor changes to directory state using AD replication cookies. (Citation: Microsoft DirSync) (Citation: ADDSecurity DCShadow Feb 2018)\n\nBaseline and periodically analyze the Configuration partition of the AD schema and alert on creation of nTDSDSA objects. (Citation: BlueHat DCShadow Jan 2018)\n\nInvestigate usage of Kerberos Service Principal Names (SPNs), especially those associated with services (beginning with \u201cGC/\u201d) by computers not present in the DC organizational unit (OU). The SPN associated with the Directory Replication Service (DRS) Remote Protocol interface (GUID E3514235\u20134B06\u201311D1-AB04\u201300C04FC2DCD2) can be set without logging. (Citation: ADDSecurity DCShadow Feb 2018) A rogue DC must authenticate as a service using these two SPNs for the replication process to successfully complete.\n\nPlatforms: Windows\n\nData Sources: API monitoring, Authentication logs, Network protocol analysis, Packet capture\n\nDefense Bypassed: Log analysis\n\nPermissions Required: Administrator\n\nContributors: Vincent Le Toux",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/wiki/Technique/T1207",
+                    "source_name": "mitre-attack",
+                    "external_id": "T1207"
+                },
+                {
+                    "description": "Delpy, B. & LE TOUX, V. (n.d.). DCShadow. Retrieved March 20, 2018.",
+                    "source_name": "DCShadow Blog",
+                    "url": "https://www.dcshadow.com/"
+                },
+                {
+                    "description": "Delpy, B. & LE TOUX, V. (2018, January 24). Active Directory: What can make your million dollar SIEM go blind?. Retrieved March 20, 2018.",
+                    "source_name": "BlueHat DCShadow Jan 2018"
+                },
+                {
+                    "description": "Metcalf, S. (2015, November 13). Unofficial Guide to Mimikatz & Command Reference. Retrieved December 23, 2015.",
+                    "source_name": "Adsecurity Mimikatz Guide",
+                    "url": "https://adsecurity.org/?page%20id=1821"
+                },
+                {
+                    "description": "Spencer S. (2018, February 22). DCSYNCMonitor. Retrieved March 30, 2018.",
+                    "source_name": "GitHub DCSYNCMonitor",
+                    "url": "https://github.com/shellster/DCSYNCMonitor"
+                },
+                {
+                    "description": "Microsoft. (n.d.). Polling for Changes Using the DirSync Control. Retrieved March 30, 2018.",
+                    "source_name": "Microsoft DirSync",
+                    "url": "https://msdn.microsoft.com/en-us/library/ms677626.aspx"
+                },
+                {
+                    "description": "Lucand,G. (2018, February 18). Detect DCShadow, impossible?. Retrieved March 30, 2018.",
+                    "source_name": "ADDSecurity DCShadow Feb 2018",
+                    "url": "https://adds-security.blogspot.fr/2018/02/detecter-dcshadow-impossible.html"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created": "2018-04-18T17:59:24.739Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_data_sources": [
+                "API monitoring",
+                "Authentication logs",
+                "Network protocol analysis",
+                "Packet capture"
+            ],
+            "x_mitre_defense_bypassed": [
+                "Log analysis"
+            ],
+            "x_mitre_permissions_required": [
+                "Administrator"
+            ],
+            "x_mitre_contributors": [
+                "Vincent Le Toux"
+            ],
+            "modified": "2018-04-18T17:59:24.739Z",
+            "type": "attack-pattern",
+            "id": "attack-pattern--564998d8-ab3e-4123-93fb-eccaa6b9714a"
+        }
+    ],
+    "type": "bundle",
+    "id": "bundle--36e3ec67-9a9c-43c8-8076-4190f31977ad",
+    "spec_version": "2.0"
+}

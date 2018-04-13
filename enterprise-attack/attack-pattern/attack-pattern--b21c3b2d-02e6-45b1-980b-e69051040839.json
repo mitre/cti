@@ -1,29 +1,9 @@
 {
-    "type": "bundle",
-    "id": "bundle--109ee663-e75e-4947-bff0-747d1c20dfbc",
-    "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "id": "attack-pattern--b21c3b2d-02e6-45b1-980b-e69051040839",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "created": "2017-05-31T21:30:55.066Z",
-            "modified": "2018-01-17T12:56:55.080Z",
-            "name": "Exploitation of Vulnerability",
-            "description": "Exploitation of a software vulnerability occurs when an adversary takes advantage of a programming error in a program, service, or within the operating system software or kernel itself to execute adversary-controlled code. Exploiting software vulnerabilities may allow adversaries to run a command or binary on a remote system for lateral movement, escalate a current process to a higher privilege level, or bypass security mechanisms. Exploits may also allow an adversary access to privileged accounts and credentials. One example of this is MS14-068, which can be used to forge Kerberos tickets using domain user permissions. (Citation: Technet MS14-068) (Citation: ADSecurity Detecting Forged Tickets)\n\nDetection: Software exploits may not always succeed or may cause the exploited process to become unstable or crash. Software and operating system crash reports may contain useful contextual information about attempted exploits that correlate with other malicious activity. Exploited processes may exhibit behavior that is unusual for the specific process, such as spawning additional processes or reading and writing to files.\n\nPlatforms: Linux, macOS, Windows\n\nData Sources: Windows Error Reporting, File monitoring, Process monitoring\n\nEffective Permissions: User, Administrator, SYSTEM\n\nDefense Bypassed: Anti-virus, System access controls\n\nPermissions Required: User, Administrator, SYSTEM\n\nSystem Requirements: Unpatched software or otherwise vulnerable target. Depending on the target and goal, the system and exploitable service may need to be remotely accessible from the internal network. In the case of privilege escalation, the adversary likely already has user permissions on the target system.\n\nContributors: John Lambert, Microsoft Threat Intelligence Center",
+            "name": "Exploitation for Privilege Escalation",
+            "description": "Exploitation of a software vulnerability occurs when an adversary takes advantage of a programming error in a program, service, or within the operating system software or kernel itself to execute adversary-controlled code. Security constructs such as permission levels will often hinder access to information and use of certain techniques, so adversaries will likely need to perform Privilege Escalation to include use of software exploitation to circumvent those restrictions.\n\nWhen initially gaining access to a system, an adversary may be operating within a lower privileged process which will prevent them from accessing certain resources on the system. Vulnerabilities may exist, usually in operating system components and software commonly running at higher permissions, that can be exploited to gain higher levels of access on the system. This could enable someone to move from unprivileged or user level permissions to SYSTEM or root permissions depending on the component that is vulnerable. This may be a necessary step for an adversary compromising a endpoint system that has been properly configured and limits other privilege escalation methods.\n\nDetection: Detecting software exploitation may be difficult depending on the tools available. Software exploits may not always succeed or may cause the exploited process to become unstable or crash. Also look for behavior on the endpoint system that might indicate successful compromise, such as abnormal behavior of the processes. This could include suspicious files written to disk, evidence of Process Injection for attempts to hide execution or evidence of Discovery.\n\nHigher privileges are often necessary to perform additional actions such as some methods of Credential Dumping. Look for additional activity that may indicate an adversary has gained higher privileges.\n\nPlatforms: Linux, macOS, Windows\n\nData Sources: Windows Error Reporting, Process monitoring, Application Logs\n\nEffective Permissions: User\n\nPermissions Required: User\n\nSystem Requirements: In the case of privilege escalation, the adversary likely already has user permissions on the target system.",
             "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "credential-access"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "lateral-movement"
-                },
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "privilege-escalation"
@@ -31,54 +11,41 @@
             ],
             "external_references": [
                 {
-                    "source_name": "mitre-attack",
                     "url": "https://attack.mitre.org/wiki/Technique/T1068",
+                    "source_name": "mitre-attack",
                     "external_id": "T1068"
-                },
-                {
-                    "source_name": "ADSecurity Detecting Forged Tickets",
-                    "description": "Metcalf, S. (2015, May 03). Detecting Forged Kerberos Ticket (Golden Ticket & Silver Ticket) Use in Active Directory. Retrieved December 23, 2015.",
-                    "url": "https://adsecurity.org/?p=1515"
-                },
-                {
-                    "source_name": "Technet MS14-068",
-                    "description": "Microsoft. (2014, November 18). Vulnerability in Kerberos Could Allow Elevation of Privilege (3011780). Retrieved December 23, 2015.",
-                    "url": "https://technet.microsoft.com/en-us/library/security/ms14-068.aspx"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_contributors": [
-                "John Lambert, Microsoft Threat Intelligence Center"
-            ],
-            "x_mitre_data_sources": [
-                "Windows Error Reporting",
-                "File monitoring",
-                "Process monitoring"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Anti-virus",
-                "System access controls"
-            ],
-            "x_mitre_effective_permissions": [
-                "User",
-                "Administrator",
-                "SYSTEM"
-            ],
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator",
-                "SYSTEM"
-            ],
+            "created": "2017-05-31T21:30:55.066Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
                 "Windows"
             ],
+            "x_mitre_data_sources": [
+                "Windows Error Reporting",
+                "Process monitoring",
+                "Application Logs"
+            ],
+            "x_mitre_effective_permissions": [
+                "User"
+            ],
+            "x_mitre_permissions_required": [
+                "User"
+            ],
             "x_mitre_system_requirements": [
-                "Unpatched software or otherwise vulnerable target. Depending on the target and goal, the system and exploitable service may need to be remotely accessible from the internal network. In the case of privilege escalation, the adversary likely already has user permissions on the target system."
-            ]
+                "In the case of privilege escalation, the adversary likely already has user permissions on the target system."
+            ],
+            "id": "attack-pattern--b21c3b2d-02e6-45b1-980b-e69051040839",
+            "modified": "2018-04-18T17:59:24.739Z",
+            "type": "attack-pattern"
         }
-    ]
+    ],
+    "type": "bundle",
+    "id": "bundle--55e8d245-7f4d-462d-a9fb-bda087c131cc",
+    "spec_version": "2.0"
 }
