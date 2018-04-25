@@ -33,6 +33,8 @@ ATT&CK Property | ATT&CK MediaWiki | STIX Properties
 **Entry Title** | `Has display name` | `name`
 **Entry Text**  | `Has description` | `description`
 **Citation**    | `Citation reference` | `external_references`
+**Deprecated**  | `Deprecated` | `x_mitre_deprecated`
+**Revoked**     | `Not available via MediaWiki API` | `revoked`
 
 
 ### Techniques
@@ -66,7 +68,7 @@ ATT&CK Property | ATT&CK MediaWiki | STIX Properties
 ### Groups
 ATT&CK Property | ATT&CK MediaWiki | STIX Properties
 --------------- | ---------------- | ---------------
-**Techniques Used** | `Has technique` | relationship where `relationship_type == "uses"`, points to a **target** object with `type == "attack-pattern"`
+**Techniques Used** | `Has technique` | relationship where `relationship_type == "uses"`, points to a `target` object with `type == "attack-pattern"`
 **Alias Descriptions** | `Has alias` | `aliases`
 **Software** | `Has groups` | `relationship` where `relationship_type == "uses"`, points to a `target` object with `type== "malware" or "tool"`
 **Contributors** | `Has contributor` | `x_mitre_contributors`
