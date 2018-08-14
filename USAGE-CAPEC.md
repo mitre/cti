@@ -31,9 +31,10 @@ The following is a table mapping of CAPEC properties to STIX properties. Some of
 **Typical\_Severity** | **Typical\_Severity** | `x_capec_typical_severity` | enumeration(`High, Medium, Low`)
 **ID** | **ID** | `external_references[i].external_id where external_references[i].source_name == "capec"` | integer 
 **Related\_Weaknesses** | **Related\_Weaknesses** | `external_references[i].external_id where external_references[i].source_name == "cwe"` | integer 
+**References** | **References** | `external_references[i].external_id where external_references[i].source_name == "reference_from_CAPEC"` | `external-reference`
 **Mitigation** | **Solutions\_and\_Mitigations** | `relationship_type == "mitigates"` | `relationship`
 
-CAPEC 3.0 properties not mapped (at this time):  **Execution\_Flow**, **Indicators**, **Taxonomy\_Mappings**, **References**, **Content\_History**
+CAPEC 3.0 properties not mapped (at this time):  **Execution\_Flow**, **Indicators**, **Taxonomy\_Mappings**, **Content\_History**
 
 CAPEC 3.0 properties not appropriate to map: **Status**
 
