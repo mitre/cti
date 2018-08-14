@@ -1,14 +1,14 @@
 {
     "type": "bundle",
-    "id": "bundle--e61e4429-73dc-4392-a526-34d127b287b5",
+    "id": "bundle--48c0db44-6216-46ce-8ebd-9296c710870e",
     "spec_version": "2.0",
     "objects": [
         {
             "type": "attack-pattern",
             "id": "attack-pattern--59aa5760-3e9f-441e-9dbb-f73c6737afa9",
             "created_by_ref": "identity--31f421d4-bb36-4dbf-9dfc-c116a91de14b",
-            "created": "2018-03-06T17:19:03.484Z",
-            "modified": "2018-03-06T17:19:03.484Z",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
             "name": "Using Unicode Encoding to Bypass Validation Logic",
             "description": "An attacker may provide a Unicode string to a system component that is not Unicode aware and use that to circumvent the filter or cause the classifying mechanism to fail to properly understanding the request. That may allow the attacker to slip malicious data past the content filter and/or possibly cause the application to route the request incorrectly.",
             "external_references": [
@@ -76,6 +76,11 @@
                     "source_name": "cwe",
                     "url": "http://cwe.mitre.org/data/definitions/692.html",
                     "external_id": "CWE-692"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
                 }
             ],
             "object_marking_refs": [
@@ -83,20 +88,37 @@
             ],
             "x_capec_abstraction": "Detailed",
             "x_capec_consequences": {
-                "Run Arbitrary Code": "Execute unauthorized code or commands"
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Modify Data"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Unreliable Execution"
+                ],
+                "Authorization": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Confidentiality": [
+                    "Bypass Protection Mechanism",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
             },
             "x_capec_example_instances": [
-                "Attack Example: Unicode Encodings in the IIS ServerA very common technique for a Unicode attack involves traversing directories looking for interesting files. An example of this idea applied to the Web is\n\thttp://target.server/some_directory/../../../winnt\nIn this case, the attacker is attempting to traverse to a directory that is not supposed to be part of standard Web services. The trick is fairly obvious, so many Web servers and scripts prevent it. However, using alternate encoding tricks, an attacker may be able to get around badly implemented request filters.\n\t. yields C0 AE\n\t/ yields C0 AF\n\t\\ yields C1 9C\nIn October 2000, an adversary publicly revealed that Microsoft's IIS server suffered from a variation of this problem. In the case of IIS, all the attacker had to do was provide alternate encodings for the dots and/or slashes found in a classic attack. The Unicode translations are\n\thttp://target.server/some_directory/%C0AE/%C0AE/%C0AE%C0AE/%C0AE%C0AE/winnt\nUsing this conversion, the previously displayed URL can be encoded as"
+                "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Attack Example: Unicode Encodings in the IIS Server</xhtml:div>\n               <xhtml:p>A very common technique for a Unicode attack involves traversing directories looking for interesting files. An example of this idea applied to the Web is</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">http://target.server/some_directory/../../../winnt</xhtml:div>\n               <xhtml:p>In this case, the attacker is attempting to traverse to a directory that is not supposed to be part of standard Web services. The trick is fairly obvious, so many Web servers and scripts prevent it. However, using alternate encoding tricks, an attacker may be able to get around badly implemented request filters.</xhtml:p>\n               <xhtml:p>In October 2000, an adversary publicly revealed that Microsoft's IIS server suffered from a variation of this problem. In the case of IIS, all the attacker had to do was provide alternate encodings for the dots and/or slashes found in a classic attack. The Unicode translations are</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">. yields C0 AE/ yields C0 AF\\ yields C1 9C</xhtml:div>\n               <xhtml:p>Using this conversion, the previously displayed URL can be encoded as</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">http://target.server/some_directory/%C0AE/%C0AE/%C0AE%C0AE/%C0AE%C0AE/winnt</xhtml:div>See also: CVE-2000-0884"
             ],
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_prerequisites": [
                 "Filtering is performed on data that has not be properly canonicalized."
             ],
             "x_capec_skills_required": {
-                "An attacker needs to understand Unicode encodings and have an idea (or be able to find out) what system components may not be Unicode aware.": "Medium"
+                "Medium": "An attacker needs to understand Unicode encodings and have an idea (or be able to find out) what system components may not be Unicode aware."
             },
-            "x_capec_typical_severity": "High",
-            "x_resources_required": ""
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High"
         }
     ]
 }

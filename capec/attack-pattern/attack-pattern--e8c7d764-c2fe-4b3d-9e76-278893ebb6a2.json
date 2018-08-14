@@ -1,14 +1,14 @@
 {
     "type": "bundle",
-    "id": "bundle--d72f150c-f31d-4840-9723-1d391cd6b2b9",
+    "id": "bundle--245bf6a9-ad38-429b-801a-893c90b1ba45",
     "spec_version": "2.0",
     "objects": [
         {
             "type": "attack-pattern",
             "id": "attack-pattern--e8c7d764-c2fe-4b3d-9e76-278893ebb6a2",
             "created_by_ref": "identity--31f421d4-bb36-4dbf-9dfc-c116a91de14b",
-            "created": "2018-03-06T17:19:01.828Z",
-            "modified": "2018-03-06T17:19:01.828Z",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
             "name": "Leveraging Time-of-Check and Time-of-Use (TOCTOU) Race Conditions",
             "description": "This attack targets a race condition occurring between the time of check (state) for a resource and the time of use of a resource. A typical example is file access. The adversary can leverage a file access race condition by \"running the race\", meaning that they would modify the resource between the first time the target program accesses the file and the time the target program uses the file. During that period of time, the adversary could replace or modify the file, causing the application to behave unexpectedly.",
             "external_references": [
@@ -61,6 +61,17 @@
                     "source_name": "cwe",
                     "url": "http://cwe.mitre.org/data/definitions/665.html",
                     "external_id": "CWE-665"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "J. Viega, G. McGraw, Building Secure Software, 2002, Addison-Wesley",
+                    "external_id": "REF-131"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Fortify Software, SAMATE - Software Assurance Metrics And Tool Evaluation, 2006--06---22, National Institute of Standards and Technology (NIST)",
+                    "url": "http://samate.nist.gov/SRD/view_testcase.php?tID=1598",
+                    "external_id": "REF-107"
                 }
             ],
             "object_marking_refs": [
@@ -68,11 +79,29 @@
             ],
             "x_capec_abstraction": "Detailed",
             "x_capec_consequences": {
-                "Denial of Service": "DoS: resource consumption (CPU)"
+                "Integrity": [
+                    "Modify Data",
+                    "Alter Execution Logic"
+                ],
+                "Availability": [
+                    "Alter Execution Logic",
+                    "Resource Consumption (Denial of Service)"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges",
+                    "Alter Execution Logic",
+                    "Read Data"
+                ]
             },
             "x_capec_example_instances": [
-                "The Net Direct client for Linux before 6.0.5 in Nortel Application Switch 2424, VPN 3050 and 3070, and SSL VPN Module 1000 extracts and executes files with insecure permissions, which allows local users to exploit a race condition to replace a world-writable file in /tmp/NetClient and cause another user to execute arbitrary code when attempting to execute this client, as demonstrated by replacing /tmp/NetClient/client.",
-                "The following code illustrates a file that is accessed multiple times by name in a publicly accessible directory. A race condition exists between the accesses where an adversary can replace the file referenced by the name.\n\tinclude <sys/types.h>\n\tinclude <fcntl.h>\n\tinclude <unistd.h>\n\t\n\tdefine FILE \"/tmp/myfile\"\n\tdefine UID 100\n\t\n\tvoid test(char *str)\n\t{\n\t}\n\t\n\tint main(int argc, char **argv)\n\t{\n\t}\n[R.29.3]"
+                "The Net Direct client for Linux before 6.0.5 in Nortel Application Switch 2424, VPN 3050 and 3070, and SSL VPN Module 1000 extracts and executes files with insecure permissions, which allows local users to exploit a race condition to replace a world-writable file in /tmp/NetClient and cause another user to execute arbitrary code when attempting to execute this client, as demonstrated by replacing /tmp/NetClient/client. See also: CVE-2007-1057",
+                "\n               <xhtml:p>The following code illustrates a file that is accessed multiple times by name in a publicly accessible directory. A race condition exists between the accesses where an adversary can replace the file referenced by the name.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">include <sys/types.h>include <fcntl.h>include <unistd.h>\n                  define FILE \"/tmp/myfile\"define UID 100\n                  void test(char *str){<xhtml:div style=\"margin-left:10px;\">int fd;fd = creat(FILE, 0644);if(fd == -1)<xhtml:div style=\"margin-left:10px;\">return;</xhtml:div>\n                     chown(FILE, UID, -1); /* BAD */close(fd);</xhtml:div>\n                  }\n                  int main(int argc, char **argv){<xhtml:div style=\"margin-left:10px;\">char *userstr;if(argc > 1) {<xhtml:div style=\"margin-left:10px;\">userstr = argv[1];test(userstr);</xhtml:div>\n                     }return 0;</xhtml:div>\n                  }</xhtml:div>\n               <xhtml:p>[R.29.3]</xhtml:p>\n            "
             ],
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
@@ -81,10 +110,10 @@
                 "A race condition exists while accessing a resource."
             ],
             "x_capec_skills_required": {
-                "This attack can get sophisticated since the attack has to occur within a short interval of time.": "Medium"
+                "Medium": "This attack can get sophisticated since the attack has to occur within a short interval of time."
             },
-            "x_capec_typical_severity": "High",
-            "x_resources_required": ""
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High"
         }
     ]
 }
