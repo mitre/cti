@@ -9,6 +9,6 @@
 7. CAPEC ids added to external references for attack-patterns
 8. Citations in alias descriptions added as external references in the object containing the alias descriptions
 9. Added tactics and matrices objects
-10. Changed ===Windows=== subheadings to ### Windows subheadingsn (Windows is just one example)
+10. Changed ===Windows=== subheadings to ### Windows subheadings (Windows is just one example)
 11. Added space between asterisks (ex. *Content to * Content) to populate markdown correctly
 12. Changed "true" to True for x_mitre_deprecated
