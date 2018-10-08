@@ -1,77 +1,78 @@
 {
+    "type": "bundle",
+    "id": "bundle--6f5edde5-4b7d-4e97-8917-383033e54be3",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--62166220-e498-410f-a90a-19d4339d4e99",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Image File Execution Options Injection",
-            "description": "Image File Execution Options (IFEO) enable a developer to attach a debugger to an application. When a process is created, any executable file present in an application\u2019s IFEO will be prepended to the application\u2019s name, effectively launching the new process under the debugger (e.g., \u201cC:\\dbg\\ntsd.exe -g  notepad.exe\u201d). (Citation: Microsoft Dev Blog IFEO Mar 2010)\n\nIFEOs can be set directly via the Registry or in Global Flags via the Gflags tool. (Citation: Microsoft GFlags Mar 2017) IFEOs are represented as Debugger Values in the Registry under <code>HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options/<executable></code> and <code> HKLM\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\<executable> </code> where <code><executable></code> is the binary on which the debugger is attached. (Citation: Microsoft Dev Blog IFEO Mar 2010)\n\nSimilar to Process Injection, this value can be abused to obtain persistence and privilege escalation by causing a malicious executable to be loaded and run in the context of separate processes on the computer. (Citation: Engame Process Injection July 2017) Installing IFEO mechanisms may also provide Persistence via continuous invocation.\n\nMalware may also use IFEO for Defense Evasion by registering invalid debuggers that redirect and effectively disable various system and security applications. (Citation: FSecure Hupigon) (Citation: Symantec Ushedix June 2008)\n\nDetection: Monitor for common processes spawned under abnormal parents and/or with creation flags indicative of debugging such as <code>DEBUG_PROCESS</code> and <code>DEBUG_ONLY_THIS_PROCESS</code>. (Citation: Microsoft Dev Blog IFEO Mar 2010)\n\nMonitor the IFEOs Registry value for modifications that do not correlate with known software, patch cycles, etc. Monitor and analyze application programming interface (API) calls that are indicative of Registry edits such as RegCreateKeyEx and RegSetValueEx. (Citation: Engame Process Injection July 2017)\n\nPlatforms: Windows\n\nData Sources: Process Monitoring, Windows Registry, Windows event logs\n\nPermissions Required: Administrator, SYSTEM",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                }
-            ],
+            "description": "Image File Execution Options (IFEO) enable a developer to attach a debugger to an application. When a process is created, any executable file present in an application\u2019s IFEO will be prepended to the application\u2019s name, effectively launching the new process under the debugger (e.g., \u201cC:\\dbg\\ntsd.exe -g  notepad.exe\u201d). (Citation: Microsoft Dev Blog IFEO Mar 2010)\n\nIFEOs can be set directly via the Registry or in Global Flags via the Gflags tool. (Citation: Microsoft GFlags Mar 2017) IFEOs are represented as Debugger Values in the Registry under <code>HKLM\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options/<executable></code> and <code> HKLM\\SOFTWARE\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\<executable> </code> where <code><executable></code> is the binary on which the debugger is attached. (Citation: Microsoft Dev Blog IFEO Mar 2010)\n\nSimilar to Process Injection, this value can be abused to obtain persistence and privilege escalation by causing a malicious executable to be loaded and run in the context of separate processes on the computer. (Citation: Engame Process Injection July 2017) Installing IFEO mechanisms may also provide Persistence via continuous invocation.\n\nMalware may also use IFEO for Defense Evasion by registering invalid debuggers that redirect and effectively disable various system and security applications. (Citation: FSecure Hupigon) (Citation: Symantec Ushedix June 2008)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1183",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1183"
+                    "external_id": "T1183",
+                    "url": "https://attack.mitre.org/techniques/T1183",
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "url": "https://blogs.msdn.microsoft.com/mithuns/2010/03/24/image-file-execution-options-ifeo/",
                     "description": "Shanbhag, M. (2010, March 24). Image File Execution Options (IFEO). Retrieved December 18, 2017.",
-                    "source_name": "Microsoft Dev Blog IFEO Mar 2010",
-                    "url": "https://blogs.msdn.microsoft.com/mithuns/2010/03/24/image-file-execution-options-ifeo/"
+                    "source_name": "Microsoft Dev Blog IFEO Mar 2010"
                 },
                 {
+                    "url": "https://docs.microsoft.com/windows-hardware/drivers/debugger/gflags-overview",
                     "description": "Microsoft. (2017, May 23). GFlags Overview. Retrieved December 18, 2017.",
-                    "source_name": "Microsoft GFlags Mar 2017",
-                    "url": "https://docs.microsoft.com/windows-hardware/drivers/debugger/gflags-overview"
+                    "source_name": "Microsoft GFlags Mar 2017"
                 },
                 {
+                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
                     "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
-                    "source_name": "Engame Process Injection July 2017",
-                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process"
+                    "source_name": "Engame Process Injection July 2017"
                 },
                 {
+                    "url": "https://www.f-secure.com/v-descs/backdoor_w32_hupigon_emv.shtml",
                     "description": "FSecure. (n.d.). Backdoor - W32/Hupigon.EMV - Threat Description. Retrieved December 18, 2017.",
-                    "source_name": "FSecure Hupigon",
-                    "url": "https://www.f-secure.com/v-descs/backdoor%20w32%20hupigon%20emv.shtml"
+                    "source_name": "FSecure Hupigon"
                 },
                 {
+                    "url": "https://www.symantec.com/security_response/writeup.jsp?docid=2008-062807-2501-99&tabid=2",
                     "description": "Symantec. (2008, June 28). Trojan.Ushedix. Retrieved December 18, 2017.",
-                    "source_name": "Symantec Ushedix June 2008",
-                    "url": "https://www.symantec.com/security%20response/writeup.jsp?docid=2008-062807-2501-99&tabid=2"
+                    "source_name": "Symantec Ushedix June 2008"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "created": "2018-01-16T16:13:52.465Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Windows"
             ],
             "x_mitre_data_sources": [
                 "Process Monitoring",
                 "Windows Registry",
                 "Windows event logs"
             ],
+            "x_mitre_detection": "Monitor for common processes spawned under abnormal parents and/or with creation flags indicative of debugging such as <code>DEBUG_PROCESS</code> and <code>DEBUG_ONLY_THIS_PROCESS</code>. (Citation: Microsoft Dev Blog IFEO Mar 2010)\n\nMonitor the IFEOs Registry value for modifications that do not correlate with known software, patch cycles, etc. Monitor and analyze application programming interface (API) calls that are indicative of Registry edits such as RegCreateKeyEx and RegSetValueEx. (Citation: Engame Process Injection July 2017)",
             "x_mitre_permissions_required": [
                 "Administrator",
                 "SYSTEM"
             ],
-            "id": "attack-pattern--62166220-e498-410f-a90a-19d4339d4e99",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "persistence",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "privilege-escalation",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "modified": "2018-09-07T16:42:18.771Z",
+            "created": "2018-01-16T16:13:52.465Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--b861f192-4533-4c76-a344-24eaa411505a",
-    "spec_version": "2.0"
+    ]
 }

@@ -1,81 +1,82 @@
 {
+    "type": "bundle",
+    "id": "bundle--a5d9bf20-7f97-4458-8637-361515b60049",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--0dbf5f1b-a560-4d51-ac1b-d70caab3e1f0",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "LLMNR/NBT-NS Poisoning",
-            "description": "Link-Local Multicast Name Resolution (LLMNR) and NetBIOS Name Service (NBT-NS) are Microsoft Windows components that serve as alternate methods of host identification. LLMNR is based upon the Domain Name System (DNS) format and allows hosts on the same local link to perform name resolution for other hosts. NBT-NS identifies systems on a local network by their NetBIOS name. (Citation: Wikipedia LLMNR) (Citation: TechNet NetBIOS)\n\nAdversaries can spoof an authoritative source for name resolution on a victim network by responding to LLMNR (UDP 5355)/NBT-NS (UDP 137) traffic as if they know the identity of the requested host, effectively poisoning the service so that the victims will communicate with the adversary controlled system. If the requested host belongs to a resource that requires identification/authentication, the username and NTLMv2 hash will then be sent to the adversary controlled system. The adversary can then collect the hash information sent over the wire through tools that monitor the ports for traffic or through Network Sniffing and crack the hashes offline through Brute Force to obtain the plaintext passwords.\n\nSeveral tools exist that can be used to poison name services within local networks such as NBNSpoof, Metasploit, and Responder. (Citation: GitHub NBNSpoof) (Citation: Rapid7 LLMNR Spoofer) (Citation: GitHub Responder)\n\nDetection: Monitor <code>HKLM\\Software\\Policies\\Microsoft\\Windows NT\\DNSClient</code> for changes to the \"EnableMulticast\" DWORD value. A value of \u201c0\u201d indicates LLMNR is disabled. (Citation: Sternsecurity LLMNR-NBTNS)\n\nMonitor for traffic on ports UDP 5355 and UDP 137 if LLMNR/NetBIOS is disabled by security policy.\n\nDeploy an LLMNR/NBT-NS spoofing detection tool. (Citation: GitHub Conveigh)\n\nPlatforms: Windows\n\nData Sources: Windows Registry, Packet capture, Netflow/Enclave netflow\n\nPermissions Required: User\n\nContributors: Matthew Demaske, Adaptforward",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "credential-access"
-                }
-            ],
+            "description": "Link-Local Multicast Name Resolution (LLMNR) and NetBIOS Name Service (NBT-NS) are Microsoft Windows components that serve as alternate methods of host identification. LLMNR is based upon the Domain Name System (DNS) format and allows hosts on the same local link to perform name resolution for other hosts. NBT-NS identifies systems on a local network by their NetBIOS name. (Citation: Wikipedia LLMNR) (Citation: TechNet NetBIOS)\n\nAdversaries can spoof an authoritative source for name resolution on a victim network by responding to LLMNR (UDP 5355)/NBT-NS (UDP 137) traffic as if they know the identity of the requested host, effectively poisoning the service so that the victims will communicate with the adversary controlled system. If the requested host belongs to a resource that requires identification/authentication, the username and NTLMv2 hash will then be sent to the adversary controlled system. The adversary can then collect the hash information sent over the wire through tools that monitor the ports for traffic or through [Network Sniffing](https://attack.mitre.org/techniques/T1040) and crack the hashes offline through [Brute Force](https://attack.mitre.org/techniques/T1110) to obtain the plaintext passwords.\n\nSeveral tools exist that can be used to poison name services within local networks such as NBNSpoof, Metasploit, and [Responder](https://attack.mitre.org/software/S0174). (Citation: GitHub NBNSpoof) (Citation: Rapid7 LLMNR Spoofer) (Citation: GitHub Responder)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1171",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1171"
+                    "external_id": "T1171",
+                    "url": "https://attack.mitre.org/techniques/T1171",
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "url": "https://en.wikipedia.org/wiki/Link-Local_Multicast_Name_Resolution",
                     "description": "Wikipedia. (2016, July 7). Link-Local Multicast Name Resolution. Retrieved November 17, 2017.",
-                    "source_name": "Wikipedia LLMNR",
-                    "url": "https://en.wikipedia.org/wiki/Link-Local%20Multicast%20Name%20Resolution"
+                    "source_name": "Wikipedia LLMNR"
                 },
                 {
+                    "url": "https://technet.microsoft.com/library/cc958811.aspx",
                     "description": "Microsoft. (n.d.). NetBIOS Name Resolution. Retrieved November 17, 2017.",
-                    "source_name": "TechNet NetBIOS",
-                    "url": "https://technet.microsoft.com/library/cc958811.aspx"
+                    "source_name": "TechNet NetBIOS"
                 },
                 {
+                    "url": "https://github.com/nomex/nbnspoof",
                     "description": "Nomex. (2014, February 7). NBNSpoof. Retrieved November 17, 2017.",
-                    "source_name": "GitHub NBNSpoof",
-                    "url": "https://github.com/nomex/nbnspoof"
+                    "source_name": "GitHub NBNSpoof"
                 },
                 {
+                    "url": "https://www.rapid7.com/db/modules/auxiliary/spoof/llmnr/llmnr_response",
                     "description": "Francois, R. (n.d.). LLMNR Spoofer. Retrieved November 17, 2017.",
-                    "source_name": "Rapid7 LLMNR Spoofer",
-                    "url": "https://www.rapid7.com/db/modules/auxiliary/spoof/llmnr/llmnr%20response"
+                    "source_name": "Rapid7 LLMNR Spoofer"
                 },
                 {
+                    "url": "https://github.com/SpiderLabs/Responder",
                     "description": "Gaffie, L. (2016, August 25). Responder. Retrieved November 17, 2017.",
-                    "source_name": "GitHub Responder",
-                    "url": "https://github.com/SpiderLabs/Responder"
+                    "source_name": "GitHub Responder"
                 },
                 {
+                    "url": "https://www.sternsecurity.com/blog/local-network-attacks-llmnr-and-nbt-ns-poisoning",
                     "description": "Sternstein, J. (2013, November). Local Network Attacks: LLMNR and NBT-NS Poisoning. Retrieved November 17, 2017.",
-                    "source_name": "Sternsecurity LLMNR-NBTNS",
-                    "url": "https://www.sternsecurity.com/blog/local-network-attacks-llmnr-and-nbt-ns-poisoning"
+                    "source_name": "Sternsecurity LLMNR-NBTNS"
                 },
                 {
+                    "url": "https://github.com/Kevin-Robertson/Conveigh",
                     "description": "Robertson, K. (2016, August 28). Conveigh. Retrieved November 17, 2017.",
-                    "source_name": "GitHub Conveigh",
-                    "url": "https://github.com/Kevin-Robertson/Conveigh"
+                    "source_name": "GitHub Conveigh"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created": "2018-01-16T16:13:52.465Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Windows"
+            "x_mitre_contributors": [
+                "Matthew Demaske, Adaptforward"
             ],
             "x_mitre_data_sources": [
                 "Windows Registry",
                 "Packet capture",
                 "Netflow/Enclave netflow"
             ],
+            "x_mitre_detection": "Monitor <code>HKLM\\Software\\Policies\\Microsoft\\Windows NT\\DNSClient</code> for changes to the \"EnableMulticast\" DWORD value. A value of \u201c0\u201d indicates LLMNR is disabled. (Citation: Sternsecurity LLMNR-NBTNS)\n\nMonitor for traffic on ports UDP 5355 and UDP 137 if LLMNR/NetBIOS is disabled by security policy.\n\nDeploy an LLMNR/NBT-NS spoofing detection tool. (Citation: GitHub Conveigh)",
             "x_mitre_permissions_required": [
                 "User"
             ],
-            "x_mitre_contributors": [
-                "Matthew Demaske, Adaptforward"
+            "x_mitre_platforms": [
+                "Windows"
             ],
-            "id": "attack-pattern--0dbf5f1b-a560-4d51-ac1b-d70caab3e1f0",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "credential-access",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "modified": "2018-09-07T16:42:18.771Z",
+            "created": "2018-01-16T16:13:52.465Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--2114cd75-20ee-4b1f-a41b-9b85c7cd94e0",
-    "spec_version": "2.0"
+    ]
 }

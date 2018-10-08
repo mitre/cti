@@ -1,48 +1,44 @@
 {
+    "type": "bundle",
+    "id": "bundle--14ad3d68-9633-43f3-96c0-59f7cb8bedd1",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--bb5a00de-e086-4859-a231-fa793f6797e2",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Input Capture",
-            "description": "Adversaries can use methods of capturing user input for obtaining credentials for Valid Accounts and information Collection that include keylogging and user input field interception.\n\nKeylogging is the most prevalent type of input capture, with many different ways of intercepting keystrokes, (Citation: Adventures of a Keystroke) but other methods exist to target information for specific purposes, such as performing a UAC prompt or wrapping the Windows default credential provider. (Citation: Wrightson 2012)\n\nKeylogging is likely to be used to acquire credentials for new access opportunities when Credential Dumping efforts are not effective, and may require an adversary to remain passive on a system for a period of time before an opportunity arises.\n\nAdversaries may also install code on externally facing portals, such as a VPN login page, to capture and transmit credentials of users who attempt to log into the service. This variation on input capture may be conducted post-compromise using legitimate administrative access as a backup measure to maintain network access through External Remote Services and Valid Accounts or as part of the initial compromise by exploitation of the externally facing web service. (Citation: Volexity Virtual Private Keylogging)\n\nDetection: Keyloggers may take many forms, possibly involving modification to the Registry and installation of a driver, setting a hook, or polling to intercept keystrokes. Commonly used API calls include SetWindowsHook, GetKeyState, and GetAsynceyState. (Citation: Adventures of a Keystroke) Monitor the Registry and file system for such changes and detect driver installs, as well as looking for common keylogging API calls. API calls alone are not an indicator of keylogging, but may provide behavioral data that is useful when combined with other information such as new files written to disk and unusual processes.\n\nMonitor the Registry for the addition of a Custom Credential Provider. (Citation: Wrightson 2012) Detection of compromised Valid Accounts in use by adversaries may help to catch the result of user input interception if new techniques are used.\n\nPlatforms: Linux, macOS, Windows\n\nData Sources: Windows Registry, Kernel drivers, Process monitoring, API monitoring\n\nPermissions Required: Administrator, SYSTEM\n\nContributors: John Lambert, Microsoft Threat Intelligence Center",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "collection"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "credential-access"
-                }
-            ],
+            "description": "Adversaries can use methods of capturing user input for obtaining credentials for [Valid Accounts](https://attack.mitre.org/techniques/T1078) and information Collection that include keylogging and user input field interception.\n\nKeylogging is the most prevalent type of input capture, with many different ways of intercepting keystrokes, (Citation: Adventures of a Keystroke) but other methods exist to target information for specific purposes, such as performing a UAC prompt or wrapping the Windows default credential provider. (Citation: Wrightson 2012)\n\nKeylogging is likely to be used to acquire credentials for new access opportunities when [Credential Dumping](https://attack.mitre.org/techniques/T1003) efforts are not effective, and may require an adversary to remain passive on a system for a period of time before an opportunity arises.\n\nAdversaries may also install code on externally facing portals, such as a VPN login page, to capture and transmit credentials of users who attempt to log into the service. This variation on input capture may be conducted post-compromise using legitimate administrative access as a backup measure to maintain network access through [External Remote Services](https://attack.mitre.org/techniques/T1133) and [Valid Accounts](https://attack.mitre.org/techniques/T1078) or as part of the initial compromise by exploitation of the externally facing web service. (Citation: Volexity Virtual Private Keylogging)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1056",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1056"
+                    "external_id": "T1056",
+                    "url": "https://attack.mitre.org/techniques/T1056",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "external_id": "CAPEC-569",
+                    "url": "https://capec.mitre.org/data/definitions/569.html",
+                    "source_name": "capec"
                 },
                 {
                     "description": "Tinaztepe,  E. (n.d.). The Adventures of a Keystroke:  An in-depth look into keyloggers on Windows. Retrieved April 27, 2016.",
                     "source_name": "Adventures of a Keystroke"
                 },
                 {
+                    "url": "http://blog.leetsys.com/2012/01/02/capturing-windows-7-credentials-at-logon-using-custom-credential-provider/",
                     "description": "Wrightson, T. (2012, January 2). CAPTURING WINDOWS 7 CREDENTIALS AT LOGON USING CUSTOM CREDENTIAL PROVIDER. Retrieved November 12, 2014.",
-                    "source_name": "Wrightson 2012",
-                    "url": "http://blog.leetsys.com/2012/01/02/capturing-windows-7-credentials-at-logon-using-custom-credential-provider/"
+                    "source_name": "Wrightson 2012"
                 },
                 {
+                    "url": "https://www.volexity.com/blog/2015/10/07/virtual-private-keylogging-cisco-web-vpns-leveraged-for-access-and-persistence/",
                     "description": "Adair, S. (2015, October 7). Virtual Private Keylogging: Cisco Web VPNs Leveraged for Access and Persistence. Retrieved March 20, 2017.",
-                    "source_name": "Volexity Virtual Private Keylogging",
-                    "url": "https://www.volexity.com/blog/2015/10/07/virtual-private-keylogging-cisco-web-vpns-leveraged-for-access-and-persistence/"
+                    "source_name": "Volexity Virtual Private Keylogging"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created": "2017-05-31T21:30:48.323Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
+            "x_mitre_contributors": [
+                "John Lambert, Microsoft Threat Intelligence Center"
             ],
             "x_mitre_data_sources": [
                 "Windows Registry",
@@ -50,19 +46,29 @@
                 "Process monitoring",
                 "API monitoring"
             ],
+            "x_mitre_detection": "Keyloggers may take many forms, possibly involving modification to the Registry and installation of a driver, setting a hook, or polling to intercept keystrokes. Commonly used API calls include SetWindowsHook, GetKeyState, and GetAsynceyState. (Citation: Adventures of a Keystroke) Monitor the Registry and file system for such changes and detect driver installs, as well as looking for common keylogging API calls. API calls alone are not an indicator of keylogging, but may provide behavioral data that is useful when combined with other information such as new files written to disk and unusual processes.\n\nMonitor the Registry for the addition of a Custom Credential Provider. (Citation: Wrightson 2012) Detection of compromised [Valid Accounts](https://attack.mitre.org/techniques/T1078) in use by adversaries may help to catch the result of user input interception if new techniques are used.",
             "x_mitre_permissions_required": [
                 "Administrator",
                 "SYSTEM"
             ],
-            "x_mitre_contributors": [
-                "John Lambert, Microsoft Threat Intelligence Center"
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
             ],
-            "id": "attack-pattern--bb5a00de-e086-4859-a231-fa793f6797e2",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "collection",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "credential-access",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "modified": "2018-09-07T16:42:18.771Z",
+            "created": "2017-05-31T21:30:48.323Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--6af3ef97-426b-4fce-ae48-a64c11eee82f",
-    "spec_version": "2.0"
+    ]
 }

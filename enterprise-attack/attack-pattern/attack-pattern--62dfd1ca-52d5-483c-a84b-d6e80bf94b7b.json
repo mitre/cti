@@ -1,43 +1,46 @@
 {
+    "type": "bundle",
+    "id": "bundle--c25bf9bf-568e-4b23-a9f5-69a033b2e4e0",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--62dfd1ca-52d5-483c-a84b-d6e80bf94b7b",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Modify Existing Service",
-            "description": "Windows service configuration information, including the file path to the service's executable or recovery programs/commands, is stored in the Registry. Service configurations can be modified using utilities such as sc.exe and Reg.\n\nAdversaries can modify an existing service to persist malware on a system by using system utilities or by using custom tools to interact with the Windows API. Use of existing services is a type of Masquerading that may make detection analysis more challenging. Modifying existing services may interrupt their functionality or may enable services that are disabled or otherwise not commonly used.\n\nAdversaries may also intentionally corrupt or kill services to execute malicious recovery programs/commands. (Citation: Twitter Service Recovery Nov 2017) (Citation: Microsoft Service Recovery Feb 2013)\n\nDetection: Look for changes to service Registry entries that do not correlate with known software, patch cycles, etc. Changes to the binary path and the service startup type changed from manual or disabled to automatic, if it does not typically do so, may be suspicious. Tools such as Sysinternals Autoruns may also be used to detect system service changes that could be attempts at persistence. (Citation: TechNet Autoruns) \n\nService information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>.\n\nCommand-line invocation of tools capable of modifying services may be unusual, depending on how systems are typically used in a particular environment. Collect service utility execution and service binary path arguments used for analysis. Service binary paths may even be changed to execute cmd commands or scripts.\n\nLook for abnormal process call trees from known services and for execution of other commands that could relate to Discovery or other adversary techniques. Services may also be modified through Windows system management tools such as Windows Management Instrumentation and PowerShell, so additional logging may need to be configured to gather the appropriate data.\n\nPlatforms: Windows\n\nData Sources: Windows Registry, File monitoring, Process command-line parameters, Process monitoring\n\nPermissions Required: Administrator, SYSTEM\n\nContributors: Travis Smith, Tripwire, Matthew Demaske, Adaptforward",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                }
-            ],
+            "description": "Windows service configuration information, including the file path to the service's executable or recovery programs/commands, is stored in the Registry. Service configurations can be modified using utilities such as sc.exe and [Reg](https://attack.mitre.org/software/S0075).\n\nAdversaries can modify an existing service to persist malware on a system by using system utilities or by using custom tools to interact with the Windows API. Use of existing services is a type of [Masquerading](https://attack.mitre.org/techniques/T1036) that may make detection analysis more challenging. Modifying existing services may interrupt their functionality or may enable services that are disabled or otherwise not commonly used.\n\nAdversaries may also intentionally corrupt or kill services to execute malicious recovery programs/commands. (Citation: Twitter Service Recovery Nov 2017) (Citation: Microsoft Service Recovery Feb 2013)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1031",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1031"
+                    "external_id": "T1031",
+                    "url": "https://attack.mitre.org/techniques/T1031",
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "external_id": "CAPEC-551",
+                    "url": "https://capec.mitre.org/data/definitions/551.html",
+                    "source_name": "capec"
+                },
+                {
+                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902",
                     "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
-                    "source_name": "TechNet Autoruns",
-                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902"
+                    "source_name": "TechNet Autoruns"
                 },
                 {
+                    "url": "https://twitter.com/r0wdy_/status/936365549553991680",
                     "description": "The Cyber (@r0wdy_). (2017, November 30). Service Recovery Parameters. Retrieved April 9, 2018.",
-                    "source_name": "Twitter Service Recovery Nov 2017",
-                    "url": "https://twitter.com/r0wdy%20/status/936365549553991680"
+                    "source_name": "Twitter Service Recovery Nov 2017"
                 },
                 {
+                    "url": "https://docs.microsoft.com/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc753662(v=ws.11)",
                     "description": "Microsoft. (2013, February 22). Set up Recovery Actions to Take Place When a Service Fails. Retrieved April 9, 2018.",
-                    "source_name": "Microsoft Service Recovery Feb 2013",
-                    "url": "https://docs.microsoft.com/previous-versions/windows/it-pro/windows-server-2008-R2-and-2008/cc753662(v=ws.11)"
+                    "source_name": "Microsoft Service Recovery Feb 2013"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created": "2017-05-31T21:30:34.928Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Windows"
+            "x_mitre_contributors": [
+                "Travis Smith, Tripwire",
+                "Matthew Demaske, Adaptforward"
             ],
             "x_mitre_data_sources": [
                 "Windows Registry",
@@ -45,20 +48,23 @@
                 "Process command-line parameters",
                 "Process monitoring"
             ],
+            "x_mitre_detection": "Look for changes to service Registry entries that do not correlate with known software, patch cycles, etc. Changes to the binary path and the service startup type changed from manual or disabled to automatic, if it does not typically do so, may be suspicious. Tools such as Sysinternals Autoruns may also be used to detect system service changes that could be attempts at persistence. (Citation: TechNet Autoruns) \n\nService information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>.\n\nCommand-line invocation of tools capable of modifying services may be unusual, depending on how systems are typically used in a particular environment. Collect service utility execution and service binary path arguments used for analysis. Service binary paths may even be changed to execute [cmd](https://attack.mitre.org/software/S0106) commands or scripts.\n\nLook for abnormal process call trees from known services and for execution of other commands that could relate to Discovery or other adversary techniques. Services may also be modified through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086), so additional logging may need to be configured to gather the appropriate data.",
             "x_mitre_permissions_required": [
                 "Administrator",
                 "SYSTEM"
             ],
-            "x_mitre_contributors": [
-                "Travis Smith, Tripwire",
-                "Matthew Demaske, Adaptforward"
+            "x_mitre_platforms": [
+                "Windows"
             ],
-            "id": "attack-pattern--62dfd1ca-52d5-483c-a84b-d6e80bf94b7b",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "persistence",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "modified": "2018-09-07T16:42:18.771Z",
+            "created": "2017-05-31T21:30:34.928Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--04b7ccb5-c937-46d2-9a31-33533b1ee8db",
-    "spec_version": "2.0"
+    ]
 }

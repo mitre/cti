@@ -1,75 +1,81 @@
 {
+    "type": "bundle",
+    "id": "bundle--1665bdf2-d57a-40c8-940f-929357452617",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--51dea151-0898-4a45-967c-3ebee0420484",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Remote Desktop Protocol",
-            "description": "Remote desktop is a common feature in operating systems. It allows a user to log into an interactive session with a system desktop graphical user interface on a remote system. Microsoft refers to its implementation of the Remote Desktop Protocol (RDP) as Remote Desktop Services (RDS). (Citation: TechNet Remote Desktop Services) There are other implementations and third-party tools that provide graphical access Remote Services similar to RDS.\n\nAdversaries may connect to a remote system over RDP/RDS to expand access if the service is enabled and allows access to accounts with known credentials. Adversaries will likely use Credential Access techniques to acquire credentials to use with RDP. Adversaries may also use RDP in conjunction with the Accessibility Features technique for Persistence. (Citation: Alperovitch Malware)\n\nAdversaries may also perform RDP session hijacking which involves stealing a legitimate user's remote session. Typically, a user is notified when someone else is trying to steal their session and prompted with a question. With System permissions and using Terminal Services Console, <code>c:\\windows\\system32\\tscon.exe [session number to be stolen]</code>, an adversary can hijack a session without the need for credentials or prompts to the user. (Citation: RDP Hijacking Korznikov) This can be done remotely or locally and with active or disconnected sessions. (Citation: RDP Hijacking Medium) It can also lead to Remote System Discovery and Privilege Escalation by stealing a Domain Admin or higher privileged account session. All of this can be done by using native Windows commands, but it has also been added as a feature in RedSnarf. (Citation: Kali Redsnarf)\n\nDetection: Use of RDP may be legitimate, depending on the network environment and how it is used. Other factors, such as access patterns and activity that occurs after a remote login, may indicate suspicious or malicious behavior with RDP. Monitor for user accounts logged into systems they would not normally access or access patterns to multiple systems over a relatively short period of time.\n\nAlso, set up process monitoring for <code>tscon.exe</code> usage and monitor service creation that uses <code>cmd.exe /k</code> or <code>cmd.exe /c</code> in its arguments to prevent RDP session hijacking.\n\nPlatforms: Windows\n\nData Sources: Authentication logs, Netflow/Enclave netflow, Process monitoring\n\nPermissions Required: User, Remote Desktop Users\n\nSystem Requirements: RDP service enabled, account in the Remote Desktop Users group.\n\nContributors: Matthew Demaske, Adaptforward",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "lateral-movement"
-                }
-            ],
+            "description": "Remote desktop is a common feature in operating systems. It allows a user to log into an interactive session with a system desktop graphical user interface on a remote system. Microsoft refers to its implementation of the Remote Desktop Protocol (RDP) as Remote Desktop Services (RDS). (Citation: TechNet Remote Desktop Services) There are other implementations and third-party tools that provide graphical access [Remote Services](https://attack.mitre.org/techniques/T1021) similar to RDS.\n\nAdversaries may connect to a remote system over RDP/RDS to expand access if the service is enabled and allows access to accounts with known credentials. Adversaries will likely use Credential Access techniques to acquire credentials to use with RDP. Adversaries may also use RDP in conjunction with the [Accessibility Features](https://attack.mitre.org/techniques/T1015) technique for Persistence. (Citation: Alperovitch Malware)\n\nAdversaries may also perform RDP session hijacking which involves stealing a legitimate user's remote session. Typically, a user is notified when someone else is trying to steal their session and prompted with a question. With System permissions and using Terminal Services Console, <code>c:\\windows\\system32\\tscon.exe [session number to be stolen]</code>, an adversary can hijack a session without the need for credentials or prompts to the user. (Citation: RDP Hijacking Korznikov) This can be done remotely or locally and with active or disconnected sessions. (Citation: RDP Hijacking Medium) It can also lead to [Remote System Discovery](https://attack.mitre.org/techniques/T1018) and Privilege Escalation by stealing a Domain Admin or higher privileged account session. All of this can be done by using native Windows commands, but it has also been added as a feature in RedSnarf. (Citation: Kali Redsnarf)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1076",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1076"
+                    "external_id": "T1076",
+                    "url": "https://attack.mitre.org/techniques/T1076",
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "external_id": "CAPEC-555",
+                    "url": "https://capec.mitre.org/data/definitions/555.html",
+                    "source_name": "capec"
+                },
+                {
+                    "url": "https://technet.microsoft.com/en-us/windowsserver/ee236407.aspx",
                     "description": "Microsoft. (n.d.). Remote Desktop Services. Retrieved June 1, 2016.",
-                    "source_name": "TechNet Remote Desktop Services",
-                    "url": "https://technet.microsoft.com/en-us/windowsserver/ee236407.aspx"
+                    "source_name": "TechNet Remote Desktop Services"
                 },
                 {
+                    "url": "http://blog.crowdstrike.com/adversary-tricks-crowdstrike-treats/",
                     "description": "Alperovitch, D. (2014, October 31). Malware-Free Intrusions. Retrieved November 4, 2014.",
-                    "source_name": "Alperovitch Malware",
-                    "url": "http://blog.crowdstrike.com/adversary-tricks-crowdstrike-treats/"
+                    "source_name": "Alperovitch Malware"
                 },
                 {
+                    "url": "http://www.korznikov.com/2017/03/0-day-or-feature-privilege-escalation.html",
                     "description": "Korznikov, A. (2017, March 17). Passwordless RDP Session Hijacking Feature All Windows versions. Retrieved December 11, 2017.",
-                    "source_name": "RDP Hijacking Korznikov",
-                    "url": "http://www.korznikov.com/2017/03/0-day-or-feature-privilege-escalation.html"
+                    "source_name": "RDP Hijacking Korznikov"
                 },
                 {
+                    "url": "https://medium.com/@networksecurity/rdp-hijacking-how-to-hijack-rds-and-remoteapp-sessions-transparently-to-move-through-an-da2a1e73a5f6",
                     "description": "Beaumont, K. (2017, March 19). RDP hijacking\u200a\u2014\u200ahow to hijack RDS and RemoteApp sessions transparently to move through an organisation. Retrieved December 11, 2017.",
-                    "source_name": "RDP Hijacking Medium",
-                    "url": "https://medium.com/@networksecurity/rdp-hijacking-how-to-hijack-rds-and-remoteapp-sessions-transparently-to-move-through-an-da2a1e73a5f6"
+                    "source_name": "RDP Hijacking Medium"
                 },
                 {
+                    "url": "https://github.com/nccgroup/redsnarf",
                     "description": "NCC Group PLC. (2016, November 1). Kali Redsnarf. Retrieved December 11, 2017.",
-                    "source_name": "Kali Redsnarf",
-                    "url": "https://github.com/nccgroup/redsnarf"
+                    "source_name": "Kali Redsnarf"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created": "2017-05-31T21:30:59.769Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Windows"
+            "x_mitre_contributors": [
+                "Matthew Demaske, Adaptforward"
             ],
             "x_mitre_data_sources": [
                 "Authentication logs",
                 "Netflow/Enclave netflow",
                 "Process monitoring"
             ],
+            "x_mitre_detection": "Use of RDP may be legitimate, depending on the network environment and how it is used. Other factors, such as access patterns and activity that occurs after a remote login, may indicate suspicious or malicious behavior with RDP. Monitor for user accounts logged into systems they would not normally access or access patterns to multiple systems over a relatively short period of time.\n\nAlso, set up process monitoring for <code>tscon.exe</code> usage and monitor service creation that uses <code>cmd.exe /k</code> or <code>cmd.exe /c</code> in its arguments to prevent RDP session hijacking.",
             "x_mitre_permissions_required": [
                 "User",
                 "Remote Desktop Users"
             ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
             "x_mitre_system_requirements": [
                 "RDP service enabled, account in the Remote Desktop Users group."
             ],
-            "x_mitre_contributors": [
-                "Matthew Demaske, Adaptforward"
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "lateral-movement",
+                    "kill_chain_name": "mitre-attack"
+                }
             ],
-            "id": "attack-pattern--51dea151-0898-4a45-967c-3ebee0420484",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "modified": "2018-09-07T16:42:18.771Z",
+            "created": "2017-05-31T21:30:59.769Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--be99be5c-b17d-4280-837b-3c1a1158f9a3",
-    "spec_version": "2.0"
+    ]
 }

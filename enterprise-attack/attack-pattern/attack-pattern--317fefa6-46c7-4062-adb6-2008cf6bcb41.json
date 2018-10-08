@@ -1,58 +1,49 @@
 {
+    "type": "bundle",
+    "id": "bundle--d403f2c1-6578-4c30-a45c-cb80f8611e29",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--317fefa6-46c7-4062-adb6-2008cf6bcb41",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "AppInit DLLs",
-            "description": "Dynamic-link libraries (DLLs) that are specified in the AppInit_DLLs value in the Registry keys <code>HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows</code> or <code>HKEY_LOCAL_MACHINE\\Software\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows</code> are loaded by user32.dll into every process that loads user32.dll. In practice this is nearly every program, since user32.dll is a very common library. (Citation: Engame Process Injection July 2017) Similar to Process Injection, these values can be abused to obtain persistence and privilege escalation by causing a malicious DLL to be loaded and run in the context of separate processes on the computer. (Citation: AppInit Registry)\n\nThe AppInit DLL functionality is disabled in Windows 8 and later versions when secure boot is enabled. (Citation: AppInit Secure Boot)\n\nDetection: Monitor DLL loads by processes that load user32.dll and look for DLLs that are not recognized or not normally loaded into a process. Monitor the AppInit_DLLs Registry values for modifications that do not correlate with known software, patch cycles, etc. Monitor and analyze application programming interface (API) calls that are indicative of Registry edits such as RegCreateKeyEx and RegSetValueEx. (Citation: Engame Process Injection July 2017) Tools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current AppInit DLLs. (Citation: TechNet Autoruns) \n\nLook for abnormal process behavior that may be due to a process loading a malicious DLL. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as making network connections for Command and Control, learning details about the environment through Discovery, and conducting Lateral Movement.\n\nPlatforms: Windows\n\nData Sources: Loaded DLLs, Process monitoring, Windows Registry\n\nEffective Permissions: Administrator, SYSTEM\n\nPermissions Required: Administrator\n\nSystem Requirements: Secure boot disabled on systems running Windows 8 and later",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                }
-            ],
+            "description": "Dynamic-link libraries (DLLs) that are specified in the AppInit_DLLs value in the Registry keys <code>HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows</code> or <code>HKEY_LOCAL_MACHINE\\Software\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows</code> are loaded by user32.dll into every process that loads user32.dll. In practice this is nearly every program, since user32.dll is a very common library. (Citation: Engame Process Injection July 2017) Similar to [Process Injection](https://attack.mitre.org/techniques/T1055), these values can be abused to obtain persistence and privilege escalation by causing a malicious DLL to be loaded and run in the context of separate processes on the computer. (Citation: AppInit Registry)\n\nThe AppInit DLL functionality is disabled in Windows 8 and later versions when secure boot is enabled. (Citation: AppInit Secure Boot)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1103",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1103"
+                    "external_id": "T1103",
+                    "url": "https://attack.mitre.org/techniques/T1103",
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "url": "https://support.microsoft.com/en-us/kb/197571",
                     "description": "Microsoft. (2006, October). Working with the AppInit_DLLs registry value. Retrieved July 15, 2015.",
-                    "source_name": "AppInit Registry",
-                    "url": "https://support.microsoft.com/en-us/kb/197571"
+                    "source_name": "AppInit Registry"
                 },
                 {
+                    "url": "https://msdn.microsoft.com/en-us/library/dn280412",
                     "description": "Microsoft. (n.d.). AppInit DLLs and Secure Boot. Retrieved July 15, 2015.",
-                    "source_name": "AppInit Secure Boot",
-                    "url": "https://msdn.microsoft.com/en-us/library/dn280412"
+                    "source_name": "AppInit Secure Boot"
                 },
                 {
+                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902",
                     "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
-                    "source_name": "TechNet Autoruns",
-                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902"
+                    "source_name": "TechNet Autoruns"
                 },
                 {
+                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
                     "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
-                    "source_name": "Engame Process Injection July 2017",
-                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process"
+                    "source_name": "Engame Process Injection July 2017"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "created": "2017-05-31T21:31:15.409Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Windows"
             ],
             "x_mitre_data_sources": [
                 "Loaded DLLs",
                 "Process monitoring",
                 "Windows Registry"
             ],
+            "x_mitre_detection": "Monitor DLL loads by processes that load user32.dll and look for DLLs that are not recognized or not normally loaded into a process. Monitor the AppInit_DLLs Registry values for modifications that do not correlate with known software, patch cycles, etc. Monitor and analyze application programming interface (API) calls that are indicative of Registry edits such as RegCreateKeyEx and RegSetValueEx. (Citation: Engame Process Injection July 2017) Tools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current AppInit DLLs. (Citation: TechNet Autoruns) \n\nLook for abnormal process behavior that may be due to a process loading a malicious DLL. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as making network connections for Command and Control, learning details about the environment through Discovery, and conducting Lateral Movement.",
             "x_mitre_effective_permissions": [
                 "Administrator",
                 "SYSTEM"
@@ -60,15 +51,25 @@
             "x_mitre_permissions_required": [
                 "Administrator"
             ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
             "x_mitre_system_requirements": [
                 "Secure boot disabled on systems running Windows 8 and later"
             ],
-            "id": "attack-pattern--317fefa6-46c7-4062-adb6-2008cf6bcb41",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "persistence",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "privilege-escalation",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "modified": "2018-09-07T16:42:18.771Z",
+            "created": "2017-05-31T21:31:15.409Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--2cc4d9bc-f166-45e5-846b-09d98535feaf",
-    "spec_version": "2.0"
+    ]
 }

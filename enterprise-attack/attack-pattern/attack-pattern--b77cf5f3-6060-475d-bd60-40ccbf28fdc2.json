@@ -1,63 +1,61 @@
 {
+    "type": "bundle",
+    "id": "bundle--2e7bc6c3-5d27-4bda-b272-9baee3eca1fb",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--b77cf5f3-6060-475d-bd60-40ccbf28fdc2",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Forced Authentication",
-            "description": "The Server Message Block (SMB) protocol is commonly used in Windows networks for authentication and communication between systems for access to resources and file sharing. When a Windows system attempts to connect to an SMB resource it will automatically attempt to authenticate and send credential information for the current user to the remote system.  (Citation: Wikipedia Server Message Block) This behavior is typical in enterprise environments so that users do not need to enter credentials to access network resources. Web Distributed Authoring and Versioning (WebDAV) is typically used by Windows systems as a backup protocol when SMB is blocked or fails. WebDAV is an extension of HTTP and will typically operate over TCP ports 80 and 443. (Citation: Didier Stevens WebDAV Traffic) (Citation: Microsoft Managing WebDAV Security)\n\nAdversaries may take advantage of this behavior to gain access to user account hashes through forced SMB authentication. An adversary can send an attachment to a user through spearphishing that contains a resource link to an external server controlled by the adversary, or place a specially crafted file on navigation path for privileged accounts (e.g. .SCF file placed on desktop) or on a publicly accessible share to be accessed by victim(s). When the user's system accesses the untrusted resource it will attempt authentication and send information including the user's hashed credentials over SMB to the adversary controlled server. (Citation: GitHub Hashjacking) With access to the credential hash, an adversary can perform off-line Brute Force cracking to gain access to plaintext credentials, or reuse it for Pass the Hash. (Citation: Cylance Redirect to SMB)\n\nThere are several different ways this can occur. (Citation: Osanda Stealing NetNTLM Hashes) Some specifics from in-the-wild use include:\n*A spearphishing attachment containing a document with a resource that is automatically loaded when the document is opened. The document can include, for example, a request similar to <code>file[:]//[remote address]/Normal.dotm</code> to trigger the SMB request. (Citation: US-CERT APT Energy Oct 2017)\n*A modified .LNK or .SCF file with the icon filename pointing to an external reference such as <code>\\\\[remote address]\\pic.png</code> that will force the system to load the resource when the icon is rendered to repeatedly gather credentials. (Citation: US-CERT APT Energy Oct 2017)\n\nDetection: Monitor for SMB traffic on TCP ports 139, 445 and UDP port 137 and WebDAV traffic attempting to exit the network to unknown external systems. If attempts are detected, then investigate endpoint data sources to find the root cause.\n\nMonitor creation and modification of .LNK, .SCF, or any other files on systems and within virtual environments that contain resources that point to external network resources as these could be used to gather credentials when the files are rendered. (Citation: US-CERT APT Energy Oct 2017)\n\nPlatforms: Windows\n\nData Sources: File monitoring, Network protocol analysis, Network device logs, Process use of network\n\nPermissions Required: User\n\nContributors: Teodor Cimpoesu, Sudhanshu Chauhan, @Sudhanshu_C",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "credential-access"
-                }
-            ],
+            "description": "The Server Message Block (SMB) protocol is commonly used in Windows networks for authentication and communication between systems for access to resources and file sharing. When a Windows system attempts to connect to an SMB resource it will automatically attempt to authenticate and send credential information for the current user to the remote system.  (Citation: Wikipedia Server Message Block) This behavior is typical in enterprise environments so that users do not need to enter credentials to access network resources. Web Distributed Authoring and Versioning (WebDAV) is typically used by Windows systems as a backup protocol when SMB is blocked or fails. WebDAV is an extension of HTTP and will typically operate over TCP ports 80 and 443. (Citation: Didier Stevens WebDAV Traffic) (Citation: Microsoft Managing WebDAV Security)\n\nAdversaries may take advantage of this behavior to gain access to user account hashes through forced SMB authentication. An adversary can send an attachment to a user through spearphishing that contains a resource link to an external server controlled by the adversary, or place a specially crafted file on navigation path for privileged accounts (e.g. .SCF file placed on desktop) or on a publicly accessible share to be accessed by victim(s). When the user's system accesses the untrusted resource it will attempt authentication and send information including the user's hashed credentials over SMB to the adversary controlled server. (Citation: GitHub Hashjacking) With access to the credential hash, an adversary can perform off-line [Brute Force](https://attack.mitre.org/techniques/T1110) cracking to gain access to plaintext credentials, or reuse it for [Pass the Hash](https://attack.mitre.org/techniques/T1075). (Citation: Cylance Redirect to SMB)\n\nThere are several different ways this can occur. (Citation: Osanda Stealing NetNTLM Hashes) Some specifics from in-the-wild use include:\n\n* A spearphishing attachment containing a document with a resource that is automatically loaded when the document is opened. The document can include, for example, a request similar to <code>file[:]//[remote address]/Normal.dotm</code> to trigger the SMB request. (Citation: US-CERT APT Energy Oct 2017)\n* A modified .LNK or .SCF file with the icon filename pointing to an external reference such as <code>\\\\[remote address]\\pic.png</code> that will force the system to load the resource when the icon is rendered to repeatedly gather credentials. (Citation: US-CERT APT Energy Oct 2017)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1187",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1187"
+                    "external_id": "T1187",
+                    "url": "https://attack.mitre.org/techniques/T1187",
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "url": "https://en.wikipedia.org/wiki/Server_Message_Block",
                     "description": "Wikipedia. (2017, December 16). Server Message Block. Retrieved December 21, 2017.",
-                    "source_name": "Wikipedia Server Message Block",
-                    "url": "https://en.wikipedia.org/wiki/Server%20Message%20Block"
+                    "source_name": "Wikipedia Server Message Block"
                 },
                 {
+                    "url": "https://blog.didierstevens.com/2017/11/13/webdav-traffic-to-malicious-sites/",
                     "description": "Stevens, D. (2017, November 13). WebDAV Traffic To Malicious Sites. Retrieved December 21, 2017.",
-                    "source_name": "Didier Stevens WebDAV Traffic",
-                    "url": "https://blog.didierstevens.com/2017/11/13/webdav-traffic-to-malicious-sites/"
+                    "source_name": "Didier Stevens WebDAV Traffic"
                 },
                 {
+                    "url": "https://www.microsoft.com/technet/prodtechnol/WindowsServer2003/Library/IIS/4beddb35-0cba-424c-8b9b-a5832ad8e208.mspx",
                     "description": "Microsoft. (n.d.). Managing WebDAV Security (IIS 6.0). Retrieved December 21, 2017.",
-                    "source_name": "Microsoft Managing WebDAV Security",
-                    "url": "https://www.microsoft.com/technet/prodtechnol/WindowsServer2003/Library/IIS/4beddb35-0cba-424c-8b9b-a5832ad8e208.mspx"
+                    "source_name": "Microsoft Managing WebDAV Security"
                 },
                 {
+                    "url": "https://github.com/hob0/hashjacking",
                     "description": "Dunning, J. (2016, August 1). Hashjacking. Retrieved December 21, 2017.",
-                    "source_name": "GitHub Hashjacking",
-                    "url": "https://github.com/hob0/hashjacking"
+                    "source_name": "GitHub Hashjacking"
                 },
                 {
+                    "url": "https://www.cylance.com/content/dam/cylance/pdfs/white_papers/RedirectToSMB.pdf",
                     "description": "Cylance. (2015, April 13). Redirect to SMB. Retrieved December 21, 2017.",
-                    "source_name": "Cylance Redirect to SMB",
-                    "url": "https://www.cylance.com/content/dam/cylance/pdfs/white%20papers/RedirectToSMB.pdf"
+                    "source_name": "Cylance Redirect to SMB"
                 },
                 {
+                    "url": "https://www.us-cert.gov/ncas/alerts/TA17-293A",
                     "description": "US-CERT. (2017, October 20). Alert (TA17-293A): Advanced Persistent Threat Activity Targeting Energy and Other Critical Infrastructure Sectors. Retrieved November 2, 2017.",
-                    "source_name": "US-CERT APT Energy Oct 2017",
-                    "url": "https://www.us-cert.gov/ncas/alerts/TA17-293A"
+                    "source_name": "US-CERT APT Energy Oct 2017"
                 },
                 {
+                    "url": "https://osandamalith.com/2017/03/24/places-of-interest-in-stealing-netntlm-hashes/",
                     "description": "Malith, O. (2017, March 24). Places of Interest in Stealing NetNTLM Hashes. Retrieved January 26, 2018.",
-                    "source_name": "Osanda Stealing NetNTLM Hashes",
-                    "url": "https://osandamalith.com/2017/03/24/places-of-interest-in-stealing-netntlm-hashes/"
+                    "source_name": "Osanda Stealing NetNTLM Hashes"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created": "2018-01-16T16:13:52.465Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Windows"
+            "x_mitre_contributors": [
+                "Teodor Cimpoesu",
+                "Sudhanshu Chauhan, @Sudhanshu_C"
             ],
             "x_mitre_data_sources": [
                 "File monitoring",
@@ -65,19 +63,22 @@
                 "Network device logs",
                 "Process use of network"
             ],
+            "x_mitre_detection": "Monitor for SMB traffic on TCP ports 139, 445 and UDP port 137 and WebDAV traffic attempting to exit the network to unknown external systems. If attempts are detected, then investigate endpoint data sources to find the root cause.\n\nMonitor creation and modification of .LNK, .SCF, or any other files on systems and within virtual environments that contain resources that point to external network resources as these could be used to gather credentials when the files are rendered. (Citation: US-CERT APT Energy Oct 2017)",
             "x_mitre_permissions_required": [
                 "User"
             ],
-            "x_mitre_contributors": [
-                "Teodor Cimpoesu",
-                "Sudhanshu Chauhan, @Sudhanshu_C"
+            "x_mitre_platforms": [
+                "Windows"
             ],
-            "id": "attack-pattern--b77cf5f3-6060-475d-bd60-40ccbf28fdc2",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "credential-access",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "modified": "2018-09-07T16:42:18.771Z",
+            "created": "2018-01-16T16:13:52.465Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--cc2616d2-27f2-44ba-9845-ed246dd37ae3",
-    "spec_version": "2.0"
+    ]
 }
