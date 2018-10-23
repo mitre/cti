@@ -1,81 +1,76 @@
 {
+    "type": "bundle",
+    "id": "bundle--33f1aa8a-548c-4902-bc2b-bd956dcc5d56",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--ff25900d-76d5-449b-a351-8824e62fc81b",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Trusted Developer Utilities",
-            "description": "There are many utilities used for software development related tasks that can be used to execute code in various forms to assist in development, debugging, and reverse engineering. These utilities may often be signed with legitimate certificates that allow them to execute on a system and proxy execution of malicious code through a trusted process that effectively bypasses application whitelisting defensive solutions.\n\n===MSBuild===\n\nMSBuild.exe (Microsoft Build Engine) is a software build platform used by Visual Studio. It takes XML formatted project files that define requirements for building various platforms and configurations. (Citation: MSDN MSBuild) \n\nAdversaries can use MSBuild to proxy execution of code through a trusted Windows utility. The inline task capability of MSBuild that was introduced in .NET version 4 allows for C# code to be inserted into the XML project file. (Citation: MSDN MSBuild) Inline Tasks MSBuild will compile and execute the inline task. MSBuild.exe is a signed Microsoft binary, so when it is used this way it can execute arbitrary code and bypass application whitelisting defenses that are configured to allow MSBuild.exe execution. (Citation: SubTee GitHub All The Things Application Whitelisting Bypass)\n\n===DNX===\n\nThe .NET Execution Environment (DNX), dnx.exe, is a software development kit packaged with Visual Studio Enterprise. It was retired in favor of .NET Core CLI in 2016. (Citation: Microsoft Migrating from DNX) DNX is not present on standard builds of Windows and may only be present on developer workstations using older versions of .NET Core and ASP.NET Core 1.0. The dnx.exe executable is signed by Microsoft. \n\nAn adversary can use dnx.exe to proxy execution of arbitrary code to bypass application whitelist policies that do not account for DNX. (Citation: engima0x3 DNX Bypass)\n\n===RCSI===\n\nThe rcsi.exe utility is a non-interactive command-line interface for C# that is similar to csi.exe. It was provided within an early version of the Roslyn .NET Compiler Platform but has since been deprecated for an integrated solution. (Citation: Microsoft Roslyn CPT RCSI) The rcsi.exe binary is signed by Microsoft. (Citation: engima0x3 RCSI Bypass)\n\nC# .csx script files can be written and executed with rcsi.exe at the command-line. An adversary can use rcsi.exe to proxy execution of arbitrary code to bypass application whitelisting policies that do not account for execution of rcsi.exe. (Citation: engima0x3 RCSI Bypass)\n\n===WinDbg/CDB===\n\nWinDbg is a Microsoft Windows kernel and user-mode debugging utility. The Microsoft Console Debugger (CDB) cdb.exe is also user-mode debugger. Both utilities are included in Windows software development kits and can be used as standalone tools. (Citation: Microsoft Debugging Tools for Windows) They are commonly used in software development and reverse engineering and may not be found on typical Windows systems. Both WinDbg.exe and cdb.exe binaries are signed by Microsoft.\n\nAn adversary can use WinDbg.exe and cdb.exe to proxy execution of arbitrary code to bypass application whitelist policies that do not account for execution of those utilities. (Citation: Exploit Monday WinDbg)\n\nIt is likely possible to use other debuggers for similar purposes, such as the kernel-mode debugger kd.exe, which is also signed by Microsoft.\n\n===Tracker===\n\nThe file tracker utility, tracker.exe, is included with the .NET framework as part of MSBuild. It is used for logging calls to the Windows file system. (Citation: Microsoft Docs File Tracking)\n\nAn adversary can use tracker.exe to proxy execution of an arbitrary DLL into another process. Since tracker.exe is also signed it can be used to bypass application whitelisting solutions. (Citation: Twitter SubTee Tracker.exe)\n\nDetection: The presence of these or other utilities that enable proxy execution that are typically used for development, debugging, and reverse engineering on a system that is not used for these purposes may be suspicious.\n\nUse process monitoring to monitor the execution and arguments of MSBuild.exe, dnx.exe, rcsi.exe, WinDbg.exe, cdb.exe, and tracker.exe. Compare recent invocations of those binaries with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. It is likely that these utilities will be used by software developers or for other software development related tasks, so if it exists and is used outside of that context, then the event may be suspicious. Command arguments used before and after invocation of the utilities may also be useful in determining the origin and purpose of the binary being executed.\n\nPlatforms: Windows\n\nData Sources: Process monitoring\n\nDefense Bypassed: Application whitelisting\n\nPermissions Required: User\n\nSystem Requirements: MSBuild: .NET Framework version 4 or higher\nDNX: .NET 4.5.2, Powershell 4.0\nRCSI: .NET 4.5 or later, Visual Studio 2012\n\nRemote Support: No\n\nContributors: Casey Smith, Matthew Demaske, Adaptforward",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "execution"
-                }
-            ],
+            "description": "There are many utilities used for software development related tasks that can be used to execute code in various forms to assist in development, debugging, and reverse engineering. These utilities may often be signed with legitimate certificates that allow them to execute on a system and proxy execution of malicious code through a trusted process that effectively bypasses application whitelisting defensive solutions.\n\n### MSBuild\n\nMSBuild.exe (Microsoft Build Engine) is a software build platform used by Visual Studio. It takes XML formatted project files that define requirements for building various platforms and configurations. (Citation: MSDN MSBuild) \n\nAdversaries can use MSBuild to proxy execution of code through a trusted Windows utility. The inline task capability of MSBuild that was introduced in .NET version 4 allows for C# code to be inserted into the XML project file. (Citation: MSDN MSBuild) Inline Tasks MSBuild will compile and execute the inline task. MSBuild.exe is a signed Microsoft binary, so when it is used this way it can execute arbitrary code and bypass application whitelisting defenses that are configured to allow MSBuild.exe execution. (Citation: SubTee GitHub All The Things Application Whitelisting Bypass)\n\n### DNX\n\nThe .NET Execution Environment (DNX), dnx.exe, is a software development kit packaged with Visual Studio Enterprise. It was retired in favor of .NET Core CLI in 2016. (Citation: Microsoft Migrating from DNX) DNX is not present on standard builds of Windows and may only be present on developer workstations using older versions of .NET Core and ASP.NET Core 1.0. The dnx.exe executable is signed by Microsoft. \n\nAn adversary can use dnx.exe to proxy execution of arbitrary code to bypass application whitelist policies that do not account for DNX. (Citation: engima0x3 DNX Bypass)\n\n### RCSI\n\nThe rcsi.exe utility is a non-interactive command-line interface for C# that is similar to csi.exe. It was provided within an early version of the Roslyn .NET Compiler Platform but has since been deprecated for an integrated solution. (Citation: Microsoft Roslyn CPT RCSI) The rcsi.exe binary is signed by Microsoft. (Citation: engima0x3 RCSI Bypass)\n\nC# .csx script files can be written and executed with rcsi.exe at the command-line. An adversary can use rcsi.exe to proxy execution of arbitrary code to bypass application whitelisting policies that do not account for execution of rcsi.exe. (Citation: engima0x3 RCSI Bypass)\n\n### WinDbg/CDB\n\nWinDbg is a Microsoft Windows kernel and user-mode debugging utility. The Microsoft Console Debugger (CDB) cdb.exe is also user-mode debugger. Both utilities are included in Windows software development kits and can be used as standalone tools. (Citation: Microsoft Debugging Tools for Windows) They are commonly used in software development and reverse engineering and may not be found on typical Windows systems. Both WinDbg.exe and cdb.exe binaries are signed by Microsoft.\n\nAn adversary can use WinDbg.exe and cdb.exe to proxy execution of arbitrary code to bypass application whitelist policies that do not account for execution of those utilities. (Citation: Exploit Monday WinDbg)\n\nIt is likely possible to use other debuggers for similar purposes, such as the kernel-mode debugger kd.exe, which is also signed by Microsoft.\n\n### Tracker\n\nThe file tracker utility, tracker.exe, is included with the .NET framework as part of MSBuild. It is used for logging calls to the Windows file system. (Citation: Microsoft Docs File Tracking)\n\nAn adversary can use tracker.exe to proxy execution of an arbitrary DLL into another process. Since tracker.exe is also signed it can be used to bypass application whitelisting solutions. (Citation: Twitter SubTee Tracker.exe)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1127",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1127"
+                    "external_id": "T1127",
+                    "url": "https://attack.mitre.org/techniques/T1127",
+                    "source_name": "mitre-attack"
                 },
                 {
-                    "description": "Graeber, M. (2016, August 15). Bypassing Application Whitelisting by using WinDbg/CDB as a Shellcode Runner. Retrieved May 26, 2017.",
-                    "source_name": "Exploit Monday WinDbg",
-                    "url": "http://www.exploit-monday.com/2016/08/windbg-cdb-shellcode-runner.html"
-                },
-                {
+                    "url": "https://msdn.microsoft.com/library/dd393574.aspx",
                     "description": "Microsoft. (n.d.). MSBuild1. Retrieved November 30, 2016.",
-                    "source_name": "MSDN MSBuild",
-                    "url": "https://msdn.microsoft.com/library/dd393574.aspx"
+                    "source_name": "MSDN MSBuild"
                 },
                 {
-                    "description": "Marshall, D. (2017, May 23). Debugging Tools for Windows (WinDbg, KD, CDB, NTSD). Retrieved June 29, 2017.",
-                    "source_name": "Microsoft Debugging Tools for Windows",
-                    "url": "https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/index"
-                },
-                {
-                    "description": "B, M., Brown, K., Cai, S., Hogenson, G., Warren, G. (2016, November 4). File Tracking. Retrieved November 1, 2017.",
-                    "source_name": "Microsoft Docs File Tracking",
-                    "url": "https://docs.microsoft.com/visualstudio/msbuild/file-tracking"
-                },
-                {
+                    "url": "https://docs.microsoft.com/en-us/dotnet/core/migration/from-dnx",
                     "description": "Knezevic, Z., Wenzel, M. Latham, L. (2016, June 20). Migrating from DNX to .NET Core CLI (project.json). Retrieved June 28, 2017.",
-                    "source_name": "Microsoft Migrating from DNX",
-                    "url": "https://docs.microsoft.com/en-us/dotnet/core/migration/from-dnx"
+                    "source_name": "Microsoft Migrating from DNX"
                 },
                 {
+                    "url": "https://enigma0x3.net/2016/11/17/bypassing-application-whitelisting-by-using-dnx-exe/",
+                    "description": "Nelson, M. (2017, November 17). Bypassing Application Whitelisting By Using dnx.exe. Retrieved May 25, 2017.",
+                    "source_name": "engima0x3 DNX Bypass"
+                },
+                {
+                    "url": "https://blogs.msdn.microsoft.com/visualstudio/2011/10/19/introducing-the-microsoft-roslyn-ctp/",
                     "description": "Osenkov, K. (2011, October 19). Introducing the Microsoft \u201cRoslyn\u201d CTP. Retrieved June 28, 2017.",
-                    "source_name": "Microsoft Roslyn CPT RCSI",
-                    "url": "https://blogs.msdn.microsoft.com/visualstudio/2011/10/19/introducing-the-microsoft-roslyn-ctp/"
+                    "source_name": "Microsoft Roslyn CPT RCSI"
+                },
+                {
+                    "url": "https://enigma0x3.net/2016/11/21/bypassing-application-whitelisting-by-using-rcsi-exe/",
+                    "description": "Nelson, M. (2016, November 21). Bypassing Application Whitelisting By Using rcsi.exe. Retrieved May 26, 2017.",
+                    "source_name": "engima0x3 RCSI Bypass"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/windows-hardware/drivers/debugger/index",
+                    "description": "Marshall, D. (2017, May 23). Debugging Tools for Windows (WinDbg, KD, CDB, NTSD). Retrieved June 29, 2017.",
+                    "source_name": "Microsoft Debugging Tools for Windows"
+                },
+                {
+                    "url": "http://www.exploit-monday.com/2016/08/windbg-cdb-shellcode-runner.html",
+                    "description": "Graeber, M. (2016, August 15). Bypassing Application Whitelisting by using WinDbg/CDB as a Shellcode Runner. Retrieved May 26, 2017.",
+                    "source_name": "Exploit Monday WinDbg"
                 },
                 {
                     "description": "[ Smith, C. (2016, August 17). Includes 5 Known Application Whitelisting/ Application Control Bypass Techniques in One File. Retrieved June 30, 2017.",
                     "source_name": "SubTee GitHub All The Things Application Whitelisting Bypass"
                 },
                 {
+                    "url": "https://docs.microsoft.com/visualstudio/msbuild/file-tracking",
+                    "description": "B, M., Brown, K., Cai, S., Hogenson, G., Warren, G. (2016, November 4). File Tracking. Retrieved November 1, 2017.",
+                    "source_name": "Microsoft Docs File Tracking"
+                },
+                {
+                    "url": "https://twitter.com/subTee/status/793151392185589760",
                     "description": "Smith, C. (2016, October 31). SubTee Twitter Status. Retrieved November 1, 2017.",
-                    "source_name": "Twitter SubTee Tracker.exe",
-                    "url": "https://twitter.com/subTee/status/793151392185589760"
-                },
-                {
-                    "description": "Nelson, M. (2017, November 17). Bypassing Application Whitelisting By Using dnx.exe. Retrieved May 25, 2017.",
-                    "source_name": "engima0x3 DNX Bypass",
-                    "url": "https://enigma0x3.net/2016/11/17/bypassing-application-whitelisting-by-using-dnx-exe/"
-                },
-                {
-                    "description": "Nelson, M. (2016, November 21). Bypassing Application Whitelisting By Using rcsi.exe. Retrieved May 26, 2017.",
-                    "source_name": "engima0x3 RCSI Bypass",
-                    "url": "https://enigma0x3.net/2016/11/21/bypassing-application-whitelisting-by-using-rcsi-exe/"
+                    "source_name": "Twitter SubTee Tracker.exe"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created": "2017-05-31T21:31:39.262Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Windows"
+            "x_mitre_version": "1.0",
+            "x_mitre_contributors": [
+                "Casey Smith",
+                "Matthew Demaske, Adaptforward"
             ],
             "x_mitre_data_sources": [
                 "Process monitoring"
@@ -83,23 +78,30 @@
             "x_mitre_defense_bypassed": [
                 "Application whitelisting"
             ],
+            "x_mitre_detection": "The presence of these or other utilities that enable proxy execution that are typically used for development, debugging, and reverse engineering on a system that is not used for these purposes may be suspicious.\n\nUse process monitoring to monitor the execution and arguments of MSBuild.exe, dnx.exe, rcsi.exe, WinDbg.exe, cdb.exe, and tracker.exe. Compare recent invocations of those binaries with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. It is likely that these utilities will be used by software developers or for other software development related tasks, so if it exists and is used outside of that context, then the event may be suspicious. Command arguments used before and after invocation of the utilities may also be useful in determining the origin and purpose of the binary being executed.",
             "x_mitre_permissions_required": [
                 "User"
+            ],
+            "x_mitre_remote_support": false,
+            "x_mitre_platforms": [
+                "Windows"
             ],
             "x_mitre_system_requirements": [
                 "MSBuild: .NET Framework version 4 or higher\nDNX: .NET 4.5.2, Powershell 4.0\nRCSI: .NET 4.5 or later, Visual Studio 2012"
             ],
-            "x_mitre_remote_support": false,
-            "x_mitre_contributors": [
-                "Casey Smith",
-                "Matthew Demaske, Adaptforward"
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "execution",
+                    "kill_chain_name": "mitre-attack"
+                }
             ],
-            "id": "attack-pattern--ff25900d-76d5-449b-a351-8824e62fc81b",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "modified": "2018-10-17T00:14:20.652Z",
+            "created": "2017-05-31T21:31:39.262Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--2c7d5282-7644-4a93-b08e-ff4ad6d8130e",
-    "spec_version": "2.0"
+    ]
 }

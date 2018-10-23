@@ -1,55 +1,52 @@
 {
+    "type": "bundle",
+    "id": "bundle--f3316a5b-b02b-4a65-bb9c-582c0cd0e3d9",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--42e8de7b-37b2-4258-905a-6897815e58e0",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Masquerading",
-            "description": "Masquerading occurs when the name or location of an executable, legitimate or malicious, is manipulated or abused for the sake of evading defenses and observation.  Several different variations of this technique have been observed.\n\nOne variant is for an executable to be placed in a commonly trusted directory or given the name of a legitimate, trusted program.  Alternatively, the filename given may be a close approximation of legitimate programs.  This is done to bypass tools that trust executables by relying on file name or path, as well as to deceive defenders and system administrators into thinking a file is benign by associating the name with something that is thought to be legitimate.\n\n\n===Windows===\nIn another variation of this technique, an adversary may use a renamed copy of a legitimate utility, such as rundll32.exe. (Citation: Endgame Masquerade Ball) An alternative case occurs when a legitimate utility is moved to a different directory and also renamed to avoid detections based on system utilities executing from non-standard paths. (Citation: F-Secure CozyDuke)\n\nAn example of abuse of trusted locations in Windows would be the <code>C:\\Windows\\System32</code> directory.  Examples of trusted binary names that can be given to malicious binares include \"explorer.exe\" and \"svchost.exe\".\n\n===Linux===\nAnother variation of this technique includes malicious binaries changing the name of their running process to that of a trusted or benign process, after they have been launched as opposed to before.  (Citation: Remaiten)\n\nAn example of abuse of trusted locations in Linux  would be the <code>/bin</code> directory.  Examples of trusted binary names that can be given to malicious binares include \"rsyncd\" and \"dbus-inotifier\".   (Citation: Fysbis Palo Alto Analysis)  (Citation: Fysbis Dr Web Analysis)\n\nDetection: Collect file hashes; file names that do not match their expected hash are suspect. Perform file monitoring; files with known names but in unusual locations are suspect. Likewise, files that are modified outside of an update or patch are suspect.\n\nIf file names are mismatched between the binary name on disk and the binary's resource section, this is a likely indicator that a binary was renamed after it was compiled. Collecting and comparing disk and resource filenames for binaries could provide useful leads, but may not always be indicative of malicious activity. (Citation: Endgame Masquerade Ball)\n\nPlatforms: Linux, macOS, Windows\n\nData Sources: File monitoring, Process monitoring, Binary file metadata\n\nDefense Bypassed: Whitelisting by file name or path\n\nContributors: ENDGAME, Bartosz Jerzman",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
+            "description": "Masquerading occurs when the name or location of an executable, legitimate or malicious, is manipulated or abused for the sake of evading defenses and observation. Several different variations of this technique have been observed.\n\nOne variant is for an executable to be placed in a commonly trusted directory or given the name of a legitimate, trusted program. Alternatively, the filename given may be a close approximation of legitimate programs. This is done to bypass tools that trust executables by relying on file name or path, as well as to deceive defenders and system administrators into thinking a file is benign by associating the name with something that is thought to be legitimate.\n\n\n### Windows\nIn another variation of this technique, an adversary may use a renamed copy of a legitimate utility, such as rundll32.exe. (Citation: Endgame Masquerade Ball) An alternative case occurs when a legitimate utility is moved to a different directory and also renamed to avoid detections based on system utilities executing from non-standard paths. (Citation: F-Secure CozyDuke)\n\nAn example of abuse of trusted locations in Windows would be the <code>C:\\Windows\\System32</code> directory. Examples of trusted binary names that can be given to malicious binares include \"explorer.exe\" and \"svchost.exe\".\n\n### Linux\nAnother variation of this technique includes malicious binaries changing the name of their running process to that of a trusted or benign process, after they have been launched as opposed to before. (Citation: Remaiten)\n\nAn example of abuse of trusted locations in Linux  would be the <code>/bin</code> directory. Examples of trusted binary names that can be given to malicious binares include \"rsyncd\" and \"dbus-inotifier\". (Citation: Fysbis Palo Alto Analysis)  (Citation: Fysbis Dr Web Analysis)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1036",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1036"
+                    "external_id": "T1036",
+                    "url": "https://attack.mitre.org/techniques/T1036",
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "url": "https://www.endgame.com/blog/how-hunt-masquerade-ball",
                     "description": "Ewing, P. (2016, October 31). How to Hunt: The Masquerade Ball. Retrieved October 31, 2016.",
-                    "source_name": "Endgame Masquerade Ball",
-                    "url": "https://www.endgame.com/blog/how-hunt-masquerade-ball"
+                    "source_name": "Endgame Masquerade Ball"
                 },
                 {
+                    "url": "https://www.f-secure.com/documents/996508/1030745/CozyDuke",
                     "description": "F-Secure Labs. (2015, April 22). CozyDuke: Malware Analysis. Retrieved December 10, 2015.",
-                    "source_name": "F-Secure CozyDuke",
-                    "url": "https://www.f-secure.com/documents/996508/1030745/CozyDuke"
+                    "source_name": "F-Secure CozyDuke"
                 },
                 {
+                    "url": "https://www.welivesecurity.com/2016/03/30/meet-remaiten-a-linux-bot-on-steroids-targeting-routers-and-potentially-other-iot-devices/",
                     "description": "Michal Malik AND Marc-Etienne M.L\u00e9veill\u00e9. (2016, March 30). Meet Remaiten \u2013 a Linux bot on steroids targeting routers and potentially other IoT devices. Retrieved September 7, 2017.",
-                    "source_name": "Remaiten",
-                    "url": "https://www.welivesecurity.com/2016/03/30/meet-remaiten-a-linux-bot-on-steroids-targeting-routers-and-potentially-other-iot-devices/"
+                    "source_name": "Remaiten"
                 },
                 {
+                    "url": "https://researchcenter.paloaltonetworks.com/2016/02/a-look-into-fysbis-sofacys-linux-backdoor/",
                     "description": "Bryan Lee and Rob Downs. (2016, February 12). A Look Into Fysbis: Sofacy\u2019s Linux Backdoor. Retrieved September 10, 2017.",
-                    "source_name": "Fysbis Palo Alto Analysis",
-                    "url": "https://researchcenter.paloaltonetworks.com/2016/02/a-look-into-fysbis-sofacys-linux-backdoor/"
+                    "source_name": "Fysbis Palo Alto Analysis"
                 },
                 {
+                    "url": "https://vms.drweb.com/virus/?i=4276269",
                     "description": "Doctor Web. (2014, November 21). Linux.BackDoor.Fysbis.1. Retrieved December 7, 2017.",
-                    "source_name": "Fysbis Dr Web Analysis",
-                    "url": "https://vms.drweb.com/virus/?i=4276269"
+                    "source_name": "Fysbis Dr Web Analysis"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created": "2017-05-31T21:30:38.511Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
+            "x_mitre_version": "1.0",
+            "x_mitre_contributors": [
+                "ENDGAME",
+                "Bartosz Jerzman"
             ],
             "x_mitre_data_sources": [
                 "File monitoring",
@@ -59,16 +56,21 @@
             "x_mitre_defense_bypassed": [
                 "Whitelisting by file name or path"
             ],
-            "x_mitre_contributors": [
-                "ENDGAME",
-                "Bartosz Jerzman"
+            "x_mitre_detection": "Collect file hashes; file names that do not match their expected hash are suspect. Perform file monitoring; files with known names but in unusual locations are suspect. Likewise, files that are modified outside of an update or patch are suspect.\n\nIf file names are mismatched between the binary name on disk and the binary's resource section, this is a likely indicator that a binary was renamed after it was compiled. Collecting and comparing disk and resource filenames for binaries could provide useful leads, but may not always be indicative of malicious activity. (Citation: Endgame Masquerade Ball)",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
             ],
-            "id": "attack-pattern--42e8de7b-37b2-4258-905a-6897815e58e0",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "modified": "2018-10-17T00:14:20.652Z",
+            "created": "2017-05-31T21:30:38.511Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--8c47b87c-1180-43ab-8590-27e626daf409",
-    "spec_version": "2.0"
+    ]
 }

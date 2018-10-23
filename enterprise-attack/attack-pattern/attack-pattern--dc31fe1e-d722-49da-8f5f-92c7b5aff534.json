@@ -1,0 +1,82 @@
+{
+    "type": "bundle",
+    "id": "bundle--cbdc2e14-553c-4ddd-9672-ce02bb68afdc",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "id": "attack-pattern--dc31fe1e-d722-49da-8f5f-92c7b5aff534",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Template Injection",
+            "description": "Microsoft\u2019s Open Office XML (OOXML) specification defines an XML-based format for Office documents (.docx, xlsx, .pptx) to replace older binary formats (.doc, .xls, .ppt). OOXML files are packed together ZIP archives compromised of various XML files, referred to as parts, containing properties that collectively define how a document is rendered. (Citation: Microsoft Open XML July 2017)\n\nProperties within parts may reference shared public resources accessed via online URLs. For example, template properties reference a file, serving as a pre-formatted document blueprint, that is fetched when the document is loaded.\n\nAdversaries may abuse this technology to initially conceal malicious code to be executed via documents (i.e. [Scripting](https://attack.mitre.org/techniques/T1064)). Template references injected into a document may enable malicious payloads to be fetched and executed when the document is loaded. These documents can be delivered via other techniques such as [Spearphishing Attachment](https://attack.mitre.org/techniques/T1193) and/or [Taint Shared Content](https://attack.mitre.org/techniques/T1080) and may evade static detections since no typical indicators (VBA macro, script, etc.) are present until after the malicious payload is fetched. (Citation: Redxorblue Remote Template Injection) Examples have been seen in the wild where template injection was used to load malicious code containing an exploit. (Citation: MalwareBytes Template Injection OCT 2017)\n\nThis technique may also enable [Forced Authentication](https://attack.mitre.org/techniques/T1187) by injecting a SMB/HTTPS (or other credential prompting) URL and triggering an authentication attempt. (Citation: Anomali Template Injection MAR 2018) (Citation: Talos Template Injection July 2017) (Citation: ryhanson phishery SEPT 2016)",
+            "external_references": [
+                {
+                    "external_id": "T1221",
+                    "url": "https://attack.mitre.org/techniques/T1221",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://docs.microsoft.com/previous-versions/office/developer/office-2007/aa338205(v=office.12)",
+                    "description": "Microsoft. (2014, July 9). Introducing the Office (2007) Open XML File Formats. Retrieved July 20, 2018.",
+                    "source_name": "Microsoft Open XML July 2017"
+                },
+                {
+                    "url": "https://forum.anomali.com/t/credential-harvesting-and-malicious-file-delivery-using-microsoft-office-template-injection/2104",
+                    "description": "Intel_Acquisition_Team. (2018, March 1). Credential Harvesting and Malicious File Delivery using Microsoft Office Template Injection. Retrieved July 20, 2018.",
+                    "source_name": "Anomali Template Injection MAR 2018"
+                },
+                {
+                    "url": "https://blog.malwarebytes.com/threat-analysis/2017/10/decoy-microsoft-word-document-delivers-malware-through-rat/",
+                    "description": "Segura, J. (2017, October 13). Decoy Microsoft Word document delivers malware through a RAT. Retrieved July 21, 2018.",
+                    "source_name": "MalwareBytes Template Injection OCT 2017"
+                },
+                {
+                    "url": "https://blog.talosintelligence.com/2017/07/template-injection.html",
+                    "description": "Baird, S. et al.. (2017, July 7). Attack on Critical Infrastructure Leverages Template Injection. Retrieved July 21, 2018.",
+                    "source_name": "Talos Template Injection July 2017"
+                },
+                {
+                    "url": "https://github.com/ryhanson/phishery",
+                    "description": "Hanson, R. (2016, September 24). phishery. Retrieved July 21, 2018.",
+                    "source_name": "ryhanson phishery SEPT 2016"
+                },
+                {
+                    "url": "http://blog.redxorblue.com/2018/07/executing-macros-from-docx-with-remote.html",
+                    "description": "Hawkins, J. (2018, July 18). Executing Macros From a DOCX With Remote Template Injection. Retrieved October 12, 2018.",
+                    "source_name": "Redxorblue Remote Template Injection"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_contributors": [
+                "Patrick Campbell, @pjcampbe11"
+            ],
+            "x_mitre_data_sources": [
+                "Anti-virus",
+                "Email gateway",
+                "Network intrusion detection system",
+                "Web logs"
+            ],
+            "x_mitre_defense_bypassed": [
+                "Static File Analysis"
+            ],
+            "x_mitre_detection": "Analyze process behavior to determine if an Office application is performing actions, such as opening network connections, reading files, spawning abnormal child processes (ex: [PowerShell](https://attack.mitre.org/techniques/T1086)), or other suspicious actions that could relate to post-compromise behavior.",
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "modified": "2018-10-17T00:14:20.652Z",
+            "created": "2018-10-17T00:14:20.652Z"
+        }
+    ]
+}

@@ -35,6 +35,7 @@ ATT&CK Property | ATT&CK MediaWiki | STIX Properties
 **Citation**    | `Citation reference` | `external_references`
 **Deprecated**  | `Deprecated` | `x_mitre_deprecated`
 **Revoked**     | `Not available via MediaWiki API` | `revoked`
+**Old ATT&CK ID** | `Not available via MediaWiki API` | `x_mitre_old_attack_id`
 
 
 ### Techniques

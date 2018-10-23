@@ -1,82 +1,87 @@
 {
+    "type": "bundle",
+    "id": "bundle--d97e3032-50e5-4e8b-a3c9-0262c5b47b56",
+    "spec_version": "2.0",
     "objects": [
         {
+            "id": "course-of-action--aeff5887-8f9e-48d5-a523-9b395e2ce80a",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Credential Dumping Mitigation",
-            "description": "Monitor/harden access to LSASS and SAM table with tools that allow process whitelisting. Limit credential overlap across systems to prevent lateral movement opportunities using Valid Accounts if passwords and hashes are obtained. Ensure that local administrator accounts have complex, unique passwords across all systems on the network. Do not put user or admin domain accounts in the local administrator groups across systems unless they are tightly controlled, as this is often equivalent to having a local administrator account with the same password on all systems. Follow best practices for design and administration of an enterprise network to limit privileged account use across administrative tiers. (Citation: Microsoft Securing Privileged Access)\n\nOn Windows 8.1 and Windows Server 2012 R2, enable Protected Process Light for LSA. (Citation: Microsoft LSA)\n\nIdentify and block potentially malicious software that may be used to dump credentials by using whitelisting (Citation: Beechey 2010) tools, like AppLocker, (Citation: Windows Commands JPCERT) (Citation: NSA MS AppLocker) or Software Restriction Policies (Citation: Corio 2008) where appropriate. (Citation: TechNet Applocker vs SRP)\n\nWith Windows 10, Microsoft implemented new protections called Credential Guard to protect the LSA secrets that can be used to obtain credentials through forms of credential dumping. It is not configured by default and has hardware and firmware system requirements. (Citation: TechNet Credential Guard) It also does not protect against all forms of credential dumping. (Citation: GitHub SHB Credential Guard)\n\nManage the access control list for \u201cReplicating Directory Changes\u201d and other permissions associated with domain controller replication. (Citation: AdSecurity DCSync Sept 2015) (Citation: Microsoft Replication ACL)\n\nConsider disabling or restricting NTLM traffic. (Citation: Microsoft Disable NTLM Nov 2012)",
+            "description": "### Windows\nMonitor/harden access to LSASS and SAM table with tools that allow process whitelisting. Limit credential overlap across systems to prevent lateral movement opportunities using [Valid Accounts](https://attack.mitre.org/techniques/T1078) if passwords and hashes are obtained. Ensure that local administrator accounts have complex, unique passwords across all systems on the network. Do not put user or admin domain accounts in the local administrator groups across systems unless they are tightly controlled, as this is often equivalent to having a local administrator account with the same password on all systems. Follow best practices for design and administration of an enterprise network to limit privileged account use across administrative tiers. (Citation: Microsoft Securing Privileged Access)\n\nOn Windows 8.1 and Windows Server 2012 R2, enable Protected Process Light for LSA. (Citation: Microsoft LSA)\n\nIdentify and block potentially malicious software that may be used to dump credentials by using whitelisting (Citation: Beechey 2010) tools, like AppLocker, (Citation: Windows Commands JPCERT) (Citation: NSA MS AppLocker) or Software Restriction Policies (Citation: Corio 2008) where appropriate. (Citation: TechNet Applocker vs SRP)\n\nWith Windows 10, Microsoft implemented new protections called Credential Guard to protect the LSA secrets that can be used to obtain credentials through forms of credential dumping. It is not configured by default and has hardware and firmware system requirements. (Citation: TechNet Credential Guard) It also does not protect against all forms of credential dumping. (Citation: GitHub SHB Credential Guard)\n\nManage the access control list for \u201cReplicating Directory Changes\u201d and other permissions associated with domain controller replication. (Citation: AdSecurity DCSync Sept 2015) (Citation: Microsoft Replication ACL)\n\nConsider disabling or restricting NTLM traffic. (Citation: Microsoft Disable NTLM Nov 2012)\n\n### Linux\nScraping the passwords from memory requires root privileges. Follow best practices in restricting access to escalated privileges to avoid hostile programs from accessing such sensitive regions of memory.",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/wiki/Technique/T1003",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1003"
+                    "external_id": "T1003",
+                    "url": "https://attack.mitre.org/techniques/T1003",
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "url": "https://technet.microsoft.com/en-us/library/dn408187.aspx",
                     "description": "Microsoft. (2013, July 31). Configuring Additional LSA Protection. Retrieved February 13, 2015.",
-                    "source_name": "Microsoft LSA",
-                    "url": "https://technet.microsoft.com/en-us/library/dn408187.aspx"
+                    "source_name": "Microsoft LSA"
                 },
                 {
+                    "url": "http://www.sans.org/reading-room/whitepapers/application/application-whitelisting-panacea-propaganda-33599",
                     "description": "Beechey, J. (2010, December). Application Whitelisting: Panacea or Propaganda?. Retrieved November 18, 2014.",
-                    "source_name": "Beechey 2010",
-                    "url": "http://www.sans.org/reading-room/whitepapers/application/application-whitelisting-panacea-propaganda-33599"
+                    "source_name": "Beechey 2010"
                 },
                 {
+                    "url": "http://blog.jpcert.or.jp/2016/01/windows-commands-abused-by-attackers.html",
                     "description": "Tomonaga, S. (2016, January 26). Windows Commands Abused by Attackers. Retrieved February 2, 2016.",
-                    "source_name": "Windows Commands JPCERT",
-                    "url": "http://blog.jpcert.or.jp/2016/01/windows-commands-abused-by-attackers.html"
+                    "source_name": "Windows Commands JPCERT"
                 },
                 {
+                    "url": "https://www.iad.gov/iad/library/ia-guidance/tech-briefs/application-whitelisting-using-microsoft-applocker.cfm",
                     "description": "NSA Information Assurance Directorate. (2014, August). Application Whitelisting Using Microsoft AppLocker. Retrieved March 31, 2016.",
-                    "source_name": "NSA MS AppLocker",
-                    "url": "https://www.iad.gov/iad/library/ia-guidance/tech-briefs/application-whitelisting-using-microsoft-applocker.cfm"
+                    "source_name": "NSA MS AppLocker"
                 },
                 {
+                    "url": "http://technet.microsoft.com/en-us/magazine/2008.06.srp.aspx",
                     "description": "Corio, C., & Sayana, D. P. (2008, June). Application Lockdown with Software Restriction Policies. Retrieved November 18, 2014.",
-                    "source_name": "Corio 2008",
-                    "url": "http://technet.microsoft.com/en-us/magazine/2008.06.srp.aspx"
+                    "source_name": "Corio 2008"
                 },
                 {
+                    "url": "https://technet.microsoft.com/en-us/library/ee791851.aspx",
                     "description": "Microsoft. (2012, June 27). Using Software Restriction Policies and AppLocker Policies. Retrieved April 7, 2016.",
-                    "source_name": "TechNet Applocker vs SRP",
-                    "url": "https://technet.microsoft.com/en-us/library/ee791851.aspx"
+                    "source_name": "TechNet Applocker vs SRP"
                 },
                 {
+                    "url": "https://technet.microsoft.com/en-us/itpro/windows/keep-secure/credential-guard",
                     "description": "Lich, B. (2016, May 31). Protect derived domain credentials with Credential Guard. Retrieved June 1, 2016.",
-                    "source_name": "TechNet Credential Guard",
-                    "url": "https://technet.microsoft.com/en-us/itpro/windows/keep-secure/credential-guard"
+                    "source_name": "TechNet Credential Guard"
                 },
                 {
+                    "url": "https://github.com/iadgov/Secure-Host-Baseline/tree/master/Credential%20Guard",
                     "description": "NSA IAD. (2017, April 20). Secure Host Baseline - Credential Guard. Retrieved April 25, 2017.",
                     "source_name": "GitHub SHB Credential Guard"
                 },
                 {
+                    "url": "https://adsecurity.org/?p=1729",
                     "description": "Metcalf, S. (2015, September 25). Mimikatz DCSync Usage, Exploitation, and Detection. Retrieved December 4, 2017.",
-                    "source_name": "AdSecurity DCSync Sept 2015",
-                    "url": "https://adsecurity.org/?p=1729"
+                    "source_name": "AdSecurity DCSync Sept 2015"
                 },
                 {
+                    "url": "https://support.microsoft.com/help/303972/how-to-grant-the-replicating-directory-changes-permission-for-the-micr",
                     "description": "Microsoft. (n.d.). How to grant the \"Replicating Directory Changes\" permission for the Microsoft Metadirectory Services ADMA service account. Retrieved December 4, 2017.",
-                    "source_name": "Microsoft Replication ACL",
-                    "url": "https://support.microsoft.com/help/303972/how-to-grant-the-replicating-directory-changes-permission-for-the-micr"
+                    "source_name": "Microsoft Replication ACL"
                 },
                 {
+                    "url": "https://technet.microsoft.com/library/jj865668.aspx",
                     "description": "Microsoft. (2012, November 29). Using security policies to restrict NTLM traffic. Retrieved December 4, 2017.",
-                    "source_name": "Microsoft Disable NTLM Nov 2012",
-                    "url": "https://technet.microsoft.com/library/jj865668.aspx"
+                    "source_name": "Microsoft Disable NTLM Nov 2012"
                 },
                 {
+                    "url": "https://docs.microsoft.com/en-us/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material#a-nameesaebmaesae-administrative-forest-design-approach",
                     "description": "Plett, C., Poggemeyer, L. (12, October 26). Securing Privileged Access Reference Material. Retrieved April 25, 2017.",
-                    "source_name": "Microsoft Securing Privileged Access",
-                    "url": "https://docs.microsoft.com/en-us/windows-server/identity/securing-privileged-access/securing-privileged-access-reference-material#a-nameesaebmaesae-administrative-forest-design-approach"
+                    "source_name": "Microsoft Securing Privileged Access"
                 }
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "id": "course-of-action--aeff5887-8f9e-48d5-a523-9b395e2ce80a",
-            "created": "2018-04-18T17:59:24.739Z",
-            "modified": "2018-04-18T17:59:24.739Z",
-            "type": "course-of-action"
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "1.0",
+            "type": "course-of-action",
+            "modified": "2018-10-17T00:14:20.652Z",
+            "created": "2018-10-17T00:14:20.652Z"
         }
-    ],
-    "type": "bundle",
-    "id": "bundle--afcc6a12-b67f-46a8-9646-83bc80d4b800",
-    "spec_version": "2.0"
+    ]
 }
