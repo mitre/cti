@@ -42,14 +42,14 @@ CAPEC 3.0 properties not appropriate to map: **Status**
 In this section, we will describe how to query and manipulate CAPEC data that has been stored in a STIX 2.0 repository. A Python library has been created for using and creating STIX 2.0 data by the OASIS Technical Committee for Cyber Threat Intelligence, which develops the STIX standard. This library abstracts storage and transport details so that the same code can be used to interact with data locally on the filesystem or in memory, or remotely via [TAXII](https://oasis-open.github.io/cti-documentation/taxii/intro). The source code, installation instructions, and basic documentation for the library can be found [here](https://github.com/oasis-open/cti-python-stix2). There is a more thorough [API documentation](http://stix2.readthedocs.io/en/latest/overview.html) as well.
 
 ## Python Library
-To begin querying STIX 2.0 data, you must first have a [DataSource](http://stix2.readthedocs.io/en/latest/guide/datastore.html). For these examples, we will simply use a [FileSystemStore](http://stix2.readthedocs.io/en/latest/guide/filesystem.html). The CAPEC corpus must first be cloned or downloaded from [github](https://github.com/mitre/cti).
+To begin querying STIX 2.0 data, you must first have a [DataSource](http://stix2.readthedocs.io/en/latest/guide/datastore.html). For these examples, we will simply use a [FileSystemSource](http://stix2.readthedocs.io/en/latest/guide/filesystem.html). The CAPEC corpus must first be cloned or downloaded from [GitHub](https://github.com/mitre/cti).
 
 ### Get all Attack Patterns
 Once the stix2 Python library is installed and the corpus is acquired, we need to open the DataStore for querying:
 
 ```python
-from stix2 import FileSystemStore
-fs = FileSystemStore('./CAPEC', allow_custom=True)
+from stix2 import FileSystemSource
+fs = FileSystemSource('./cti/capec')
 ```
 
 When creating the DataSource, the keyword agrument `allow_custom` must be set to `True`. This is because the CAPEC data uses several custom properties which are not part of the STIX 2.0 specification (`x_capec_prerequisites`, `x_capec_example_instances`, etc).
