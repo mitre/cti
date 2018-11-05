@@ -28,7 +28,7 @@ The following is a table mapping of ATT&CK properties, the old ATT&CK MediaWiki 
 ### Common properties (on all objects)
 ATT&CK Property | ATT&CK MediaWiki | STIX Properties
 --------------- | ---------------- | ---------------
-**Entry ID**    | `Has ID` | `external_references[i].external_id` where `external_references[i].source_name` == "mitre-attack"
+**Entry ID**    | `Has ID` | `external_references[i].external_id` where `external_references[i].source_name == "mitre-attack"`
 **Entry URL**   | `URL` | `external_references[i].url` where `external_references[i].source_name == "mitre-attack"`
 **Entry Title** | `Has display name` | `name`
 **Entry Text**  | `Has description` | `description`
@@ -61,7 +61,7 @@ ATT&CK Property | ATT&CK MediaWiki | STIX Properties
 ### Software
 ATT&CK Property | ATT&CK MediaWiki | STIX Properties
 --------------- | ---------------- | ---------------
-**Techniques Used** | `Has technique` | `relationship` where `relationship_type == "uses"`, points from a `source` object with `type== "attack-pattern"`
+**Techniques Used** | `Has technique` | `relationship` where `relationship_type == "uses"`, points to a `target` object with `type== "attack-pattern"`
 **Aliases** | `Has alias` | `x_mitre_aliases`
 **Groups** | `Has groups` | `relationship` where `relationship_type == "uses"`, points from a `source` object with `type== "intrusion-set"`
 **Contributors** | `Has contributor` | `x_mitre_contributors`
@@ -78,14 +78,16 @@ ATT&CK Property | ATT&CK MediaWiki | STIX Properties
 In this section, we will describe how to query and manipulate ATT&CK data that has been stored in a STIX 2.0 repository. A Python library has been created for using and creating STIX 2.0 data by the OASIS Technical Committee for Cyber Threat Intelligence, which develops the STIX standard. This library abstracts storage and transport details so that the same code can be used to interact with data locally on the filesystem or in memory, or remotely via [TAXII](https://oasis-open.github.io/cti-documentation/taxii/intro). The source code, installation instructions, and basic documentation for the library can be found [here](https://github.com/oasis-open/cti-python-stix2). There is a more thorough [API documentation](http://stix2.readthedocs.io/en/latest/overview.html) as well.
 
 ## Python Library
-To begin querying STIX 2.0 data, you must first have a [DataSource](http://stix2.readthedocs.io/en/latest/guide/datastore.html). For these examples, we will simply use a [FileSystemStore](http://stix2.readthedocs.io/en/latest/guide/filesystem.html). The ATT&CK corpus must first be cloned or downloaded from [github](https://github.com/mitre/cti).
+To begin querying STIX 2.0 data, you must first have a [DataSource](http://stix2.readthedocs.io/en/latest/guide/datastore.html). For these examples, we will simply use a [FileSystemSource](http://stix2.readthedocs.io/en/latest/guide/filesystem.html). The ATT&CK corpus must first be cloned or downloaded from [GitHub](https://github.com/mitre/cti).
+
+**Note** for this example we used the enterprise-attack corpus to demonstrate usage. The same can be done for all other data sources.
 
 ### Get all Techniques
 Once the stix2 Python library is installed and the corpus is acquired, we need to open the DataStore for querying:
 
 ```python
-from stix2 import FileSystemStore
-fs = FileSystemStore('./ATTACK')
+from stix2 import FileSystemSource
+fs = FileSystemSource('./cti/enterprise-attack')
 ```
 
 To perform a query, we must define a [Filter](http://stix2.readthedocs.io/en/latest/guide/datastore.html#Filters). As of this writing, a filter must, at a minimum, specify object `id`'s or an object `type`.  The following filter can be used to retrieve all ATT&CK techniques:
@@ -208,13 +210,13 @@ def get_techniques_by_group_software(src, group_stix_id):
     software_uses = src.query([
         Filter('type', '=', 'relationship'),
         Filter('relationship_type', '=', 'uses'),
-        Filter('target_ref', 'in', [r.target_ref for r in group_uses])
+        Filter('source_ref', 'in', [r.source_ref for r in group_uses])
     ])
 
     #get the techniques themselves
     return src.query([
         Filter('type', '=', 'attack-pattern'),
-        Filter('id', 'in', [r.source_ref for r in software_uses])
+        Filter('id', 'in', [r.target_ref for r in software_uses])
     ])
 
 group = get_group_by_alias(fs, 'Cozy Bear')[0]
@@ -222,7 +224,7 @@ get_techniques_by_group_software(fs, group)
 ```
 
 ### Get all Groups and Software that use a specific Technique
-Notice the difference between the directions of the relationships. For groups, the relationships are defined as "`intrusion-set` `uses` `attack-pattern`" (where the relationship is of the form "`source_ref relationship_type target_ref`"). For software, the relationships are defined as "`attack-pattern` `uses` `malware` or `tool`". This may be unintuitive, but this is how the STIX 2.0 specification has defined the usage of the `relationship_type` "uses".
+Notice that a relationship that `uses` an `attack-pattern` will always be `target_ref` for an `intrusion-set`, `tool` or `malware`. This example is broken down to separate groups from software, but it could have been made in a single step.
 
 ```python
 def get_technique_users(src, tech_stix_id):
@@ -233,8 +235,8 @@ def get_technique_users(src, tech_stix_id):
     ]
 
     software = [
-        r.target_ref
-        for r in src.relationships(tech_stix_id, 'uses', source_only=True)
+        r.source_ref
+        for r in src.relationships(tech_stix_id, 'uses', target_only=True)
         if get_type_from_id(r.source_ref) in ['tool', 'malware']
     ]
 
@@ -292,4 +294,27 @@ def get_mitigations_by_technique(src, tech_stix_id):
 
 tech = get_technique_by_name(fs, 'Rundll32')[0]
 get_mitigations_by_technique(fs, tech.id)
+```
+
+## FAQ
+
+### Is it possible to query multiple ATT&CK sources at the same time?
+
+Yes! Using a [CompositeDataSource](https://stix2.readthedocs.io/en/latest/guide/datastore.html#CompositeDataSource) you can collectively query multiple sources with the same filter. An example below using the FileSystemSource.
+
+```python
+import stix2
+
+enterprise_attack_fs = stix2.FileSystemSource("./cti/enterprise-attack")
+pre_attack_fs = stix2.FileSystemSource("./cti/pre-attack")
+mobile_attack_fs = stix2.FileSystemSource("./cti/mobile-attack")
+
+composite_ds = stix2.CompositeDataSource()
+composite_ds.add_data_sources([enterprise_attack_fs, pre_attack_fs, mobile_attack_fs])
+
+q1 = stix2.Filter("name", "=", ".bash_profile and .bashrc")
+q2 = stix2.Filter("type", "=", "attack-pattern")
+
+print(composite_ds.query(q1))
+print(composite_ds.query(q2))
 ```
