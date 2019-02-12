@@ -17,6 +17,8 @@ Technique | `attack-pattern`
 Group | `intrusion-set`
 Software | `malware` or `tool`
 Mitigation | `course-of-action`
+Tactic | `x-mitre-tactic`
+Matrix | `x-mitre-matrix`
 
 The above STIX types are found as literal strings assigned to the `type` property of the STIX JSON object. As shown in the table, in STIX 2.0, there are objects called "Course(s) of Action" used to describe mitigations to ATT&CK techniques. Similarly, the STIX 2.0 object called "Attack Pattern" describes techniques, etc. It should also be noted that Tactics are not an explicit object type in STIX 2.0, and they are referenced implicitly as kill chain phases within the other object types, as described in the tables below.
 
@@ -294,6 +296,24 @@ def get_mitigations_by_technique(src, tech_stix_id):
 
 tech = get_technique_by_name(fs, 'Rundll32')[0]
 get_mitigations_by_technique(fs, tech.id)
+```
+
+### Get all Tactics for Matrix
+The tactics are individual objects (`x-mitre-tactic`), and their order in a matrix (`x-mitre-matrix`) is found within the `tactic_refs` property in a matrix. The order of the tactics in that list matches the ordering of the tactics in that matrix. You can get all matrices and tactics in Enterprise ATT&CK (or in any other ATT&CK domain) by using the following code.
+
+```python
+def getTacticsByMatrix(src):
+    tactics = {}
+    matrix = src.query([
+        Filter('type', '=', 'x-mitre-matrix'),
+    ])
+
+    for i in range(len(matrix)):
+        tactics[matrix[i]['name']] = []
+        for tactic_id in matrix[i]['tactic_refs']:
+            tactics[matrix[i]['name']].append(src.query([Filter('id', '=', tactic_id)])[0])    
+    
+    return tactics
 ```
 
 ## FAQ
