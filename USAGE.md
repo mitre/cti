@@ -153,6 +153,20 @@ get_technique_by_name(fs, 'Rundll32')
 get_techniques_by_content(fs, 'rundll32.exe')
 ```
 
+### Get Techniques added since a certain time
+This example shows how you can use the `Filter` API to only get techniques that have been added to the STIX content since a certain time based on the `created` timestamp. This code could be used within a larger function or script to alert when a new technique has been added to the ATT&CK STIX/TAXII content. The type could also be changed (or removed completely) to return results for different objects.
+
+```python
+def get_techniques_since_time(src, timestamp):
+    filt = [
+        Filter('type', '=', 'attack-pattern'),
+        Filter('created', '>', timestamp)
+    ]
+    return src.query(filt)
+    
+get_techniques_since_time(src, "2018-10-01T00:14:20.652Z")
+```
+
 ### Get any object by ATT&CK ID
 In this example, the STIX 2.0 type must be passed into the function. Here we query for the group with ATT&CK ID `G0016` (*APT29*).
 
