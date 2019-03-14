@@ -78,9 +78,9 @@ In this example, the STIX 2.0 type must be passed into the function. Here we que
 ```python
 def get_attack_pattern_by_capec_id(src, capec_id):
     filt = [
-        Filter('type', '=', 'attack_pattern'),
-        Filter('external_references.external_id', '=', 'CAPEC-" + capec_id)
-        Filter('external_references.source_name', '=' 'capec")
+        Filter('type', '=', 'attack-pattern'),
+        Filter('external_references.external_id', '=', 'CAPEC-' + capec_id),
+        Filter('external_references.source_name', '=', 'capec'),
     ]
     return src.query(filt)
 
