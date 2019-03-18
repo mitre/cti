@@ -330,6 +330,21 @@ def getTacticsByMatrix(src):
     return tactics
 ```
 
+### Get an Object that revoked a previous Object
+If an object is revoked by another object, whether it's a group/software/technique/x-mitre-tactic/x-mitre-matrix, that means that the object was replaced by a new object. You can find what object replaced the original object by supplying the *stix_id* of the revoked object to the following function.
+
+```python
+def getRevokedBy(stix_id, src):
+    relations = src.relationships(stix_id, 'revoked-by', source_only=True)
+    revoked_by = src.query([
+        Filter('id', 'in', [r.target_ref for r in relations]),
+        Filter('revoked', '=', False)
+    ])
+    if revoked_by is not None:
+        revoked_by = revoked_by[0]
+
+    return revoked_by
+ ```
 ## FAQ
 
 ### Is it possible to query multiple ATT&CK sources at the same time?
