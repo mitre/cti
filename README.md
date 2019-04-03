@@ -4,7 +4,7 @@ The Cyber Threat Intelligence Repository of ATT&amp;CK and CAPEC catalogs expres
 ## ATT&CK
 ATT&CK is a catalog of techniques and tactics that describe post-compromise adversary behavior on typical enterprise IT environments. The core use cases involve using the catalog to analyze, triage, compare, describe, relate, and share post-compromise adversary behavior.
 
-https://attack.mitre.org/wiki/Main_Page
+https://attack.mitre.org
 
 ## STIX
 Structured Threat Information Expression (STIX™) is a language and serialization format used to exchange cyber threat intelligence (CTI).
