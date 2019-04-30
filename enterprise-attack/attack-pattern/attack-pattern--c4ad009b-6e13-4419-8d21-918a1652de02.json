@@ -1,96 +1,82 @@
 {
+    "id": "bundle--53e4d676-b030-4f44-9aaf-c63ba543cf8b",
     "type": "bundle",
-    "id": "bundle--c1a2af92-45c2-4dfa-8db1-3555878105ff",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--c4ad009b-6e13-4419-8d21-918a1652de02",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Path Interception",
-            "description": "Path interception occurs when an executable is placed in a specific path so that it is executed by an application instead of the intended target. One example of this was the use of a copy of [cmd](https://attack.mitre.org/software/S0106) in the current working directory of a vulnerable application that loads a CMD or BAT file with the CreateProcess function. (Citation: TechNet MS14-019)\n\nThere are multiple distinct weaknesses or misconfigurations that adversaries may take advantage of when performing path interception: unquoted paths, path environment variable misconfigurations, and search order hijacking. The first vulnerability deals with full program paths, while the second and third occur when program paths are not specified. These techniques can be used for persistence if executables are called on a regular basis, as well as privilege escalation if intercepted executables are started by a higher privileged process.\n\n### Unquoted Paths\nService paths (stored in Windows Registry keys) (Citation: Microsoft Subkey) and shortcut paths are vulnerable to path interception if the path has one or more spaces and is not surrounded by quotation marks (e.g., <code>C:\\unsafe path with space\\program.exe</code> vs. <code>\"C:\\safe path with space\\program.exe\"</code>). (Citation: Baggett 2012) An adversary can place an executable in a higher level directory of the path, and Windows will resolve that executable instead of the intended executable. For example, if the path in a shortcut is <code>C:\\program files\\myapp.exe</code>, an adversary may create a program at <code>C:\\program.exe</code> that will be run instead of the intended program. (Citation: SecurityBoulevard Unquoted Services APR 2018) (Citation: SploitSpren Windows Priv Jan 2018)\n\n### PATH Environment Variable Misconfiguration\nThe PATH environment variable contains a list of directories. Certain methods of executing a program (namely using cmd.exe or the command-line) rely solely on the PATH environment variable to determine the locations that are searched for a program when the path for the program is not given. If any directories are listed in the PATH environment variable before the Windows directory, <code>%SystemRoot%\\system32</code> (e.g., <code>C:\\Windows\\system32</code>), a program may be placed in the preceding directory that is named the same as a Windows program (such as cmd, PowerShell, or Python), which will be executed when that command is executed from a script or command-line.\n\nFor example, if <code>C:\\example path</code> precedes <code>C:\\Windows\\system32</code> is in the PATH environment variable, a program that is named net.exe and placed in <code>C:\\example path</code> will be called instead of the Windows system \"net\" when \"net\" is executed from the command-line.\n\n### Search Order Hijacking\nSearch order hijacking occurs when an adversary abuses the order in which Windows searches for programs that are not given a path. The search order differs depending on the method that is used to execute the program. (Citation: Microsoft CreateProcess) (Citation: Hill NT Shell) (Citation: Microsoft WinExec) However, it is common for Windows to search in the directory of the initiating program before searching through the Windows system directory. An adversary who finds a program vulnerable to search order hijacking (i.e., a program that does not specify the path to an executable) may take advantage of this vulnerability by creating a program named after the improperly specified program and placing it within the initiating program's directory.\n\nFor example, \"example.exe\" runs \"cmd.exe\" with the command-line argument <code>net user</code>. An adversary may place a program called \"net.exe\" within the same directory as example.exe, \"net.exe\" will be run instead of the Windows system utility net. In addition, if an adversary places a program called \"net.com\" in the same directory as \"net.exe\", then <code>cmd.exe /C net user</code> will execute \"net.com\" instead of \"net.exe\" due to the order of executable extensions defined under PATHEXT. (Citation: MSDN Environment Property)\n\nSearch order hijacking is also a common practice for hijacking DLL loads and is covered in [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1038).",
             "external_references": [
                 {
-                    "external_id": "T1034",
                     "url": "https://attack.mitre.org/techniques/T1034",
-                    "source_name": "mitre-attack"
+                    "source_name": "mitre-attack",
+                    "external_id": "T1034"
                 },
                 {
-                    "external_id": "CAPEC-159",
                     "url": "https://capec.mitre.org/data/definitions/159.html",
-                    "source_name": "capec"
+                    "source_name": "capec",
+                    "external_id": "CAPEC-159"
                 },
                 {
                     "url": "http://support.microsoft.com/KB/103000",
-                    "description": "Microsoft. (n.d.). CurrentControlSet\\Services Subkey Entries. Retrieved November 30, 2014.",
-                    "source_name": "Microsoft Subkey"
+                    "source_name": "Microsoft Subkey",
+                    "description": "Microsoft. (n.d.). CurrentControlSet\\Services Subkey Entries. Retrieved November 30, 2014."
                 },
                 {
                     "url": "https://isc.sans.edu/diary/Help+eliminate+unquoted+path+vulnerabilities/14464",
-                    "description": "Baggett, M. (2012, November 8). Help eliminate unquoted path vulnerabilities. Retrieved December 4, 2014.",
-                    "source_name": "Baggett 2012"
+                    "source_name": "Baggett 2012",
+                    "description": "Baggett, M. (2012, November 8). Help eliminate unquoted path vulnerabilities. Retrieved December 4, 2014."
                 },
                 {
                     "url": "http://msdn.microsoft.com/en-us/library/ms682425",
-                    "description": "Microsoft. (n.d.). CreateProcess function. Retrieved December 5, 2014.",
-                    "source_name": "Microsoft CreateProcess"
+                    "source_name": "Microsoft CreateProcess",
+                    "description": "Microsoft. (n.d.). CreateProcess function. Retrieved December 5, 2014."
                 },
                 {
                     "url": "http://technet.microsoft.com/en-us/library/cc723564.aspx#XSLTsection127121120120",
-                    "description": "Hill, T. (n.d.). Windows NT Command Shell. Retrieved December 5, 2014.",
-                    "source_name": "Hill NT Shell"
+                    "source_name": "Hill NT Shell",
+                    "description": "Hill, T. (n.d.). Windows NT Command Shell. Retrieved December 5, 2014."
                 },
                 {
                     "url": "http://msdn.microsoft.com/en-us/library/ms687393",
-                    "description": "Microsoft. (n.d.). WinExec function. Retrieved December 5, 2014.",
-                    "source_name": "Microsoft WinExec"
+                    "source_name": "Microsoft WinExec",
+                    "description": "Microsoft. (n.d.). WinExec function. Retrieved December 5, 2014."
                 },
                 {
                     "url": "https://blogs.technet.microsoft.com/srd/2014/04/08/ms14-019-fixing-a-binary-hijacking-via-cmd-or-bat-file/",
-                    "description": "Nagaraju, S. (2014, April 8). MS14-019 \u2013 Fixing a binary hijacking via .cmd or .bat file. Retrieved July 25, 2016.",
-                    "source_name": "TechNet MS14-019"
+                    "source_name": "TechNet MS14-019",
+                    "description": "Nagaraju, S. (2014, April 8). MS14-019 \u2013 Fixing a binary hijacking via .cmd or .bat file. Retrieved July 25, 2016."
                 },
                 {
                     "url": "https://msdn.microsoft.com/en-us/library/fd7hxfdd.aspx",
-                    "description": "Microsoft. (n.d.). Environment Property. Retrieved July 27, 2016.",
-                    "source_name": "MSDN Environment Property"
+                    "source_name": "MSDN Environment Property",
+                    "description": "Microsoft. (n.d.). Environment Property. Retrieved July 27, 2016."
                 },
                 {
                     "url": "https://securityboulevard.com/2018/04/windows-privilege-escalation-unquoted-services/",
-                    "description": "HackHappy. (2018, April 23). Windows Privilege Escalation \u2013 Unquoted Services. Retrieved August 10, 2018.",
-                    "source_name": "SecurityBoulevard Unquoted Services APR 2018"
+                    "source_name": "SecurityBoulevard Unquoted Services APR 2018",
+                    "description": "HackHappy. (2018, April 23). Windows Privilege Escalation \u2013 Unquoted Services. Retrieved August 10, 2018."
                 },
                 {
                     "url": "https://www.sploitspren.com/2018-01-26-Windows-Privilege-Escalation-Guide/",
-                    "description": "McFarland, R. (2018, January 26). Windows Privilege Escalation Guide. Retrieved August 10, 2018.",
-                    "source_name": "SploitSpren Windows Priv Jan 2018"
+                    "source_name": "SploitSpren Windows Priv Jan 2018",
+                    "description": "McFarland, R. (2018, January 26). Windows Privilege Escalation Guide. Retrieved August 10, 2018."
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "1.0",
+            "x_mitre_contributors": [
+                "Stefan Kanthak"
+            ],
             "x_mitre_data_sources": [
                 "File monitoring",
                 "Process monitoring"
             ],
-            "x_mitre_contributors": [
-                "Stefan Kanthak"
-            ],
+            "modified": "2018-10-17T00:14:20.652Z",
             "x_mitre_detection": "Monitor file creation for files named after partial directories and in locations that may be searched for common processes through the environment variable, or otherwise should not be user writable. Monitor the executing process for process executable paths that are named for partial directories. Monitor file creation for programs that are named after Windows system programs or programs commonly executed without a path (such as \"findstr,\" \"net,\" and \"python\"). If this activity occurs outside of known administration activity, upgrades, installations, or patches, then it may be suspicious. \n\nData and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
-            "x_mitre_effective_permissions": [
-                "User",
-                "Administrator",
-                "SYSTEM"
-            ],
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator",
-                "SYSTEM"
-            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
                     "phase_name": "persistence",
@@ -101,8 +87,22 @@
                     "kill_chain_name": "mitre-attack"
                 }
             ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "created": "2017-05-31T21:30:36.140Z"
+            "id": "attack-pattern--c4ad009b-6e13-4419-8d21-918a1652de02",
+            "name": "Path Interception",
+            "created": "2017-05-31T21:30:36.140Z",
+            "x_mitre_version": "1.0",
+            "type": "attack-pattern",
+            "description": "Path interception occurs when an executable is placed in a specific path so that it is executed by an application instead of the intended target. One example of this was the use of a copy of [cmd](https://attack.mitre.org/software/S0106) in the current working directory of a vulnerable application that loads a CMD or BAT file with the CreateProcess function. (Citation: TechNet MS14-019)\n\nThere are multiple distinct weaknesses or misconfigurations that adversaries may take advantage of when performing path interception: unquoted paths, path environment variable misconfigurations, and search order hijacking. The first vulnerability deals with full program paths, while the second and third occur when program paths are not specified. These techniques can be used for persistence if executables are called on a regular basis, as well as privilege escalation if intercepted executables are started by a higher privileged process.\n\n### Unquoted Paths\nService paths (stored in Windows Registry keys) (Citation: Microsoft Subkey) and shortcut paths are vulnerable to path interception if the path has one or more spaces and is not surrounded by quotation marks (e.g., <code>C:\\unsafe path with space\\program.exe</code> vs. <code>\"C:\\safe path with space\\program.exe\"</code>). (Citation: Baggett 2012) An adversary can place an executable in a higher level directory of the path, and Windows will resolve that executable instead of the intended executable. For example, if the path in a shortcut is <code>C:\\program files\\myapp.exe</code>, an adversary may create a program at <code>C:\\program.exe</code> that will be run instead of the intended program. (Citation: SecurityBoulevard Unquoted Services APR 2018) (Citation: SploitSpren Windows Priv Jan 2018)\n\n### PATH Environment Variable Misconfiguration\nThe PATH environment variable contains a list of directories. Certain methods of executing a program (namely using cmd.exe or the command-line) rely solely on the PATH environment variable to determine the locations that are searched for a program when the path for the program is not given. If any directories are listed in the PATH environment variable before the Windows directory, <code>%SystemRoot%\\system32</code> (e.g., <code>C:\\Windows\\system32</code>), a program may be placed in the preceding directory that is named the same as a Windows program (such as cmd, PowerShell, or Python), which will be executed when that command is executed from a script or command-line.\n\nFor example, if <code>C:\\example path</code> precedes <code>C:\\Windows\\system32</code> is in the PATH environment variable, a program that is named net.exe and placed in <code>C:\\example path</code> will be called instead of the Windows system \"net\" when \"net\" is executed from the command-line.\n\n### Search Order Hijacking\nSearch order hijacking occurs when an adversary abuses the order in which Windows searches for programs that are not given a path. The search order differs depending on the method that is used to execute the program. (Citation: Microsoft CreateProcess) (Citation: Hill NT Shell) (Citation: Microsoft WinExec) However, it is common for Windows to search in the directory of the initiating program before searching through the Windows system directory. An adversary who finds a program vulnerable to search order hijacking (i.e., a program that does not specify the path to an executable) may take advantage of this vulnerability by creating a program named after the improperly specified program and placing it within the initiating program's directory.\n\nFor example, \"example.exe\" runs \"cmd.exe\" with the command-line argument <code>net user</code>. An adversary may place a program called \"net.exe\" within the same directory as example.exe, \"net.exe\" will be run instead of the Windows system utility net. In addition, if an adversary places a program called \"net.com\" in the same directory as \"net.exe\", then <code>cmd.exe /C net user</code> will execute \"net.com\" instead of \"net.exe\" due to the order of executable extensions defined under PATHEXT. (Citation: MSDN Environment Property)\n\nSearch order hijacking is also a common practice for hijacking DLL loads and is covered in [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1038).",
+            "x_mitre_effective_permissions": [
+                "User",
+                "Administrator",
+                "SYSTEM"
+            ],
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator",
+                "SYSTEM"
+            ]
         }
     ]
 }

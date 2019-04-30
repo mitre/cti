@@ -1,3 +1,7 @@
+### Changes to STIX for April 2019 ATT&CK Content Release
+1. `x_mitre_impact_type` added for enterprise techniques within the `Impact` tactic
+2. Descriptions added to relationships between software/groups
+
 ### Changes to STIX for October 2018 ATT&CK Content Release
 
 1. `x_mitre_platforms` added for enterprise malware/tools

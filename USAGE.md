@@ -58,6 +58,7 @@ ATT&CK Property | ATT&CK MediaWiki | STIX Properties
 **Network Requirements** | `Has network requirements` | `x_mitre_network_requirements`
 **Remote Support** | `Has remote support` | `x_mitre_remote_support`
 **Contributors** | `Has contributor` | `x_mitre_contributors`
+**Impact Type** | `Not available via MediaWiki API` | `x_mitre_impact_type`
 
 
 ### Software

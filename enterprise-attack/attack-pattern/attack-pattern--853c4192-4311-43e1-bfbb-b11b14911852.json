@@ -1,0 +1,93 @@
+{
+    "id": "bundle--5b7b1bc6-2374-4b95-ab54-e2a8fe471035",
+    "type": "bundle",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "external_id": "T1480",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1480"
+                },
+                {
+                    "url": "https://www.cyberscoop.com/kevin-mandia-fireeye-u-s-malware-nice/",
+                    "source_name": "FireEye Kevin Mandia Guardrails",
+                    "description": "Shoorbajee, Z. (2018, June 1). Playing nice? FireEye CEO says U.S. malware is more restrained than adversaries'. Retrieved January 17, 2019."
+                },
+                {
+                    "url": "https://www.schneier.com/academic/paperfiles/paper-clueless-agents.pdf",
+                    "source_name": "EK Clueless Agents",
+                    "description": "Riordan, J., Schneier, B. (1998, June 18). Environmental Key Generation towards Clueless Agents. Retrieved January 18, 2019."
+                },
+                {
+                    "url": "https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2018/03/20134940/kaspersky-lab-gauss.pdf",
+                    "source_name": "Kaspersky Gauss Whitepaper",
+                    "description": "Kaspersky Lab. (2012, August). Gauss: Abnormal Distribution. Retrieved January 17, 2019."
+                },
+                {
+                    "url": "https://www.proofpoint.com/us/threat-insight/post/home-routers-under-attack-malvertising-windows-android-devices",
+                    "source_name": "Proofpoint Router Malvertising",
+                    "description": "Kafeine. (2016, December 13). Home Routers Under Attack via Malvertising on Windows, Android Devices. Retrieved January 16, 2019."
+                },
+                {
+                    "url": "https://pdfs.semanticscholar.org/2721/3d206bc3c1e8c229fb4820b6af09e7f975da.pdf",
+                    "source_name": "EK Impeding Malware Analysis",
+                    "description": "Song, C., et al. (2012, August 7). Impeding Automated Malware Analysis with Environment-sensitive Malware. Retrieved January 18, 2019."
+                },
+                {
+                    "url": "https://www.nccgroup.trust/uk/about-us/newsroom-and-events/blogs/2017/august/smuggling-hta-files-in-internet-exploreredge/",
+                    "source_name": "Environmental Keyed HTA",
+                    "description": "Warren, R. (2017, August 8). Smuggling HTA files in Internet Explorer/Edge. Retrieved January 16, 2019."
+                },
+                {
+                    "url": "https://github.com/Genetic-Malware/Ebowla/blob/master/Eko_2016_Morrow_Pitts_Master.pdf",
+                    "source_name": "Ebowla: Genetic Malware",
+                    "description": "Morrow, T., Pitts, J. (2016, October 28). Genetic Malware: Designing Payloads for Specific Targets. Retrieved January 18, 2019."
+                },
+                {
+                    "url": "https://github.com/nccgroup/demiguise/blob/master/examples/virginkey.js",
+                    "source_name": "Demiguise Guardrail Router Logo",
+                    "description": "Warren, R. (2017, August 2). Demiguise: virginkey.js. Retrieved January 17, 2019."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_contributors": [
+                "Nick Carr, FireEye"
+            ],
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_data_sources": [
+                "Process monitoring"
+            ],
+            "modified": "2019-04-29T14:08:34.665Z",
+            "x_mitre_detection": "Detecting the action of environmental keying may be difficult depending on the implementation. Monitoring for suspicious processes being spawned that gather a variety of system information or perform other forms of [Discovery](https://attack.mitre.org/tactics/TA0007), especially in a short period of time, may aid in detection.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "id": "attack-pattern--853c4192-4311-43e1-bfbb-b11b14911852",
+            "name": "Execution Guardrails",
+            "created": "2019-01-31T02:10:08.261Z",
+            "x_mitre_version": "1.0",
+            "type": "attack-pattern",
+            "description": "Execution guardrails constrain execution or actions based on adversary supplied environment specific conditions that are expected to be present on the target. \n\nGuardrails ensure that a payload only executes against an intended target and reduces collateral damage from an adversary\u2019s campaign.(Citation: FireEye Kevin Mandia Guardrails) Values an adversary can provide about a target system or environment to use as guardrails may include specific network share names, attached physical devices, files, joined Active Directory (AD) domains, and local/external IP addresses.\n\nEnvironmental keying is one type of guardrail that includes cryptographic techniques for deriving encryption/decryption keys from specific types of values in a given computing environment.(Citation: EK Clueless Agents) Values can be derived from target-specific elements and used to generate a decryption key for an encrypted payload. Target-specific values can be derived from specific network shares, physical devices, software/software versions, files, joined AD domains, system time, and local/external IP addresses.(Citation: Kaspersky Gauss Whitepaper)(Citation: Proofpoint Router Malvertising)(Citation: EK Impeding Malware Analysis)(Citation: Environmental Keyed HTA)(Citation: Ebowla: Genetic Malware) By generating the decryption keys from target-specific environmental values, environmental keying can make sandbox detection, anti-virus detection, crowdsourcing of information, and reverse engineering difficult.(Citation: Kaspersky Gauss Whitepaper)(Citation: Ebowla: Genetic Malware) These difficulties can slow down the incident response process and help adversaries hide their tactics, techniques, and procedures (TTPs).\n\nSimilar to [Obfuscated Files or Information](https://attack.mitre.org/techniques/T1027), adversaries may use guardrails and environmental keying to help protect their TTPs and evade detection. For example, environmental keying may be used to deliver an encrypted payload to the target that will use target-specific values to decrypt the payload before execution.(Citation: Kaspersky Gauss Whitepaper)(Citation: EK Impeding Malware Analysis)(Citation: Environmental Keyed HTA)(Citation: Ebowla: Genetic Malware)(Citation: Demiguise Guardrail Router Logo) By utilizing target-specific values to decrypt the payload the adversary can avoid packaging the decryption key with the payload or sending it over a potentially monitored network connection. Depending on the technique for gathering target-specific values, reverse engineering of the encrypted payload can be exceptionally difficult.(Citation: Kaspersky Gauss Whitepaper) In general, guardrails can be used to prevent exposure of capabilities in environments that are not intended to be compromised or operated within. This use of guardrails is distinct from typical [Virtualization/Sandbox Evasion](https://attack.mitre.org/techniques/T1497) where a decision can be made not to further engage because the value conditions specified by the adversary are meant to be target specific and not such that they could occur in any environment.",
+            "x_mitre_defense_bypassed": [
+                "Anti-virus,Host forensic analysis",
+                "Signature-based detection",
+                "Static File Analysis"
+            ]
+        }
+    ]
+}

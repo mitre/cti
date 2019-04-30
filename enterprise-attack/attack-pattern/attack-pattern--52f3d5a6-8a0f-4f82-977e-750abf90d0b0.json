@@ -1,77 +1,68 @@
 {
+    "id": "bundle--623f7bf5-f067-4624-9f8b-5a575c571ad2",
     "type": "bundle",
-    "id": "bundle--584c0c8d-7512-482e-a53f-39ed760ac6ab",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--52f3d5a6-8a0f-4f82-977e-750abf90d0b0",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Extra Window Memory Injection",
-            "description": "Before creating a window, graphical Windows-based processes must prescribe to or register a windows class, which stipulate appearance and behavior (via windows procedures, which are functions that handle input/output of data). (Citation: Microsoft Window Classes) Registration of new windows classes can include a request for up to 40 bytes of extra window memory (EWM) to be appended to the allocated memory of each instance of that class. This EWM is intended to store data specific to that window and has specific application programming interface (API) functions to set and get its value. (Citation: Microsoft GetWindowLong function) (Citation: Microsoft SetWindowLong function)\n\nAlthough small, the EWM is large enough to store a 32-bit pointer and is often used to point to a windows procedure. Malware may possibly utilize this memory location in part of an attack chain that includes writing code to shared sections of the process\u2019s memory, placing a pointer to the code in EWM, then invoking execution by returning execution control to the address in the process\u2019s EWM.\n\nExecution granted through EWM injection may take place in the address space of a separate live process. Similar to [Process Injection](https://attack.mitre.org/techniques/T1055), this may allow access to both the target process's memory and possibly elevated privileges. Writing payloads to shared sections also avoids the use of highly monitored API calls such as WriteProcessMemory and CreateRemoteThread. (Citation: Endgame Process Injection July 2017) More sophisticated malware samples may also potentially bypass protection mechanisms such as data execution prevention (DEP) by triggering a combination of windows procedures and other system functions that will rewrite the malicious payload inside an executable portion of the target process. (Citation: MalwareTech Power Loader Aug 2013) (Citation: WeLiveSecurity Gapz and Redyms Mar 2013)",
             "external_references": [
                 {
-                    "external_id": "T1181",
                     "url": "https://attack.mitre.org/techniques/T1181",
-                    "source_name": "mitre-attack"
+                    "source_name": "mitre-attack",
+                    "external_id": "T1181"
                 },
                 {
                     "url": "https://msdn.microsoft.com/library/windows/desktop/ms633574.aspx",
-                    "description": "Microsoft. (n.d.). About Window Classes. Retrieved December 16, 2017.",
-                    "source_name": "Microsoft Window Classes"
+                    "source_name": "Microsoft Window Classes",
+                    "description": "Microsoft. (n.d.). About Window Classes. Retrieved December 16, 2017."
                 },
                 {
                     "url": "https://msdn.microsoft.com/library/windows/desktop/ms633584.aspx",
-                    "description": "Microsoft. (n.d.). GetWindowLong function. Retrieved December 16, 2017.",
-                    "source_name": "Microsoft GetWindowLong function"
+                    "source_name": "Microsoft GetWindowLong function",
+                    "description": "Microsoft. (n.d.). GetWindowLong function. Retrieved December 16, 2017."
                 },
                 {
                     "url": "https://msdn.microsoft.com/library/windows/desktop/ms633591.aspx",
-                    "description": "Microsoft. (n.d.). SetWindowLong function. Retrieved December 16, 2017.",
-                    "source_name": "Microsoft SetWindowLong function"
+                    "source_name": "Microsoft SetWindowLong function",
+                    "description": "Microsoft. (n.d.). SetWindowLong function. Retrieved December 16, 2017."
                 },
                 {
                     "url": "https://www.malwaretech.com/2013/08/powerloader-injection-something-truly.html",
-                    "description": "MalwareTech. (2013, August 13). PowerLoader Injection \u2013 Something truly amazing. Retrieved December 16, 2017.",
-                    "source_name": "MalwareTech Power Loader Aug 2013"
+                    "source_name": "MalwareTech Power Loader Aug 2013",
+                    "description": "MalwareTech. (2013, August 13). PowerLoader Injection \u2013 Something truly amazing. Retrieved December 16, 2017."
                 },
                 {
                     "url": "https://www.welivesecurity.com/2013/03/19/gapz-and-redyms-droppers-based-on-power-loader-code/",
-                    "description": "Matrosov, A. (2013, March 19). Gapz and Redyms droppers based on Power Loader code. Retrieved December 16, 2017.",
-                    "source_name": "WeLiveSecurity Gapz and Redyms Mar 2013"
+                    "source_name": "WeLiveSecurity Gapz and Redyms Mar 2013",
+                    "description": "Matrosov, A. (2013, March 19). Gapz and Redyms droppers based on Power Loader code. Retrieved December 16, 2017."
                 },
                 {
                     "url": "https://msdn.microsoft.com/library/windows/desktop/ms644953.aspx",
-                    "description": "Microsoft. (n.d.). SendNotifyMessage function. Retrieved December 16, 2017.",
-                    "source_name": "Microsoft SendNotifyMessage function"
+                    "source_name": "Microsoft SendNotifyMessage function",
+                    "description": "Microsoft. (n.d.). SendNotifyMessage function. Retrieved December 16, 2017."
                 },
                 {
                     "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
-                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
-                    "source_name": "Endgame Process Injection July 2017"
+                    "source_name": "Endgame Process Injection July 2017",
+                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017."
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "1.0",
-            "x_mitre_data_sources": [
-                "API monitoring",
-                "Process monitoring"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Anti-virus",
-                "Host intrusion prevention systems",
-                "Data Execution Prevention"
-            ],
-            "x_mitre_detection": "Monitor for API calls related to enumerating and manipulating EWM such as GetWindowLong (Citation: Microsoft GetWindowLong function) and SetWindowLong (Citation: Microsoft SetWindowLong function). Malware associated with this technique have also used SendNotifyMessage (Citation: Microsoft SendNotifyMessage function) to trigger the associated window procedure and eventual malicious injection. (Citation: Endgame Process Injection July 2017)",
             "x_mitre_permissions_required": [
                 "Administrator",
                 "SYSTEM"
             ],
+            "x_mitre_data_sources": [
+                "API monitoring",
+                "Process monitoring"
+            ],
+            "modified": "2018-10-31T13:45:13.024Z",
+            "x_mitre_detection": "Monitor for API calls related to enumerating and manipulating EWM such as GetWindowLong (Citation: Microsoft GetWindowLong function) and SetWindowLong (Citation: Microsoft SetWindowLong function). Malware associated with this technique have also used SendNotifyMessage (Citation: Microsoft SendNotifyMessage function) to trigger the associated window procedure and eventual malicious injection. (Citation: Endgame Process Injection July 2017)",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
                     "phase_name": "defense-evasion",
@@ -82,8 +73,17 @@
                     "kill_chain_name": "mitre-attack"
                 }
             ],
-            "modified": "2018-10-31T13:45:13.024Z",
-            "created": "2018-01-16T16:13:52.465Z"
+            "id": "attack-pattern--52f3d5a6-8a0f-4f82-977e-750abf90d0b0",
+            "name": "Extra Window Memory Injection",
+            "created": "2018-01-16T16:13:52.465Z",
+            "x_mitre_version": "1.0",
+            "type": "attack-pattern",
+            "description": "Before creating a window, graphical Windows-based processes must prescribe to or register a windows class, which stipulate appearance and behavior (via windows procedures, which are functions that handle input/output of data). (Citation: Microsoft Window Classes) Registration of new windows classes can include a request for up to 40 bytes of extra window memory (EWM) to be appended to the allocated memory of each instance of that class. This EWM is intended to store data specific to that window and has specific application programming interface (API) functions to set and get its value. (Citation: Microsoft GetWindowLong function) (Citation: Microsoft SetWindowLong function)\n\nAlthough small, the EWM is large enough to store a 32-bit pointer and is often used to point to a windows procedure. Malware may possibly utilize this memory location in part of an attack chain that includes writing code to shared sections of the process\u2019s memory, placing a pointer to the code in EWM, then invoking execution by returning execution control to the address in the process\u2019s EWM.\n\nExecution granted through EWM injection may take place in the address space of a separate live process. Similar to [Process Injection](https://attack.mitre.org/techniques/T1055), this may allow access to both the target process's memory and possibly elevated privileges. Writing payloads to shared sections also avoids the use of highly monitored API calls such as WriteProcessMemory and CreateRemoteThread. (Citation: Endgame Process Injection July 2017) More sophisticated malware samples may also potentially bypass protection mechanisms such as data execution prevention (DEP) by triggering a combination of windows procedures and other system functions that will rewrite the malicious payload inside an executable portion of the target process. (Citation: MalwareTech Power Loader Aug 2013) (Citation: WeLiveSecurity Gapz and Redyms Mar 2013)",
+            "x_mitre_defense_bypassed": [
+                "Anti-virus",
+                "Host intrusion prevention systems",
+                "Data Execution Prevention"
+            ]
         }
     ]
 }

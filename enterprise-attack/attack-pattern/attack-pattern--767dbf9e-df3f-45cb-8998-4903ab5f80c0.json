@@ -1,0 +1,77 @@
+{
+    "id": "bundle--6ae67109-9e1a-40b7-9af9-a8cbe54cf5b6",
+    "type": "bundle",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "external_id": "T1482",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1482"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc759554(v=ws.10)",
+                    "source_name": "Microsoft Trusts",
+                    "description": "Microsoft. (2009, October 7). Trust Technologies. Retrieved February 14, 2019."
+                },
+                {
+                    "url": "https://adsecurity.org/?p=1588",
+                    "source_name": "AdSecurity Forging Trust Tickets",
+                    "description": "Metcalf, S. (2015, July 15). It\u2019s All About Trust \u2013 Forging Kerberos Trust Tickets to Spoof Access across Active Directory Trusts. Retrieved February 14, 2019."
+                },
+                {
+                    "url": "http://www.harmj0y.net/blog/redteaming/a-guide-to-attacking-domain-trusts/ ",
+                    "source_name": "Harmj0y Domain Trusts",
+                    "description": "Schroeder, W. (2017, October 30). A Guide to Attacking Domain Trusts. Retrieved February 14, 2019."
+                },
+                {
+                    "url": "https://www.microsoft.com/security/blog/2017/05/04/windows-defender-atp-thwarts-operation-wilysupply-software-supply-chain-cyberattack/",
+                    "source_name": "Microsoft Operation Wilysupply",
+                    "description": "Florio, E.. (2017, May 4). Windows Defender ATP thwarts Operation WilySupply software supply chain cyberattack. Retrieved February 14, 2019."
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.activedirectory.domain.getalltrustrelationships?redirectedfrom=MSDN&view=netframework-4.7.2#System_DirectoryServices_ActiveDirectory_Domain_GetAllTrustRelationships",
+                    "source_name": "Microsoft GetAllTrustRelationships",
+                    "description": "Microsoft. (n.d.). Domain.GetAllTrustRelationships Method. Retrieved February 14, 2019."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_contributors": [
+                "Dave Westgard",
+                "Elia Florio, Microsoft",
+                "Mnemonic",
+                "RedHuntLabs (@redhuntlabs)"
+            ],
+            "x_mitre_data_sources": [
+                "PowerShell logs",
+                "API monitoring",
+                "Process command-line parameters",
+                "Process monitoring"
+            ],
+            "modified": "2019-04-29T14:06:06.900Z",
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation but as part of a chain of behavior that could lead to other activities based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information, such as <code>nltest /domain_trusts</code>. Remote access tools with built-in features may interact directly with the Windows API to gather information. Look for the DSEnumerateDomainTrusts() Win32 API call to spot activity associated with [Domain Trust Discovery](https://attack.mitre.org/techniques/T1482).(Citation: Harmj0y Domain Trusts) Information may also be acquired through Windows system management tools such as [PowerShell](https://attack.mitre.org/techniques/T1086). The .NET method GetAllTrustRelationships() can be an indicator of [Domain Trust Discovery](https://attack.mitre.org/techniques/T1482).(Citation: Microsoft GetAllTrustRelationships)\n",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "kill_chain_phases": [
+                {
+                    "phase_name": "discovery",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "id": "attack-pattern--767dbf9e-df3f-45cb-8998-4903ab5f80c0",
+            "name": "Domain Trust Discovery",
+            "created": "2019-02-14T16:15:05.974Z",
+            "x_mitre_version": "1.0",
+            "type": "attack-pattern",
+            "description": "Adversaries may attempt to gather information on domain trust relationships that may be used to identify [Lateral Movement](https://attack.mitre.org/tactics/TA0008) opportunities in Windows multi-domain/forest environments. Domain trusts provide a mechanism for a domain to allow access to resources based on the authentication procedures of another domain.(Citation: Microsoft Trusts) Domain trusts allow the users of the trusted domain to access resources in the trusting domain. The information discovered may help the adversary conduct [SID-History Injection](https://attack.mitre.org/techniques/T1178), [Pass the Ticket](https://attack.mitre.org/techniques/T1097), and [Kerberoasting](https://attack.mitre.org/techniques/T1208).(Citation: AdSecurity Forging Trust Tickets)(Citation: Harmj0y Domain Trusts) Domain trusts can be enumerated using the DSEnumerateDomainTrusts() Win32 API call, .NET methods, and LDAP.(Citation: Harmj0y Domain Trusts) The Windows utility [Nltest](https://attack.mitre.org/software/S0359) is known to be used by adversaries to enumerate domain trusts.(Citation: Microsoft Operation Wilysupply)",
+            "x_mitre_permissions_required": [
+                "User"
+            ]
+        }
+    ]
+}
