@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--ca9feb5a-ffcf-4c3a-a80e-8620b12e0e07",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--5a90e8fa-eff4-44a4-9571-a0f9f0d967d3",
+            "created_by_ref": "identity--a310da54-cad2-443b-8371-36e2df91ab5d",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Server Side Include (SSI) Injection",
+            "description": "An attacker can use Server Side Include (SSI) Injection to send code to a web application that then gets executed by the web server. Doing so enables the attacker to achieve similar results to Cross Site Scripting, viz., arbitrary code execution and information disclosure, albeit on a more limited scale, since the SSI directives are nowhere near as powerful as a full-fledged scripting language. Nonetheless, the attacker can conveniently gain access to sensitive files, such as password files, and execute shell commands.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/101.html",
+                    "external_id": "CAPEC-101"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/97.html",
+                    "external_id": "CWE-97"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html",
+                    "external_id": "CWE-74"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html",
+                    "external_id": "CWE-20"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/713.html",
+                    "external_id": "CWE-713"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--db13c800-5b49-4c0f-b51b-7f0ec4309951"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Consider a website hosted on a server that permits Server Side Includes (SSI), such as Apache with the \"Options Includes\" directive enabled.</xhtml:p>\n               <xhtml:p>Whenever an error occurs, the HTTP Headers along with the entire request are logged, which can then be displayed on a page that allows review of such errors. A malicious user can inject SSI directives in the HTTP Headers of a request designed to create an error.</xhtml:p>\n               <xhtml:p>When these logs are eventually reviewed, the server parses the SSI directives and executes them.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "A web server that supports server side includes and has them enabled",
+                "User controllable input that can carry include directives to the web server"
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack. Determining whether the server supports SSI does not require special tools, and nor does injecting directives that get executed. Spidering tools can make the task of finding and following links easier."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "The attacker needs to be aware of SSI technology, determine the nature of injection and be able to craft input that results in the SSI directives being executed."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High"
+        }
+    ]
+}
