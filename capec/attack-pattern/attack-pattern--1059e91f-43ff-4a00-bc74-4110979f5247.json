@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--2f38aba2-58ba-4f5b-9b01-057709f4401a",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--1059e91f-43ff-4a00-bc74-4110979f5247",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "ICMP Error Message Quoting Probe",
+            "description": "An adversary uses a technique to generate an ICMP Error message (Port Unreachable, Destination Unreachable, Redirect, Source Quench, Time Exceeded, Parameter Problem) from a target and then analyze the amount of data returned or \"Quoted\" from the originating request that generated the ICMP error message. For this purpose \"Port Unreachable\" error messages are often used, as generating them requires the attacker to send a UDP datagram to a closed port on the target. The goal of this analysis to make inferences about the type of operating system or firmware that sent the error message in reply. This is useful for identifying unique characteristics of operating systems because the RFC-1122 expected behavior reads: \"Every ICMP error message includes the Internet header and at least the first 8 data octets of the datagram that triggered the error; more than 8 octets MAY be sent [...].\" This contrasts with RFC-792 expected behavior, which limited the quoted text to 64 bits (8 octets). Given the latitude in the specification the resulting RFC-1122 stack implementations often respond with a high degree of variability in the amount of data quoted in the error message because \"older\" or \"legacy\" stacks may comply with the RFC-792 specification, while other stacks may choose a longer format in accordance with RFC-1122. As a general rule most operating systems or firmware will quote the first 8 bytes of the datagram triggering the error, but some IP stacks will quote more than the first 8 bytes of data.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/329.html",
+                    "external_id": "CAPEC-329"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/200.html",
+                    "external_id": "CWE-200"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Stuart McClure, Joel Scambray, George Kurtz, Hacking Exposed: Network Security Secrets & Solutions (6th Edition), 2009, McGraw Hill",
+                    "external_id": "REF-33"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "J. Postel, RFC792 - Internet Control Messaging Protocol, 1981--09, Defense Advanced Research Projects Agency (DARPA)",
+                    "url": "http://www.faqs.org/rfcs/rfc792.html",
+                    "external_id": "REF-123"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "R. Braden, Ed., RFC1122 - Requirements for Internet Hosts - Communication Layers, 1989--10",
+                    "url": "http://www.faqs.org/rfcs/rfc1122.html",
+                    "external_id": "REF-124"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Ofir Arkin, A Remote Active OS Fingerprinting Tool using ICMP, 2002--04, The Sys-Security Group",
+                    "url": "http://ofirarkin.files.wordpress.com/2008/11/login.pdf",
+                    "external_id": "REF-262"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ],
+                "Authorization": [
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ]
+            },
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "The ability to monitor and interact with network communications.Access to at least one host, and the privileges to interface with the network interface card."
+            ],
+            "x_capec_resources_required": [
+                "A tool capable of sending/receiving UDP datagram packets from a remote system to a closed port and receive an ICMP Error Message Type 3, \"Port Unreachable.."
+            ],
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Low",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

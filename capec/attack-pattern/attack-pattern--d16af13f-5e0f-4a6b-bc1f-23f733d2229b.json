@@ -1,0 +1,68 @@
+{
+    "type": "bundle",
+    "id": "bundle--1ca3b54d-a107-4b3c-ac0e-468c5702f59f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--d16af13f-5e0f-4a6b-bc1f-23f733d2229b",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Redirect Access to Libraries",
+            "description": "An adversary exploits a weakness in the way an application searches for external libraries to manipulate the execution flow to point to an adversary supplied library or code base. This pattern of attack allows the adversary to compromise the application or server via the execution of unauthorized code. An application typically makes calls to functions that are a part of libraries external to the application. These libraries may be part of the operating system or they may be third party libraries. If an adversary can redirect an application's attempts to access these libraries to other libraries that the adversary supplies, the adversary will be able to force the targeted application to execute arbitrary code. This is especially dangerous if the targeted application has enhanced privileges. Access can be redirected through a number of techniques, including the use of symbolic links, search path modification, and relative path manipulation.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/159.html",
+                    "external_id": "CAPEC-159"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/706.html",
+                    "external_id": "CWE-706"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Silvio Cesare, Share Library Call Redirection Via ELF PLT Infection (Issue 56), Phrack Magazine, 2000",
+                    "url": "http://phrack.org/issues/56/7.html",
+                    "external_id": "REF-29"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "OWASP Top 10 (2007), The Open Web Application Security Project (OWASP)",
+                    "url": "https://www.owasp.org/index.php/Top_10_2007-A3",
+                    "external_id": "REF-30"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Bypass Protection Mechanism"
+                ]
+            },
+            "x_capec_example_instances": [
+                "In this example, the attacker using ELF infection that redirects the Procedure Linkage Table (PLT) of an executable allowing redirection to be resident outside of the infected executable. The algorithm at the entry point code is as follows... \u2022 mark the text segment writeable \u2022 save the PLT(GOT) entry \u2022 replace the PLT(GOT) entry with the address of the new lib call The algorithm in the new library call is as follows... \u2022 do the payload of the new lib call \u2022 restore the original PLT(GOT) entry \u2022 call the lib call \u2022 save the PLT(GOT) entry again (if its changed) \u2022 replace the PLT(GOT) entry with the address of the new lib call"
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The target must utilize external libraries and must fail to verify the integrity of these libraries before using them."
+            ],
+            "x_capec_skills_required": {
+                "High": "To reverse engineering the libraries and inject malicious code into the libraries",
+                "Low": "To modify the entries in the configuration file pointing to malicious libraries",
+                "Medium": "To force symlink and timing issues for redirecting access to libraries"
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

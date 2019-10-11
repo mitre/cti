@@ -1,0 +1,41 @@
+{
+    "type": "bundle",
+    "id": "bundle--d5717f40-c052-493c-ab0a-af2bc0a893e2",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--ce75149a-6882-4b07-8841-db9d6a9ec20d",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Fuzzing for garnering other adjacent user/sensitive data",
+            "description": "An attacker who is authorized to send queries to a target sends variants of expected queries in the hope that these modified queries might return information (directly or indirectly through error logs) beyond what the expected set of queries should provide. Many client applications use specific query templates when interacting with a server and often automatically fill in specific fields or attributes. For example, a client that queries an employee database might have templates such that the user only supplies the target's name and the template dictates the fields to be returned (location, position in the company, phone number, etc.). If the server does not verify that the query matches one of the expected templates, an attacker who is allowed to send normal queries could modify their query to try to return additional information. In the above example, additional information might include social security numbers or salaries. Fuzzing techniques involve sending random or malformed messages to a target and monitoring the target's response. In this particular attack, the fuzzing is applied to the format of the expected templates, creating variants that request additional information, exclude limiting clauses, or alter fields that identify the requester in order to subvert access controls. The attacker may not know the names of fields to request or how other modifications will affect the server response, but by attempting multiple plausible variants, they might eventually trigger a server response that divulges sensitive information. Other possible outcomes include server crashes and resource consumption if the unexpected queries cause the server to enter an unstable state or perform excessive computation.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/261.html",
+                    "external_id": "CAPEC-261"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html",
+                    "external_id": "CWE-20"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_prerequisites": [
+                "The server must assume that the queries it receives follow specific templates and/or have fields or attributes that follow specific procedures. The server must process queries that it receives without adequately checking or sanitizing queries to ensure they follow these templates."
+            ],
+            "x_capec_resources_required": [
+                "The attacker must have sufficient privileges to send queries to the targeted server. A normal client might limit the nature of these queries, so the attacker must either have a modified client or their own application which allows them to modify the expected queries."
+            ],
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

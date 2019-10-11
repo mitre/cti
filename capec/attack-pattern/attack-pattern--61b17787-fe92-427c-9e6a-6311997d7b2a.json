@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--46071bbb-e990-4931-a0fc-2f006e3d66bb",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--61b17787-fe92-427c-9e6a-6311997d7b2a",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2017-04-15T00:00:00.000Z",
+            "modified": "2019-09-30T00:00:00.000Z",
+            "name": "Reflected XSS",
+            "description": "This type of attack is a form of Cross-Site Scripting (XSS) where a malicious script is \"reflected\" off a vulnerable web application and then executed by a victim's browser. The process starts with an adversary delivering a malicious script to a victim and convincing the victim to send the script to the vulnerable web application. The most common method of this is through a phishing email where the adversary embeds the malicious script with a URL that the victim then clicks on. In processing the subsequent request, the vulnerable web application incorrectly considers the malicious script as valid input and uses it to creates a reposnse that is then sent back to the victim. To launch a successful Reflected XSS attack, an adversary looks for places where user-input is used directly in the generation of a response. This often involves elements that are not expected to host scripts such as image tags (<img>), or the addition of event attibutes such as onload and onmouseover. These elements are often not subject to the same input validation, output encoding, and other content filtering and checking routines.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/591.html",
+                    "external_id": "CAPEC-591"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/79.html",
+                    "external_id": "CWE-79"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Watchfire Research, XSS vulnerabilities in Google.com, Full Disclosure mailing list archives",
+                    "url": "http://seclists.org/fulldisclosure/2005/Dec/1107",
+                    "external_id": "REF-476"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges (A successful Reflected XSS attack can enable an adversary to elevate their privilege level and access functionality they should not otherwise be allowed to access.)"
+                ],
+                "Authorization": [
+                    "Gain Privileges (A successful Reflected XSS attack can enable an adversary to elevate their privilege level and access functionality they should not otherwise be allowed to access.)"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (A successful Reflected attack can enable an adversary run arbitrary code of their choosing, thus enabling a complete compromise of the application.)"
+                ],
+                "Confidentiality": [
+                    "Read Data (A successful Reflected XSS attack can enable an adversary to exfiltrate sensitive information from the application.)",
+                    "Gain Privileges (A successful Reflected XSS attack can enable an adversary to elevate their privilege level and access functionality they should not otherwise be allowed to access.)",
+                    "Execute Unauthorized Commands (A successful Reflected attack can enable an adversary run arbitrary code of their choosing, thus enabling a complete compromise of the application.)"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (A successful Reflected attack can enable an adversary run arbitrary code of their choosing, thus enabling a complete compromise of the application.)",
+                    "Modify Data (A successful Reflected attack can allow an adversary to tamper with application data.)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Consider a web application that enables or disables some of the fields of a form on the page via the use of a mode parameter provided on the query string.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">http://my.site.com/aform.html?mode=full</xhtml:div>\n               <xhtml:p>The application\u2019s server-side code may want to display this mode value in the HTML page being created to give the users an understanding of what mode they are in. In this example, PHP is used to pull the value from the URL and generate the desired HTML.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><?phpecho 'Mode is: ' . $_GET[\"mode\"];?></xhtml:div>\n               <xhtml:p>Notice how the value provided on the URL is used directly with no input validation performed and no output encoding in place. A maliciously crafted URL can thus be formed such that if a victim clicked on the URL, a malicious script would then be executed by the victim\u2019s browser:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://my.site.com/aform.html?mode=<script>alert('hi');</script></xhtml:div>\n            ",
+                "\n               <xhtml:p>Reflected XSS attacks can take advantage of HTTP headers to compromise a victim. For example, assume a vulnerable web application called \u2018mysite\u2019 dynamically generates a link using an HTTP header such as HTTP_REFERER. Code somewhere in the application could look like:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><?phpecho \"<a href=\"$_SERVER['HTTP_REFERER']\">Test URL</a>\"?></xhtml:div>\n               <xhtml:p>The HTTP_REFERER header is populated with the URI that linked to the currently executing page. A web site can be created and hosted by an adversary that takes advantage of this by adding a reference to the vulnerable web application. By tricking a victim into clicking a link that executes the attacker\u2019s web page, such as:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">\"http://attackerswebsite.com?<script>malicious content</script>\"</xhtml:div>\n               <xhtml:p>The vulnerable web application ('mysite') is now called via the attacker's web site, initiated by the victim's web browser. The HTTP_REFERER header will contain a malicious script, which is embedded into the page by the vulnerable application and served to the victim. The victim\u2019s web browser then executes the injected script, thus compromising the victim\u2019s machine.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "An application that leverages a client-side web browser with scripting enabled.",
+                "An application that fail to adequately sanitize or encode untrusted input."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Requires the ability to write malicious scripts and embed them into HTTP requests."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

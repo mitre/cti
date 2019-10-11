@@ -1,0 +1,64 @@
+{
+    "type": "bundle",
+    "id": "bundle--914c8184-1de7-4e7e-8fa4-4a49dc9143eb",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--ebf4bdc7-73dd-47c4-96e1-1ff471efbcd2",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "XML Schema Poisoning",
+            "description": "An adversary corrupts or modifies the content of XML schema information passed between a client and server for the purpose of undermining the security of the target. XML Schemas provide the structure and content definitions for XML documents. Schema poisoning is the ability to manipulate a schema either by replacing or modifying it to compromise the programs that process documents that use this schema. Possible attacks are denial of service attacks by modifying the schema so that it does not contain required information for subsequent processing. For example, the unaltered schema may require a @name attribute in all submitted documents. If the adversary removes this attribute from the schema then documents created using the new grammar may lack this field, which may cause the processing application to enter an unexpected state or record incomplete data. In addition, manipulation of the data types described in the schema may affect the results of calculations taken by the document reader. For example, a float field could be changed to an int field. Finally, the adversary may change the encoding defined in the schema for certain fields allowing the contents to bypass filters that scan for dangerous strings. For example, the modified schema might us a URL encoding instead of ASCII, and a filter that catches a semicolon (;) might fail to detect its URL encoding (%3B).",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/146.html",
+                    "external_id": "CAPEC-146"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/15.html",
+                    "external_id": "CWE-15"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/472.html",
+                    "external_id": "CWE-472"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Availability": [
+                    "Unreliable Execution (A successful schema poisoning attack can compromise the availability of the target system's service by exhausting its available resources.)",
+                    "Resource Consumption (A successful schema poisoning attack can compromise the availability of the target system's service by exhausting its available resources.)"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>XML Schema Poisoning Attacks can often occur locally due to being embedded within the XML document itself or being located on the host within an improperaly protected file. In these cases, the adversary can simply edit the XML schema without the need for additional privileges. An example of the former can be seen below:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\"><?xml version=\"1.0\"?> <!DOCTYPE contact [ <!ELEMENT contact (name,phone,email,address)> <!ELEMENT name (#PCDATA)> <!ELEMENT phone (#PCDATA)> <!ELEMENT email (#PCDATA)> <!ELEMENT address (#PCDATA)> ]> <note> <name>John Smith</name> <phone>555-1234</phone> <email>jsmith@email.com</email> <address>1 Example Lane</address> </note></capec:Code></xhtml:div>\n               <xhtml:p>If the 'name' attribute is required in all submitted documents and this field is removed by the adversary, the application may enter an unexpected state or record incomplete data. Additionally, if this data is needed to perform additional functions, a Denial of Service (DOS) may occur.</xhtml:p>\n            ",
+                "\n               <xhtml:p>XML Schema Poisoning Attacks can also be executed remotely if the HTTP protocol is being used to transport data. :</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\"><?xml version=\"1.0\"?> <!DOCTYPE contact SYSTEM \"http://example.com/contact.dtd\"[ <note> <name>John Smith</name> <phone>555-1234</phone> <email>jsmith@email.com</email> <address>1 Example Lane</address> </note></capec:Code></xhtml:div>\n               <xhtml:p>The HTTP protocol does not encrypt the traffic it transports, so all communication occurs in plaintext. This traffic can be observed and modified by the adversary during transit to alter the XML schema before it reaches the end user. The adversary can perform a Man-in-the-Middle (MITM) Attack to alter the schema in the same way as the previous example and to acheive the same results.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_prerequisites": [
+                "Some level of access to modify the target schema.",
+                "The schema used by the target application must be improperly secured against unauthorized modification and manipulation."
+            ],
+            "x_capec_resources_required": [
+                "Access to the schema and the knowledge and ability modify it. Ability to replace or redirect access to the modified schema."
+            ],
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

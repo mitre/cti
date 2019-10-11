@@ -1,0 +1,87 @@
+{
+    "type": "bundle",
+    "id": "bundle--2b209051-6b38-4972-9503-a92db2631804",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--39322012-07ba-4bfc-bac7-10891614ee3e",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2017-05-01T00:00:00.000Z",
+            "name": "XSS Through HTTP Headers",
+            "description": "An adversary exploits web applications that generate web content, such as links in a HTML page, based on unvalidated or improperly validated data submitted by other actors. XSS in HTTP Headers attacks target the HTTP headers which are hidden from most users and may not be validated by web applications.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/86.html",
+                    "external_id": "CAPEC-86"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/80.html",
+                    "external_id": "CWE-80"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "OWASP Cheatsheets, The Open Web Application Security Project (OWASP)",
+                    "url": "http://ha.ckers.org/xss.html",
+                    "external_id": "REF-97"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Watchfire Research, XSS vulnerabilities in Google.com, Full Disclosure mailing list archives",
+                    "url": "http://seclists.org/fulldisclosure/2005/Dec/1107",
+                    "external_id": "REF-476"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Read Data",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Utilize a remote style sheet set in the HTTP header for XSS attack. When the attacker is able to point to a remote stylesheet, any of the variables set in that stylesheet are controllable on the client side by the remote attacker. Like most XSS attacks, results vary depending on browser that is used.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\"><META HTTP-EQUIV=\"Link\" Content=\"<http://ha.ckers.org/xss.css>; REL=stylesheet\"></xhtml:div>\n               <xhtml:p>[R.86.2]</xhtml:p>\n            ",
+                "\n               <xhtml:p>Google's 404 redirection script was found vulnerable to this attack vector.</xhtml:p>\n               <xhtml:p>Google's 404 file not found page read</xhtml:p>\n               <xhtml:p>* Response headers: \"Content-Type: text/html; charset=[encoding]\".</xhtml:p>\n               <xhtml:p>* Response body: <META http-equiv=\"Content-Type\" (...) charset=[encoding]/></xhtml:p>\n               <xhtml:p>If the response sends an unexpected encoding type such as UTF-7, then no enforcement is done on the payload and arbitrary XSS code will be transported along with the standard HTTP response. [R.86.3]</xhtml:p>\n            ",
+                "XSS can be used in variety of ways, because it is scripted and executes in a distributed, asynchronous fashion it can create its own vector and openings. For example, the attacker can use XSS to mount a DDoS attack by having series of different computers unknowingly executing requests against a single host."
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Target software must be a client that allows scripting communication from remote hosts."
+            ],
+            "x_capec_resources_required": [
+                "The adversary must have the ability to deploy a custom hostile service for access by targeted clients and the abbility to communicate synchronously or asynchronously with client machine. The adversary must also control a remote site of some sort to redirect client and data to."
+            ],
+            "x_capec_skills_required": {
+                "High": "Exploiting a client side vulnerability to inject malicious scripts into the browser's executable process.",
+                "Low": "To achieve a redirection and use of less trusted source, an attacker can simply edit HTTP Headers that are sent to client machine."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

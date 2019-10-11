@@ -1,0 +1,65 @@
+{
+    "type": "bundle",
+    "id": "bundle--1f4231da-f567-4a55-92f4-34fed307d408",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--634aeef0-13a8-449b-afea-332cbc6095bf",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Embedding Scripts within Scripts",
+            "description": "An attack of this type exploits a programs' vulnerabilities that are brought on by allowing remote hosts to execute scripts. The adversary leverages this capability to execute his/her own script by embedding it within other scripts that the target software is likely to execute. The adversary must have the ability to inject their script into a script that is likely to be executed. If this is done, then the adversary can potentially launch a variety of probes and attacks against the web server's local environment, in many cases the so-called DMZ, back end resources the web server can communicate with, and other hosts. With the proliferation of intermediaries, such as Web App Firewalls, network devices, and even printers having JVMs and Web servers, there are many locales where an attacker can inject malicious scripts. Since this attack pattern defines scripts within scripts, there are likely privileges to execute said attack on the host. These attacks are not solely limited to the server side, client side scripts like Ajax and client side JavaScript can contain malicious scripts as well.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/19.html",
+                    "external_id": "CAPEC-19"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/284.html",
+                    "external_id": "CWE-284"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Ajax applications enable rich functionality for browser based web applications. Applications like Google Maps deliver unprecedented ability to zoom in and out, scroll graphics, and change graphic presentation through Ajax. The security issues that an attacker may exploit in this instance are the relative lack of security features in JavaScript and the various browser's implementation of JavaScript, these security gaps are what XSS and a host of other client side vulnerabilities are based on. While Ajax may not open up new security holes, per se, due to the conversational aspects between client and server of Ajax communication, attacks can be optimized. A single zoom in or zoom out on a graphic in an Ajax application may round trip to the server dozens of times. One of the first steps many attackers take is frequently footprinting an environment, this can include scanning local addresses like 192.*.*.* IP addresses, checking local directories, files, and settings for known vulnerabilities, and so on.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><IMG SRC=javascript:alert('XSS')></xhtml:div>\n               <xhtml:p>The XSS script that is embedded in a given IMG tag can be manipulated to probe a different address on every click of the mouse or other motions that the Ajax application is aware of.</xhtml:p>\n               <xhtml:p>In addition the enumerations allow for the attacker to nest sequential logic in the attacks. While Ajax applications do not open up brand new attack vectors, the existing attack vectors are more than adequate to execute attacks, and now these attacks can be optimized to sequentially execute and enumerate host environments.</xhtml:p>\n            ",
+                "~/.bash_profile and ~/.bashrc are executed in a user's context when a new shell opens or when a user logs in so that their environment is set correctly. ~/.bash_profile is executed for login shells and ~/.bashrc is executed for interactive non-login shells. This means that when a user logs in (via username and password) to the console (either locally or remotely via something like SSH), ~/.bash_profile is executed before the initial command prompt is returned to the user. After that, every time a new shell is opened, ~/.bashrc is executed. This allows users more fine grained control over when they want certain commands executed. These files are meant to be written to by the local user to configure their own environment; however, adversaries can also insert code into these files to gain persistence each time a user logs in or opens a new shell."
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Target software must be able to execute scripts, and also grant the adversary privilege to write/upload scripts."
+            ],
+            "x_capec_skills_required": {
+                "Low": "To load malicious script into open, e.g. world writable directory",
+                "Medium": "Executing remote scripts on host and collecting output"
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

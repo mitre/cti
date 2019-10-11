@@ -1,0 +1,122 @@
+{
+    "type": "bundle",
+    "id": "bundle--c2a68d78-c36b-4878-895d-ecb86ace0e89",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--369d69a3-fb4a-49ac-8999-9b4ecfbf74c6",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Forced Integer Overflow",
+            "description": "This attack forces an integer variable to go out of range. The integer variable is often used as an offset such as size of memory allocation or similarly. The attacker would typically control the value of such variable and try to get it out of range. For instance the integer in question is incremented past the maximum possible value, it may wrap to become a very small, or negative number, therefore providing a very incorrect value which can lead to unexpected behavior. At worst the attacker can execute arbitrary code.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/92.html",
+                    "external_id": "CAPEC-92"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/190.html",
+                    "external_id": "CWE-190"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/128.html",
+                    "external_id": "CWE-128"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/120.html",
+                    "external_id": "CWE-120"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/122.html",
+                    "external_id": "CWE-122"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/196.html",
+                    "external_id": "CWE-196"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/680.html",
+                    "external_id": "CWE-680"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/697.html",
+                    "external_id": "CWE-697"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "J. Viega, G. McGraw, Building Secure Software, 2002, Addison-Wesley",
+                    "external_id": "REF-131"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "The OWASP Application Security Desk Reference, 2009, The Open Web Application Security Project (OWASP)",
+                    "url": "http://www.owasp.org/index.php/Integer_overflow",
+                    "external_id": "REF-546"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Robert C. Seacord, SAMATE - Software Assurance Metrics And Tool Evaluation, 2006--05---22, National Institute of Standards and Technology (NIST)",
+                    "url": "http://samate.nist.gov/SRD/view_testcase.php?tID=1511",
+                    "external_id": "REF-547"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Robert C. Seacord, Secure Coding in C and C++",
+                    "external_id": "REF-548"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Unreliable Execution"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "Integer overflow in the ProcAuWriteElement function in server/dia/audispatch.c in Network Audio System (NAS) before 1.8a SVN 237 allows remote attackers to cause a denial of service (crash) and possibly execute arbitrary code via a large max_samples value. See also: CVE-2007-1544",
+                "\n               <xhtml:p>The following code illustrates an integer overflow. The declaration of total integer as \"unsigned short int\" assumes that the length of the first and second arguments fits in such an integer.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">include <stdlib.h>include <string.h>include <stdio.h>\n                  int main (int argc, char *const *argv){<xhtml:div style=\"margin-left:10px;\">if (argc !=3){<xhtml:div style=\"margin-left:10px;\">printf(\"Usage: prog_name <string1> <string2>\\n\");exit(-1);</xhtml:div>\n                     }unsigned short int total;total = strlen(argv[1])+strlen(argv[2])+1;char * buff = (char *)malloc(total);strcpy(buff, argv[1]);strcpy(buff, argv[2]);</xhtml:div>\n                  }</xhtml:div>\n               <xhtml:p>[R.92.4], [R.92.5]</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The attacker can manipulate the value of an integer variable utilized by the target host.",
+                "The target host does not do proper range checking on the variable before utilizing it.",
+                "When the integer variable is incremented or decremented to an out of range value, it gets a very different value (e.g. very small or negative number)"
+            ],
+            "x_capec_skills_required": {
+                "High": "Exploiting a buffer overflow by injecting malicious code into the stack of a software system or even the heap can require a higher skill level.",
+                "Low": "An attacker can simply overflow an integer by inserting an out of range value."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

@@ -1,0 +1,91 @@
+{
+    "type": "bundle",
+    "id": "bundle--c432cbfe-ddf1-43ef-a89a-f5fff1b43c51",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--89acf77d-723b-43b4-b66d-6eaafed52369",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2017-08-04T00:00:00.000Z",
+            "name": "Command Line Execution through SQL Injection",
+            "description": "An attacker uses standard SQL injection methods to inject data into the command line for execution. This could be done directly through misuse of directives such as MSSQL_xp_cmdshell or indirectly through injection of data into the database that would be interpreted as shell commands. Sometime later, an unscrupulous backend application (or could be part of the functionality of the same application) fetches the injected data stored in the database and uses this data as command line arguments without performing proper validation. The malicious data escapes that data plane by spawning new commands to be executed on the host.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/108.html",
+                    "external_id": "CAPEC-108"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/89.html",
+                    "external_id": "CWE-89"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html",
+                    "external_id": "CWE-74"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html",
+                    "external_id": "CWE-20"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/78.html",
+                    "external_id": "CWE-78"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/114.html",
+                    "external_id": "CWE-114"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Unreliable Execution",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Gain Privileges",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>SQL injection vulnerability in Cacti 0.8.6i and earlier, when register_argc_argv is enabled, allows remote attackers to execute arbitrary SQL commands via the (1) second or (2) third arguments to cmd.php. NOTE: this issue can be leveraged to execute arbitrary commands since the SQL query results are later used in the polling_items array and popen function (CVE-2006-6799).</xhtml:p>\n               <xhtml:p>Reference: http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2006-6799</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_prerequisites": [
+                "The application does not properly validate data before storing in the database",
+                "Backend application implicitly trusts the data stored in the database",
+                "Malicious data is used on the backend as a command line argument"
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "High": "The attacker most likely has to be familiar with the internal functionality of the system to launch this attack. Without that knowledge, there are not many feedback mechanisms to give an attacker the indication of how to perform command injection or whether the attack is succeeding."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

@@ -1,0 +1,65 @@
+{
+    "type": "bundle",
+    "id": "bundle--fbb33cdf-bd08-42d1-beec-9ad6a4cbf86e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--8bd0c718-f126-4397-9754-c5225da7b696",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-09-30T00:00:00.000Z",
+            "name": "Flash Parameter Injection",
+            "description": "An adversary takes advantage of improper data validation to inject malicious global parameters into a Flash file embedded within an HTML document. Flash files can leverage user-submitted data to configure the Flash document and access the embedding HTML document. These 'FlashVars' are most often passed to the Flash file via URL arguments or from the Object or Embed tag within the embedding HTML document. If these FlashVars are not properly sanitized, an adversary may be able to embed malicious content (such as scripts) into the HTML document. The injected parameters can also provide the adversary control over other objects within the Flash file as well as full control over the parent document's DOM model. As such, this is a form of HTTP parameter injection, but the abilities granted to the Flash document (such as access to a page's document model, including associated cookies) make this attack more flexible. Flash Parameter Injection attacks can also preface further attacks such as various forms of Cross-Site Scripting (XSS) attacks in addition to Session Hijacking attacks.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/174.html",
+                    "external_id": "CAPEC-174"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/88.html",
+                    "external_id": "CWE-88"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Yuval B., Ayal Y., Adi S., Flash Parameter Injection: A Security Advisory, 2008--09---24, IBM Rational Security Team",
+                    "url": "http://blog.watchfire.com/FPI.pdf",
+                    "external_id": "REF-40"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Elaborate Ways to Exploit XSS: Flash Parameter Injection (FPI), 2014--04---08, Acunetix",
+                    "url": "https://www.acunetix.com/blog/articles/elaborate-ways-exploit-xss-flash-parameter-injection/",
+                    "external_id": "REF-560"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Authorization": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Other (Information Leakage)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>The following are examples for different types of parameters passed to the Flash file.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">DOM-based Flash parameter injection</xhtml:div>\n                  <xhtml:div style=\"margin-left:10px;\"><object><xhtml:div style=\"margin-left:10px;\"><embed src=\"myFlash.swf\" flashvars=\"location=http://example.com/index.htm#&globalVar=e-v-i-l\"></embed></xhtml:div>\n                     </object></xhtml:div>\n               </xhtml:div>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Passing parameter in an embedded URI</xhtml:div><object type=\"application/x-shockwave-flash\" data=\"myfile.swf?globalVar=e-v-i-l\" ></object></xhtml:div>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Passing parameter in flashvars</xhtml:div><object type=\"application/x-shockwafile.swf\" ve-flash\" data=\"my flashvars=\"language=English&globalVar=e-v-i-l\"></object></xhtml:div>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Persistent Flash Parameter Injection</xhtml:div>\n                  <xhtml:div>\n                     <xhtml:i>// Create a new shared object or read an existing one</xhtml:i>\n                  </xhtml:div>mySharedObject = SharedObject.getLocal(\"flashToLoad\");if (_root.flashfile == undefined) {<xhtml:div style=\"margin-left:10px;\">\n                     <xhtml:div>\n                        <xhtml:i>// Check whether there is a shared object saved</xhtml:i>\n                     </xhtml:div>if (mySharedObject.data.flash == null) {<xhtml:div style=\"margin-left:10px;\">\n                        <xhtml:div>\n                           <xhtml:i>// Set a default</xhtml:i>\n                        </xhtml:div>value _root.flashfile = \"defaultFlash.swf\";</xhtml:div>\n                     } else {<xhtml:div style=\"margin-left:10px;\">\n                        <xhtml:div>\n                           <xhtml:i>// Read the flash file to load from the shared object</xhtml:i>\n                        </xhtml:div>_root.flashfile = mySharedObject.data.flash;</xhtml:div>\n                     }</xhtml:div>\n                  }<xhtml:div>\n                     <xhtml:i>// Store the flash file's name in the shared object</xhtml:i>\n                  </xhtml:div>\n                  mySharedObject.data.flash = _root.flashfile;<xhtml:div>\n                     <xhtml:i>// Load the flash file</xhtml:i>\n                  </xhtml:div>\n                  getURL(_root.flashfile);</xhtml:div>\n               <xhtml:p>If an unsuspecting user is lured by an attacker to click on link like this: http://example.com/vulnerable.swf?flashfile=javascript:alert(document.domain)</xhtml:p>\n               <xhtml:p>The result will be not merely a one-time execution of the JavaScript code in the victim's browser in the context of the domain with the vulnerable Flash file, but every time the Flash is loaded, whether by direct reference or embedded inside the same domain, the JavaScript will be executed again.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_resources_required": [
+                "The attacker must convince the victim to click their crafted link."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "The attacker need inject values into the global parameters to the Flash file and understand the parent HTML document DOM structure. The attacker need be smart enough to convince the victim to his crafted link."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

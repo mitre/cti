@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--5d4c48ac-e10e-46b0-9ccd-346b31e4711f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--138c8405-1295-44b9-b2ed-3b4cd15c2a55",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Creating a Rogue Certification Authority Certificate",
+            "description": "An adversary exploits a weakness in the MD5 hash algorithm (weak collision resistance) to generate a certificate signing request (CSR) that contains collision blocks in the \"to be signed\" part. The adversary specially crafts two different, but valid X.509 certificates that when hashed with the MD5 algorithm would yield the same value. The adversary then sends the CSR for one of the certificates to the Certification Authority which uses the MD5 hashing algorithm. That request is completely valid and the Certificate Authority issues an X.509 certificate to the adversary which is signed with its private key. An adversary then takes that signed blob and inserts it into another X.509 certificate that the attacker generated. Due to the MD5 collision, both certificates, though different, hash to the same value and so the signed blob works just as well in the second certificate. The net effect is that the adversary's second X.509 certificate, which the Certification Authority has never seen, is now signed and validated by that Certification Authority. To make the attack more interesting, the second certificate could be not just a regular certificate, but rather itself a signing certificate. Thus the adversary is able to start their own Certification Authority that is anchored in its root of trust in the legitimate Certification Authority that has signed the attackers' first X.509 certificate. If the original Certificate Authority was accepted by default by browsers, so will now the Certificate Authority set up by the adversary and of course any certificates that it signs. So the adversary is now able to generate any SSL certificates to impersonate any web server, and the user's browser will not issue any warning to the victim. This can be used to compromise HTTPS communications and other types of systems where PKI and X.509 certificates may be used (e.g., VPN, IPSec).",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/459.html",
+                    "external_id": "CAPEC-459"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/327.html",
+                    "external_id": "CWE-327"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/295.html",
+                    "external_id": "CWE-295"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/290.html",
+                    "external_id": "CWE-290"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Alexander Sotirov, Marc Stevens, Jacob Appelbaum, Arjen Lenstra, David Molnar, Dag Arne Osvik, Benne de Weger, MD5 Considered Harmful Today: Creating a Rogue CA Certificate, 2008--12---30, Phreedom.org",
+                    "url": "http://www.phreedom.org/research/rogue-ca/",
+                    "external_id": "REF-395"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_prerequisites": [
+                "Certification Authority is using the MD5 hash function to generate the certificate hash to be signed"
+            ],
+            "x_capec_skills_required": {
+                "High": "An attacker must be able to craft two X.509 certificates that produce the same MD5 hash",
+                "Medium": "Knowledge needed to set up a certification authority"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

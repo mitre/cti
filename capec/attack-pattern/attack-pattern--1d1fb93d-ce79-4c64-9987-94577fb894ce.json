@@ -1,0 +1,78 @@
+{
+    "type": "bundle",
+    "id": "bundle--6d216e07-0cb2-41fb-81fa-d4e5facd6cf3",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--1d1fb93d-ce79-4c64-9987-94577fb894ce",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-09-30T00:00:00.000Z",
+            "name": "Escaping a Sandbox by Calling Signed Code in Another Language",
+            "description": "The attacker may submit a malicious signed code from another language to obtain access to privileges that were not intentionally exposed by the sandbox, thus escaping the sandbox. For instance, Java code cannot perform unsafe operations, such as modifying arbitrary memory locations, due to restrictions placed on it by the Byte code Verifier and the JVM. If allowed, Java code can call directly into native C code, which may perform unsafe operations, such as call system calls and modify arbitrary memory locations on their behalf. To provide isolation, Java does not grant untrusted code with unmediated access to native C code. Instead, the sandboxed code is typically allowed to call some subset of the pre-existing native code that is part of standard libraries.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/237.html",
+                    "external_id": "CAPEC-237"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/693.html",
+                    "external_id": "CWE-693"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "J. Cappos, J. Rasley, J. Samuel, I. Beschastnikh, C. Barsan, A. Krishnamurthy, T. Anderson, Retaining Sandbox Containment Despite Bugs in Privileged Memory-Safe Code, The 17th ACM Conference on Computer and Communications Security (CCS '10), 2010",
+                    "external_id": "REF-91"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Malware Protection Center: Threat Research and Response, 2007, Microsoft Corporation",
+                    "url": "https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=Exploit%3AJava%2FByteVerify.C",
+                    "external_id": "REF-92"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Accountability": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Bypass Protection Mechanism",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges"
+                ],
+                "Non-Repudiation": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "Exploit: Java/ByteVerify.C is a detection of malicious code that attempts to exploit a vulnerability in the Microsoft Virtual Machine (VM). The VM enables Java programs to run on Windows platforms. The Microsoft Java VM is included in most versions of Windows and Internet Explorer. In some versions of the Microsoft VM, a vulnerability exists because of a flaw in the way the ByteCode Verifier checks code when it is initially being loaded by the Microsoft VM. The ByteCode Verifier is a low level process in the Microsoft VM that is responsible for checking the validity of code - or byte code - as it is initially being loaded into the Microsoft VM. Java/ByteVerify.C attempts to download a file named \"msits.exe\", located in the same virtual directory as the Java applet, into the Windows system folder, and with a random file name. It then tries to execute this specific file. This flaw enables attackers to execute arbitrary code on a user's machine such as writing, downloading and executing additional malware. This vulnerability is addressed by update MS03-011, released in 2003."
+            ],
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_prerequisites": [
+                "A framework-based language that supports code signing and sandbox (such as Java, .Net, JavaScript, and Flash) Deployed code that has been signed by its authoring vendor, or a partner"
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "High": "The attacker must have a good knowledge of the platform specific mechanisms of signing and verifying code. Most code signing and verification schemes are based on use of cryptography, the attacker needs to have an understand of these cryptographic operations in good detail."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

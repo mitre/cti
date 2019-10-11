@@ -1,0 +1,99 @@
+{
+    "type": "bundle",
+    "id": "bundle--6f7615d2-e0a1-4fa5-837d-aaa11ebe9aa4",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--fdeff5dd-62e2-43b2-8eea-5e97307cf973",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-09-30T00:00:00.000Z",
+            "name": "Leveraging Race Conditions via Symbolic Links",
+            "description": "This attack leverages the use of symbolic links (Symlinks) in order to write to sensitive files. An attacker can create a Symlink link to a target file not otherwise accessible to her. When the privileged program tries to create a temporary file with the same name as the Symlink link, it will actually write to the target file pointed to by the attackers' Symlink link. If the attacker can insert malicious content in the temporary file she will be writing to the sensitive file by using the Symlink. The race occurs because the system checks if the temporary file exists, then creates the file. The attacker would typically create the Symlink during the interval between the check and the creation of the temporary file.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/27.html",
+                    "external_id": "CAPEC-27"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/367.html",
+                    "external_id": "CWE-367"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/61.html",
+                    "external_id": "CWE-61"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/662.html",
+                    "external_id": "CWE-662"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/689.html",
+                    "external_id": "CWE-689"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/667.html",
+                    "external_id": "CWE-667"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Wikipedia, The Wikimedia Foundation, Inc",
+                    "url": "http://en.wikipedia.org/wiki/Symlink_race",
+                    "external_id": "REF-115"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "mkstemp (IEEE Std 1003.1, 2004 Edition), The Open Group Base Specifications Issue 6",
+                    "url": "http://www.opengroup.org/onlinepubs/009695399/functions/mkstemp.html",
+                    "external_id": "REF-116"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Resource Consumption (Denial of Service)"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>In this naive example, the Unix program foo is setuid. Its function is to retrieve information for the accounts specified by the user. For \"efficiency,\" it sorts the requested accounts into a temporary file (/tmp/foo naturally) before making the queries.</xhtml:p>\n               <xhtml:p>The directory /tmp is world-writable. Malicious user Mallory creates a symbolic link to the file /.rhosts named /tmp/foo. Then, she invokes foo with \"user\" as the requested account. The program creates the (temporary) file /tmp/foo (really creating /.rhosts) and puts the requested account (e.g. \"user password\")) in it. It removes the temporary file (merely removing the symbolic link).</xhtml:p>\n               <xhtml:p>Now the /.rhosts contains + +, which is the incantation necessary to allow anyone to use rlogin to log into the computer as the superuser.</xhtml:p>\n               <xhtml:p>[R.27.1]</xhtml:p>\n            ",
+                "GNU \"ed\" utility (before 0.3) allows local users to overwrite arbitrary files via a symlink attack on temporary files, possibly in the open_sbuf function. See also: CVE-2006-6939",
+                "OpenmosixCollector and OpenMosixView in OpenMosixView 1.5 allow local users to overwrite or delete arbitrary files via a symlink attack on (1) temporary files in the openmosixcollector directory or (2) nodes.tmp. See also: CVE-2005-0894",
+                "Setuid product allows file reading by replacing a file being edited with a symlink to the targeted file, leaking the result in error messages when parsing fails. See also: CVE-2000-0972"
+            ],
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "The attacker is able to create Symlink links on the target host.",
+                "Tainted data from the attacker is used and copied to temporary files.",
+                "The target host does insecure temporary file creation."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "This attack is sophisticated because the attacker has to overcome a few challenges such as creating symlinks on the target host during a precise timing, inserting malicious data in the temporary file and have knowledge about the temporary files created (file name and function which creates them)."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

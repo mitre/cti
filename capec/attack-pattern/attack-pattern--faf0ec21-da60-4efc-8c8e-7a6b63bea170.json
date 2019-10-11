@@ -1,0 +1,90 @@
+{
+    "type": "bundle",
+    "id": "bundle--3fd26b0f-a26b-4b85-a2a1-063f74e375af",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--faf0ec21-da60-4efc-8c8e-7a6b63bea170",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2017-01-09T00:00:00.000Z",
+            "name": "Path Traversal",
+            "description": "An adversary uses path manipulation methods to exploit insufficient input validation of a target to obtain access to data that should be not be retrievable by ordinary well-formed requests. A typical variety of this attack involves specifying a path to a desired file together with dot-dot-slash characters, resulting in the file access API or function traversing out of the intended directory structure and into the root file system. By replacing or modifying the expected path information the access function or API retrieves the file desired by the attacker. These attacks either involve the attacker providing a complete path to a targeted file or using control characters (e.g. path separators (/ or \\) and/or dots (.)) to reach desired directories or files.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/126.html",
+                    "external_id": "CAPEC-126"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/22.html",
+                    "external_id": "CWE-22"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "The OWASP Application Security Desk Reference, 2009, The Open Web Application Security Project (OWASP)",
+                    "url": "https://www.owasp.org/index.php/Path_Traversal",
+                    "external_id": "REF-8"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "OWASP Testing Guide (v3), 2010, The Open Web Application Security Project (OWASP)",
+                    "url": "https://www.owasp.org/index.php/Testing_for_Path_Traversal_(OWASP-AZ-001)",
+                    "external_id": "REF-9"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)",
+                    "url": "http://projects.webappsec.org/w/page/13246952/Path-Traversal",
+                    "external_id": "REF-10"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_alternate_terms": [
+                "Directory Traversal"
+            ],
+            "x_capec_consequences": {
+                "Availability": [
+                    "Execute Unauthorized Commands (The attacker may be able to create or overwrite critical files that are used to execute code, such as programs or libraries.)",
+                    "Unreliable Execution (The attacker may be able to overwrite, delete, or corrupt unexpected critical files such as programs, libraries, or important data. This may prevent the software from working at all and in the case of a protection mechanisms such as authentication, it has the potential to lockout every user of the software.)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (The attacker may be able to create or overwrite critical files that are used to execute code, such as programs or libraries.)",
+                    "Read Data (The attacker may be able read the contents of unexpected files and expose sensitive data. If the targeted file is used for a security mechanism, then the attacker may be able to bypass that mechanism. For example, by reading a password file, the attacker could conduct brute force password guessing attacks in order to break into an account on the system.)"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (The attacker may be able to create or overwrite critical files that are used to execute code, such as programs or libraries.)",
+                    "Modify Data (The attacker may be able to overwrite or create critical files, such as programs, libraries, or important data. If the targeted file is used for a security mechanism, then the attacker may be able to bypass that mechanism. For example, appending a new account at the end of a password file may allow an attacker to bypass authentication.)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>An example of using path traversal to attack some set of resources on a web server is to use a standard HTTP request</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">http://example/../../../../../etc/passwd</xhtml:div>\n               <xhtml:p>From an attacker point of view, this may be sufficient to gain access to the password file on a poorly protected system. If the attacker can list directories of critical resources then read only access is not sufficient to protect the system.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The attacker must be able to control the path that is requested of the target.",
+                "The target must fail to adequately sanitize incoming paths"
+            ],
+            "x_capec_resources_required": [
+                "The ability to manually manipulate path information either directly through a client application relative to the service or application or via a proxy application."
+            ],
+            "x_capec_skills_required": {
+                "Low": "Simple command line attacks or to inject the malicious payload in a web page.",
+                "Medium": "Customizing attacks to bypass non trivial filters in the application."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

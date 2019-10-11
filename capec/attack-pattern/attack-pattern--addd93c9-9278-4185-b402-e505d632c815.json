@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--66732269-5f20-4037-87ed-550701026ff8",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--addd93c9-9278-4185-b402-e505d632c815",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2014-06-23T00:00:00.000Z",
+            "name": "Password Recovery Exploitation",
+            "description": "An attacker may take advantage of the application feature to help users recover their forgotten passwords in order to gain access into the system with the same privileges as the original user. Generally password recovery schemes tend to be weak and insecure. Most of them use only one security question . For instance, mother's maiden name tends to be a fairly popular one. Unfortunately in many cases this information is not very hard to find, especially if the attacker knows the legitimate user. These generic security questions are also re-used across many applications, thus making them even more insecure. An attacker could for instance overhear a coworker talking to a bank representative at the work place and supplying their mother's maiden name for verification purposes. An attacker can then try to log in into one of the victim's accounts, click on \"forgot password\" and there is a good chance that the security question there will be to provide mother's maiden name. A weak password recovery scheme totally undermines the effectiveness of a strong password scheme.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/50.html",
+                    "external_id": "CAPEC-50"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/522.html",
+                    "external_id": "CWE-522"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/640.html",
+                    "external_id": "CWE-640"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/718.html",
+                    "external_id": "CWE-718"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Advisory: Unauthorized password recovery in phpBannerExchange, 2006, RedTeam Pentesting GmbH",
+                    "url": "http://www.redteam-pentesting.de/advisories/rt-sa-2006-005.txt",
+                    "external_id": "REF-429"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "An attacker clicks on the \"forgot password\" and is presented with a single security question. The question is regarding the name of the first dog of the user. The system does not limit the number of attempts to provide the dog's name. An attacker goes through a list of 100 most popular dog names and finds the right name, thus getting the ability to reset the password and access the system.",
+                "\n               <xhtml:p>phpBanner Exchange is a PHP script (using the mySQL database) that facilitates the running of a banner exchange without extensive knowledge of PHP or mySQL.</xhtml:p>\n               <xhtml:p>A SQL injection was discovered in the password recovery module of the system that allows recovering an arbitrary user's password and taking over his account. The problem is due to faulty input sanitization in the phpBannerExchange, specifically the e-mail address of the user which is requested by the password recovery module.</xhtml:p>\n               <xhtml:p>The e-mail address requested by the password recovery module on the resetpw.php page. That e-mail address is validated with the following regular expression:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">if(!eregi(\"^[_a-z0-9-]+(\\.[_a-z0-9-]+)*@[a-z0-9-]+(\\.[a-z0-9-]+)*<xhtml:div style=\"margin-left:10px;\">(\\.[a-z]{2,3})$\", $email)){</xhtml:div>\n               </xhtml:div>\n               <xhtml:p>A bug in the implementation of eregi() allows to pass additional character using a null byte \"\\0\". Since eregi() is implemented in C, the variable $email is treated as a zero-terminated string. All characters following the Null Byte will not be recognized by the regular expression. So an e-mail address can be provided that includes the special character \" ' \" to break the SQL query below (and it will not be rejected by the regular expression because of the null byte trick). So a SQL injection becomes possible:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">$get_info=mysql_query(\"select * from banneruser where<xhtml:div style=\"margin-left:10px;\">email='$email' \");</xhtml:div>\n               </xhtml:div>\n               <xhtml:p>This query will return a non-zero result set even though the email supplied (attacker's email) is not in the database.</xhtml:p>\n               <xhtml:p>Then a new password for the user is generated and sent to the $email address, an e-mail address controlled by the attacker. An attacker can then log in into the system.</xhtml:p>See also: CVE-2006-3013"
+            ],
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "The system allows users to recover their passwords and gain access back into the system.",
+                "Password recovery mechanism has been designed or implemented insecurely.",
+                "Password recovery mechanism relies only on something the user knows and not something the user has.",
+                "No third party intervention is required to use the password recovery mechanism."
+            ],
+            "x_capec_resources_required": [
+                "For a brute force attack one would need a machine with sufficient CPU, RAM and HD."
+            ],
+            "x_capec_skills_required": {
+                "Low": "Brute force attack",
+                "Medium": "Social engineering and more sophisticated technical attacks."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

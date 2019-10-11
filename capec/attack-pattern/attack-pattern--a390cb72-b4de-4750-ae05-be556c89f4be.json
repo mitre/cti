@@ -1,0 +1,91 @@
+{
+    "type": "bundle",
+    "id": "bundle--68e5b999-cbb1-43fd-baaf-9fa850402af3",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--a390cb72-b4de-4750-ae05-be556c89f4be",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Rainbow Table Password Cracking",
+            "description": "An attacker gets access to the database table where hashes of passwords are stored. He then uses a rainbow table of pre-computed hash chains to attempt to look up the original password. Once the original password corresponding to the hash is obtained, the attacker uses the original password to gain access to the system. A password rainbow table stores hash chains for various passwords. A password chain is computed, starting from the original password, P, via a reduce(compression) function R and a hash function H. A recurrence relation exists where Xi+1 = R(H(Xi)), X0 = P. Then the hash chain of length n for the original password P can be formed: X1, X2, X3, ... , Xn-2, Xn-1, Xn, H(Xn). P and H(Xn) are then stored together in the rainbow table. Constructing the rainbow tables takes a very long time and is computationally expensive. A separate table needs to be constructed for the various hash algorithms (e.g. SHA1, MD5, etc.). However, once a rainbow table is computed, it can be very effective in cracking the passwords that have been hashed without the use of salt.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/55.html",
+                    "external_id": "CAPEC-55"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/261.html",
+                    "external_id": "CWE-261"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/521.html",
+                    "external_id": "CWE-521"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/262.html",
+                    "external_id": "CWE-262"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/263.html",
+                    "external_id": "CWE-263"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/693.html",
+                    "external_id": "CWE-693"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/719.html",
+                    "external_id": "CWE-719"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/916.html",
+                    "external_id": "CWE-916"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "BusyBox 1.1.1 does not use a salt when generating passwords, which makes it easier for local users to guess passwords from a stolen password file using techniques such as rainbow tables. See also: CVE-2006-1058"
+            ],
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "Hash of the original password is available to the attacker. For a better chance of success, an attacker should have more than one hash of the original password, and ideally the whole table.",
+                "Salt was not used to create the hash of the original password. Otherwise the rainbow tables have to be re-computed, which is very expensive and will make the attack effectively infeasible (especially if salt was added in iterations).",
+                "The system uses one factor password based authentication."
+            ],
+            "x_capec_resources_required": [
+                "Rainbow table of password hash chains with the right algorithm used. A password cracking tool that leverages this rainbow table will also be required. Hash(es) of the password is required."
+            ],
+            "x_capec_skills_required": {
+                "Low": "A variety of password cracking tools are available that can leverage a rainbow table. The more difficult part is to obtain the password hash(es) in the first place."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

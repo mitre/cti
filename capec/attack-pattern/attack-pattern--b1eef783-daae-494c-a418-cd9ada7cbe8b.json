@@ -1,0 +1,93 @@
+{
+    "type": "bundle",
+    "id": "bundle--bb16ea53-deef-4d3d-b284-9b16e3e84185",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--b1eef783-daae-494c-a418-cd9ada7cbe8b",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2017-04-15T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "DOM-Based XSS",
+            "description": "This type of attack is a form of Cross-Site Scripting (XSS) where a malicious script is inserted into the client-side HTML being parsed by a web browser. Content served by a vulnerable web application includes script code used to manipulate the Document Object Model (DOM). This script code either does not properly validate input, or does not perform proper output encoding, thus creating an opportunity for an adversary to inject a malicious script launch a XSS attack. A key distinction between other XSS attacks and DOM-based attacks is that in other XSS attacks, the malicious script runs when the vulnerable web page is initially loaded, while a DOM-based attack executes sometime after the page loads. Another distinction of DOM-based attacks is that in some cases, the malicious script is never sent to the vulnerable web server at all. An attack like this is guaranteed to bypass any server-side filtering attempts to protect users.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/588.html",
+                    "external_id": "CAPEC-588"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/79.html",
+                    "external_id": "CWE-79"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html",
+                    "external_id": "CWE-20"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/83.html",
+                    "external_id": "CWE-83"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Amit Klein, DOM Based Cross Site Scripting or XSS of the Third Kind",
+                    "url": "http://www.webappsec.org/projects/articles/071105.shtml",
+                    "external_id": "REF-471"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Jakob Kallin, Irene Lobo Valbuena, A comprehensive tutorial on cross-site scripting",
+                    "url": "https://excess-xss.com/",
+                    "external_id": "REF-472"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges (A successful DOM-based XSS attack can enable an adversary to elevate their privilege level and access functionality they should not otherwise be allowed to access.)"
+                ],
+                "Authorization": [
+                    "Gain Privileges (A successful DOM-based XSS attack can enable an adversary to elevate their privilege level and access functionality they should not otherwise be allowed to access.)"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (A successful DOM-based XSS attack can enable an adversary run arbitrary code of their choosing, thus enabling a complete compromise of the application.)"
+                ],
+                "Confidentiality": [
+                    "Read Data (A successful DOM-based XSS attack can enable an adversary to exfiltrate sensitive information from the application.)",
+                    "Gain Privileges (A successful DOM-based XSS attack can enable an adversary to elevate their privilege level and access functionality they should not otherwise be allowed to access.)",
+                    "Execute Unauthorized Commands (A successful DOM-based XSS attack can enable an adversary run arbitrary code of their choosing, thus enabling a complete compromise of the application.)"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (A successful DOM-based XSS attack can enable an adversary run arbitrary code of their choosing, thus enabling a complete compromise of the application.)",
+                    "Modify Data (A successful DOM-based XSS attack can allow an adversary to tamper with application data.)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Consider a web application that enables or disables some of the fields of a form on the page via the use of a mode parameter provided on the query string.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">http://my.site.com/aform.html?mode=full</xhtml:div>\n               <xhtml:p>The application\u2019s client-side code may want to print this mode value to the screen to give the users an understanding of what mode they are in. In this example, JavaScript is used to pull the value from the URL and update the HTML by dynamically manipulating the DOM via a document.write() call.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><script>document.write(\"<p>Mode is: \" + document.location.href.substring(document.location.href.indexOf('mode=') + 5) + \"</p>\");</script></xhtml:div>\n               <xhtml:p>Notice how the value provided on the URL is used directly with no input validation performed and no output encoding in place. A maliciously crafted URL can thus be formed such that if a victim clicked on the URL, a malicious script would then be executed by the victim\u2019s browser:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://my.site.com/aform.html?mode=<script>alert('hi');</script></xhtml:div>\n            ",
+                "\n               <xhtml:p>In some DOM-based attacks, the malicious script never gets sent to the web server at all, thus bypassing any server-side protections that might be in place. Consider the previously used web application that displays the mode value. Since the HTML is being generated dynamically through DOM manipulations, a URL fragment (i.e., the part of a URL after the '#' character) can be used.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://my.site.com/aform.html#mode=<script>alert('hi')</script></xhtml:div>\n               <xhtml:p>In this variation of a DOM-based XSS attack, the malicious script will not be sent to the web server, but will instead be managed by the victim's browser and is still available to the client-side script code.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "An application that leverages a client-side web browser with scripting enabled.",
+                "An application that manipulates the DOM via client-side scripting.",
+                "An application that failS to adequately sanitize or encode untrusted input."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Requires the ability to write scripts of some complexity and to inject it through user controlled fields in the system."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

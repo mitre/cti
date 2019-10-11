@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--fa5cf194-e929-4af3-b6d1-f149016d14b3",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--800f8095-99b6-4bb9-8bc6-8b9727201a2f",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2017-04-15T00:00:00.000Z",
+            "modified": "2019-09-30T00:00:00.000Z",
+            "name": "Stored XSS",
+            "description": "This type of attack is a form of Cross-site Scripting (XSS) where a malicious script is persistenly \"stored\" within the data storage of a vulnerable web application. Initially presented by an adversary to the vulnerable web application, the malicious script is incorrectly considered valid input and is not properly encoded by the web application. A victim is then convinced to use the web application in a way that creates a response that includes the malicious script. This response is subsequently sent to the victim and the malicious script is executed by the victim's browser. To launch a successful Stored XSS attack, an adversary looks for places where stored input data is used in the generation of a response. This often involves elements that are not expected to host scripts such as image tags (<img>), or the addition of event attibutes such as onload and onmouseover. These elements are often not subject to the same input validation, output encoding, and other content filtering and checking routines.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/592.html",
+                    "external_id": "CAPEC-592"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/79.html",
+                    "external_id": "CWE-79"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges (A successful Stored XSS attack can enable an adversary to elevate their privilege level and access functionality they should not otherwise be allowed to access.)"
+                ],
+                "Authorization": [
+                    "Gain Privileges (A successful Stored XSS attack can enable an adversary to elevate their privilege level and access functionality they should not otherwise be allowed to access.)"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (A successful Stored XSS attack can enable an adversary run arbitrary code of their choosing, thus enabling a complete compromise of the application.)"
+                ],
+                "Confidentiality": [
+                    "Read Data (A successful Stored XSS attack can enable an adversary to exfiltrate sensitive information from the application.)",
+                    "Gain Privileges (A successful Stored XSS attack can enable an adversary to elevate their privilege level and access functionality they should not otherwise be allowed to access.)",
+                    "Execute Unauthorized Commands (A successful Stored XSS attack can enable an adversary run arbitrary code of their choosing, thus enabling a complete compromise of the application.)"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (A successful Stored XSS attack can enable an adversary run arbitrary code of their choosing, thus enabling a complete compromise of the application.)",
+                    "Modify Data (A successful Stored XSS attack can allow an adversary to tamper with application data.)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "An adversary determines that a system uses a web based interface for administration. The adversary creates a new user record and supplies a malicious script in the user name field. The user name field is not validated by the system and a new log entry is created detailing the creation of the new user. Later, an administrator reviews the log in the administrative console. When the administrator comes across the new user entry, the browser sees a script and executes it, stealing the administrator's authentication cookie and forwarding it to the adversary. An adversary then uses the received authentication cookie to log in to the system as an administrator, provided that the administrator console can be accessed remotely.",
+                "An online discussion forum allows its members to post HTML-enabled messages, which can also include image tags. An adversary embeds JavaScript in the image tags of his message. The adversary then sends the victim an email advertising free goods and provides a link to the form for how to collect. When the victim visits the forum and reads the message, the malicious script is executed within the victim's browser."
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "An application that leverages a client-side web browser with scripting enabled.",
+                "An application that fails to adequately sanitize or encode untrusted input.",
+                "An application that stores information provided by the user in data storage of some kind."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Requires the ability to write scripts of varying complexity and to inject them through user controlled fields within the application."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

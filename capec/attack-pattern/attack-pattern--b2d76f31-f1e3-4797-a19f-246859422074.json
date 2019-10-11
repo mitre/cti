@@ -1,0 +1,81 @@
+{
+    "type": "bundle",
+    "id": "bundle--6a8846e1-6159-4734-8f8f-ebb5c4128558",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--b2d76f31-f1e3-4797-a19f-246859422074",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Relative Path Traversal",
+            "description": "An attacker exploits a weakness in input validation on the target by supplying a specially constructed path utilizing dot and slash characters for the purpose of obtaining access to arbitrary files or resources. An attacker modifies a known path on the target in order to reach material that is not available through intended channels. These attacks normally involve adding additional path separators (/ or \\) and/or dots (.), or encodings thereof, in various combinations in order to reach parent directories or entirely separate trees of the target's directory structure.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/139.html",
+                    "external_id": "CAPEC-139"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/23.html",
+                    "external_id": "CWE-23"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "The OWASP Application Security Desk Reference, 2009, The Open Web Application Security Project (OWASP)",
+                    "url": "https://www.owasp.org/index.php/Path_Traversal",
+                    "external_id": "REF-8"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "OWASP Testing Guide (v3), 2010, The Open Web Application Security Project (OWASP)",
+                    "url": "https://www.owasp.org/index.php/Testing_for_Path_Traversal_(OWASP-AZ-001)",
+                    "external_id": "REF-9"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)",
+                    "url": "http://projects.webappsec.org/w/page/13246952/Path-Traversal",
+                    "external_id": "REF-10"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Unreliable Execution"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>The attacker uses relative path traversal to access files in the application. This is an example of accessing user's password file.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://www.example.com/getProfile.jsp?filename=../../../../etc/passwd</xhtml:div>\n               <xhtml:p>However, the target application employs regular expressions to make sure no relative path sequences are being passed through the application to the web page. The application would replace all matches from this regex with the empty string.</xhtml:p>\n               <xhtml:p>Then an attacker creates special payloads to bypass this filter:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://www.example.com/getProfile.jsp?filename=%2e%2e/%2e%2e/%2e%2e/%2e%2e /etc/passwd</xhtml:div>\n               <xhtml:p>When the application gets this input string, it will be the desired vector by the attacker.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The target application must accept a string as user input, fail to sanitize combinations of characters in the input that have a special meaning in the context of path navigation, and insert the user-supplied string into path navigation commands."
+            ],
+            "x_capec_skills_required": {
+                "High": "To bypass non trivial filters in the application",
+                "Low": "To inject the malicious payload in a web page"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

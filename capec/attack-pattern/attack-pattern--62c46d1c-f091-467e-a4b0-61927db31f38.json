@@ -1,0 +1,98 @@
+{
+    "type": "bundle",
+    "id": "bundle--b601b3f6-3071-456f-9d1a-3c12c5e23226",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--62c46d1c-f091-467e-a4b0-61927db31f38",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Directory Indexing",
+            "description": "An adversary crafts a request to a target that results in the target listing/indexing the content of a directory as output. One common method of triggering directory contents as output is to construct a request containing a path that terminates in a directory name rather than a file name since many applications are configured to provide a list of the directory's contents when such a request is received. An adversary can use this to explore the directory tree on a target as well as learn the names of files. This can often end up revealing test files, backup files, temporary files, hidden files, configuration files, user accounts, script contents, as well as naming conventions, all of which can be used by an attacker to mount additional attacks.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/127.html",
+                    "external_id": "CAPEC-127"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/424.html",
+                    "external_id": "CWE-424"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/425.html",
+                    "external_id": "CWE-425"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/288.html",
+                    "external_id": "CWE-288"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/285.html",
+                    "external_id": "CWE-285"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/732.html",
+                    "external_id": "CWE-732"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/276.html",
+                    "external_id": "CWE-276"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/693.html",
+                    "external_id": "CWE-693"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/721.html",
+                    "external_id": "CWE-721"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)",
+                    "url": "http://projects.webappsec.org/Directory-Indexing",
+                    "external_id": "REF-11"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Confidentiality": [
+                    "Read Data (Information Leakage)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>The adversary uses directory listing to view sensitive files in the application. This is an example of accessing the backup file. The attack issues a request for http://www.example.com/admin/ and receives the following dynamic directory indexing content in the response: Index of /admin Name Last Modified Size Description backup/ 31-May-2007 08:18 - Apache/ 2.0.55 Server at www.example.com Port 80</xhtml:p>\n               <xhtml:p>The target application does not have direct hyperlink to the \"backup\" directory in the normal html webpage, however the attacker has learned of this directory due to indexing the content. The client then requests the backup directory URL and receives output which has a \"db_dump.php\" file in it. This sensitive data should not be disclosed publicly.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The target must be misconfigured to return a list of a directory's content when it receives a request that ends in a directory name rather than a file name.",
+                "The adversary must be able to control the path that is requested of the target.",
+                "The administrator must have failed to properly configure an ACL or has associated an overly permissive ACL with a particular directory.",
+                "The server version or patch level must not inherently prevent known directory listing attacks from working."
+            ],
+            "x_capec_resources_required": [
+                "Ability to send HTTP requests to a web application."
+            ],
+            "x_capec_skills_required": {
+                "High": "To bypass the access control of the directory of listings",
+                "Low": "To issue the request to URL without given a specific file name"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

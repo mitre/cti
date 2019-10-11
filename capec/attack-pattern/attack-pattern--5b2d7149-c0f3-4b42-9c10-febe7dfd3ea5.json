@@ -1,0 +1,65 @@
+{
+    "type": "bundle",
+    "id": "bundle--c4433037-b355-4de0-be44-454aaba04cf5",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--5b2d7149-c0f3-4b42-9c10-febe7dfd3ea5",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-09-30T00:00:00.000Z",
+            "name": "JSON Hijacking (aka JavaScript Hijacking)",
+            "description": "An attacker targets a system that uses JavaScript Object Notation (JSON) as a transport mechanism between the client and the server (common in Web 2.0 systems using AJAX) to steal possibly confidential information transmitted from the server back to the client inside the JSON object by taking advantage of the loophole in the browser's Same Origin Policy that does not prohibit JavaScript from one website to be included and executed in the context of another website. An attacker gets the victim to visit his or her malicious page that contains a script tag whose source points to the vulnerable system with a URL that requests a response from the server containing a JSON object with possibly confidential information. The malicious page also contains malicious code to capture the JSON object returned by the server before any other processing on it can take place, typically by overriding the JavaScript function used to create new objects. This hook allows the malicious code to get access to the creation of each object and transmit the possibly sensitive contents of the captured JSON object to the attackers' server. There is nothing in the browser's security model to prevent the attackers' malicious JavaScript code (originating from attacker's domain) to set up an environment (as described above) to intercept a JSON object response (coming from the vulnerable target system's domain), read its contents and transmit to the attackers' controlled site. The same origin policy protects the domain object model (DOM), but not the JSON.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/111.html",
+                    "external_id": "CAPEC-111"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/345.html",
+                    "external_id": "CWE-345"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/346.html",
+                    "external_id": "CWE-346"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/352.html",
+                    "external_id": "CWE-352"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Confidentiality": [
+                    "Read Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Gmail service was found to be vulnerable to a JSON Hijacking attack that enabled an attacker to get the contents of the victim's address book. An attacker could send an e-mail to the victim's Gmail account (which ensures that the victim is logged in to Gmail when he or she receives it) with a link to the attackers' malicious site. If the victim clicked on the link, a request (containing the victim's authenticated session cookie) would be sent to the Gmail servers to fetch the victim's address book. This functionality is typically used by the Gmail service to get this data on the fly so that the user can be provided a list of contacts from which to choose the recipient of the e-mail.</xhtml:p>\n               <xhtml:p>When the JSON object with the contacts came back, it was loaded into the JavaScript space via a script tag on the attackers' malicious page. Since the JSON object was never assigned to a local variable (which would have prevented a script from a different domain accessing it due to the browser's same origin policy), another mechanism was needed to access the data that it contained. That mechanism was overwriting the internal array constructor with the attackers' own constructor in order to gain access to the JSON object's contents. These contents could then be transferred to the site controlled by the attacker.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "JSON is used as a transport mechanism between the client and the server",
+                "The target server cannot differentiate real requests from forged requests",
+                "The JSON object returned from the server can be accessed by the attackers' malicious code via a script tag"
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Once this attack pattern is developed and understood, creating an exploit is not very complex.The attacker needs to have knowledge of the URLs that need to be accessed on the target system to request the JSON objects."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

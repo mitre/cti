@@ -1,0 +1,91 @@
+{
+    "type": "bundle",
+    "id": "bundle--60527e2f-5040-41f9-9f21-ed24df665c31",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--1dd1397d-816a-4093-86a6-cf28bb32e486",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Log Injection-Tampering-Forging",
+            "description": "This attack targets the log files of the target host. The attacker injects, manipulates or forges malicious log entries in the log file, allowing him to mislead a log audit, cover traces of attack, or perform other malicious actions. The target host is not properly controlling log access. As a result tainted data is resulting in the log files leading to a failure in accountability, non-repudiation and incident forensics capability.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/93.html",
+                    "external_id": "CAPEC-93"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/117.html",
+                    "external_id": "CWE-117"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/75.html",
+                    "external_id": "CWE-75"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/150.html",
+                    "external_id": "CWE-150"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/713.html",
+                    "external_id": "CWE-713"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "J. Viega, G. McGraw, Building Secure Software, 2002, Addison-Wesley",
+                    "external_id": "REF-131"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "A. Muffet, The night the log was forged",
+                    "url": "http://doc.novsu.ac.ru/oreilly/tcpip/puis/ch10_05.htm",
+                    "external_id": "REF-550"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "The OWASP Application Security Desk Reference, 2009, The Open Web Application Security Project (OWASP)",
+                    "url": "https://www.owasp.org/index.php/Log_Injection",
+                    "external_id": "REF-551"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Fortify Software, SAMATE - Software Assurance Metrics And Tool Evaluation, 2006--06---22, National Institute of Standards and Technology (NIST)",
+                    "url": "https://samate.nist.gov/SRD/view_testcase.php?tID=1579",
+                    "external_id": "REF-552"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "Dave Nielsen and Patrick Breitenbach PayPal Web Services (aka PHP Toolkit) 0.50, and possibly earlier versions, allows remote attackers to enter false payment entries into the log file via HTTP POST requests to ipn_success.php. See also: CVE-2006-0201",
+                "\n               <xhtml:p>If a user submits the string \"twenty-one\" for val, the following entry is logged:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"result\">INFO: Failed to parse val=twenty-one</xhtml:div>\n               <xhtml:p>However, if an attacker submits the string</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">twenty-one%0a%0aINFO:+User+logged+out%3dbadguy</xhtml:div>\n               <xhtml:p>the following entry is logged:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"result\">INFO: Failed to parse val=twenty-oneINFO: User logged out=badguy</xhtml:div>\n               <xhtml:p>Clearly, attackers can use this same mechanism to insert arbitrary log entries.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The target host is logging the action and data of the user.",
+                "The target host insufficiently protects access to the logs or logging mechanisms."
+            ],
+            "x_capec_skills_required": {
+                "Low": "This attack can be as simple as adding extra characters to the logged data (e.g. username). Adding entries is typically easier than removing entries.",
+                "Medium": "A more sophisticated attack can try to defeat the input validation mechanism."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

@@ -1,0 +1,81 @@
+{
+    "type": "bundle",
+    "id": "bundle--55eaa780-1fbe-406d-bafb-9c6a51b85515",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--16a18e0c-676c-4fac-89c7-6a7ab96666f4",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "TCP Xmas Scan",
+            "description": "An adversary uses a TCP XMAS scan to determine if ports are closed on the target machine. This scan type is accomplished by sending TCP segments with the all flags sent in the packet header, generating packets that are illegal based on RFC 793. The RFC 793 expected behavior is that any TCP segment with an out-of-state Flag sent to an open port is discarded, whereas segments with out-of-state flags sent to closed ports should be handled with a RST in response. This behavior should allow an attacker to scan for closed ports by sending certain types of rule-breaking packets (out of sync or disallowed by the TCB) and detect closed ports via RST packets. In addition to its relative speed when compared with other types of scans, its major advantage is its ability to scan through stateless firewall or ACL filters. Such filters are configured to block access to ports usually by preventing SYN packets, thus stopping any attempt to 'build' a connection. XMAS packets, like out-of-state FIN or ACK packets, tend to pass through such devices undetected. Many operating systems, however, do not implement RFC 793 exactly and for this reason FIN scans do not work as expected against these devices. Some operating systems, like Microsoft Windows, send a RST packet in response to any out-of-sync (or malformed) TCP segments received by a listening socket (rather than dropping the packet via RFC 793), thus preventing the adversary from distinguishing between open and closed ports. XMAS scans are limited by the range of platforms against which they work. Additionally, because open ports are inferred via no responses being generated, one cannot distinguish an open port from a filtered port without further analysis. For instance, XMAS scanning a system protected by a stateful firewall may indicate all ports being open. Because of their obvious rule-breaking nature, XMAS scans are flagged by almost all intrusion prevention or intrusion detection systems.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/303.html",
+                    "external_id": "CAPEC-303"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/200.html",
+                    "external_id": "CWE-200"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Stuart McClure, Joel Scambray, George Kurtz, Hacking Exposed: Network Security Secrets & Solutions (6th Edition), 2009, McGraw Hill",
+                    "external_id": "REF-33"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Defense Advanced Research Projects Agency Information Processing Techniques Office, Information Sciences Institute University of Southern California, RFC793 - Transmission Control Protocol, 1981--09, Defense Advanced Research Projects Agency (DARPA)",
+                    "url": "http://www.faqs.org/rfcs/rfc793.html",
+                    "external_id": "REF-128"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Gordon \"Fyodor\" Lyon, Nmap Network Scanning: The Official Nmap Project Guide to Network Discovery and Security Scanning (3rd \"Zero Day\" Edition,), 2008, Insecure.com LLC, ISBN: 978-0-9799587-1-7",
+                    "external_id": "REF-34"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Gordon \"Fyodor\" Lyon, The Art of Port Scanning (Volume: 7, Issue. 51), Phrack Magazine, 1997",
+                    "url": "http://phrack.org/issues/51/11.html",
+                    "external_id": "REF-130"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ],
+                "Authorization": [
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ],
+                "Availability": [
+                    "Unreliable Execution"
+                ],
+                "Confidentiality": [
+                    "Other",
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ]
+            },
+            "x_capec_prerequisites": [
+                "The adversary needs logical access to the target network. XMAS scanning requires the use of raw sockets, and thus cannot be performed from some Windows systems (Windows XP SP 2, for example). On Unix and Linux, raw socket manipulations require root privileges."
+            ],
+            "x_capec_resources_required": [
+                "This attack can be carried out with a network mapper or scanner, or via raw socket programming in a scripting language. Packet injection tools are also useful for this purpose. Depending upon the method used it may be necessary to sniff the network in order to see the response."
+            ],
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Low",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--a64658e2-5436-4b74-9c6b-5476ef877497",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--28aff255-abc8-4392-872c-61f78d4fe55b",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "XSS Through HTTP Query Strings",
+            "description": "An adversary embeds malicious script code in the parameters of an HTTP query string and convinces a victim to submit the HTTP request that contains the query string to a vulnerable web application. The web application then procedes to use the values parameters without properly validation them first and generates the HTML code that will be executed by the victim's browser.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/32.html",
+                    "external_id": "CAPEC-32"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/80.html",
+                    "external_id": "CWE-80"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "http://user:host@example.com:8080/oradb<script>alert('Hi')</script>",
+                "\n               <xhtml:p>Web applications that accept name value pairs in a HTTP Query string are inherently at risk to any value (or name for that matter) that an attacker would like to enter in the query string. This can be done manually via web browser or trivially scripted to post the query string to multiple sites. In the latter case, in the instance of many sites using similar infrastructure with predictable http queries being accepted and operated on (such as blogging software, Google applications, and so on), a single malicious payload can be scripted to target a wide variety of sites.</xhtml:p>\n               <xhtml:p>Web 2.0 type sites like Technorati and del.icio.us rely on user generated content like tags to build http links that are displayed to other users. del.icio.us allows users to identify sites, tag them with metadata and provide URL, descriptions and more data. This data is then echoed back to any other web browser that is interested in the link. If the data is not validated by the del.icio.us site properly then an arbitrary code can be added into the standard http string sent to del.icio.us by the attacker, for example formatted as normal content with a URL and description and tagged as Java, and available to be clicked on (and executed by) any user browsing for Java content that clicks on this trojaned content.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Target client software must allow scripting such as JavaScript. Server software must allow display of remote generated HTML without sufficient input or output validation."
+            ],
+            "x_capec_resources_required": [
+                "Ability to send HTTP post to scripting host and collect output"
+            ],
+            "x_capec_skills_required": {
+                "High": "Exploiting any information gathered by HTTP Query on script host",
+                "Low": "To place malicious payload on server via HTTP"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

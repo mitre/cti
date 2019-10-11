@@ -1,0 +1,124 @@
+{
+    "type": "bundle",
+    "id": "bundle--e46a2664-f25d-4c0c-8ad9-9f5b017ea884",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--dbe3513a-5527-4aaf-a463-ead5eae2967f",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Using Leading 'Ghost' Character Sequences to Bypass Input Filters",
+            "description": "Some APIs will strip certain leading characters from a string of parameters. An adversary can intentionally introduce leading \"ghost\" characters (extra characters that don't affect the validity of the request at the API layer) that enable the input to pass the filters and therefore process the adversary's input. This occurs when the targeted API will accept input data in several syntactic forms and interpret it in the equivalent semantic way, while the filter does not take into account the full spectrum of the syntactic forms acceptable to the targeted API.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/3.html",
+                    "external_id": "CAPEC-3"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/173.html",
+                    "external_id": "CWE-173"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/41.html",
+                    "external_id": "CWE-41"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/172.html",
+                    "external_id": "CWE-172"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/171.html",
+                    "external_id": "CWE-171"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/179.html",
+                    "external_id": "CWE-179"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/180.html",
+                    "external_id": "CWE-180"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/181.html",
+                    "external_id": "CWE-181"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/183.html",
+                    "external_id": "CWE-183"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/184.html",
+                    "external_id": "CWE-184"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html",
+                    "external_id": "CWE-20"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html",
+                    "external_id": "CWE-74"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/697.html",
+                    "external_id": "CWE-697"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/707.html",
+                    "external_id": "CWE-707"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Alternate Encoding with Ghost Characters in FTP and Web Servers</xhtml:p>\n               <xhtml:p>Some web and FTP servers fail to detect prohibited upward directory traversals if the user-supplied pathname contains extra characters such as an extra leading dot. For example, a program that will disallow access to the pathname \"../test.txt\" may erroneously allow access to that file if the pathname is specified as \".../test.txt\". This attack succeeds because 1) the input validation logic fails to detect the triple-dot as a directory traversal attempt (since it isn't dot-dot), 2) some part of the input processing decided to strip off the \"extra\" dot, leaving the dot-dot behind.</xhtml:p>\n               <xhtml:p>Using the file system API as the target, the following strings are all equivalent to many programs:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">.../../../test.txt............/../../test.txt..?/../../test.txt..????????/../../test.txt../test.txt</xhtml:div>\n               <xhtml:p>As you can see, there are many ways to make a semantically equivalent request. All these strings ultimately result in a request for the file ../test.txt.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "The targeted API must ignore the leading ghost characters that are used to get past the filters for the semantics to be the same."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "The ability to make an API request, and knowledge of \"ghost\" characters that will not be filtered by any input validation. These \"ghost\" characters must be known to not affect the way in which the request will be interpreted."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

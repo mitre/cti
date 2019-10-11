@@ -1,0 +1,85 @@
+{
+    "type": "bundle",
+    "id": "bundle--920f50e4-690d-4998-9ab2-c44bebd479ed",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--7cb5458d-b646-4a25-ad0a-4c3fabd70a65",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Symlink Attack",
+            "description": "An attacker positions a symbolic link in such a manner that the targeted user or application accesses the link's endpoint, assuming that it is accessing a file with the link's name. The endpoint file may be either output or input. If the file is output, the result is that the endpoint is modified, instead of a file at the intended location. Modifications to the endpoint file may include appending, overwriting, corrupting, changing permissions, or other modifications. In some variants of this attack the attacker may be able to control the change to a file while in other cases they cannot. The former is especially damaging since the attacker may be able to grant themselves increased privileges or insert false information, but the latter can also be damaging as it can expose sensitive information or corrupt or destroy vital system or application files. Alternatively, the endpoint file may serve as input to the targeted application. This can be used to feed malformed input into the target or to cause the target to process different information, possibly allowing the attacker to control the actions of the target or to cause the target to expose information to the attacker. Moreover, the actions taken on the endpoint file are undertaken with the permissions of the targeted user or application, which may exceed the permissions that the attacker would normally have.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/132.html",
+                    "external_id": "CAPEC-132"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/59.html",
+                    "external_id": "CWE-59"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Shaun Colley, Crafting Symlinks for Fun and Profit",
+                    "url": "http://www.infosecwriters.com/texts.php?op=display&id=159",
+                    "external_id": "REF-13"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Accountability": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges",
+                    "Bypass Protection Mechanism"
+                ],
+                "Availability": [
+                    "Unreliable Execution"
+                ],
+                "Confidentiality": [
+                    "Other (Information Leakage)",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Modify Data"
+                ],
+                "Non-Repudiation": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>The attacker creates a symlink with the \"same\" name as the file which the application is intending to write to. The application will write to the file- \"causing the data to be written where the symlink is pointing\". An attack like this can be demonstrated as follows:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">root# vulprog myFile<xhtml:div>\n                     <xhtml:i>{...program does some processing...]</xhtml:i>\n                  </xhtml:div>\n                  attacker# ln \u2013s /etc/nologin myFile<xhtml:div>\n                     <xhtml:i>[...program writes to 'myFile', which points to /etc/nologin...]</xhtml:i>\n                  </xhtml:div>\n               </xhtml:div>\n               <xhtml:p>In the above example, the root user ran a program with poorly written file handling routines, providing the filename \"myFile\" to vulnprog for the relevant data to be written to. However, the attacker happened to be looking over the shoulder of \"root\" at the time, and created a link from myFile to /etc/nologin. The attack would make no user be able to login.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_prerequisites": [
+                "The targeted application must perform the desired activities on a file without checking whether the file is a symbolic link or not. The attacker must be able to predict the name of the file the target application is modifying and be able to create a new symbolic link where that file would appear."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack. The only requirement is the ability to create the necessary symbolic link."
+            ],
+            "x_capec_skills_required": {
+                "High": "To identify the files and create the symlinks during the file operation time window",
+                "Low": "To create symlinks"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

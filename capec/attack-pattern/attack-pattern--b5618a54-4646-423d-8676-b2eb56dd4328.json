@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--903b794b-8517-4bcc-9052-35833b400a60",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--b5618a54-4646-423d-8676-b2eb56dd4328",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Fuzzing and observing application log data/errors for application mapping",
+            "description": "An attacker sends random, malformed, or otherwise unexpected messages to a target application and observes the application's log or error messages returned. Fuzzing techniques involve sending random or malformed messages to a target and monitoring the target's response. The attacker does not initially know how a target will respond to individual messages but by attempting a large number of message variants they may find a variant that trigger's desired behavior. In this attack, the purpose of the fuzzing is to observe the application's log and error messages, although fuzzing a target can also sometimes cause the target to enter an unstable state, causing a crash. By observing logs and error messages, the attacker can learn details about the configuration of the target application and might be able to cause the target to disclose sensitive information.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/215.html",
+                    "external_id": "CAPEC-215"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/209.html",
+                    "external_id": "CWE-209"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/532.html",
+                    "external_id": "CWE-532"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Confidentiality": [
+                    "Other (Information Leakage)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>The following code generates an error message that leaks the full pathname of the configuration file.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">$ConfigDir = \"/home/myprog/config\";$uname = GetUserInput(\"username\");ExitError(\"Bad hacker!\") if ($uname !~ /^\\w+$/);$file = \"$ConfigDir/$uname.txt\";if (! (-e $file)) { ExitError(\"Error: $file does not exist\"); }...</xhtml:div>\n               <xhtml:p>If this code is running on a server, such as a web application, then the person making the request should not know what the full pathname of the configuration directory is. By submitting a username that does not produce a $file that exists, an attacker could get this pathname. It could then be used to exploit path traversal or symbolic link following problems that may exist elsewhere in the application.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The target application must fail to sanitize incoming messages adequately before processing."
+            ],
+            "x_capec_resources_required": [
+                "Fuzzing tools, which automatically generate and send message variants, are necessary for this attack. The attacker must have sufficient access to send messages to the target. The attacker must also have the ability to observe the target application's log and/or error messages in order to collect information about the target."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Although fuzzing parameters is not difficult, and often possible with automated fuzzing tools, interpreting the error conditions and modifying the parameters so as to move further in the process of mapping the application requires detailed knowledge of target platform, the languages and packages used as well as software design."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Low",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

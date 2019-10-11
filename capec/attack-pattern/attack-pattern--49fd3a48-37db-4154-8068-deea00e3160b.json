@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--0ab4871c-5d20-4c08-b5f6-be78d0815472",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--49fd3a48-37db-4154-8068-deea00e3160b",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-09-30T00:00:00.000Z",
+            "name": "TCP ACK Ping",
+            "description": "An adversary sends a TCP segment with the ACK flag set to a remote host for the purpose of determining if the host is alive. This is one of several TCP 'ping' types. The RFC 793 expected behavior for a service is to respond with a RST 'reset' packet to any unsolicited ACK segment that is not part of an existing connection. So by sending an ACK segment to a port, the adversary can identify that the host is alive by looking for a RST packet. Typically, a remote server will respond with a RST regardless of whether a port is open or closed. In this way, TCP ACK pings cannot discover the state of a remote port because the behavior is the same in either case. The firewall will look up the ACK packet in its state-table and discard the segment because it does not correspond to any active connection. A TCP ACK Ping can be used to discover if a host is alive via RST response packets sent from the host.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/297.html",
+                    "external_id": "CAPEC-297"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/200.html",
+                    "external_id": "CWE-200"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Stuart McClure, Joel Scambray, George Kurtz, Hacking Exposed: Network Security Secrets & Solutions (6th Edition), 2009, McGraw Hill",
+                    "external_id": "REF-33"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Defense Advanced Research Projects Agency Information Processing Techniques Office, Information Sciences Institute University of Southern California, RFC793 - Transmission Control Protocol, 1981--09, Defense Advanced Research Projects Agency (DARPA)",
+                    "url": "http://www.faqs.org/rfcs/rfc793.html",
+                    "external_id": "REF-128"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Gordon \"Fyodor\" Lyon, Nmap Network Scanning: The Official Nmap Project Guide to Network Discovery and Security Scanning (3rd \"Zero Day\" Edition,), 2008, Insecure.com LLC, ISBN: 978-0-9799587-1-7",
+                    "external_id": "REF-34"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Mark Wolfgang, Host Discovery with Nmap, 2002--11",
+                    "url": "http://nmap.org/docs/discovery.pdf",
+                    "external_id": "REF-125"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ],
+                "Authorization": [
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ],
+                "Confidentiality": [
+                    "Other",
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ]
+            },
+            "x_capec_prerequisites": [
+                "The ability to send an ACK packet to a remote host and identify the response. Creating the ACK packet without building a full connection requires the use of raw sockets. As a result, it is not possible to send a TCP ACK ping from some systems (Windows XP SP 2) without the use of third-party packet drivers like Winpcap. On other systems (BSD, Linux) administrative privileges are required in order to write to the raw socket.",
+                "The target must employ a stateless firewall that lacks a rule set that rejects unsolicited ACK packets.",
+                "The adversary requires the ability to craft custom TCP ACK segments for use during network reconnaissance. Sending an ACK ping requires the ability to access \"raw sockets\" in order to create the packets with direct access to the packet header."
+            ],
+            "x_capec_resources_required": [
+                "ACK scanning can be performed via the use of a port scanner or by raw socket manipulation using a scripting or programming language. Packet injection tools are also useful for this purpose. Depending upon the technique used it may also be necessary to sniff the network in order to see the response."
+            ],
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Low",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

@@ -1,0 +1,73 @@
+{
+    "type": "bundle",
+    "id": "bundle--88d04540-8863-4ce7-a89b-97c0b11d5e40",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--74a4fb36-83cb-4851-b09c-370f1a408523",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Cause Web Server Misclassification",
+            "description": "An attack of this type exploits a Web server's decision to take action based on filename or file extension. Because different file types are handled by different server processes, misclassification may force the Web server to take unexpected action, or expected actions in an unexpected sequence. This may cause the server to exhaust resources, supply debug or system data to the attacker, or bind an attacker to a remote process. This type of vulnerability has been found in many widely used servers including IIS, Lotus Domino, and Orion. The attacker's job in this case is straightforward, standard communication protocols and methods are used and are generally appended with malicious information at the tail end of an otherwise legitimate request. The attack payload varies, but it could be special characters like a period or simply appending a tag that has a special meaning for operations on the server side like .jsp for a java application server. The essence of this attack is that the attacker deceives the server into executing functionality based on the name of the request, i.e. login.jsp, not the contents.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/11.html",
+                    "external_id": "CAPEC-11"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/430.html",
+                    "external_id": "CWE-430"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Orion Application Server JSP Source Disclosure Vulnerability (Bugtraq ID: 17204), SecurityFocus",
+                    "url": "http://www.securityfocus.com/bid/17204/info",
+                    "external_id": "REF-6"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>J2EE application servers are supposed to execute Java Server Pages (JSP). There have been disclosure issues relating to Orion Application Server, where an attacker that appends either a period (.) or space characters to the end of a legitimate Http request, then the server displays the full source code in the attackers' web browser.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://victim.site/login.jsp.</xhtml:div>\n               <xhtml:p>Since remote data and directory access may be accessed directly from the JSP, this is a potentially very serious issue.</xhtml:p>\n               <xhtml:p>[R.11.2]</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "Web server software must rely on file name or file extension for processing.",
+                "The attacker must be able to make HTTP requests to the web server."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Low": "To modify file name or file extension",
+                "Medium": "To use misclassification to force the Web server to disclose configuration information, source, or binary data"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

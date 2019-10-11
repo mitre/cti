@@ -1,0 +1,74 @@
+{
+    "type": "bundle",
+    "id": "bundle--f4ba1706-7432-4690-87fa-cc6d020ede2e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--2e603682-c08c-4af1-8e06-329dc8bbe4b4",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Leveraging/Manipulating Configuration File Search Paths",
+            "description": "This pattern of attack sees an adversary load a malicious resource into a program's standard path so that when a known command is executed then the system instead executes the malicious component. The adversary can either modify the search path a program uses, like a PATH variable or classpath, or they can manipulate resources on the path to point to their malicious components. J2EE applications and other component based applications that are built from multiple binaries can have very long list of dependencies to execute. If one of these libraries and/or references is controllable by the attacker then application controls can be circumvented by the attacker.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/38.html",
+                    "external_id": "CAPEC-38"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/426.html",
+                    "external_id": "CWE-426"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/427.html",
+                    "external_id": "CWE-427"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Another method is to redirect commands by aliasing one legitimate command to another to create unexpected results. the Unix command \"rm\" could be aliased to \"mv\" and move all files the victim thinks they are deleting to a directory the attacker controls. In a Unix shell .profile setting</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">alias rm=mv /usr/home/attacker</xhtml:div>\n               <xhtml:p>In this case the attacker retains a copy of all the files the victim attempts to remove.</xhtml:p>\n            ",
+                "\n               <xhtml:p>A standard UNIX path looks similar to this</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin</xhtml:div>\n               <xhtml:p>If the attacker modifies the path variable to point to a locale that includes malicious resources then the user unwittingly can execute commands on the attackers' behalf:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">/evildir/bin:/sbin:/usr/bin:/usr/local/bin:/usr/sbin</xhtml:div>\n               <xhtml:p>This is a form of usurping control of the program and the attack can be done on the classpath, database resources, or any other resources built from compound parts. At runtime detection and blocking of this attack is nearly impossible, because the configuration allows execution.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The attacker must be able to write to redirect search paths on the victim host."
+            ],
+            "x_capec_skills_required": {
+                "Low": "To identify and execute against an over-privileged system interface"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

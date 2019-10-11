@@ -1,0 +1,78 @@
+{
+    "type": "bundle",
+    "id": "bundle--f175099f-67fc-44d0-95fa-8748a9dcfbf0",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--25aafa9d-84f2-4f9d-a19e-280e20bcd16c",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-09-30T00:00:00.000Z",
+            "name": "Timestamp Request",
+            "description": "This pattern of attack leverages standard requests to learn the exact time associated with a target system. An adversary may be able to use the timestamp returned from the target to attack time-based security algorithms, such as random number generators, or time-based authentication mechanisms.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/295.html",
+                    "external_id": "CAPEC-295"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/200.html",
+                    "external_id": "CWE-200"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Stuart McClure, Joel Scambray, George Kurtz, Hacking Exposed: Network Security Secrets & Solutions (6th Edition), 2009, McGraw Hill",
+                    "external_id": "REF-33"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "J. Postel, RFC792 - Internet Control Messaging Protocol, 1981--09, Defense Advanced Research Projects Agency (DARPA)",
+                    "url": "http://www.faqs.org/rfcs/rfc792.html",
+                    "external_id": "REF-123"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "R. Braden, Ed., RFC1122 - Requirements for Internet Hosts - Communication Layers, 1989--10",
+                    "url": "http://www.faqs.org/rfcs/rfc1122.html",
+                    "external_id": "REF-124"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Mark Wolfgang, Host Discovery with Nmap, 2002--11",
+                    "url": "http://nmap.org/docs/discovery.pdf",
+                    "external_id": "REF-125"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Gordon \"Fyodor\" Lyon, Nmap Network Scanning: The Official Nmap Project Guide to Network Discovery and Security Scanning (3rd \"Zero Day\" Edition), 2008, Insecure.com LLC, ISBN: 978-0-9799587-1-7",
+                    "external_id": "REF-147"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Confidentiality": [
+                    "Other"
+                ]
+            },
+            "x_capec_example_instances": [
+                "An adversary sends an ICMP type 13 Timestamp Request to determine the time as recorded by a remote target. Timestamp Replies, ICMP Type 14, usually return a value in Greenwich Mean Time. An adversary can attempt to use an ICMP Timestamp requests to 'ping' a remote system to see if is alive. Additionally, because these types of messages are rare they are easily spotted by intrusion detection systems, many ICMP scanning tools support IP spoofing to help conceal the origin of the actual request among a storm of similar ICMP messages. It is a common practice for border firewalls and gateways to be configured to block ingress ICMP type 13 and egress ICMP type 14 messages.",
+                "An adversary may gather the system time or time zone from a local or remote system. This information may be gathered in a number of ways, such as with Net on Windows by performing net time \\\\hostname to gather the system time on a remote system. The victim's time zone may also be inferred from the current system time or gathered by using w32tm /tz. The information could be useful for performing other techniques, such as executing a file with a Scheduled Task, or to discover locality information based on time zone to assist in victim targeting"
+            ],
+            "x_capec_prerequisites": [
+                "The ability to send a timestamp request to a remote target and receive a response."
+            ],
+            "x_capec_resources_required": [
+                "Scanners or utilities that provide the ability to send custom ICMP queries."
+            ],
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Low",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

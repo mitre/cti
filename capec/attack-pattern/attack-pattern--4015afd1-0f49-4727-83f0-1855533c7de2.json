@@ -1,0 +1,78 @@
+{
+    "type": "bundle",
+    "id": "bundle--9ec23938-a027-4af2-aa5f-894f5f06f73b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--4015afd1-0f49-4727-83f0-1855533c7de2",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "TCP ACK Scan",
+            "description": "An adversary uses TCP ACK segments to gather information about firewall or ACL configuration. The purpose of this type of scan is to discover information about filter configurations rather than port state. This type of scanning is rarely useful alone, but when combined with SYN scanning, gives a more complete picture of the type of firewall rules that are present. When a TCP ACK segment is sent to a closed port, or sent out-of-sync to a listening port, the RFC 793 expected behavior is for the device to respond with a RST. Getting RSTs back in response to a ACK scan gives the attacker useful information that can be used to infer the type of firewall present. Stateful firewalls will discard out-of-sync ACK packets, leading to no response. When this occurs the port is marked as filtered. When RSTs are received in response, the ports are marked as unfiltered, as the ACK packets solicited the expected behavior from a port. When combined with SYN techniques an attacker can gain a more complete picture of which types of packets get through to a host and thereby map out its firewall rule-set. ACK scanning, when combined with SYN scanning, also allows the adversary to analyze whether a firewall is stateful or non-stateful. If a SYN solicits a SYN/ACK or a RST and an ACK solicits a RST, the port is unfiltered by any firewall type. If a SYN solicits a SYN/ACK, but an ACK generates no response, the port is statefully filtered. When a SYN generates neither a SYN/ACK or a RST, but an ACK generates a RST, the port is statefully filtered. When neither SYN nor ACK generates any response, the port is blocked by a specific firewall rule, which can occur via any type of firewall. TCP ACK Scans are somewhat faster and more stealthy than other types of scans but often requires rather sophisticated analysis by an experienced person. A skilled adversary may use this method to map out firewall rules, but the results of ACK scanning will be less useful to a novice.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/305.html",
+                    "external_id": "CAPEC-305"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/200.html",
+                    "external_id": "CWE-200"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Stuart McClure, Joel Scambray, George Kurtz, Hacking Exposed: Network Security Secrets & Solutions (6th Edition), 2009, McGraw Hill",
+                    "external_id": "REF-33"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Defense Advanced Research Projects Agency Information Processing Techniques Office, Information Sciences Institute University of Southern California, RFC793 - Transmission Control Protocol, 1981--09, Defense Advanced Research Projects Agency (DARPA)",
+                    "url": "http://www.faqs.org/rfcs/rfc793.html",
+                    "external_id": "REF-128"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Gordon \"Fyodor\" Lyon, Nmap Network Scanning: The Official Nmap Project Guide to Network Discovery and Security Scanning (3rd \"Zero Day\" Edition,), 2008, Insecure.com LLC, ISBN: 978-0-9799587-1-7",
+                    "external_id": "REF-34"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Gordon \"Fyodor\" Lyon, The Art of Port Scanning (Volume: 7, Issue. 51), Phrack Magazine, 1997",
+                    "url": "http://phrack.org/issues/51/11.html",
+                    "external_id": "REF-130"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ],
+                "Authorization": [
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ],
+                "Confidentiality": [
+                    "Other",
+                    "Bypass Protection Mechanism",
+                    "Hide Activities"
+                ]
+            },
+            "x_capec_prerequisites": [
+                "The adversary requires logical access to the target network. ACK scanning requires the use of raw sockets, and thus cannot be performed from some Windows systems (Windows XP SP 2, for example). On Unix and Linux, raw socket manipulations require root privileges."
+            ],
+            "x_capec_resources_required": [
+                "This attack can be achieved via the use of a network mapper or scanner, or via raw socket programming in a scripting language. Packet injection tools are also useful for this purpose. Depending upon the method used it may be necessary to sniff the network in order to see the response."
+            ],
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Low",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

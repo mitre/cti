@@ -1,0 +1,84 @@
+{
+    "type": "bundle",
+    "id": "bundle--cde0d72b-a724-401c-9eb4-e5c109582dd2",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--a7cc8cb3-8652-4669-893a-baaa21f7eb55",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "DNS Rebinding",
+            "description": "An adversary serves content whose IP address is resolved by a DNS server that the adversary controls. After initial contact by a web browser (or similar client), the adversary changes the IP address, to which its name resolves, to an address within the target organization that is not publicly accessible. This allows the web browser to examine this internal address on behalf of the adversary. Web browsers enforce security zones based on DNS names in order to prevent cross-zone disclosure of information. In a DNS binding attack, an adversary publishes content on their own server with their own name and DNS server. The first time the target accesses the adversary's content, the adversary's name must be resolved to an IP address. The adversary's DNS server performs this resolution and provides a short Time-To-Live (TTL) in order to prevent the target from caching the value. When the target makes a subsequent request to the adversary's content, the adversary's DNS server must again be queried, but this time the DNS server returns an address internal to the target's organization that would not be accessible from an outside source. Because the same name resolves to both these IP addresses, browsers will place both IP addresses in the same security zone and allow information to flow between the addresses. The adversary can then use scripts in the content the target retrieved from the adversary in the original message to exfiltrate data from the named internal addresses. This allows adversaries to discover sensitive information about the internal network of an enterprise. If there is a trust relationship between the computer with the targeted browser and the internal machine the adversary identifies, additional attacks are possible. This attack differs from pharming attacks in that the adversary is the legitimate owner of the malicious DNS server and so does not need to compromise behavior of external DNS services.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/275.html",
+                    "external_id": "CAPEC-275"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/350.html",
+                    "external_id": "CWE-350"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Collin Jackson, Adam Barth, Andrew Bortz, Weidong Shao, Dan Boneh, Protecting Browsers from DNS Rebinding Attacks, In Proceedings of ACM CCS 07",
+                    "external_id": "REF-119"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Wikipedia, The Wikimedia Foundation, Inc",
+                    "url": "http://en.wikipedia.org/wiki/DNS_rebinding",
+                    "external_id": "REF-120"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Accountability": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges",
+                    "Bypass Protection Mechanism"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ],
+                "Non-Repudiation": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "The adversary registers a domain name, such as www.evil.com with IP address 1.3.5.7, delegates it to his own DNS server (1.3.5.2), and uses phishing links or emails to get HTTP traffic. Instead of sending a normal TTL record, the DNS server sends a very short TTL record (for example, 1 second), preventing DNS response of entry[www.evil.com, 1.3.5.7] from being cached on victim's (192.168.1.10) browser. The adversary's server first responds to the victim with malicious script such as JavaScript, containing IP address (1.3.5.7) of the server. The adversary uses XMLHttpRequest (XHR) to send HTTP request or HTTPS request directly to the adversary's server and load response. The malicious script allows the adversary to rebind the host name to the IP address (192.168.1.2) of a target server that is behind the firewall. Then the server responds to the adversary's real target, which is an internal host IP (192.168.1.2) in the same domain of the victim (192.168.1.10). Because the same name resolves to both these IP addresses, browsers will place both IP addresses (1.3.5.7 and 192.168.1.2) in the same security zone and allow information to flow between the addresses. Further, the adversary can achieve scanning and accessing all internal hosts in the victim's local network (192.168.X.X) by sending multiple short-lived IP addresses."
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The target browser must access content server from the adversary controlled DNS name. Web advertisements are often used for this purpose. The target browser must honor the TTL value returned by the adversary and re-resolve the adversary's DNS name after initial contact."
+            ],
+            "x_capec_resources_required": [
+                "The adversary must serve some web content that a victim accesses initially. This content must include executable content that queries the adversary's DNS name (to provide the second DNS resolution) and then performs the follow-on attack against the internal system. The adversary also requires a customized DNS server that serves an IP address for their registered DNS name, but which resolves subsequent requests by a single client to addresses internal to that client's network."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Setup DNS server and the adversary's web server. Write a malicious script to allow the victim to connect to the web server."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

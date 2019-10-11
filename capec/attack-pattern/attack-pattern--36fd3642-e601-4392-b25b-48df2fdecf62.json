@@ -1,0 +1,124 @@
+{
+    "type": "bundle",
+    "id": "bundle--50e8a665-e0a3-434f-86f0-a5d8c4715a1e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--36fd3642-e601-4392-b25b-48df2fdecf62",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2017-01-09T00:00:00.000Z",
+            "name": "Manipulating Web Input to File System Calls",
+            "description": "An attacker manipulates inputs to the target software which the target software passes to file system calls in the OS. The goal is to gain access to, and perhaps modify, areas of the file system that the target software did not intend to be accessible.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/76.html",
+                    "external_id": "CAPEC-76"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/23.html",
+                    "external_id": "CWE-23"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/22.html",
+                    "external_id": "CWE-22"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/73.html",
+                    "external_id": "CWE-73"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/77.html",
+                    "external_id": "CWE-77"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/346.html",
+                    "external_id": "CWE-346"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/348.html",
+                    "external_id": "CWE-348"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/285.html",
+                    "external_id": "CWE-285"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/264.html",
+                    "external_id": "CWE-264"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/272.html",
+                    "external_id": "CWE-272"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/59.html",
+                    "external_id": "CWE-59"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html",
+                    "external_id": "CWE-74"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/15.html",
+                    "external_id": "CWE-15"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/715.html",
+                    "external_id": "CWE-715"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>The attacker uses relative path traversal to access files in the application. This is an example of accessing user's password file.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://www.example.com/getProfile.jsp?filename=../../../../etc/passwd</xhtml:div>\n               <xhtml:p>However, the target application employs regular expressions to make sure no relative path sequences are being passed through the application to the web page. The application would replace all matches from this regex with the empty string.</xhtml:p>\n               <xhtml:p>Then an attacker creates special payloads to bypass this filter:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://www.example.com/getProfile.jsp?filename=%2e%2e/%2e%2e/%2e%2e/%2e%2e /etc/passwd</xhtml:div>\n               <xhtml:p>When the application gets this input string, it will be the desired vector by the attacker.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Program must allow for user controlled variables to be applied directly to the filesystem"
+            ],
+            "x_capec_skills_required": {
+                "Low": "To identify file system entry point and execute against an over-privileged system interface"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

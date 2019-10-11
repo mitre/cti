@@ -1,0 +1,93 @@
+{
+    "type": "bundle",
+    "id": "bundle--01fb4588-5d28-4505-a9df-8e5470cca62a",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--3c08bb9d-43b5-4468-8b38-387c6cb60da7",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2014-06-23T00:00:00.000Z",
+            "name": "MIME Conversion",
+            "description": "An attacker exploits a weakness in the MIME conversion routine to cause a buffer overflow and gain control over the mail server machine. The MIME system is designed to allow various different information formats to be interpreted and sent via e-mail. Attack points exist when data are converted to MIME compatible format and back.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/42.html",
+                    "external_id": "CAPEC-42"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/120.html",
+                    "external_id": "CWE-120"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/119.html",
+                    "external_id": "CWE-119"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html",
+                    "external_id": "CWE-74"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html",
+                    "external_id": "CWE-20"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "CERT Advisory CA-1997-05 MIME Conversion Buffer Overflow in Sendmail Versions 8.8.3 and 8.8.4, Software Engineering Institute: Carnegie Mellon University",
+                    "url": "http://www.cert.org/advisories/CA-1997-05.html",
+                    "external_id": "REF-364"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Unreliable Execution"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Attack Example: Sendmail Overflow</xhtml:div>\n               <xhtml:p>A MIME conversion buffer overflow exists in Sendmail versions 8.8.3 and 8.8.4. Sendmail versions 8.8.3 and 8.8.4 are vulnerable to a buffer overflow in the MIME handling code. By sending a message with specially-crafted headers to the server, a remote attacker can overflow a buffer and execute arbitrary commands on the system with root privileges.</xhtml:p>\n               <xhtml:p>Sendmail performs a 7 bit to 8 bit conversion on email messages. This vulnerability is due to the fact that insufficient bounds checking was performed while performing these conversions. This gave attacker an opportunity to overwrite the internal stack of sendmail while it is executing with root privileges. An attacker first probes the target system to figure out what mail server is used on the system and what version. An attacker could then test out the exploit at their leisure on their own machine running the same version of the mail server before using it in the wild.</xhtml:p>See also: CVE-1999-0047"
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The target system uses a mail server.",
+                "Mail server vendor has not released a patch for the MIME conversion routine, the patch itself has a security hole or does not fix the original problem, or the patch has not been applied to the user's system."
+            ],
+            "x_capec_skills_required": {
+                "High": "Causing arbitrary code to execute on the target system.",
+                "Low": "It may be trivial to cause a DoS via this attack pattern"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

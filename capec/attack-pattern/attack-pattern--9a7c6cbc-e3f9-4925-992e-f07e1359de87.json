@@ -1,0 +1,125 @@
+{
+    "type": "bundle",
+    "id": "bundle--814efce0-e505-4f33-886e-b37f51ebf9ed",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--9a7c6cbc-e3f9-4925-992e-f07e1359de87",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Leverage Executable Code in Non-Executable Files",
+            "description": "An attack of this type exploits a system's trust in configuration and resource files. When the executable loads the resource (such as an image file or configuration file) the attacker has modified the file to either execute malicious code directly or manipulate the target process (e.g. application server) to execute based on the malicious configuration parameters. Since systems are increasingly interrelated mashing up resources from local and remote sources the possibility of this attack occurring is high.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/35.html",
+                    "external_id": "CAPEC-35"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/94.html",
+                    "external_id": "CWE-94"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/96.html",
+                    "external_id": "CWE-96"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/95.html",
+                    "external_id": "CWE-95"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/97.html",
+                    "external_id": "CWE-97"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/272.html",
+                    "external_id": "CWE-272"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/59.html",
+                    "external_id": "CWE-59"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/282.html",
+                    "external_id": "CWE-282"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/275.html",
+                    "external_id": "CWE-275"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/264.html",
+                    "external_id": "CWE-264"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/270.html",
+                    "external_id": "CWE-270"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/714.html",
+                    "external_id": "CWE-714"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "Virtually any system that relies on configuration files for runtime behavior is open to this attack vector. The configuration files are frequently stored in predictable locations, so an attacker that can fingerprint a server process such as a web server or database server can quickly identify the likely locale where the configuration is stored. And this is of course not limited to server processes. Unix shells rely on profile files to store environment variables, search paths for programs and so on. If the aliases are changed, then a standard Unix \"cp\" command can be rerouted to \"rm\" or other standard command so the user's intention is subverted.",
+                "The attack can be directed at a client system, such as causing buffer overrun through loading seemingly benign image files, as in Microsoft Security Bulletin MS04-028 where specially crafted JPEG files could cause a buffer overrun once loaded into the browser.",
+                "\n               <xhtml:p>Another example targets clients reading pdf files. In this case the attacker simply appends javascript to the end of a legitimate url for a pdf (http://www.gnucitizen.org/blog/danger-danger-danger/)</xhtml:p>\n               <xhtml:p>http://path/to/pdf/file.pdf#whatever_name_you_want=javascript:your_code_here</xhtml:p>\n               <xhtml:p>The client assumes that they are reading a pdf, but the attacker has modified the resource and loaded executable javascript into the client's browser process.</xhtml:p>\n            ",
+                "\n               <xhtml:p>The attack can also target server processes. The attacker edits the resource or configuration file, for example a web.xml file used to configure security permissions for a J2EE app server, adding role name \"public\" grants all users with the public role the ability to use the administration functionality.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">< security-constraint><xhtml:div style=\"margin-left:10px;\"><description>Security processing rules for admin screens</description><url-pattern>/admin/*</url-pattern><http-method>POST</http-method><http-method>GET</http-method><xhtml:div style=\"margin-left:10px;\"><auth-constraint><xhtml:div style=\"margin-left:10px;\"><role-name>administrator</role-name><role-name>public</role-name></xhtml:div>\n                        </auth-constraint></xhtml:div>\n                  </xhtml:div>\n                  </security-constraint></xhtml:div>\n               <xhtml:p>The server trusts its configuration file to be correct, but when they are manipulated, the attacker gains full control.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The attacker must have the ability to modify non-executable files consumed by the target software."
+            ],
+            "x_capec_resources_required": [
+                "Ability to communicate synchronously or asynchronously with server that publishes an over-privileged directory, program, or interface. Optionally, ability to capture output directly through synchronous communication or other method such as FTP."
+            ],
+            "x_capec_skills_required": {
+                "Low": "To identify and execute against an over-privileged system interface"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

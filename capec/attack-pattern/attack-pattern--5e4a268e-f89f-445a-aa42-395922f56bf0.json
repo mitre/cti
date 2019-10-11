@@ -1,0 +1,116 @@
+{
+    "type": "bundle",
+    "id": "bundle--bbab5459-4b1f-4a1a-b9e4-02c576b94b87",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--5e4a268e-f89f-445a-aa42-395922f56bf0",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Manipulating User-Controlled Variables",
+            "description": "This attack targets user controlled variables (DEBUG=1, PHP Globals, and So Forth). An attacker can override environment variables leveraging user-supplied, untrusted query variables directly used on the application server without any data sanitization. In extreme cases, the attacker can change variables controlling the business logic of the application. For instance, in languages like PHP, a number of poorly set default configurations may allow the user to override variables.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/77.html",
+                    "external_id": "CAPEC-77"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/473.html",
+                    "external_id": "CWE-473"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/15.html",
+                    "external_id": "CWE-15"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/285.html",
+                    "external_id": "CWE-285"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/302.html",
+                    "external_id": "CWE-302"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/94.html",
+                    "external_id": "CWE-94"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/96.html",
+                    "external_id": "CWE-96"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Artur Maj, Securing PHP: Step-by-Step, 2003--06---22, Security Focus",
+                    "url": "http://www.securityfocus.com/infocus/1706",
+                    "external_id": "REF-520"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Clancy Malcolm, Ten Security Checks for PHP, Part 1, 2003--03---20",
+                    "external_id": "REF-521"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "PHP Manual, The PHP Group",
+                    "url": "http://www.php.net/manual/en/security.globals.php",
+                    "external_id": "REF-522"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Read Data",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Attack Example: PHP Global Variables</xhtml:div>\n               <xhtml:p>PHP is a study in bad security. The main idea pervading PHP is \"ease of use,\" and the mantra \"don't make the developer go to any extra work to get stuff done\" applies in all cases. This is accomplished in PHP by removing formalism from the language, allowing declaration of variables on first use, initializing everything with preset values, and taking every meaningful variable from a transaction and making it available. In cases of collision with something more technical, the simple almost always dominates in PHP.</xhtml:p>\n               <xhtml:p>One consequence of all this is that PHP allows users of a Web application to override environment variables with user-supplied, untrusted query variables. Thus, critical values such as the CWD and the search path can be overwritten and directly controlled by a remote anonymous user.</xhtml:p>\n               <xhtml:p>Another similar consequence is that variables can be directly controlled and assigned from the user-controlled values supplied in GET and POST request fields. So seemingly normal code like this, does bizarre things:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">while($count < 10){// Do something$count++;}</xhtml:div>\n               <xhtml:p>Normally, this loop will execute its body ten times. The first iteration will be an undefined zero, and further trips though the loop will result in an increment of the variable $count. The problem is that the coder does not initialize the variable to zero before entering the loop. This is fine because PHP initializes the variable on declaration. The result is code that seems to function, regardless of badness. The problem is that a user of the Web application can supply a request such as</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">GET /login.php?count=9</xhtml:div>\n               <xhtml:p>and cause $count to start out at the value 9, resulting in only one trip through the loop. Yerg.</xhtml:p>\n               <xhtml:p>Depending on the configuration, PHP may accept user-supplied variables in place of environment variables. PHP initializes global variables for all process environment variables, such as $PATH and $HOSTNAME. These variables are of critical importance because they may be used in file or network operations. If an attacker can supply a new $PATH variable (such as PATH='/var'), the program may be exploitable.</xhtml:p>\n               <xhtml:p>PHP may also take field tags supplied in GET/POST requests and transform them into global variables. This is the case with the $count variable we explored in our previous example.</xhtml:p>\n               <xhtml:p>Consider another example of this problem in which a program defines a variable called $tempfile. An attacker can supply a new temp file such as $tempfile = \"/etc/passwd\". Then the temp file may get erased later via a call to unlink($tempfile);. Now the passwd file has been erased--a bad thing indeed on most OSs.</xhtml:p>\n               <xhtml:p>Also consider that the use of include() and require() first search $PATH, and that using calls to the shell may execute crucial programs such as ls. In this way, ls may be \"Trojaned\" (the attacker can modify $PATH to cause a Trojan copy of ls to be loaded). This type of attack could also apply to loadable libraries if $LD_LIBRARY_PATH is modified.</xhtml:p>\n               <xhtml:p>Finally, some versions of PHP may pass user data to syslog as a format string, thus exposing the application to a format string buffer overflow.</xhtml:p>See also: File upload allows arbitrary file read by setting hidden form variables to match internal variable names (CVE-2000-0860)"
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "A variable consumed by the application server is exposed to the client.",
+                "A variable consumed by the application server can be overwritten by the user.",
+                "The application server trusts user supplied data to compute business logic.",
+                "The application server does not perform proper input validation."
+            ],
+            "x_capec_skills_required": {
+                "Low": "The malicious user can easily try some well-known global variables and find one which matches.",
+                "Medium": "The attacker can use automated tools to probe for variables that she can control."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

@@ -1,0 +1,65 @@
+{
+    "type": "bundle",
+    "id": "bundle--d3c3fca9-035e-4ab8-a448-16d3a06b2dd8",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--581433c0-1d73-4975-80f1-6dcee4761bbc",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2015-12-07T00:00:00.000Z",
+            "name": "Generic Cross-Browser Cross-Domain Theft",
+            "description": "An attacker makes use of Cascading Style Sheets (CSS) injection to steal data cross domain from the victim's browser. The attack works by abusing the standards relating to loading of CSS: 1. Send cookies on any load of CSS (including cross-domain) 2. When parsing returned CSS ignore all data that does not make sense before a valid CSS descriptor is found by the CSS parser By having control of some text in the victim's domain, the attacker is able to inject a seemingly valid CSS string. It does not matter if this CSS string is preceded by other data. The CSS parser will still locate the CSS string. If the attacker is able to control two injection points, one before the cross domain data that the attacker is interested in receiving and the other one after, the attacker can use this attack to steal all of the data in between these two CSS injection points when referencing the injected CSS while performing rendering on the site that the attacker controls. When rendering, the CSS parser will detect the valid CSS string to parse and ignore the data that \"does not make sense\". That data will simply be rendered. That data is in fact the data that the attacker just stole cross domain. The stolen data may contain sensitive information, such CSRF protection tokens.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/468.html",
+                    "external_id": "CAPEC-468"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/707.html",
+                    "external_id": "CWE-707"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/149.html",
+                    "external_id": "CWE-149"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/177.html",
+                    "external_id": "CWE-177"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/838.html",
+                    "external_id": "CWE-838"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Chris Evans, Generic cross-browser cross-domain theft, 2009--12---28",
+                    "url": "http://scarybeastsecurity.blogspot.com/2009/12/generic-cross-browser-cross-domain.html",
+                    "external_id": "REF-405"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_prerequisites": [
+                "No new lines can be present in the injected CSS stringProper HTML or URL escaping of the \" and ' characters is not presentThe attacker has control of two injection points: pre-string and post-string"
+            ],
+            "x_capec_resources_required": [
+                "Attacker controlled site/page to render a page referencing the injected CSS string"
+            ],
+            "x_capec_skills_required": {
+                "High": "Ability to craft a CSS injection"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

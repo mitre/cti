@@ -1,0 +1,68 @@
+{
+    "type": "bundle",
+    "id": "bundle--d4e70f6a-fe79-4637-b183-b42704735ea6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--2b8d7aaf-bd4b-424f-8df4-6d0f37b72f4b",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Subvert Code-signing Facilities",
+            "description": "Many languages use code signing facilities to vouch for code's identity and to thus tie code to its assigned privileges within an environment. Subverting this mechanism can be instrumental in an attacker escalating privilege. Any means of subverting the way that a virtual machine enforces code signing classifies for this style of attack.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/68.html",
+                    "external_id": "CAPEC-68"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/325.html",
+                    "external_id": "CWE-325"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/328.html",
+                    "external_id": "CWE-328"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "In old versions (prior to 3.0b4) of the Netscape web browser Attackers able to foist a malicious Applet into a client's browser could execute the \"Magic Coat\" attack. In this attack, the offending Applet would implement its own getSigners() method. This implementation would use the containing VM's APIs to acquire other Applet's signatures (by calling _their_ getSigners() method) and if any running Applet had privileged-enough signature, the malicious Applet would have inherited that privilege just be (metaphorically) donning the others' coats.",
+                "Some (older) web browsers allowed scripting languages, such as JavaScript, to call signed Java code. In these circumstances, the browser's VM implementation would choose not to conduct stack inspection across language boundaries (from called signed Java to calling JavaScript) and would short-circuit \"true\" at the language boundary. Doing so meant that the VM would allow any (unprivileged) script to call privileged functions within signed code with impunity, causing them to fall prey to luring attacks.",
+                "The ability to load unsigned code into the kernel of earlier versions of Vista and bypass integrity checking is an example of such subversion. In the proof-of-concept, it is possible to bypass the signature-checking mechanism Vista uses to load device drivers."
+            ],
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_prerequisites": [
+                "A framework-based language that supports code signing (such as, and most commonly, Java or .NET)",
+                "Deployed code that has been signed by its authoring vendor, or a partner.",
+                "The attacker will, for most circumstances, also need to be able to place code in the victim container. This does not necessarily mean that they will have to subvert host-level security, except when explicitly indicated."
+            ],
+            "x_capec_resources_required": [
+                "The Attacker needs no special resources beyond the listed prerequisites in order to conduct this style of attack."
+            ],
+            "x_capec_skills_required": {
+                "High": "Subverting code signing is not a trivial activity. Most code signing and verification schemes are based on use of cryptography and the attacker needs to have an understanding of these cryptographic operations in good detail. Additionally the attacker also needs to be aware of the way memory is assigned and accessed by the container since, often, the only way to subvert code signing would be to patch the code in memory. Finally, a knowledge of the platform specific mechanisms of signing and verifying code is a must."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

@@ -1,0 +1,106 @@
+{
+    "type": "bundle",
+    "id": "bundle--89e0c15e-96b8-4cb1-a8c6-e1e349745343",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--9afead03-280c-4f2c-82f6-b08b7a54a8e3",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Manipulating Opaque Client-based Data Tokens",
+            "description": "In circumstances where an application holds important data client-side in tokens (cookies, URLs, data files, and so forth) that data can be manipulated. If client or server-side application components reinterpret that data as authentication tokens or data (such as store item pricing or wallet information) then even opaquely manipulating that data may bear fruit for an Attacker. In this pattern an attacker undermines the assumption that client side tokens have been adequately protected from tampering through use of encryption or obfuscation.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/39.html",
+                    "external_id": "CAPEC-39"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/353.html",
+                    "external_id": "CWE-353"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/285.html",
+                    "external_id": "CWE-285"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/302.html",
+                    "external_id": "CWE-302"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/472.html",
+                    "external_id": "CWE-472"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/565.html",
+                    "external_id": "CWE-565"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/315.html",
+                    "external_id": "CWE-315"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/539.html",
+                    "external_id": "CWE-539"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/384.html",
+                    "external_id": "CWE-384"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/233.html",
+                    "external_id": "CWE-233"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "With certain price watching websites, that aggregate products available prices, the user can buy items through whichever vendors has product availability, the best price, or other differentiator. Once a user selects an item, the site must broker the purchase of that item with the vendor. Because vendors sell the same product through different channel partners at different prices, token exchange between price watching sites and selling vendors will often contain pricing information. With some price watching sites, manipulating URL-data (which is encrypted) even opaquely yields different prices charged by the fulfilling vendor. If the manipulated price turns out higher, the Attacker can cancel purchase. If the Attacker succeeded in manipulating the token and creating a lower price, he/she proceeds.",
+                "Upon successful authentication user is granted an encrypted authentication cookie by the server and it is stored on the client. One piece of information stored in the authentication cookie reflects the access level of the user (e.g. \"u\" for user). The authentication cookie is encrypted using the Electronic Code Book (ECB) mode, that naively encrypts each of the plaintext blocks to each of the ciphertext blocks separately. An attacker knows the structure of the cookie and can figure out what bits (encrypted) store the information relating to the access level of the user. An attacker modifies the authentication cookie and effectively substitutes \"u\" for \"a\" by flipping some of the corresponding bits of ciphertext (trial and error). Once the correct \"flip\" is found, when the system is accessed, the attacker is granted administrative privileges in the system. Note that in this case an attacker did not have to figure out the exact encryption algorithm or find the secret key, but merely exploit the weakness inherent in using the ECB encryption mode.",
+                "Archangel Weblog 0.90.02 allows remote attackers to bypass authentication by setting the ba_admin cookie to 1. See also: CVE-2006-0944"
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "An attacker already has some access to the system or can steal the client based data tokens from another user who has access to the system.",
+                "For an Attacker to viably execute this attack, some data (later interpreted by the application) must be held client-side in a way that can be manipulated without detection. This means that the data or tokens are not CRCd as part of their value or through a separate meta-data store elsewhere."
+            ],
+            "x_capec_resources_required": [
+                "The Attacker needs no special hardware-based resources in order to conduct this attack. Software plugins, such as Tamper Data for Firefox, may help in manipulating URL- or cookie-based data."
+            ],
+            "x_capec_skills_required": {
+                "High": "If the client site token is encrypted.",
+                "Medium": "If the client site token is obfuscated."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

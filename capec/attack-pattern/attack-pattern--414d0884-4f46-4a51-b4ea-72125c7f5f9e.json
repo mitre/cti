@@ -1,0 +1,90 @@
+{
+    "type": "bundle",
+    "id": "bundle--1ad2dac6-17d8-4fad-b395-3ef54e276893",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--414d0884-4f46-4a51-b4ea-72125c7f5f9e",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Session Credential Falsification through Forging",
+            "description": "An attacker creates a false but functional session credential in order to gain or usurp access to a service. Session credentials allow users to identify themselves to a service after an initial authentication without needing to resend the authentication information (usually a username and password) with every message. If an attacker is able to forge valid session credentials they may be able to bypass authentication or piggy-back off some other authenticated user's session. This attack differs from Reuse of Session IDs and Session Sidejacking attacks in that in the latter attacks an attacker uses a previous or existing credential without modification while, in a forging attack, the attacker must create their own credential, although it may be based on previously observed credentials.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/196.html",
+                    "external_id": "CAPEC-196"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/384.html",
+                    "external_id": "CWE-384"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/664.html",
+                    "external_id": "CWE-664"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Thomas Schreiber, Session Riding: A Widespread Vulnerability in Today's Web Applications, SecureNet GmbH",
+                    "url": "https://crypto.stanford.edu/cs155old/cs155-spring08/papers/Session_Riding.pdf",
+                    "external_id": "REF-62"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "OWASP Testing Guide (v4 [DRAFT]), The Open Web Application Security Project (OWASP)",
+                    "url": "http://www.owasp.org/index.php/Testing_for_Session_Management",
+                    "external_id": "REF-63"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Accountability": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges",
+                    "Bypass Protection Mechanism"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ],
+                "Non-Repudiation": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>This example uses client side scripting to set session ID in the victim's browser. The JavaScript code</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">document.cookie=\"sessionid=0123456789\"</xhtml:div>\n               <xhtml:p>fixates a falsified session credential into victim's browser, with the help of crafted a URL link.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">http://www.example.com/<script>document.cookie=\"sessionid=0123456789\";</script></xhtml:div>\n               <xhtml:p>A similar example uses session ID as an argument of the URL.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">http://www.example.com/index.php/sessionid=0123456789</xhtml:div>\n               <xhtml:p>Once the victim clicks the links, the attacker may be able to bypass authentication or piggy-back off some other authenticated victim's session.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "The targeted application must use session credentials to identify legitimate users. Session identifiers that remains unchanged when the privilege levels change. Predictable session identifiers."
+            ],
+            "x_capec_resources_required": [
+                "Attackers may require tools to craft messages containing their forged credentials, and ability to send HTTP request to a web application."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Forge the session credential and reply the request."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

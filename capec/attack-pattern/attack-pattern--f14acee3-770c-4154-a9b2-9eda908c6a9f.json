@@ -1,0 +1,77 @@
+{
+    "type": "bundle",
+    "id": "bundle--ae6979ed-c2e6-46ff-a3c3-03d12e8022e5",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--f14acee3-770c-4154-a9b2-9eda908c6a9f",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2017-08-04T00:00:00.000Z",
+            "name": "Cross Site Tracing",
+            "description": "Cross Site Tracing (XST) enables an adversary to steal the victim's session cookie and possibly other authentication credentials transmitted in the header of the HTTP request when the victim's browser communicates to destination system's web server. The adversary first gets a malicious script to run in the victim's browser that induces the browser to initiate an HTTP TRACE request to the web server. If the destination web server allows HTTP TRACE requests, it will proceed to return a response to the victim's web browser that contains the original HTTP request in its body. The function of HTTP TRACE, as defined by the HTTP specification, is to echo the request that the web server receives from the client back to the client. Since the HTTP header of the original request had the victim's session cookie in it, that session cookie can now be picked off the HTTP TRACE response and sent to the adversary's malicious site. XST becomes relevant when direct access to the session cookie via the \"document.cookie\" object is disabled with the use of httpOnly attribute which ensures that the cookie can be transmitted in HTTP requests but cannot be accessed in other ways. Using SSL does not protect against XST. If the system with which the victim is interacting is susceptible to XSS, an adversary can exploit that weakness directly to get his or her malicious script to issue an HTTP TRACE request to the destination system's web server. In the absence of an XSS weakness on the site with which the victim is interacting, an adversary can get the script to come from the site that he controls and get it to execute in the victim's browser (if he can trick the victim's into visiting his malicious website or clicking on the link that he supplies). However, in that case, due to the same origin policy protection mechanism in the browser, the adversary's malicious script cannot directly issue an HTTP TRACE request to the destination system's web server because the malicious script did not originate at that domain. An adversary will then need to find a way to exploit another weakness that would enable him or her to get around the same origin policy protection.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/107.html",
+                    "external_id": "CAPEC-107"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/693.html",
+                    "external_id": "CWE-693"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/648.html",
+                    "external_id": "CWE-648"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Jeremiah Grossman, Cross-Site Tracing (XST), 2003, WhiteHat Security",
+                    "url": "http://www.cgisecurity.com/whitehat-mirror/WH-WhitePaper_XST_ebook.pdf",
+                    "external_id": "REF-3"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "An adversary determines that a particular system is vulnerable to reflected cross-site scripting (XSS) and endeavors to leverage this weakness to steal the victim's authentication cookie. An adversary realizes that since httpOnly attribute is set on the user's cookie, it is not possible to steal it directly with his malicious script. Instead, the adversary has their script use XMLHTTP ActiveX control in the victim's IE browser to issue an HTTP TRACE to the target system's server which has HTTP TRACE enabled. The original HTTP TRACE request contains the session cookie and so does the echoed response. The adversary picks the session cookie from the body of HTTP TRACE response and ships it to the adversary. The adversary then uses the newly acquired victim's session cookie to impersonate the victim in the target system."
+            ],
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "HTTP TRACE is enabled on the web server",
+                "The destination system is susceptible to XSS or an adversary can leverage some other weakness to bypass the same origin policy",
+                "Scripting is enabled in the client's browser",
+                "HTTP is used as the communication protocol between the server and the client"
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Understanding of the HTTP protocol and an ability to craft a malicious script"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

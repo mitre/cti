@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--be855149-aed0-4783-a5f8-021205850f21",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--807e5b36-9da9-4be8-9f6e-5d8c7258cff5",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-09-30T00:00:00.000Z",
+            "name": "Block Access to Libraries",
+            "description": "An application typically makes calls to functions that are a part of libraries external to the application. These libraries may be part of the operating system or they may be third party libraries. It is possible that the application does not handle situations properly where access to these libraries has been blocked. Depending on the error handling within the application, blocked access to libraries may leave the system in an insecure state that could be leveraged by an attacker.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/96.html",
+                    "external_id": "CAPEC-96"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/589.html",
+                    "external_id": "CWE-589"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/227.html",
+                    "external_id": "CWE-227"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Authorization": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Availability": [
+                    "Alter Execution Logic"
+                ],
+                "Confidentiality": [
+                    "Other",
+                    "Bypass Protection Mechanism"
+                ]
+            },
+            "x_capec_example_instances": [
+                "A web-based system uses a third party cryptographic random number generation library that derives entropy from machine's hardware. This library is used in generation of user session ids used by the application. If the library is inaccessible, the application instead uses a software based weak pseudo random number generation library. An attacker of the system blocks access of the application to the third party cryptographic random number generation library (by renaming it). The application in turn uses the weak pseudo random number generation library to generate session ids that are predictable. An attacker then leverages this weakness to guess a session id of another user to perform a horizontal elevation of privilege escalation and gain access to another user's account."
+            ],
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "An application requires access to external libraries.",
+                "An attacker has the privileges to block application access to external libraries."
+            ],
+            "x_capec_skills_required": {
+                "Low": "Knowledge of how to block access to libraries, as well as knowledge of how to leverage the resulting state of the application based on the failed call."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

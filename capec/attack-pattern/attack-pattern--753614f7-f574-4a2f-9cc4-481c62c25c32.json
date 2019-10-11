@@ -1,0 +1,48 @@
+{
+    "type": "bundle",
+    "id": "bundle--f63dc301-f277-4156-839a-5aca357a43e4",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--753614f7-f574-4a2f-9cc4-481c62c25c32",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "TCP Fragmentation",
+            "description": "An attacker may execute a TCP Fragmentation attack against a target with the intention of avoiding filtering rules. IP fragmentation occurs when an IP datagram is larger than the MTU of the route the datagram has to traverse. The attacker attempts to fragment the TCP packet such that the headers flag field is pushed into the second fragment which typically is not filtered. This behavior defeats some IPS and firewall filters who typically check the FLAGS in the header of the first packet since dropping this packet prevents the following fragments from being processed and assembled. Another variation is overlapping fragments thus that an innocuous first segment passes the filter and the second segment overwrites the TCP header data with the true payload which is malicious in nature. The malicious payload manipulated properly may lead to a DoS due to resource consumption or kernel crash. Additionally the fragmentation could be used in conjunction with sending fragments at a rate slightly slower than the timeout to cause a DoS condition by forcing resources that assemble the packet to wait an inordinate amount of time to complete the task. The fragmentation identification numbers could also be duplicated very easily as there are only 16 bits in IPv4 so only 65536 packets are needed.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/494.html",
+                    "external_id": "CAPEC-494"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/770.html",
+                    "external_id": "CWE-770"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/404.html",
+                    "external_id": "CWE-404"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Security Considerations - IP Fragment Filtering",
+                    "url": "https://www.rfc-editor.org/rfc/rfc1858.txt",
+                    "external_id": "REF-423"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_prerequisites": [
+                "This type of an attack requires the target system to be running a vulnerable implementation of IP, and the attacker needs to ability to send TCP packets of arbitrary size with crafted data."
+            ],
+            "x_capec_status": "Draft",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

@@ -1,0 +1,82 @@
+{
+    "type": "bundle",
+    "id": "bundle--7088eed6-3412-42a3-89fe-f8e859cc922e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--8d88a81c-bde9-4fb3-acbe-901c783d6427",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Password Brute Forcing",
+            "description": "In this attack, the adversary tries every possible value for a password until they succeed. A brute force attack, if feasible computationally, will always be successful because it will essentially go through all possible passwords given the alphabet used (lower case letters, upper case letters, numbers, symbols, etc.) and the maximum length of the password. A system will be particularly vulnerable to this type of an attack if it does not have a proper enforcement mechanism in place to ensure that passwords selected by users are strong passwords that comply with an adequate password policy. In practice a pure brute force attack on passwords is rarely used, unless the password is suspected to be weak. Other password cracking methods exist that are far more effective (e.g. dictionary attacks, rainbow tables, etc.). Knowing the password policy on the system can make a brute force attack more efficient. For instance, if the policy states that all passwords must be of a certain level, there is no need to check smaller candidates.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/49.html",
+                    "external_id": "CAPEC-49"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/521.html",
+                    "external_id": "CWE-521"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/262.html",
+                    "external_id": "CWE-262"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/263.html",
+                    "external_id": "CWE-263"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/257.html",
+                    "external_id": "CWE-257"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/693.html",
+                    "external_id": "CWE-693"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>A system does not enforce a strong password policy and the user picks a five letter password consisting of lower case English letters only. The system does not implement any password throttling mechanism. Assuming the adversary does not know the length of the users' password, an adversary can brute force this password in maximum 1+26+26^2+26^3+26^4+26^5 = 1 + 26 + 676 + 17576 + 456976 + 11,881,376 = 12,356,631 attempts, and half these tries (6,178,316) on average. Using modern hardware this attack is trivial. If the adversary were to assume that the user password could also contain upper case letters (and it was case sensitive) and/or numbers, than the number of trials would have been larger.</xhtml:p>\n               <xhtml:p>An adversary's job would have most likely been even easier because many users who choose easy to brute force passwords like this are also likely to use a word that can be found in the dictionary. Since there are far fewer valid English words containing up to five letters than 12,356,631, an attack that tries each of the entries in the English dictionary would go even faster.</xhtml:p>\n            ",
+                "A weakness exists in the automatic password generation routine of Mailman prior to 2.1.5 that causes only about five million different passwords to be generated. This makes it easy to brute force the password for all users who decided to let Mailman automatically generate their passwords for them. Users who chose their own passwords during the sign up process would not have been affected (assuming that they chose strong passwords). See also: CVE-2004-1143"
+            ],
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "An adversary needs to know a username to target.",
+                "The system uses password based authentication as the one factor authentication mechanism.",
+                "An application does not have a password throttling mechanism in place. A good password throttling mechanism will make it almost impossible computationally to brute force a password as it may either lock out the user after a certain number of incorrect attempts or introduce time out periods. Both of these would make a brute force attack impractical."
+            ],
+            "x_capec_resources_required": [
+                "A powerful enough computer for the job with sufficient CPU, RAM and HD. Exact requirements will depend on the size of the brute force job and the time requirement for completion. Some brute forcing jobs may require grid or distributed computing (e.g. DES Challenge)."
+            ],
+            "x_capec_skills_required": {
+                "Low": "A brute force attack is very straightforward. A variety of password cracking tools are widely available."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

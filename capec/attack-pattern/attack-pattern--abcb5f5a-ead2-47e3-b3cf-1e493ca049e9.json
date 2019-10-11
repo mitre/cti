@@ -1,0 +1,100 @@
+{
+    "type": "bundle",
+    "id": "bundle--054c0dbf-6fb3-4412-a5f4-6dee504202c0",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--abcb5f5a-ead2-47e3-b3cf-1e493ca049e9",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2017-01-09T00:00:00.000Z",
+            "name": "Postfix, Null Terminate, and Backslash",
+            "description": "If a string is passed through a filter of some kind, then a terminal NULL may not be valid. Using alternate representation of NULL allows an attacker to embed the NULL mid-string while postfixing the proper data so that the filter is avoided. One example is a filter that looks for a trailing slash character. If a string insertion is possible, but the slash must exist, an alternate encoding of NULL in mid-string may be used.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/53.html",
+                    "external_id": "CAPEC-53"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/158.html",
+                    "external_id": "CWE-158"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/172.html",
+                    "external_id": "CWE-172"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/173.html",
+                    "external_id": "CWE-173"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/171.html",
+                    "external_id": "CWE-171"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html",
+                    "external_id": "CWE-74"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html",
+                    "external_id": "CWE-20"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/697.html",
+                    "external_id": "CWE-697"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/707.html",
+                    "external_id": "CWE-707"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>A rather simple injection is possible in a URL:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">http://getAccessHostname/sekbin/helpwin.gas.bat?mode=&draw=x&file=x&module=&locale=[insert relative path here][%00][%5C]&chapter=</xhtml:div>\n               <xhtml:p>This attack has appeared with regularity in the wild. There are many variations of this kind of attack. Spending a short amount of time injecting against Web applications will usually result in a new exploit being discovered.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Null terminators are not properly handled by the filter."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "An attacker needs to understand alternate encodings, what the filter looks for and the data format acceptable to the target API"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

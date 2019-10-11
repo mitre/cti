@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--baa74e80-f5a6-4511-a630-dc1950a8c32d",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--d9904019-98fa-4beb-ae5a-f667e516269e",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2015-12-07T00:00:00.000Z",
+            "name": "Choosing Message Identifier",
+            "description": "This pattern of attack is defined by the selection of messages distributed over via multicast or public information channels that are intended for another client by determining the parameter value assigned to that client. This attack allows the adversary to gain access to potentially privileged information, and to possibly perpetrate other attacks through the distribution means by impersonation. If the channel/message being manipulated is an input rather than output mechanism for the system, (such as a command bus), this style of attack could be used to change the adversary's identifier to more a privileged one.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/12.html",
+                    "external_id": "CAPEC-12"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/201.html",
+                    "external_id": "CWE-201"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/306.html",
+                    "external_id": "CWE-306"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "A certain B2B interface on a large application codes for messages passed over an MQSeries queue, on a single \"Partners\" channel. Messages on that channel code for their client destination based on a partner_ID field, held by each message. That field is a simple integer. Attackers having access to that channel, perhaps a particularly nosey partner, can simply choose to store messages of another partner's ID and read them as they desire. Note that authentication does not prevent a partner from leveraging this attack on other partners. It simply disallows Attackers without partner status from conducting this attack."
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Information and client-sensitive (and client-specific) data must be present through a distribution channel available to all users.",
+                "Distribution means must code (through channel, message identifiers, or convention) message destination in a manner visible within the distribution means itself (such as a control channel) or in the messages themselves."
+            ],
+            "x_capec_resources_required": [
+                "The Attacker needs the ability to control source code or application configuration responsible for selecting which message/channel id is absorbed from the public distribution means."
+            ],
+            "x_capec_skills_required": {
+                "Low": "All the attacker needs to discover is the format of the messages on the channel/distribution means and the particular identifier used within the messages."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

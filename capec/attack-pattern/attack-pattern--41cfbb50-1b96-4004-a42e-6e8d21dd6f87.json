@@ -1,0 +1,59 @@
+{
+    "type": "bundle",
+    "id": "bundle--aac6d453-3986-4458-b9cf-5c345fecb72e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--41cfbb50-1b96-4004-a42e-6e8d21dd6f87",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "Schema Poisoning",
+            "description": "An adversary corrupts or modifies the content of a schema for the purpose of undermining the security of the target. Schemas provide the structure and content definitions for resources used by an application. By replacing or modifying a schema, the adversary can affect how the application handles or interprets a resource, often leading to possible denial of service, entering into an unexpected state, or recording incomplete data.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/271.html",
+                    "external_id": "CAPEC-271"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/15.html",
+                    "external_id": "CWE-15"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Availability": [
+                    "Unreliable Execution (A successful schema poisoning attack can compromise the availability of the target system's service by exhausting its available resources.)",
+                    "Resource Consumption (A successful schema poisoning attack can compromise the availability of the target system's service by exhausting its available resources.)"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>In a JSON Schema Poisoning Attack, an adervary modifies the JSON schema to cause a Denial of Service (DOS) or to submit malicious input:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">{ \"title\": \"Contact\", \"type\": \"object\", \"properties\": { \"Name\": { \"type\": \"string\" }, \"Phone\": { \"type\": \"string\" }, \"Email\": { \"type\": \"string\" }, \"Address\": { \"type\": \"string\" } }, \"required\": [\"Name\", \"Phone\", \"Email\", \"Address\"] }</xhtml:div>\n               <xhtml:p>If the 'name' attribute is required in all submitted documents and this field is removed by the adversary, the application may enter an unexpected state or record incomplete data. Additionally, if this data is needed to perform additional functions, a Denial of Service (DOS) may occur.</xhtml:p>\n            ",
+                "\n               <xhtml:p>In a Database Schema Poisoning Attack, an adversary alters the database schema being used to modify the database in some way. This can result in loss of data, DOS, or malicious input being submitted. Assuming there is a column named \"name\", an adversary could make the following schema change:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">ALTER TABLE Contacts MODIFY Name VARCHAR(65353);</xhtml:div>\n               <xhtml:p>The \"Name\" field of the \"Conteacts\" table now allows the storing of names up to 65353 characters in length. This could allow the adversary to store excess data within the database to consume system resource or to execute a DOS.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_prerequisites": [
+                "Some level of access to modify the target schema.",
+                "The schema used by the target application must be improperly secured against unauthorized modification and manipulation."
+            ],
+            "x_capec_resources_required": [
+                "Access to the schema and the knowledge and ability modify it. Ability to replace or redirect access to the modified schema."
+            ],
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

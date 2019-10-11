@@ -1,0 +1,120 @@
+{
+    "type": "bundle",
+    "id": "bundle--afbc6436-0fba-412a-9852-05137bd27725",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--7e2a629f-eb4d-4cc9-b086-42c7395b2c3e",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Embedding NULL Bytes",
+            "description": "An attacker embeds one or more null bytes in input to the target software. This attack relies on the usage of a null-valued byte as a string terminator in many environments. The goal is for certain components of the target software to stop processing the input when it encounters the null byte(s).",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/52.html",
+                    "external_id": "CAPEC-52"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/158.html",
+                    "external_id": "CWE-158"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/172.html",
+                    "external_id": "CWE-172"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/173.html",
+                    "external_id": "CWE-173"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/171.html",
+                    "external_id": "CWE-171"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html",
+                    "external_id": "CWE-74"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html",
+                    "external_id": "CWE-20"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/697.html",
+                    "external_id": "CWE-697"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/707.html",
+                    "external_id": "CWE-707"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Adobe Acrobat/Acrobat Reader ActiveX Control Buffer Overflow Vulnerability, iDefense Labs Public Advisory, 2004--08---13, Verisign, Inc.",
+                    "url": "http://labs.idefense.com/intelligence/vulnerabilities/display.php?id=126",
+                    "external_id": "REF-445"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "PHP Input Validation Vulnerabilities, Bugtraq mailing list archive",
+                    "url": "http://msgs.securepoint.com/bugtraq/",
+                    "external_id": "REF-446"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Gain Privileges",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Directory Browsing</xhtml:p>\n               <xhtml:p>Assume a Web application allows a user to access a set of reports. The path to the reports directory may be something like web/username/reports. If the username is supplied via a hidden field, an attacker could insert a bogus username such as ../../../../../WINDOWS. If the attacker needs to remove the trailing string /reports, then he can simply insert enough characters so the string is truncated. Alternatively the attacker might apply the postfix NULL character (%00) to determine whether this terminates the string.</xhtml:p>\n               <xhtml:p>Different forms of NULL to think about include</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">PATH%00PATH[0x00]PATH[alternate representation of NULL character]<script></script>%00</xhtml:div>\n            ",
+                "\n               <xhtml:p>Exploitation of a buffer overflow vulnerability in the ActiveX component packaged with Adobe Systems Inc.'s Acrobat/Acrobat Reader allows remote attackers to execute arbitrary code.</xhtml:p>\n               <xhtml:p>The problem specifically exists upon retrieving a link of the following form:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">GET /any_existing_dir/any_existing_pdf.pdf%00[long string] HTTP/1.1</xhtml:div>\n               <xhtml:p>Where [long string] is a malicious crafted long string containing acceptable URI characters. The request must be made to a web server that truncates the request at the null byte (%00), otherwise an invalid file name is specified and a \"file not found\" page will be returned. Example web servers that truncate the requested URI include Microsoft IIS and Netscape Enterprise. Though the requested URI is truncated for the purposes of locating the file the long string is still passed to the Adobe ActiveX component responsible for rendering the page. This in turn triggers a buffer overflow within RTLHeapFree() allowing for an attacker to overwrite an arbitrary word in memory. The responsible instructions from RTLHeapFree() are shown here:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">0x77F83AE5 MOV EAX,[EDI+8]0x77F83AE8 MOV ECX,[EDI+C]...0x77F83AED MOV [ECX],EAX</xhtml:div>\n               <xhtml:p>The register EDI contains a pointer to a user-supplied string. The attacker therefore has control over both the ECX and EAX registers used in the shown MOV instruction.</xhtml:p>\n               <xhtml:p>Successful exploitation allows remote attackers to utilize the arbitrary word overwrite to redirect the flow of control and eventually take control of the affected system. Code execution will occur under the context of the user that instantiated the vulnerable version of Adobe Acrobat.</xhtml:p>\n               <xhtml:p>An attacker does not need to establish a malicious web site as exploitation can occur by adding malicious content to the end of any embedded link and referencing any Microsoft IIS or Netscape Enterprise web server. Clicking on a direct malicious link is also not required as it may be embedded within an IMAGE tag, an IFRAME or an auto-loading script.</xhtml:p>\n               <xhtml:p>Successful exploitation requires that a payload be written such that certain areas of the input are URI acceptable. This includes initial injected instructions as well as certain overwritten addresses. This increases the complexity of successful exploitation. While not trivial, exploitation is definitely plausible [R.52.2].</xhtml:p>See also: CVE-2004-0629",
+                "\n               <xhtml:p>Consider the following PHP script:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">$whatever = addslashes($_REQUEST['whatever']);include(\"/path/to/program/\" . $whatever . \"/header.htm\");</xhtml:div>\n               <xhtml:p>A malicious attacker might open the following URL, disclosing the boot.ini file:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">http://localhost/phpscript.php?whatever=../../../../boot.ini%00</xhtml:div>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The program does not properly handle postfix NULL terminators"
+            ],
+            "x_capec_skills_required": {
+                "High": "Execution of arbitrary code",
+                "Medium": "Directory traversal"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

@@ -1,0 +1,128 @@
+{
+    "type": "bundle",
+    "id": "bundle--64f7264d-86d3-4856-9518-a34457cac57b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--07e5901d-0f6d-41a9-ac19-e00eecece95f",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Using Escaped Slashes in Alternate Encoding",
+            "description": "This attack targets the use of the backslash in alternate encoding. An attacker can provide a backslash as a leading character and causes a parser to believe that the next character is special. This is called an escape. By using that trick, the attacker tries to exploit alternate ways to encode the same character which leads to filter problems and opens avenues to attack.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/78.html",
+                    "external_id": "CAPEC-78"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/180.html",
+                    "external_id": "CWE-180"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/181.html",
+                    "external_id": "CWE-181"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/173.html",
+                    "external_id": "CWE-173"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/171.html",
+                    "external_id": "CWE-171"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/172.html",
+                    "external_id": "CWE-172"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/73.html",
+                    "external_id": "CWE-73"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/21.html",
+                    "external_id": "CWE-21"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/22.html",
+                    "external_id": "CWE-22"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html",
+                    "external_id": "CWE-74"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html",
+                    "external_id": "CWE-20"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/697.html",
+                    "external_id": "CWE-697"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/707.html",
+                    "external_id": "CWE-707"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Authorization": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Availability": [
+                    "Resource Consumption (Denial of Service)",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Bypass Protection Mechanism"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>For example, the byte pair \\0 might result in a single zero byte (a NULL) being sent. Another example is \\t, which is sometimes converted into a tab character. There is often an equivalent encoding between the back slash and the escaped back slash. This means that \\/ results in a single forward slash. A single forward slash also results in a single forward slash. The encoding looks like this:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">/ yields /\\/ yields /</xhtml:div>\n            ",
+                "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Attack Example: Escaped Slashes in Alternate Encodings</xhtml:div>\n               <xhtml:p>An attack leveraging this pattern is very simple. If you believe the target may be filtering the slash, attempt to supply \\/ and see what happens. Example command strings to try out include</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">CWD ..\\/..\\/..\\/..\\/winnt</xhtml:div>\n               <xhtml:p>which converts in many cases to</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">CWD ../../../../winnt</xhtml:div>\n               <xhtml:p>To probe for this kind of problem, a small C program that uses string output routines can be very useful. File system calls make excellent testing fodder. The simple snippet</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">int main(int argc, char* argv[]){<xhtml:div style=\"margin-left:10px;\">puts(\"\\/ \\\\ \\? \\. \\| \");return 0;</xhtml:div>\n                  }</xhtml:div>\n               <xhtml:p>produces the output</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">/ \\ ? . |</xhtml:div>\n               <xhtml:p>Clearly, the back slash is ignored, and thus we have hit on a number of alternative encodings to experiment with. Given our previous example, we can extend the attack to include other possibilities:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">CWD ..\\?\\?\\?\\?\\/..\\/..\\/..\\/winntCWD \\.\\.\\/\\.\\.\\/\\.\\.\\/\\.\\.\\/winntCWD ..\\|\\|\\|\\|\\/..\\/..\\/..\\/winnt</xhtml:div>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The application accepts the backlash character as escape character.",
+                "The application server does incomplete input data decoding, filtering and validation."
+            ],
+            "x_capec_skills_required": {
+                "Low": "The attacker can naively try backslash character and discover that the target host uses it as escape character.",
+                "Medium": "The attacker may need deep understanding of the host target in order to exploit the vulnerability. The attacker may also use automated tools to probe for this vulnerability."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

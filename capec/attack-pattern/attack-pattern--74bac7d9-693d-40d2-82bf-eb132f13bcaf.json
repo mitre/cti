@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--77ffa81a-d5de-499b-83d4-68e52a230f96",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--74bac7d9-693d-40d2-82bf-eb132f13bcaf",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2015-12-07T00:00:00.000Z",
+            "name": "Restful Privilege Elevation",
+            "description": "Rest uses standard HTTP (Get, Put, Delete) style permissions methods, but these are not necessarily correlated generally with back end programs. Strict interpretation of HTTP get methods means that these HTTP Get services should not be used to delete information on the server, but there is no access control mechanism to back up this logic. This means that unless the services are properly ACL'd and the application's service implementation are following these guidelines then an HTTP request can easily execute a delete or update on the server side. The attacker identifies a HTTP Get URL such as http://victimsite/updateOrder, which calls out to a program to update orders on a database or other resource. The URL is not idempotent so the request can be submitted multiple times by the attacker, additionally, the attacker may be able to exploit the URL published as a Get method that actually performs updates (instead of merely retrieving data). This may result in malicious or inadvertent altering of data on the server.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/58.html",
+                    "external_id": "CAPEC-58"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/267.html",
+                    "external_id": "CWE-267"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/269.html",
+                    "external_id": "CWE-269"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/264.html",
+                    "external_id": "CWE-264"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Mark O'Neill, Security for REST Web Services, Vprde;",
+                    "url": "http://www.vordel.com/downloads/rsa_conf_2006.pdf",
+                    "external_id": "REF-463"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "The HTTP Get method is designed to retrieve resources and not to alter the state of the application or resources on the server side. However, developers can easily code programs that accept a HTTP Get request that do in fact create, update or delete data on the server. Both Flickr (http://www.flickr.com/services/api/flickr.photosets.delete.html) and del.icio.us (http://del.icio.us/api/posts/delete) have implemented delete operations using standard HTTP Get requests. These HTTP Get methods do delete data on the server side, despite being called from Get which is not supposed to alter state."
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The attacker needs to be able to identify HTTP Get URLs. The Get methods must be set to call applications that perform operations other than get such as update and delete."
+            ],
+            "x_capec_skills_required": {
+                "Low": "It is relatively straightforward to identify an HTTP Get method that changes state on the server side and executes against an over-privileged system interface"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

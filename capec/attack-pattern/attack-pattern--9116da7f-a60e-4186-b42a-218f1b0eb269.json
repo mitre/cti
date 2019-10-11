@@ -1,0 +1,93 @@
+{
+    "type": "bundle",
+    "id": "bundle--81d840ad-ad8c-4805-84ae-c6b00edd6caf",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--9116da7f-a60e-4186-b42a-218f1b0eb269",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Blind SQL Injection",
+            "description": "Blind SQL Injection results from an insufficient mitigation for SQL Injection. Although suppressing database error messages are considered best practice, the suppression alone is not sufficient to prevent SQL Injection. Blind SQL Injection is a form of SQL Injection that overcomes the lack of error messages. Without the error messages that facilitate SQL Injection, the adversary constructs input strings that probe the target through simple Boolean SQL expressions. The adversary can determine if the syntax and structure of the injection was successful based on whether the query was executed or not. Applied iteratively, the adversary determines how and where the target is vulnerable to SQL Injection.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/7.html",
+                    "external_id": "CAPEC-7"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/89.html",
+                    "external_id": "CWE-89"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/209.html",
+                    "external_id": "CWE-209"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html",
+                    "external_id": "CWE-74"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html",
+                    "external_id": "CWE-20"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/697.html",
+                    "external_id": "CWE-697"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/713.html",
+                    "external_id": "CWE-713"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/707.html",
+                    "external_id": "CWE-707"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>An adversary may try entering something like \"username' AND 1=1; --\" in an input field. If the result is the same as when the adversary entered \"username\" in the field, then the adversary knows that the application is vulnerable to SQL Injection. The adversary can then ask yes/no questions from the database server to extract information from it. For example, the adversary can extract table names from a database using the following types of queries:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\"username' AND ascii(lower(substring((SELECT TOP 1 name FROM sysobjects WHERE xtype='U'), 1, 1))) > 108\".</xhtml:div>\n               <xhtml:p>If the above query executes properly, then the adversary knows that the first character in a table name in the database is a letter between m and z. If it doesn't, then the adversary knows that the character must be between a and l (assuming of course that table names only contain alphabetic characters). By performing a binary search on all character positions, the adversary can determine all table names in the database. Subsequently, the adversary may execute an actual attack and send something like:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\"username'; DROP TABLE trades; --</xhtml:div>\n            ",
+                "In the PHP application TimeSheet 1.1, an adversary can successfully retrieve username and password hashes from the database using Blind SQL Injection. If the adversary is aware of the local path structure, the adversary can also remotely execute arbitrary code and write the output of the injected queries to the local path. Blind SQL Injection is possible since the application does not properly sanitize the $_POST['username'] variable in the login.php file. See also: CVE-2006-4705"
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "SQL queries used by the application to store, retrieve or modify data.",
+                "User-controllable input that is not properly validated by the application as part of SQL queries."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Determining the database type and version, as well as the right number and type of parameters to the query being injected in the absence of error messages requires greater skill than reverse-engineering database error messages."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

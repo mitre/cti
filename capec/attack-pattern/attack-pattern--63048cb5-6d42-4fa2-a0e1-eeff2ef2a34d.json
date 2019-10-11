@@ -1,0 +1,74 @@
+{
+    "type": "bundle",
+    "id": "bundle--7df736f7-85a3-4b82-9b6f-165f30284192",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--63048cb5-6d42-4fa2-a0e1-eeff2ef2a34d",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Padding Oracle Crypto Attack",
+            "description": "An adversary is able to efficiently decrypt data without knowing the decryption key if a target system leaks data on whether or not a padding error happened while decrypting the ciphertext. A target system that leaks this type of information becomes the padding oracle and an adversary is able to make use of that oracle to efficiently decrypt data without knowing the decryption key by issuing on average 128*b calls to the padding oracle (where b is the number of bytes in the ciphertext block). In addition to performing decryption, an adversary is also able to produce valid ciphertexts (i.e., perform encryption) by using the padding oracle, all without knowing the encryption key. Any cryptosystem can be vulnerable to padding oracle attacks if the encrypted messages are not authenticated to ensure their validity prior to decryption, and then the information about padding error is leaked to the adversary. This attack technique may be used, for instance, to break CAPTCHA systems or decrypt/modify state information stored in client side objects (e.g., hidden fields or cookies). This attack technique is a side-channel attack on the cryptosystem that uses a data leak from an improperly implemented decryption routine to completely subvert the cryptosystem. The one bit of information that tells the adversary whether a padding error during decryption has occurred, in whatever form it comes, is sufficient for the adversary to break the cryptosystem. That bit of information can come in a form of an explicit error message about a padding error, a returned blank page, or even the server taking longer to respond (a timing attack). This attack can be launched cross domain where an adversary is able to use cross-domain information leaks to get the bits of information from the padding oracle from a target system / service with which the victim is communicating. To do so an adversary sends a request containing ciphertext to the target system. Due to the browser's same origin policy, the adversary is not able to see the response directly, but can use cross-domain information leak techniques to still get the information needed (i.e., information on whether or not a padding error has occurred). For instance, this can be done using \"img\" tag plus the onerror()/onload() events. The adversary's JavaScript can make web browsers to load an image on the target site, and know if the image is loaded or not. This is 1-bit information needed for the padding oracle attack to work: if the image is loaded, then it is valid padding, otherwise it is not.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/463.html",
+                    "external_id": "CAPEC-463"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/209.html",
+                    "external_id": "CWE-209"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/514.html",
+                    "external_id": "CWE-514"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/649.html",
+                    "external_id": "CWE-649"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/347.html",
+                    "external_id": "CWE-347"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/354.html",
+                    "external_id": "CWE-354"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/696.html",
+                    "external_id": "CWE-696"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Juliano Rizzo, Thai Duong, Practical Padding Oracle Attacks, 2010--05---25",
+                    "url": "https://www.usenix.org/legacy/events/woot10/tech/full_papers/Rizzo.pdf",
+                    "external_id": "REF-400"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_prerequisites": [
+                "The decryption routine does not properly authenticate the message / does not verify its integrity prior to performing the decryption operation",
+                "The target system leaks data (in some way) on whether a padding error has occurred when attempting to decrypt the ciphertext.",
+                "The padding oracle remains available for enough time / for as many requests as needed for the adversary to decrypt the ciphertext."
+            ],
+            "x_capec_resources_required": [
+                "\n               <xhtml:p>Ability to detect instances where a target system is vulnerable to an oracle padding attack</xhtml:p>\n               <xhtml:p>Sufficient cryptography knowledge and tools needed to take advantage of the presence of the padding oracle to perform decryption / encryption of data without a key</xhtml:p>\n            "
+            ],
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

@@ -1,0 +1,98 @@
+{
+    "type": "bundle",
+    "id": "bundle--64e3252a-7cbd-42fe-ae3b-6b8a4e81f248",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--b703f007-6e24-4365-b5f7-c5d249253b33",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-04-04T00:00:00.000Z",
+            "name": "XSS Using Alternate Syntax",
+            "description": "An adversary uses alternate forms of keywords or commands that result in the same action as the primary form but which may not be caught by filters. For example, many keywords are processed in a case insensitive manner. If the site's web filtering algorithm does not convert all tags into a consistent case before the comparison with forbidden keywords it is possible to bypass filters (e.g., incomplete black lists) by using an alternate case structure. For example, the \"script\" tag using the alternate forms of \"Script\" or \"ScRiPt\" may bypass filters where \"script\" is the only form tested. Other variants using different syntax representations are also possible as well as using pollution meta-characters or entities that are eventually ignored by the rendering engine. The attack can result in the execution of otherwise prohibited functionality.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/199.html",
+                    "external_id": "CAPEC-199"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/87.html",
+                    "external_id": "CWE-87"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "OWASP Cheatsheets, The Open Web Application Security Project (OWASP)",
+                    "url": "https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet",
+                    "external_id": "REF-69"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "OWASP Testing Guide (v2), The Open Web Application Security Project (OWASP)",
+                    "url": "http://www.owasp.org/index.php/Testing_for_Cross_site_scripting",
+                    "external_id": "REF-70"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "Non-alphanumeric XSS cheat sheet",
+                    "url": "http://sla.ckers.org/forum/read.php?24,28687",
+                    "external_id": "REF-71"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)",
+                    "url": "http://projects.webappsec.org/Cross-Site+Scripting",
+                    "external_id": "REF-72"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Accountability": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges",
+                    "Bypass Protection Mechanism"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ],
+                "Non-Repudiation": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>In this example, the attacker tries to get <script>alert(1)</script> executed by the victim's browser. The target application employs regular expressions to make sure no script is being passed through the application to the web page; such a regular expression could be ((?i)script), and the application would replace all matches by this regex by the empty string. An attacker will then create a special payload to bypass this filter:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\"><scriscriptpt>alert(1)</scscriptript></xhtml:div>\n               <xhtml:p>when the applications gets this input string, it will replace all \"script\" (case insensitive) by the empty string and the resulting input will be the desired vector by the attacker:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"result\"><script>alert(1)</script></xhtml:div>\n               <xhtml:p>In this example, we assume that the application needs to write a particular string in a client-side JavaScript context (e.g., <script>HERE</script>). For the attacker to execute the same payload as in the previous example, he would need to send alert(1) if there was no filtering. The application makes use of the following regular expression as filter</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"mitigation\">((\\w+)\\s*\\(.*\\)|alert|eval|function|document)</xhtml:div>\n               <xhtml:p>and replaces all matches by the empty string. For example each occurrence of alert(), eval(), foo() or even the string \"alert\" would be stripped. An attacker will then create a special payload to bypass this filter:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">this['al' + 'ert'](1)</xhtml:div>\n               <xhtml:p>when the applications gets this input string, it won't replace anything and this piece of JavaScript has exactly the same runtime meaning as alert(1). The attacker could also have used non-alphanumeric XSS vectors to bypass the filter; for example,</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">($=[$=[]][(__=!$+$)[_=-~-~-~$]+({}+$)[_/_]+($$=($_=!''+$)[_/_]+$_[+$])])()[__[_/_]+__[_+~$]+$_[_]+$$](_/_)</xhtml:div>\n               <xhtml:p>would be executed by the JavaScript engine like alert(1) is.</xhtml:p>\n            "
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Target client software must allow scripting such as JavaScript."
+            ],
+            "x_capec_resources_required": [
+                "Ability to send HTTP request to a web application."
+            ],
+            "x_capec_skills_required": {
+                "High": "To bypass non trivial filters in the application",
+                "Low": "To inject the malicious payload in a web page"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

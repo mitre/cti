@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--a601bf32-b573-4874-a286-49d6258d3213",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--359d056e-6d5c-4d54-97d6-5a9f586bcccf",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2019-09-30T00:00:00.000Z",
+            "name": "Utilizing REST's Trust in the System Resource to Obtain Sensitive Data",
+            "description": "This attack utilizes a REST(REpresentational State Transfer)-style applications' trust in the system resources and environment to obtain sensitive data once SSL is terminated. Rest applications premise is that they leverage existing infrastructure to deliver web services functionality. An example of this is a Rest application that uses HTTP Get methods and receives a HTTP response with an XML document. These Rest style web services are deployed on existing infrastructure such as Apache and IIS web servers with no SOAP stack required. Unfortunately from a security standpoint, there frequently is no interoperable identity security mechanism deployed, so Rest developers often fall back to SSL to deliver security. In large data centers, SSL is typically terminated at the edge of the network - at the firewall, load balancer, or router. Once the SSL is terminated the HTTP request is in the clear (unless developers have hashed or encrypted the values, but this is rare). The attacker can utilize a sniffer such as Wireshark to snapshot the credentials, such as username and password that are passed in the clear once SSL is terminated. Once the attacker gathers these credentials, they can submit requests to the web service provider just as authorized user do. There is not typically an authentication on the client side, beyond what is passed in the request itself so once this is compromised, then this is generally sufficient to compromise the service's authentication scheme.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/57.html",
+                    "external_id": "CAPEC-57"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/300.html",
+                    "external_id": "CWE-300"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/287.html",
+                    "external_id": "CWE-287"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/724.html",
+                    "external_id": "CWE-724"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/693.html",
+                    "external_id": "CWE-693"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Detailed",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "The Rest service provider uses SSL to protect the communications between the service requester (client) to the service provider. In the instance where SSL is terminated before the communications reach the web server, it is very common in enterprise data centers to terminate SSL at a router, firewall, load balancer, proxy or other device, then the attacker can insert a sniffer into the communication stream and gather all the authentication tokens (such as session credentials, username/passwords combinations, and so on). The Rest service requester and service provider do not have any way to detect this attack."
+            ],
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "Opportunity to intercept must exist beyond the point where SSL is terminated.",
+                "The attacker must be able to insert a listener actively (proxying the communication) or passively (sniffing the communication) in the client-server communication path."
+            ],
+            "x_capec_skills_required": {
+                "Low": "To insert a network sniffer or other listener into the communication stream"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}

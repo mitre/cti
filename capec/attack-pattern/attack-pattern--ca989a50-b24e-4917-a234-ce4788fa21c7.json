@@ -1,0 +1,83 @@
+{
+    "type": "bundle",
+    "id": "bundle--7d9206f7-44dd-4405-83e8-fbbe9b7db46f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--ca989a50-b24e-4917-a234-ce4788fa21c7",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "created": "2014-06-23T00:00:00.000Z",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Target Programs with Elevated Privileges",
+            "description": "This attack targets programs running with elevated privileges. The attacker would try to leverage a bug in the running program and get arbitrary code to execute with elevated privileges. For instance an attacker would look for programs that write to the system directories or registry keys (such as HKLM, which stores a number of critical Windows environment variables). These programs are typically running with elevated privileges and have usually not been designed with security in mind. Such programs are excellent exploit targets because they yield lots of power when they break. The malicious user try to execute its code at the same level as a privileged system call.",
+            "external_references": [
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/69.html",
+                    "external_id": "CAPEC-69"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/250.html",
+                    "external_id": "CWE-250"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/264.html",
+                    "external_id": "CWE-264"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/15.html",
+                    "external_id": "CWE-15"
+                },
+                {
+                    "source_name": "reference_from_CAPEC",
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "x_capec_abstraction": "Standard",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Resource Consumption (Denial of Service)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The targeted program runs with elevated OS privileges.",
+                "The targeted program accepts input data from the user or from another program.",
+                "The targeted program does not perform input validation properly.",
+                "The targeted program does not fail safely. For instance when a program fails it may authorize restricted access to anyone.",
+                "The targeted program has a vulnerability such as buffer overflow which may be exploited if a malicious user can inject unvalidated data. For instance a buffer overflow interrupts the program as it executes, and makes it run additional code supplied by the attacker. If the program under attack has elevated privileges to the OS, the attacker can elevate its privileges (such as having root level access).",
+                "The targeted program is giving away information about itself. Before performing such attack, an eventual attacker may need to gather information about the services running on the host target. The more the host target is verbose about the services that are running (version number of application, etc.) the more information can be gather by an attacker.",
+                "This attack often requires communicating with the host target services directly. For instance Telnet may be enough to communicate with the host target."
+            ],
+            "x_capec_skills_required": {
+                "Low": "An attacker can use a tool to scan and automatically launch an attack against known issues. A tool can also repeat a sequence of instructions and try to brute force the service on the host target, an example of that would be the flooding technique.",
+                "Medium": "More advanced attack may require knowledge of the protocol spoken by the host service."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.2"
+        }
+    ]
+}
