@@ -1,3 +1,6 @@
+### Changes to STIX for July 2019 ATT&CK Content Release
+1. Descriptions added to relationships of type `mitigates` under the enterprise domain 
+
 ### Changes to STIX for April 2019 ATT&CK Content Release
 1. `x_mitre_impact_type` added for enterprise techniques within the `Impact` tactic
 2. Descriptions added to relationships between software/groups
