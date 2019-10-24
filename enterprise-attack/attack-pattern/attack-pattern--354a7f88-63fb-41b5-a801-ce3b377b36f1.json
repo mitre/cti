@@ -1,51 +1,75 @@
 {
     "type": "bundle",
-    "id": "bundle--3ab61cbc-648f-402b-951e-f48521b1a3a0",
+    "id": "bundle--dca44a26-2ac9-4ef7-b4aa-9aaf2c30d53b",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1082",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1082"
-                },
-                {
-                    "url": "https://capec.mitre.org/data/definitions/311.html",
-                    "source_name": "capec",
-                    "external_id": "CAPEC-311"
-                }
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_data_sources": [
+                "Azure activity logs",
+                "Stackdriver logs",
+                "AWS CloudTrail logs",
+                "Process monitoring",
+                "Process command-line parameters"
+            ],
+            "name": "System Information Discovery",
+            "description": "An adversary may attempt to get detailed information about the operating system and hardware, including version, patches, hotfixes, service packs, and architecture. Adversaries may use the information from [System Information Discovery](https://attack.mitre.org/techniques/T1082) during automated discovery to shape follow-on behaviors, including whether or not the adversary fully infects the target and/or attempts specific actions.\n\n### Windows\n\nExample commands and utilities that obtain this information include <code>ver</code>, [Systeminfo](https://attack.mitre.org/software/S0096), and <code>dir</code> within [cmd](https://attack.mitre.org/software/S0106) for identifying information based on present files and directories.\n\n### Mac\n\nOn Mac, the <code>systemsetup</code> command gives a detailed breakdown of the system, but it requires administrative privileges. Additionally, the <code>system_profiler</code> gives a very detailed breakdown of configurations, firewall rules, mounted volumes, hardware, and many other things without needing elevated permissions.\n\n### AWS\n\nIn Amazon Web Services (AWS), the Application Discovery Service may be used by an adversary to identify servers, virtual machines, software, and software dependencies running.(Citation: Amazon System Discovery)\n\n### GCP\n\nOn Google Cloud Platform (GCP) <code>GET /v1beta1/{parent=organizations/*}/assets</code> or <code>POST /v1beta1/{parent=organizations/*}/assets:runDiscovery</code> may be used to list an organizations cloud assets, or perform asset discovery on a cloud environment.(Citation: Google Command Center Dashboard)\n\n### Azure\n\nIn Azure, the API request <code>GET https://management.azure.com/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}?api-version=2019-03-01</code> may be used to retrieve information about the model or instance view of a virtual machine.(Citation: Microsoft Virutal Machine API)",
+            "id": "attack-pattern--354a7f88-63fb-41b5-a801-ce3b377b36f1",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows",
+                "AWS",
+                "GCP",
+                "Azure"
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_data_sources": [
-                "Process monitoring",
-                "Process command-line parameters"
-            ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086).",
+            "x_mitre_version": "2.0",
+            "type": "attack-pattern",
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086).\n\nIn cloud-based systems, native logging can be used to identify access to certain APIs and dashboards that may contain system information. Depending on how the environment is used, that data alone may not be useful due to benign use during normal operations.",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
+            "x_mitre_contributors": [
+                "Praetorian"
             ],
+            "created": "2017-05-31T21:31:04.307Z",
             "kill_chain_phases": [
                 {
-                    "phase_name": "discovery",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "discovery"
                 }
             ],
-            "id": "attack-pattern--354a7f88-63fb-41b5-a801-ce3b377b36f1",
-            "name": "System Information Discovery",
-            "created": "2017-05-31T21:31:04.307Z",
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "description": "An adversary may attempt to get detailed information about the operating system and hardware, including version, patches, hotfixes, service packs, and architecture.\n\n### Windows\n\nExample commands and utilities that obtain this information include <code>ver</code>, [Systeminfo](https://attack.mitre.org/software/S0096), and <code>dir</code> within [cmd](https://attack.mitre.org/software/S0106) for identifying information based on present files and directories.\n\n### Mac\n\nOn Mac, the <code>systemsetup</code> command gives a detailed breakdown of the system, but it requires administrative privileges. Additionally, the <code>system_profiler</code> gives a very detailed breakdown of configurations, firewall rules, mounted volumes, hardware, and many other things without needing elevated permissions.",
-            "x_mitre_permissions_required": [
-                "User"
-            ]
+            "external_references": [
+                {
+                    "external_id": "T1082",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1082"
+                },
+                {
+                    "source_name": "capec",
+                    "external_id": "CAPEC-312",
+                    "url": "https://capec.mitre.org/data/definitions/312.html"
+                },
+                {
+                    "source_name": "Amazon System Discovery",
+                    "description": "Amazon. (n.d.). What Is AWS Application Discovery Service?. Retrieved October 8, 2019.",
+                    "url": "https://docs.aws.amazon.com/en_pv/application-discovery/latest/userguide/what-is-appdiscovery.html"
+                },
+                {
+                    "source_name": "Google Command Center Dashboard",
+                    "description": "Google. (2019, October 3). Quickstart: Using the dashboard. Retrieved October 8, 2019.",
+                    "url": "https://cloud.google.com/security-command-center/docs/quickstart-scc-dashboard"
+                },
+                {
+                    "source_name": "Microsoft Virutal Machine API",
+                    "description": "Microsoft. (2019, March 1). Virtual Machines - Get. Retrieved October 8, 2019.",
+                    "url": "https://docs.microsoft.com/en-us/rest/api/compute/virtualmachines/get"
+                }
+            ],
+            "modified": "2019-10-10T17:30:17.393Z"
         }
     ]
 }

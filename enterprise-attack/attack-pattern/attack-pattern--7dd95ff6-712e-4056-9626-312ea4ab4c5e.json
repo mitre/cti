@@ -1,44 +1,51 @@
 {
     "type": "bundle",
-    "id": "bundle--2bf2a5e9-f665-4a82-b87f-2a0d2100894d",
+    "id": "bundle--30b4443d-f84f-4088-9c3a-af0aa2f8a8d7",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1074",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1074"
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "x_mitre_data_sources": [
                 "File monitoring",
                 "Process monitoring",
                 "Process command-line parameters"
             ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "x_mitre_detection": "Processes that appear to be reading files from disparate locations and writing them to the same directory or file may be an indication of data being staged, especially if they are suspected of performing encryption or compression on the files.\n\nMonitor processes and command-line arguments for actions that could be taken to collect and combine files. Remote access tools with built-in features may interact directly with the Windows API to gather and copy to a location. Data may also be acquired and staged through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086).",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Data Staged",
+            "description": "Collected data is staged in a central location or directory prior to Exfiltration. Data may be kept in separate files or combined into one file through techniques such as [Data Compressed](https://attack.mitre.org/techniques/T1002) or [Data Encrypted](https://attack.mitre.org/techniques/T1022).\n\nInteractive command shells may be used, and common functionality within [cmd](https://attack.mitre.org/software/S0106) and bash may be used to copy data into a staging location.",
+            "id": "attack-pattern--7dd95ff6-712e-4056-9626-312ea4ab4c5e",
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
-                "Windows"
+                "Windows",
+                "AWS",
+                "GCP",
+                "Azure"
             ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "1.1",
+            "type": "attack-pattern",
+            "x_mitre_detection": "Processes that appear to be reading files from disparate locations and writing them to the same directory or file may be an indication of data being staged, especially if they are suspected of performing encryption or compression on the files, such as 7zip, RAR, ZIP, or zlib. Monitor publicly writeable directories, central locations, and commonly used staging directories (recycle bin, temp folders, etc.) to regularly check for compressed or encrypted data that may be indicative of staging.\n\nMonitor processes and command-line arguments for actions that could be taken to collect and combine files. Remote access tools with built-in features may interact directly with the Windows API to gather and copy to a location. Data may also be acquired and staged through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086).",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_contributors": [
+                "Praetorian",
+                "Shane Tully, @securitygypsy"
+            ],
+            "created": "2017-05-31T21:30:58.938Z",
             "kill_chain_phases": [
                 {
-                    "phase_name": "collection",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "collection"
                 }
             ],
-            "id": "attack-pattern--7dd95ff6-712e-4056-9626-312ea4ab4c5e",
-            "name": "Data Staged",
-            "created": "2017-05-31T21:30:58.938Z",
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "description": "Collected data is staged in a central location or directory prior to Exfiltration. Data may be kept in separate files or combined into one file through techniques such as [Data Compressed](https://attack.mitre.org/techniques/T1002) or [Data Encrypted](https://attack.mitre.org/techniques/T1022).\n\nInteractive command shells may be used, and common functionality within [cmd](https://attack.mitre.org/software/S0106) and bash may be used to copy data into a staging location."
+            "external_references": [
+                {
+                    "external_id": "T1074",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1074"
+                }
+            ],
+            "modified": "2019-10-09T21:09:00.992Z"
         }
     ]
 }

@@ -1,64 +1,69 @@
 {
     "type": "bundle",
-    "id": "bundle--61614576-d8a4-4f09-98dd-8b3d421623f2",
+    "id": "bundle--cb0b4a47-e40f-4e5c-87a1-2f132396d2c7",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1162",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1162"
-                },
-                {
-                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLoginItems.html",
-                    "source_name": "Adding Login Items",
-                    "description": "Apple. (2016, September 13). Adding Login Items. Retrieved July 11, 2017."
-                },
-                {
-                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
-                    "source_name": "Methods of Mac Malware Persistence",
-                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017."
-                },
-                {
-                    "url": "https://www.rsaconference.com/writable/presentations/file_upload/ht-r03-malware-persistence-on-os-x-yosemite_final.pdf",
-                    "source_name": "Malware Persistence on OS X",
-                    "description": "Patrick Wardle. (2015). Malware Persistence on OS X Yosemite. Retrieved July 10, 2017."
-                },
-                {
-                    "url": "https://blog.malwarebytes.com/threat-analysis/2017/04/new-osx-dok-malware-intercepts-web-traffic/",
-                    "source_name": "OSX.Dok Malware",
-                    "description": "Thomas Reed. (2017, July 7). New OSX.Dok malware intercepts web traffic. Retrieved July 10, 2017."
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            "x_mitre_permissions_required": [
+                "User"
             ],
             "x_mitre_data_sources": [
                 "File monitoring",
                 "API monitoring"
             ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "x_mitre_detection": "All the login items created via shared file lists are viewable by going to the Apple menu -> System Preferences -> Users & Groups -> Login items. This area (and the corresponding file locations) should be monitored and whitelisted for known good applications. Otherwise, Login Items are located in <code> Contents/Library/LoginItems </code> within an application bundle, so these paths should be monitored as well  (Citation: Adding Login Items). Monitor process execution resulting from login actions for unusual or unknown applications.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Login Item",
+            "description": "MacOS provides the option to list specific applications to run when a user logs in. These applications run under the logged in user's context, and will be started every time the user logs in. Login items installed using the Service Management Framework are not visible in the System Preferences and can only be removed by the application that created them (Citation: Adding Login Items). Users have direct control over login items installed using a shared file list which are also visible in System Preferences (Citation: Adding Login Items). These login items are stored in the user's <code>~/Library/Preferences/</code> directory in a plist file called <code>com.apple.loginitems.plist</code> (Citation: Methods of Mac Malware Persistence). Some of these applications can open visible dialogs to the user, but they don\u2019t all have to since there is an option to \u2018Hide\u2019 the window. If an adversary can register their own login item or modified an existing one, then they can use it to execute their code for a persistence mechanism each time the user logs in (Citation: Malware Persistence on OS X) (Citation: OSX.Dok Malware). The API method <code> SMLoginItemSetEnabled </code> can be used to set Login Items, but scripting languages like [AppleScript](https://attack.mitre.org/techniques/T1155) can do this as well  (Citation: Adding Login Items).",
+            "id": "attack-pattern--36675cd3-fe00-454c-8516-aebecacbe9d9",
             "x_mitre_platforms": [
                 "macOS"
             ],
-            "kill_chain_phases": [
-                {
-                    "phase_name": "persistence",
-                    "kill_chain_name": "mitre-attack"
-                }
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "attack-pattern--36675cd3-fe00-454c-8516-aebecacbe9d9",
-            "name": "Login Item",
-            "created": "2017-12-14T16:46:06.044Z",
             "x_mitre_version": "1.0",
             "type": "attack-pattern",
-            "description": "MacOS provides the option to list specific applications to run when a user logs in. These applications run under the logged in user's context, and will be started every time the user logs in. Login items installed using the Service Management Framework are not visible in the System Preferences and can only be removed by the application that created them (Citation: Adding Login Items). Users have direct control over login items installed using a shared file list which are also visible in System Preferences (Citation: Adding Login Items). These login items are stored in the user's <code>~/Library/Preferences/</code> directory in a plist file called <code>com.apple.loginitems.plist</code> (Citation: Methods of Mac Malware Persistence). Some of these applications can open visible dialogs to the user, but they don\u2019t all have to since there is an option to \u2018Hide\u2019 the window. If an adversary can register their own login item or modified an existing one, then they can use it to execute their code for a persistence mechanism each time the user logs in (Citation: Malware Persistence on OS X) (Citation: OSX.Dok Malware). The API method <code> SMLoginItemSetEnabled </code> can be used to set Login Items, but scripting languages like [AppleScript](https://attack.mitre.org/techniques/T1155) can do this as well  (Citation: Adding Login Items).",
-            "x_mitre_permissions_required": [
-                "User"
-            ]
+            "x_mitre_detection": "All the login items created via shared file lists are viewable by going to the Apple menu -> System Preferences -> Users & Groups -> Login items. This area (and the corresponding file locations) should be monitored and whitelisted for known good applications. Otherwise, Login Items are located in <code> Contents/Library/LoginItems </code> within an application bundle, so these paths should be monitored as well  (Citation: Adding Login Items). Monitor process execution resulting from login actions for unusual or unknown applications.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "created": "2017-12-14T16:46:06.044Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "external_references": [
+                {
+                    "external_id": "T1162",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1162"
+                },
+                {
+                    "source_name": "capec",
+                    "external_id": "CAPEC-564",
+                    "url": "https://capec.mitre.org/data/definitions/564.html"
+                },
+                {
+                    "source_name": "Adding Login Items",
+                    "description": "Apple. (2016, September 13). Adding Login Items. Retrieved July 11, 2017.",
+                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLoginItems.html"
+                },
+                {
+                    "source_name": "Methods of Mac Malware Persistence",
+                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
+                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf"
+                },
+                {
+                    "source_name": "Malware Persistence on OS X",
+                    "description": "Patrick Wardle. (2015). Malware Persistence on OS X Yosemite. Retrieved July 10, 2017.",
+                    "url": "https://www.rsaconference.com/writable/presentations/file_upload/ht-r03-malware-persistence-on-os-x-yosemite_final.pdf"
+                },
+                {
+                    "source_name": "OSX.Dok Malware",
+                    "description": "Thomas Reed. (2017, July 7). New OSX.Dok malware intercepts web traffic. Retrieved July 10, 2017.",
+                    "url": "https://blog.malwarebytes.com/threat-analysis/2017/04/new-osx-dok-malware-intercepts-web-traffic/"
+                }
+            ],
+            "modified": "2019-07-18T15:33:05.940Z"
         }
     ]
 }

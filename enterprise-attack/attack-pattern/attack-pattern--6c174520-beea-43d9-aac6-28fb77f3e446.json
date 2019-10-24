@@ -1,55 +1,55 @@
 {
     "type": "bundle",
-    "id": "bundle--f9e2b6c8-99c5-417a-9868-327dada0fff8",
+    "id": "bundle--574f307a-4eba-4020-b28b-eeec7b5f0690",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1101",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1101"
-                },
-                {
-                    "url": "http://docplayer.net/20839173-Analysis-of-malicious-security-support-provider-dlls.html",
-                    "source_name": "Graeber 2014",
-                    "description": "Graeber, M. (2014, October). Analysis of Malicious Security Support Provider DLLs. Retrieved March 1, 2017."
-                },
-                {
-                    "url": "https://technet.microsoft.com/en-us/library/dn408187.aspx",
-                    "source_name": "Microsoft Configure LSA",
-                    "description": "Microsoft. (2013, July 31). Configuring Additional LSA Protection. Retrieved June 24, 2015."
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "x_mitre_data_sources": [
                 "DLL monitoring",
                 "Windows Registry",
                 "Loaded DLLs"
             ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "x_mitre_detection": "Monitor the Registry for changes to the SSP Registry keys. Monitor the LSA process for DLL loads. Windows 8.1 and Windows Server 2012 R2 may generate events when unsigned SSP DLLs try to load into the LSA by setting the Registry key <code>HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\LSASS.exe</code> with AuditLevel = 8. (Citation: Graeber 2014) (Citation: Microsoft Configure LSA)",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_permissions_required": [
+                "Administrator"
+            ],
+            "name": "Security Support Provider",
+            "description": "Windows Security Support Provider (SSP) DLLs are loaded into the Local Security Authority (LSA) process at system start. Once loaded into the LSA, SSP DLLs have access to encrypted and plaintext passwords that are stored in Windows, such as any logged-on user's Domain password or smart card PINs. The SSP configuration is stored in two Registry keys: <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\Security Packages</code> and <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\OSConfig\\Security Packages</code>. An adversary may modify these Registry keys to add new SSPs, which will be loaded the next time the system boots, or when the AddSecurityPackage Windows API function is called.\n (Citation: Graeber 2014)",
+            "id": "attack-pattern--6c174520-beea-43d9-aac6-28fb77f3e446",
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "kill_chain_phases": [
-                {
-                    "phase_name": "persistence",
-                    "kill_chain_name": "mitre-attack"
-                }
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "attack-pattern--6c174520-beea-43d9-aac6-28fb77f3e446",
-            "name": "Security Support Provider",
-            "created": "2017-05-31T21:31:13.447Z",
             "x_mitre_version": "1.0",
             "type": "attack-pattern",
-            "description": "Windows Security Support Provider (SSP) DLLs are loaded into the Local Security Authority (LSA) process at system start. Once loaded into the LSA, SSP DLLs have access to encrypted and plaintext passwords that are stored in Windows, such as any logged-on user's Domain password or smart card PINs. The SSP configuration is stored in two Registry keys: <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\Security Packages</code> and <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\OSConfig\\Security Packages</code>. An adversary may modify these Registry keys to add new SSPs, which will be loaded the next time the system boots, or when the AddSecurityPackage Windows API function is called.\n (Citation: Graeber 2014)",
-            "x_mitre_permissions_required": [
-                "Administrator"
-            ]
+            "x_mitre_detection": "Monitor the Registry for changes to the SSP Registry keys. Monitor the LSA process for DLL loads. Windows 8.1 and Windows Server 2012 R2 may generate events when unsigned SSP DLLs try to load into the LSA by setting the Registry key <code>HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\LSASS.exe</code> with AuditLevel = 8. (Citation: Graeber 2014) (Citation: Microsoft Configure LSA)",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "created": "2017-05-31T21:31:13.447Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "external_references": [
+                {
+                    "external_id": "T1101",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1101"
+                },
+                {
+                    "source_name": "Graeber 2014",
+                    "description": "Graeber, M. (2014, October). Analysis of Malicious Security Support Provider DLLs. Retrieved March 1, 2017.",
+                    "url": "http://docplayer.net/20839173-Analysis-of-malicious-security-support-provider-dlls.html"
+                },
+                {
+                    "source_name": "Microsoft Configure LSA",
+                    "description": "Microsoft. (2013, July 31). Configuring Additional LSA Protection. Retrieved June 24, 2015.",
+                    "url": "https://technet.microsoft.com/en-us/library/dn408187.aspx"
+                }
+            ],
+            "modified": "2019-06-24T12:15:29.952Z"
         }
     ]
 }

@@ -1,0 +1,79 @@
+{
+    "type": "bundle",
+    "id": "bundle--1d9787ab-9319-4766-b94a-a003441273c7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_data_sources": [
+                "Process monitoring",
+                "PowerShell logs",
+                "File monitoring",
+                "API monitoring"
+            ],
+            "name": "Credentials from Web Browsers",
+            "description": "Adversaries may acquire credentials from web browsers by reading files specific to the target browser.  (Citation: Talos Olympic Destroyer 2018) \n\nWeb browsers commonly save credentials such as website usernames and passwords so that they do not need to be entered manually in the future. Web browsers typically store the credentials in an encrypted format within a credential store; however, methods exist to extract plaintext credentials from web browsers.\n\nFor example, on Windows systems, encrypted credentials may be obtained from Google Chrome by reading a database file, <code>AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data</code> and executing a SQL query: <code>SELECT action_url, username_value, password_value FROM logins;</code>. The plaintext password can then be obtained by passing the encrypted credentials to the Windows API function <code>CryptUnprotectData</code>, which uses the victim\u2019s cached logon credentials as the decryption key. (Citation: Microsoft CryptUnprotectData \u200eApril 2018)\n \nAdversaries have executed similar procedures for common web browsers such as FireFox, Safari, Edge, etc. (Citation: Proofpoint Vega Credential Stealer May 2018)(Citation: FireEye HawkEye Malware July 2017)\n\nAdversaries may also acquire credentials by searching web browser process memory for patterns that commonly match credentials.(Citation: GitHub Mimikittenz July 2016)\n\nAfter acquiring credentials from web browsers, adversaries may attempt to recycle the credentials across different systems and/or accounts in order to expand access. This can result in significantly furthering an adversary's objective in cases where credentials gained from web browsers overlap with privileged accounts (e.g. domain administrator).",
+            "id": "attack-pattern--4579d9c9-d5b9-45e0-9848-0104637b579f",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "1.0",
+            "type": "attack-pattern",
+            "x_mitre_detection": "Identify web browser files that contain credentials such as Google Chrome\u2019s Login Data database file: <code>AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data</code>. Monitor file read events of web browser files that contain credentials, especially when the reading process is unrelated to the subject web browser. Monitor process execution logs to include PowerShell Transcription focusing on those that perform a combination of behaviors including reading web browser process memory, utilizing regular expressions, and those that contain numerous keywords for common web applications (Gmail, Twitter, Office365, etc.).",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_contributors": [
+                "Ryan Benson, Exabeam",
+                "Barry Shteiman, Exabeam",
+                "Sylvain Gil, Exabeam",
+                "RedHuntLabs, @redhuntlabs"
+            ],
+            "created": "2019-06-17T19:34:51.855Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "credential-access"
+                }
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1503",
+                    "url": "https://attack.mitre.org/techniques/T1503"
+                },
+                {
+                    "description": "Mercer, W. and Rascagneres, P. (2018, February 12). Olympic Destroyer Takes Aim At Winter Olympics. Retrieved March 14, 2019.",
+                    "source_name": "Talos Olympic Destroyer 2018",
+                    "url": "https://blog.talosintelligence.com/2018/02/olympic-destroyer.html"
+                },
+                {
+                    "description": "Microsoft. (2018, April 12). CryptUnprotectData function. Retrieved June 18, 2019.",
+                    "source_name": "Microsoft CryptUnprotectData \u200eApril 2018",
+                    "url": "https://docs.microsoft.com/en-us/windows/desktop/api/dpapi/nf-dpapi-cryptunprotectdata"
+                },
+                {
+                    "description": "Proofpoint. (2018, May 10). New Vega Stealer shines brightly in targeted campaign . Retrieved June 18, 2019.",
+                    "source_name": "Proofpoint Vega Credential Stealer May 2018",
+                    "url": "https://www.proofpoint.com/us/threat-insight/post/new-vega-stealer-shines-brightly-targeted-campaign"
+                },
+                {
+                    "description": "Swapnil Patil, Yogesh Londhe. (2017, July 25). HawkEye Credential Theft Malware Distributed in Recent Phishing Campaign. Retrieved June 18, 2019.",
+                    "source_name": "FireEye HawkEye Malware July 2017",
+                    "url": "https://www.fireeye.com/blog/threat-research/2017/07/hawkeye-malware-distributed-in-phishing-campaign.html"
+                },
+                {
+                    "description": "Jamieson O'Reilly (putterpanda). (2016, July 4). mimikittenz. Retrieved June 20, 2019.",
+                    "source_name": "GitHub Mimikittenz July 2016",
+                    "url": "https://github.com/putterpanda/mimikittenz"
+                }
+            ],
+            "modified": "2019-07-10T20:57:36.851Z"
+        }
+    ]
+}

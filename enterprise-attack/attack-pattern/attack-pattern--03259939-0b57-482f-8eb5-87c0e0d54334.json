@@ -1,64 +1,64 @@
 {
     "type": "bundle",
-    "id": "bundle--a7817931-6981-448c-bb1b-4de3d3a221d3",
+    "id": "bundle--188ecf71-2e57-42ad-856b-fa0ad7e23e25",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1037",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1037"
-                },
-                {
-                    "url": "https://capec.mitre.org/data/definitions/564.html",
-                    "source_name": "capec",
-                    "external_id": "CAPEC-564"
-                },
-                {
-                    "url": "https://technet.microsoft.com/en-us/library/cc758918(v=ws.10).aspx",
-                    "source_name": "TechNet Logon Scripts",
-                    "description": "Microsoft. (2005, January 21). Creating logon scripts. Retrieved April 27, 2016."
-                },
-                {
-                    "url": "https://support.apple.com/de-at/HT2420",
-                    "source_name": "creating login hook",
-                    "description": "Apple. (2011, June 1). Mac OS X: Creating a login hook. Retrieved July 17, 2017."
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_system_requirements": [
-                "Write access to system or domain logon scripts"
-            ],
             "x_mitre_data_sources": [
                 "File monitoring",
                 "Process monitoring"
             ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "x_mitre_detection": "Monitor logon scripts for unusual access by abnormal users or at abnormal times. Look for files added or modified by unusual accounts outside of normal administration duties.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "type": "attack-pattern",
+            "name": "Logon Scripts",
+            "description": "### Windows\n\nWindows allows logon scripts to be run whenever a specific user or group of users log into a system. (Citation: TechNet Logon Scripts) The scripts can be used to perform administrative functions, which may often execute other programs or send information to an internal logging server.\n\nIf adversaries can access these scripts, they may insert additional code into the logon script to execute their tools when a user logs in. This code can allow them to maintain persistence on a single system, if it is a local script, or to move laterally within a network, if the script is stored on a central server and pushed to many systems. Depending on the access configuration of the logon scripts, either local credentials or an administrator account may be necessary.\n\n### Mac\n\nMac allows login and logoff hooks to be run as root whenever a specific user logs into or out of a system. A login hook tells Mac OS X to execute a certain script when a user logs in, but unlike startup items, a login hook executes as root (Citation: creating login hook). There can only be one login hook at a time though. If adversaries can access these scripts, they can insert additional code to the script to execute their tools when a user logs in.",
+            "id": "attack-pattern--03259939-0b57-482f-8eb5-87c0e0d54334",
             "x_mitre_platforms": [
                 "macOS",
                 "Windows"
             ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_system_requirements": [
+                "Write access to system or domain logon scripts"
+            ],
+            "x_mitre_detection": "Monitor logon scripts for unusual access by abnormal users or at abnormal times. Look for files added or modified by unusual accounts outside of normal administration duties.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "created": "2017-05-31T21:30:38.910Z",
             "kill_chain_phases": [
                 {
-                    "phase_name": "lateral-movement",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "lateral-movement"
                 },
                 {
-                    "phase_name": "persistence",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
                 }
             ],
-            "id": "attack-pattern--03259939-0b57-482f-8eb5-87c0e0d54334",
-            "name": "Logon Scripts",
-            "created": "2017-05-31T21:30:38.910Z",
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "description": "### Windows\n\nWindows allows logon scripts to be run whenever a specific user or group of users log into a system. (Citation: TechNet Logon Scripts) The scripts can be used to perform administrative functions, which may often execute other programs or send information to an internal logging server.\n\nIf adversaries can access these scripts, they may insert additional code into the logon script to execute their tools when a user logs in. This code can allow them to maintain persistence on a single system, if it is a local script, or to move laterally within a network, if the script is stored on a central server and pushed to many systems. Depending on the access configuration of the logon scripts, either local credentials or an administrator account may be necessary.\n\n### Mac\n\nMac allows login and logoff hooks to be run as root whenever a specific user logs into or out of a system. A login hook tells Mac OS X to execute a certain script when a user logs in, but unlike startup items, a login hook executes as root (Citation: creating login hook). There can only be one login hook at a time though. If adversaries can access these scripts, they can insert additional code to the script to execute their tools when a user logs in."
+            "external_references": [
+                {
+                    "external_id": "T1037",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1037"
+                },
+                {
+                    "source_name": "capec",
+                    "external_id": "CAPEC-564",
+                    "url": "https://capec.mitre.org/data/definitions/564.html"
+                },
+                {
+                    "source_name": "TechNet Logon Scripts",
+                    "description": "Microsoft. (2005, January 21). Creating logon scripts. Retrieved April 27, 2016.",
+                    "url": "https://technet.microsoft.com/en-us/library/cc758918(v=ws.10).aspx"
+                },
+                {
+                    "source_name": "creating login hook",
+                    "description": "Apple. (2011, June 1). Mac OS X: Creating a login hook. Retrieved July 17, 2017.",
+                    "url": "https://support.apple.com/de-at/HT2420"
+                }
+            ],
+            "modified": "2019-06-24T14:22:07.921Z"
         }
     ]
 }

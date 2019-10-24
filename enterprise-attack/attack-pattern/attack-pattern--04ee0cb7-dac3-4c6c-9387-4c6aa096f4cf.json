@@ -1,48 +1,61 @@
 {
     "type": "bundle",
-    "id": "bundle--092f646a-3696-4d4a-ad1f-cba5cf994c7e",
+    "id": "bundle--c63ae7aa-6c8c-4729-98c8-18b64212db21",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1143",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1143"
-                },
-                {
-                    "url": "https://blog.malwarebytes.com/threat-analysis/2017/01/new-mac-backdoor-using-antiquated-code/",
-                    "source_name": "Antiquated Mac Malware",
-                    "description": "Thomas Reed. (2017, January 18). New Mac backdoor using antiquated code. Retrieved July 5, 2017."
-                }
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_data_sources": [
+                "Windows event logs",
+                "PowerShell logs",
+                "Process command-line parameters",
+                "Process monitoring",
+                "File monitoring"
+            ],
+            "name": "Hidden Window",
+            "description": "Adversaries may implement hidden windows to conceal malicious activity from the plain sight of users. In some cases, windows that would typically be displayed when an application carries out an operation can be hidden. This may be utilized by system administrators to avoid disrupting user work environments when carrying out administrative tasks. Adversaries may abuse operating system functionality to hide otherwise visible windows from users so as not to alert the user to adversary activity on the system.\n\n### Windows\nThere are a variety of features in scripting languages in Windows, such as [PowerShell](https://attack.mitre.org/techniques/T1086), Jscript, and VBScript to make windows hidden. One example of this is <code>powershell.exe -WindowStyle Hidden</code>.  (Citation: PowerShell About 2019)\n\n### Mac\nThe configurations for how applications run on macOS are listed in property list (plist) files. One of the tags in these files can be\u00a0<code>apple.awt.UIElement</code>, which allows for Java applications to prevent the application's icon from appearing in the Dock. A common use for this is when applications run in the system tray, but don't also want to show up in the Dock. However, adversaries can abuse this feature and hide their running window.(Citation: Antiquated Mac Malware)\n",
+            "id": "attack-pattern--04ee0cb7-dac3-4c6c-9387-4c6aa096f4cf",
+            "x_mitre_platforms": [
+                "macOS",
+                "Windows"
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_data_sources": [
-                "File monitoring"
-            ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "x_mitre_detection": "Plist files are ASCII text files with a specific format, so they're relatively easy to parse. File monitoring can check for the <code>apple.awt.UIElement</code> or any other suspicious plist tag in plist files and flag them.",
+            "x_mitre_version": "1.1",
+            "type": "attack-pattern",
+            "x_mitre_detection": "Monitor processes and command-line arguments for actions indicative of hidden windows. In Windows, enable and configure event logging and PowerShell logging to check for the hidden window style. In MacOS, plist files are ASCII text files with a specific format, so they're relatively easy to parse. File monitoring can check for the <code>apple.awt.UIElement</code> or any other suspicious plist tag in plist files and flag them.",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "macOS"
+            "x_mitre_contributors": [
+                "Travis Smith, Tripwire"
             ],
+            "created": "2017-12-14T16:46:06.044Z",
             "kill_chain_phases": [
                 {
-                    "phase_name": "defense-evasion",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
                 }
             ],
-            "id": "attack-pattern--04ee0cb7-dac3-4c6c-9387-4c6aa096f4cf",
-            "name": "Hidden Window",
-            "created": "2017-12-14T16:46:06.044Z",
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "description": "The configurations for how applications run on macOS and OS X are listed in property list (plist) files. One of the tags in these files can be <code>apple.awt.UIElement</code>, which allows for Java applications to prevent the application's icon from appearing in the Dock. A common use for this is when applications run in the system tray, but don't also want to show up in the Dock. However, adversaries can abuse this feature and hide their running window  (Citation: Antiquated Mac Malware).",
-            "x_mitre_permissions_required": [
-                "User"
-            ]
+            "external_references": [
+                {
+                    "external_id": "T1143",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1143"
+                },
+                {
+                    "description": "Wheeler, S. et al.. (2019, May 1). About PowerShell.exe. Retrieved October 11, 2019.",
+                    "source_name": "PowerShell About 2019",
+                    "url": "https://docs.microsoft.com/en-us/powershell/module/Microsoft.PowerShell.Core/About/about_PowerShell_exe?view=powershell-5.1"
+                },
+                {
+                    "source_name": "Antiquated Mac Malware",
+                    "description": "Thomas Reed. (2017, January 18). New Mac backdoor using antiquated code. Retrieved July 5, 2017.",
+                    "url": "https://blog.malwarebytes.com/threat-analysis/2017/01/new-mac-backdoor-using-antiquated-code/"
+                }
+            ],
+            "modified": "2019-10-15T22:00:58.582Z"
         }
     ]
 }

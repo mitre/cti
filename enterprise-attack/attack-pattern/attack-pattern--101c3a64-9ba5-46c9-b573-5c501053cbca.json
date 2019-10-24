@@ -1,0 +1,73 @@
+{
+    "type": "bundle",
+    "id": "bundle--6d878e99-8f11-466f-8f27-a247b5f3b6ef",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "User"
+            ],
+            "x_mitre_data_sources": [
+                "File monitoring",
+                "Process monitoring",
+                "API monitoring"
+            ],
+            "name": "Elevated Execution with Prompt",
+            "description": "Adversaries may leverage the AuthorizationExecuteWithPrivileges API to escalate privileges by prompting the user for credentials.(Citation: AppleDocs AuthorizationExecuteWithPrivileges) The purpose of this API is to give application developers an easy way to perform operations with root privileges, such as for application installation or updating.  This API does not validate that the program requesting root privileges comes from a reputable source or has been maliciously modified. Although this API is deprecated, it still fully functions in the latest releases of macOS. When calling this API, the user will be prompted to enter their credentials but no checks on the origin or integrity of the program are made. The program calling the API may also load world writable files which can be modified to perform malicious behavior with elevated privileges.\n\nAdversaries may abuse AuthorizationExecuteWithPrivileges to obtain root privileges in order to install malicious software on victims and install persistence mechanisms.(Citation: Death by 1000 installers; it's all broken!)(Citation: Carbon Black Shlayer Feb 2019)(Citation: OSX Coldroot RAT) This technique may be combined with [Masquerading](https://attack.mitre.org/techniques/T1036) to trick the user into granting escalated privileges to malicious code.(Citation: Death by 1000 installers; it's all broken!)(Citation: Carbon Black Shlayer Feb 2019) This technique has also been shown to work by modifying legitimate programs present on the machine that make use of this API.(Citation: Death by 1000 installers; it's all broken!)",
+            "id": "attack-pattern--101c3a64-9ba5-46c9-b573-5c501053cbca",
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "1.0",
+            "type": "attack-pattern",
+            "x_mitre_detection": "Consider monitoring for <code>/usr/libexec/security_authtrampoline</code> executions which may indicate that AuthorizationExecuteWithPrivileges is being executed. MacOS system logs may also indicate when AuthorizationExecuteWithPrivileges is being called. Monitoring OS API callbacks for the execution can also be a way to detect this behavior but requires specialized security tooling.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_contributors": [
+                "Erika Noerenberg, @gutterchurl, Carbon Black",
+                "Jimmy Astle, @AstleJimmy, Carbon Black"
+            ],
+            "created": "2019-08-08T14:29:37.108Z",
+            "x_mitre_effective_permissions": [
+                "root"
+            ],
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1514",
+                    "url": "https://attack.mitre.org/techniques/T1514"
+                },
+                {
+                    "description": "Apple. (n.d.). Apple Developer Documentation - AuthorizationExecuteWithPrivileges. Retrieved August 8, 2019.",
+                    "source_name": "AppleDocs AuthorizationExecuteWithPrivileges",
+                    "url": "https://developer.apple.com/documentation/security/1540038-authorizationexecutewithprivileg"
+                },
+                {
+                    "description": "Patrick Wardle. (2017). Death by 1000 installers; it's all broken!. Retrieved August 8, 2019.",
+                    "source_name": "Death by 1000 installers; it's all broken!",
+                    "url": "https://speakerdeck.com/patrickwardle/defcon-2017-death-by-1000-installers-its-all-broken?slide=8"
+                },
+                {
+                    "description": "Carbon Black Threat Analysis Unit. (2019, February 12). New macOS Malware Variant of Shlayer (OSX) Discovered. Retrieved August 8, 2019.",
+                    "source_name": "Carbon Black Shlayer Feb 2019",
+                    "url": "https://www.carbonblack.com/2019/02/12/tau-threat-intelligence-notification-new-macos-malware-variant-of-shlayer-osx-discovered/"
+                },
+                {
+                    "description": "Patrick Wardle. (2018, February 17). Tearing Apart the Undetected (OSX)Coldroot RAT. Retrieved August 8, 2019.",
+                    "source_name": "OSX Coldroot RAT",
+                    "url": "https://objective-see.com/blog/blog_0x2A.html"
+                }
+            ],
+            "modified": "2019-09-17T15:16:01.415Z"
+        }
+    ]
+}

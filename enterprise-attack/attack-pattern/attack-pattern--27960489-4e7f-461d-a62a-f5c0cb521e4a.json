@@ -1,0 +1,79 @@
+{
+    "type": "bundle",
+    "id": "bundle--d0df5f84-9e1b-49d0-9262-96b799e70a81",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_data_sources": [
+                "OAuth audit logs",
+                "Office 365 account logs"
+            ],
+            "name": "Application Access Token",
+            "description": "Adversaries may use application access tokens to bypass the typical authentication process and access restricted accounts, information, or services on remote systems. These tokens are typically stolen from users and used in lieu of login credentials.\n\nApplication access tokens are used to make authorized API requests on behalf of a user and are commonly used as a way to access resources in cloud-based applications and software-as-a-service (SaaS).(Citation: Auth0 - Why You Should Always Use Access Tokens to Secure APIs Sept 2019) OAuth is one commonly implemented framework that issues tokens to users for access to systems. These frameworks are used collaboratively to verify the user and determine what actions the user is allowed to perform. Once identity is established, the token allows actions to be authorized, without passing the actual credentials of the user. Therefore, compromise of the token can grant the adversary access to resources of other sites through a malicious application.(Citation: okta)\n\nFor example, with a cloud-based email service once an OAuth access token is granted to a malicious application, it can potentially gain long-term access to features of the user account if a \"refresh\" token enabling background access is awarded.(Citation: Microsoft Identity Platform Access 2019) With an OAuth access token an adversary can use the user-granted REST API to perform functions such as email searching and contact enumeration.(Citation: Staaldraad Phishing with OAuth 2017)\n\nCompromised access tokens may be used as an initial step in compromising other services. For example, if a token grants access to a victim\u2019s primary email, the adversary may be able to extend access to all other services which the target subscribes by triggering forgotten password routines. Direct API access through a token negates the effectiveness of a second authentication factor and may be immune to intuitive countermeasures like changing passwords. Access abuse over an API channel can be difficult to detect even from the service provider end, as the access can still align well with a legitimate workflow.\n",
+            "id": "attack-pattern--27960489-4e7f-461d-a62a-f5c0cb521e4a",
+            "modified": "2019-10-22T19:53:15.909Z",
+            "x_mitre_platforms": [
+                "SaaS",
+                "Office 365"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "1.0",
+            "type": "attack-pattern",
+            "x_mitre_detection": "Monitor access token activity for abnormal use and permissions granted to unusual or suspicious applications. Administrators can set up a variety of logs and leverage audit tools to monitor actions that can be conducted as a result of OAuth 2.0 access. For instance, audit reports enable admins to identify privilege escalation actions such as role creations or policy modifications, which could be actions performed after initial access.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_contributors": [
+                "Mark Wee",
+                "Jeff Sakowicz, Microsoft Identity Developer Platform Services (IDPM Services)",
+                "Saisha Agrawal, Microsoft Threat Intelligent Center (MSTIC)",
+                "Shailesh Tiwary (Indian Army)"
+            ],
+            "created": "2019-08-30T12:55:58.607Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "lateral-movement"
+                }
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1527",
+                    "url": "https://attack.mitre.org/techniques/T1527"
+                },
+                {
+                    "description": "Auth0. (n.d.). Why You Should Always Use Access Tokens to Secure APIs. Retrieved September 12, 2019.",
+                    "source_name": "Auth0 - Why You Should Always Use Access Tokens to Secure APIs Sept 2019",
+                    "url": "https://auth0.com/docs/api-auth/why-use-access-tokens-to-secure-apis"
+                },
+                {
+                    "description": "okta. (n.d.). What Happens If Your JWT Is Stolen?. Retrieved September 12, 2019.",
+                    "source_name": "okta",
+                    "url": "https://developer.okta.com/blog/2018/06/20/what-happens-if-your-jwt-is-stolen"
+                },
+                {
+                    "description": "Cai, S., Flores, J., de Guzman, C., et. al.. (2019, August 27). Microsoft identity platform access tokens. Retrieved October 4, 2019.",
+                    "source_name": "Microsoft Identity Platform Access 2019",
+                    "url": "https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens"
+                },
+                {
+                    "description": "Stalmans, E.. (2017, August 2). Phishing with OAuth and o365/Azure. Retrieved October 4, 2019.",
+                    "source_name": "Staaldraad Phishing with OAuth 2017",
+                    "url": "https://staaldraad.github.io/2017/08/02/o356-phishing-with-oauth/"
+                }
+            ],
+            "x_mitre_defense_bypassed": [
+                "Multi-Factor Authentication",
+                "Logon Credentials"
+            ]
+        }
+    ]
+}

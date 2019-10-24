@@ -1,99 +1,99 @@
 {
     "type": "bundle",
-    "id": "bundle--b0e14159-f58e-4fc2-a006-e5ea467589c0",
+    "id": "bundle--77ed1401-2538-42a3-88e0-0aeffab1e052",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1096",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1096"
-                },
-                {
-                    "url": "https://posts.specterops.io/host-based-threat-modeling-indicator-design-a9dbbb53d5ea",
-                    "source_name": "SpectorOps Host-Based Jul 2017",
-                    "description": "Atkinson, J. (2017, July 18). Host-based Threat Modeling & Indicator Design. Retrieved March 21, 2018."
-                },
-                {
-                    "url": "https://blogs.technet.microsoft.com/askcore/2010/08/25/ntfs-file-attributes/",
-                    "source_name": "Microsoft NTFS File Attributes Aug 2010",
-                    "description": "Hughes, J. (2010, August 25). NTFS File Attributes. Retrieved March 21, 2018."
-                },
-                {
-                    "url": "http://msdn.microsoft.com/en-us/library/aa364404",
-                    "source_name": "Microsoft File Streams",
-                    "description": "Microsoft. (n.d.). File Streams. Retrieved December 2, 2014."
-                },
-                {
-                    "url": "https://blog.malwarebytes.com/101/2015/07/introduction-to-alternate-data-streams/",
-                    "source_name": "MalwareBytes ADS July 2015",
-                    "description": "Arntz, P. (2015, July 22). Introduction to Alternate Data Streams. Retrieved March 21, 2018."
-                },
-                {
-                    "url": "https://blogs.technet.microsoft.com/askcore/2013/03/24/alternate-data-streams-in-ntfs/",
-                    "source_name": "Microsoft ADS Mar 2014",
-                    "description": "Marlin, J. (2013, March 24). Alternate Data Streams in NTFS. Retrieved March 21, 2018."
-                },
-                {
-                    "url": "http://journeyintoir.blogspot.com/2012/12/extracting-zeroaccess-from-ntfs.html",
-                    "source_name": "Journey into IR ZeroAccess NTFS EA",
-                    "description": "Harrell, C. (2012, December 11). Extracting ZeroAccess from NTFS Extended Attributes. Retrieved June 3, 2016."
-                },
-                {
-                    "url": "https://oddvar.moe/2018/01/14/putting-data-in-alternate-data-streams-and-how-to-execute-it/",
-                    "source_name": "Oddvar Moe ADS1 Jan 2018",
-                    "description": "Moe, O. (2018, January 14). Putting Data in Alternate Data Streams and How to Execute It. Retrieved June 30, 2018."
-                },
-                {
-                    "url": "https://oddvar.moe/2018/04/11/putting-data-in-alternate-data-streams-and-how-to-execute-it-part-2/",
-                    "source_name": "Oddvar Moe ADS2 Apr 2018",
-                    "description": "Moe, O. (2018, April 11). Putting Data in Alternate Data Streams and How to Execute It - Part 2. Retrieved June 30, 2018."
-                },
-                {
-                    "url": "https://www.symantec.com/connect/articles/what-you-need-know-about-alternate-data-streams-windows-your-data-secure-can-you-restore",
-                    "source_name": "Symantec ADS May 2009",
-                    "description": "Pravs. (2009, May 25). What you need to know about alternate data streams in windows? Is your Data secure? Can you restore that?. Retrieved March 21, 2018."
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_contributors": [
-                "Red Canary",
-                "Oddvar Moe, @oddvarmoe"
-            ],
             "x_mitre_data_sources": [
                 "File monitoring",
                 "Kernel drivers",
                 "API monitoring",
                 "Process command-line parameters"
             ],
-            "modified": "2019-02-20T14:17:30.847Z",
-            "x_mitre_detection": "Forensic techniques exist to identify information stored in NTFS EA. (Citation: Journey into IR ZeroAccess NTFS EA) Monitor calls to the ZwSetEaFile and ZwQueryEaFile Windows API functions as well as binaries used to interact with EA, (Citation: Oddvar Moe ADS1 Jan 2018) (Citation: Oddvar Moe ADS2 Apr 2018) and consider regularly scanning for the presence of modified information. (Citation: SpectorOps Host-Based Jul 2017)\n\nThere are many ways to create and interact with ADSs using Windows utilities. Monitor for operations (execution, copies, etc.) with file names that contain colons. This syntax (ex: <code>file.ext:ads[.ext]</code>) is commonly associated with ADSs. (Citation: Microsoft ADS Mar 2014) (Citation: Oddvar Moe ADS1 Jan 2018) (Citation: Oddvar Moe ADS2 Apr 2018) For a more exhaustive list of utilities that can be used to execute and create ADSs, see https://gist.github.com/api0cradle/cdd2d0d0ec9abb686f0e89306e277b8f.\n\nThe Streams tool of Sysinternals can be used to uncover files with ADSs. The <code>dir /r</code> command can also be used to display ADSs. (Citation: Symantec ADS May 2009) Many PowerShell commands (such as Get-Item, Set-Item, Remove-Item, and Get-ChildItem) can also accept a <code>-stream</code> parameter to interact with ADSs. (Citation: MalwareBytes ADS July 2015) (Citation: Microsoft ADS Mar 2014)",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "type": "attack-pattern",
+            "name": "NTFS File Attributes",
+            "description": "Every New Technology File System (NTFS) formatted partition contains a Master File Table (MFT) that maintains a record for every file/directory on the partition. (Citation: SpectorOps Host-Based Jul 2017) Within MFT entries are file attributes, (Citation: Microsoft NTFS File Attributes Aug 2010) such as Extended Attributes (EA) and Data [known as Alternate Data Streams (ADSs) when more than one Data attribute is present], that can be used to store arbitrary data (and even complete files). (Citation: SpectorOps Host-Based Jul 2017) (Citation: Microsoft File Streams) (Citation: MalwareBytes ADS July 2015) (Citation: Microsoft ADS Mar 2014)\n\nAdversaries may store malicious data or binaries in file attribute metadata instead of directly in files. This may be done to evade some defenses, such as static indicator scanning tools and anti-virus. (Citation: Journey into IR ZeroAccess NTFS EA) (Citation: MalwareBytes ADS July 2015)",
+            "id": "attack-pattern--f2d44246-91f1-478a-b6c8-1227e0ca109d",
+            "modified": "2019-06-25T12:17:31.157Z",
             "x_mitre_platforms": [
                 "Windows"
             ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_system_requirements": [
+                "NTFS partitioned hard drive"
+            ],
+            "x_mitre_detection": "Forensic techniques exist to identify information stored in NTFS EA. (Citation: Journey into IR ZeroAccess NTFS EA) Monitor calls to the ZwSetEaFile and ZwQueryEaFile Windows API functions as well as binaries used to interact with EA, (Citation: Oddvar Moe ADS1 Jan 2018) (Citation: Oddvar Moe ADS2 Apr 2018) and consider regularly scanning for the presence of modified information. (Citation: SpectorOps Host-Based Jul 2017)\n\nThere are many ways to create and interact with ADSs using Windows utilities. Monitor for operations (execution, copies, etc.) with file names that contain colons. This syntax (ex: <code>file.ext:ads[.ext]</code>) is commonly associated with ADSs. (Citation: Microsoft ADS Mar 2014) (Citation: Oddvar Moe ADS1 Jan 2018) (Citation: Oddvar Moe ADS2 Apr 2018) For a more exhaustive list of utilities that can be used to execute and create ADSs, see https://gist.github.com/api0cradle/cdd2d0d0ec9abb686f0e89306e277b8f.\n\nThe Streams tool of Sysinternals can be used to uncover files with ADSs. The <code>dir /r</code> command can also be used to display ADSs. (Citation: Symantec ADS May 2009) Many PowerShell commands (such as Get-Item, Set-Item, Remove-Item, and Get-ChildItem) can also accept a <code>-stream</code> parameter to interact with ADSs. (Citation: MalwareBytes ADS July 2015) (Citation: Microsoft ADS Mar 2014)",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_contributors": [
+                "Red Canary",
+                "Oddvar Moe, @oddvarmoe"
+            ],
+            "created": "2017-05-31T21:31:11.147Z",
             "kill_chain_phases": [
                 {
-                    "phase_name": "defense-evasion",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "external_references": [
+                {
+                    "external_id": "T1096",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1096"
+                },
+                {
+                    "description": "Atkinson, J. (2017, July 18). Host-based Threat Modeling & Indicator Design. Retrieved March 21, 2018.",
+                    "source_name": "SpectorOps Host-Based Jul 2017",
+                    "url": "https://posts.specterops.io/host-based-threat-modeling-indicator-design-a9dbbb53d5ea"
+                },
+                {
+                    "description": "Hughes, J. (2010, August 25). NTFS File Attributes. Retrieved March 21, 2018.",
+                    "source_name": "Microsoft NTFS File Attributes Aug 2010",
+                    "url": "https://blogs.technet.microsoft.com/askcore/2010/08/25/ntfs-file-attributes/"
+                },
+                {
+                    "description": "Microsoft. (n.d.). File Streams. Retrieved December 2, 2014.",
+                    "source_name": "Microsoft File Streams",
+                    "url": "http://msdn.microsoft.com/en-us/library/aa364404"
+                },
+                {
+                    "source_name": "MalwareBytes ADS July 2015",
+                    "description": "Arntz, P. (2015, July 22). Introduction to Alternate Data Streams. Retrieved March 21, 2018.",
+                    "url": "https://blog.malwarebytes.com/101/2015/07/introduction-to-alternate-data-streams/"
+                },
+                {
+                    "source_name": "Microsoft ADS Mar 2014",
+                    "description": "Marlin, J. (2013, March 24). Alternate Data Streams in NTFS. Retrieved March 21, 2018.",
+                    "url": "https://blogs.technet.microsoft.com/askcore/2013/03/24/alternate-data-streams-in-ntfs/"
+                },
+                {
+                    "description": "Harrell, C. (2012, December 11). Extracting ZeroAccess from NTFS Extended Attributes. Retrieved June 3, 2016.",
+                    "source_name": "Journey into IR ZeroAccess NTFS EA",
+                    "url": "http://journeyintoir.blogspot.com/2012/12/extracting-zeroaccess-from-ntfs.html"
+                },
+                {
+                    "description": "Moe, O. (2018, January 14). Putting Data in Alternate Data Streams and How to Execute It. Retrieved June 30, 2018.",
+                    "source_name": "Oddvar Moe ADS1 Jan 2018",
+                    "url": "https://oddvar.moe/2018/01/14/putting-data-in-alternate-data-streams-and-how-to-execute-it/"
+                },
+                {
+                    "source_name": "Oddvar Moe ADS2 Apr 2018",
+                    "description": "Moe, O. (2018, April 11). Putting Data in Alternate Data Streams and How to Execute It - Part 2. Retrieved June 30, 2018.",
+                    "url": "https://oddvar.moe/2018/04/11/putting-data-in-alternate-data-streams-and-how-to-execute-it-part-2/"
+                },
+                {
+                    "description": "Pravs. (2009, May 25). What you need to know about alternate data streams in windows? Is your Data secure? Can you restore that?. Retrieved March 21, 2018.",
+                    "source_name": "Symantec ADS May 2009",
+                    "url": "https://www.symantec.com/connect/articles/what-you-need-know-about-alternate-data-streams-windows-your-data-secure-can-you-restore"
                 }
             ],
             "x_mitre_defense_bypassed": [
                 "Signature-based detection",
                 "Host forensic analysis",
                 "Anti-virus"
-            ],
-            "id": "attack-pattern--f2d44246-91f1-478a-b6c8-1227e0ca109d",
-            "name": "NTFS File Attributes",
-            "created": "2017-05-31T21:31:11.147Z",
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "description": "Every New Technology File System (NTFS) formatted partition contains a Master File Table (MFT) that maintains a record for every file/directory on the partition. (Citation: SpectorOps Host-Based Jul 2017) Within MFT entries are file attributes, (Citation: Microsoft NTFS File Attributes Aug 2010) such as Extended Attributes (EA) and Data [known as Alternate Data Streams (ADSs) when more than one Data attribute is present], that can be used to store arbitrary data (and even complete files). (Citation: SpectorOps Host-Based Jul 2017) (Citation: Microsoft File Streams) (Citation: MalwareBytes ADS July 2015) (Citation: Microsoft ADS Mar 2014)\n\nAdversaries may store malicious data or binaries in file attribute metadata instead of directly in files. This may be done to evade some defenses, such as static indicator scanning tools and anti-virus. (Citation: Journey into IR ZeroAccess NTFS EA) (Citation: MalwareBytes ADS July 2015)",
-            "x_mitre_system_requirements": [
-                "NTFS partitioned hard drive"
             ]
         }
     ]

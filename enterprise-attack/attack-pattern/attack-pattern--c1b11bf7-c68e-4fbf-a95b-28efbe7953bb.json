@@ -1,71 +1,71 @@
 {
     "type": "bundle",
-    "id": "bundle--4934efb4-7e59-4667-b918-1793bdc02d3d",
+    "id": "bundle--8d7d55c5-b14b-406a-b9b5-08beb6ce1d17",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1184",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1184"
-                },
-                {
-                    "url": "https://www.blackhat.com/presentations/bh-usa-05/bh-us-05-boileau.pdf",
-                    "source_name": "SSHjack Blackhat",
-                    "description": "Adam Boileau. (2005, August 5). Trust Transience:  Post Intrusion SSH Hijacking. Retrieved December 19, 2017."
-                },
-                {
-                    "url": "https://www.clockwork.com/news/2012/09/28/602/ssh_agent_hijacking",
-                    "source_name": "Clockwork SSH Agent Hijacking",
-                    "description": "Beuchler, B. (2012, September 28). SSH Agent Hijacking. Retrieved December 20, 2017."
-                },
-                {
-                    "url": "https://www.slideshare.net/morisson/mistrusting-and-abusing-ssh-13526219",
-                    "source_name": "Slideshare Abusing SSH",
-                    "description": "Duarte, H., Morrison, B. (2012). (Mis)trusting and (ab)using ssh. Retrieved January 8, 2018."
-                },
-                {
-                    "url": "https://www.welivesecurity.com/2014/02/21/an-in-depth-analysis-of-linuxebury/",
-                    "source_name": "Welivesecurity Ebury SSH",
-                    "description": "M.L\u00e9veill\u00e9, M. (2014, February 21). An In-depth Analysis of Linux/Ebury. Retrieved January 8, 2018."
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_contributors": [
-                "Anastasios Pingios"
+            "x_mitre_data_sources": [
+                "Authentication logs"
             ],
             "x_mitre_permissions_required": [
                 "User",
                 "root"
             ],
-            "x_mitre_data_sources": [
-                "Authentication logs"
-            ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "x_mitre_detection": "Use of SSH may be legitimate, depending upon the network environment and how it is used. Other factors, such as access patterns and activity that occurs after a remote login, may indicate suspicious or malicious behavior with SSH. Monitor for user accounts logged into systems they would not normally access or access patterns to multiple systems over a relatively short period of time. Also monitor user SSH-agent socket files being used by different users.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "SSH Hijacking",
+            "description": "Secure Shell (SSH) is a standard means of remote access on Linux and macOS systems. It allows a user to connect to another system via an encrypted tunnel, commonly authenticating through a password, certificate or the use of an asymmetric encryption key pair.\n\nIn order to move laterally from a compromised host, adversaries may take advantage of trust relationships established with other systems via public key authentication in active SSH sessions by hijacking an existing connection to another system. This may occur through compromising the SSH agent itself or by having access to the agent's socket. If an adversary is able to obtain root access, then hijacking SSH sessions is likely trivial. (Citation: Slideshare Abusing SSH) (Citation: SSHjack Blackhat) (Citation: Clockwork SSH Agent Hijacking) Compromising the SSH agent also provides access to intercept SSH credentials. (Citation: Welivesecurity Ebury SSH)\n\n[SSH Hijacking](https://attack.mitre.org/techniques/T1184) differs from use of [Remote Services](https://attack.mitre.org/techniques/T1021) because it injects into an existing SSH session rather than creating a new session using [Valid Accounts](https://attack.mitre.org/techniques/T1078).",
+            "id": "attack-pattern--c1b11bf7-c68e-4fbf-a95b-28efbe7953bb",
             "x_mitre_platforms": [
                 "Linux",
                 "macOS"
             ],
-            "kill_chain_phases": [
-                {
-                    "phase_name": "lateral-movement",
-                    "kill_chain_name": "mitre-attack"
-                }
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "attack-pattern--c1b11bf7-c68e-4fbf-a95b-28efbe7953bb",
-            "name": "SSH Hijacking",
-            "created": "2018-01-16T16:13:52.465Z",
             "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "description": "Secure Shell (SSH) is a standard means of remote access on Linux and macOS systems. It allows a user to connect to another system via an encrypted tunnel, commonly authenticating through a password, certificate or the use of an asymmetric encryption key pair.\n\nIn order to move laterally from a compromised host, adversaries may take advantage of trust relationships established with other systems via public key authentication in active SSH sessions by hijacking an existing connection to another system. This may occur through compromising the SSH agent itself or by having access to the agent's socket. If an adversary is able to obtain root access, then hijacking SSH sessions is likely trivial. (Citation: Slideshare Abusing SSH) (Citation: SSHjack Blackhat) (Citation: Clockwork SSH Agent Hijacking) Compromising the SSH agent also provides access to intercept SSH credentials. (Citation: Welivesecurity Ebury SSH)\n\n[SSH Hijacking](https://attack.mitre.org/techniques/T1184) differs from use of [Remote Services](https://attack.mitre.org/techniques/T1021) because it injects into an existing SSH session rather than creating a new session using [Valid Accounts](https://attack.mitre.org/techniques/T1078).",
             "x_mitre_system_requirements": [
                 "SSH service enabled, trust relationships configured, established connections"
-            ]
+            ],
+            "type": "attack-pattern",
+            "x_mitre_detection": "Use of SSH may be legitimate, depending upon the network environment and how it is used. Other factors, such as access patterns and activity that occurs after a remote login, may indicate suspicious or malicious behavior with SSH. Monitor for user accounts logged into systems they would not normally access or access patterns to multiple systems over a relatively short period of time. Also monitor user SSH-agent socket files being used by different users.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_contributors": [
+                "Anastasios Pingios"
+            ],
+            "created": "2018-01-16T16:13:52.465Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "lateral-movement"
+                }
+            ],
+            "external_references": [
+                {
+                    "external_id": "T1184",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1184"
+                },
+                {
+                    "source_name": "Slideshare Abusing SSH",
+                    "description": "Duarte, H., Morrison, B. (2012). (Mis)trusting and (ab)using ssh. Retrieved January 8, 2018.",
+                    "url": "https://www.slideshare.net/morisson/mistrusting-and-abusing-ssh-13526219"
+                },
+                {
+                    "source_name": "SSHjack Blackhat",
+                    "description": "Adam Boileau. (2005, August 5). Trust Transience:  Post Intrusion SSH Hijacking. Retrieved December 19, 2017.",
+                    "url": "https://www.blackhat.com/presentations/bh-usa-05/bh-us-05-boileau.pdf"
+                },
+                {
+                    "source_name": "Clockwork SSH Agent Hijacking",
+                    "description": "Beuchler, B. (2012, September 28). SSH Agent Hijacking. Retrieved December 20, 2017.",
+                    "url": "https://www.clockwork.com/news/2012/09/28/602/ssh_agent_hijacking"
+                },
+                {
+                    "source_name": "Welivesecurity Ebury SSH",
+                    "description": "M.L\u00e9veill\u00e9, M. (2014, February 21). An In-depth Analysis of Linux/Ebury. Retrieved January 8, 2018.",
+                    "url": "https://www.welivesecurity.com/2014/02/21/an-in-depth-analysis-of-linuxebury/"
+                }
+            ],
+            "modified": "2019-07-18T17:51:25.900Z"
         }
     ]
 }

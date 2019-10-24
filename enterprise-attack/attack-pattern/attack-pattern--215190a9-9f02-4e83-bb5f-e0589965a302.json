@@ -1,46 +1,36 @@
 {
     "type": "bundle",
-    "id": "bundle--548be6f7-9a1b-49b1-9eb0-34c80609a5eb",
+    "id": "bundle--7553495d-4eb2-4e1c-90b3-bad2dfe9be05",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "external_id": "T1121",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1121"
-                },
-                {
-                    "url": "https://msdn.microsoft.com/en-us/library/04za0hca.aspx",
-                    "source_name": "MSDN Regsvcs",
-                    "description": "Microsoft. (n.d.). Regsvcs.exe (.NET Services Installation Tool). Retrieved July 1, 2016."
-                },
-                {
-                    "url": "https://msdn.microsoft.com/en-us/library/tzat5yw6.aspx",
-                    "source_name": "MSDN Regasm",
-                    "description": "Microsoft. (n.d.). Regasm.exe (Assembly Registration Tool). Retrieved July 1, 2016."
-                },
-                {
-                    "source_name": "SubTee GitHub All The Things Application Whitelisting Bypass",
-                    "description": "Smith, C. (2016, August 17). Includes 5 Known Application Whitelisting/ Application Control Bypass Techniques in One File. Retrieved June 30, 2017."
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_contributors": [
-                "Casey Smith"
-            ],
             "x_mitre_data_sources": [
                 "Process monitoring",
                 "Process command-line parameters"
             ],
-            "modified": "2019-04-12T17:41:13.440Z",
-            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of Regsvcs.exe and Regasm.exe. Compare recent invocations of Regsvcs.exe and Regasm.exe with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. Command arguments used before and after Regsvcs.exe or Regasm.exe invocation may also be useful in determining the origin and purpose of the binary being executed.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
+            ],
+            "name": "Regsvcs/Regasm",
+            "description": "Regsvcs and Regasm are Windows command-line utilities that are used to register .NET Component Object Model (COM) assemblies. Both are digitally signed by Microsoft. (Citation: MSDN Regsvcs) (Citation: MSDN Regasm)\n\nAdversaries can use Regsvcs and Regasm to proxy execution of code through a trusted Windows utility. Both utilities may be used to bypass process whitelisting through use of attributes within the binary to specify code that should be run before registration or unregistration: <code>[ComRegisterFunction]</code> or <code>[ComUnregisterFunction]</code> respectively. The code with the registration and unregistration attributes will be executed even if the process is run under insufficient privileges and fails to execute. (Citation: LOLBAS Regsvcs)(Citation: LOLBAS Regasm)",
+            "x_mitre_remote_support": false,
+            "id": "attack-pattern--215190a9-9f02-4e83-bb5f-e0589965a302",
+            "modified": "2019-07-31T19:26:35.927Z",
             "x_mitre_platforms": [
                 "Windows"
             ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "1.2",
+            "type": "attack-pattern",
+            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of Regsvcs.exe and Regasm.exe. Compare recent invocations of Regsvcs.exe and Regasm.exe with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. Command arguments used before and after Regsvcs.exe or Regasm.exe invocation may also be useful in determining the origin and purpose of the binary being executed.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_contributors": [
+                "Casey Smith"
+            ],
+            "created": "2017-05-31T21:31:33.499Z",
             "kill_chain_phases": [
                 {
                     "phase_name": "defense-evasion",
@@ -51,20 +41,36 @@
                     "kill_chain_name": "mitre-attack"
                 }
             ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1121",
+                    "url": "https://attack.mitre.org/techniques/T1121"
+                },
+                {
+                    "description": "Microsoft. (n.d.). Regsvcs.exe (.NET Services Installation Tool). Retrieved July 1, 2016.",
+                    "source_name": "MSDN Regsvcs",
+                    "url": "https://msdn.microsoft.com/en-us/library/04za0hca.aspx"
+                },
+                {
+                    "description": "Microsoft. (n.d.). Regasm.exe (Assembly Registration Tool). Retrieved July 1, 2016.",
+                    "source_name": "MSDN Regasm",
+                    "url": "https://msdn.microsoft.com/en-us/library/tzat5yw6.aspx"
+                },
+                {
+                    "description": "LOLBAS. (n.d.). Regsvcs.exe. Retrieved July 31, 2019.",
+                    "source_name": "LOLBAS Regsvcs",
+                    "url": "https://lolbas-project.github.io/lolbas/Binaries/Regsvcs/"
+                },
+                {
+                    "description": "LOLBAS. (n.d.). Regasm.exe. Retrieved July 31, 2019.",
+                    "source_name": "LOLBAS Regasm",
+                    "url": "https://lolbas-project.github.io/lolbas/Binaries/Regasm/"
+                }
+            ],
             "x_mitre_defense_bypassed": [
                 "Process whitelisting",
                 "Digital Certificate Validation"
-            ],
-            "id": "attack-pattern--215190a9-9f02-4e83-bb5f-e0589965a302",
-            "name": "Regsvcs/Regasm",
-            "created": "2017-05-31T21:31:33.499Z",
-            "x_mitre_version": "1.1",
-            "x_mitre_remote_support": false,
-            "type": "attack-pattern",
-            "description": "Regsvcs and Regasm are Windows command-line utilities that are used to register .NET Component Object Model (COM) assemblies. Both are digitally signed by Microsoft. (Citation: MSDN Regsvcs) (Citation: MSDN Regasm)\n\nAdversaries can use Regsvcs and Regasm to proxy execution of code through a trusted Windows utility. Both utilities may be used to bypass process whitelisting through use of attributes within the binary to specify code that should be run before registration or unregistration: <code>[ComRegisterFunction]</code> or <code>[ComUnregisterFunction]</code> respectively. The code with the registration and unregistration attributes will be executed even if the process is run under insufficient privileges and fails to execute. (Citation: SubTee GitHub All The Things Application Whitelisting Bypass)",
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
             ]
         }
     ]

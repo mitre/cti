@@ -1,11 +1,14 @@
-### Changes to STIX for July 2019 ATT&CK Content Release
+### Changes to STIX for October 2019 ATT&CK Content Release (ATT&CK-v6.0)
+1. Added cloud platforms under the enterprise domain: `AWS`, `GCP`, `Azure`, `Office 365`, `Azure AD`, and `SaaS`.
+
+### Changes to STIX for July 2019 ATT&CK Content Release (ATT&CK-v5.0)
 1. Descriptions added to relationships of type `mitigates` under the enterprise domain 
 
-### Changes to STIX for April 2019 ATT&CK Content Release
+### Changes to STIX for April 2019 ATT&CK Content Release (ATT&CK-v4.0)
 1. `x_mitre_impact_type` added for enterprise techniques within the `Impact` tactic
 2. Descriptions added to relationships between software/groups
 
-### Changes to STIX for October 2018 ATT&CK Content Release
+### Changes to STIX for October 2018 ATT&CK Content Release (ATT&CK-v3.0)
 
 1. `x_mitre_platforms` added for enterprise malware/tools
 2. `x_mitre_detection` added to attack-patterns

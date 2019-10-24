@@ -1,0 +1,60 @@
+{
+    "type": "bundle",
+    "id": "bundle--d7b9fa1f-4f81-4322-a597-362aadba4d33",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_data_sources": [
+                "Azure activity logs",
+                "AWS CloudTrail logs",
+                "Authentication logs"
+            ],
+            "name": "Cloud Instance Metadata API",
+            "description": "Adversaries may attempt to access the Cloud Instance Metadata API to collect credentials and other sensitive data.\n\nMost cloud service providers support a Cloud Instance Metadata API which is a service provided to running virtual instances that allows applications to access information about the running virtual instance. Available information generally includes name, security group, and additional metadata including sensitive data such as credentials and UserData scripts that may contain additional secrets. The Instance Metadata API is provided as a convenience to assist in managing applications and is accessible by anyone who can access the instance.(Citation: AWS Instance Metadata API)\n\nIf adversaries have a presence on the running virtual instance, they may query the Instance Metadata API directly to identify credentials that grant access to additional resources. Additionally, attackers may exploit a Server-Side Request Forgery (SSRF) vulnerability in a public facing web proxy that allows the attacker to gain access to the sensitive information via a request to the Instance Metadata API.(Citation: RedLock Instance Metadata API 2018)\n\nThe de facto standard across cloud service providers is to host the Instance Metadata API at <code>http[:]//169.254.169.254</code>.\n",
+            "id": "attack-pattern--1c2fd73a-e634-44ed-b1b5-9e7cf7404e9f",
+            "x_mitre_platforms": [
+                "AWS",
+                "GCP",
+                "Azure"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "1.0",
+            "type": "attack-pattern",
+            "x_mitre_detection": "* Monitor access to the Instance Metadata API and look for anomalous queries.\n* It may be possible to detect adversary use of credentials they have obtained. See [Valid Accounts](https://attack.mitre.org/techniques/T1078) for more information.\n",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_contributors": [
+                "Praetorian"
+            ],
+            "created": "2019-09-04T14:41:32.317Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "credential-access"
+                }
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1522",
+                    "url": "https://attack.mitre.org/techniques/T1522"
+                },
+                {
+                    "description": "AWS. (n.d.). Instance Metadata and User Data. Retrieved July 18, 2019.",
+                    "source_name": "AWS Instance Metadata API",
+                    "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instance-metadata.html"
+                },
+                {
+                    "source_name": "RedLock Instance Metadata API 2018",
+                    "description": "Higashi, Michael. (2018, May 15). Instance Metadata API: A Modern Day Trojan Horse. Retrieved July 16, 2019.",
+                    "url": "https://redlock.io/blog/instance-metadata-api-a-modern-day-trojan-horse"
+                }
+            ],
+            "modified": "2019-10-22T19:57:25.998Z"
+        }
+    ]
+}

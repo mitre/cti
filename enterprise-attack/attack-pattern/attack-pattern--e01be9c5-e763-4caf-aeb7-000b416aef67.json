@@ -1,53 +1,75 @@
 {
     "type": "bundle",
-    "id": "bundle--1049394f-e9be-4b15-a23b-611512d964a5",
+    "id": "bundle--df6af4f4-e1fa-4826-8f3f-2a3e77f2c9d8",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1136",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1136"
-                },
-                {
-                    "url": "https://docs.microsoft.com/windows/device-security/auditing/event-4720",
-                    "source_name": "Microsoft User Creation Event",
-                    "description": "Lich, B., Miroshnikov, A. (2017, April 5). 4720(S): A user account was created. Retrieved June 30, 2017."
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            "x_mitre_permissions_required": [
+                "Administrator"
             ],
             "x_mitre_data_sources": [
+                "Office 365 account logs",
+                "Azure activity logs",
+                "AWS CloudTrail logs",
                 "Process monitoring",
                 "Process command-line parameters",
                 "Authentication logs",
                 "Windows event logs"
             ],
-            "modified": "2018-10-31T13:45:13.024Z",
-            "x_mitre_detection": "Collect data on account creation within a network. Event ID 4720 is generated when a user account is created on a Windows system and domain controller. (Citation: Microsoft User Creation Event) Perform regular audits of domain and local system accounts to detect suspicious accounts that may have been created by an adversary.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Create Account",
+            "description": "Adversaries with a sufficient level of access may create a local system, domain, or cloud tenant account. Such accounts may be used for persistence that do not require persistent remote access tools to be deployed on the system.\n\nIn cloud environments, adversaries may create accounts that only have access to specific services, which can reduce the chance of detection.\n\n### Windows\n\nThe <code>net user</code> commands can be used to create a local or domain account.\n\n### Office 365\n\nAn adversary with access to a Global Admin account can create another account and assign it the Global Admin role for persistent access to the Office 365 tenant.(Citation: Microsoft O365 Admin Roles)(Citation: Microsoft Support O365 Add Another Admin, October 2019)",
+            "id": "attack-pattern--e01be9c5-e763-4caf-aeb7-000b416aef67",
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
-                "Windows"
+                "Windows",
+                "AWS",
+                "GCP",
+                "Azure AD",
+                "Azure",
+                "Office 365"
             ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "2",
+            "type": "attack-pattern",
+            "x_mitre_detection": "Collect data on account creation within a network. Event ID 4720 is generated when a user account is created on a Windows system and domain controller. (Citation: Microsoft User Creation Event) Perform regular audits of domain and local system accounts to detect suspicious accounts that may have been created by an adversary.\n\nCollect usage logs from cloud administrator accounts to identify unusual activity in the creation of new accounts and assignment of roles to those accounts. Monitor for accounts assigned to admin roles that go over a certain threshold of known admins.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_contributors": [
+                "Microsoft Threat Intelligence Center (MSTIC)",
+                "Praetorian"
+            ],
+            "created": "2017-12-14T16:46:06.044Z",
             "kill_chain_phases": [
                 {
-                    "phase_name": "persistence",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
                 }
             ],
-            "id": "attack-pattern--e01be9c5-e763-4caf-aeb7-000b416aef67",
-            "name": "Create Account",
-            "created": "2017-12-14T16:46:06.044Z",
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "description": "Adversaries with a sufficient level of access may create a local system or domain account. Such accounts may be used for persistence that do not require persistent remote access tools to be deployed on the system.\n\nThe <code>net user</code> commands can be used to create a local or domain account.",
-            "x_mitre_permissions_required": [
-                "Administrator"
-            ]
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1136",
+                    "url": "https://attack.mitre.org/techniques/T1136"
+                },
+                {
+                    "description": "Ako-Adjei, K., Dickhaus, M., Baumgartner, P., Faigel, D., et. al.. (2019, October 8). About admin roles. Retrieved October 18, 2019.",
+                    "source_name": "Microsoft O365 Admin Roles",
+                    "url": "https://docs.microsoft.com/en-us/office365/admin/add-users/about-admin-roles?view=o365-worldwide"
+                },
+                {
+                    "description": "Microsoft. (n.d.). Add Another Admin. Retrieved October 18, 2019.",
+                    "source_name": "Microsoft Support O365 Add Another Admin, October 2019",
+                    "url": "https://support.office.com/en-us/article/add-another-admin-f693489f-9f55-4bd0-a637-a81ce93de22d"
+                },
+                {
+                    "description": "Lich, B., Miroshnikov, A. (2017, April 5). 4720(S): A user account was created. Retrieved June 30, 2017.",
+                    "source_name": "Microsoft User Creation Event",
+                    "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4720"
+                }
+            ],
+            "modified": "2019-10-18T18:48:44.770Z"
         }
     ]
 }

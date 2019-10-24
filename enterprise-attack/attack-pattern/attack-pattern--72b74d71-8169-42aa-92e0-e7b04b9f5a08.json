@@ -1,55 +1,90 @@
 {
     "type": "bundle",
-    "id": "bundle--03f2a49d-ca4e-4096-bd47-d6e88c450f74",
+    "id": "bundle--e9e068bc-bd14-460d-abac-013e1324d72d",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1087",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1087"
-                },
-                {
-                    "url": "https://capec.mitre.org/data/definitions/575.html",
-                    "source_name": "capec",
-                    "external_id": "CAPEC-575"
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_contributors": [
-                "Travis Smith, Tripwire"
+            "x_mitre_permissions_required": [
+                "User"
             ],
             "x_mitre_data_sources": [
+                "Azure activity logs",
+                "Office 365 account logs",
                 "API monitoring",
                 "Process monitoring",
                 "Process command-line parameters"
             ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086).",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Account Discovery",
+            "description": "Adversaries may attempt to get a listing of local system or domain accounts. \n\n### Windows\n\nExample commands that can acquire this information are <code>net user</code>, <code>net group <groupname></code>, and <code>net localgroup <groupname></code> using the [Net](https://attack.mitre.org/software/S0039) utility or through use of [dsquery](https://attack.mitre.org/software/S0105). If adversaries attempt to identify the primary user, currently logged in user, or set of users that commonly uses a system, [System Owner/User Discovery](https://attack.mitre.org/techniques/T1033) may apply.\n\n### Mac\n\nOn Mac, groups can be enumerated through the <code>groups</code> and <code>id</code> commands. In mac specifically, <code>dscl . list /Groups</code> and <code>dscacheutil -q group</code> can also be used to enumerate groups and users.\n\n### Linux\n\nOn Linux, local users can be enumerated through the use of the <code>/etc/passwd</code> file which is world readable. In mac, this same file is only used in single-user mode in addition to the <code>/etc/master.passwd</code> file.\n\nAlso, groups can be enumerated through the <code>groups</code> and <code>id</code> commands.\n\n### Office 365 and Azure AD\n\nWith authenticated access there are several tools that can be used to find accounts. The <code>Get-MsolRoleMember</code> PowerShell cmdlet can be used to obtain account names given a role or permissions group.(Citation: Microsoft msolrolemember)(Citation: GitHub Raindance)\n\nAzure CLI (AZ CLI) also provides an interface to obtain user accounts with authenticated access to a domain. The command <code>az ad user list</code> will list all users within a domain.(Citation: Microsoft AZ CLI)(Citation: Black Hills Red Teaming MS AD Azure, 2018) \n\nThe <code>Get-GlobalAddressList</code> PowerShell cmdlet can be used to obtain email addresses and accounts from a domain using an authenticated session.(Citation: Microsoft getglobaladdresslist)(Citation: Black Hills Attacking Exchange MailSniper, 2016)",
+            "id": "attack-pattern--72b74d71-8169-42aa-92e0-e7b04b9f5a08",
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
-                "Windows"
+                "Windows",
+                "Office 365",
+                "Azure AD"
             ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_version": "2.0",
+            "type": "attack-pattern",
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086).",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_contributors": [
+                "Microsoft Threat Intelligence Center (MSTIC)",
+                "Travis Smith, Tripwire"
+            ],
+            "created": "2017-05-31T21:31:06.988Z",
             "kill_chain_phases": [
                 {
-                    "phase_name": "discovery",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "discovery"
                 }
             ],
-            "id": "attack-pattern--72b74d71-8169-42aa-92e0-e7b04b9f5a08",
-            "name": "Account Discovery",
-            "created": "2017-05-31T21:31:06.988Z",
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "description": "Adversaries may attempt to get a listing of local system or domain accounts. \n\n### Windows\n\nExample commands that can acquire this information are <code>net user</code>, <code>net group <groupname></code>, and <code>net localgroup <groupname></code> using the [Net](https://attack.mitre.org/software/S0039) utility or through use of [dsquery](https://attack.mitre.org/software/S0105). If adversaries attempt to identify the primary user, currently logged in user, or set of users that commonly uses a system, [System Owner/User Discovery](https://attack.mitre.org/techniques/T1033) may apply.\n\n### Mac\n\nOn Mac, groups can be enumerated through the <code>groups</code> and <code>id</code> commands. In mac specifically, <code>dscl . list /Groups</code> and <code>dscacheutil -q group</code> can also be used to enumerate groups and users.\n\n### Linux\n\nOn Linux, local users can be enumerated through the use of the <code>/etc/passwd</code> file which is world readable. In mac, this same file is only used in single-user mode in addition to the <code>/etc/master.passwd</code> file.\n\nAlso, groups can be enumerated through the <code>groups</code> and <code>id</code> commands.",
-            "x_mitre_permissions_required": [
-                "User"
-            ]
+            "external_references": [
+                {
+                    "external_id": "T1087",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1087"
+                },
+                {
+                    "source_name": "capec",
+                    "external_id": "CAPEC-575",
+                    "url": "https://capec.mitre.org/data/definitions/575.html"
+                },
+                {
+                    "description": "Microsoft. (n.d.). Get-MsolRoleMember. Retrieved October 6, 2019.",
+                    "source_name": "Microsoft msolrolemember",
+                    "url": "https://docs.microsoft.com/en-us/powershell/module/msonline/get-msolrolemember?view=azureadps-1.0"
+                },
+                {
+                    "description": "Stringer, M.. (2018, November 21). RainDance. Retrieved October 6, 2019.",
+                    "source_name": "GitHub Raindance",
+                    "url": "https://github.com/True-Demon/raindance"
+                },
+                {
+                    "description": "Microsoft. (n.d.). az ad user. Retrieved October 6, 2019.",
+                    "source_name": "Microsoft AZ CLI",
+                    "url": "https://docs.microsoft.com/en-us/cli/azure/ad/user?view=azure-cli-latest"
+                },
+                {
+                    "description": "Felch, M.. (2018, August 31). Red Teaming Microsoft Part 1 Active Directory Leaks via Azure. Retrieved October 6, 2019.",
+                    "source_name": "Black Hills Red Teaming MS AD Azure, 2018",
+                    "url": "https://www.blackhillsinfosec.com/red-teaming-microsoft-part-1-active-directory-leaks-via-azure/"
+                },
+                {
+                    "description": "Microsoft. (n.d.). Get-GlobalAddressList. Retrieved October 6, 2019.",
+                    "source_name": "Microsoft getglobaladdresslist",
+                    "url": "https://docs.microsoft.com/en-us/powershell/module/exchange/email-addresses-and-address-books/get-globaladdresslist"
+                },
+                {
+                    "description": "Bullock, B.. (2016, October 3). Attacking Exchange with MailSniper. Retrieved October 6, 2019.",
+                    "source_name": "Black Hills Attacking Exchange MailSniper, 2016",
+                    "url": "https://www.blackhillsinfosec.com/attacking-exchange-with-mailsniper/"
+                }
+            ],
+            "modified": "2019-10-08T21:05:16.654Z"
         }
     ]
 }
