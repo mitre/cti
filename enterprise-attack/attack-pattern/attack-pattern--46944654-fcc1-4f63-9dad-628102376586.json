@@ -1,71 +1,19 @@
 {
     "type": "bundle",
-    "id": "bundle--0f99ecff-5f32-4c07-bc7f-dc476d7db590",
+    "id": "bundle--559a6764-d094-473a-a80c-d49fdced2c6c",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator",
-                "SYSTEM"
-            ],
-            "x_mitre_data_sources": [
-                "File monitoring",
-                "DLL monitoring",
-                "Process monitoring",
-                "Process command-line parameters"
-            ],
-            "name": "DLL Search Order Hijacking",
-            "description": "Windows systems use a common method to look for required DLLs to load into a program. (Citation: Microsoft DLL Search) Adversaries may take advantage of the Windows DLL search order and programs that ambiguously specify DLLs to gain privilege escalation and persistence. \n\nAdversaries may perform DLL preloading, also called binary planting attacks, (Citation: OWASP Binary Planting) by placing a malicious DLL with the same name as an ambiguously specified DLL in a location that Windows searches before the legitimate DLL. Often this location is the current working directory of the program. Remote DLL preloading attacks occur when a program sets its current directory to a remote location such as a Web share before loading a DLL. (Citation: Microsoft 2269637) Adversaries may use this behavior to cause the program to load a malicious DLL. \n\nAdversaries may also directly modify the way a program loads DLLs by replacing an existing DLL or modifying a .manifest or .local redirection file, directory, or junction to cause the program to load a different DLL to maintain persistence or privilege escalation. (Citation: Microsoft DLL Redirection) (Citation: Microsoft Manifests) (Citation: Mandiant Search Order)\n\nIf a search order-vulnerable program is configured to run at a higher privilege level, then the adversary-controlled DLL that is loaded will also be executed at the higher level. In this case, the technique could be used for privilege escalation from user to administrator or SYSTEM or from administrator to SYSTEM, depending on the program.\n\nPrograms that fall victim to path hijacking may appear to behave normally because malicious DLLs may be configured to also load the legitimate DLLs they were meant to replace.",
-            "id": "attack-pattern--46944654-fcc1-4f63-9dad-628102376586",
-            "modified": "2019-07-24T15:07:22.266Z",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_version": "1.0",
-            "x_mitre_system_requirements": [
-                "Ability to add a DLL, manifest file, or .local file, directory, or junction."
-            ],
-            "type": "attack-pattern",
-            "x_mitre_detection": "Monitor file systems for moving, renaming, replacing, or modifying DLLs. Changes in the set of DLLs that are loaded by a process (compared with past behavior) that do not correlate with known software, patches, etc., are suspicious. Monitor DLLs loaded into a process and detect DLLs that have the same file name but abnormal paths. Modifications to or creation of .manifest and .local redirection files that do not correlate with software updates are suspicious.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_contributors": [
-                "Stefan Kanthak",
-                "Travis Smith, Tripwire"
-            ],
-            "created": "2017-05-31T21:30:40.604Z",
-            "x_mitre_effective_permissions": [
-                "User",
-                "Administrator",
-                "SYSTEM"
-            ],
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1038",
                     "external_id": "T1038",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1038"
+                    "source_name": "mitre-attack"
                 },
                 {
+                    "url": "https://capec.mitre.org/data/definitions/471.html",
                     "source_name": "capec",
-                    "external_id": "CAPEC-471",
-                    "url": "https://capec.mitre.org/data/definitions/471.html"
+                    "external_id": "CAPEC-471"
                 },
                 {
                     "source_name": "Microsoft DLL Search",
@@ -80,7 +28,7 @@
                 {
                     "source_name": "Microsoft 2269637",
                     "description": "Microsoft. (2010, August 22). Microsoft Security Advisory 2269637 Released. Retrieved December 5, 2014.",
-                    "url": "http://blogs.technet.com/b/msrc/archive/2010/08/21/microsoft-security-advisory-2269637-released.aspx"
+                    "url": "https://msrc-blog.microsoft.com/2010/08/21/microsoft-security-advisory-2269637-released/"
                 },
                 {
                     "source_name": "Microsoft DLL Redirection",
@@ -98,9 +46,12 @@
                     "url": "https://www.mandiant.com/blog/dll-search-order-hijacking-revisited/"
                 }
             ],
-            "x_mitre_defense_bypassed": [
-                "Process whitelisting"
-            ]
+            "name": "DLL Search Order Hijacking",
+            "id": "attack-pattern--46944654-fcc1-4f63-9dad-628102376586",
+            "revoked": true,
+            "type": "attack-pattern",
+            "modified": "2020-03-26T14:49:47.091Z",
+            "created": "2017-05-31T21:30:40.604Z"
         }
     ]
 }

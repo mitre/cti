@@ -1,54 +1,55 @@
 {
     "type": "bundle",
-    "id": "bundle--3575a563-8f45-4e50-9b96-6518af20bfe9",
+    "id": "bundle--df732232-61c0-45be-8b92-bc95739d8698",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_data_sources": [
-                "API monitoring",
-                "DLL monitoring",
-                "File monitoring",
-                "Process monitoring"
-            ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "name": "Execution through Module Load",
-            "description": "The Windows module loader can be instructed to load DLLs from arbitrary local paths and arbitrary Universal Naming Convention (UNC) network paths. This functionality resides in NTDLL.dll and is part of the Windows Native API which is called from functions like CreateProcess(), LoadLibrary(), etc. of the Win32 API. (Citation: Wikipedia Windows Library Files)\n\nThe module loader can load DLLs:\n\n* via specification of the (fully-qualified or relative) DLL pathname in the IMPORT directory;\n    \n* via EXPORT forwarded to another DLL, specified with (fully-qualified or relative) pathname (but without extension);\n    \n* via an NTFS junction or symlink program.exe.local with the fully-qualified or relative pathname of a directory containing the DLLs specified in the IMPORT directory or forwarded EXPORTs;\n    \n* via <code>&#x3c;file name=\"filename.extension\" loadFrom=\"fully-qualified or relative pathname\"&#x3e;</code> in an embedded or external \"application manifest\". The file name refers to an entry in the IMPORT directory or a forwarded EXPORT.\n\nAdversaries can use this functionality as a way to execute arbitrary code on a system.",
             "id": "attack-pattern--0a5231ec-41af-4a35-83d0-6bdf11f28c65",
-            "x_mitre_platforms": [
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Shared Modules",
+            "description": "Adversaries may abuse shared modules to execute malicious payloads. The Windows module loader can be instructed to load DLLs from arbitrary local paths and arbitrary Universal Naming Convention (UNC) network paths. This functionality resides in NTDLL.dll and is part of the Windows [Native API](https://attack.mitre.org/techniques/T1106) which is called from functions like <code>CreateProcess</code>, <code>LoadLibrary</code>, etc. of the Win32 API. (Citation: Wikipedia Windows Library Files)\n\nThe module loader can load DLLs:\n\n* via specification of the (fully-qualified or relative) DLL pathname in the IMPORT directory;\n    \n* via EXPORT forwarded to another DLL, specified with (fully-qualified or relative) pathname (but without extension);\n    \n* via an NTFS junction or symlink program.exe.local with the fully-qualified or relative pathname of a directory containing the DLLs specified in the IMPORT directory or forwarded EXPORTs;\n    \n* via <code>&#x3c;file name=\"filename.extension\" loadFrom=\"fully-qualified or relative pathname\"&#x3e;</code> in an embedded or external \"application manifest\". The file name refers to an entry in the IMPORT directory or a forwarded EXPORT.\n\nAdversaries may use this functionality as a way to execute arbitrary code on a victim system. For example, malware may execute share modules to load additional components or features.",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1129",
+                    "url": "https://attack.mitre.org/techniques/T1129"
+                },
+                {
+                    "url": "https://en.wikipedia.org/wiki/Microsoft_Windows_library_files",
+                    "description": "Wikipedia. (2017, January 31). Microsoft Windows library files. Retrieved February 13, 2017.",
+                    "source_name": "Wikipedia Windows Library Files"
+                }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "1.0",
             "type": "attack-pattern",
-            "x_mitre_detection": "Monitoring DLL module loads may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances, since benign use of Windows modules load functions are common and may be difficult to distinguish from malicious behavior. Legitimate software will likely only need to load routine, bundled DLL modules or Windows system DLLs such that deviation from known module loads may be suspicious. Limiting DLL module loads to <code>%SystemRoot%</code> and <code>%ProgramFiles%</code> directories will protect against module loads from unsafe paths. \n\nCorrelation of other events with behavior surrounding module loads using API monitoring and suspicious DLLs written to disk will provide additional context to an event that may assist in determining if it is due to malicious behavior.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_contributors": [
-                "Stefan Kanthak"
-            ],
-            "created": "2017-05-31T21:31:40.542Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "execution"
                 }
             ],
-            "external_references": [
-                {
-                    "external_id": "T1129",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1129"
-                },
-                {
-                    "source_name": "Wikipedia Windows Library Files",
-                    "description": "Wikipedia. (2017, January 31). Microsoft Windows library files. Retrieved February 13, 2017.",
-                    "url": "https://en.wikipedia.org/wiki/Microsoft_Windows_library_files"
-                }
+            "modified": "2020-03-28T18:14:36.980Z",
+            "created": "2017-05-31T21:31:40.542Z",
+            "x_mitre_version": "2.0",
+            "x_mitre_contributors": [
+                "Stefan Kanthak"
             ],
-            "modified": "2019-07-17T20:12:18.964Z"
+            "x_mitre_data_sources": [
+                "API monitoring",
+                "DLL monitoring",
+                "File monitoring",
+                "Process monitoring"
+            ],
+            "x_mitre_detection": "Monitoring DLL module loads may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances, since benign use of Windows modules load functions are common and may be difficult to distinguish from malicious behavior. Legitimate software will likely only need to load routine, bundled DLL modules or Windows system DLLs such that deviation from known module loads may be suspicious. Limiting DLL module loads to <code>%SystemRoot%</code> and <code>%ProgramFiles%</code> directories will protect against module loads from unsafe paths. \n\nCorrelation of other events with behavior surrounding module loads using API monitoring and suspicious DLLs written to disk will provide additional context to an event that may assist in determining if it is due to malicious behavior.",
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": false
         }
     ]
 }

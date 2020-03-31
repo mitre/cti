@@ -1,0 +1,50 @@
+{
+    "type": "bundle",
+    "id": "bundle--34b3a3cf-52a4-408f-964f-dc543da5bc32",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1551.003",
+                    "url": "https://attack.mitre.org/techniques/T1551/003"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Clear Command History",
+            "description": "In addition to clearing system logs, an adversary may clear the command history of a compromised account to conceal the actions undertaken during an intrusion. macOS and Linux both keep track of the commands users type in their terminal so that users can retrace what they've done.\n\nThese logs can be accessed in a few different ways. While logged in, this command history is tracked in a file pointed to by the environment variable <code>HISTFILE</code>. When a user logs off a system, this information is flushed to a file in the user's home directory called <code>~/.bash_history</code>. The benefit of this is that it allows users to go back to commands they've used before in different sessions.\n\nAdversaries can use a variety of methods to prevent their own commands from appear in these logs, such as clearing the history environment variable (<code>unset HISTFILE</code>), setting the command history size to zero (<code>export HISTFILESIZE=0</code>), manually clearing the history (<code>history -c</code>), or deleting the bash history file <code>rm ~/.bash_history</code>.",
+            "id": "attack-pattern--3aef9463-9a7a-43ba-8957-a867e07c1e6a",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-03-29T21:31:03.043Z",
+            "created": "2020-01-31T12:32:08.228Z",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS"
+            ],
+            "x_mitre_data_sources": [
+                "File monitoring",
+                "Authentication logs"
+            ],
+            "x_mitre_detection": "User authentication, especially via remote terminal services like SSH, without new entries in that user's <code>~/.bash_history</code> is suspicious. Additionally, the modification of the <code>HISTFILE</code> and <code>HISTFILESIZE</code> environment variables or the removal/clearing of the <code>~/.bash_history</code> file are indicators of suspicious activity.",
+            "x_mitre_defense_bypassed": [
+                "Host forensic analysis",
+                "Log analysis"
+            ],
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0"
+        }
+    ]
+}

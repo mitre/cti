@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--217ce166-7b01-4330-ace4-33bb498965d0",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "id": "attack-pattern--633a100c-b2c9-41bf-9be5-905c1b16c825",
+            "description": "Adversaries may execute their own malicious payloads by hijacking environment variables used to load libraries. Adversaries may set the LD_PRELOAD environment variable to point at malicious libraries that match the name of legitimate libraries which are requested by a victim program, causing the operating system to load the adversary's malicious code upon execution of the victim program. This environment variable is used to control when different shared libraries are loaded by a program.(Citation: TLDP Shared Libraries) Libraries specified by this variable with be loaded and mapped into memory by <code>dlopen()</code> and <code>mmap()</code> respectively.(Citation: Code Injection on Linux and macOS) (Citation: Uninformed Needle) (Citation: Phrack halfdead 1997)\n\nLD_PRELOAD hijacking is a method of executing arbitrary code, abusing how environment variables are used to load alternate shared libraries during process execution. LD_PRELOAD hijacking may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via LD_PRELOAD hijacking may also evade detection from security products since the execution is masked under a legitimate process.",
+            "name": "LD_PRELOAD",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1574.006",
+                    "url": "https://attack.mitre.org/techniques/T1574/006"
+                },
+                {
+                    "source_name": "TLDP Shared Libraries",
+                    "url": "https://www.tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html",
+                    "description": "The Linux Documentation Project. (n.d.). Shared Libraries. Retrieved January 31, 2020."
+                },
+                {
+                    "source_name": "Code Injection on Linux and macOS",
+                    "url": "https://www.datawire.io/code-injection-on-linux-and-macos/",
+                    "description": "Itamar Turner-Trauring. (2017, April 18). \u201cThis will only hurt for a moment\u201d: code injection on Linux and macOS with LD_PRELOAD. Retrieved December 20, 2017."
+                },
+                {
+                    "url": "http://hick.org/code/skape/papers/needle.txt",
+                    "description": "skape. (2003, January 19). Linux x86 run-time process manipulation. Retrieved December 20, 2017.",
+                    "source_name": "Uninformed Needle"
+                },
+                {
+                    "url": "http://phrack.org/issues/51/8.html",
+                    "description": "halflife. (1997, September 1). Shared Library Redirection Techniques. Retrieved December 20, 2017.",
+                    "source_name": "Phrack halfdead 1997"
+                }
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-03-26T18:46:55.796Z",
+            "created": "2020-03-13T20:09:59.569Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_detection": "Monitor for changes to environment variables, as well as the commands to implement these changes.\n\nMonitor processes for unusual activity (e.g., a process that does not use the network begins to do so). Track library metadata, such as a hash, and compare libraries that are loaded at process execution time against previous executions to detect differences that do not correlate with patching or updates.",
+            "x_mitre_data_sources": [
+                "Process monitoring",
+                "File monitoring",
+                "Environment variable"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ]
+        }
+    ]
+}

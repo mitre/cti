@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--9f839671-0292-45ef-ba1f-bbe1d541bce2",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "id": "attack-pattern--2f6b4ed7-fef1-44ba-bcb8-1b4beb610b64",
+            "description": "Adversaries may use the Windows Component Object Model (COM) for local code execution. COM is an inter-process communication (IPC) component of the native Windows application programming interface (API) that enables interaction between software objects, or executable code that implements one or more interfaces.(Citation: Fireeye Hunting COM June 2019) Through COM, a client object can call methods of server objects, which are typically binary Dynamic Link Libraries (DLL) or executables (EXE).(Citation: Microsoft COM)\n\nVarious COM interfaces are exposed that can be abused to invoke arbitrary execution via a variety of programming languages such as C, C++, Java, and [VBScript](https://attack.mitre.org/techniques/T1059/005).(Citation: Microsoft COM) Specific COM objects also exist to directly perform functions beyond code execution, such as creating a [Scheduled Task/Job](https://attack.mitre.org/techniques/T1053), fileless download/execution, and other adversary behaviors related to privilege escalation and persistence.(Citation: Fireeye Hunting COM June 2019)(Citation: ProjectZero File Write EoP Apr 2018)",
+            "name": "Component Object Model",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1559.001",
+                    "url": "https://attack.mitre.org/techniques/T1559/001"
+                },
+                {
+                    "source_name": "Fireeye Hunting COM June 2019",
+                    "url": "https://www.fireeye.com/blog/threat-research/2019/06/hunting-com-objects.html",
+                    "description": "Hamilton, C. (2019, June 4). Hunting COM Objects. Retrieved June 10, 2019."
+                },
+                {
+                    "url": "https://msdn.microsoft.com/library/windows/desktop/ms680573.aspx",
+                    "description": "Microsoft. (n.d.). Component Object Model (COM). Retrieved November 22, 2017.",
+                    "source_name": "Microsoft COM"
+                },
+                {
+                    "url": "https://googleprojectzero.blogspot.com/2018/04/windows-exploitation-tricks-exploiting.html",
+                    "description": "Forshaw, J. (2018, April 18). Windows Exploitation Tricks: Exploiting Arbitrary File Writes for Local Elevation of Privilege. Retrieved May 3, 2018.",
+                    "source_name": "ProjectZero File Write EoP Apr 2018"
+                },
+                {
+                    "url": "https://enigma0x3.net/2017/11/16/lateral-movement-using-outlooks-createobject-method-and-dotnettojscript/",
+                    "description": "Nelson, M. (2017, November 16). Lateral Movement using Outlook's CreateObject Method and DotNetToJScript. Retrieved November 21, 2017.",
+                    "source_name": "Enigma Outlook DCOM Lateral Movement Nov 2017"
+                },
+                {
+                    "url": "https://enigma0x3.net/2017/01/05/lateral-movement-using-the-mmc20-application-com-object/",
+                    "description": "Nelson, M. (2017, January 5). Lateral Movement using the MMC20 Application COM Object. Retrieved November 21, 2017.",
+                    "source_name": "Enigma MMC20 COM Jan 2017"
+                }
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "execution"
+                }
+            ],
+            "modified": "2020-03-28T19:30:52.639Z",
+            "created": "2020-02-12T14:09:53.107Z",
+            "x_mitre_data_sources": [
+                "Process monitoring",
+                "DLL monitoring"
+            ],
+            "x_mitre_detection": "Monitor for COM objects loading DLLs and other modules not typically associated with the application.(Citation: Enigma Outlook DCOM Lateral Movement Nov 2017) Enumeration of COM objects, via [Query Registry](https://attack.mitre.org/techniques/T1012) or [PowerShell](https://attack.mitre.org/techniques/T1059/001), may also proceed malicious use.(Citation: Fireeye Hunting COM June 2019)(Citation: Enigma MMC20 COM Jan 2017)\n\nMonitor for spawning of processes associated with COM objects, especially those invoked by a user different than the one currently logged on. ",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_platforms": [
+                "Windows"
+            ]
+        }
+    ]
+}

@@ -1,58 +1,32 @@
 {
     "type": "bundle",
-    "id": "bundle--0d90392b-08ba-483e-a3b9-53e77a0006f1",
+    "id": "bundle--23c8619a-7939-4620-80a3-667f1f5654e3",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_data_sources": [
-                "File monitoring",
-                "Process command-line parameters"
-            ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "name": "Sudo Caching",
-            "description": "The <code>sudo</code> command \"allows a system administrator to delegate authority to give certain users (or groups of users) the ability to run some (or all) commands as root or another user while providing an audit trail of the commands and their arguments.\" (Citation: sudo man page 2018) Since sudo was made for the system administrator, it has some useful configuration features such as a <code>timestamp_timeout</code> that is the amount of time in minutes between instances of <code>sudo</code> before it will re-prompt for a password. This is because <code>sudo</code> has the ability to cache credentials for a period of time. Sudo creates (or touches) a file at <code>/var/db/sudo</code> with a timestamp of when sudo was last run to determine this timeout. Additionally, there is a <code>tty_tickets</code> variable that treats each new tty (terminal session) in isolation. This means that, for example, the sudo timeout of one tty will not affect another tty (you will have to type the password again).\n\nAdversaries can abuse poor configurations of this to escalate privileges without needing the user's password. <code>/var/db/sudo</code>'s timestamp can be monitored to see if it falls within the <code>timestamp_timeout</code> range. If it does, then malware can execute sudo commands without needing to supply the user's password. When <code>tty_tickets</code> is disabled, adversaries can do this from any tty for that user. \n\nThe OSX Proton Malware has disabled <code>tty_tickets</code> to potentially make scripting easier by issuing <code>echo \\'Defaults !tty_tickets\\' >> /etc/sudoers</code>  (Citation: cybereason osx proton). In order for this change to be reflected, the Proton malware also must issue <code>killall Terminal</code>. As of macOS Sierra, the sudoers file has <code>tty_tickets</code> enabled by default.",
             "id": "attack-pattern--2169ba87-1146-4fc7-a118-12b72251db7e",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "x_mitre_detection": "This technique is abusing normal functionality in macOS and Linux systems, but sudo has the ability to log all input and output based on the <code>LOG_INPUT</code> and <code>LOG_OUTPUT</code> directives in the <code>/etc/sudoers</code> file.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "created": "2018-04-18T17:59:24.739Z",
-            "x_mitre_effective_permissions": [
-                "root"
-            ],
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                }
-            ],
+            "name": "Sudo Caching",
             "external_references": [
                 {
-                    "external_id": "T1206",
                     "source_name": "mitre-attack",
+                    "external_id": "T1206",
                     "url": "https://attack.mitre.org/techniques/T1206"
                 },
                 {
-                    "source_name": "sudo man page 2018",
+                    "url": "https://www.sudo.ws/",
                     "description": "Todd C. Miller. (2018). Sudo Man Page. Retrieved March 19, 2018.",
-                    "url": "https://www.sudo.ws/"
+                    "source_name": "sudo man page 2018"
                 },
                 {
-                    "source_name": "cybereason osx proton",
+                    "url": "https://www.cybereason.com/blog/labs-proton-b-what-this-mac-malware-actually-does",
                     "description": "Amit Serper. (2018, May 10). ProtonB What this Mac Malware Actually Does. Retrieved March 19, 2018.",
-                    "url": "https://www.cybereason.com/blog/labs-proton-b-what-this-mac-malware-actually-does"
+                    "source_name": "cybereason osx proton"
                 }
             ],
-            "modified": "2019-06-24T13:19:32.798Z"
+            "revoked": true,
+            "type": "attack-pattern",
+            "modified": "2020-02-05T20:10:18.586Z",
+            "created": "2018-04-18T17:59:24.739Z"
         }
     ]
 }

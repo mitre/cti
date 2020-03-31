@@ -1,0 +1,78 @@
+{
+    "type": "bundle",
+    "id": "bundle--5be9044c-0abe-4189-8327-e4dd080722b9",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1548.004",
+                    "url": "https://attack.mitre.org/techniques/T1548/004"
+                },
+                {
+                    "source_name": "AppleDocs AuthorizationExecuteWithPrivileges",
+                    "url": "https://developer.apple.com/documentation/security/1540038-authorizationexecutewithprivileg",
+                    "description": "Apple. (n.d.). Apple Developer Documentation - AuthorizationExecuteWithPrivileges. Retrieved August 8, 2019."
+                },
+                {
+                    "source_name": "Death by 1000 installers; it's all broken!",
+                    "url": "https://speakerdeck.com/patrickwardle/defcon-2017-death-by-1000-installers-its-all-broken?slide=8",
+                    "description": "Patrick Wardle. (2017). Death by 1000 installers; it's all broken!. Retrieved August 8, 2019."
+                },
+                {
+                    "source_name": "Carbon Black Shlayer Feb 2019",
+                    "url": "https://www.carbonblack.com/2019/02/12/tau-threat-intelligence-notification-new-macos-malware-variant-of-shlayer-osx-discovered/",
+                    "description": "Carbon Black Threat Analysis Unit. (2019, February 12). New macOS Malware Variant of Shlayer (OSX) Discovered. Retrieved August 8, 2019."
+                },
+                {
+                    "source_name": "OSX Coldroot RAT",
+                    "url": "https://objective-see.com/blog/blog_0x2A.html",
+                    "description": "Patrick Wardle. (2018, February 17). Tearing Apart the Undetected (OSX)Coldroot RAT. Retrieved August 8, 2019."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Elevated Execution with Prompt",
+            "description": "Adversaries may leverage the <code>AuthorizationExecuteWithPrivileges</code> API to escalate privileges by prompting the user for credentials.(Citation: AppleDocs AuthorizationExecuteWithPrivileges) The purpose of this API is to give application developers an easy way to perform operations with root privileges, such as for application installation or updating. This API does not validate that the program requesting root privileges comes from a reputable source or has been maliciously modified. \n\nAlthough this API is deprecated, it still fully functions in the latest releases of macOS. When calling this API, the user will be prompted to enter their credentials but no checks on the origin or integrity of the program are made. The program calling the API may also load world writable files which can be modified to perform malicious behavior with elevated privileges.\n\nAdversaries may abuse <code>AuthorizationExecuteWithPrivileges</code> to obtain root privileges in order to install malicious software on victims and install persistence mechanisms.(Citation: Death by 1000 installers; it's all broken!)(Citation: Carbon Black Shlayer Feb 2019)(Citation: OSX Coldroot RAT) This technique may be combined with [Masquerading](https://attack.mitre.org/techniques/T1036) to trick the user into granting escalated privileges to malicious code.(Citation: Death by 1000 installers; it's all broken!)(Citation: Carbon Black Shlayer Feb 2019) This technique has also been shown to work by modifying legitimate programs present on the machine that make use of this API.(Citation: Death by 1000 installers; it's all broken!)",
+            "id": "attack-pattern--b84903f0-c7d5-435d-a69e-de47cc3578c0",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-03-27T12:04:37.823Z",
+            "created": "2020-01-30T14:40:20.187Z",
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_contributors": [
+                "Jimmy Astle, @AstleJimmy, Carbon Black",
+                "Erika Noerenberg, @gutterchurl, Carbon Black"
+            ],
+            "x_mitre_data_sources": [
+                "API monitoring",
+                "Process monitoring",
+                "File monitoring"
+            ],
+            "x_mitre_detection": "Consider monitoring for <code>/usr/libexec/security_authtrampoline</code> executions which may indicate that <code>AuthorizationExecuteWithPrivileges</code> is being executed. MacOS system logs may also indicate when <code>AuthorizationExecuteWithPrivileges</code> is being called. Monitoring OS API callbacks for the execution can also be a way to detect this behavior but requires specialized security tooling.",
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "User"
+            ],
+            "x_mitre_effective_permissions": [
+                "root"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0"
+        }
+    ]
+}

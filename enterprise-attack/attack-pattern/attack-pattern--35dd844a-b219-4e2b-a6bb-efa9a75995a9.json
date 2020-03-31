@@ -1,46 +1,34 @@
 {
     "type": "bundle",
-    "id": "bundle--2ed6e820-3893-46cb-909a-fad0439695d6",
+    "id": "bundle--baafd8e6-6d60-4e98-a29c-e84cdd97f6e7",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "SYSTEM",
-                "User"
-            ],
-            "x_mitre_data_sources": [
-                "File monitoring",
-                "Process monitoring",
-                "Process command-line parameters",
-                "Windows event logs"
-            ],
-            "name": "Scheduled Task",
-            "description": "Utilities such as [at](https://attack.mitre.org/software/S0110) and [schtasks](https://attack.mitre.org/software/S0111), along with the Windows Task Scheduler, can be used to schedule programs or scripts to be executed at a date and time. A task can also be scheduled on a remote system, provided the proper authentication is met to use RPC and file and printer sharing is turned on. Scheduling a task on a remote system typically required being a member of the Administrators group on the remote system. (Citation: TechNet Task Scheduler Security)\n\nAn adversary may use task scheduling to execute programs at system startup or on a scheduled basis for persistence, to conduct remote Execution as part of Lateral Movement, to gain SYSTEM privileges, or to run a process under the context of a specified account.",
-            "x_mitre_remote_support": true,
-            "id": "attack-pattern--35dd844a-b219-4e2b-a6bb-efa9a75995a9",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "1.1",
-            "type": "attack-pattern",
-            "x_mitre_detection": "Monitor scheduled task creation from common utilities using command-line invocation. Legitimate scheduled tasks may be created during installation of new software or through system administration functions. Monitor process execution from the <code>svchost.exe</code> in Windows 10 and the Windows Task Scheduler <code>taskeng.exe</code> for older versions of Windows. (Citation: Twitter Leoloobeek Scheduled Task) If scheduled tasks are not used for persistence, then the adversary is likely to remove the task when the action is complete. Monitor Windows Task Scheduler stores in <code>%systemroot%\\System32\\Tasks</code> for change entries related to scheduled tasks that do not correlate with known software, patch cycles, etc. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.\n\nConfigure event logging for scheduled task creation and changes by enabling the \"Microsoft-Windows-TaskScheduler/Operational\" setting within the event logging service. (Citation: TechNet Forum Scheduled Task Operational Setting) Several events will then be logged on scheduled task activity, including: (Citation: TechNet Scheduled Task Events)(Citation: Microsoft Scheduled Task Events Win10)\n\n* Event ID 106 on Windows 7, Server 2008 R2 - Scheduled task registered\n* Event ID 140 on Windows 7, Server 2008 R2 / 4702 on Windows 10, Server 2016 - Scheduled task updated\n* Event ID 141 on Windows 7, Server 2008 R2 / 4699 on Windows 10, Server 2016 - Scheduled task deleted\n* Event ID 4698 on Windows 10, Server 2016 - Scheduled task created\n* Event ID 4700 on Windows 10, Server 2016 - Scheduled task enabled\n* Event ID 4701 on Windows 10, Server 2016 - Scheduled task disabled\n\nTools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current scheduled tasks. (Citation: TechNet Autoruns) Look for changes to tasks that do not correlate with known software, patch cycles, etc. Suspicious program execution through scheduled tasks may show up as outlier processes that have not been seen before when compared against historical data.\n\nMonitor processes and command-line arguments for actions that could be taken to create tasks. Remote access tools with built-in features may interact directly with the Windows API to perform these functions outside of typical system utilities. Tasks may also be created through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086), so additional logging may need to be configured to gather the appropriate data.",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1053",
+                    "url": "https://attack.mitre.org/techniques/T1053"
+                },
+                {
+                    "external_id": "CAPEC-557",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/557.html"
+                },
+                {
+                    "url": "https://technet.microsoft.com/en-us/library/cc785125.aspx",
+                    "description": "Microsoft. (2005, January 21). Task Scheduler and security. Retrieved June 8, 2016.",
+                    "source_name": "TechNet Task Scheduler Security"
+                }
+            ],
+            "description": "Adversaries may abuse task scheduling functionality to facilitate initial or recurring execution of malicious code. Utilities exist within all major operating systems to schedule programs or scripts to be executed at a specified date and time. A task can also be scheduled on a remote system, provided the proper authentication is met (ex: RPC and file and printer sharing in Windows environments). Scheduling a task on a remote system typically requires being a member of an admin or otherwise privileged group on the remote system.(Citation: TechNet Task Scheduler Security)\n\nAdversaries may use task scheduling to execute programs at system startup or on a scheduled basis for persistence. These mechanisms can also be abused to run a process under the context of a specified account (such as one with elevated permissions/privileges).",
+            "name": "Scheduled Task/Job",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_contributors": [
-                "Prashant Verma, Paladion",
-                "Leo Loobeek, @leoloobeek",
-                "Travis Smith, Tripwire",
-                "Alain Homewood, Insomnia Security"
-            ],
-            "created": "2017-05-31T21:30:46.977Z",
-            "x_mitre_effective_permissions": [
-                "SYSTEM",
-                "Administrator",
-                "User"
-            ],
+            "id": "attack-pattern--35dd844a-b219-4e2b-a6bb-efa9a75995a9",
+            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -55,49 +43,39 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "external_references": [
-                {
-                    "external_id": "T1053",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1053"
-                },
-                {
-                    "source_name": "capec",
-                    "external_id": "CAPEC-557",
-                    "url": "https://capec.mitre.org/data/definitions/557.html"
-                },
-                {
-                    "source_name": "TechNet Task Scheduler Security",
-                    "description": "Microsoft. (2005, January 21). Task Scheduler and security. Retrieved June 8, 2016.",
-                    "url": "https://technet.microsoft.com/en-us/library/cc785125.aspx"
-                },
-                {
-                    "source_name": "Twitter Leoloobeek Scheduled Task",
-                    "description": "Loobeek, L. (2017, December 8). leoloobeek Status. Retrieved December 12, 2017.",
-                    "url": "https://twitter.com/leoloobeek/status/939248813465853953"
-                },
-                {
-                    "source_name": "TechNet Forum Scheduled Task Operational Setting",
-                    "description": "Satyajit321. (2015, November 3). Scheduled Tasks History Retention settings. Retrieved December 12, 2017.",
-                    "url": "https://social.technet.microsoft.com/Forums/en-US/e5bca729-52e7-4fcb-ba12-3225c564674c/scheduled-tasks-history-retention-settings?forum=winserver8gen"
-                },
-                {
-                    "source_name": "TechNet Scheduled Task Events",
-                    "description": "Microsoft. (n.d.). General Task Registration. Retrieved December 12, 2017.",
-                    "url": "https://technet.microsoft.com/library/dd315590.aspx"
-                },
-                {
-                    "description": "Microsoft. (2017, May 28). Audit Other Object Access Events. Retrieved June 27, 2019.",
-                    "source_name": "Microsoft Scheduled Task Events Win10",
-                    "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-other-object-access-events"
-                },
-                {
-                    "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
-                    "source_name": "TechNet Autoruns",
-                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902"
-                }
+            "modified": "2020-03-24T13:45:04.006Z",
+            "created": "2017-05-31T21:30:46.977Z",
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "macOS"
             ],
-            "modified": "2019-07-25T19:04:10.980Z"
+            "x_mitre_remote_support": true,
+            "x_mitre_effective_permissions": [
+                "SYSTEM",
+                "Administrator",
+                "User"
+            ],
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "SYSTEM",
+                "User"
+            ],
+            "x_mitre_detection": "Monitor scheduled task creation from common utilities using command-line invocation. Legitimate scheduled tasks may be created during installation of new software or through system administration functions. Look for changes to tasks that do not correlate with known software, patch cycles, etc. \n\nSuspicious program execution through scheduled tasks may show up as outlier processes that have not been seen before when compared against historical data. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
+            "x_mitre_data_sources": [
+                "File monitoring",
+                "Process monitoring",
+                "Process command-line parameters",
+                "Windows event logs"
+            ],
+            "x_mitre_contributors": [
+                "Prashant Verma, Paladion",
+                "Leo Loobeek, @leoloobeek",
+                "Travis Smith, Tripwire",
+                "Alain Homewood, Insomnia Security"
+            ],
+            "x_mitre_version": "2.0",
+            "x_mitre_is_subtechnique": false
         }
     ]
 }

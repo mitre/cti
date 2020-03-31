@@ -1,0 +1,61 @@
+{
+    "type": "bundle",
+    "id": "bundle--48078cff-d35f-4bf8-b270-39398087ee15",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1546.006",
+                    "url": "https://attack.mitre.org/techniques/T1546/006"
+                },
+                {
+                    "url": "https://www.blackhat.com/docs/us-15/materials/us-15-Wardle-Writing-Bad-A-Malware-For-OS-X.pdf",
+                    "description": "Patrick Wardle. (2015). Writing Bad @$$ Malware for OS X. Retrieved July 10, 2017.",
+                    "source_name": "Writing Bad Malware for OSX"
+                },
+                {
+                    "url": "https://www.rsaconference.com/writable/presentations/file_upload/ht-r03-malware-persistence-on-os-x-yosemite_final.pdf",
+                    "description": "Patrick Wardle. (2015). Malware Persistence on OS X Yosemite. Retrieved July 10, 2017.",
+                    "source_name": "Malware Persistence on OS X"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "LC_LOAD_DYLIB Addition",
+            "description": "Adversaries may establish persistence by executing malicious content triggered by the execution of tainted binaries. Mach-O binaries have a series of headers that are used to perform certain operations when a binary is loaded. The LC_LOAD_DYLIB header in a Mach-O binary tells macOS and OS X which dynamic libraries (dylibs) to load during execution time. These can be added ad-hoc to the compiled binary as long as adjustments are made to the rest of the fields and dependencies. (Citation: Writing Bad Malware for OSX) There are tools available to perform these changes.\n\nAdversaries may modify Mach-O binary headers to load and execute malicious dylibs every time the binary is executed. Although any changes will invalidate digital signatures on binaries because the binary is being modified, this can be remediated by simply removing the LC_CODE_SIGNATURE command from the binary so that the signature isn\u2019t checked at load time. (Citation: Malware Persistence on OS X)",
+            "id": "attack-pattern--10ff21b9-5a01-4268-a1b5-3b55015f1847",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "modified": "2020-03-24T16:50:36.235Z",
+            "created": "2020-01-24T14:21:52.750Z",
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_data_sources": [
+                "File monitoring",
+                "Process command-line parameters",
+                "Process monitoring",
+                "Binary file metadata"
+            ],
+            "x_mitre_detection": "Monitor processes for those that may be used to modify binary headers. Monitor file systems for changes to application binaries and invalid checksums/signatures. Changes to binaries that do not line up with application updates or patches are also extremely suspicious.",
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0"
+        }
+    ]
+}

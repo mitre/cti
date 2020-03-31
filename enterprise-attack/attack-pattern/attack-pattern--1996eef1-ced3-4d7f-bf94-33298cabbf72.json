@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--bef44689-9664-422c-8edf-3ce46dbb3f34",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1071.004",
+                    "url": "https://attack.mitre.org/techniques/T1071/004"
+                },
+                {
+                    "source_name": "PAN DNS Tunneling",
+                    "url": "https://www.paloaltonetworks.com/cyberpedia/what-is-dns-tunneling",
+                    "description": "Palo Alto Networks. (n.d.). What Is DNS Tunneling?. Retrieved March 15, 2020."
+                },
+                {
+                    "source_name": "Medium DnsTunneling",
+                    "url": "https://medium.com/@galolbardes/learn-how-easy-is-to-bypass-firewalls-using-dns-tunneling-and-also-how-to-block-it-3ed652f4a000",
+                    "description": "Galobardes, R. (2018, October 30). Learn how easy is to bypass firewalls using DNS tunneling (and also how to block it). Retrieved March 15, 2020."
+                },
+                {
+                    "url": "https://arxiv.org/ftp/arxiv/papers/1408/1408.1136.pdf",
+                    "description": "Gardiner, J.,  Cova, M., Nagaraja, S. (2014, February). Command & Control Understanding, Denying and Detecting. Retrieved April 20, 2016.",
+                    "source_name": "University of Birmingham C2"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "DNS",
+            "description": "Adversaries may communicate using the Domain Name System (DNS) application layer protocol to avoid detection/network filtering by blending in with existing traffic. Commands to the remote system, and often the results of those commands, will be embedded within the protocol traffic between the client and server. \n\nThe DNS protocol serves an administrative function in computer networking and thus may be very common in environments. DNS traffic may also be allowed even before network authentication is completed. DNS packets contain many fields and headers in which data can be concealed. Often known as DNS tunneling, adversaries may abuse DNS to communicate with systems under their control within a victim network while also mimicking normal, expected traffic.(Citation: PAN DNS Tunneling)(Citation: Medium DnsTunneling) ",
+            "id": "attack-pattern--1996eef1-ced3-4d7f-bf94-33298cabbf72",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "command-and-control"
+                }
+            ],
+            "modified": "2020-03-27T19:02:44.600Z",
+            "created": "2020-03-15T16:27:31.768Z",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_data_sources": [
+                "DNS records",
+                "Netflow/Enclave netflow",
+                "Process monitoring",
+                "Process use of network",
+                "Netflow/Enclave netflow",
+                "Packet capture"
+            ],
+            "x_mitre_detection": "Analyze network data for uncommon data flows (e.g., a client sending significantly more data than it receives from a server). Processes utilizing the network that do not normally have network communication or have never been seen before are suspicious. Analyze packet contents to detect application layer protocols that do not follow the expected protocol standards regarding syntax, structure, or any other variable adversaries could leverage to conceal data.(Citation: University of Birmingham C2)\n\nMonitor for DNS traffic to/from known-bad or suspicious domains.",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_contributors": [
+                "Jan Petrov, Citi"
+            ]
+        }
+    ]
+}

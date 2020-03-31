@@ -1,39 +1,18 @@
 {
     "type": "bundle",
-    "id": "bundle--6892832b-c328-42b5-914c-920b3db6dd47",
+    "id": "bundle--e400aa83-94cd-4e6d-b728-a8aa30e8f9d6",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_old_attack_id": "MOB-T1014",
+            "id": "attack-pattern--3dd58c80-4c2e-458c-9503-1b2cd273c4d2",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Input Prompt",
             "description": "The operating system and installed applications often have legitimate needs to prompt the user for sensitive information such as account credentials, bank account information, or Personally Identifiable Information (PII). Adversaries may mimic this functionality to prompt users for sensitive information.\n\nCompared to traditional PCs, the constrained display size of mobile devices may impair the ability to provide users with contextual information, making users more susceptible to this technique\u2019s use.(Citation: Felt-PhishingOnMobileDevices)\n\nSpecific approaches to this technique include:\n\n### Impersonate the identity of a legitimate application\n\nA malicious application could impersonate the identity of a legitimate application (e.g. use the same application name and/or icon) and get installed on the device. The malicious app could then prompt the user for sensitive information.(Citation: eset-finance)\n\n### Display a prompt on top of a running legitimate application\n\nA malicious application could display a prompt on top of a running legitimate application to trick users into entering sensitive information into the malicious application rather than the legitimate application. Typically, the malicious application would need to know when the targeted application (and individual activity within the targeted application) is running in the foreground, so that the malicious application knows when to display its prompt. Android 5.0 and 5.1.1, respectively, increased the difficulty of determining the current foreground application through modifications to the `ActivityManager` API.(Citation: Android-getRunningTasks)(Citation: StackOverflow-getRunningAppProcesses). A malicious application can still abuse Android\u2019s accessibility features to determine which application is currently in the foreground.(Citation: ThreatFabric Cerberus) Approaches to display a prompt include:\n\n* A malicious application could start a new activity on top of a running legitimate application.(Citation: Felt-PhishingOnMobileDevices)(Citation: Hassell-ExploitingAndroid) Android 10 places new restrictions on the ability for an application to start a new activity on top of another application, which may make it more difficult for adversaries to utilize this technique.(Citation: Android Background)\n* A malicious application could create an application overlay window on top of a running legitimate application. Applications must hold the `SYSTEM_ALERT_WINDOW` permission to create overlay windows. This permission is handled differently than typical Android permissions, and at least under certain conditions is automatically granted to applications installed from the Google Play Store.(Citation: Cloak and Dagger)(Citation: NowSecure Android Overlay)(Citation: Skycure-Accessibility) The `SYSTEM_ALERT_WINDOW` permission and its associated ability to create application overlay windows are expected to be deprecated in a future release of Android in favor of a new API.(Citation: XDA Bubbles)\n\n### Fake device notifications\n\nA malicious application could send fake device notifications to the user. Clicking on the device notification could trigger the malicious application to display an input prompt.(Citation: Group IB Gustuff Mar 2019)",
-            "id": "attack-pattern--3dd58c80-4c2e-458c-9503-1b2cd273c4d2",
-            "x_mitre_platforms": [
-                "Android",
-                "iOS"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_version": "2.0",
-            "type": "attack-pattern",
-            "x_mitre_detection": "The user can view and manage which applications hold the SYSTEM_ALERT_WINDOW permission to create overlay windows on top of other apps through the device settings in Apps & notifications -> Special app access -> Display over other apps (the exact menu location may vary between Android versions).",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "created": "2017-10-25T14:48:34.407Z",
-            "x_mitre_tactic_type": [
-                "Post-Adversary Device Access"
-            ],
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-mobile-attack",
-                    "phase_name": "credential-access"
-                }
-            ],
             "external_references": [
                 {
                     "source_name": "mitre-mobile-attack",
-                    "external_id": "T1411",
-                    "url": "https://attack.mitre.org/techniques/T1411"
+                    "url": "https://attack.mitre.org/techniques/T1411",
+                    "external_id": "T1411"
                 },
                 {
                     "external_id": "APP-31",
@@ -41,29 +20,29 @@
                     "url": "https://pages.nist.gov/mobile-threat-catalogue/application-threats/APP-31.html"
                 },
                 {
+                    "url": "http://w2spconf.com/2011/papers/felt-mobilephishing.pdf",
                     "description": "A.P. Felt and D. Wagner. (2011, May 26). Phishing on Mobile Devices. Retrieved August 25, 2016.",
-                    "source_name": "Felt-PhishingOnMobileDevices",
-                    "url": "http://w2spconf.com/2011/papers/felt-mobilephishing.pdf"
+                    "source_name": "Felt-PhishingOnMobileDevices"
                 },
                 {
-                    "description": "Lukas Stefanko. (2016, July 7). Fake finance apps on Google Play target users from around the world. Retrieved September 24, 2018.",
-                    "source_name": "eset-finance",
-                    "url": "https://www.welivesecurity.com/2018/09/19/fake-finance-apps-google-play-target-around-world/"
+                    "url": "https://www.welivesecurity.com/2018/09/19/fake-finance-apps-google-play-target-around-world/",
+                    "description": "Luk\u00e1\u0161 \u0160tefanko. (2016, July 7). Fake finance apps on Google Play target users from around the world. Retrieved September 24, 2018.",
+                    "source_name": "eset-finance"
                 },
                 {
+                    "url": "https://developer.android.com/reference/android/app/ActivityManager.html#getRunningTasks%28int%29",
                     "description": "Android. (n.d.). ActivityManager getRunningTasks documentation. Retrieved January 19, 2017.",
-                    "source_name": "Android-getRunningTasks",
-                    "url": "https://developer.android.com/reference/android/app/ActivityManager.html#getRunningTasks%28int%29"
+                    "source_name": "Android-getRunningTasks"
                 },
                 {
+                    "url": "http://stackoverflow.com/questions/30619349/android-5-1-1-and-above-getrunningappprocesses-returns-my-application-packag",
                     "description": "Various. (n.d.). Android 5.1.1 and above - getRunningAppProcesses() returns my application package only. Retrieved January 19, 2017.",
-                    "source_name": "StackOverflow-getRunningAppProcesses",
-                    "url": "http://stackoverflow.com/questions/30619349/android-5-1-1-and-above-getrunningappprocesses-returns-my-application-packag"
+                    "source_name": "StackOverflow-getRunningAppProcesses"
                 },
                 {
                     "source_name": "ThreatFabric Cerberus",
-                    "description": "ThreatFabric. (2019, August). Cerberus - A new banking Trojan from the underworld. Retrieved September 18, 2019.",
-                    "url": "https://www.threatfabric.com/blogs/cerberus-a-new-banking-trojan-from-the-underworld.html"
+                    "url": "https://www.threatfabric.com/blogs/cerberus-a-new-banking-trojan-from-the-underworld.html",
+                    "description": "ThreatFabric. (2019, August). Cerberus - A new banking Trojan from the underworld. Retrieved September 18, 2019."
                 },
                 {
                     "source_name": "Hassell-ExploitingAndroid",
@@ -72,36 +51,57 @@
                 },
                 {
                     "source_name": "Android Background",
-                    "description": "Android Developers. (n.d.). Restrictions on starting activities from the background. Retrieved September 18, 2019.",
-                    "url": "https://developer.android.com/guide/components/activities/background-starts"
+                    "url": "https://developer.android.com/guide/components/activities/background-starts",
+                    "description": "Android Developers. (n.d.). Restrictions on starting activities from the background. Retrieved September 18, 2019."
                 },
                 {
                     "source_name": "Cloak and Dagger",
-                    "description": "Fratantonio, Y., et al.. (2017). Cloak & Dagger. Retrieved September 18, 2019.",
-                    "url": "http://cloak-and-dagger.org/"
+                    "url": "http://cloak-and-dagger.org/",
+                    "description": "Fratantonio, Y., et al.. (2017). Cloak & Dagger. Retrieved September 18, 2019."
                 },
                 {
                     "source_name": "NowSecure Android Overlay",
-                    "description": "Ramirez, T.. (2017, May 25). \u2018SAW\u2019-ing through the UI: Android overlay malware and the System Alert Window permission explained. Retrieved September 18, 2019.",
-                    "url": "https://www.nowsecure.com/blog/2017/05/25/android-overlay-malware-system-alert-window-permission/"
+                    "url": "https://www.nowsecure.com/blog/2017/05/25/android-overlay-malware-system-alert-window-permission/",
+                    "description": "Ramirez, T.. (2017, May 25). \u2018SAW\u2019-ing through the UI: Android overlay malware and the System Alert Window permission explained. Retrieved September 18, 2019."
                 },
                 {
+                    "url": "https://www.skycure.com/blog/accessibility-clickjacking/",
                     "description": "Yair Amit. (2016, March 3). \u201cAccessibility Clickjacking\u201d \u2013 The Next Evolution in Android Malware that Impacts More Than 500 Million Devices. Retrieved December 21, 2016.",
-                    "source_name": "Skycure-Accessibility",
-                    "url": "https://www.skycure.com/blog/accessibility-clickjacking/"
+                    "source_name": "Skycure-Accessibility"
                 },
                 {
                     "source_name": "XDA Bubbles",
-                    "description": "Rahman, M.. (2019, May 8). Bubbles in Android Q will fully replace the overlay API in a future Android version. Retrieved September 18, 2019.",
-                    "url": "https://www.xda-developers.com/android-q-system-alert-window-deprecate-bubbles/"
+                    "url": "https://www.xda-developers.com/android-q-system-alert-window-deprecate-bubbles/",
+                    "description": "Rahman, M.. (2019, May 8). Bubbles in Android Q will fully replace the overlay API in a future Android version. Retrieved September 18, 2019."
                 },
                 {
                     "description": "Group-IB. (2019, March 28). Group-IB uncovers Android Trojan named \u00abGustuff\u00bb capable of targeting more than 100 global banking apps, cryptocurrency and marketplace applications. Retrieved September 3, 2019.",
-                    "source_name": "Group IB Gustuff Mar 2019",
-                    "url": "https://www.group-ib.com/blog/gustuff"
+                    "url": "https://www.group-ib.com/blog/gustuff",
+                    "source_name": "Group IB Gustuff Mar 2019"
                 }
             ],
-            "modified": "2019-10-14T19:07:24.369Z"
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-mobile-attack",
+                    "phase_name": "credential-access"
+                }
+            ],
+            "modified": "2019-10-28T18:34:50.758Z",
+            "created": "2017-10-25T14:48:34.407Z",
+            "x_mitre_platforms": [
+                "Android",
+                "iOS"
+            ],
+            "x_mitre_tactic_type": [
+                "Post-Adversary Device Access"
+            ],
+            "x_mitre_version": "2.0",
+            "x_mitre_old_attack_id": "MOB-T1014",
+            "x_mitre_detection": "The user can view and manage which applications hold the SYSTEM_ALERT_WINDOW permission to create overlay windows on top of other apps through the device settings in Apps & notifications -> Special app access -> Display over other apps (the exact menu location may vary between Android versions)."
         }
     ]
 }

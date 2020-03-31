@@ -1,45 +1,54 @@
 {
     "type": "bundle",
-    "id": "bundle--a7cfb040-1b39-4edc-93b9-8565ff4fffed",
+    "id": "bundle--67415256-bff0-4715-bc1f-b80124999005",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_old_attack_id": "MOB-T1005",
-            "name": "App Auto-Start at Device Boot",
-            "description": "An Android application can listen for the BOOT_COMPLETED broadcast, ensuring that the app's functionality will be activated every time the device starts up without having to wait for the device user to manually start the app.\n\nAn analysis published in 2012(Citation: Zhou) of 1260 Android malware samples belonging to 49 families of malware determined that 29 malware families and 83.3% of the samples listened for BOOT_COMPLETED.",
-            "id": "attack-pattern--bd4d32f5-eed4-4018-a649-40b229dd1d69",
-            "x_mitre_platforms": [
-                "Android"
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "1.1",
-            "type": "attack-pattern",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "created": "2017-10-25T14:48:30.127Z",
-            "x_mitre_tactic_type": [
-                "Post-Adversary Device Access"
+            "external_references": [
+                {
+                    "source_name": "mitre-mobile-attack",
+                    "external_id": "T1402",
+                    "url": "https://attack.mitre.org/techniques/T1402"
+                },
+                {
+                    "source_name": "Android Changes to System Broadcasts",
+                    "url": "https://developer.android.com/guide/components/broadcasts#changes-system-broadcasts",
+                    "description": "Google. (2019, December 27). Broadcasts Overview. Retrieved January 27, 2020."
+                }
             ],
+            "description": "An intent is a message passed between Android application or system components. Applications can register to receive broadcast intents at runtime, which are system-wide intents delivered to each app when certain events happen on the device, such as network changes or the user unlocking the screen. Malicious applications can then trigger certain actions within the app based on which broadcast intent was received.\n\nFurther, malicious applications can register for intents broadcasted by other applications in addition to the Android system itself. This allows the malware to respond based on actions in other applications. This behavior typically indicates a more intimate knowledge, or potentially the targeting of specific devices, users, or applications.\n\nIn Android 8 (API level 26), broadcast intent behavior was changed, limiting the implicit intents that applications can register for in the manifest. In most cases, applications that register through the manifest will no longer receive the broadcasts. Now, applications must register context-specific broadcast receivers while the user is actively using the app.(Citation: Android Changes to System Broadcasts)",
+            "name": "Broadcast Receivers",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "id": "attack-pattern--bd4d32f5-eed4-4018-a649-40b229dd1d69",
+            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-mobile-attack",
                     "phase_name": "persistence"
-                }
-            ],
-            "external_references": [
-                {
-                    "external_id": "T1402",
-                    "source_name": "mitre-mobile-attack",
-                    "url": "https://attack.mitre.org/techniques/T1402"
                 },
                 {
-                    "source_name": "Zhou",
-                    "description": "Yajin Zhou and Xuxian Jiang. (2012, May). Dissecting Android Malware: Characterization and Evolution. Retrieved December 9, 2016.",
-                    "url": "http://ieeexplore.ieee.org/document/6234407"
+                    "kill_chain_name": "mitre-mobile-attack",
+                    "phase_name": "execution"
                 }
             ],
-            "modified": "2019-06-18T13:39:55.079Z"
+            "modified": "2020-03-27T15:28:03.858Z",
+            "created": "2017-10-25T14:48:30.127Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_contributors": [
+                "Alex Hinchliffe, Palo Alto Networks"
+            ],
+            "x_mitre_detection": "Broadcast intent receivers are part of standard OS-level APIs and are therefore typically undetectable to the end user.",
+            "x_mitre_old_attack_id": "MOB-T1005",
+            "x_mitre_version": "2.0",
+            "x_mitre_tactic_type": [
+                "Post-Adversary Device Access"
+            ],
+            "x_mitre_platforms": [
+                "Android"
+            ]
         }
     ]
 }

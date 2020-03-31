@@ -1,0 +1,59 @@
+{
+    "type": "bundle",
+    "id": "bundle--e40b4002-9cf6-4d62-8291-95dfa68825fa",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "id": "attack-pattern--dca670cf-eeec-438f-8185-fd959d9ef211",
+            "description": "Adversaries may use rc.common automatically executed at boot initialization to establish persistence. During the boot process, macOS executes <code>source /etc/rc.common</code>, which is a shell script containing various utility functions. This file also defines routines for processing command-line arguments and for gathering system settings and is thus recommended to include in the start of Startup Item Scripts (Citation: Startup Items). In macOS and OS X, this is now a deprecated mechanism in favor of [Launch Agent](https://attack.mitre.org/techniques/T1543/001) and [Launch Daemon](https://attack.mitre.org/techniques/T1543/004) but is currently still used.\n\nAdversaries can use the rc.common file as a way to hide code for persistence that will execute on each reboot as the root user. (Citation: Methods of Mac Malware Persistence)",
+            "name": "Rc.common",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1037.004",
+                    "url": "https://attack.mitre.org/techniques/T1037/004"
+                },
+                {
+                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/StartupItems.html",
+                    "description": "Apple. (2016, September 13). Startup Items. Retrieved July 11, 2017.",
+                    "source_name": "Startup Items"
+                },
+                {
+                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
+                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
+                    "source_name": "Methods of Mac Malware Persistence"
+                }
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2020-03-24T23:46:20.433Z",
+            "created": "2020-01-15T16:25:22.260Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "root"
+            ],
+            "x_mitre_detection": "The <code>/etc/rc.common</code> file can be monitored to detect changes from the company policy. Monitor process execution resulting from the rc.common script for unusual or unknown applications or behavior. ",
+            "x_mitre_data_sources": [
+                "Process monitoring",
+                "File monitoring"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ]
+        }
+    ]
+}

@@ -1,17 +1,44 @@
 {
     "type": "bundle",
-    "id": "bundle--30b4443d-f84f-4088-9c3a-af0aa2f8a8d7",
+    "id": "bundle--94b48df1-1661-4b3f-b934-590cbabb7ec2",
     "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--7dd95ff6-712e-4056-9626-312ea4ab4c5e",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Data Staged",
+            "description": "Adversaries may stage collected data in a central location or directory prior to Exfiltration. Data may be kept in separate files or combined into one file through techniques such as [Archive Collected Data](https://attack.mitre.org/techniques/T1560). Interactive command shells may be used, and common functionality within [cmd](https://attack.mitre.org/software/S0106) and bash may be used to copy data into a staging location.(Citation: PWC Cloud Hopper April 2017)\n\nAdversaries may choose to stage data from a victim network in a centralized location prior to Exfiltration to minimize the number of connections made to their C2 server and better evade detection.",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1074",
+                    "url": "https://attack.mitre.org/techniques/T1074"
+                },
+                {
+                    "source_name": "PWC Cloud Hopper April 2017",
+                    "description": "PwC and BAE Systems. (2017, April). Operation Cloud Hopper. Retrieved April 5, 2017.",
+                    "url": "https://www.pwc.co.uk/cyber-security/pdf/cloud-hopper-report-final-v4.pdf"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "collection"
+                }
+            ],
+            "modified": "2020-03-24T17:26:16.286Z",
+            "created": "2017-05-31T21:30:58.938Z",
+            "x_mitre_version": "1.2",
             "x_mitre_data_sources": [
                 "File monitoring",
                 "Process monitoring",
                 "Process command-line parameters"
             ],
-            "name": "Data Staged",
-            "description": "Collected data is staged in a central location or directory prior to Exfiltration. Data may be kept in separate files or combined into one file through techniques such as [Data Compressed](https://attack.mitre.org/techniques/T1002) or [Data Encrypted](https://attack.mitre.org/techniques/T1022).\n\nInteractive command shells may be used, and common functionality within [cmd](https://attack.mitre.org/software/S0106) and bash may be used to copy data into a staging location.",
-            "id": "attack-pattern--7dd95ff6-712e-4056-9626-312ea4ab4c5e",
+            "x_mitre_detection": "Processes that appear to be reading files from disparate locations and writing them to the same directory or file may be an indication of data being staged, especially if they are suspected of performing encryption or compression on the files, such as 7zip, RAR, ZIP, or zlib. Monitor publicly writeable directories, central locations, and commonly used staging directories (recycle bin, temp folders, etc.) to regularly check for compressed or encrypted data that may be indicative of staging.\n\nMonitor processes and command-line arguments for actions that could be taken to collect and combine files. Remote access tools with built-in features may interact directly with the Windows API to gather and copy to a location. Data may also be acquired and staged through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).",
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
@@ -20,32 +47,11 @@
                 "GCP",
                 "Azure"
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_version": "1.1",
-            "type": "attack-pattern",
-            "x_mitre_detection": "Processes that appear to be reading files from disparate locations and writing them to the same directory or file may be an indication of data being staged, especially if they are suspected of performing encryption or compression on the files, such as 7zip, RAR, ZIP, or zlib. Monitor publicly writeable directories, central locations, and commonly used staging directories (recycle bin, temp folders, etc.) to regularly check for compressed or encrypted data that may be indicative of staging.\n\nMonitor processes and command-line arguments for actions that could be taken to collect and combine files. Remote access tools with built-in features may interact directly with the Windows API to gather and copy to a location. Data may also be acquired and staged through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086).",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_contributors": [
                 "Praetorian",
                 "Shane Tully, @securitygypsy"
             ],
-            "created": "2017-05-31T21:30:58.938Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "collection"
-                }
-            ],
-            "external_references": [
-                {
-                    "external_id": "T1074",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1074"
-                }
-            ],
-            "modified": "2019-10-09T21:09:00.992Z"
+            "x_mitre_is_subtechnique": false
         }
     ]
 }

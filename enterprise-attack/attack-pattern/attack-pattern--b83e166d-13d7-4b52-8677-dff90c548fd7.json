@@ -1,0 +1,82 @@
+{
+    "type": "bundle",
+    "id": "bundle--fb29e206-1e5a-4a6b-b4fa-795e9ef35442",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "revoked": false,
+            "id": "attack-pattern--b83e166d-13d7-4b52-8677-dff90c548fd7",
+            "description": "Adversaries may undermine security controls that will either warn users of untrusted activity or prevent execution of untrusted programs. Operating systems and security products may contain mechanisms to identify programs or websites as possessing some level of trust. Examples of such features would include a program being allowed to run because it is signed by a valid code signing certificate, a program prompting the user with a warning because it has an attribute set from being downloaded from the Internet, or getting an indication that you are about to connect to an untrusted site.\n\nAdversaries may attempt to subvert these trust mechanisms. The method adversaries use will depend on the specific mechanism they seek to subvert. Adversaries may conduct [File and Directory Permissions Modification](https://attack.mitre.org/techniques/T1222) or [Modify Registry](https://attack.mitre.org/techniques/T1112) in support of subverting these controls.(Citation: SpectorOps Subverting Trust Sept 2017) Adversaries may also create or steal code signing certificates to acquire trust on target systems.(Citation: Securelist Digital Certificates)(Citation: Symantec Digital Certificates) ",
+            "name": "Subvert Trust Controls",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1553",
+                    "url": "https://attack.mitre.org/techniques/T1553"
+                },
+                {
+                    "url": "https://specterops.io/assets/resources/SpecterOps_Subverting_Trust_in_Windows.pdf",
+                    "description": "Graeber, M. (2017, September). Subverting Trust in Windows. Retrieved January 31, 2018.",
+                    "source_name": "SpectorOps Subverting Trust Sept 2017"
+                },
+                {
+                    "url": "https://securelist.com/why-you-shouldnt-completely-trust-files-signed-with-digital-certificates/68593/",
+                    "description": "Ladikov, A. (2015, January 29). Why You Shouldn\u2019t Completely Trust Files Signed with Digital Certificates. Retrieved March 31, 2016.",
+                    "source_name": "Securelist Digital Certificates"
+                },
+                {
+                    "url": "http://www.symantec.com/connect/blogs/how-attackers-steal-private-keys-digital-certificates",
+                    "description": "Shinotsuka, H. (2013, February 22). How Attackers Steal Private Keys from Digital Certificates. Retrieved March 31, 2016.",
+                    "source_name": "Symantec Digital Certificates"
+                },
+                {
+                    "url": "https://posts.specterops.io/code-signing-certificate-cloning-attacks-and-defenses-6f98657fc6ec",
+                    "description": "Graeber, M. (2017, December 22). Code Signing Certificate Cloning Attacks and Defenses. Retrieved April 3, 2018.",
+                    "source_name": "SpectorOps Code Signing Dec 2017"
+                }
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-03-31T12:49:36.781Z",
+            "created": "2020-02-05T14:54:07.588Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_defense_bypassed": [
+                "Application whitelisting",
+                "Anti-virus",
+                "Autoruns Analysis",
+                "Digital Certificate Validation",
+                "Process whitelisting",
+                "User Mode Signature Validation",
+                "Windows User Account Control"
+            ],
+            "x_mitre_detection": "Collect and analyze signing certificate metadata on software that executes within the environment to look for unusual certificate characteristics and outliers. Periodically baseline registered SIPs and trust providers (Registry entries and files on disk), specifically looking for new, modified, or non-Microsoft entries. (Citation: SpectorOps Subverting Trust Sept 2017) A system's root certificates are unlikely to change frequently. Monitor new certificates installed on a system that could be due to malicious activity.(Citation: SpectorOps Code Signing Dec 2017)\n\nAnalyze Autoruns data for oddities and anomalies, specifically malicious files attempting persistent execution by hiding within auto-starting locations. Autoruns will hide entries signed by Microsoft or Windows by default, so ensure \"Hide Microsoft Entries\" and \"Hide Windows Entries\" are both deselected.(Citation: SpectorOps Subverting Trust Sept 2017) \n\nMonitor and investigate attempts to modify extended file attributes with utilities such as <code>xattr</code>. Built-in system utilities may generate high false positive alerts, so compare against baseline knowledge for how systems are typically used and correlate modification events with other indications of malicious activity where possible. ",
+            "x_mitre_data_sources": [
+                "Binary file metadata",
+                "File monitoring",
+                "Process command-line parameters",
+                "Process monitoring",
+                "API monitoring",
+                "Application logs",
+                "DLL monitoring",
+                "Loaded DLLs",
+                "Windows Registry",
+                "Windows event logs"
+            ],
+            "x_mitre_platforms": [
+                "Windows",
+                "macOS",
+                "Linux"
+            ]
+        }
+    ]
+}

@@ -1,82 +1,52 @@
 {
     "type": "bundle",
-    "id": "bundle--3436e741-bdd6-4346-bdde-8868209d4653",
+    "id": "bundle--40f8bad3-d7e2-41cd-8b43-90c4bb8cf867",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_data_sources": [
-                "API monitoring",
-                "Process monitoring"
-            ],
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "SYSTEM",
-                "User"
-            ],
-            "name": "Process Doppelg\u00e4nging",
-            "description": "Windows Transactional NTFS (TxF) was introduced in Vista as a method to perform safe file operations. (Citation: Microsoft TxF) To ensure data integrity, TxF enables only one transacted handle to write to a file at a given time. Until the write handle transaction is terminated, all other handles are isolated from the writer and may only read the committed version of the file that existed at the time the handle was opened. (Citation: Microsoft Basic TxF Concepts) To avoid corruption, TxF performs an automatic rollback if the system or application fails during a write transaction. (Citation: Microsoft Where to use TxF)\n\nAlthough deprecated, the TxF application programming interface (API) is still enabled as of Windows 10. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017)\n\nAdversaries may leverage TxF to a perform a file-less variation of [Process Injection](https://attack.mitre.org/techniques/T1055) called Process Doppelg\u00e4nging. Similar to [Process Hollowing](https://attack.mitre.org/techniques/T1093), Process Doppelg\u00e4nging involves replacing the memory of a legitimate process, enabling the veiled execution of malicious code that may evade defenses and detection. Process Doppelg\u00e4nging's use of TxF also avoids the use of highly-monitored API functions such as NtUnmapViewOfSection, VirtualProtectEx, and SetThreadContext. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017)\n\nProcess Doppelg\u00e4nging is implemented in 4 steps (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017):\n\n* Transact \u2013 Create a TxF transaction using a legitimate executable then overwrite the file with malicious code. These changes will be isolated and only visible within the context of the transaction.\n* Load \u2013 Create a shared section of memory and load the malicious executable.\n* Rollback \u2013 Undo changes to original executable, effectively removing malicious code from the file system.\n* Animate \u2013 Create a process from the tainted section of memory and initiate execution.",
             "id": "attack-pattern--c1a452f3-6499-4c12-b7e9-a6a0a102af76",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "x_mitre_detection": "Monitor and analyze calls to CreateTransaction, CreateFileTransacted, RollbackTransaction, and other rarely used functions indicative of TxF activity. Process Doppelg\u00e4nging also invokes an outdated and undocumented implementation of the Windows process loader via calls to NtCreateProcessEx and NtCreateThreadEx as well as API calls used to modify memory within another process, such as WriteProcessMemory. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017) (Citation: hasherezade Process Doppelg\u00e4nging Dec 2017)\n\nScan file objects reported during the PsSetCreateProcessNotifyRoutine, (Citation: Microsoft PsSetCreateProcessNotifyRoutine routine) which triggers a callback whenever a process is created or deleted, specifically looking for file objects with enabled write access. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017) Also consider comparing file objects loaded in memory to the corresponding file on disk. (Citation: hasherezade Process Doppelg\u00e4nging Dec 2017)\n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2019-09-24T13:30:04.684Z",
-            "created": "2018-01-16T16:13:52.465Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
+            "name": "Process Doppelg\u00e4nging",
             "external_references": [
                 {
-                    "external_id": "T1186",
                     "source_name": "mitre-attack",
+                    "external_id": "T1186",
                     "url": "https://attack.mitre.org/techniques/T1186"
                 },
                 {
-                    "source_name": "Microsoft TxF",
+                    "url": "https://msdn.microsoft.com/library/windows/desktop/bb968806.aspx",
                     "description": "Microsoft. (n.d.). Transactional NTFS (TxF). Retrieved December 20, 2017.",
-                    "url": "https://msdn.microsoft.com/library/windows/desktop/bb968806.aspx"
+                    "source_name": "Microsoft TxF"
                 },
                 {
-                    "source_name": "Microsoft Basic TxF Concepts",
+                    "url": "https://msdn.microsoft.com/library/windows/desktop/dd979526.aspx",
                     "description": "Microsoft. (n.d.). Basic TxF Concepts. Retrieved December 20, 2017.",
-                    "url": "https://msdn.microsoft.com/library/windows/desktop/dd979526.aspx"
+                    "source_name": "Microsoft Basic TxF Concepts"
                 },
                 {
-                    "source_name": "Microsoft Where to use TxF",
+                    "url": "https://msdn.microsoft.com/library/windows/desktop/aa365738.aspx",
                     "description": "Microsoft. (n.d.). When to Use Transactional NTFS. Retrieved December 20, 2017.",
-                    "url": "https://msdn.microsoft.com/library/windows/desktop/aa365738.aspx"
+                    "source_name": "Microsoft Where to use TxF"
                 },
                 {
-                    "source_name": "BlackHat Process Doppelg\u00e4nging Dec 2017",
+                    "url": "https://www.blackhat.com/docs/eu-17/materials/eu-17-Liberman-Lost-In-Transaction-Process-Doppelganging.pdf",
                     "description": "Liberman, T. & Kogan, E. (2017, December 7). Lost in Transaction: Process Doppelg\u00e4nging. Retrieved December 20, 2017.",
-                    "url": "https://www.blackhat.com/docs/eu-17/materials/eu-17-Liberman-Lost-In-Transaction-Process-Doppelganging.pdf"
+                    "source_name": "BlackHat Process Doppelg\u00e4nging Dec 2017"
                 },
                 {
-                    "source_name": "hasherezade Process Doppelg\u00e4nging Dec 2017",
+                    "url": "https://hshrzd.wordpress.com/2017/12/18/process-doppelganging-a-new-way-to-impersonate-a-process/",
                     "description": "hasherezade. (2017, December 18). Process Doppelg\u00e4nging \u2013 a new way to impersonate a process. Retrieved December 20, 2017.",
-                    "url": "https://hshrzd.wordpress.com/2017/12/18/process-doppelganging-a-new-way-to-impersonate-a-process/"
+                    "source_name": "hasherezade Process Doppelg\u00e4nging Dec 2017"
                 },
                 {
-                    "source_name": "Microsoft PsSetCreateProcessNotifyRoutine routine",
+                    "url": "https://msdn.microsoft.com/library/windows/hardware/ff559951.aspx",
                     "description": "Microsoft. (n.d.). PsSetCreateProcessNotifyRoutine routine. Retrieved December 20, 2017.",
-                    "url": "https://msdn.microsoft.com/library/windows/hardware/ff559951.aspx"
+                    "source_name": "Microsoft PsSetCreateProcessNotifyRoutine routine"
                 }
             ],
-            "x_mitre_defense_bypassed": [
-                "Process whitelisting",
-                "Anti-virus",
-                "Whitelisting by file name or path",
-                "Signature-based detection"
-            ]
+            "revoked": true,
+            "type": "attack-pattern",
+            "modified": "2020-01-14T17:23:25.111Z",
+            "created": "2018-01-16T16:13:52.465Z"
         }
     ]
 }

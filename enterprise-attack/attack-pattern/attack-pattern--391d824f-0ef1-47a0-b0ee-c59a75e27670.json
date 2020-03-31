@@ -1,60 +1,70 @@
 {
     "type": "bundle",
-    "id": "bundle--8d3201ba-9db4-4213-985b-42036a67cc70",
+    "id": "bundle--cc864c10-92e5-4275-9950-0411405f19ff",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator",
-                "SYSTEM"
-            ],
-            "x_mitre_data_sources": [
-                "API monitoring",
-                "Process monitoring"
-            ],
-            "name": "Execution through API",
-            "description": "Adversary tools may directly use the Windows application programming interface (API) to execute binaries. Functions such as the Windows API CreateProcess will allow programs and scripts to start other processes with proper path and argument parameters. (Citation: Microsoft CreateProcess)\n\nAdditional Windows API calls that can be used to execute binaries include: (Citation: Kanthak Verifier)\n\n* CreateProcessA() and CreateProcessW(),\n* CreateProcessAsUserA() and CreateProcessAsUserW(),\n* CreateProcessInternalA() and CreateProcessInternalW(),\n* CreateProcessWithLogonW(), CreateProcessWithTokenW(),\n* LoadLibraryA() and LoadLibraryW(),\n* LoadLibraryExA() and LoadLibraryExW(),\n* LoadModule(),\n* LoadPackagedLibrary(),\n* WinExec(),\n* ShellExecuteA() and ShellExecuteW(),\n* ShellExecuteExA() and ShellExecuteExW()",
-            "x_mitre_remote_support": false,
             "id": "attack-pattern--391d824f-0ef1-47a0-b0ee-c59a75e27670",
-            "x_mitre_platforms": [
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Native API",
+            "description": "Adversaries may interact with the native Windows application programming interface (API) to execute behaviors. Similar to the system call interface on UNIX systems, the Windows native API provides a controlled means to calling low-level OS services within the kernel, such as those involving hardware/devices, memory, and processes. The native API is leveraged by the OS during system boot (when other system components are not yet initialized) but is also exposed to user-mode applications via ntdll.dll and ntoskrnl.exe.(Citation: Microsoft NativeAPI)\n\nFunctionality provided by the native API is also available via the Windows API, which provides a documented programming interface. For example, functions such as the Windows API <code>CreateProcess</code> will allow programs and scripts to start other processes with proper path and argument parameters.(Citation: Microsoft CreateProcess) This allows API callers to execute a binary, run a CLI command, load modules, etc. Thousands of similar API functions exist for various system operations.(Citation: Microsoft Win32)\n\nOther software frameworks, such as Microsoft .NET, are also available to interact with the native API. These frameworks typically provide wrappers/abstractions to API functionalities and are designed for ease-of-use/portability of code.(Citation: Microsoft NET)\n\nAdversaries may abuse the native API as a means of execution. Similar to [Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059), the native API, and its hierarchy of interfaces, provide mechanisms to interact with and utilize a victimized system. ",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1106",
+                    "url": "https://attack.mitre.org/techniques/T1106"
+                },
+                {
+                    "source_name": "Microsoft NativeAPI",
+                    "url": "https://social.technet.microsoft.com/wiki/contents/articles/11831.the-windows-native-api.aspx",
+                    "description": "Bruno, L. (2013, July 30). The Windows Native API. Retrieved March 15, 2020."
+                },
+                {
+                    "url": "http://msdn.microsoft.com/en-us/library/ms682425",
+                    "description": "Microsoft. (n.d.). CreateProcess function. Retrieved December 5, 2014.",
+                    "source_name": "Microsoft CreateProcess"
+                },
+                {
+                    "source_name": "Microsoft Win32",
+                    "url": "https://docs.microsoft.com/en-us/windows/win32/api/",
+                    "description": "Microsoft. (n.d.). Programming reference for the Win32 API. Retrieved March 15, 2020."
+                },
+                {
+                    "source_name": "Microsoft NET",
+                    "url": "https://dotnet.microsoft.com/learn/dotnet/what-is-dotnet-framework",
+                    "description": "Microsoft. (n.d.). What is .NET Framework?. Retrieved March 15, 2020."
+                }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "1.0",
             "type": "attack-pattern",
-            "x_mitre_detection": "Monitoring API calls may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances, since benign use of Windows API functions such as CreateProcess are common and difficult to distinguish from malicious behavior. Correlation of other events with behavior surrounding API function calls using API monitoring will provide additional context to an event that may assist in determining if it is due to malicious behavior. Correlation of activity by process lineage by process ID may be sufficient.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_contributors": [
-                "Stefan Kanthak"
-            ],
-            "created": "2017-05-31T21:31:17.472Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "execution"
                 }
             ],
-            "external_references": [
-                {
-                    "external_id": "T1106",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1106"
-                },
-                {
-                    "source_name": "Microsoft CreateProcess",
-                    "description": "Microsoft. (n.d.). CreateProcess function. Retrieved December 5, 2014.",
-                    "url": "http://msdn.microsoft.com/en-us/library/ms682425"
-                },
-                {
-                    "source_name": "Kanthak Verifier",
-                    "description": "Kanthak, S. (2017). Application Verifier Provider. Retrieved February 13, 2017.",
-                    "url": "https://skanthak.homepage.t-online.de/verifier.html"
-                }
+            "modified": "2020-03-15T15:52:05.227Z",
+            "created": "2017-05-31T21:31:17.472Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_version": "2.0",
+            "x_mitre_contributors": [
+                "Stefan Kanthak"
             ],
-            "modified": "2019-07-17T20:10:02.128Z"
+            "x_mitre_data_sources": [
+                "Loaded DLLs",
+                "API monitoring",
+                "Process monitoring"
+            ],
+            "x_mitre_detection": "Monitoring native and Windows API calls may generate a significant amount of data and may not be useful for defense unless collected under specific circumstances, since benign use of Windows API functions such as <code>CreateProcess</code> are common and difficult to distinguish from malicious behavior. Correlation of other events with behavior surrounding API function calls using API monitoring will provide additional context to an event that may assist in determining if it is due to malicious behavior. Correlation of activity by process lineage by process ID may be sufficient. \n\nUtilization of the Windows API may involve processes loading/accessing system DLLs associated with providing called functions (ex: kernel32.dll, advapi32.dll, user32.dll, and gdi32.dll). Monitoring for DLL loads, especially to abnormal/unusual or potentially malicious processes, may indicate abuse of the Windows API. Though noisy, this data can be combined with other indicators to identify adversary activity. ",
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_remote_support": false,
+            "x_mitre_platforms": [
+                "Windows"
+            ]
         }
     ]
 }

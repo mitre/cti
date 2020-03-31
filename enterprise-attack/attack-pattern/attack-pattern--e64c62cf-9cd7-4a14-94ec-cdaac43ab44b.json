@@ -1,0 +1,70 @@
+{
+    "type": "bundle",
+    "id": "bundle--cd5362c5-0da8-4bd6-801a-26fe5390a31b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1574.002",
+                    "url": "https://attack.mitre.org/techniques/T1574/002"
+                },
+                {
+                    "external_id": "CAPEC-capec",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/capec.html"
+                },
+                {
+                    "source_name": "About Side by Side Assemblies",
+                    "url": "https://docs.microsoft.com/en-us/windows/win32/sbscs/about-side-by-side-assemblies-",
+                    "description": "Microsoft. (2018, May 31). About Side-by-Side Assemblies. Retrieved March 13, 2020."
+                },
+                {
+                    "source_name": "FireEye DLL Side-Loading",
+                    "url": "https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/rpt-dll-sideloading.pdf",
+                    "description": "Amanda Steward. (2014). FireEye DLL Side-Loading: A Thorn in the Side of the Anti-Virus Industry. Retrieved March 13, 2020."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "DLL Side-Loading",
+            "description": "Adversaries may execute their own malicious payloads by hijacking the library manifest used to load DLLs. Adversaries may take advantage of vague references in the library manifest of a program by replacing a legitimate library with a malicious one, causing the operating system to load their malicious library when it is called for by the victim program.\n\nPrograms may specify DLLs that are loaded at runtime. Programs that improperly or vaguely specify a required DLL may be open to a vulnerability in which an unintended DLL is loaded. Side-loading vulnerabilities specifically occur when Windows Side-by-Side (WinSxS) manifests (Citation: About Side by Side Assemblies) are not explicit enough about characteristics of the DLL to be loaded. Adversaries may take advantage of a legitimate program that is vulnerable by replacing the legitimate DLL with a malicious one.  (Citation: FireEye DLL Side-Loading)\n\nAdversaries likely use this technique as a means of masking actions they perform under a legitimate, trusted system or software process.",
+            "id": "attack-pattern--e64c62cf-9cd7-4a14-94ec-cdaac43ab44b",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-03-26T16:23:21.010Z",
+            "created": "2020-03-13T19:41:37.908Z",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_data_sources": [
+                "Loaded DLLs",
+                "Process monitoring",
+                "Process use of network"
+            ],
+            "x_mitre_detection": "Monitor processes for unusual activity (e.g., a process that does not use the network begins to do so). Track DLL metadata, such as a hash, and compare DLLs that are loaded at process execution time against previous executions to detect differences that do not correlate with patching or updates.",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_defense_bypassed": [
+                "Anti-virus",
+                "Process whitelisting"
+            ]
+        }
+    ]
+}
