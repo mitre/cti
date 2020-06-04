@@ -14,7 +14,7 @@ The STIX 2.0 JSON content found here is the unabridged conversion of the MITRE A
 
 **Bold** signifies data pulled from ATT&CK model objects
 
-**(Custom)** signifies STIX object properties that are not apart of the standard STIX 2.0 data model but were added for further fidelity in the mapping from ATT&CK.
+**(Custom)** signifies STIX object properties that are not part of the standard STIX 2.0 data model but were added for further fidelity in the mapping from ATT&CK.
 
 ### ATT&CK Technique -> STIX Attack-Pattern
 
