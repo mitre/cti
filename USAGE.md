@@ -140,13 +140,13 @@ ATT&CK does not represent procedures under their own STIX type. Instead, procedu
 
 A Mitigation in ATT&CK is defined as a [course-of-action](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230929) object. ATT&CK Mitigations do not depart from the STIX `course-of-action` spec.
 
-### Collisions with technique ATT&CK IDs
+#### Collisions with technique ATT&CK IDs
 
 In ATT&CK versions prior to v5 (released in July of 2019), mitigations had 1:1 relationships with techniques and shared their technique's ID. These old 1:1 mitigations are deprecated in subsequent ATT&CK releases, and can be filtered out in queries  — see [removing revoked and deprecated objects](#Removing-revoked-and-deprecated-objects), below.
 
 ### Groups
 
-A Group in ATT&CK is defined as an [intrusion-set](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230941) object. ATT&CK Groups do not depart from the STIX `intrusion-set` spec.
+A Group in ATT&CK is defined as an [intrusion-set](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230941) object. ATT&CK Groups do not depart from the STIX `intrusion-set` format.
 
 ### Software
 
@@ -204,7 +204,7 @@ If you instead prefer to download just the domain bundle, e.g [enterprise-attack
 import stix2
 
 src = stix2.MemoryStore()
-src.load_from_file("./cti/enterprise-attack/enterprise-attack.json")
+src.load_from_file("enterprise-attack.json")
 ```
 
 ## Access live content
@@ -328,7 +328,7 @@ def get_technique_by_name(thesrc, name):
         Filter('name', '=', name)
     ]
     return thesrc.query(filt)
-# get the technique titled "
+# get the technique titled "System Information Discovery"
 get_technique_by_name(src, 'System Information Discovery')
 ```
 
@@ -351,14 +351,10 @@ get_group_by_alias(src, 'Cozy Bear')
 ## Getting multiple objects
 The recipes in this section address how to query the dataset for multiple objects.
 
-When working with queries to return objects based on a set of characteristics, it is likely that you'll
-end up with a few objects which are no longer maintained by ATT&CK. We keep these outdated objects around
-so that workflows depending on them don't break, but we recommend avoiding using them when possible. 
-Please see the section [working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) 
-for more information on how to work with these objects.
+When working with queries to return objects based on a set of characteristics, it is likely that you'll end up with a few objects which are no longer maintained by ATT&CK. We keep these outdated objects around so that workflows depending on them don't break, but we recommend you avoid using them when possible. Please see the section [working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information.
 
 ### Getting all objects of a type
-See [The ATT&CK Data Model](#The-ATT&CK-Data-Model) (above) for mappings of ATT&CK type to STIX type.
+See [The ATT&CK Data Model](#The-ATTCK-Data-Model) (above) for mappings of ATT&CK type to STIX type.
 
 ```python
 # use the appropriate STIX type in the query according to the desired ATT&CK type
@@ -405,6 +401,10 @@ def get_tactic_techniques(thesrc, tactic):
     ])
 
     # double checking the kill chain is MITRE ATT&CK
+    # note: kill_chain_name is different for other domains:
+    #    - enterprise: "mitre-attack"
+    #    - mobile: "mitre-mobile-attack"
+    #    - pre: "pre-attack"
     return [t for t in techs if {
             'kill_chain_name' : 'mitre-attack',
             'phase_name' : tactic,
@@ -648,10 +648,7 @@ get_techniques_by_group_software(fs, "intrusion-set--f047ee18-7985-4946-8bfb-4ed
 ```
 
 ## Working with deprecated and revoked objects
-Objects that are deemed no longer beneficial to track as part of the knowledge base are marked as deprecated, 
-and objects which are replaced by a different object are revoked. In both cases, the old object is marked with
-a field (`x_mitre_deprecated` and `revoked`) noting their status. In the case of revoked objects, a relationship of 
-type `revoked-by` is also created targeting the replacing object. 
+Objects that are deemed no longer beneficial to track as part of the knowledge base are marked as deprecated, and objects which are replaced by a different object are revoked. In both cases, the old object is marked with a field (either `x_mitre_deprecated` or `revoked`) noting their status. In the case of revoked objects, a relationship of type `revoked-by` is also created targeting the replacing object. 
 
 ### Removing revoked and deprecated objects
 Revoked and deprecated objects are kept in the knowledge base so that workflows relying on those objects are not 
@@ -678,9 +675,7 @@ mitigations = remove_revoked_deprecated(mitigations)
 
 
 ### Getting a revoking object
-When an object is replaced by another object, it is marked with the field `revoked` a relationship of type `revoked-by` 
-is created to where the `source_ref` is the revoked object and the `target_ref` is the revoking object. This relationship
-can be followed to find the replacing object:
+When an object is replaced by another object, it is marked with the field `revoked` a relationship of type `revoked-by` is created to where the `source_ref` is the revoked object and the `target_ref` is the revoking object. This relationship can be followed to find the replacing object:
 
 ```python
 def getRevokedBy(stix_id, thesrc):
