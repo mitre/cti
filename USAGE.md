@@ -2,13 +2,13 @@
 
 This document describes how to query and manipulate ATT&CK data from either this repository or the ATT&CK TAXII server. It is divided into three sections:
 
-- [The ATT&CK data model](#the-attck-data-model), which describes the format of the data and highlights how it departs from the stock STIX2.0 format
+- [The ATT&CK data model](#the-attck-data-model), which describes the format of the data and highlights how it extends the stock STIX2.0 format
 - [Accessing ATT&CK data in python](#accessing-attck-data-in-python), which describes different methodologies that can be used to load the ATT&CK data into a script
 - [Python recipes](#Python-Recipes), which provides python3 examples of common ways to query the ATT&CK data once loaded
 
 The latter two sections on the programmatic use of ATT&CK heavily utilize the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically.
 
-This document describes how ATT&CK implements the STIX format as well as where ATT&CK departs from that format. To find out more about STIX, please see [the STIX 2.0 website](https://oasis-open.github.io/cti-documentation/stix/intro). 
+This document describes how ATT&CK implements and extends the STIX format. To find out more about STIX, please see [the STIX 2.0 website](https://oasis-open.github.io/cti-documentation/stix/intro). 
 
 We also recommend reading the [ATT&CK Design and Philosophy Paper](https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf), which describes high-level overall approach, intention, and usage of ATT&CK.
 
@@ -119,16 +119,17 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 | `x_mitre_detection` | string | All techniques | Strategies for identifying if a technique has been used by an adversary. |
 | `x_mitre-platforms` | string[] | Enterprise & Mobile domains | List of platforms that apply to the technique. |
 | `x_mitre_data_sources` | string[] | Enterprise domain | Sources of information that may be used to identify the action or result of the action being performed. |
-| `x_mitre_is_subtechnique` | boolean | Enterprise domain | if true, this `attack-pattern` is a sub-technique. See [sub-techniques](#sub-techniques), below.
+| `x_mitre_is_subtechnique` | boolean | Enterprise domain | If true, this `attack-pattern` is a sub-technique. See [sub-techniques](#sub-techniques). |
 | `x_mitre_tactic_types` | string | Mobile domain |  "Post-Adversary Device Access", "Pre-Adversary Device Access", or "Without Adversary Device Access" |
 | `x_mitre_permissions_required` | string[] | Enterprise domain in the _Privilege Escalation_ tactic | Found on Enterprise techniques within the Privilege Escalation tactic, this field describes the lowest level of permissions the adversary is required to be operating within to perform the technique on a system. |
+| `x_mitre_defense_bypassed` | string[] | Enterprise domain in the _Defense Evasion_ tactic | List of defensive tools, methodologies, or processes the technique can bypass. |
 | `x_mitre_supports_remote` | boolean | Enterprise domain in the _Execution_ tactic | True if the technique can be used to execute something on a remote system. |
 
 Techniques map into tactics by use of their `kill_chain_phases` property. Where the `kill_chain_name` is `mitre-attack`, `mitre-mobile-attack` or `pre-attack` (for enterprise, mobile, and pre-attack domains respectively), the `phase_name` corresponds to the `x_mitre_shortname` property of an `x-mitre-tactic` object.
 
 #### Sub-Techniques
 
-A sub-technique in ATT&CK is represented as an `attack-pattern` and follows the same format as [techniques](#techniques), above. They differ in that they have a boolean field (`x_mitre_is_subtechnique`) marking them as sub-techniques, and a relationship of the type `subtechnique-of` where the `source_ref` is the sub-technique and the `target_ref` is the parent technique. A sub-technique can only have 1 parent technique, but techniques can have multiple sub-techniques.
+A sub-technique in ATT&CK is represented as an `attack-pattern` and follows the same format as [techniques](#techniques). They differ in that they have a boolean field (`x_mitre_is_subtechnique`) marking them as sub-techniques, and a relationship of the type `subtechnique-of` where the `source_ref` is the sub-technique and the `target_ref` is the parent technique. A sub-technique can only have 1 parent technique, but techniques can have multiple sub-techniques.
 
 Additionally:
 - Sub-technique ATT&CK IDs are a suffix of their parent IDs. For a given sub-technique ID `Txxxx.yyy`, `Txxxx` is the parent technique ID and `yyy` is the sub-technique ID. Sub-techniques have unique STIX IDs.
@@ -147,7 +148,7 @@ A Mitigation in ATT&CK is defined as a [course-of-action](https://docs.oasis-ope
 
 #### Collisions with technique ATT&CK IDs
 
-In ATT&CK versions prior to v5 (released in July of 2019), mitigations had 1:1 relationships with techniques and shared their technique's ID. These old 1:1 mitigations are deprecated in subsequent ATT&CK releases, and can be filtered out in queries  — see [Removing revoked and deprecated objects](#Removing-revoked-and-deprecated-objects), below.
+In ATT&CK versions prior to v5 (released in July of 2019), mitigations had 1:1 relationships with techniques and shared their technique's ID. These old 1:1 mitigations are deprecated in subsequent ATT&CK releases, and can be filtered out in queries  — see [Removing revoked and deprecated objects](#Removing-revoked-and-deprecated-objects).
 
 ### Groups
 
@@ -180,7 +181,7 @@ Relationships oftentimes have descriptions which contextualize the relationship 
 | `attack-pattern`    | `subtechnique-of` | `attack-pattern` | Yes | Sub-technique of a technique, where the `source_ref` is the sub-technique and the `target_ref` is the parent technique. |
 | any type    | `revoked-by`      | any type | Yes | The target object is a replacement for the source object. Only occurs where the objects are of the same type, and the source object will have the property `x_mitre_revoked = true`. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. |
 
-Note that because groups use software and software uses techniques, groups can be considered indirect users of techniques used by their software. See [getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software), below.
+Note that because groups use software and software uses techniques, groups can be considered indirect users of techniques used by their software. See [getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software).
 
 # Accessing ATT&CK data in python
 There are several ways to acquire the ATT&CK data in Python. All of them will provide an object 
@@ -266,7 +267,7 @@ src = get_data_from_branch("enterprise-attack")
 
 ATT&CK versions are tracked on the MITRE/CTI repo using [tags](https://github.com/mitre/cti/tags). Tags prefixed with `ATT&CK-v` correspond to ATT&CK versions and tags prefixed with `CAPEC-v` correspond to CAPEC versions. You can find more information about ATT&CK versions on the [versions of ATT&CK page](https://attack.mitre.org/resources/versions/) on the ATT&CK website. 
 
-In addition to checking out the repo under the tag for a given version or downloading the STIX from github using your browser, you can also use a variation on the requests method [above](#access-from-github-via-requests) to access a particular version of ATT&CK:
+In addition to checking out the repo under the tag for a given version or downloading the STIX from github using your browser, you can also use a variation on the [requests method](#access-from-github-via-requests) to access a particular version of ATT&CK:
 
 ```python
 import requests
@@ -306,7 +307,7 @@ src.add_data_sources([enterprise_attack_src, pre_attack_src, mobile_attack_src])
 You can then use this CompositeDataSource just as you would the DataSource for an individual domain.
 
 # Python recipes
-Below are example python recipes which can be used to work with ATT&CK data. They assume the existence of an object implementing the DataStore API. Any of the methods outlined in the [Accessing ATT&CK data in python](#accessing-ATTCK-Data-in-Python) section above should provide an object implementing this API.
+Below are example python recipes which can be used to work with ATT&CK data. They assume the existence of an object implementing the DataStore API. Any of the methods outlined in the [Accessing ATT&CK data in python](#accessing-ATTCK-Data-in-Python) section should provide an object implementing this API.
 
 This section utilizes the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically.
 
@@ -336,7 +337,7 @@ t1134 = src.query([
 ])[0]
 ```
 
-The old 1:1 mitigations causing this issue are deprecated, so you can also filter them out that way — see [Removing revoked and deprecated objects](#Removing-revoked-and-deprecated-objects), below.
+The old 1:1 mitigations causing this issue are deprecated, so you can also filter them out that way — see [Removing revoked and deprecated objects](#Removing-revoked-and-deprecated-objects).
 
 ### By name
 The following recipe retrieves an object according to its name:
@@ -373,7 +374,7 @@ The recipes in this section address how to query the dataset for multiple object
 &#9888; When working with queries to return objects based on a set of characteristics, it is likely that you'll end up with a few objects which are no longer maintained by ATT&CK. These are objects marked as deprecated or revoked. We keep these outdated objects around so that workflows depending on them don't break, but we recommend you avoid using them when possible. Please see the section [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information.
 
 ### Objects by type
-See [The ATT&CK data model](#The-ATTCK-Data-Model) (above) for mappings of ATT&CK type to STIX type.
+See [The ATT&CK data model](#The-ATTCK-Data-Model) for mappings of ATT&CK type to STIX type.
 
 ```python
 # use the appropriate STIX type in the query according to the desired ATT&CK type
