@@ -33,8 +33,8 @@ Two additional object types are found in the ATT&CK catalog:
  
 | STIX object type | About |
 |:-----------------|:------|
-| `identity`       | Referenced in the `created_by_ref` of all objects to state that the MITRE Corporation created the object |
-| `marking-definition` | Referenced in the `object_marking_refs` of all objects to express the MITRE Corporation copyright |
+| [identity](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230933)       | Referenced in the `created_by_ref` of all objects to state that the MITRE Corporation created the object |
+| [marking-definition](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part1-stix-core/stix-v2.0-csprd01-part1-stix-core.html#_Toc476227338) | Referenced in the `object_marking_refs` of all objects to express the MITRE Corporation copyright |
 
 ## Extensions of the STIX spec
 
@@ -51,7 +51,7 @@ There are three general ways that ATT&CK extends the STIX 2.0 format:
     | `x_mitre_version` | string | The version of the object in format `major.minor` where `major` and `minor` are integers. ATT&CK increments this version number when the object content is updated. |
     | `x_mitre_contributors` | string[] | People and organizations who have contributed to the object. | 
 
-- New relationship types. Unlike custom object types and extended fields, custom relationship types are **not** prefixed with `x_mitre_`. You can find a full list of relationship types in the [relationships](#Relationships) section, which also mentions whether the type is a default STIX type.
+- New relationship types. Unlike custom object types and extended fields, custom relationship types are **not** prefixed with `x_mitre_`. You can find a full list of relationship types in the [Relationships](#Relationships) section, which also mentions whether the type is a default STIX type.
 
 Please see also the STIX documentation on [customizing STIX](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part1-stix-core/stix-v2.0-csprd01-part1-stix-core.html#_Toc476227365).
 
@@ -67,12 +67,12 @@ The most commonly used ID format is what is referred to as the ATT&CK ID or simp
 | [Matrix](#matrices)              | `MAxxxx` |
 | [Tactic](#tactics)               | `TAxxxx` |
 | [Technique](#techniques)         | `Txxxx` |
-| [Sub-technique](#sub-techniques) | `Txxxx.yyy` |
+| [Sub-Technique](#sub-techniques) | `Txxxx.yyy` |
 | [Mitigation](#mitigations)       | `Mxxxx` |
 | [Group](#groups)                 | `Gxxxx`  |
 | [Software](#software)            | `Sxxxx` |
 
-ATT&CK IDs are typically, but not always, unique. See the note in [this section](#collisions-with-technique-attck-ids) for an edge case involving ID collisions between mitigations and techniques.
+ATT&CK IDs are typically, but not always, unique. See [Collisions with Technique ATT&CK IDs](#collisions-with-technique-attck-ids) for an edge case involving ID collisions between mitigations and techniques.
 
 ATT&CK IDs can be found in the first external reference of all objects except for relationships (which don't have ATT&CK IDs). The first external reference also includes a `url` field linking to the page describing that object on the [ATT&CK Website](https://attack.mitre.org/).
 
@@ -121,9 +121,9 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 | `x_mitre_data_sources` | string[] | Enterprise domain | Sources of information that may be used to identify the action or result of the action being performed. |
 | `x_mitre_is_subtechnique` | boolean | Enterprise domain | If true, this `attack-pattern` is a sub-technique. See [sub-techniques](#sub-techniques). |
 | `x_mitre_tactic_types` | string | Mobile domain |  "Post-Adversary Device Access", "Pre-Adversary Device Access", or "Without Adversary Device Access" |
-| `x_mitre_permissions_required` | string[] | Enterprise domain in the _Privilege Escalation_ tactic | Found on Enterprise techniques within the Privilege Escalation tactic, this field describes the lowest level of permissions the adversary is required to be operating within to perform the technique on a system. |
+| `x_mitre_permissions_required` | string[] | Enterprise domain in the _Privilege Escalation_ tactic | The lowest level of permissions the adversary is required to be operating within to perform the technique on a system. |
 | `x_mitre_defense_bypassed` | string[] | Enterprise domain in the _Defense Evasion_ tactic | List of defensive tools, methodologies, or processes the technique can bypass. |
-| `x_mitre_supports_remote` | boolean | Enterprise domain in the _Execution_ tactic | True if the technique can be used to execute something on a remote system. |
+| `x_mitre_supports_remote` | boolean | Enterprise domain in the _Execution_ tactic | If true, the technique can be used to execute something on a remote system. |
 
 Techniques map into tactics by use of their `kill_chain_phases` property. Where the `kill_chain_name` is `mitre-attack`, `mitre-mobile-attack` or `pre-attack` (for enterprise, mobile, and pre-attack domains respectively), the `phase_name` corresponds to the `x_mitre_shortname` property of an `x-mitre-tactic` object.
 
@@ -181,7 +181,7 @@ Relationships oftentimes have descriptions which contextualize the relationship 
 | `attack-pattern`    | `subtechnique-of` | `attack-pattern` | Yes | Sub-technique of a technique, where the `source_ref` is the sub-technique and the `target_ref` is the parent technique. |
 | any type    | `revoked-by`      | any type | Yes | The target object is a replacement for the source object. Only occurs where the objects are of the same type, and the source object will have the property `x_mitre_revoked = true`. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. |
 
-Note that because groups use software and software uses techniques, groups can be considered indirect users of techniques used by their software. See [getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software).
+Note that because groups use software and software uses techniques, groups can be considered indirect users of techniques used by their software. See [Getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software).
 
 # Accessing ATT&CK data in python
 There are several ways to acquire the ATT&CK data in Python. All of them will provide an object 
@@ -244,7 +244,7 @@ collection = Collection(f"https://cti-taxii.mitre.org/stix/collections/{collecti
 src = TAXIICollectionSource(collection)
 ```
 
-For more about TAXII, please see the [Introduction to TAXII page on oasis-open](https://oasis-open.github.io/cti-documentation/taxii/intro).
+For more about TAXII, please see oasis-open's [Introduction to TAXII](https://oasis-open.github.io/cti-documentation/taxii/intro).
 
 ### Access from Github via requests
 Users can alternatively access the data from MITRE/CTI using HTTP requests, and load the resulting content into a MemoryStore. 
