@@ -1,3 +1,13 @@
+### Changes to STIX for July 2020 ATT&CK Content Release (ATT&CK-v7.0)
+1. Added sub-techniques:
+    - A sub-technique is an attack-pattern where `x_mitre_is_subtechnique` is `true`. 
+    - Relationships of type `subtechnique-of` between sub-techniques and techniques convey their hierarchy.
+
+   For more information about the representation of sub-techniques in STIX, please see [the sub-techniques section of the USAGE document](USAGE.md#sub-techniques). 
+2. Revised the representation of deprecated objects. The first paragraph of deprecated objects' descriptions should in most cases convey the reason the object was deprecated.
+
+We've also rewritten the [USAGE](USAGE.md) document with additional information about the ATT&CK data model and more examples of how to access and use ATT&CK in Python.
+
 ### Changes to STIX for October 2019 ATT&CK Content Release (ATT&CK-v6.0)
 1. Added cloud platforms under the enterprise domain: `AWS`, `GCP`, `Azure`, `Office 365`, `Azure AD`, and `SaaS`.
 
