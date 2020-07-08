@@ -1,64 +1,52 @@
 {
     "type": "bundle",
-    "id": "bundle--188ecf71-2e57-42ad-856b-fa0ad7e23e25",
+    "id": "bundle--be2edeb1-5fd5-48de-b9dd-955e4f16f22f",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_data_sources": [
-                "File monitoring",
-                "Process monitoring"
-            ],
-            "type": "attack-pattern",
-            "name": "Logon Scripts",
-            "description": "### Windows\n\nWindows allows logon scripts to be run whenever a specific user or group of users log into a system. (Citation: TechNet Logon Scripts) The scripts can be used to perform administrative functions, which may often execute other programs or send information to an internal logging server.\n\nIf adversaries can access these scripts, they may insert additional code into the logon script to execute their tools when a user logs in. This code can allow them to maintain persistence on a single system, if it is a local script, or to move laterally within a network, if the script is stored on a central server and pushed to many systems. Depending on the access configuration of the logon scripts, either local credentials or an administrator account may be necessary.\n\n### Mac\n\nMac allows login and logoff hooks to be run as root whenever a specific user logs into or out of a system. A login hook tells Mac OS X to execute a certain script when a user logs in, but unlike startup items, a login hook executes as root (Citation: creating login hook). There can only be one login hook at a time though. If adversaries can access these scripts, they can insert additional code to the script to execute their tools when a user logs in.",
             "id": "attack-pattern--03259939-0b57-482f-8eb5-87c0e0d54334",
-            "x_mitre_platforms": [
-                "macOS",
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Boot or Logon Initialization Scripts",
+            "description": "Adversaries may use scripts automatically executed at boot or logon initialization to establish persistence. Initialization scripts can be used to perform administrative functions, which may often execute other programs or send information to an internal logging server. These scripts can vary based on operating system and whether applied locally or remotely.  \n\nAdversaries may use these scripts to maintain persistence on a single system. Depending on the access configuration of the logon scripts, either local credentials or an administrator account may be necessary. \n\nAn adversary may also be able to escalate their privileges since some boot or logon initialization scripts run with higher privileges.",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1037",
+                    "url": "https://attack.mitre.org/techniques/T1037"
+                },
+                {
+                    "external_id": "CAPEC-564",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/564.html"
+                }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "1.0",
-            "x_mitre_system_requirements": [
-                "Write access to system or domain logon scripts"
-            ],
-            "x_mitre_detection": "Monitor logon scripts for unusual access by abnormal users or at abnormal times. Look for files added or modified by unusual accounts outside of normal administration duties.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "created": "2017-05-31T21:30:38.910Z",
+            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
-                    "phase_name": "lateral-movement"
+                    "phase_name": "persistence"
                 },
                 {
                     "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
+                    "phase_name": "privilege-escalation"
                 }
             ],
-            "external_references": [
-                {
-                    "external_id": "T1037",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1037"
-                },
-                {
-                    "source_name": "capec",
-                    "external_id": "CAPEC-564",
-                    "url": "https://capec.mitre.org/data/definitions/564.html"
-                },
-                {
-                    "source_name": "TechNet Logon Scripts",
-                    "description": "Microsoft. (2005, January 21). Creating logon scripts. Retrieved April 27, 2016.",
-                    "url": "https://technet.microsoft.com/en-us/library/cc758918(v=ws.10).aspx"
-                },
-                {
-                    "source_name": "creating login hook",
-                    "description": "Apple. (2011, June 1). Mac OS X: Creating a login hook. Retrieved July 17, 2017.",
-                    "url": "https://support.apple.com/de-at/HT2420"
-                }
+            "modified": "2020-03-27T16:49:15.953Z",
+            "created": "2017-05-31T21:30:38.910Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "macOS",
+                "Windows"
             ],
-            "modified": "2019-06-24T14:22:07.921Z"
+            "x_mitre_detection": "Monitor logon scripts for unusual access by abnormal users or at abnormal times. Look for files added or modified by unusual accounts outside of normal administration duties. Monitor running process for actions that could be indicative of abnormal programs or executables running upon logon.",
+            "x_mitre_data_sources": [
+                "File monitoring",
+                "Process monitoring"
+            ],
+            "x_mitre_version": "2.0"
         }
     ]
 }

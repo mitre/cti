@@ -1,54 +1,11 @@
 {
     "type": "bundle",
-    "id": "bundle--71b0663c-7744-434f-8eb7-00921b388554",
+    "id": "bundle--ba41c453-264e-4729-be86-ddcec7931c51",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_permissions_required": [
-                "Administrator"
-            ],
-            "x_mitre_data_sources": [
-                "Authentication logs",
-                "API monitoring",
-                "Windows event logs",
-                "Packet capture"
-            ],
-            "name": "Account Manipulation",
-            "description": "Account manipulation may aid adversaries in maintaining access to credentials and certain permission levels within an environment. Manipulation could consist of modifying permissions, modifying credentials, adding or changing permission groups, modifying account settings, or modifying how authentication is performed. These actions could also include account activity designed to subvert security policies, such as performing iterative password updates to subvert password duration policies and preserve the life of compromised credentials. In order to create or manipulate accounts, the adversary must already have sufficient permissions on systems or the domain.\n\n### Exchange Email Account Takeover\n\nThe Add-MailboxPermission PowerShell cmdlet, available in on-premises Exchange and in the cloud-based service Office 365, adds permissions to a mailbox.(Citation: Microsoft - Add-MailboxPermission) This command can be run, given adequate permissions, to further access granted to certain user accounts. This may be used in persistent threat incidents as well as BEC (Business Email Compromise) incidents where an adversary can assign more access rights to the accounts they wish to compromise. This may further enable use of additional techniques for gaining access to systems. For example, compromised business accounts are often used to send messages to other accounts in the network of the target business while creating inbox rules so the messages evade spam/phishing detection mechanisms.(Citation: Bienstock, D. - Defending O365 - 2019)\n\n### Azure AD\n\nIn Azure, an adversary can set a second password for Service Principals, facilitating persistence.(Citation: Blue Cloud of Death)\n\n### AWS\n\nAWS policies allow trust between accounts by simply identifying the account name. It is then up to the trusted account to only allow the correct roles to have access.(Citation: Summit Route Advanced AWS policy auditing)",
-            "id": "attack-pattern--a10641f4-87b4-45a3-a906-92a149cb2c27",
-            "x_mitre_platforms": [
-                "Windows",
-                "Office 365",
-                "Azure",
-                "GCP",
-                "Azure AD",
-                "AWS"
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_version": "2.0",
-            "x_mitre_system_requirements": [
-                "Exchange email account takeover: Sufficient permission to run the Add-MailboxPermission PowerShell cmdlet (depending on parameters used, may require more permission)"
-            ],
-            "type": "attack-pattern",
-            "x_mitre_detection": "Collect events that correlate with changes to account objects on systems and the domain, such as event ID 4738.(Citation: Microsoft User Modified Event) Monitor for modification of accounts in correlation with other suspicious activity. Changes may occur at unusual times or from unusual systems. Especially flag events where the subject and target accounts differ(Citation: InsiderThreat ChangeNTLM July 2017) or that include additional flags such as changing a password without knowledge of the old password.(Citation: GitHub Mimikatz Issue 92 June 2017)\n\nUse of credentials may also occur at unusual times or to unusual systems or services and may correlate with other suspicious activity.\n\nMonitor for unusual Exchange and Office 365 email account permissions changes that may indicate excessively broad permissions being granted to compromised accounts.\n\nA larger volume of emails sent from an account than normal and the discovery of similar phishing emails being sent from\u202freal accounts within a network may be signs that an account may have been compromised and attempts to leverage access with modified email permissions is occurring.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_contributors": [
-                "Jannie Li, Microsoft Threat Intelligence\u202fCenter\u202f(MSTIC)",
-                "Praetorian",
-                "Tim MalcomVetter"
-            ],
-            "created": "2017-05-31T21:31:12.196Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "credential-access"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                }
             ],
             "external_references": [
                 {
@@ -57,42 +14,61 @@
                     "url": "https://attack.mitre.org/techniques/T1098"
                 },
                 {
-                    "description": "Microsoft. (n.d.). Add-Mailbox Permission. Retrieved September 13, 2019.",
-                    "source_name": "Microsoft - Add-MailboxPermission",
-                    "url": "https://docs.microsoft.com/en-us/powershell/module/exchange/mailboxes/add-mailboxpermission?view=exchange-ps"
-                },
-                {
-                    "description": "Bienstock, D.. (2019). BECS and Beyond: Investigating and Defending O365. Retrieved September 13, 2019.",
-                    "source_name": "Bienstock, D. - Defending O365 - 2019",
-                    "url": "https://www.slideshare.net/DouglasBienstock/shmoocon-2019-becs-and-beyond-investigating-and-defending-office-365"
-                },
-                {
-                    "description": "Kunz, Bryce. (2018, May 11). Blue Cloud of Death: Red Teaming Azure. Retrieved October 23, 2019.",
-                    "source_name": "Blue Cloud of Death",
-                    "url": "https://speakerdeck.com/tweekfawkes/blue-cloud-of-death-red-teaming-azure-1"
-                },
-                {
-                    "description": "Piper, Scott. (2019, April 3). Advanced AWS policy auditing - Confused deputies with AWS services. Retrieved October 23, 2019.",
-                    "source_name": "Summit Route Advanced AWS policy auditing",
-                    "url": "https://summitroute.com/blog/2019/04/03/advanced_aws_policy_auditing_confused_deputies_with_aws_services/"
-                },
-                {
-                    "description": "Lich, B., Miroshnikov, A. (2017, April 5). 4738(S): A user account was changed. Retrieved June 30, 2017.",
                     "source_name": "Microsoft User Modified Event",
+                    "description": "Lich, B., Miroshnikov, A. (2017, April 5). 4738(S): A user account was changed. Retrieved June 30, 2017.",
                     "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/event-4738"
                 },
                 {
-                    "source_name": "InsiderThreat ChangeNTLM July 2017",
-                    "description": "Warren, J. (2017, July 11). Manipulating User Passwords with Mimikatz. Retrieved December 4, 2017.",
-                    "url": "https://blog.stealthbits.com/manipulating-user-passwords-with-mimikatz-SetNTLM-ChangeNTLM"
+                    "description": "Franklin Smith, R. (n.d.). Windows Security Log Event ID 4670. Retrieved November 4, 2019.",
+                    "url": "https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventID=4670",
+                    "source_name": "Microsoft Security Event 4670"
                 },
                 {
-                    "source_name": "GitHub Mimikatz Issue 92 June 2017",
+                    "url": "https://blog.stealthbits.com/manipulating-user-passwords-with-mimikatz-SetNTLM-ChangeNTLM",
+                    "description": "Warren, J. (2017, July 11). Manipulating User Passwords with Mimikatz. Retrieved December 4, 2017.",
+                    "source_name": "InsiderThreat ChangeNTLM July 2017"
+                },
+                {
+                    "url": "https://github.com/gentilkiwi/mimikatz/issues/92",
                     "description": "Warren, J. (2017, June 22). lsadump::changentlm and lsadump::setntlm work, but generate Windows events #92. Retrieved December 4, 2017.",
-                    "url": "https://github.com/gentilkiwi/mimikatz/issues/92"
+                    "source_name": "GitHub Mimikatz Issue 92 June 2017"
                 }
             ],
-            "modified": "2019-10-23T14:49:39.188Z"
+            "description": "Adversaries may manipulate accounts to maintain access to victim systems. Account manipulation may consist of any action that preserves adversary access to a compromised account, such as modifying credentials or permission groups. These actions could also include account activity designed to subvert security policies, such as performing iterative password updates to bypass password duration policies and preserve the life of compromised credentials. In order to create or manipulate accounts, the adversary must already have sufficient permissions on systems or the domain.",
+            "name": "Account Manipulation",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "id": "attack-pattern--a10641f4-87b4-45a3-a906-92a149cb2c27",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "modified": "2020-06-25T16:32:23.685Z",
+            "created": "2017-05-31T21:31:12.196Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_version": "2.1",
+            "x_mitre_contributors": [
+                "Jannie Li, Microsoft Threat Intelligence\u202fCenter\u202f(MSTIC)",
+                "Praetorian",
+                "Tim MalcomVetter"
+            ],
+            "x_mitre_data_sources": [
+                "Authentication logs",
+                "Windows event logs"
+            ],
+            "x_mitre_detection": "Collect events that correlate with changes to account objects and/or permissions on systems and the domain, such as event IDs 4738, 4728 and 4670.(Citation: Microsoft User Modified Event)(Citation: Microsoft Security Event 4670)(Citation: Microsoft Security Event 4670) Monitor for modification of accounts in correlation with other suspicious activity. Changes may occur at unusual times or from unusual systems. Especially flag events where the subject and target accounts differ(Citation: InsiderThreat ChangeNTLM July 2017) or that include additional flags such as changing a password without knowledge of the old password.(Citation: GitHub Mimikatz Issue 92 June 2017)\n\nMonitor for use of credentials at unusual times or to unusual systems or services. This may also correlate with other suspicious activity.\n\nMonitor for unusual permissions changes that may indicate excessively broad permissions being granted to compromised accounts.",
+            "x_mitre_platforms": [
+                "Windows",
+                "Office 365",
+                "Azure",
+                "GCP",
+                "Azure AD",
+                "AWS",
+                "Linux",
+                "macOS"
+            ]
         }
     ]
 }

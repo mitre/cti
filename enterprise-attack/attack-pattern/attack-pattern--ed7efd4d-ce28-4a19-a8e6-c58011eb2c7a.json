@@ -1,0 +1,64 @@
+{
+    "type": "bundle",
+    "id": "bundle--6ac5193f-c4fe-4d75-a1e8-95e8d2712936",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1137.002",
+                    "url": "https://attack.mitre.org/techniques/T1137/002"
+                },
+                {
+                    "url": "http://www.hexacorn.com/blog/2014/04/16/beyond-good-ol-run-key-part-10/",
+                    "description": "Hexacorn. (2014, April 16). Beyond good ol\u2019 Run key, Part 10. Retrieved July 3, 2017.",
+                    "source_name": "Hexacorn Office Test"
+                },
+                {
+                    "url": "https://researchcenter.paloaltonetworks.com/2016/07/unit42-technical-walkthrough-office-test-persistence-method-used-in-recent-sofacy-attacks/",
+                    "description": "Falcone, R. (2016, July 20). Technical Walkthrough: Office Test Persistence Method Used In Recent Sofacy Attacks. Retrieved July 3, 2017.",
+                    "source_name": "Palo Alto Office Test Sofacy"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Office Test",
+            "description": "Adversaries may abuse the Microsoft Office \"Office Test\" Registry key to obtain persistence on a compromised system. An Office Test Registry location exists that allows a user to specify an arbitrary DLL that will be executed every time an Office application is started. This Registry key is thought to be used by Microsoft to load DLLs for testing and debugging purposes while developing Office applications. This Registry key is not created by default during an Office installation.(Citation: Hexacorn Office Test)(Citation: Palo Alto Office Test Sofacy)\n\nThere exist user and global Registry keys for the Office Test feature:\n\n* <code>HKEY_CURRENT_USER\\Software\\Microsoft\\Office test\\Special\\Perf</code>\n* <code>HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Office test\\Special\\Perf</code>\n\nAdversaries may add this Registry key and specify a malicious DLL that will be executed whenever an Office application, such as Word or Excel, is started.",
+            "id": "attack-pattern--ed7efd4d-ce28-4a19-a8e6-c58011eb2c7a",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "modified": "2020-03-20T15:27:51.559Z",
+            "created": "2019-11-07T19:44:04.475Z",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_system_requirements": [
+                "Office 2007, 2010, 2013, and 2016"
+            ],
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "User"
+            ],
+            "x_mitre_detection": "Monitor for the creation of the Office Test Registry key. Many Office-related persistence mechanisms require changes to the Registry and for binaries, files, or scripts to be written to disk or existing files modified to include malicious scripts. Collect events related to Registry key creation and modification for keys that could be used for Office-based persistence. Since v13.52, Autoruns can detect tasks set up using the Office Test Registry key.(Citation: Palo Alto Office Test Sofacy)\n\nConsider monitoring Office processes for anomalous DLL loads.",
+            "x_mitre_data_sources": [
+                "DLL monitoring",
+                "Loaded DLLs",
+                "Process monitoring",
+                "Process command-line parameters",
+                "File monitoring",
+                "Windows Registry"
+            ],
+            "x_mitre_platforms": [
+                "Windows",
+                "Office 365"
+            ]
+        }
+    ]
+}

@@ -1,78 +1,80 @@
 {
     "type": "bundle",
-    "id": "bundle--ff6fd203-a946-40b4-b5fa-126f543b7dc1",
+    "id": "bundle--61268a41-f5c0-4bd0-be7e-10bb6b920361",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_data_sources": [
-                "Process monitoring",
-                "Process command-line parameters",
-                "Network protocol analysis",
-                "Process use of network"
-            ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "name": "Network Share Discovery",
-            "description": "Networks often contain shared network drives and folders that enable users to access file directories on various systems across a network. \n\n### Windows\n\nFile sharing over a Windows network occurs over the SMB protocol. (Citation: Wikipedia Shared Resource) (Citation: TechNet Shared Folder)\n\n[Net](https://attack.mitre.org/software/S0039) can be used to query a remote system for available shared drives using the <code>net view \\\\remotesystem</code> command. It can also be used to query shared drives on the local system using <code>net share</code>.\n\nAdversaries may look for folders and drives shared on remote systems as a means of identifying sources of information to gather as a precursor for Collection and to identify potential systems of interest for Lateral Movement.\n\n### Mac\n\nOn Mac, locally mounted shares can be viewed with the <code>df -aH</code> command.\n\n### Cloud\n\nCloud virtual networks may contain remote network shares or file storage services accessible to an adversary after they have obtained access to a system. For example, AWS, GCP, and Azure support creation of Network File System (NFS) shares and Server Message Block (SMB) shares that may be mapped on endpoint or cloud-based systems.(Citation: Amazon Creating an NFS File Share)(Citation: Google File servers on Compute Engine)",
             "id": "attack-pattern--3489cfc5-640f-4bb3-a103-9137b97de79f",
-            "x_mitre_platforms": [
-                "macOS",
-                "Windows",
-                "AWS",
-                "GCP",
-                "Azure"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Network Share Discovery",
+            "description": "Adversaries may look for folders and drives shared on remote systems as a means of identifying sources of information to gather as a precursor for Collection and to identify potential systems of interest for Lateral Movement. Networks often contain shared network drives and folders that enable users to access file directories on various systems across a network. \n\nFile sharing over a Windows network occurs over the SMB protocol. (Citation: Wikipedia Shared Resource) (Citation: TechNet Shared Folder) [Net](https://attack.mitre.org/software/S0039) can be used to query a remote system for available shared drives using the <code>net view \\\\remotesystem</code> command. It can also be used to query shared drives on the local system using <code>net share</code>.\n\nCloud virtual networks may contain remote network shares or file storage services accessible to an adversary after they have obtained access to a system. For example, AWS, GCP, and Azure support creation of Network File System (NFS) shares and Server Message Block (SMB) shares that may be mapped on endpoint or cloud-based systems.(Citation: Amazon Creating an NFS File Share)(Citation: Google File servers on Compute Engine)",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1135",
+                    "url": "https://attack.mitre.org/techniques/T1135"
+                },
+                {
+                    "external_id": "CAPEC-643",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/643.html"
+                },
+                {
+                    "url": "https://en.wikipedia.org/wiki/Shared_resource",
+                    "description": "Wikipedia. (2017, April 15). Shared resource. Retrieved June 30, 2017.",
+                    "source_name": "Wikipedia Shared Resource"
+                },
+                {
+                    "url": "https://technet.microsoft.com/library/cc770880.aspx",
+                    "description": "Microsoft. (n.d.). Share a Folder or Drive. Retrieved June 30, 2017.",
+                    "source_name": "TechNet Shared Folder"
+                },
+                {
+                    "source_name": "Amazon Creating an NFS File Share",
+                    "url": "https://docs.aws.amazon.com/storagegateway/latest/userguide/CreatingAnNFSFileShare.html",
+                    "description": "Amazon. (n.d.). Creating an NFS File Share. Retrieved October 23, 2019."
+                },
+                {
+                    "source_name": "Google File servers on Compute Engine",
+                    "url": "https://cloud.google.com/solutions/filers-on-compute-engine",
+                    "description": "Google Cloud. (2019, October 10). File servers on Compute Engine. Retrieved October 23, 2019."
+                }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "2.0",
             "type": "attack-pattern",
-            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nNormal, benign system and network events related to legitimate remote system discovery may be uncommon, depending on the environment and how they are used. Monitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086).\n\nIn cloud-based systems, native logging can be used to identify access to certain APIs and dashboards that may contain system information. Depending on how the environment is used, that data alone may not be sufficient due to benign use during normal operations.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_contributors": [
-                "Praetorian"
-            ],
-            "created": "2017-12-14T16:46:06.044Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "discovery"
                 }
             ],
-            "external_references": [
-                {
-                    "external_id": "T1135",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1135"
-                },
-                {
-                    "source_name": "capec",
-                    "external_id": "CAPEC-643",
-                    "url": "https://capec.mitre.org/data/definitions/643.html"
-                },
-                {
-                    "source_name": "Wikipedia Shared Resource",
-                    "description": "Wikipedia. (2017, April 15). Shared resource. Retrieved June 30, 2017.",
-                    "url": "https://en.wikipedia.org/wiki/Shared_resource"
-                },
-                {
-                    "source_name": "TechNet Shared Folder",
-                    "description": "Microsoft. (n.d.). Share a Folder or Drive. Retrieved June 30, 2017.",
-                    "url": "https://technet.microsoft.com/library/cc770880.aspx"
-                },
-                {
-                    "description": "Amazon. (n.d.). Creating an NFS File Share. Retrieved October 23, 2019.",
-                    "source_name": "Amazon Creating an NFS File Share",
-                    "url": "https://docs.aws.amazon.com/storagegateway/latest/userguide/CreatingAnNFSFileShare.html"
-                },
-                {
-                    "description": "Google Cloud. (2019, October 10). File servers on Compute Engine. Retrieved October 23, 2019.",
-                    "source_name": "Google File servers on Compute Engine",
-                    "url": "https://cloud.google.com/solutions/filers-on-compute-engine"
-                }
+            "modified": "2020-03-15T00:59:10.149Z",
+            "created": "2017-12-14T16:46:06.044Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_contributors": [
+                "Praetorian"
             ],
-            "modified": "2019-10-23T14:34:08.075Z"
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_platforms": [
+                "macOS",
+                "Windows",
+                "AWS",
+                "GCP",
+                "Azure",
+                "Linux"
+            ],
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nNormal, benign system and network events related to legitimate remote system discovery may be uncommon, depending on the environment and how they are used. Monitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).\n\nIn cloud-based systems, native logging can be used to identify access to certain APIs and dashboards that may contain system information. Depending on how the environment is used, that data alone may not be sufficient due to benign use during normal operations.",
+            "x_mitre_data_sources": [
+                "Process monitoring",
+                "Process command-line parameters",
+                "Network protocol analysis",
+                "Process use of network"
+            ],
+            "x_mitre_version": "2.1"
         }
     ]
 }

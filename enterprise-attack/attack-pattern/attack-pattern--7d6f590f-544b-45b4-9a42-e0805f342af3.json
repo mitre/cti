@@ -1,58 +1,21 @@
 {
     "type": "bundle",
-    "id": "bundle--58b6ce2f-3cd6-4369-97b3-d369b0ff0fea",
+    "id": "bundle--4de8382b-46d4-4987-a375-4349568567c4",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_data_sources": [
-                "Process monitoring",
-                "Process command-line parameters",
-                "Process use of network",
-                "Windows event logs"
-            ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "name": "CMSTP",
-            "description": "The Microsoft Connection Manager Profile Installer (CMSTP.exe) is a command-line program used to install Connection Manager service profiles. (Citation: Microsoft Connection Manager Oct 2009) CMSTP.exe accepts an installation information file (INF) as a parameter and installs a service profile leveraged for remote access connections.\n\nAdversaries may supply CMSTP.exe with INF files infected with malicious commands. (Citation: Twitter CMSTP Usage Jan 2018) Similar to [Regsvr32](https://attack.mitre.org/techniques/T1117) / \u201dSquiblydoo\u201d, CMSTP.exe may be abused to load and execute DLLs (Citation: MSitPros CMSTP Aug 2017)  and/or COM scriptlets (SCT) from remote servers. (Citation: Twitter CMSTP Jan 2018) (Citation: GitHub Ultimate AppLocker Bypass List) (Citation: Endurant CMSTP July 2018) This execution may also bypass AppLocker and other whitelisting defenses since CMSTP.exe is a legitimate, signed Microsoft application.\n\nCMSTP.exe can also be abused to [Bypass User Account Control](https://attack.mitre.org/techniques/T1088) and execute arbitrary commands from a malicious INF through an auto-elevated COM interface. (Citation: MSitPros CMSTP Aug 2017) (Citation: GitHub Ultimate AppLocker Bypass List) (Citation: Endurant CMSTP July 2018)",
-            "x_mitre_remote_support": false,
             "id": "attack-pattern--7d6f590f-544b-45b4-9a42-e0805f342af3",
-            "modified": "2019-06-13T18:55:24.133Z",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "x_mitre_detection": "Use process monitoring to detect and analyze the execution and arguments of CMSTP.exe. Compare recent invocations of CMSTP.exe with prior history of known good arguments and loaded files to determine anomalous and potentially adversarial activity.\n\nSysmon events can also be used to identify potential abuses of CMSTP.exe. Detection strategy may depend on the specific adversary procedure, but potential rules include: (Citation: Endurant CMSTP July 2018)\n\n* To detect loading and execution of local/remote payloads - Event 1 (Process creation) where ParentImage contains CMSTP.exe and/or Event 3 (Network connection) where Image contains CMSTP.exe and DestinationIP is external.\n* To detect [Bypass User Account Control](https://attack.mitre.org/techniques/T1088) via an auto-elevated COM interface - Event 10 (ProcessAccess) where CallTrace contains CMLUA.dll and/or Event 12 or 13 (RegistryEvent) where TargetObject contains CMMGR32.exe. Also monitor for events, such as the creation of processes (Sysmon Event 1), that involve auto-elevated CMSTP COM interfaces such as CMSTPLUA (3E5FC7F9-9A51-4367-9063-A120244FBEC7) and CMLUAUTIL (3E000D72-A845-4CD9-BD83-80C07C3B881F).",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_contributors": [
-                "Ye Yint Min Thu Htut, Offensive Security Team, DBS Bank",
-                "Nik Seetharaman, Palantir"
-            ],
-            "created": "2018-04-18T17:59:24.739Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "execution"
-                }
-            ],
+            "name": "CMSTP",
             "external_references": [
                 {
-                    "external_id": "T1191",
                     "source_name": "mitre-attack",
+                    "external_id": "T1191",
                     "url": "https://attack.mitre.org/techniques/T1191"
                 },
                 {
-                    "source_name": "Microsoft Connection Manager Oct 2009",
+                    "url": "https://docs.microsoft.com/previous-versions/windows/it-pro/windows-server-2003/cc786431(v=ws.10)",
                     "description": "Microsoft. (2009, October 8). How Connection Manager Works. Retrieved April 11, 2018.",
-                    "url": "https://docs.microsoft.com/previous-versions/windows/it-pro/windows-server-2003/cc786431(v=ws.10)"
+                    "source_name": "Microsoft Connection Manager Oct 2009"
                 },
                 {
                     "source_name": "Twitter CMSTP Usage Jan 2018",
@@ -60,19 +23,19 @@
                     "url": "https://twitter.com/ItsReallyNick/status/958789644165894146"
                 },
                 {
-                    "source_name": "MSitPros CMSTP Aug 2017",
+                    "url": "https://msitpros.com/?p=3960",
                     "description": "Moe, O. (2017, August 15). Research on CMSTP.exe. Retrieved April 11, 2018.",
-                    "url": "https://msitpros.com/?p=3960"
+                    "source_name": "MSitPros CMSTP Aug 2017"
                 },
                 {
-                    "source_name": "Twitter CMSTP Jan 2018",
+                    "url": "https://twitter.com/NickTyrer/status/958450014111633408",
                     "description": "Tyrer, N. (2018, January 30). CMSTP.exe - remote .sct execution applocker bypass. Retrieved April 11, 2018.",
-                    "url": "https://twitter.com/NickTyrer/status/958450014111633408"
+                    "source_name": "Twitter CMSTP Jan 2018"
                 },
                 {
-                    "source_name": "GitHub Ultimate AppLocker Bypass List",
+                    "url": "https://github.com/api0cradle/UltimateAppLockerByPassList",
                     "description": "Moe, O. (2018, March 1). Ultimate AppLocker Bypass List. Retrieved April 10, 2018.",
-                    "url": "https://github.com/api0cradle/UltimateAppLockerByPassList"
+                    "source_name": "GitHub Ultimate AppLocker Bypass List"
                 },
                 {
                     "source_name": "Endurant CMSTP July 2018",
@@ -80,10 +43,10 @@
                     "url": "http://www.endurant.io/cmstp/detecting-cmstp-enabled-code-execution-and-uac-bypass-with-sysmon/"
                 }
             ],
-            "x_mitre_defense_bypassed": [
-                "Application whitelisting",
-                "Anti-virus"
-            ]
+            "revoked": true,
+            "type": "attack-pattern",
+            "modified": "2020-01-31T18:58:17.078Z",
+            "created": "2018-04-18T17:59:24.739Z"
         }
     ]
 }

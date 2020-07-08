@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--b5a4e597-33dd-4b25-9df5-414bcb5a28b1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1556.003",
+                    "url": "https://attack.mitre.org/techniques/T1556/003"
+                },
+                {
+                    "source_name": "Apple PAM",
+                    "url": "https://opensource.apple.com/source/dovecot/dovecot-239/dovecot/doc/wiki/PasswordDatabase.PAM.txt",
+                    "description": "Apple. (2011, May 11). PAM - Pluggable Authentication Modules. Retrieved June 25, 2020."
+                },
+                {
+                    "source_name": "Man Pam_Unix",
+                    "url": "https://linux.die.net/man/8/pam_unix",
+                    "description": "die.net. (n.d.). pam_unix(8) - Linux man page. Retrieved June 25, 2020."
+                },
+                {
+                    "source_name": "Red Hat PAM",
+                    "url": "https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/managing_smart_cards/pluggable_authentication_modules",
+                    "description": "Red Hat. (n.d.). CHAPTER 2. USING PLUGGABLE AUTHENTICATION MODULES (PAM). Retrieved June 25, 2020."
+                },
+                {
+                    "source_name": "PAM Backdoor",
+                    "url": "https://github.com/zephrax/linux-pam-backdoor",
+                    "description": "zephrax. (2018, August 3). linux-pam-backdoor. Retrieved June 25, 2020."
+                },
+                {
+                    "source_name": "PAM Creds",
+                    "url": "https://x-c3ll.github.io/posts/PAM-backdoor-DNS/",
+                    "description": "Fern\u00e1ndez, J. M. (2018, June 27). Exfiltrating credentials via PAM backdoors & DNS requests. Retrieved June 26, 2020."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Pluggable Authentication Modules",
+            "description": "Adversaries may modify pluggable authentication modules (PAM) to access user credentials or enable otherwise unwarranted access to accounts. PAM is a modular system of configuration files, libraries, and executable files which guide authentication for many services. The most common authentication module is <code>pam_unix.so</code>, which retrieves, sets, and verifies account authentication information in <code>/etc/passwd</code> and <code>/etc/shadow</code>.(Citation: Apple PAM)(Citation: Man Pam_Unix)(Citation: Red Hat PAM)\n\nAdversaries may modify components of the PAM system to create backdoors. PAM components, such as <code>pam_unix.so</code>, can be patched to accept arbitrary adversary supplied values as legitimate credentials.(Citation: PAM Backdoor)\n\nMalicious modifications to the PAM system may also be abused to steal credentials. Adversaries may infect PAM resources with code to harvest user credentials, since the values exchanged with PAM components may be plain-text since PAM does not store passwords.(Citation: PAM Creds)(Citation: Apple PAM)",
+            "id": "attack-pattern--06c00069-771a-4d57-8ef5-d3718c1a8771",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "credential-access"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-06-30T19:16:10.008Z",
+            "created": "2020-06-26T04:01:09.648Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "root"
+            ],
+            "x_mitre_detection": "Monitor PAM configuration and module paths (ex: <code>/etc/pam.d/</code>) for changes. Use system-integrity tools such as AIDE and monitoring tools such as auditd to monitor PAM files.\n\nLook for suspicious account behavior across systems that share accounts, either user, admin, or service accounts. Examples: one account logged into multiple systems simultaneously; multiple accounts logged into the same machine simultaneously; accounts logged in at odd times (ex: when the user is not present) or outside of business hours. Activity may be from interactive login sessions or process ownership from accounts being used to execute binaries on a remote system as a particular account. Correlate other security systems with login information (e.g., a user has an active login session but has not entered the building or does not have VPN access).",
+            "x_mitre_data_sources": [
+                "Authentication logs",
+                "File monitoring"
+            ],
+            "x_mitre_contributors": [
+                "Scott Knight, @sdotknight, VMware Carbon Black",
+                "George Allen, VMware Carbon Black"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ]
+        }
+    ]
+}

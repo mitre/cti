@@ -1,12 +1,56 @@
 {
     "type": "bundle",
-    "id": "bundle--de47c8f7-f439-4b43-b848-6c0f126c2359",
+    "id": "bundle--d2d5d5cb-135a-4390-bd9b-a30c24bf7c2f",
     "spec_version": "2.0",
     "objects": [
         {
+            "created": "2017-05-31T21:30:55.471Z",
+            "modified": "2020-03-26T17:48:28.002Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "discovery"
+                }
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--15dbf668-795c-41e6-8219-f0447c0e64ce",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Permission Groups Discovery",
+            "description": "Adversaries may attempt to find group and permission settings. This information can help adversaries determine which user accounts and groups are available, the membership of users in particular groups, and which users and groups have elevated permissions.",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1069",
+                    "url": "https://attack.mitre.org/techniques/T1069"
+                },
+                {
+                    "external_id": "CAPEC-576",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/576.html"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_contributors": [
+                "Microsoft Threat Intelligence Center (MSTIC)"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows",
+                "Office 365",
+                "Azure AD",
+                "AWS",
+                "GCP",
+                "Azure",
+                "SaaS"
+            ],
             "x_mitre_permissions_required": [
                 "User"
             ],
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).",
             "x_mitre_data_sources": [
                 "Azure activity logs",
                 "Office 365 account logs",
@@ -14,66 +58,7 @@
                 "Process monitoring",
                 "Process command-line parameters"
             ],
-            "name": "Permission Groups Discovery",
-            "description": "Adversaries may attempt to find local system or domain-level groups and permissions settings. \n\n### Windows\n\nExamples of commands that can list groups are <code>net group /domain</code> and <code>net localgroup</code> using the [Net](https://attack.mitre.org/software/S0039) utility.\n\n### Mac\n\nOn Mac, this same thing can be accomplished with the <code>dscacheutil -q group</code> for the domain, or <code>dscl . -list /Groups</code> for local groups.\n\n### Linux\n\nOn Linux, local groups can be enumerated with the <code>groups</code> command and domain groups via the <code>ldapsearch</code> command.\n\n### Office 365 and Azure AD\n\nWith authenticated access there are several tools that can be used to find permissions groups. The <code>Get-MsolRole</code> PowerShell cmdlet can be used to obtain roles and permissions groups for Exchange and Office 365 accounts.(Citation: Microsoft msrole)(Citation: GitHub Raindance)\n\nAzure CLI (AZ CLI) also provides an interface to obtain permissions groups with authenticated access to a domain. The command <code>az ad user get-member-groups</code> will list groups associated to a user account.(Citation: Microsoft AZ CLI)(Citation: Black Hills Red Teaming MS AD Azure, 2018)",
-            "id": "attack-pattern--15dbf668-795c-41e6-8219-f0447c0e64ce",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows",
-                "Office 365",
-                "Azure AD"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_version": "2.0",
-            "type": "attack-pattern",
-            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086).",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_contributors": [
-                "Microsoft Threat Intelligence Center (MSTIC)"
-            ],
-            "created": "2017-05-31T21:30:55.471Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "discovery"
-                }
-            ],
-            "external_references": [
-                {
-                    "external_id": "T1069",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1069"
-                },
-                {
-                    "source_name": "capec",
-                    "external_id": "CAPEC-576",
-                    "url": "https://capec.mitre.org/data/definitions/576.html"
-                },
-                {
-                    "source_name": "Microsoft msrole",
-                    "description": "Microsoft. (n.d.). Get-MsolRole. Retrieved October 6, 2019.",
-                    "url": "https://docs.microsoft.com/en-us/powershell/module/msonline/get-msolrole?view=azureadps-1.0"
-                },
-                {
-                    "source_name": "GitHub Raindance",
-                    "description": "Stringer, M.. (2018, November 21). RainDance. Retrieved October 6, 2019.",
-                    "url": "https://github.com/True-Demon/raindance"
-                },
-                {
-                    "source_name": "Microsoft AZ CLI",
-                    "description": "Microsoft. (n.d.). az ad user. Retrieved October 6, 2019.",
-                    "url": "https://docs.microsoft.com/en-us/cli/azure/ad/user?view=azure-cli-latest"
-                },
-                {
-                    "source_name": "Black Hills Red Teaming MS AD Azure, 2018",
-                    "description": "Felch, M.. (2018, August 31). Red Teaming Microsoft Part 1 Active Directory Leaks via Azure. Retrieved October 6, 2019.",
-                    "url": "https://www.blackhillsinfosec.com/red-teaming-microsoft-part-1-active-directory-leaks-via-azure/"
-                }
-            ],
-            "modified": "2019-10-18T20:37:17.043Z"
+            "x_mitre_version": "2.1"
         }
     ]
 }

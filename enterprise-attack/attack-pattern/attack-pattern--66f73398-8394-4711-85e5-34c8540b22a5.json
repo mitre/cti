@@ -1,54 +1,16 @@
 {
     "type": "bundle",
-    "id": "bundle--76fc3579-076d-41ed-9118-ed95a771da8d",
+    "id": "bundle--949d8554-344c-4ac6-b5de-1f688aed258c",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_data_sources": [
-                "API monitoring",
-                "Binary file metadata",
-                "DLL monitoring",
-                "Loaded DLLs",
-                "Process monitoring",
-                "Windows event logs"
-            ],
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "SYSTEM"
-            ],
-            "name": "Hooking",
-            "description": "Windows processes often leverage application programming interface (API) functions to perform tasks that require reusable system resources. Windows API functions are typically stored in dynamic-link libraries (DLLs) as exported functions. \n\nHooking involves redirecting calls to these functions and can be implemented via:\n\n* **Hooks procedures**, which intercept and execute designated code in response to events such as messages, keystrokes, and mouse inputs. (Citation: Microsoft Hook Overview) (Citation: Endgame Process Injection July 2017)\n* **Import address table (IAT) hooking**, which use modifications to a process\u2019s IAT, where pointers to imported API functions are stored. (Citation: Endgame Process Injection July 2017) (Citation: Adlice Software IAT Hooks Oct 2014) (Citation: MWRInfoSecurity Dynamic Hooking 2015)\n* **Inline hooking**, which overwrites the first bytes in an API function to redirect code flow. (Citation: Endgame Process Injection July 2017) (Citation: HighTech Bridge Inline Hooking Sept 2011) (Citation: MWRInfoSecurity Dynamic Hooking 2015)\n\nSimilar to [Process Injection](https://attack.mitre.org/techniques/T1055), adversaries may use hooking to load and execute malicious code within the context of another process, masking the execution while also allowing access to the process's memory and possibly elevated privileges. Installing hooking mechanisms may also provide Persistence via continuous invocation when the functions are called through normal use.\n\nMalicious hooking mechanisms may also capture API calls that include parameters that reveal user authentication credentials for Credential Access. (Citation: Microsoft TrojanSpy:Win32/Ursnif.gen!I Sept 2017)\n\nHooking is commonly utilized by [Rootkit](https://attack.mitre.org/techniques/T1014)s to conceal files, processes, Registry keys, and other objects in order to hide malware and associated behaviors. (Citation: Symantec Windows Rootkits)",
             "id": "attack-pattern--66f73398-8394-4711-85e5-34c8540b22a5",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "x_mitre_detection": "Monitor for calls to the SetWindowsHookEx and SetWinEventHook functions, which install a hook procedure. (Citation: Microsoft Hook Overview) (Citation: Volatility Detecting Hooks Sept 2012) Also consider analyzing hook chains (which hold pointers to hook procedures for each type of hook) using tools  (Citation: Volatility Detecting Hooks Sept 2012) (Citation: PreKageo Winhook Jul 2011) (Citation: Jay GetHooks Sept 2011) or by programmatically examining internal kernel structures. (Citation: Zairon Hooking Dec 2006) (Citation: EyeofRa Detecting Hooking June 2017)\n\nRootkits detectors  (Citation: GMER Rootkits) can also be used to monitor for various flavors of hooking activity.\n\nVerify integrity of live processes by comparing code in memory to that of corresponding static binaries, specifically checking for jumps and other instructions that redirect code flow. Also consider taking snapshots of newly started processes  (Citation: Microsoft Process Snapshot) to compare the in-memory IAT to the real addresses of the referenced functions. (Citation: StackExchange Hooks Jul 2012) (Citation: Adlice Software IAT Hooks Oct 2014)\n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "created": "2018-01-16T16:13:52.465Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "credential-access"
-                }
-            ],
+            "name": "Hooking",
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1179",
                     "external_id": "T1179",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1179"
+                    "source_name": "mitre-attack"
                 },
                 {
                     "source_name": "Microsoft Hook Overview",
@@ -77,7 +39,8 @@
                 },
                 {
                     "source_name": "Microsoft TrojanSpy:Win32/Ursnif.gen!I Sept 2017",
-                    "description": "Microsoft. (2017, September 15). TrojanSpy:Win32/Ursnif.gen!I. Retrieved December 18, 2017."
+                    "description": "Microsoft. (2017, September 15). TrojanSpy:Win32/Ursnif.gen!I. Retrieved December 18, 2017.",
+                    "url": "https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=TrojanSpy:Win32/Ursnif.gen!I&threatId=-2147336918"
                 },
                 {
                     "source_name": "Symantec Windows Rootkits",
@@ -125,7 +88,10 @@
                     "url": "https://security.stackexchange.com/questions/17904/what-are-the-methods-to-find-hooked-functions-and-apis"
                 }
             ],
-            "modified": "2019-04-03T15:02:18.662Z"
+            "revoked": true,
+            "type": "attack-pattern",
+            "modified": "2020-02-12T16:57:40.440Z",
+            "created": "2018-01-16T16:13:52.465Z"
         }
     ]
 }

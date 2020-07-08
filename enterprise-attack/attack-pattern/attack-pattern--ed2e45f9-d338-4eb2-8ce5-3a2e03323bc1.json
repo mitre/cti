@@ -1,0 +1,77 @@
+{
+    "type": "bundle",
+    "id": "bundle--cf938357-8208-4eb1-b03f-c8ea1d7b9a34",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1578.001",
+                    "url": "https://attack.mitre.org/techniques/T1578/001"
+                },
+                {
+                    "source_name": "Mandiant M-Trends 2020",
+                    "url": "https://content.fireeye.com/m-trends/rpt-m-trends-2020",
+                    "description": "FireEye / Mandiant. (2020, February). M-Trends 2020. Retrieved April 24, 2020."
+                },
+                {
+                    "source_name": "AWS Cloud Trail Backup API",
+                    "url": "https://docs.aws.amazon.com/aws-backup/latest/devguide/logging-using-cloudtrail.html",
+                    "description": "Amazon. (2020). Logging AWS Backup API Calls with AWS CloudTrail. Retrieved April 27, 2020."
+                },
+                {
+                    "source_name": "Azure - Monitor Logs",
+                    "url": "https://docs.microsoft.com/en-us/azure/backup/backup-azure-monitoring-use-azuremonitor",
+                    "description": "Microsoft. (2019, June 4). Monitor at scale by using Azure Monitor. Retrieved May 1, 2020."
+                },
+                {
+                    "source_name": "Cloud Audit Logs",
+                    "url": "https://cloud.google.com/logging/docs/audit#admin-activity",
+                    "description": "Google. (n.d.). Audit Logs. Retrieved June 1, 2020."
+                },
+                {
+                    "source_name": "GCP - Creating and Starting a VM",
+                    "url": "https://cloud.google.com/compute/docs/instances/create-start-instance#api_2",
+                    "description": "Google. (2020, April 23). Creating and Starting a VM instance. Retrieved May 1, 2020."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Create Snapshot",
+            "description": "An adversary may create a snapshot or data backup within a cloud account to evade defenses. A snapshot is a point-in-time copy of an existing cloud compute component such as a virtual machine (VM), virtual hard drive, or volume. An adversary may leverage permissions to create a snapshot in order to bypass restrictions that prevent access to existing compute service infrastructure, unlike in [Revert Cloud Instance](https://attack.mitre.org/techniques/T1536) where an adversary may revert to a snapshot to evade detection and remove evidence of their presence.\n\nAn adversary may [Create Cloud Instance](https://attack.mitre.org/techniques/T1578/002), mount one or more created snapshots to that instance, and then apply a policy that allows the adversary access to the created instance, such as a firewall policy that allows them inbound and outbound SSH access.(Citation: Mandiant M-Trends 2020)",
+            "id": "attack-pattern--ed2e45f9-d338-4eb2-8ce5-3a2e03323bc1",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-06-19T14:45:59.618Z",
+            "created": "2020-06-09T15:33:13.563Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_detection": "The creation of a snapshot is a common part of operations within many cloud environments. Events should then not be viewed in isolation, but as part of a chain of behavior that could lead to other activities such as the creation of one or more snapshots and the restoration of these snapshots by a new user account.\n\nIn AWS, CloudTrail logs capture the creation of snapshots and all API calls for AWS Backup as events. Using the information collected by CloudTrail, you can determine the request that was made, the IP address from which the request was made, which user made the request, when it was made, and additional details.(Citation: AWS Cloud Trail Backup API).\n\nIn Azure, the creation of a snapshot may be captured in Azure activity logs. Backup restoration events can also be detected through Azure Monitor Log Data by creating a custom alert for completed restore jobs.(Citation: Azure - Monitor Logs)\n\nGoogle's Admin Activity audit logs within their Cloud Audit logs can be used to detect the usage of the <code>gcloud compute instances create</code> command to create a new VM disk from a snapshot.(Citation: Cloud Audit Logs) It is also possible to detect the usage of the GCP API with the <code>\"sourceSnapshot\":</code> parameter pointed to <code>\"global/snapshots/[BOOT_SNAPSHOT_NAME]</code>.(Citation: GCP - Creating and Starting a VM)",
+            "x_mitre_data_sources": [
+                "GCP audit logs",
+                "Stackdriver logs",
+                "Azure activity logs",
+                "AWS CloudTrail logs"
+            ],
+            "x_mitre_contributors": [
+                "Praetorian"
+            ],
+            "x_mitre_platforms": [
+                "AWS",
+                "GCP",
+                "Azure"
+            ]
+        }
+    ]
+}

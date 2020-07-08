@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--e760b586-1f47-4d51-a2fd-e19766a4a753",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "created": "2020-01-24T18:38:55.801Z",
+            "modified": "2020-03-25T16:52:26.567Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--f0589bc3-a6ae-425a-a3d5-5659bfee07f4",
+            "description": "Adversaries may modify or add LSASS drivers to obtain persistence on compromised systems. The Windows security subsystem is a set of components that manage and enforce the security policy for a computer or domain. The Local Security Authority (LSA) is the main component responsible for local security policy and user authentication. The LSA includes multiple dynamic link libraries (DLLs) associated with various other security functions, all of which run in the context of the LSA Subsystem Service (LSASS) lsass.exe process. (Citation: Microsoft Security Subsystem)\n\nAdversaries may target LSASS drivers to obtain persistence. By either replacing or adding illegitimate drivers (e.g., [Hijack Execution Flow](https://attack.mitre.org/techniques/T1574)), an adversary can use LSA operations to continuously execute malicious payloads.",
+            "name": "LSASS Driver",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1547.008",
+                    "url": "https://attack.mitre.org/techniques/T1547/008"
+                },
+                {
+                    "url": "https://technet.microsoft.com/library/cc961760.aspx",
+                    "description": "Microsoft. (n.d.). Security Subsystem Architecture. Retrieved November 27, 2017.",
+                    "source_name": "Microsoft Security Subsystem"
+                },
+                {
+                    "url": "https://technet.microsoft.com/library/dn408187.aspx",
+                    "description": "Microsoft. (2014, March 12). Configuring Additional LSA Protection. Retrieved November 27, 2017.",
+                    "source_name": "Microsoft LSA Protection Mar 2014"
+                },
+                {
+                    "url": "https://msdn.microsoft.com/library/windows/desktop/ff919712.aspx",
+                    "description": "Microsoft. (n.d.). Dynamic-Link Library Security. Retrieved November 27, 2017.",
+                    "source_name": "Microsoft DLL Security"
+                },
+                {
+                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902",
+                    "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
+                    "source_name": "TechNet Autoruns"
+                }
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_contributors": [
+                "Vincent Le Toux"
+            ],
+            "x_mitre_data_sources": [
+                "DLL monitoring",
+                "File monitoring",
+                "Loaded DLLs",
+                "Process monitoring"
+            ],
+            "x_mitre_detection": "With LSA Protection enabled, monitor the event logs (Events 3033 and 3063) for failed attempts to load LSA plug-ins and drivers. (Citation: Microsoft LSA Protection Mar 2014) Also monitor DLL load operations in lsass.exe. (Citation: Microsoft DLL Security)\n\nUtilize the Sysinternals Autoruns/Autorunsc utility (Citation: TechNet Autoruns) to examine loaded drivers associated with the LSA. ",
+            "x_mitre_permissions_required": [
+                "SYSTEM",
+                "Administrator"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0"
+        }
+    ]
+}

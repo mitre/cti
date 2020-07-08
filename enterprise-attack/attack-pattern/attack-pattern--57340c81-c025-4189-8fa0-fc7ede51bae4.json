@@ -1,9 +1,85 @@
 {
     "type": "bundle",
-    "id": "bundle--f3faf377-1218-44d4-b3b2-5f9b4af3c6a9",
+    "id": "bundle--497dad37-b1bc-4445-ae2d-bd9f2cb8547c",
     "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--57340c81-c025-4189-8fa0-fc7ede51bae4",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Modify Registry",
+            "description": "Adversaries may interact with the Windows Registry to hide configuration information within Registry keys, remove information as part of cleaning up, or as part of other techniques to aid in persistence and execution.\n\nAccess to specific areas of the Registry depends on account permissions, some requiring administrator-level access. The built-in Windows command-line utility [Reg](https://attack.mitre.org/software/S0075) may be used for local or remote Registry modification. (Citation: Microsoft Reg) Other tools may also be used, such as a remote access tool, which may contain functionality to interact with the Registry through the Windows API.\n\nRegistry modifications may also include actions to hide keys, such as prepending key names with a null character, which will cause an error and/or be ignored when read via [Reg](https://attack.mitre.org/software/S0075) or other utilities using the Win32 API. (Citation: Microsoft Reghide NOV 2006) Adversaries may abuse these pseudo-hidden keys to conceal payloads/commands used to maintain persistence. (Citation: TrendMicro POWELIKS AUG 2014) (Citation: SpectorOps Hiding Reg Jul 2017)\n\nThe Registry of a remote system may be modified to aid in execution of files as part of lateral movement. It requires the remote Registry service to be running on the target system. (Citation: Microsoft Remote) Often [Valid Accounts](https://attack.mitre.org/techniques/T1078) are required, along with access to the remote system's [SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002) for RPC communication.",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1112",
+                    "url": "https://attack.mitre.org/techniques/T1112"
+                },
+                {
+                    "external_id": "CAPEC-203",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/203.html"
+                },
+                {
+                    "url": "https://technet.microsoft.com/en-us/library/cc732643.aspx",
+                    "description": "Microsoft. (2012, April 17). Reg. Retrieved May 1, 2015.",
+                    "source_name": "Microsoft Reg"
+                },
+                {
+                    "url": "https://docs.microsoft.com/sysinternals/downloads/reghide",
+                    "description": "Russinovich, M. & Sharkey, K. (2006, January 10). Reghide. Retrieved August 9, 2018.",
+                    "source_name": "Microsoft Reghide NOV 2006"
+                },
+                {
+                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/poweliks-malware-hides-in-windows-registry/",
+                    "description": "Santos, R. (2014, August 1). POWELIKS: Malware Hides In Windows Registry. Retrieved August 9, 2018.",
+                    "source_name": "TrendMicro POWELIKS AUG 2014"
+                },
+                {
+                    "url": "https://posts.specterops.io/hiding-registry-keys-with-psreflect-b18ec5ac8353",
+                    "description": "Reitz, B. (2017, July 14). Hiding Registry keys with PSReflect. Retrieved August 9, 2018.",
+                    "source_name": "SpectorOps Hiding Reg Jul 2017"
+                },
+                {
+                    "url": "https://technet.microsoft.com/en-us/library/cc754820.aspx",
+                    "description": "Microsoft. (n.d.). Enable the Remote Registry Service. Retrieved May 1, 2015.",
+                    "source_name": "Microsoft Remote"
+                },
+                {
+                    "url": "https://docs.microsoft.com/windows/security/threat-protection/auditing/event-4657",
+                    "description": "Miroshnikov, A. & Hall, J. (2017, April 18). 4657(S): A registry value was modified. Retrieved August 9, 2018.",
+                    "source_name": "Microsoft 4657 APR 2017"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/sysinternals/downloads/regdelnull",
+                    "description": "Russinovich, M. & Sharkey, K. (2016, July 4). RegDelNull v1.11. Retrieved August 10, 2018.",
+                    "source_name": "Microsoft RegDelNull July 2016"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-03-29T22:52:55.930Z",
+            "created": "2017-05-31T21:31:23.587Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator",
+                "SYSTEM"
+            ],
+            "x_mitre_detection": "Modifications to the Registry are normal and occur throughout typical use of the Windows operating system. Consider enabling Registry Auditing on specific keys to produce an alertable event (Event ID 4657) whenever a value is changed (though this may not trigger when values are created with Reghide or other evasive methods). (Citation: Microsoft 4657 APR 2017) Changes to Registry entries that load software on Windows startup that do not correlate with known software, patch cycles, etc., are suspicious, as are additions or changes to files within the startup folder. Changes could also include new services and modification of existing binary paths to point to malicious files. If a change to a service-related entry occurs, then it will likely be followed by a local or remote service start or restart to execute the file.\n\nMonitor processes and command-line arguments for actions that could be taken to change or delete information in the Registry. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001), which may require additional logging features to be configured in the operating system to collect necessary information for analysis.\n\nMonitor for processes, command-line arguments, and API calls associated with concealing Registry keys, such as Reghide. (Citation: Microsoft Reghide NOV 2006) Inspect and cleanup malicious hidden Registry entries using Native Windows API calls and/or tools such as Autoruns (Citation: SpectorOps Hiding Reg Jul 2017) and RegDelNull (Citation: Microsoft RegDelNull July 2016).",
+            "x_mitre_defense_bypassed": [
+                "Host forensic analysis"
+            ],
             "x_mitre_data_sources": [
                 "Windows Registry",
                 "File monitoring",
@@ -11,87 +87,12 @@
                 "Process command-line parameters",
                 "Windows event logs"
             ],
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator",
-                "SYSTEM"
-            ],
-            "name": "Modify Registry",
-            "description": "Adversaries may interact with the Windows Registry to hide configuration information within Registry keys, remove information as part of cleaning up, or as part of other techniques to aid in Persistence and Execution.\n\nAccess to specific areas of the Registry depends on account permissions, some requiring administrator-level access. The built-in Windows command-line utility [Reg](https://attack.mitre.org/software/S0075) may be used for local or remote Registry modification. (Citation: Microsoft Reg) Other tools may also be used, such as a remote access tool, which may contain functionality to interact with the Registry through the Windows API (see examples).\n\nRegistry modifications may also include actions to hide keys, such as prepending key names with a null character, which will cause an error and/or be ignored when read via [Reg](https://attack.mitre.org/software/S0075) or other utilities using the Win32 API. (Citation: Microsoft Reghide NOV 2006) Adversaries may abuse these pseudo-hidden keys to conceal payloads/commands used to establish Persistence. (Citation: TrendMicro POWELIKS AUG 2014) (Citation: SpectorOps Hiding Reg Jul 2017)\n\nThe Registry of a remote system may be modified to aid in execution of files as part of Lateral Movement. It requires the remote Registry service to be running on the target system. (Citation: Microsoft Remote) Often [Valid Accounts](https://attack.mitre.org/techniques/T1078) are required, along with access to the remote system's [Windows Admin Shares](https://attack.mitre.org/techniques/T1077) for RPC communication.",
-            "id": "attack-pattern--57340c81-c025-4189-8fa0-fc7ede51bae4",
-            "modified": "2019-06-25T12:31:56.827Z",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "x_mitre_detection": "Modifications to the Registry are normal and occur throughout typical use of the Windows operating system. Consider enabling Registry Auditing on specific keys to produce an alertable event (Event ID 4657) whenever a value is changed (though this may not trigger when values are created with Reghide or other evasive methods). (Citation: Microsoft 4657 APR 2017) Changes to Registry entries that load software on Windows startup that do not correlate with known software, patch cycles, etc., are suspicious, as are additions or changes to files within the startup folder. Changes could also include new services and modification of existing binary paths to point to malicious files. If a change to a service-related entry occurs, then it will likely be followed by a local or remote service start or restart to execute the file.\n\nMonitor processes and command-line arguments for actions that could be taken to change or delete information in the Registry. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1086), which may require additional logging features to be configured in the operating system to collect necessary information for analysis.\n\nMonitor for processes, command-line arguments, and API calls associated with concealing Registry keys, such as Reghide. (Citation: Microsoft Reghide NOV 2006) Inspect and cleanup malicious hidden Registry entries using Native Windows API calls and/or tools such as Autoruns (Citation: SpectorOps Hiding Reg Jul 2017) and RegDelNull (Citation: Microsoft RegDelNull July 2016).",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_contributors": [
                 "Bartosz Jerzman",
                 "Travis Smith, Tripwire",
                 "David Lu, Tripwire"
             ],
-            "created": "2017-05-31T21:31:23.587Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "external_references": [
-                {
-                    "external_id": "T1112",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1112"
-                },
-                {
-                    "source_name": "capec",
-                    "external_id": "CAPEC-203",
-                    "url": "https://capec.mitre.org/data/definitions/203.html"
-                },
-                {
-                    "source_name": "Microsoft Reg",
-                    "description": "Microsoft. (2012, April 17). Reg. Retrieved May 1, 2015.",
-                    "url": "https://technet.microsoft.com/en-us/library/cc732643.aspx"
-                },
-                {
-                    "source_name": "Microsoft Reghide NOV 2006",
-                    "description": "Russinovich, M. & Sharkey, K. (2006, January 10). Reghide. Retrieved August 9, 2018.",
-                    "url": "https://docs.microsoft.com/sysinternals/downloads/reghide"
-                },
-                {
-                    "source_name": "TrendMicro POWELIKS AUG 2014",
-                    "description": "Santos, R. (2014, August 1). POWELIKS: Malware Hides In Windows Registry. Retrieved August 9, 2018.",
-                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/poweliks-malware-hides-in-windows-registry/"
-                },
-                {
-                    "description": "Reitz, B. (2017, July 14). Hiding Registry keys with PSReflect. Retrieved August 9, 2018.",
-                    "source_name": "SpectorOps Hiding Reg Jul 2017",
-                    "url": "https://posts.specterops.io/hiding-registry-keys-with-psreflect-b18ec5ac8353"
-                },
-                {
-                    "source_name": "Microsoft Remote",
-                    "description": "Microsoft. (n.d.). Enable the Remote Registry Service. Retrieved May 1, 2015.",
-                    "url": "https://technet.microsoft.com/en-us/library/cc754820.aspx"
-                },
-                {
-                    "source_name": "Microsoft 4657 APR 2017",
-                    "description": "Miroshnikov, A. & Hall, J. (2017, April 18). 4657(S): A registry value was modified. Retrieved August 9, 2018.",
-                    "url": "https://docs.microsoft.com/windows/security/threat-protection/auditing/event-4657"
-                },
-                {
-                    "description": "Russinovich, M. & Sharkey, K. (2016, July 4). RegDelNull v1.11. Retrieved August 10, 2018.",
-                    "source_name": "Microsoft RegDelNull July 2016",
-                    "url": "https://docs.microsoft.com/en-us/sysinternals/downloads/regdelnull"
-                }
-            ],
-            "x_mitre_defense_bypassed": [
-                "Host forensic analysis"
-            ]
+            "x_mitre_version": "1.1"
         }
     ]
 }

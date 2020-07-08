@@ -1,85 +1,86 @@
 {
     "type": "bundle",
-    "id": "bundle--f706dd80-059f-4bbb-96ca-128cd2d61568",
+    "id": "bundle--e43845b0-2d5c-4fee-9be9-4a221686c106",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_data_sources": [
-                "File monitoring",
-                "Network protocol analysis",
-                "Network device logs",
-                "Process use of network"
-            ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "name": "Forced Authentication",
-            "description": "The Server Message Block (SMB) protocol is commonly used in Windows networks for authentication and communication between systems for access to resources and file sharing. When a Windows system attempts to connect to an SMB resource it will automatically attempt to authenticate and send credential information for the current user to the remote system. (Citation: Wikipedia Server Message Block) This behavior is typical in enterprise environments so that users do not need to enter credentials to access network resources. Web Distributed Authoring and Versioning (WebDAV) is typically used by Windows systems as a backup protocol when SMB is blocked or fails. WebDAV is an extension of HTTP and will typically operate over TCP ports 80 and 443. (Citation: Didier Stevens WebDAV Traffic) (Citation: Microsoft Managing WebDAV Security)\n\nAdversaries may take advantage of this behavior to gain access to user account hashes through forced SMB authentication. An adversary can send an attachment to a user through spearphishing that contains a resource link to an external server controlled by the adversary (i.e. [Template Injection](https://attack.mitre.org/techniques/T1221)), or place a specially crafted file on navigation path for privileged accounts (e.g. .SCF file placed on desktop) or on a publicly accessible share to be accessed by victim(s). When the user's system accesses the untrusted resource it will attempt authentication and send information including the user's hashed credentials over SMB to the adversary controlled server. (Citation: GitHub Hashjacking) With access to the credential hash, an adversary can perform off-line [Brute Force](https://attack.mitre.org/techniques/T1110) cracking to gain access to plaintext credentials. (Citation: Cylance Redirect to SMB)\n\nThere are several different ways this can occur. (Citation: Osanda Stealing NetNTLM Hashes) Some specifics from in-the-wild use include:\n\n* A spearphishing attachment containing a document with a resource that is automatically loaded when the document is opened (i.e. [Template Injection](https://attack.mitre.org/techniques/T1221)). The document can include, for example, a request similar to <code>file[:]//[remote address]/Normal.dotm</code> to trigger the SMB request. (Citation: US-CERT APT Energy Oct 2017)\n* A modified .LNK or .SCF file with the icon filename pointing to an external reference such as <code>\\\\[remote address]\\pic.png</code> that will force the system to load the resource when the icon is rendered to repeatedly gather credentials. (Citation: US-CERT APT Energy Oct 2017)",
             "id": "attack-pattern--b77cf5f3-6060-475d-bd60-40ccbf28fdc2",
-            "x_mitre_platforms": [
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Forced Authentication",
+            "description": "Adversaries may gather credential material by invoking or forcing a user to automatically provide authentication information through a mechanism in which they can intercept.\n\nThe Server Message Block (SMB) protocol is commonly used in Windows networks for authentication and communication between systems for access to resources and file sharing. When a Windows system attempts to connect to an SMB resource it will automatically attempt to authenticate and send credential information for the current user to the remote system. (Citation: Wikipedia Server Message Block) This behavior is typical in enterprise environments so that users do not need to enter credentials to access network resources.\n\nWeb Distributed Authoring and Versioning (WebDAV) is also typically used by Windows systems as a backup protocol when SMB is blocked or fails. WebDAV is an extension of HTTP and will typically operate over TCP ports 80 and 443. (Citation: Didier Stevens WebDAV Traffic) (Citation: Microsoft Managing WebDAV Security)\n\nAdversaries may take advantage of this behavior to gain access to user account hashes through forced SMB/WebDAV authentication. An adversary can send an attachment to a user through spearphishing that contains a resource link to an external server controlled by the adversary (i.e. [Template Injection](https://attack.mitre.org/techniques/T1221)), or place a specially crafted file on navigation path for privileged accounts (e.g. .SCF file placed on desktop) or on a publicly accessible share to be accessed by victim(s). When the user's system accesses the untrusted resource it will attempt authentication and send information, including the user's hashed credentials, over SMB to the adversary controlled server. (Citation: GitHub Hashjacking) With access to the credential hash, an adversary can perform off-line [Brute Force](https://attack.mitre.org/techniques/T1110) cracking to gain access to plaintext credentials. (Citation: Cylance Redirect to SMB)\n\nThere are several different ways this can occur. (Citation: Osanda Stealing NetNTLM Hashes) Some specifics from in-the-wild use include:\n\n* A spearphishing attachment containing a document with a resource that is automatically loaded when the document is opened (i.e. [Template Injection](https://attack.mitre.org/techniques/T1221)). The document can include, for example, a request similar to <code>file[:]//[remote address]/Normal.dotm</code> to trigger the SMB request. (Citation: US-CERT APT Energy Oct 2017)\n* A modified .LNK or .SCF file with the icon filename pointing to an external reference such as <code>\\\\[remote address]\\pic.png</code> that will force the system to load the resource when the icon is rendered to repeatedly gather credentials. (Citation: US-CERT APT Energy Oct 2017)",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1187",
+                    "url": "https://attack.mitre.org/techniques/T1187"
+                },
+                {
+                    "url": "https://en.wikipedia.org/wiki/Server_Message_Block",
+                    "description": "Wikipedia. (2017, December 16). Server Message Block. Retrieved December 21, 2017.",
+                    "source_name": "Wikipedia Server Message Block"
+                },
+                {
+                    "url": "https://blog.didierstevens.com/2017/11/13/webdav-traffic-to-malicious-sites/",
+                    "description": "Stevens, D. (2017, November 13). WebDAV Traffic To Malicious Sites. Retrieved December 21, 2017.",
+                    "source_name": "Didier Stevens WebDAV Traffic"
+                },
+                {
+                    "url": "https://www.microsoft.com/technet/prodtechnol/WindowsServer2003/Library/IIS/4beddb35-0cba-424c-8b9b-a5832ad8e208.mspx",
+                    "description": "Microsoft. (n.d.). Managing WebDAV Security (IIS 6.0). Retrieved December 21, 2017.",
+                    "source_name": "Microsoft Managing WebDAV Security"
+                },
+                {
+                    "url": "https://github.com/hob0/hashjacking",
+                    "description": "Dunning, J. (2016, August 1). Hashjacking. Retrieved December 21, 2017.",
+                    "source_name": "GitHub Hashjacking"
+                },
+                {
+                    "url": "https://www.cylance.com/content/dam/cylance/pdfs/white_papers/RedirectToSMB.pdf",
+                    "description": "Cylance. (2015, April 13). Redirect to SMB. Retrieved December 21, 2017.",
+                    "source_name": "Cylance Redirect to SMB"
+                },
+                {
+                    "url": "https://osandamalith.com/2017/03/24/places-of-interest-in-stealing-netntlm-hashes/",
+                    "description": "Osanda Malith Jayathissa. (2017, March 24). Places of Interest in Stealing NetNTLM Hashes. Retrieved January 26, 2018.",
+                    "source_name": "Osanda Stealing NetNTLM Hashes"
+                },
+                {
+                    "url": "https://www.us-cert.gov/ncas/alerts/TA17-293A",
+                    "description": "US-CERT. (2017, October 20). Alert (TA17-293A): Advanced Persistent Threat Activity Targeting Energy and Other Critical Infrastructure Sectors. Retrieved November 2, 2017.",
+                    "source_name": "US-CERT APT Energy Oct 2017"
+                }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "1.1",
             "type": "attack-pattern",
-            "x_mitre_detection": "Monitor for SMB traffic on TCP ports 139, 445 and UDP port 137 and WebDAV traffic attempting to exit the network to unknown external systems. If attempts are detected, then investigate endpoint data sources to find the root cause. For internal traffic, monitor the workstation-to-workstation unusual (vs. baseline) SMB traffic. For many networks there should not be any, but it depends on how systems on the network are configured and where resources are located.\n\nMonitor creation and modification of .LNK, .SCF, or any other files on systems and within virtual environments that contain resources that point to external network resources as these could be used to gather credentials when the files are rendered. (Citation: US-CERT APT Energy Oct 2017)",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_contributors": [
-                "Teodor Cimpoesu",
-                "Sudhanshu Chauhan, @Sudhanshu_C"
-            ],
-            "created": "2018-01-16T16:13:52.465Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "credential-access"
                 }
             ],
-            "external_references": [
-                {
-                    "external_id": "T1187",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1187"
-                },
-                {
-                    "source_name": "Wikipedia Server Message Block",
-                    "description": "Wikipedia. (2017, December 16). Server Message Block. Retrieved December 21, 2017.",
-                    "url": "https://en.wikipedia.org/wiki/Server_Message_Block"
-                },
-                {
-                    "source_name": "Didier Stevens WebDAV Traffic",
-                    "description": "Stevens, D. (2017, November 13). WebDAV Traffic To Malicious Sites. Retrieved December 21, 2017.",
-                    "url": "https://blog.didierstevens.com/2017/11/13/webdav-traffic-to-malicious-sites/"
-                },
-                {
-                    "source_name": "Microsoft Managing WebDAV Security",
-                    "description": "Microsoft. (n.d.). Managing WebDAV Security (IIS 6.0). Retrieved December 21, 2017.",
-                    "url": "https://www.microsoft.com/technet/prodtechnol/WindowsServer2003/Library/IIS/4beddb35-0cba-424c-8b9b-a5832ad8e208.mspx"
-                },
-                {
-                    "source_name": "GitHub Hashjacking",
-                    "description": "Dunning, J. (2016, August 1). Hashjacking. Retrieved December 21, 2017.",
-                    "url": "https://github.com/hob0/hashjacking"
-                },
-                {
-                    "source_name": "Cylance Redirect to SMB",
-                    "description": "Cylance. (2015, April 13). Redirect to SMB. Retrieved December 21, 2017.",
-                    "url": "https://www.cylance.com/content/dam/cylance/pdfs/white_papers/RedirectToSMB.pdf"
-                },
-                {
-                    "source_name": "Osanda Stealing NetNTLM Hashes",
-                    "description": "Malith, O. (2017, March 24). Places of Interest in Stealing NetNTLM Hashes. Retrieved January 26, 2018.",
-                    "url": "https://osandamalith.com/2017/03/24/places-of-interest-in-stealing-netntlm-hashes/"
-                },
-                {
-                    "source_name": "US-CERT APT Energy Oct 2017",
-                    "description": "US-CERT. (2017, October 20). Alert (TA17-293A): Advanced Persistent Threat Activity Targeting Energy and Other Critical Infrastructure Sectors. Retrieved November 2, 2017.",
-                    "url": "https://www.us-cert.gov/ncas/alerts/TA17-293A"
-                }
+            "modified": "2020-06-19T17:16:41.470Z",
+            "created": "2018-01-16T16:13:52.465Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "Windows"
             ],
-            "modified": "2019-09-16T17:15:43.746Z"
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_detection": "Monitor for SMB traffic on TCP ports 139, 445 and UDP port 137 and WebDAV traffic attempting to exit the network to unknown external systems. If attempts are detected, then investigate endpoint data sources to find the root cause. For internal traffic, monitor the workstation-to-workstation unusual (vs. baseline) SMB traffic. For many networks there should not be any, but it depends on how systems on the network are configured and where resources are located.\n\nMonitor creation and modification of .LNK, .SCF, or any other files on systems and within virtual environments that contain resources that point to external network resources as these could be used to gather credentials when the files are rendered. (Citation: US-CERT APT Energy Oct 2017)",
+            "x_mitre_data_sources": [
+                "File monitoring",
+                "Network protocol analysis",
+                "Network device logs",
+                "Process use of network"
+            ],
+            "x_mitre_contributors": [
+                "Teodor Cimpoesu",
+                "Sudhanshu Chauhan, @Sudhanshu_C"
+            ],
+            "x_mitre_version": "1.2"
         }
     ]
 }

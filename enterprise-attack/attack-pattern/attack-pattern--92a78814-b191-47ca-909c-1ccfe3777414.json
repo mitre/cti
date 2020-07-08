@@ -1,42 +1,24 @@
 {
     "type": "bundle",
-    "id": "bundle--43aeca17-fc99-4544-b0a2-e132101386c9",
+    "id": "bundle--6c4e0432-3df6-42ac-92a2-c06d2ea2f1a1",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator",
-                "SYSTEM"
-            ],
-            "x_mitre_data_sources": [
-                "File monitoring",
-                "Third-party application logs",
-                "Windows Registry",
-                "Process monitoring",
-                "Process use of network",
-                "Binary file metadata"
-            ],
-            "name": "Third-party Software",
-            "description": "Third-party applications and software deployment systems may be in use in the network environment for administration purposes (e.g., SCCM, VNC, HBSS, Altiris, etc.). If an adversary gains access to these systems, then they may be able to execute code.\n\nAdversaries may gain access to and use third-party systems installed within an enterprise network, such as administration, monitoring, and deployment systems as well as third-party gateways and jump servers used for managing other systems. Access to a third-party network-wide or enterprise-wide software system may enable an adversary to have remote code execution on all systems that are connected to such a system. The access may be used to laterally move to other systems, gather information, or cause a specific effect, such as wiping the hard drives on all endpoints.\n\nThe permissions required for this action vary by system configuration; local credentials may be sufficient with direct access to the third-party system, or specific domain credentials may be required. However, the system may require an administrative account to log in or to perform it's intended purpose.",
-            "x_mitre_remote_support": true,
-            "id": "attack-pattern--92a78814-b191-47ca-909c-1ccfe3777414",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "1.1",
-            "type": "attack-pattern",
-            "x_mitre_detection": "Detection methods will vary depending on the type of third-party software or system and how it is typically used. \n\nThe same investigation process can be applied here as with other potentially malicious activities where the distribution vector is initially unknown but the resulting activity follows a discernible pattern. Analyze the process execution trees, historical activities from the third-party application (such as what types of files are usually pushed), and the resulting activities or events from the file/binary/script pushed to systems. \n\nOften these third-party applications will have logs of their own that can be collected and correlated with other data from the environment. Ensure that third-party application logs are on-boarded to the enterprise logging system and the logs are regularly reviewed. Audit software deployment logs and look for suspicious or unauthorized activity. A system not typically used to push software to clients that suddenly is used for such a task outside of a known admin function may be suspicious.\n\nPerform application deployment at regular times so that irregular deployment activity stands out. Monitor process activity that does not correlate to known good software. Monitor account login activity on the deployment system.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_contributors": [
-                "Shane Tully, @securitygypsy"
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1072",
+                    "external_id": "T1072"
+                }
             ],
-            "created": "2017-05-31T21:30:57.201Z",
+            "description": "Adversaries may gain access to and use third-party software suites installed within an enterprise network, such as administration, monitoring, and deployment systems, to move laterally through the network. Third-party applications and software deployment systems may be in use in the network environment for administration purposes (e.g., SCCM, VNC, HBSS, Altiris, etc.).\n\nAccess to a third-party network-wide or enterprise-wide software system may enable an adversary to have remote code execution on all systems that are connected to such a system. The access may be used to laterally move to other systems, gather information, or cause a specific effect, such as wiping the hard drives on all endpoints.\n\nThe permissions required for this action vary by system configuration; local credentials may be sufficient with direct access to the third-party system, or specific domain credentials may be required. However, the system may require an administrative account to log in or to perform it's intended purpose.",
+            "name": "Software Deployment Tools",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "id": "attack-pattern--92a78814-b191-47ca-909c-1ccfe3777414",
+            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -47,14 +29,34 @@
                     "phase_name": "lateral-movement"
                 }
             ],
-            "external_references": [
-                {
-                    "external_id": "T1072",
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1072"
-                }
+            "modified": "2020-02-21T16:31:32.789Z",
+            "created": "2017-05-31T21:30:57.201Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_version": "2.0",
+            "x_mitre_data_sources": [
+                "Authentication logs",
+                "File monitoring",
+                "Third-party application logs",
+                "Windows Registry",
+                "Process monitoring",
+                "Process use of network",
+                "Binary file metadata"
             ],
-            "modified": "2019-07-18T21:34:47.137Z"
+            "x_mitre_detection": "Detection methods will vary depending on the type of third-party software or system and how it is typically used. \n\nThe same investigation process can be applied here as with other potentially malicious activities where the distribution vector is initially unknown but the resulting activity follows a discernible pattern. Analyze the process execution trees, historical activities from the third-party application (such as what types of files are usually pushed), and the resulting activities or events from the file/binary/script pushed to systems. \n\nOften these third-party applications will have logs of their own that can be collected and correlated with other data from the environment. Ensure that third-party application logs are on-boarded to the enterprise logging system and the logs are regularly reviewed. Audit software deployment logs and look for suspicious or unauthorized activity. A system not typically used to push software to clients that suddenly is used for such a task outside of a known admin function may be suspicious. Monitor account login activity on these applications to detect suspicious/abnormal usage.\n\nPerform application deployment at regular times so that irregular deployment activity stands out. Monitor process activity that does not correlate to known good software. Monitor account login activity on the deployment system.",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator",
+                "SYSTEM"
+            ],
+            "x_mitre_remote_support": true,
+            "x_mitre_contributors": [
+                "Shane Tully, @securitygypsy"
+            ]
         }
     ]
 }

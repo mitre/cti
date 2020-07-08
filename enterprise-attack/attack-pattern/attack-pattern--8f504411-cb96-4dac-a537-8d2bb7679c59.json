@@ -1,0 +1,57 @@
+{
+    "type": "bundle",
+    "id": "bundle--0f3ea892-5921-4103-844b-223a3a61767f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1562.003",
+                    "url": "https://attack.mitre.org/techniques/T1562/003"
+                },
+                {
+                    "external_id": "CAPEC-13",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/13.html"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "HISTCONTROL",
+            "description": "Adversaries may configure <code>HISTCONTROL</code> to not log all command history. The <code>HISTCONTROL</code> environment variable keeps track of what should be saved by the <code>history</code> command and eventually into the <code>~/.bash_history</code> file when a user logs out. <code>HISTCONTROL</code> does not exist by default on macOS, but can be set by the user and will be respected.\n\nThis setting can be configured to ignore commands that start with a space by simply setting it to \"ignorespace\". <code>HISTCONTROL</code> can also be set to ignore duplicate commands by setting it to \"ignoredups\". In some Linux systems, this is set by default to \"ignoreboth\" which covers both of the previous examples. This means that \u201c ls\u201d will not be saved, but \u201cls\u201d would be saved by history.\n\n Adversaries can abuse this to operate without leaving traces by simply prepending a space to all of their terminal commands.",
+            "id": "attack-pattern--8f504411-cb96-4dac-a537-8d2bb7679c59",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-03-29T22:09:18.020Z",
+            "created": "2020-02-21T20:56:06.498Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_defense_bypassed": [
+                "Host forensic analysis",
+                "Log analysis"
+            ],
+            "x_mitre_detection": "Correlating a user session with a distinct lack of new commands in their <code>.bash_history</code> can be a clue to suspicious behavior. Additionally, users checking or changing their <code>HISTCONTROL</code> environment variable is also suspicious.",
+            "x_mitre_data_sources": [
+                "Environment variable",
+                "File monitoring",
+                "Authentication logs",
+                "Process monitoring"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS"
+            ]
+        }
+    ]
+}
