@@ -1,23 +1,33 @@
 {
     "type": "bundle",
-    "id": "bundle--1cdbb931-bf1c-49bc-8c8a-7e70ce02e810",
+    "id": "bundle--5c0ebc53-b078-440d-b334-e521b3726c1d",
     "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--a9d4b653-6915-42af-98b2-5758c4ceee56",
+            "description": "Adversaries may abuse Unix shell commands and scripts for execution. Unix shells are the primary command prompt on Linux and macOS systems, though many variations of the Unix shell exist (e.g. sh, bash, zsh, etc.) depending on the specific OS or distribution.(Citation: DieNet Bash)(Citation: Apple ZShell) Unix shells can control every aspect of a system, with certain commands requiring elevated privileges.\n\nUnix shells also support scripts that enable sequential execution of commands as well as other typical programming operations such as conditionals and loops. Common uses of shell scripts include long or repetitive tasks, or the need to run the same set of commands on multiple systems.\n\nAdversaries may abuse Unix shells to execute various commands or payloads. Interactive shells may be accessed through command and control channels or during lateral movement such as with [SSH](https://attack.mitre.org/techniques/T1021/004). Adversaries may also leverage shell scripts to deliver and execute multiple commands on victims or as part of payloads used for persistence.",
+            "name": "Unix Shell",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "external_references": [
                 {
                     "source_name": "mitre-attack",
                     "external_id": "T1059.004",
                     "url": "https://attack.mitre.org/techniques/T1059/004"
+                },
+                {
+                    "source_name": "DieNet Bash",
+                    "url": "https://linux.die.net/man/1/bash",
+                    "description": "die.net. (n.d.). bash(1) - Linux man page. Retrieved June 12, 2020."
+                },
+                {
+                    "source_name": "Apple ZShell",
+                    "url": "https://support.apple.com/HT208050",
+                    "description": "Apple. (2020, January 28). Use zsh as the default shell on your Mac. Retrieved June 12, 2020."
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Bash",
-            "description": "Adversaries may abuse Bash commands and scripts for execution. Bash, the primary macOS (through Mojave) and Linux shell, can control every aspect of a system, with certain commands requiring elevated privileges. \n\nBash scripts (.sh) provide the shell with a list of sequential commands to run, as well as normal scripting operations such as conditionals and loops. Common uses of Bash scripts include long or repetitive tasks, or the need to run the same set of commands on multiple systems.",
-            "id": "attack-pattern--a9d4b653-6915-42af-98b2-5758c4ceee56",
             "type": "attack-pattern",
             "kill_chain_phases": [
                 {
@@ -25,17 +35,18 @@
                     "phase_name": "execution"
                 }
             ],
-            "modified": "2020-03-28T17:06:19.681Z",
+            "modified": "2020-06-15T16:55:44.483Z",
             "created": "2020-03-09T14:15:05.330Z",
             "x_mitre_platforms": [
                 "macOS",
                 "Linux"
             ],
             "x_mitre_data_sources": [
+                "File monitoring",
                 "Process monitoring",
                 "Process command-line parameters"
             ],
-            "x_mitre_detection": "Bash usage may be common on administrator, developer, or power user systems, depending on job function. If scripting is restricted for normal users, then any attempt to enable scripts running on a system would be considered suspicious. If scripts are not commonly used on a system, but enabled, scripts running out of cycle from patching or other administrator functions are suspicious. Scripts should be captured from the file system when possible to determine their actions and intent.\n\nScripts are likely to perform actions with various effects on a system that may generate events, depending on the types of monitoring used. Monitor processes and command-line arguments for script execution and subsequent behavior. Actions may be related to network and system information Discovery, Collection, or other scriptable post-compromise behaviors and could be used as indicators of detection leading back to the source script. ",
+            "x_mitre_detection": "Unix shell usage may be common on administrator, developer, or power user systems, depending on job function. If scripting is restricted for normal users, then any attempt to enable scripts running on a system would be considered suspicious. If scripts are not commonly used on a system, but enabled, scripts running out of cycle from patching or other administrator functions are suspicious. Scripts should be captured from the file system when possible to determine their actions and intent.\n\nScripts are likely to perform actions with various effects on a system that may generate events, depending on the types of monitoring used. Monitor processes and command-line arguments for script execution and subsequent behavior. Actions may be related to network and system information discovery, collection, or other scriptable post-compromise behaviors and could be used as indicators of detection leading back to the source script. ",
             "x_mitre_permissions_required": [
                 "User",
                 "root"

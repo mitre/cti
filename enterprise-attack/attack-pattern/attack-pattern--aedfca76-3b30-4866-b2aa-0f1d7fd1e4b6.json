@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--0eb58123-8155-4722-8780-ba38bfc14b5f",
+    "id": "bundle--fd6175e8-1f5e-4071-b95f-c987a02479c2",
     "spec_version": "2.0",
     "objects": [
         {
@@ -21,7 +21,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Hijack Execution Flow",
-            "description": "Adversaries may execute their own malicious payloads by hijacking the way operating systems run programs. Hijacking execution flow can be for the purposes of persistence, since this hijacked execution may reoccur over time. Adversaries may also use these mechanisms to elevate privileges or evade defenses, such as whitelisting or other restrictions on execution.\n\nThere are many ways an adversary may hijack the flow of execution, including by manipulating how the operating system locates programs to be executed. How the operating system locates libraries to be used by a program can also be intercepted. Locations where the operating system looks for programs/resources, such as file directories and in the case of Windows the Registry, could also be poisoned to include malicious payloads.",
+            "description": "Adversaries may execute their own malicious payloads by hijacking the way operating systems run programs. Hijacking execution flow can be for the purposes of persistence, since this hijacked execution may reoccur over time. Adversaries may also use these mechanisms to elevate privileges or evade defenses, such as application control or other restrictions on execution.\n\nThere are many ways an adversary may hijack the flow of execution, including by manipulating how the operating system locates programs to be executed. How the operating system locates libraries to be used by a program can also be intercepted. Locations where the operating system looks for programs/resources, such as file directories and in the case of Windows the Registry, could also be poisoned to include malicious payloads.",
             "id": "attack-pattern--aedfca76-3b30-4866-b2aa-0f1d7fd1e4b6",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -38,20 +38,8 @@
                     "phase_name": "defense-evasion"
                 }
             ],
-            "modified": "2020-03-27T17:33:44.855Z",
+            "modified": "2020-06-26T16:09:59.324Z",
             "created": "2020-03-12T20:38:12.465Z",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
-            ],
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_version": "1.0",
-            "x_mitre_defense_bypassed": [
-                "Anti-virus",
-                "Process whitelisting"
-            ],
-            "x_mitre_detection": "Monitor file systems for moving, renaming, replacing, or modifying DLLs. Changes in the set of DLLs that are loaded by a process (compared with past behavior) that do not correlate with known software, patches, etc., are suspicious. Monitor DLLs loaded into a process and detect DLLs that have the same file name but abnormal paths. Modifications to or creation of .manifest and .local redirection files that do not correlate with software updates are suspicious.\n\nLook for changes to binaries and service executables that may normally occur during software updates. If an executable is written, renamed, and/or moved to match an existing service executable, it could be detected and correlated with other suspicious behavior. Hashing of binaries and service executables could be used to detect replacement against historical data.\n\nMonitor for changes to environment variables, as well as the commands to implement these changes.\n\nMonitor processes for unusual activity (e.g., a process that does not use the network begins to do so, abnormal process call trees). Track library metadata, such as a hash, and compare libraries that are loaded at process execution time against previous executions to detect differences that do not correlate with patching or updates.\n\nService changes are reflected in the Registry. Modification to existing services should not occur frequently. If a service binary path or failure parameters are changed to values that are not typical for that service and does not correlate with software updates, then it may be due to malicious activity. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.\n\nTools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current service information. (Citation: Autoruns for Windows) Suspicious program execution through services may show up as outlier processes that have not been seen before when compared against historical data.",
             "x_mitre_data_sources": [
                 "Environment variable",
                 "Loaded DLLs",
@@ -59,6 +47,18 @@
                 "Process monitoring",
                 "File monitoring",
                 "DLL monitoring"
+            ],
+            "x_mitre_detection": "Monitor file systems for moving, renaming, replacing, or modifying DLLs. Changes in the set of DLLs that are loaded by a process (compared with past behavior) that do not correlate with known software, patches, etc., are suspicious. Monitor DLLs loaded into a process and detect DLLs that have the same file name but abnormal paths. Modifications to or creation of .manifest and .local redirection files that do not correlate with software updates are suspicious.\n\nLook for changes to binaries and service executables that may normally occur during software updates. If an executable is written, renamed, and/or moved to match an existing service executable, it could be detected and correlated with other suspicious behavior. Hashing of binaries and service executables could be used to detect replacement against historical data.\n\nMonitor for changes to environment variables, as well as the commands to implement these changes.\n\nMonitor processes for unusual activity (e.g., a process that does not use the network begins to do so, abnormal process call trees). Track library metadata, such as a hash, and compare libraries that are loaded at process execution time against previous executions to detect differences that do not correlate with patching or updates.\n\nService changes are reflected in the Registry. Modification to existing services should not occur frequently. If a service binary path or failure parameters are changed to values that are not typical for that service and does not correlate with software updates, then it may be due to malicious activity. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.\n\nTools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current service information. (Citation: Autoruns for Windows) Suspicious program execution through services may show up as outlier processes that have not been seen before when compared against historical data.",
+            "x_mitre_defense_bypassed": [
+                "Anti-virus",
+                "Application control"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
             ]
         }
     ]

@@ -1,11 +1,11 @@
 {
     "type": "bundle",
-    "id": "bundle--84a03985-b937-409d-895c-b412008ddcbc",
+    "id": "bundle--e4203705-d497-4639-99d2-09086433d586",
     "spec_version": "2.0",
     "objects": [
         {
             "id": "attack-pattern--c48a67ee-b657-45c1-91bf-6cdbe27205f8",
-            "description": "Adversaries may abuse Regsvcs and Regasm to proxy execution of code through a trusted Windows utility. Regsvcs and Regasm are Windows command-line utilities that are used to register .NET [Component Object Model](https://attack.mitre.org/techniques/T1559/001) (COM) assemblies. Both are digitally signed by Microsoft. (Citation: MSDN Regsvcs) (Citation: MSDN Regasm)\n\nBoth utilities may be used to bypass process whitelisting through use of attributes within the binary to specify code that should be run before registration or unregistration: <code>[ComRegisterFunction]</code> or <code>[ComUnregisterFunction]</code> respectively. The code with the registration and unregistration attributes will be executed even if the process is run under insufficient privileges and fails to execute. (Citation: LOLBAS Regsvcs)(Citation: LOLBAS Regasm)",
+            "description": "Adversaries may abuse Regsvcs and Regasm to proxy execution of code through a trusted Windows utility. Regsvcs and Regasm are Windows command-line utilities that are used to register .NET [Component Object Model](https://attack.mitre.org/techniques/T1559/001) (COM) assemblies. Both are digitally signed by Microsoft. (Citation: MSDN Regsvcs) (Citation: MSDN Regasm)\n\nBoth utilities may be used to bypass application control through use of attributes within the binary to specify code that should be run before registration or unregistration: <code>[ComRegisterFunction]</code> or <code>[ComUnregisterFunction]</code> respectively. The code with the registration and unregistration attributes will be executed even if the process is run under insufficient privileges and fails to execute. (Citation: LOLBAS Regsvcs)(Citation: LOLBAS Regasm)",
             "name": "Regsvcs/Regasm",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "object_marking_refs": [
@@ -45,29 +45,29 @@
                     "phase_name": "defense-evasion"
                 }
             ],
-            "modified": "2020-03-29T15:50:56.613Z",
+            "modified": "2020-06-20T22:36:37.411Z",
             "created": "2020-01-23T19:42:16.439Z",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Digital Certificate Validation",
-                "Process whitelisting"
-            ],
-            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of Regsvcs.exe and Regasm.exe. Compare recent invocations of Regsvcs.exe and Regasm.exe with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. Command arguments used before and after Regsvcs.exe or Regasm.exe invocation may also be useful in determining the origin and purpose of the binary being executed.",
-            "x_mitre_data_sources": [
-                "Process command-line parameters",
-                "Process monitoring"
+            "x_mitre_platforms": [
+                "Windows"
             ],
             "x_mitre_contributors": [
                 "Casey Smith"
             ],
-            "x_mitre_platforms": [
-                "Windows"
-            ]
+            "x_mitre_data_sources": [
+                "Process command-line parameters",
+                "Process monitoring"
+            ],
+            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of Regsvcs.exe and Regasm.exe. Compare recent invocations of Regsvcs.exe and Regasm.exe with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. Command arguments used before and after Regsvcs.exe or Regasm.exe invocation may also be useful in determining the origin and purpose of the binary being executed.",
+            "x_mitre_defense_bypassed": [
+                "Digital Certificate Validation",
+                "Application control"
+            ],
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0"
         }
     ]
 }

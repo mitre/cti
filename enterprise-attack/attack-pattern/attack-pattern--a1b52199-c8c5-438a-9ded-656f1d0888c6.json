@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a4dad313-1795-48e5-a343-395f16125bc0",
+    "id": "bundle--b2ca2552-d2e1-479f-8457-9436165e73f9",
     "spec_version": "2.0",
     "objects": [
         {
@@ -61,6 +61,11 @@
                     "source_name": "Securelist Ventir"
                 },
                 {
+                    "source_name": "Trend Micro Skidmap",
+                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/skidmap-linux-malware-uses-rootkit-capabilities-to-hide-cryptocurrency-mining-payload/",
+                    "description": "Remillano, A., Urbanec, J. (2019, September 19). Skidmap Linux Malware Uses Rootkit Capabilities to Hide Cryptocurrency-Mining Payload. Retrieved June 4, 2020."
+                },
+                {
                     "url": "http://tldp.org/HOWTO/Module-HOWTO/x197.html",
                     "description": "Henderson, B. (2006, September 24). How To Insert And Remove LKMs. Retrieved April 9, 2018.",
                     "source_name": "Linux Loadable Kernel Module Insert and Remove LKMs"
@@ -76,7 +81,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Kernel Modules and Extensions",
-            "description": "Adversaries may modify the kernel to automatically execute programs on system boot. Loadable Kernel Modules (LKMs) are pieces of code that can be loaded and unloaded into the kernel upon demand. They extend the functionality of the kernel without the need to reboot the system. For example, one type of module is the device driver, which allows the kernel to access hardware connected to the system. (Citation: Linux Kernel Programming)\u00a0\n\nWhen used maliciously, LKMs can be a type of kernel-mode [Rootkit](https://attack.mitre.org/techniques/T1014) that run with the highest operating system privilege (Ring 0). (Citation: Linux Kernel Module Programming Guide)\u00a0Common features of LKM based rootkits include: hiding itself, selective hiding of files, processes and network activity, as well as log tampering, providing authenticated backdoors and enabling root access to non-privileged users. (Citation: iDefense Rootkit Overview)\n\nKernel extensions, also called kext, are used for macOS to load functionality onto a system similar to LKMs for Linux. They are loaded and unloaded through <code>kextload</code> and <code>kextunload</code> commands.\n\nAdversaries can use LKMs and kexts to covertly persist on a system and elevate privileges. Examples have been found in the wild and there are some open source projects. (Citation: Volatility Phalanx2) (Citation: CrowdStrike Linux Rootkit) (Citation: GitHub Reptile) (Citation: GitHub Diamorphine)(Citation: RSAC 2015 San Francisco Patrick Wardle) (Citation: Synack Secure Kernel Extension Broken)(Citation: Securelist Ventir)",
+            "description": "Adversaries may modify the kernel to automatically execute programs on system boot. Loadable Kernel Modules (LKMs) are pieces of code that can be loaded and unloaded into the kernel upon demand. They extend the functionality of the kernel without the need to reboot the system. For example, one type of module is the device driver, which allows the kernel to access hardware connected to the system. (Citation: Linux Kernel Programming)\u00a0\n\nWhen used maliciously, LKMs can be a type of kernel-mode [Rootkit](https://attack.mitre.org/techniques/T1014) that run with the highest operating system privilege (Ring 0). (Citation: Linux Kernel Module Programming Guide)\u00a0Common features of LKM based rootkits include: hiding itself, selective hiding of files, processes and network activity, as well as log tampering, providing authenticated backdoors and enabling root access to non-privileged users. (Citation: iDefense Rootkit Overview)\n\nKernel extensions, also called kext, are used for macOS to load functionality onto a system similar to LKMs for Linux. They are loaded and unloaded through <code>kextload</code> and <code>kextunload</code> commands.\n\nAdversaries can use LKMs and kexts to covertly persist on a system and elevate privileges. Examples have been found in the wild and there are some open source projects. (Citation: Volatility Phalanx2) (Citation: CrowdStrike Linux Rootkit) (Citation: GitHub Reptile) (Citation: GitHub Diamorphine)(Citation: RSAC 2015 San Francisco Patrick Wardle) (Citation: Synack Secure Kernel Extension Broken)(Citation: Securelist Ventir) (Citation: Trend Micro Skidmap)",
             "id": "attack-pattern--a1b52199-c8c5-438a-9ded-656f1d0888c6",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -89,26 +94,27 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2020-03-25T16:14:29.149Z",
+            "modified": "2020-06-30T21:23:15.188Z",
             "created": "2020-01-24T17:42:23.339Z",
-            "x_mitre_platforms": [
-                "macOS",
-                "Linux"
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "root"
             ],
-            "x_mitre_contributors": [
-                "Jeremy Galloway",
-                "Red Canary"
-            ],
+            "x_mitre_detection": "Loading, unloading, and manipulating modules on Linux systems can be detected by monitoring for the following commands:<code>modprobe</code>, <code>insmod</code>, <code>lsmod</code>, <code>rmmod</code>, or <code>modinfo</code> (Citation: Linux Loadable Kernel Module Insert and Remove LKMs) LKMs are typically loaded into <code>/lib/modules</code> and have had the extension .ko (\"kernel object\") since version 2.6 of the Linux kernel. (Citation: Wikipedia Loadable Kernel Module)\n\nFor macOS, monitor for execution of <code>kextload</code> commands and correlate with other unknown or suspicious activity.\n\nAdversaries may run commands on the target system before loading a malicious module in order to ensure that it is properly compiled. (Citation: iDefense Rootkit Overview) Adversaries may also execute commands to identify the exact version of the running Linux kernel and/or download multiple versions of the same .ko (kernel object) files to use the one appropriate for the running system.(Citation: Trend Micro Skidmap) Many LKMs require Linux headers (specific to the target kernel) in order to compile properly.\u00a0These are typically obtained through the operating systems package manager and installed like a normal package. On Ubuntu and Debian based systems this can be accomplished by running: <code>apt-get install linux-headers-$(uname -r)</code> On RHEL and CentOS based systems this can be accomplished by running: <code>yum install kernel-devel-$(uname -r)</code>",
             "x_mitre_data_sources": [
                 "Process monitoring",
                 "Process command-line parameters"
             ],
-            "x_mitre_detection": "Loading, unloading, and manipulating modules on Linux systems can be detected by monitoring for the following commands:<code>modprobe</code>, <code>insmod</code>, <code>lsmod</code>, <code>rmmod</code>, or <code>modinfo</code> (Citation: Linux Loadable Kernel Module Insert and Remove LKMs) LKMs are typically loaded into <code>/lib/modules</code> and have had the extension .ko (\"kernel object\") since version 2.6 of the Linux kernel. (Citation: Wikipedia Loadable Kernel Module)\n\nFor macOS, monitor for execution of <code>kextload</code> commands and correlate with other unknown or suspicious activity.\n\nAdversaries will likely run commands on the target system before loading a malicious module in order to ensure that it is properly compiled. (Citation: iDefense Rootkit Overview) Many LKMs require Linux headers (specific to the target kernel) in order to compile properly.\u00a0These are typically obtained through the operating systems package manager and installed like a normal package. On Ubuntu and Debian based systems this can be accomplished by running: <code>apt-get install linux-headers-$(uname -r)</code> On RHEL and CentOS based systems this can be accomplished by running: <code>yum install kernel-devel-$(uname -r)</code>",
-            "x_mitre_permissions_required": [
-                "root"
+            "x_mitre_contributors": [
+                "Anastasios Pingios",
+                "Jeremy Galloway",
+                "Red Canary"
             ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0"
+            "x_mitre_platforms": [
+                "macOS",
+                "Linux"
+            ]
         }
     ]
 }

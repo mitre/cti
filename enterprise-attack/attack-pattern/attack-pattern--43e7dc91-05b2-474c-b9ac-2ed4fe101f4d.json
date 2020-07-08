@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--71ddebc2-3b06-4daa-81fa-0837427d0601",
+    "id": "bundle--3b3413ef-e212-4c74-a04d-3cbd85577bf3",
     "spec_version": "2.0",
     "objects": [
         {
@@ -34,7 +34,7 @@
                     "source_name": "GNU Acct"
                 },
                 {
-                    "url": "https://access.redhat.com/documentation/red_hat_enterprise_linux/6/html/security_guide/chap-system_auditing",
+                    "url": "https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/security_guide/chap-system_auditing",
                     "description": "Jahoda, M. et al.. (2017, March 14). redhat Security Guide - Chapter 7 - System Auditing. Retrieved December 20, 2017.",
                     "source_name": "RHEL auditd"
                 },
@@ -63,14 +63,17 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2020-03-26T21:05:43.152Z",
+            "modified": "2020-06-20T22:28:45.651Z",
             "created": "2017-05-31T21:30:47.843Z",
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_version": "1.1",
-            "x_mitre_contributors": [
-                "Anastasios Pingios",
-                "Christiaan Beek, @ChristiaanBeek",
-                "Ryan Becwar"
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_detection": "Monitoring Windows API calls indicative of the various types of code injection may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances for known bad sequences of calls, since benign use of API functions may be common and difficult to distinguish from malicious behavior. Windows API calls such as <code>CreateRemoteThread</code>, <code>SuspendThread</code>/<code>SetThreadContext</code>/<code>ResumeThread</code>, <code>QueueUserAPC</code>/<code>NtQueueApcThread</code>, and those that can be used to modify memory within another process, such as <code>VirtualAllocEx</code>/<code>WriteProcessMemory</code>, may be used for this technique.(Citation: Endgame Process Injection July 2017) \n\nMonitor DLL/PE file events, specifically creation of these binary files as well as the loading of DLLs into processes. Look for DLLs that are not recognized or not normally loaded into a process. \n\nMonitoring for Linux specific calls such as the ptrace system call should not generate large amounts of data due to their specialized nature, and can be a very effective method to detect some of the common process injection methods.(Citation: ArtOfMemoryForensics)  (Citation: GNU Acct)  (Citation: RHEL auditd)  (Citation: Chokepoint preload rootkits) \n\nMonitor for named pipe creation and connection events (Event IDs 17 and 18) for possible indicators of infected processes with external modules.(Citation: Microsoft Sysmon v6 May 2017) \n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior. ",
+            "x_mitre_defense_bypassed": [
+                "Application control",
+                "Anti-virus"
             ],
             "x_mitre_data_sources": [
                 "API monitoring",
@@ -79,16 +82,13 @@
                 "Process monitoring",
                 "Named Pipes"
             ],
-            "x_mitre_defense_bypassed": [
-                "Process whitelisting",
-                "Anti-virus"
+            "x_mitre_contributors": [
+                "Anastasios Pingios",
+                "Christiaan Beek, @ChristiaanBeek",
+                "Ryan Becwar"
             ],
-            "x_mitre_detection": "Monitoring Windows API calls indicative of the various types of code injection may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances for known bad sequences of calls, since benign use of API functions may be common and difficult to distinguish from malicious behavior. Windows API calls such as <code>CreateRemoteThread</code>, <code>SuspendThread</code>/<code>SetThreadContext</code>/<code>ResumeThread</code>, <code>QueueUserAPC</code>/<code>NtQueueApcThread</code>, and those that can be used to modify memory within another process, such as <code>VirtualAllocEx</code>/<code>WriteProcessMemory</code>, may be used for this technique.(Citation: Endgame Process Injection July 2017) \n\nMonitor DLL/PE file events, specifically creation of these binary files as well as the loading of DLLs into processes. Look for DLLs that are not recognized or not normally loaded into a process. \n\nMonitoring for Linux specific calls such as the ptrace system call should not generate large amounts of data due to their specialized nature, and can be a very effective method to detect some of the common process injection methods.(Citation: ArtOfMemoryForensics)  (Citation: GNU Acct)  (Citation: RHEL auditd)  (Citation: Chokepoint preload rootkits) \n\nMonitor for named pipe creation and connection events (Event IDs 17 and 18) for possible indicators of infected processes with external modules.(Citation: Microsoft Sysmon v6 May 2017) \n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior. ",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
-            ]
+            "x_mitre_version": "1.1",
+            "x_mitre_is_subtechnique": false
         }
     ]
 }

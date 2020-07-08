@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--335428a2-5d1a-49b0-b817-f1718c3b608a",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1098.004",
+                    "url": "https://attack.mitre.org/techniques/T1098/004"
+                },
+                {
+                    "source_name": "SSH Authorized Keys",
+                    "url": "https://www.ssh.com/ssh/authorized_keys/",
+                    "description": "ssh.com. (n.d.). Authorized_keys File in SSH. Retrieved June 24, 2020."
+                },
+                {
+                    "source_name": "Venafi SSH Key Abuse",
+                    "url": "https://www.venafi.com/blog/growing-abuse-ssh-keys-commodity-malware-campaigns-now-equipped-ssh-capabilities",
+                    "description": "Blachman, Y. (2020, April 22). Growing Abuse of SSH Keys: Commodity Malware Campaigns Now Equipped with SSH Capabilities. Retrieved June 24, 2020."
+                },
+                {
+                    "source_name": "Cybereason Linux Exim Worm",
+                    "url": "https://www.cybereason.com/blog/new-pervasive-worm-exploiting-linux-exim-server-vulnerability",
+                    "description": "Cybereason Nocturnus. (2019, June 13). New Pervasive Worm Exploiting Linux Exim Server Vulnerability. Retrieved June 24, 2020."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "SSH Authorized Keys",
+            "description": "Adversaries may modify the SSH <code>authorized_keys</code> file to maintain persistence on a victim host. Linux distributions and macOS commonly use key-based authentication to secure the authentication process of SSH sessions for remote management. The <code>authorized_keys</code> file in SSH specifies the SSH keys that can be used for logging into the user account for which the file is configured. This file is usually found in the user's home directory under <code>&lt;user-home&gt;/.ssh/authorized_keys</code>.(Citation: SSH Authorized Keys) Users may edit the system\u2019s SSH config file to modify the directives PubkeyAuthentication and RSAAuthentication to the value \u201cyes\u201d to ensure public key and RSA authentication are enabled. The SSH config file is usually located under <code>/etc/ssh/sshd_config</code>.\n\nAdversaries may modify SSH <code>authorized_keys</code> files directly with scripts or shell commands to add their own adversary-supplied public keys. This ensures that an adversary possessing the corresponding private key may log in as an existing user via SSH.(Citation: Venafi SSH Key Abuse) (Citation: Cybereason Linux Exim Worm)",
+            "id": "attack-pattern--6b57dc31-b814-4a03-8706-28bc20d739c4",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "modified": "2020-06-25T16:32:23.367Z",
+            "created": "2020-06-24T12:42:35.144Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
+            ],
+            "x_mitre_detection": "Use file integrity monitoring to detect changes made to the <code>authorized_keys</code> file for each user on a system. Monitor for suspicious processes modifying the <code>authorized_keys</code> file.\n\nMonitor for changes to and suspicious processes modifiying <code>/etc/ssh/sshd_config</code>.",
+            "x_mitre_data_sources": [
+                "Process command-line parameters",
+                "Process monitoring",
+                "File monitoring"
+            ],
+            "x_mitre_contributors": [
+                "Tony Lambert, Red Canary"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS"
+            ]
+        }
+    ]
+}

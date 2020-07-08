@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--46a1be62-67c6-4b76-8863-c0a7d755e3d8",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1578.004",
+                    "url": "https://attack.mitre.org/techniques/T1578/004"
+                },
+                {
+                    "source_name": "Tech Republic - Restore AWS Snapshots",
+                    "url": "https://www.techrepublic.com/blog/the-enterprise-cloud/backing-up-and-restoring-snapshots-on-amazon-ec2-machines/",
+                    "description": "Hardiman, N.. (2012, March 20). Backing up and restoring snapshots on Amazon EC2 machines. Retrieved October 8, 2019."
+                },
+                {
+                    "source_name": "Google - Restore Cloud Snapshot",
+                    "url": "https://cloud.google.com/compute/docs/disks/restore-and-delete-snapshots",
+                    "description": "Google. (2019, October 7). Restoring and deleting persistent disk snapshots. Retrieved October 8, 2019."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Revert Cloud Instance",
+            "description": "An adversary may revert changes made to a cloud instance after they have performed malicious activities in attempt to evade detection and remove evidence of their presence. In highly virtualized environments, such as cloud-based infrastructure, this may be accomplished by restoring virtual machine (VM) or data storage snapshots through the cloud management dashboard or cloud APIs.\n\nAnother variation of this technique is to utilize temporary storage attached to the compute instance. Most cloud providers provide various types of storage including persistent, local, and/or ephemeral, with the ephemeral types often reset upon stop/restart of the VM.(Citation: Tech Republic - Restore AWS Snapshots)(Citation: Google - Restore Cloud Snapshot)",
+            "id": "attack-pattern--0708ae90-d0eb-4938-9a76-d0fc94f6eec1",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-06-17T17:36:24.531Z",
+            "created": "2020-06-16T18:42:20.734Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_detection": "Establish centralized logging of instance activity, which can be used to monitor and review system events even after reverting to a snapshot, rolling back changes, or changing persistence/type of storage. Monitor specifically for events related to snapshots and rollbacks and VM configuration changes, that are occurring outside of normal activity. To reduce false positives, valid change management procedures could introduce a known identifier that is logged with the change (e.g., tag or header) if supported by the cloud provider, to help distinguish valid, expected actions from malicious ones.",
+            "x_mitre_data_sources": [
+                "Stackdriver logs",
+                "GCP audit logs",
+                "Azure activity logs",
+                "AWS CloudTrail logs"
+            ],
+            "x_mitre_contributors": [
+                "Netskope"
+            ],
+            "x_mitre_platforms": [
+                "AWS",
+                "GCP",
+                "Azure"
+            ]
+        }
+    ]
+}

@@ -1,9 +1,14 @@
 {
     "type": "bundle",
-    "id": "bundle--da0f69e1-24a0-4242-8b27-93bab9abdb6f",
+    "id": "bundle--86c658a3-03a1-4ad8-b8a4-94940b940454",
     "spec_version": "2.0",
     "objects": [
         {
+            "revoked": false,
+            "id": "attack-pattern--451a9977-d255-43c9-b431-66de80130c8c",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Traffic Signaling",
+            "description": "Adversaries may use traffic signaling to hide open ports or other malicious functionality used for persistence or command and control. Traffic signaling involves the use of a magic value or sequence that must be sent to a system to trigger a special response, such as opening a closed port or executing a malicious task. This may take the form of sending a series of packets with certain characteristics before a port will be opened that the adversary can use for command and control. Usually this series of packets consists of attempted connections to a predefined sequence of closed ports (i.e. [Port Knocking](https://attack.mitre.org/techniques/T1205/001)), but can involve unusual flags, specific strings, or other unique characteristics. After the sequence is completed, opening a port may be accomplished by the host-based firewall, but could also be implemented by custom software.\n\nAdversaries may also communicate with an already open port, but the service listening on that port will only respond to commands or trigger other malicious functionality if passed the appropriate magic value(s).\n\nThe observation of the signal packets to trigger the communication can be conducted through different methods. One means, originally implemented by Cd00r (Citation: Hartrell cd00r 2002), is to use the libpcap libraries to sniff for the packets in question. Another method leverages raw sockets, which enables the malware to use ports that are already open for use by other programs.",
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -16,12 +21,48 @@
                     "source_name": "Hartrell cd00r 2002"
                 }
             ],
-            "name": "Port Knocking",
-            "id": "attack-pattern--451a9977-d255-43c9-b431-66de80130c8c",
-            "revoked": true,
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "type": "attack-pattern",
-            "modified": "2020-01-22T20:28:29.694Z",
-            "created": "2018-04-18T17:59:24.739Z"
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "command-and-control"
+                }
+            ],
+            "modified": "2020-07-01T18:27:41.755Z",
+            "created": "2018-04-18T17:59:24.739Z",
+            "x_mitre_contributors": [
+                "Josh Day, Gigamon"
+            ],
+            "x_mitre_data_sources": [
+                "Packet capture",
+                "Netflow/Enclave netflow"
+            ],
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_network_requirements": true,
+            "x_mitre_detection": "Record network packets sent to and from the system, looking for extraneous packets that do not belong to established flows.",
+            "x_mitre_defense_bypassed": [
+                "Defensive network service scanning"
+            ],
+            "x_mitre_version": "2.0",
+            "x_mitre_is_subtechnique": false
         }
     ]
 }

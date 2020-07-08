@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--7382e8a3-a19a-4eca-8471-cce36a6032f7",
+    "id": "bundle--1d437350-87c9-4a6d-b20b-e7d9db1eeba4",
     "spec_version": "2.0",
     "objects": [
         {
@@ -29,26 +29,26 @@
                     "phase_name": "defense-evasion"
                 }
             ],
-            "modified": "2020-03-27T12:18:44.286Z",
+            "modified": "2020-06-25T19:57:54.923Z",
             "created": "2020-01-30T13:58:14.373Z",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
-            ],
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_version": "1.0",
-            "x_mitre_detection": "Monitor the file system for files that have the setuid or setgid bits set. Also look for any process API calls for behavior that may be indicative of [Process Injection](https://attack.mitre.org/techniques/T1055) and unusual loaded DLLs through [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1574/001), which indicate attempts to gain access to higher privileged processes. On Linux, auditd can alert every time a user's actual ID and effective ID are different (this is what happens when you sudo).\n\nConsider monitoring for <code>/usr/libexec/security_authtrampoline</code> executions which may indicate that AuthorizationExecuteWithPrivileges is being executed. MacOS system logs may also indicate when AuthorizationExecuteWithPrivileges is being called. Monitoring OS API callbacks for the execution can also be a way to detect this behavior but requires specialized security tooling.\n\nOn Linux, auditd can alert every time a user's actual ID and effective ID are different (this is what happens when you sudo). This technique is abusing normal functionality in macOS and Linux systems, but sudo has the ability to log all input and output based on the <code>LOG_INPUT</code> and <code>LOG_OUTPUT</code> directives in the <code>/etc/sudoers</code> file.\n\nThere are many ways to perform UAC bypasses when a user is in the local administrator group on a system, so it may be difficult to target detection on all variations. Efforts should likely be placed on mitigation and collecting enough information on process launches and actions that could be performed before and after a UAC bypass is performed. Some UAC bypass methods rely on modifying specific, user-accessible Registry settings. Analysts should monitor Registry settings for unauthorized changes.",
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "User"
-            ],
             "x_mitre_data_sources": [
                 "Windows Registry",
                 "File monitoring",
                 "Process command-line parameters",
                 "API monitoring",
                 "Process monitoring"
+            ],
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "User"
+            ],
+            "x_mitre_detection": "Monitor the file system for files that have the setuid or setgid bits set. Also look for any process API calls for behavior that may be indicative of [Process Injection](https://attack.mitre.org/techniques/T1055) and unusual loaded DLLs through [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1574/001), which indicate attempts to gain access to higher privileged processes. On Linux, auditd can alert every time a user's actual ID and effective ID are different (this is what happens when you sudo).\n\nConsider monitoring for <code>/usr/libexec/security_authtrampoline</code> executions which may indicate that AuthorizationExecuteWithPrivileges is being executed. MacOS system logs may also indicate when AuthorizationExecuteWithPrivileges is being called. Monitoring OS API callbacks for the execution can also be a way to detect this behavior but requires specialized security tooling.\n\nOn Linux, auditd can alert every time a user's actual ID and effective ID are different (this is what happens when you sudo). This technique is abusing normal functionality in macOS and Linux systems, but sudo has the ability to log all input and output based on the <code>LOG_INPUT</code> and <code>LOG_OUTPUT</code> directives in the <code>/etc/sudoers</code> file.\n\nThere are many ways to perform UAC bypasses when a user is in the local administrator group on a system, so it may be difficult to target detection on all variations. Efforts should likely be placed on mitigation and collecting enough information on process launches and actions that could be performed before and after a UAC bypass is performed. Some UAC bypass methods rely on modifying specific, user-accessible Registry settings. Analysts should monitor Registry settings for unauthorized changes.",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
             ]
         }
     ]

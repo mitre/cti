@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--d17de929-03bc-44a3-8e84-6787ae592a0d",
+    "id": "bundle--5c029940-dca7-4386-989c-3fbd1c3a78f2",
     "spec_version": "2.0",
     "objects": [
         {
@@ -64,19 +64,23 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2020-03-26T21:55:15.343Z",
+            "modified": "2020-04-16T19:37:02.355Z",
             "created": "2017-12-14T16:46:06.044Z",
-            "x_mitre_platforms": [
-                "Windows"
+            "x_mitre_defense_bypassed": [
+                "Windows User Account Control",
+                "System access controls",
+                "File system access controls",
+                "Heuristic Detection",
+                "Host forensic analysis"
             ],
-            "x_mitre_effective_permissions": [
-                "SYSTEM"
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_version": "2.0",
+            "x_mitre_contributors": [
+                "Tom Ueltschi @c_APT_ure",
+                "Travis Smith, Tripwire",
+                "Robby Winchester, @robwinchester3",
+                "Jared Atkinson, @jaredcatkinson"
             ],
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
-            ],
-            "x_mitre_detection": "If an adversary is using a standard command-line shell, analysts can detect token manipulation by auditing command-line activity. Specifically, analysts should look for use of the <code>runas</code> command. Detailed command-line logging is not enabled by default in Windows.(Citation: Microsoft Command-line Logging)\n\nIf an adversary is using a payload that calls the Windows token APIs directly, analysts can detect token manipulation only through careful analysis of user network activity, examination of running processes, and correlation with other endpoint and network behavior. \n\nThere are many Windows API calls a payload can take advantage of to manipulate access tokens (e.g., <code>LogonUser</code> (Citation: Microsoft LogonUser), <code>DuplicateTokenEx</code>(Citation: Microsoft DuplicateTokenEx), and <code>ImpersonateLoggedOnUser</code>(Citation: Microsoft ImpersonateLoggedOnUser)). Please see the referenced Windows API pages for more information.\n\nQuery systems for process and thread token information and look for inconsistencies such as user owns processes impersonating the local SYSTEM account.(Citation: BlackHat Atkinson Winchester Token Manipulation)\n\nLook for inconsistencies between the various fields that store PPID information, such as the EventHeader ProcessId from data collected via Event Tracing for Windows (ETW), Creator Process ID/Name from Windows event logs, and the ProcessID and ParentProcessID (which are also produced from ETW and other utilities such as Task Manager and Process Explorer). The ETW provided EventHeader ProcessId identifies the actual parent process.",
             "x_mitre_data_sources": [
                 "Authentication logs",
                 "Windows event logs",
@@ -85,20 +89,16 @@
                 "Process monitoring",
                 "Process command-line parameters"
             ],
-            "x_mitre_contributors": [
-                "Tom Ueltschi @c_APT_ure",
-                "Travis Smith, Tripwire",
-                "Robby Winchester, @robwinchester3",
-                "Jared Atkinson, @jaredcatkinson"
+            "x_mitre_detection": "If an adversary is using a standard command-line shell, analysts can detect token manipulation by auditing command-line activity. Specifically, analysts should look for use of the <code>runas</code> command. Detailed command-line logging is not enabled by default in Windows.(Citation: Microsoft Command-line Logging)\n\nIf an adversary is using a payload that calls the Windows token APIs directly, analysts can detect token manipulation only through careful analysis of user network activity, examination of running processes, and correlation with other endpoint and network behavior. \n\nThere are many Windows API calls a payload can take advantage of to manipulate access tokens (e.g., <code>LogonUser</code> (Citation: Microsoft LogonUser), <code>DuplicateTokenEx</code>(Citation: Microsoft DuplicateTokenEx), and <code>ImpersonateLoggedOnUser</code>(Citation: Microsoft ImpersonateLoggedOnUser)). Please see the referenced Windows API pages for more information.\n\nQuery systems for process and thread token information and look for inconsistencies such as user owns processes impersonating the local SYSTEM account.(Citation: BlackHat Atkinson Winchester Token Manipulation)\n\nLook for inconsistencies between the various fields that store PPID information, such as the EventHeader ProcessId from data collected via Event Tracing for Windows (ETW), Creator Process ID/Name from Windows event logs, and the ProcessID and ParentProcessID (which are also produced from ETW and other utilities such as Task Manager and Process Explorer). The ETW provided EventHeader ProcessId identifies the actual parent process.",
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
             ],
-            "x_mitre_version": "2.0",
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_defense_bypassed": [
-                "Windows User Account Control",
-                "System access controls",
-                "File system access controls",
-                "Heuristic Detection",
-                "Host forensic analysis"
+            "x_mitre_effective_permissions": [
+                "SYSTEM"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
             ]
         }
     ]

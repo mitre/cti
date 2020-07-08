@@ -1,16 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--dabc01b7-e553-49c7-8fc9-baf092a095f7",
+    "id": "bundle--e3118dcf-8425-49be-baba-22acedca6bc0",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--d201d4cc-214d-4a74-a1ba-b3fa09fd4591",
-            "description": "Adversaries may inject malicious code into processes via the /proc filesystem in order to evade process-based defenses as well as possibly elevate privileges. Proc memory injection is a method of executing arbitrary code in the address space of a separate live process. \n\nProc memory injection involves enumerating the memory of a process via the /proc filesystem (<code>/proc/[pid]</code>) then crafting a return-oriented programming (ROP) payload with available gadgets/instructions. Each running process has its own directory, which includes memory mappings. Proc memory injection is commonly performed by overwriting the target processes\u2019 stack using memory mappings provided by the /proc filesystem. This information can be used to enumerate offsets (including the stack) and gadgets (or instructions within the program that can be used to build a malicious payload) otherwise hidden by process memory protections such as address space layout randomization (ASLR). Once enumerated, the target processes\u2019 memory map within <code>/proc/[pid]/maps</code> can be overwritten using dd.(Citation: Uninformed Needle)(Citation: GDS Linux Injection)(Citation: DD Man) \n\nOther techniques such as [LD_PRELOAD](https://attack.mitre.org/techniques/T1574/006) may be used to populate a target process with more available gadgets. Similar to [Process Hollowing](https://attack.mitre.org/techniques/T1055/012), proc memory injection may target child processes (such as a backgrounded copy of sleep).(Citation: GDS Linux Injection) \n\nRunning code in the context of another process may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via proc memory injection may also evade detection from security products since the execution is masked under a legitimate process. ",
-            "name": "Proc Memory",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -33,6 +26,13 @@
                     "description": "Kerrisk, M. (2020, February 2). DD(1) User Commands. Retrieved February 21, 2020."
                 }
             ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Proc Memory",
+            "description": "Adversaries may inject malicious code into processes via the /proc filesystem in order to evade process-based defenses as well as possibly elevate privileges. Proc memory injection is a method of executing arbitrary code in the address space of a separate live process. \n\nProc memory injection involves enumerating the memory of a process via the /proc filesystem (<code>/proc/[pid]</code>) then crafting a return-oriented programming (ROP) payload with available gadgets/instructions. Each running process has its own directory, which includes memory mappings. Proc memory injection is commonly performed by overwriting the target processes\u2019 stack using memory mappings provided by the /proc filesystem. This information can be used to enumerate offsets (including the stack) and gadgets (or instructions within the program that can be used to build a malicious payload) otherwise hidden by process memory protections such as address space layout randomization (ASLR). Once enumerated, the target processes\u2019 memory map within <code>/proc/[pid]/maps</code> can be overwritten using dd.(Citation: Uninformed Needle)(Citation: GDS Linux Injection)(Citation: DD Man) \n\nOther techniques such as [LD_PRELOAD](https://attack.mitre.org/techniques/T1574/006) may be used to populate a target process with more available gadgets. Similar to [Process Hollowing](https://attack.mitre.org/techniques/T1055/012), proc memory injection may target child processes (such as a backgrounded copy of sleep).(Citation: GDS Linux Injection) \n\nRunning code in the context of another process may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via proc memory injection may also evade detection from security products since the execution is masked under a legitimate process. ",
+            "id": "attack-pattern--d201d4cc-214d-4a74-a1ba-b3fa09fd4591",
             "type": "attack-pattern",
             "kill_chain_phases": [
                 {
@@ -44,10 +44,10 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2020-03-26T20:33:52.548Z",
+            "modified": "2020-06-20T22:25:55.331Z",
             "created": "2020-01-14T01:34:10.588Z",
             "x_mitre_defense_bypassed": [
-                "Process whitelisting",
+                "Application control",
                 "Anti-virus"
             ],
             "x_mitre_data_sources": [
@@ -58,8 +58,7 @@
             "x_mitre_version": "1.0",
             "x_mitre_is_subtechnique": true,
             "x_mitre_platforms": [
-                "Linux",
-                "macOS"
+                "Linux"
             ]
         }
     ]

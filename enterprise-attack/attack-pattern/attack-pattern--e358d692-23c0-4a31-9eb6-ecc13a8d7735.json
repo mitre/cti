@@ -1,23 +1,43 @@
 {
     "type": "bundle",
-    "id": "bundle--0ad877cd-4629-44d8-9a33-9228dabe2fa4",
+    "id": "bundle--ac545477-84b1-486e-8842-7a1ec5b213b3",
     "spec_version": "2.0",
     "objects": [
         {
             "id": "attack-pattern--e358d692-23c0-4a31-9eb6-ecc13a8d7735",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Remote System Discovery",
-            "description": "Adversaries may attempt to get a listing of other systems by IP address, hostname, or other logical identifier on a network that may be used for Lateral Movement from the current system. Functionality could exist within remote access tools to enable this, but utilities available on the operating system could also be used such as  [Ping](https://attack.mitre.org/software/S0097) or <code>net view</code> using [Net](https://attack.mitre.org/software/S0039). Adversaries may also use local host files (ex: <code>C:\\Windows\\System32\\Drivers\\etc\\hosts</code> or <code>/etc/hosts</code>) in order to discover the hostname to IP address mappings of remote systems. \n\nSpecific to macOS, the <code>bonjour</code> protocol exists to discover additional Mac-based systems within the same broadcast domain. In cloud environments, many typical utilities may be used to discover remote systems depending upon the host operating system. In addition, cloud environments often provide APIs that serve information about remote systems and services.",
+            "description": "Adversaries may attempt to get a listing of other systems by IP address, hostname, or other logical identifier on a network that may be used for Lateral Movement from the current system. Functionality could exist within remote access tools to enable this, but utilities available on the operating system could also be used such as  [Ping](https://attack.mitre.org/software/S0097) or <code>net view</code> using [Net](https://attack.mitre.org/software/S0039). Adversaries may also use local host files (ex: <code>C:\\Windows\\System32\\Drivers\\etc\\hosts</code> or <code>/etc/hosts</code>) in order to discover the hostname to IP address mappings of remote systems. \n\nSpecific to macOS, the <code>bonjour</code> protocol exists to discover additional Mac-based systems within the same broadcast domain.\n\nWithin IaaS (Infrastructure as a Service) environments, remote systems include instances and virtual machines in various states, including the running or stopped state. Cloud providers have created methods to serve information about remote systems, such as APIs and CLIs. For example, AWS provides a <code>DescribeInstances</code> API within the Amazon EC2 API and a <code>describe-instances</code> command within the AWS CLI that can return information about all instances within an account.(Citation: Amazon Describe Instances API)(Citation: Amazon Describe Instances CLI) Similarly, GCP's Cloud SDK CLI provides the <code>gcloud compute instances list</code> command to list all Google Compute Engine instances in a project, and Azure's CLI <code>az vm list</code> lists details of virtual machines.(Citation: Google Compute Instances)(Citation: Azure VM List)",
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1018",
-                    "external_id": "T1018"
+                    "external_id": "T1018",
+                    "url": "https://attack.mitre.org/techniques/T1018"
                 },
                 {
                     "external_id": "CAPEC-292",
                     "source_name": "capec",
                     "url": "https://capec.mitre.org/data/definitions/292.html"
+                },
+                {
+                    "source_name": "Amazon Describe Instances API",
+                    "url": "https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeInstances.html",
+                    "description": "Amazon. (n.d.). DescribeInstances. Retrieved May 26, 2020."
+                },
+                {
+                    "source_name": "Amazon Describe Instances CLI",
+                    "url": "https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2/describe-instances.html",
+                    "description": "Amazon. (n.d.). describe-instances. Retrieved May 26, 2020."
+                },
+                {
+                    "source_name": "Google Compute Instances",
+                    "url": "https://cloud.google.com/sdk/gcloud/reference/compute/instances/list",
+                    "description": "Google. (n.d.). gcloud compute instances list. Retrieved May 26, 2020."
+                },
+                {
+                    "source_name": "Azure VM List",
+                    "url": "https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest",
+                    "description": "Microsoft. (n.d.). az vm. Retrieved May 26, 2020."
                 }
             ],
             "object_marking_refs": [
@@ -30,16 +50,18 @@
                     "phase_name": "discovery"
                 }
             ],
-            "modified": "2020-03-26T18:13:00.634Z",
+            "modified": "2020-05-26T15:02:19.656Z",
             "created": "2017-05-31T21:30:28.187Z",
-            "x_mitre_version": "2.1",
-            "x_mitre_data_sources": [
-                "Network protocol analysis",
-                "Process monitoring",
-                "Process use of network",
-                "Process command-line parameters"
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_contributors": [
+                "Praetorian",
+                "RedHuntLabs, @redhuntlabs"
             ],
-            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nNormal, benign system and network events related to legitimate remote system discovery may be uncommon, depending on the environment and how they are used. Monitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001). ",
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator",
+                "SYSTEM"
+            ],
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
@@ -48,16 +70,17 @@
                 "Azure",
                 "AWS"
             ],
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator",
-                "SYSTEM"
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nNormal, benign system and network events related to legitimate remote system discovery may be uncommon, depending on the environment and how they are used. Monitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).\n\nIn cloud environments, the usage of particular commands or APIs to request information about remote systems may be common. Where possible, anomalous usage of these commands and APIs or the usage of these commands and APIs in conjunction with additional unexpected commands may be a sign of malicious use. Logging methods provided by cloud providers that capture history of CLI commands executed or API usage may be utilized for detection.",
+            "x_mitre_data_sources": [
+                "Azure activity logs",
+                "Stackdriver logs",
+                "AWS CloudTrail logs",
+                "Network protocol analysis",
+                "Process monitoring",
+                "Process use of network",
+                "Process command-line parameters"
             ],
-            "x_mitre_contributors": [
-                "Praetorian",
-                "RedHuntLabs, @redhuntlabs"
-            ],
-            "x_mitre_is_subtechnique": false
+            "x_mitre_version": "2.1"
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--4ddac489-2e90-42ef-a34b-7f4c7c7e0a5b",
+    "id": "bundle--d586a9a5-8943-4e98-b680-12ed58ee9b30",
     "spec_version": "2.0",
     "objects": [
         {
@@ -51,10 +51,15 @@
             ],
             "modified": "2020-03-25T22:22:10.041Z",
             "created": "2020-01-17T19:13:50.402Z",
-            "x_mitre_contributors": [
-                "Matthew Demaske, Adaptforward",
-                "Travis Smith, Tripwire",
-                "Pedro Harrison"
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_detection": "Monitor processes and command-line arguments for actions that could create or modify services. Command-line invocation of tools capable of adding or modifying services may be unusual, depending on how systems are typically used in a particular environment. Services may also be modified through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001), so additional logging may need to be configured to gather the appropriate data. Remote access tools with built-in features may also interact directly with the Windows API to perform these functions outside of typical system utilities. Collect service utility execution and service binary path arguments used for analysis. Service binary paths may even be changed to execute commands or scripts.  \n\nLook for changes to service Registry entries that do not correlate with known software, patch cycles, etc. Service information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. Changes to the binary path and the service startup type changed from manual or disabled to automatic, if it does not typically do so, may be suspicious. Tools such as Sysinternals Autoruns may also be used to detect system service changes that could be attempts at persistence.(Citation: TechNet Autoruns)  \n\nCreation of new services may generate an alterable event (ex: Event ID 4697 and/or 7045 (Citation: Microsoft 4697 APR 2017)(Citation: Microsoft Windows Event Forwarding FEB 2018)). New, benign services may be created during installation of new software.\n\nSuspicious program execution through services may show up as outlier processes that have not been seen before when compared against historical data. Look for abnormal process call trees from known services and for execution of other commands that could relate to Discovery or other adversary techniques. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
+            "x_mitre_effective_permissions": [
+                "Administrator",
+                "SYSTEM"
             ],
             "x_mitre_data_sources": [
                 "API monitoring",
@@ -64,15 +69,10 @@
                 "File monitoring",
                 "Windows Registry"
             ],
-            "x_mitre_effective_permissions": [
-                "Administrator",
-                "SYSTEM"
-            ],
-            "x_mitre_detection": "Monitor processes and command-line arguments for actions that could create or modify services. Command-line invocation of tools capable of adding or modifying services may be unusual, depending on how systems are typically used in a particular environment. Services may also be modified through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001), so additional logging may need to be configured to gather the appropriate data. Remote access tools with built-in features may also interact directly with the Windows API to perform these functions outside of typical system utilities. Collect service utility execution and service binary path arguments used for analysis. Service binary paths may even be changed to execute commands or scripts.  \n\nLook for changes to service Registry entries that do not correlate with known software, patch cycles, etc. Service information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. Changes to the binary path and the service startup type changed from manual or disabled to automatic, if it does not typically do so, may be suspicious. Tools such as Sysinternals Autoruns may also be used to detect system service changes that could be attempts at persistence.(Citation: TechNet Autoruns)  \n\nCreation of new services may generate an alterable event (ex: Event ID 4697 and/or 7045 (Citation: Microsoft 4697 APR 2017)(Citation: Microsoft Windows Event Forwarding FEB 2018)). New, benign services may be created during installation of new software.\n\nSuspicious program execution through services may show up as outlier processes that have not been seen before when compared against historical data. Look for abnormal process call trees from known services and for execution of other commands that could relate to Discovery or other adversary techniques. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Windows"
+            "x_mitre_contributors": [
+                "Matthew Demaske, Adaptforward",
+                "Travis Smith, Tripwire",
+                "Pedro Harrison"
             ]
         }
     ]

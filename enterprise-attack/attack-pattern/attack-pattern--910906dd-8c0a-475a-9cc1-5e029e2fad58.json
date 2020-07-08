@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--52e1f57c-0d3e-46f2-a1d3-46fff0d94992",
+    "id": "bundle--53569764-87f5-4606-a0ba-290bf542be3b",
     "spec_version": "2.0",
     "objects": [
         {
@@ -14,6 +14,16 @@
                     "url": "https://www2.fireeye.com/rs/fireye/images/rpt-m-trends-2015.pdf",
                     "description": "Mandiant. (2015, February 24). M-Trends 2015: A View from the Front Lines. Retrieved May 18, 2016.",
                     "source_name": "Mandiant M-Trends 2015"
+                },
+                {
+                    "source_name": "FireEye WMI SANS 2015",
+                    "url": "https://www.fireeye.com/content/dam/fireeye-www/services/pdfs/sans-dfir-2015.pdf",
+                    "description": "Devon Kerr. (2015). There's Something About WMI. Retrieved May 4, 2020."
+                },
+                {
+                    "url": "https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/wp-windows-management-instrumentation.pdf",
+                    "description": "Ballenthin, W., et al. (2015). Windows Management Instrumentation (WMI) Offense, Defense, and Forensics. Retrieved March 30, 2016.",
+                    "source_name": "FireEye WMI 2015"
                 },
                 {
                     "url": "https://www.secureworks.com/blog/wmi-persistence",
@@ -46,7 +56,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Windows Management Instrumentation Event Subscription",
-            "description": "Adversaries may establish persistence and elevate privileges by executing malicious content triggered by a Windows Management Instrumentation (WMI) event subscription. WMI can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs. Examples of events that may be subscribed to are the wall clock time, user loging, or the computer's uptime. (Citation: Mandiant M-Trends 2015)\n\nAdversaries may use the capabilities of WMI to subscribe to an event and execute arbitrary code when that event occurs, providing persistence on a system. Adversaries may also compile WMI scripts into Windows Management Object (MOF) files (.mof extension) that can be used to create a malicious subscription. (Citation: Dell WMI Persistence) (Citation: Microsoft MOF May 2018)\n\nWMI subscription execution is proxied by the WMI Provider Host process (WmiPrvSe.exe) and thus may result in elevated SYSTEM privileges.",
+            "description": "Adversaries may establish persistence and elevate privileges by executing malicious content triggered by a Windows Management Instrumentation (WMI) event subscription. WMI can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs. Examples of events that may be subscribed to are the wall clock time, user loging, or the computer's uptime. (Citation: Mandiant M-Trends 2015)\n\nAdversaries may use the capabilities of WMI to subscribe to an event and execute arbitrary code when that event occurs, providing persistence on a system. (Citation: FireEye WMI SANS 2015) (Citation: FireEye WMI 2015) Adversaries may also compile WMI scripts into Windows Management Object (MOF) files (.mof extension) that can be used to create a malicious subscription. (Citation: Dell WMI Persistence) (Citation: Microsoft MOF May 2018)\n\nWMI subscription execution is proxied by the WMI Provider Host process (WmiPrvSe.exe) and thus may result in elevated SYSTEM privileges.",
             "id": "attack-pattern--910906dd-8c0a-475a-9cc1-5e029e2fad58",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -59,23 +69,23 @@
                     "phase_name": "persistence"
                 }
             ],
-            "modified": "2020-03-24T14:58:13.113Z",
+            "modified": "2020-05-05T12:02:45.522Z",
             "created": "2020-01-24T14:07:56.276Z",
-            "x_mitre_platforms": [
-                "Windows"
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "SYSTEM"
             ],
+            "x_mitre_detection": "Monitor WMI event subscription entries, comparing current WMI event subscriptions to known good subscriptions for each host. Tools such as Sysinternals Autoruns may also be used to detect WMI changes that could be attempts at persistence. (Citation: TechNet Autoruns) (Citation: Medium Detecting WMI Persistence)\n\nMonitor processes and command-line arguments that can be used to register WMI persistence, such as the <code> Register-WmiEvent</code> [PowerShell](https://attack.mitre.org/techniques/T1086) cmdlet (Citation: Microsoft Register-WmiEvent), as well as those that result from the execution of subscriptions (i.e. spawning from the WmiPrvSe.exe WMI Provider Host process).",
             "x_mitre_data_sources": [
                 "Process command-line parameters",
                 "Process monitoring",
                 "WMI Objects"
             ],
-            "x_mitre_detection": "Monitor WMI event subscription entries, comparing current WMI event subscriptions to known good subscriptions for each host. Tools such as Sysinternals Autoruns may also be used to detect WMI changes that could be attempts at persistence. (Citation: TechNet Autoruns) (Citation: Medium Detecting WMI Persistence)\n\nMonitor processes and command-line arguments that can be used to register WMI persistence, such as the <code> Register-WmiEvent</code> [PowerShell](https://attack.mitre.org/techniques/T1086) cmdlet (Citation: Microsoft Register-WmiEvent), as well as those that result from the execution of subscriptions (i.e. spawning from the WmiPrvSe.exe WMI Provider Host process).",
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "SYSTEM"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0"
+            "x_mitre_platforms": [
+                "Windows"
+            ]
         }
     ]
 }
