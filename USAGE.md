@@ -117,7 +117,7 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 | Field | Type | Applies to | Description | 
 |:------|:-----|:--------|:------------|
 | `x_mitre_detection` | string | All techniques | Strategies for identifying if a technique has been used by an adversary. |
-| `x_mitre-platforms` | string[] | Enterprise & Mobile domains | List of platforms that apply to the technique. |
+| `x_mitre_platforms` | string[] | Enterprise & Mobile domains | List of platforms that apply to the technique. |
 | `x_mitre_data_sources` | string[] | Enterprise domain | Sources of information that may be used to identify the action or result of the action being performed. |
 | `x_mitre_is_subtechnique` | boolean | Enterprise domain | If true, this `attack-pattern` is a sub-technique. See [sub-techniques](#sub-techniques). |
 | `x_mitre_tactic_types` | string | Mobile domain |  "Post-Adversary Device Access", "Pre-Adversary Device Access", or "Without Adversary Device Access" |
