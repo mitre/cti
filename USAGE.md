@@ -47,7 +47,6 @@ There are three general ways that ATT&CK extends the STIX 2.0 format:
 
     | Field | Type | Description |
     |:------|:-----|:------------|
-    | `x_mitre_revoked` | boolean | If true, the object has been replaced by another object. A relationship will exist describing the replacing object where the `source_ref` is the ID of this object and the `target_ref` is the ID of the replacing object. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects.
     | `x_mitre_version` | string | The version of the object in format `major.minor` where `major` and `minor` are integers. ATT&CK increments this version number when the object content is updated. |
     | `x_mitre_contributors` | string[] | People and organizations who have contributed to the object. | 
 
@@ -179,7 +178,7 @@ Relationships oftentimes have descriptions which contextualize the relationship 
 | `malware` or `tool` | `uses`    | `attack-pattern`    | No | Software using a technique, which is also considered a procedure example. |
 | `course-of-action`  | `mitigates` | `attack-pattern`  | No | Mitigation mitigating technique. |
 | `attack-pattern`    | `subtechnique-of` | `attack-pattern` | Yes | Sub-technique of a technique, where the `source_ref` is the sub-technique and the `target_ref` is the parent technique. |
-| any type    | `revoked-by`      | any type | Yes | The target object is a replacement for the source object. Only occurs where the objects are of the same type, and the source object will have the property `x_mitre_revoked = true`. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. |
+| any type    | `revoked-by`      | any type | Yes | The target object is a replacement for the source object. Only occurs where the objects are of the same type, and the source object will have the property `revoked = true`. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. |
 
 Note that because groups use software and software uses techniques, groups can be considered indirect users of techniques used by their software. See [Getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software).
 
