@@ -377,7 +377,39 @@ See [The ATT&CK data model](#The-ATTCK-Data-Model) for mappings of ATT&CK type t
 
 ```python
 # use the appropriate STIX type in the query according to the desired ATT&CK type
-techniques = src.query([ stix2.Filter("type", "=", "attack-pattern") ])
+groups = src.query([ stix2.Filter("type", "=", "intrusion-set") ])
+```
+
+#### Getting techniques or sub-techniques
+ATT&CK Techniques and sub-techniques are both represented as `attack-pattern` objects. Therefore further parsing is necessary to get specifically techniques or sub-techniques.
+
+```python
+def get_techniques_or_subtechniques(src, include="both"):
+    """Filter Techniques or Sub-Techniques from ATT&CK Enterprise Domain.
+    include argument has three options: "techniques", "subtechniques", or "both"
+    depending on the intended behavior."""
+    if include == "techniques":
+        query_results = src.query([
+            stix2.Filter('type', '=', 'attack-pattern'),
+            stix2.Filter('x_mitre_is_subtechnique', '=', False)
+        ])
+    elif include == "subtechniques":
+        query_results = src.query([
+            stix2.Filter('type', '=', 'attack-pattern'),
+            stix2.Filter('x_mitre_is_subtechnique', '=', True)
+        ])
+    elif include == "both":
+        query_results = src.query([
+            stix2.Filter('type', '=', 'attack-pattern')
+        ])
+    else:
+        raise RuntimeError("Unknown option %s!" % include)
+
+    return query_results
+
+
+subtechniques = get_techniques_or_subtechniques(src, "subtechniques")
+subtechniques = remove_revoked_deprecated(subtechniques) # see https://github.com/mitre/cti/blob/master/USAGE.md#removing-revoked-and-deprecated-objects
 ```
 
 ### Objects by content
