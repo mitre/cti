@@ -409,7 +409,7 @@ def get_techniques_or_subtechniques(src, include="both"):
 
 
 subtechniques = get_techniques_or_subtechniques(src, "subtechniques")
-subtechniques = remove_revoked_deprecated(techniques) # see https://github.com/mitre/cti/blob/master/USAGE.md#removing-revoked-and-deprecated-objects
+subtechniques = remove_revoked_deprecated(subtechniques) # see https://github.com/mitre/cti/blob/master/USAGE.md#removing-revoked-and-deprecated-objects
 ```
 
 ### Objects by content
