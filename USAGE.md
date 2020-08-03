@@ -380,7 +380,7 @@ See [The ATT&CK data model](#The-ATTCK-Data-Model) for mappings of ATT&CK type t
 groups = src.query([ stix2.Filter("type", "=", "intrusion-set") ])
 ```
 
-#### Getting Techniques or Sub-Techniques
+#### Getting techniques or sub-techniques
 ATT&CK Techniques and sub-techniques are both represented as `attack-pattern` objects. Therefore further parsing is necessary to get specifically techniques or sub-techniques.
 
 ```python
