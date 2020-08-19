@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--b601b3f6-3071-456f-9d1a-3c12c5e23226",
+    "id": "bundle--e9f59a53-ac7a-42b7-9f4d-877e122ea11e",
     "spec_version": "2.0",
     "objects": [
         {
@@ -58,6 +58,12 @@
                     "external_id": "CWE-721"
                 },
                 {
+                    "source_name": "ATTACK",
+                    "description": "File and Directory Discovery",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1083",
+                    "external_id": "T1083"
+                },
+                {
                     "source_name": "reference_from_CAPEC",
                     "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)",
                     "url": "http://projects.webappsec.org/Directory-Indexing",
@@ -76,6 +82,7 @@
             "x_capec_example_instances": [
                 "\n               <xhtml:p>The adversary uses directory listing to view sensitive files in the application. This is an example of accessing the backup file. The attack issues a request for http://www.example.com/admin/ and receives the following dynamic directory indexing content in the response: Index of /admin Name Last Modified Size Description backup/ 31-May-2007 08:18 - Apache/ 2.0.55 Server at www.example.com Port 80</xhtml:p>\n               <xhtml:p>The target application does not have direct hyperlink to the \"backup\" directory in the normal html webpage, however the attacker has learned of this directory due to indexing the content. The client then requests the backup directory URL and receives output which has a \"db_dump.php\" file in it. This sensitive data should not be disclosed publicly.</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Directory Discovery: </b>Use a method, either manual, scripted, or automated to discover the directories on the server by making requests for directories that may possibly exist. During this phase the adversary is less concerned with whether a directory can be accessed or indexed and more focused on simply discovering what directories do exist on the target.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Send requests to the web server for common directory names</td></tr><tr><td>If directories are discovered that are native to a server type further refine the directory search to include directories usually present on those types of servers.</td></tr><tr><td>Search for uncommon or potentially user created directories that may be present.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Iteratively explore directory/file structures: </b>The adversary attempts to access the discovered directories that allow access and may attempt to bypass server or application level ACLs by using manual or automated methods</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a scanner tool to dynamically add directories/files to include their scan based upon data obtained in initial probes.</td></tr><tr><td>Use a browser to manually explore the website by issuing a request ending the URL in a slash '/'.</td></tr><tr><td>Attempt to bypass ACLs on directories by using methods that known to work against some server types by appending data to the directory request. For instance, appending a Null byte to the end of the request which may cause an ACL to fail and allow access.</td></tr><tr><td>Sequentially request a list of common base files to each directory discovered.</td></tr><tr><td>Try multiple fuzzing techniques to list directory contents for directories that will not reveal their contents with a \"/\" request</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Read directories or files which are not intended for public viewing.: </b>The adversary attempts to access the discovered directories that allow access and may attempt to bypass server or application level ACLs by using manual or automated methods</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Try multiple exploit techniques to list directory contents for directories that will not reveal their contents with a \"/\" request</td></tr><tr><td>Try other known exploits to elevate privileges sufficient to bypass protected directories.</td></tr><tr><td>List the files in the directory by issuing a request with the URL ending in a \"/\" slash.</td></tr><tr><td>Access the files via direct URL and capture contents.</td></tr><tr><td>Attempt to bypass ACLs on directories by using methods that are known to work against some server types by appending data to the directory request. For instance, appending a Null byte to the end of the request which may cause an ACL to fail and allow access.</td></tr><tr><td>Sequentially request a list of common base files to each directory discovered.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The target must be misconfigured to return a list of a directory's content when it receives a request that ends in a directory name rather than a file name.",
@@ -92,7 +99,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

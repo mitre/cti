@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--78682f43-d129-4ba5-b9fb-0a9e64cef7d1",
+    "id": "bundle--e49302e1-3ebb-470e-8c7f-61724af46e7d",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--3da1844e-c905-420a-9179-260356a85a05",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2019-09-30T00:00:00.000Z",
+            "modified": "2020-07-30T00:00:00.000Z",
             "name": "Leveraging Time-of-Check and Time-of-Use (TOCTOU) Race Conditions",
             "description": "This attack targets a race condition occurring between the time of check (state) for a resource and the time of use of a resource. A typical example is file access. The adversary can leverage a file access race condition by \"running the race\", meaning that they would modify the resource between the first time the target program accesses the file and the time the target program uses the file. During that period of time, the adversary could replace or modify the file, causing the application to behave unexpectedly.",
             "external_references": [
@@ -101,8 +101,9 @@
             },
             "x_capec_example_instances": [
                 "The Net Direct client for Linux before 6.0.5 in Nortel Application Switch 2424, VPN 3050 and 3070, and SSL VPN Module 1000 extracts and executes files with insecure permissions, which allows local users to exploit a race condition to replace a world-writable file in /tmp/NetClient and cause another user to execute arbitrary code when attempting to execute this client, as demonstrated by replacing /tmp/NetClient/client. See also: CVE-2007-1057",
-                "\n               <xhtml:p>The following code illustrates a file that is accessed multiple times by name in a publicly accessible directory. A race condition exists between the accesses where an adversary can replace the file referenced by the name.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">include <sys/types.h>include <fcntl.h>include <unistd.h>\n                  define FILE \"/tmp/myfile\"define UID 100\n                  void test(char *str){<xhtml:div style=\"margin-left:10px;\">int fd;fd = creat(FILE, 0644);if(fd == -1)<xhtml:div style=\"margin-left:10px;\">return;</xhtml:div>\n                     chown(FILE, UID, -1); /* BAD */close(fd);</xhtml:div>\n                  }\n                  int main(int argc, char **argv){<xhtml:div style=\"margin-left:10px;\">char *userstr;if(argc > 1) {<xhtml:div style=\"margin-left:10px;\">userstr = argv[1];test(userstr);</xhtml:div>\n                     }return 0;</xhtml:div>\n                  }</xhtml:div>\n               <xhtml:p>[R.29.3]</xhtml:p>\n            "
+                "\n               <xhtml:p>The following code illustrates a file that is accessed multiple times by name in a publicly accessible directory. A race condition exists between the accesses where an adversary can replace the file referenced by the name.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">include <sys/types.h>include <fcntl.h>include <unistd.h>\n                  define FILE \"/tmp/myfile\"define UID 100\n                  void test(char *str){<xhtml:div style=\"margin-left:10px;\">int fd;fd = creat(FILE, 0644);if(fd == -1)<xhtml:div style=\"margin-left:10px;\">return;</xhtml:div>\n                     chown(FILE, UID, -1); /* BAD */close(fd);</xhtml:div>\n                  }\n                  int main(int argc, char **argv){<xhtml:div style=\"margin-left:10px;\">char *userstr;if(argc > 1) {<xhtml:div style=\"margin-left:10px;\">userstr = argv[1];test(userstr);</xhtml:div>\n                     }return 0;</xhtml:div>\n                  }</xhtml:div>\n               <xhtml:p>[REF-107]</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary explores to gauge what level of access they have.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary confirms access to a resource on the target host. The adversary confirms ability to modify the targeted resource.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The adversary decides to leverage the race condition by \"running the race\", meaning that they would modify the resource between the first time the target program accesses the file and the time the target program uses the file. During that period of time, the adversary can replace the resource and cause an escalation of privilege.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "A resource is access/modified concurrently by multiple processes.",
@@ -114,7 +115,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--732fe381-d972-4c8b-af4c-51c20be6648f",
+    "id": "bundle--db65bc1e-2843-4cb3-ab7b-e4512a843456",
     "spec_version": "2.0",
     "objects": [
         {
@@ -73,6 +73,7 @@
             "x_capec_example_instances": [
                 "\n               <xhtml:p>In this example, an adversary sends request to a local DNS server to look up www.example .com. The associated IP address of www.example.com is 1.3.5.7.</xhtml:p>\n               <xhtml:p>Local DNS usually caches IP addresses and do not go to remote DNS every time. Since the local record is not found, DNS server tries to connect to remote DNS for queries. However, before the remote DNS returns the right IP address 1.3.5.7, the adversary floods local DNS with crafted responses with IP address 2.4.6.8. The result is that 2.4.6.8 is stored in DNS cache. Meanwhile, 2.4.6.8 is associated with a malicious website www.maliciousexampsle.com</xhtml:p>\n               <xhtml:p>When users connect to www.example.com, the local DNS will direct it to www.maliciousexample.com, this works as part of a Pharming attack.</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Explore resolver caches: </b>Check DNS caches on local DNS server and client's browser with DNS cache enabled.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Run tools that check the resolver cache in the memory to see if it contains a target DNS entry.</td></tr><tr><td>Figure out if the client's browser has DNS cache enabled.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt sending crafted records to DNS cache: </b>A request is sent to the authoritative server for target website and wait for the iterative name resolver. An adversary sends bogus request to the DNS local server, and then floods responses that trick a DNS cache to remember malicious responses, which are wrong answers of DNS query.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Adversary must know the transaction ID by intercepting a DNS query, or sending a bogus query with known transaction ID.</td></tr><tr><td>If the transaction ID used to identify each query instance is randomized in some new DNS software, the attack must guess the transaction ID. Slow the response of the real DNS server by causing Denial-of-service. This gives adversaries enough time to guess transaction</td></tr><tr><td>Adversary crafts DNS response with the same transaction ID as in the request. The adversary sends out DNS responses before the authorized DNS server. This forces DNS local cache stores fake DNS response (wrong answer). The fake DNS responses usually include a malicious website's IP address.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Redirect users to malicious website: </b>As the adversary succeeds in exploiting the vulnerability, the victim connects to a malicious site using a good web site's domain name.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Redirecting Web traffic to a site that looks enough like the original so as to not raise any suspicion.</td></tr><tr><td>Man-in-the-Middle intercepts secure communication between two parties.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "A DNS cache must be vulnerable to some attack that allows the adversary to replace addresses in its lookup table.Client applications must trust the corrupted cashed values and utilize them for their domain name resolutions."
@@ -85,7 +86,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

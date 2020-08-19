@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--8824f683-f65e-45ed-9dea-65f1daba2134",
+    "id": "bundle--9614c3eb-7397-4190-8ddf-9a69f66b0f44",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--7ee89c1f-50a5-42e6-abdb-6d8ba0349810",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2017-08-04T00:00:00.000Z",
+            "modified": "2020-07-30T00:00:00.000Z",
             "name": "Session Credential Falsification through Prediction",
             "description": "This attack targets predictable session ID in order to gain privileges. The attacker can predict the session ID used during a transaction to perform spoofing and session hijacking.",
             "external_references": [
@@ -102,6 +102,7 @@
                 "Jetty before 4.2.27, 5.1 before 5.1.12, 6.0 before 6.0.2, and 6.1 before 6.1.0pre3 generates predictable session identifiers using java.util.random, which makes it easier for remote attackers to guess a session identifier through brute force attacks, bypass authentication requirements, and possibly conduct cross-site request forgery attacks. See also: CVE-2006-6969",
                 "mod_usertrack in Apache 1.3.11 through 1.3.20 generates session ID's using predictable information including host IP address, system time and server process ID, which allows local users to obtain session ID's and bypass authentication when these session ID's are used for authentication. See also: CVE-2001-1534"
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find Session IDs: </b>The attacker interacts with the target host and finds that session IDs are used to authenticate users.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>An attacker makes many anonymous connections and records the session IDs assigned.</td></tr><tr><td>An attacker makes authorized connections and records the session tokens or credentials issued.</td></tr></tbody></table><li> <p> <b>Characterize IDs: </b>The attacker studies the characteristics of the session ID (size, format, etc.). As a results the attacker finds that legitimate session IDs are predictable.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Cryptanalysis. The attacker uses cryptanalysis to determine if the session IDs contain any cryptographic protections.</td></tr><tr><td>Pattern tests. The attacker looks for patterns (odd/even, repetition, multiples, or other arithmetic relationships) between IDs</td></tr><tr><td>Comparison against time. The attacker plots or compares the issued IDs to the time they were issued to check for correlation.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Match issued IDs: </b>The attacker brute forces different values of session ID and manages to predict a valid session ID.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker models the session ID algorithm enough to produce a compatible session IDs, or just one match.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Use matched Session ID: </b>The attacker uses the falsified session ID to access the target system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker loads the session ID into their web browser and browses to restricted data or functionality.</td></tr><tr><td>The attacker loads the session ID into their network communications and impersonates a legitimate user to gain access to data or functionality.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The target host uses session IDs to keep track of the users.",
@@ -114,7 +115,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

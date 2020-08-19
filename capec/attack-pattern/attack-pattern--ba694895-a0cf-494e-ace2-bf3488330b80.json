@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--85963e73-bc6d-4fd3-bcc4-91253fb766b8",
+    "id": "bundle--98be1a0f-7e30-4982-85f8-451fed1b8f5a",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--ba694895-a0cf-494e-ace2-bf3488330b80",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2018-07-31T00:00:00.000Z",
+            "modified": "2020-07-30T00:00:00.000Z",
             "name": "HTTP Response Splitting",
             "description": "This attack uses a maliciously-crafted HTTP request in order to cause a vulnerable web server to respond with an HTTP response stream that will be interpreted by the client as two separate responses instead of one. This is possible when user-controlled input is used unvalidated as part of the response headers. The target software, the client, will interpret the injected header as being a response to a second request, thereby causing the maliciously-crafted contents be displayed and possibly cached.",
             "external_references": [
@@ -73,6 +73,7 @@
             "x_capec_example_instances": [
                 "In the PHP 5 session extension mechanism, a user-supplied session ID is sent back to the user within the Set-Cookie HTTP header. Since the contents of the user-supplied session ID are not validated, it is possible to inject arbitrary HTTP headers into the response body. This immediately enables HTTP Response Splitting by simply terminating the HTTP response header from within the session ID used in the Set-Cookie directive. See also: CVE-2006-0207"
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Spider: </b>Using a browser or an automated tool, an adversary follows all public links on a web site. They record all the links, the forms and all potential user-controllable input points for the web application.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links and analyze the web pages to find entry points. Make special note of any links that include parameters in the URL, forms found in the pages (like file upload, etc.).</td></tr><tr><td>Use a proxy tool to record all links visited during a manual traversal of the web application.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt variations on input parameters: </b>The adversary injects the entry points identified in the Explore Phase with response splitting syntax and variations of payloads to be acted on in the additional response. They record all the responses from the server that include unmodified versions of their payload.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use CR\\LF characters (encoded or not) in the payloads in order to see if the HTTP header can be split.</td></tr><tr><td>Use a proxy tool to record the HTTP responses headers.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Cross-Site Scripting: </b>As the adversary succeeds in exploiting the vulnerability, they can choose to attack the user with Cross-Site Scripting. The possible outcomes of such an attack are described in the Cross-Site Scripting related attack patterns.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Inject cross-site scripting payload preceded by response splitting syntax (CR/LF) into user-controllable input identified as vulnerable in the Experiment Phase.</td></tr></tbody></table><li> <p> <b>Cache poisoning: </b>The adversary decides to target the cache server by forging new responses. The server will then cache the second request and response. The cached response has most likely an attack vector like Cross-Site Scripting; this attack will then be serve to many clients due to the caching system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The adversary decides to target the cache server by forging new responses. The server will then cache the second request and response. The cached response has most likely an attack vector like Cross-Site Scripting; this attack will then be serve to many clients due to the caching system.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_prerequisites": [
                 "User-controlled input used as part of HTTP header",
@@ -87,7 +88,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

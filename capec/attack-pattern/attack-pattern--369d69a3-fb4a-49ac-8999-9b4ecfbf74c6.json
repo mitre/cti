@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--c2a68d78-c36b-4878-895d-ecb86ace0e89",
+    "id": "bundle--6c033b99-4db8-4408-81cb-0b435f16cba4",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--369d69a3-fb4a-49ac-8999-9b4ecfbf74c6",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2018-07-31T00:00:00.000Z",
+            "modified": "2020-07-30T00:00:00.000Z",
             "name": "Forced Integer Overflow",
             "description": "This attack forces an integer variable to go out of range. The integer variable is often used as an offset such as size of memory allocation or similarly. The attacker would typically control the value of such variable and try to get it out of range. For instance the integer in question is incremented past the maximum possible value, it may wrap to become a very small, or negative number, therefore providing a very incorrect value which can lead to unexpected behavior. At worst the attacker can execute arbitrary code.",
             "external_references": [
@@ -102,8 +102,9 @@
             },
             "x_capec_example_instances": [
                 "Integer overflow in the ProcAuWriteElement function in server/dia/audispatch.c in Network Audio System (NAS) before 1.8a SVN 237 allows remote attackers to cause a denial of service (crash) and possibly execute arbitrary code via a large max_samples value. See also: CVE-2007-1544",
-                "\n               <xhtml:p>The following code illustrates an integer overflow. The declaration of total integer as \"unsigned short int\" assumes that the length of the first and second arguments fits in such an integer.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">include <stdlib.h>include <string.h>include <stdio.h>\n                  int main (int argc, char *const *argv){<xhtml:div style=\"margin-left:10px;\">if (argc !=3){<xhtml:div style=\"margin-left:10px;\">printf(\"Usage: prog_name <string1> <string2>\\n\");exit(-1);</xhtml:div>\n                     }unsigned short int total;total = strlen(argv[1])+strlen(argv[2])+1;char * buff = (char *)malloc(total);strcpy(buff, argv[1]);strcpy(buff, argv[2]);</xhtml:div>\n                  }</xhtml:div>\n               <xhtml:p>[R.92.4], [R.92.5]</xhtml:p>\n            "
+                "\n               <xhtml:p>The following code illustrates an integer overflow. The declaration of total integer as \"unsigned short int\" assumes that the length of the first and second arguments fits in such an integer.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">include <stdlib.h>include <string.h>include <stdio.h>\n                  int main (int argc, char *const *argv){<xhtml:div style=\"margin-left:10px;\">if (argc !=3){<xhtml:div style=\"margin-left:10px;\">printf(\"Usage: prog_name <string1> <string2>\\n\");exit(-1);</xhtml:div>\n                     }unsigned short int total;total = strlen(argv[1])+strlen(argv[2])+1;char * buff = (char *)malloc(total);strcpy(buff, argv[1]);strcpy(buff, argv[2]);</xhtml:div>\n                  }</xhtml:div>\n               <xhtml:p>[REF-547], [REF-548]</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The first step is exploratory meaning the attacker looks for an integer variable that they can control.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The attacker finds an integer variable that they can write into or manipulate and try to get the value of the integer out of the possible range.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The integer variable is forced to have a value out of range which set its final value to an unexpected value.</p></li><li> <p>The target host acts on the data and unexpected behavior may happen.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The attacker can manipulate the value of an integer variable utilized by the target host.",
@@ -116,7 +117,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--e46a2664-f25d-4c0c-8ad9-9f5b017ea884",
+    "id": "bundle--ebd67775-ff3c-4c62-b5ef-ed26be6a14f2",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--dbe3513a-5527-4aaf-a463-ead5eae2967f",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2018-07-31T00:00:00.000Z",
+            "modified": "2020-07-30T00:00:00.000Z",
             "name": "Using Leading 'Ghost' Character Sequences to Bypass Input Filters",
             "description": "Some APIs will strip certain leading characters from a string of parameters. An adversary can intentionally introduce leading \"ghost\" characters (extra characters that don't affect the validity of the request at the API layer) that enable the input to pass the filters and therefore process the adversary's input. This occurs when the targeted API will accept input data in several syntactic forms and interpret it in the equivalent semantic way, while the filter does not take into account the full spectrum of the syntactic forms acceptable to the targeted API.",
             "external_references": [
@@ -109,6 +109,7 @@
             "x_capec_example_instances": [
                 "\n               <xhtml:p>Alternate Encoding with Ghost Characters in FTP and Web Servers</xhtml:p>\n               <xhtml:p>Some web and FTP servers fail to detect prohibited upward directory traversals if the user-supplied pathname contains extra characters such as an extra leading dot. For example, a program that will disallow access to the pathname \"../test.txt\" may erroneously allow access to that file if the pathname is specified as \".../test.txt\". This attack succeeds because 1) the input validation logic fails to detect the triple-dot as a directory traversal attempt (since it isn't dot-dot), 2) some part of the input processing decided to strip off the \"extra\" dot, leaving the dot-dot behind.</xhtml:p>\n               <xhtml:p>Using the file system API as the target, the following strings are all equivalent to many programs:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">.../../../test.txt............/../../test.txt..?/../../test.txt..????????/../../test.txt../test.txt</xhtml:div>\n               <xhtml:p>As you can see, there are many ways to make a semantically equivalent request. All these strings ultimately result in a request for the file ../test.txt.</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>Determine if the source code is available and if so, examine the filter logic.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>If the source code is not available, write a small program that loops through various possible inputs to given API call and tries a variety of alternate (but equivalent) encodings of strings with leading ghost characters. Knowledge of frameworks and libraries used and what filters they apply will help to make this search more structured.</p></li><li> <p>Observe the effects. See if the probes are getting past the filters. Identify a string that is semantically equivalent to that which an adversary wants to pass to the targeted API, but syntactically structured in a way as to get past the input filter. That encoding will contain certain ghost characters that will help it get past the filters. These ghost characters will be ignored by the targeted API.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>Once the \"winning\" alternate encoding using (typically leading) ghost characters is identified, an adversary can launch the attacks against the targeted API (e.g. directory traversal attack, arbitrary shell command execution, corruption of files)</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_prerequisites": [
                 "The targeted API must ignore the leading ghost characters that are used to get past the filters for the semantics to be the same."
@@ -118,7 +119,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--903b794b-8517-4bcc-9052-35833b400a60",
+    "id": "bundle--bb151ba5-46d6-4735-b9fe-c208879b93cc",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--b5618a54-4646-423d-8676-b2eb56dd4328",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2018-07-31T00:00:00.000Z",
+            "modified": "2020-07-30T00:00:00.000Z",
             "name": "Fuzzing and observing application log data/errors for application mapping",
             "description": "An attacker sends random, malformed, or otherwise unexpected messages to a target application and observes the application's log or error messages returned. Fuzzing techniques involve sending random or malformed messages to a target and monitoring the target's response. The attacker does not initially know how a target will respond to individual messages but by attempting a large number of message variants they may find a variant that trigger's desired behavior. In this attack, the purpose of the fuzzing is to observe the application's log and error messages, although fuzzing a target can also sometimes cause the target to enter an unstable state, causing a crash. By observing logs and error messages, the attacker can learn details about the configuration of the target application and might be able to cause the target to disclose sensitive information.",
             "external_references": [
@@ -40,6 +40,7 @@
             "x_capec_example_instances": [
                 "\n               <xhtml:p>The following code generates an error message that leaks the full pathname of the configuration file.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">$ConfigDir = \"/home/myprog/config\";$uname = GetUserInput(\"username\");ExitError(\"Bad hacker!\") if ($uname !~ /^\\w+$/);$file = \"$ConfigDir/$uname.txt\";if (! (-e $file)) { ExitError(\"Error: $file does not exist\"); }...</xhtml:div>\n               <xhtml:p>If this code is running on a server, such as a web application, then the person making the request should not know what the full pathname of the configuration directory is. By submitting a username that does not produce a $file that exists, an attacker could get this pathname. It could then be used to exploit path traversal or symbolic link following problems that may exist elsewhere in the application.</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Probing: </b>The attacker uses fuzzing tools to send random malformed messages to web server and observes for server's log or error message.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker uses fuzzing tools to send random malformed messages to web server and observes for server's log or error message.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Modify the parameters to get the desired information from the error messages.: </b>Attacker usually needs to modify the fuzzing parameters according to the observed error messages to get the desired sensitive information for the application. To defeat correlation, the attacker may try changing the origin IP addresses or client browser identification strings or start a new session from where they left off in obfuscating the attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Modify the parameters in the fuzzing tool according to the observed error messages. Repeat with enough parameters until the application has been sufficiently mapped.</td></tr><tr><td>If the application rejects the large amount of fuzzing messages from the same host machine, the attacker needs to hide the attacks by changing the IP addresses or other credentials.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The target application must fail to sanitize incoming messages adequately before processing."
@@ -52,7 +53,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Low",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

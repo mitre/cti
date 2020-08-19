@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a55290e7-137b-4568-8e30-961ebe153367",
+    "id": "bundle--c4622028-d6a0-4931-bfd2-c38ef8aa7c8f",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--1cc991f7-9f62-4e6b-9e37-70fa23ab23e9",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2018-07-31T00:00:00.000Z",
+            "modified": "2020-07-30T00:00:00.000Z",
             "name": "Hijacking a Privileged Thread of Execution",
             "description": "Adversaries can sometimes hijack a privileged thread from the underlying system through synchronous (calling a privileged function that returns incorrectly) or asynchronous (callbacks, signal handlers, and similar) means. This can allow the adversary to access functionality the system's designer didn't intend for them to, but they may also go undetected or deny other users essential services in a catastrophic (or insidiously subtle) way.",
             "external_references": [
@@ -21,6 +21,12 @@
                     "source_name": "cwe",
                     "url": "http://cwe.mitre.org/data/definitions/270.html",
                     "external_id": "CWE-270"
+                },
+                {
+                    "source_name": "ATTACK",
+                    "description": "Process Injection:Thread Execution Hijacking",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1055/003",
+                    "external_id": "T1055.003"
                 }
             ],
             "object_marking_refs": [
@@ -48,6 +54,7 @@
             "x_capec_example_instances": [
                 "Adversary targets an application written using Java's AWT, with the 1.2.2 era event model. In this circumstance, any AWTEvent originating in the underlying OS (such as a mouse click) would return a privileged thread (e.g., a system call). The adversary could choose to not return the AWT-generated thread upon consuming the event, but instead leveraging its privilege to conduct privileged operations."
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>Adversary determines the underlying system thread that is subject to user-control</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>Adversary then provides input, perhaps by way of environment variables for the process in question, that affect the executing thread</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>Upon successful hijacking, the adversary enjoys elevated privileges, and can possibly have the hijacked thread do their bidding.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "Low",
             "x_capec_prerequisites": [
                 "The application in question employs a threaded model of execution with the threads operating at, or having the ability to switch to, a higher privilege level than normal users",
@@ -61,7 +68,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

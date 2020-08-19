@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a7df4f76-7e86-4385-b5b5-88d5b67b1b51",
+    "id": "bundle--82105ea5-6ac8-4e1f-8d96-e23b1444e270",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--326dfb79-2d81-406a-9977-79e67d8de6e2",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2019-04-04T00:00:00.000Z",
+            "modified": "2020-07-30T00:00:00.000Z",
             "name": "Manipulating Writeable Terminal Devices",
             "description": "This attack exploits terminal devices that allow themselves to be written to by other users. The attacker sends command strings to the target terminal device hoping that the target user will hit enter and thereby execute the malicious command with their privileges. The attacker can send the results (such as copying /etc/passwd) to a known directory and collect once the attack has succeeded.",
             "external_references": [
@@ -52,8 +52,9 @@
                 ]
             },
             "x_capec_example_instances": [
-                "\n               <xhtml:p>\"Any system that allows other peers to write directly to its terminal process is vulnerable to this type of attack. If the terminals are available through being over-privileged (i.e. world-writable) or the attacker is an administrator, then a series of commands in this format can be used to echo commands out to victim terminals.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\"$echo -e \"\\033[30m\\033\\132\" > /dev/ttyXX</xhtml:div>\n               <xhtml:p>where XX is the tty number of the user under attack. This will paste the characters to another terminal (tty). Note this technique works only if the victim's tty is world writable (which it may not be). That is one reason why programs like write(1) and talk(1) in UNIX systems need to run setuid.\" [R.40.1][REF-2]</xhtml:p>\n               <xhtml:p>If the victim continues to hit \"enter\" and execute the commands, there are an endless supply of vectors available to the attacker, copying files, open up network connections, ftp out to servers, and so on.</xhtml:p>\n            "
+                "\n               <xhtml:p>\"Any system that allows other peers to write directly to its terminal process is vulnerable to this type of attack. If the terminals are available through being over-privileged (i.e. world-writable) or the attacker is an administrator, then a series of commands in this format can be used to echo commands out to victim terminals.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\"$echo -e \"\\033[30m\\033\\132\" > /dev/ttyXX</xhtml:div>\n               <xhtml:p>where XX is the tty number of the user under attack. This will paste the characters to another terminal (tty). Note this technique works only if the victim's tty is world writable (which it may not be). That is one reason why programs like write(1) and talk(1) in UNIX systems need to run setuid.\" [REF-1]</xhtml:p>\n               <xhtml:p>If the victim continues to hit \"enter\" and execute the commands, there are an endless supply of vectors available to the attacker, copying files, open up network connections, ftp out to servers, and so on.</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify attacker-writable terminals: </b>Determine if users TTYs are writable by the attacker.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine the permissions for the TTYs found on the system. Any that allow user write to the TTY may be vulnerable.</td></tr><tr><td>Attempt to write to other user TTYs. This approach could leave a trail or alert a user.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Execute malicious commands: </b>Using one or more vulnerable TTY, execute commands to achieve various impacts.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Commands that allow reading or writing end user files can be executed.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "User terminals must have a permissive access control such as world writeable that allows normal users to control data on other user's terminals."
@@ -66,7 +67,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

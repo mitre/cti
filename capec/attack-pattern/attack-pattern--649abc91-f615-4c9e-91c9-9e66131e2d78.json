@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--fd28ea7a-af80-4f4d-ac63-102288e7c223",
+    "id": "bundle--4833e86a-7dce-4dc8-9508-ca0d2555c051",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,9 +8,9 @@
             "id": "attack-pattern--649abc91-f615-4c9e-91c9-9e66131e2d78",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2017-05-01T00:00:00.000Z",
-            "name": "Manipulating User State",
-            "description": "The adversary modifies state information maintained by the target software in user-accessible locations. If successful, the target software will use this tainted state information and execute in an unintended manner. State management is an important function within an application. User state maintained by the application can include usernames, payment information, browsing history as well as application-specific contents such as items in a shopping cart. Manipulating user state can be employed by an adversary to elevate privilege, conduct fraudulent transactions or otherwise modify the flow of the application to derive certain benefits.",
+            "modified": "2020-07-30T00:00:00.000Z",
+            "name": "Manipulating State",
+            "description": "\n            <xhtml:p>The adversary modifies state information maintained by the target software or causes a state transition in hardware. If successful, the target will use this tainted state and execute in an unintended manner.</xhtml:p>\n            <xhtml:p>State management is an important function within a software application. User state maintained by the application can include usernames, payment information, browsing history as well as application-specific contents such as items in a shopping cart. Manipulating user state can be employed by an adversary to elevate privilege, conduct fraudulent transactions or otherwise modify the flow of the application to derive certain benefits.</xhtml:p>\n            <xhtml:p>If there is a hardware logic error in a finite state machine, the adversary can use this to put the system in an undefined state which could cause a denial of service or exposure of secure data.</xhtml:p>\n         ",
             "external_references": [
                 {
                     "source_name": "capec",
@@ -41,6 +41,21 @@
                     "source_name": "cwe",
                     "url": "http://cwe.mitre.org/data/definitions/693.html",
                     "external_id": "CWE-693"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1245.html",
+                    "external_id": "CWE-1245"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1265.html",
+                    "external_id": "CWE-1265"
+                },
+                {
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1271.html",
+                    "external_id": "CWE-1271"
                 }
             ],
             "object_marking_refs": [
@@ -54,6 +69,9 @@
                 "Authorization": [
                     "Gain Privileges"
                 ],
+                "Availability": [
+                    "Unreliable Execution"
+                ],
                 "Confidentiality": [
                     "Gain Privileges"
                 ],
@@ -64,9 +82,11 @@
             "x_capec_example_instances": [
                 "\n               <xhtml:p>During the authentication process, an application stores the authentication decision (auth=0/1) in unencrypted cookies. At every request, this cookie is checked to permit or deny a request.</xhtml:p>\n               <xhtml:p>An adversary can easily violate this representation of user state and set auth=1 at every request in order to gain illegitimate access and elevated privilege in the application.</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>Adversary determines the nature of state management employed by the target. This includes determining the location (client-side, server-side or both applications) and possibly the items stored as part of user state.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary now tries to modify the user state contents (possibly blindly if the contents are encrypted or otherwise obfuscated) or cause a state transition and observe the effects of this change on the target.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>Having determined how to manipulate the state, the adversary can perform illegitimate actions.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_prerequisites": [
-                "User state is maintained at least in some way in user-controllable locations, such as cookies or URL parameters."
+                "User state is maintained at least in some way in user-controllable locations, such as cookies or URL parameters.",
+                "There is a faulty finite state machine in the hardware logic that can be exploited."
             ],
             "x_capec_resources_required": [
                 "The adversary needs a data tampering tool capable of generating and creating custom inputs to aid in the attack, like Fiddler, Wireshark, or a similar in-browser plugin (e.g., Tamper Data for Firefox)."
@@ -76,7 +96,7 @@
             },
             "x_capec_status": "Stable",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

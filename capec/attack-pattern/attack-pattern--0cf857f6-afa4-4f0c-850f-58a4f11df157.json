@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--f923046d-910c-4bd0-bce5-1eecb474d078",
+    "id": "bundle--17cf7306-d1b1-4c31-bcbf-05b2e1a52759",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--0cf857f6-afa4-4f0c-850f-58a4f11df157",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2019-04-04T00:00:00.000Z",
+            "modified": "2020-07-30T00:00:00.000Z",
             "name": "Web Application Fingerprinting",
             "description": "An attacker sends a series of probes to a web application in order to elicit version-dependent and type-dependent behavior that assists in identifying the target. An attacker could learn information such as software versions, error pages, and response headers, variations in implementations of the HTTP protocol, directory structures, and other similar information about the targeted service. This information can then be used by an attacker to formulate a targeted attack plan. While web application fingerprinting is not intended to be damaging (although certain activities, such as network scans, can sometimes cause disruptions to vulnerable applications inadvertently) it may often pave the way for more damaging attacks.",
             "external_references": [
@@ -57,8 +57,9 @@
                 ]
             },
             "x_capec_example_instances": [
-                "\n               <xhtml:p>An attacker sends malformed requests or requests of nonexistent pages to the server. Consider the following HTTP responses.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Response from Apache 1.3.23</xhtml:div>$ nc apache.server.com80 GET / HTTP/3.0\n                  HTTP/1.1 400 Bad RequestDate: Sun, 15 Jun 2003 17:12: 37 GMTServer: Apache/1.3.23Connection: closeTransfer: chunkedContent-Type: text/HTML; charset=iso-8859-1</xhtml:div>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Response from IIS 5.0</xhtml:div>$ nc iis.server.com 80GET / HTTP/3.0\n                  HTTP/1.1 200 OKServer: Microsoft-IIS/5.0Content-Location: http://iis.example.com/Default.htmDate: Fri, 01 Jan 1999 20:14: 02 GMTContent-Type: text/HTMLAccept-Ranges: bytes Last-Modified: Fri, 01 Jan 1999 20:14: 02 GMTETag: W/e0d362a4c335be1: ae1Content-Length: 133</xhtml:div>\n               <xhtml:p>[R.170.2]</xhtml:p>\n            "
+                "\n               <xhtml:p>An attacker sends malformed requests or requests of nonexistent pages to the server. Consider the following HTTP responses.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Response from Apache 1.3.23</xhtml:div>$ nc apache.server.com80 GET / HTTP/3.0\n                  HTTP/1.1 400 Bad RequestDate: Sun, 15 Jun 2003 17:12: 37 GMTServer: Apache/1.3.23Connection: closeTransfer: chunkedContent-Type: text/HTML; charset=iso-8859-1</xhtml:div>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Response from IIS 5.0</xhtml:div>$ nc iis.server.com 80GET / HTTP/3.0\n                  HTTP/1.1 200 OKServer: Microsoft-IIS/5.0Content-Location: http://iis.example.com/Default.htmDate: Fri, 01 Jan 1999 20:14: 02 GMTContent-Type: text/HTMLAccept-Ranges: bytes Last-Modified: Fri, 01 Jan 1999 20:14: 02 GMTETag: W/e0d362a4c335be1: ae1Content-Length: 133</xhtml:div>\n               <xhtml:p>[REF-37]</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Request fingerprinting: </b>Use automated tools or send web server specific commands to web server and wait for server's response.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use automated tools or send web server specific commands to web server and then receive server's response.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Increase the accuracy of server fingerprinting of Web servers: </b>Attacker usually needs to send several different commands to accurately identify the web server. Attacker can also use automated tools to send requests to the server. The responses of the server may be different in terms of protocol behavior.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Observe the ordering of the several HTTP response headers. The ordering of the header of each server may have unique identities.</td></tr><tr><td>Send bad requests or requests of nonexistent pages to the server.</td></tr><tr><td>Attacker takes existing automated tools to recognize the type and the version of the web server in use.</td></tr></tbody></table><li> <p> <b>Identify Web Application Software: </b>After the web server platform software has been identified, the attacker start to identify web application technologies such as ASP, .NET, PHP and Java on the server.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Examine the file name extensions in URL, for example .php indicates PHP script interfaced with Apache server.</td></tr><tr><td>Examine the HTTP Response Headers. This may leak information about software signatures</td></tr><tr><td>Examine Cookies that may contain server's software information.</td></tr><tr><td>Check error pages.</td></tr></tbody></table><li> <p> <b>Identify Backend Database Version: </b>Determining the database engine type can assist attackers' attempt to successfully execute SQL injection. Some database API such as ODBC will show a database type as part of the driver information when reporting an error.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use tools to send bogus SQL query to the server and check error pages.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "Any web application can be fingerprinted. However, some configuration choices can limit the useful information an attacker may collect during a fingerprinting attack."
@@ -71,7 +72,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Low",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

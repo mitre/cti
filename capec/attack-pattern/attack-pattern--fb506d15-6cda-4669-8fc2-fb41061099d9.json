@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--26f3855c-8812-46a3-8c5f-b804d6a56e88",
+    "id": "bundle--16c7c360-8588-4823-8fc1-57da7f2b6278",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--fb506d15-6cda-4669-8fc2-fb41061099d9",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2018-07-31T00:00:00.000Z",
+            "modified": "2020-07-30T00:00:00.000Z",
             "name": "Double Encoding",
             "description": "The adversary utilizes a repeating of the encoding process for a set of characters (that is, character encoding a character encoding of a character) to obfuscate the payload of a particular request. This may allow the adversary to bypass filters that attempt to detect illegal characters or strings, such as those that might be used in traversal or injection attacks. Filters may be able to catch illegal encoded strings, but may not catch doubly encoded strings. For example, a dot (.), often used in path traversal attacks and therefore often blocked by filters, could be URL encoded as %2E. However, many filters recognize this encoding and would still block the request. In a double encoding, the % in the above URL encoding would be encoded again as %25, resulting in %252E which some filters might not catch, but which could still be interpreted as a dot (.) by interpreters on the target.",
             "external_references": [
@@ -85,6 +85,7 @@
             "x_capec_example_instances": [
                 "\n               <xhtml:p>Double Enconding Attacks can often be used to bypass Cross Site Scripting (XSS) detection and execute XSS attacks.:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">%253Cscript%253Ealert('This is an XSS Attack')%253C%252Fscript%253E</xhtml:div>\n               <xhtml:p>Since <, <, and / are often sued to perform web attacks, these may be captured by XSS filters. The use of double encouding prevents the filter from working as intended and allows the XSS to bypass dectection. This can allow an adversary to execute malicious code.</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the application for user-controllable inputs: </b>Using a browser, an automated tool or by inspecting the application, an attacker records all entry points to the application.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links and analyze the web pages to find entry points. Make special note of any links that include parameters in the URL.</td></tr><tr><td>Use a proxy tool to record all user input entry points visited during a manual traversal of the web application.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery.</td></tr><tr><td>Manually inspect the application to find entry points.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Probe entry points to locate vulnerabilities: </b>Try double-encoding for parts of the input in order to try to get past the filters. For instance, by double encoding certain characters in the URL (e.g. dots and slashes) an adversary may try to get access to restricted resources on the web server or force browse to protected pages (thus subverting the authorization service). An adversary can also attempt other injection style attacks using this attack pattern: command injection, SQL injection, etc.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Try to use double-encoding to bypass validation routines.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "Low",
             "x_capec_prerequisites": [
                 "The target's filters must fail to detect that a character has been doubly encoded but its interpreting engine must still be able to convert a doubly encoded character to an un-encoded character.",
@@ -96,7 +97,7 @@
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

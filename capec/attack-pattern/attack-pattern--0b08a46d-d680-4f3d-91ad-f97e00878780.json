@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--0e4d5e30-2629-4eb1-a4bb-ce7f2510e55a",
+    "id": "bundle--dca3cf90-2537-4c6b-b8ad-4d79dcdfa44e",
     "spec_version": "2.0",
     "objects": [
         {
@@ -90,6 +90,7 @@
             "x_capec_example_instances": [
                 "Most web servers have a public interface, even if the majority of the site is password protected, there is usually at least a login site and brochureware that is publicly available. HTTP requests to the site are also generally logged to a Web log. From an attacker point of view, standard HTTP requests containing a malicious payload can be sent to the public website (with no other access required), when those requests appear in the log (such as http://victimsite/index.html?< malicious script> if they are followed by an administrator this may be sufficient to probe the administrator's host or local network."
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine Application Web Server Log File Format: </b>The attacker observes the system and looks for indicators of which logging utility is being used by the web server.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine logging utility being used by application web server (e.g. log4j), only possible if the application is known by the attacker or if the application returns error messages with logging utility information.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Determine Injectable Content: </b>The attacker launches various logged actions with malicious data to determine what sort of log injection is possible.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Attacker triggers logged actions with maliciously crafted data as inputs, parameters, arguments, etc.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Manipulate Log Files: </b>The attacker alters the log contents either directly through manipulation or forging or indirectly through injection of specially crafted request that the web server will receive and write into the logs. This type of attack typically follows another attack and is used to try to cover the traces of the previous attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>\n                  <xhtml:p>Indirectly through injection, use carriage return and/or line feed characters to start a new line in the log file, and then, add a fake entry.</xhtml:p>\n                  <xhtml:p>For example: The HTTP request for \"/index.html%0A%0DIP_ADDRESS- - DATE_FORMAT] \"GET /forged-path HTTP/1.1\" 200 - \"-\" USER_AGENT\" may add the log line into Apache \"access_log\" (for example). Different applications may require different encodings of the carriage return and line feed characters.</xhtml:p>\n               </td></tr><tr><td>\n                  <xhtml:p>Directly through log file or database manipulation, use carriage return and/or line feed characters to start a new line in the log file, and then, add a fake entry.</xhtml:p>\n                  <xhtml:p>For example: The HTTP request for \"/index.html%0A%0DIP_ADDRESS- - DATE_FORMAT] \"GET /forged-path HTTP/1.1\" 200 - \"-\" USER_AGENT\" may add the log line into Apache \"access_log\" (for example). Different applications may require different encodings of the carriage return and line feed characters.</xhtml:p>\n               </td></tr><tr><td>Directly through log file or database manipulation, modify existing log entries.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_prerequisites": [
                 "Target server software must be a HTTP server that performs web logging."
@@ -102,7 +103,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }

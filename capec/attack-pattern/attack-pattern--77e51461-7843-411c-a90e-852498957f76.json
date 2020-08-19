@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--9f9c9d71-7447-4326-a0aa-c23cfc9a18b8",
+    "id": "bundle--6bad224b-664c-4a65-8408-fe9fa13d5945",
     "spec_version": "2.0",
     "objects": [
         {
@@ -80,6 +80,7 @@
                 "The most straightforward example is an application that reads in input from the user and stores it in an internal buffer but does not check that the size of the input data is less than or equal to the size of the buffer. If the user enters excessive length data, the buffer may overflow leading to the application crashing, or worse, enabling the user to cause execution of injected code.",
                 "Many web servers enforce security in web applications through the use of filter plugins. An example is the SiteMinder plugin used for authentication. An overflow in such a plugin, possibly through a long URL or redirect parameter, can allow an adversary not only to bypass the security checks but also execute arbitrary code on the target web server in the context of the user that runs the web server process."
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary identifies a buffer to target. Buffer regions are either allotted on the stack or the heap, and the exact nature of attack would vary depending on the location of the buffer</p></li><li> <p>Next, the adversary identifies an injection vector to deliver the excessive content to the targeted buffer.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary crafts the content to be injected. If the intent is to simply cause the software to crash, the content need only consist of an excessive quantity of random data. If the intent is to leverage the overflow for execution of arbitrary code, the adversary will craft a set of content that not only overflows the targeted buffer but does so in such a way that the overwritten return address is replaced with one of the adversaries' choosing which points to code injected by the adversary.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The adversary injects the content into the targeted software.</p></li><li> <p>Upon successful exploitation, the system either crashes or control of the program is returned to a location of the adversaries' choice. This can result in execution of arbitrary code or escalated privileges, depending upon the exploited target.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "Targeted software performs buffer operations.",
@@ -95,7 +96,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.2"
+            "x_capec_version": "3.3"
         }
     ]
 }
