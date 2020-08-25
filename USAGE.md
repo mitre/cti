@@ -213,15 +213,12 @@ from stix2.v20 import AttackPattern
 You can see a full list of the classes which have versioned imports [here](https://stix2.readthedocs.io/en/latest/api/stix2.v20.html).
 
 ### taxii2client
-[taxii2-client can be installed by following the instructions on their repository](https://github.com/oasis-open/cti-taxii-client#installation). How taxii2client should be imported depends on what version you have installed. You can check your installed version using `pip3 show taxii2-client | grep Version`.
-- **If version >= 2.0.0**, you *must* use the `v20` import in order to avoid [HTTP 406](https://httpstatuses.com/406) responses when connecting to the ATT&CK TAXII server:
-    ```python
-    from taxii2client.v20 import Collection
-    ```
-- **If version < 2.0.0**, you *must not* use the `v20` import because it was introduced in version 2.0.0:
-    ```python
-    from taxii2client import Collection
-    ```
+[taxii2-client can be installed by following the instructions on their repository](https://github.com/oasis-open/cti-taxii-client#installation). The ATT&CK TAXII server implements the 2.0 version of the TAXII specification, but the default import of `taxii2client` (version 2.0.0 and above) uses the 2.1 version of the TAXII specification, which can lead to 406 responses when connecting to our TAXII server if not accounted for. 
+
+If the TAXII Client is getting a 406 Response, make sure you are running the latest version (`pip install --upgrade stix2` or `pip install --upgrade taxii2-client`). In addition, make sure you are running the 2.0 version of the client (using the `v20` import) as shown below in order to communicate with the ATT&CK TAXII 2.0 Server.
+```python
+from taxii2client.v20 import Collection
+```
 
 ## Access local content
 Many users may opt to access the ATT&CK content via a local copy of the STIX data on this repo. This can be advantageous for several reasons:
@@ -433,22 +430,22 @@ ATT&CK Techniques and sub-techniques are both represented as `attack-pattern` ob
 ```python
 from stix2 import Filter
 
-def get_techniques_or_subtechniques(src, include="both"):
+def get_techniques_or_subtechniques(thesrc, include="both"):
     """Filter Techniques or Sub-Techniques from ATT&CK Enterprise Domain.
     include argument has three options: "techniques", "subtechniques", or "both"
     depending on the intended behavior."""
     if include == "techniques":
-        query_results = src.query([
+        query_results = thesrc.query([
             Filter('type', '=', 'attack-pattern'),
             Filter('x_mitre_is_subtechnique', '=', False)
         ])
     elif include == "subtechniques":
-        query_results = src.query([
+        query_results = thesrc.query([
             Filter('type', '=', 'attack-pattern'),
             Filter('x_mitre_is_subtechnique', '=', True)
         ])
     elif include == "both":
-        query_results = src.query([
+        query_results = thesrc.query([
             Filter('type', '=', 'attack-pattern')
         ])
     else:
@@ -501,20 +498,17 @@ The `phase_name` of each kill chain phase corresponds to the `x_mitre_shortname`
 from stix2 import Filter
 
 def get_tactic_techniques(thesrc, tactic):
-    techs =  thesrc.query([
-        Filter('type', '=', 'attack-pattern'),
-        Filter('kill_chain_phases.phase_name', '=', tactic)
-    ])
-
     # double checking the kill chain is MITRE ATT&CK
     # note: kill_chain_name is different for other domains:
     #    - enterprise: "mitre-attack"
     #    - mobile: "mitre-mobile-attack"
     #    - pre: "pre-attack"
-    return [t for t in techs if {
-            'kill_chain_name' : 'mitre-attack',
-            'phase_name' : tactic,
-    } in t.kill_chain_phases]
+    return thesrc.query([
+        Filter('type', '=', 'attack-pattern'),
+        Filter('kill_chain_phases.phase_name', '=', tactic),
+        Filter('kill_chain_phases.kill_chain_name', '=', 'mitre-attack'),
+    ])
+
 
 # use the x_mitre_shortname as argument
 get_tactic_techniques(src, 'defense-evasion')
@@ -585,17 +579,17 @@ The argument to each accessor function is a STIX2 MemoryStore to build the relat
 from stix2 import MemoryStore, Filter
 from itertools import chain
 
-def get_related(ms, src_type, rel_type, target_type, reverse=False):
+def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
     """build relationship mappings
        params:
-         ms: MemoryStore to build relationship lookups for
+         thesrc: MemoryStore to build relationship lookups for
          src_type: source type for the relationships, e.g "attack-pattern"
          rel_type: relationship type for the relationships, e.g "uses"
          target_type: target type for the relationship, e.g "intrusion-set"
          reverse: build reverse mapping of target to source
     """
 
-    relationships = ms.query([
+    relationships = thesrc.query([
         Filter('type', '=', 'relationship'),
         Filter('relationship_type', '=', rel_type),
         Filter('revoked', '=', False)
@@ -633,12 +627,12 @@ def get_related(ms, src_type, rel_type, target_type, reverse=False):
                     }]
     # all objects of relevant type
     if not reverse:
-        targets = ms.query([
+        targets = thesrc.query([
             Filter('type', '=', target_type),
             Filter('revoked', '=', False)
         ])
     else:
-        targets = ms.query([
+        targets = thesrc.query([
             Filter('type', '=', src_type),
             Filter('revoked', '=', False)
         ])
@@ -664,49 +658,49 @@ def get_related(ms, src_type, rel_type, target_type, reverse=False):
 
 
 # software:group
-def software_used_by_groups(ms):
+def software_used_by_groups(thesrc):
     """returns group_id => {software, relationship} for each software used by the group."""
-    return get_related(ms, "intrusion-set", "uses", "tool") + get_related(ms, "intrusion-set", "uses", "malware")
+    return get_related(thesrc, "intrusion-set", "uses", "tool") + get_related(thesrc, "intrusion-set", "uses", "malware")
 
-def groups_using_software(ms):
+def groups_using_software(thesrc):
     """returns software_id => {group, relationship} for each group using the software."""
-    return get_related(ms, "intrusion-set", "uses", "tool", reverse=True) + get_related(ms, "intrusion-set", "uses", "malware", reverse=True)
+    return get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True) + get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True)
 
 # technique:group
-def techniques_used_by_groups(ms):
+def techniques_used_by_groups(thesrc):
     """returns group_id => {technique, relationship} for each technique used by the group."""
-    return get_related(ms, "intrusion-set", "uses", "attack-pattern")
+    return get_related(thesrc, "intrusion-set", "uses", "attack-pattern")
 
-def groups_using_technique(ms):
+def groups_using_technique(thesrc):
     """returns technique_id => {group, relationship} for each group using the technique."""
-    return get_related(ms, "intrusion-set", "uses", "attack-pattern", reverse=True)
+    return get_related(thesrc, "intrusion-set", "uses", "attack-pattern", reverse=True)
 
 # technique:software
-def techniques_used_by_software(ms):
+def techniques_used_by_software(thesrc):
     """return software_id => {technique, relationship} for each technique used by the software."""
-    return get_related(ms, "malware", "uses", "attack-pattern") + get_related(ms, "tool", "uses", "attack-pattern")
+    return get_related(thesrc, "malware", "uses", "attack-pattern") + get_related(thesrc, "tool", "uses", "attack-pattern")
 
-def software_using_technique(ms):
+def software_using_technique(thesrc):
     """return technique_id  => {software, relationship} for each software using the technique."""
-    return get_related(ms, "malware", "uses", "attack-pattern", reverse=True) + get_related(ms, "tool", "uses", "attack-pattern", reverse=True)
+    return get_related(thesrc, "malware", "uses", "attack-pattern", reverse=True) + get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True)
 
 # technique:mitigation
-def mitigation_mitigates_techniques(ms):
+def mitigation_mitigates_techniques(thesrc):
     """return mitigation_id => {technique, relationship} for each technique mitigated by the mitigation."""
-    return get_related(ms, "course-of-action", "mitigates", "attack-pattern", reverse=False)
+    return get_related(thesrc, "course-of-action", "mitigates", "attack-pattern", reverse=False)
 
-def technique_mitigated_by_mitigations(ms):
+def technique_mitigated_by_mitigations(thesrc):
     """return technique_id => {mitigation, relationship} for each mitigation of the technique."""
-    return get_related(ms, "course-of-action", "mitigates", "attack-pattern", reverse=True)
+    return get_related(thesrc, "course-of-action", "mitigates", "attack-pattern", reverse=True)
 
 # technique:subtechnique
-def subtechniques_of(ms):
+def subtechniques_of(thesrc):
     """return technique_id => {subtechnique, relationship} for each subtechnique of the technique."""
-    return get_related(ms, "attack-pattern", "subtechnique-of", "attack-pattern", reverse=True)
+    return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern", reverse=True)
 
-def parent_technique_of(ms):
+def parent_technique_of(thesrc):
     """return subtechnique_id => {technique, relationship} describing the parent technique of the subtechnique"""
-    return get_related(ms, "attack-pattern", "subtechnique-of", "attack-pattern")[0]
+    return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern")[0]
 ```
 
 Example usage: 
@@ -735,27 +729,27 @@ The following recipe can be used to retrieve the techniques used by a group's so
 from stix2.utils import get_type_from_id
 from stix2 import Filter
 
-def get_techniques_by_group_software(src, group_stix_id):
+def get_techniques_by_group_software(thesrc, group_stix_id):
     # get the malware, tools that the group uses
     group_uses = [
-        r for r in src.relationships(group_stix_id, 'uses', source_only=True)
+        r for r in thesrc.relationships(group_stix_id, 'uses', source_only=True)
         if get_type_from_id(r.target_ref) in ['malware', 'tool']
     ]
 
     # get the technique stix ids that the malware, tools use
-    software_uses = src.query([
+    software_uses = thesrc.query([
         Filter('type', '=', 'relationship'),
         Filter('relationship_type', '=', 'uses'),
         Filter('source_ref', 'in', [r.source_ref for r in group_uses])
     ])
 
     #get the techniques themselves
-    return src.query([
+    return thesrc.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('id', 'in', [r.target_ref for r in software_uses])
     ])
 
-get_techniques_by_group_software(fs, "intrusion-set--f047ee18-7985-4946-8bfb-4ed754d3a0dd")
+get_techniques_by_group_software(src, "intrusion-set--f047ee18-7985-4946-8bfb-4ed754d3a0dd")
 ```
 
 ## Working with deprecated and revoked objects
