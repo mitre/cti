@@ -6,7 +6,7 @@ This document describes how to query and manipulate ATT&CK data from either this
 - [Accessing ATT&CK data in python](#accessing-attck-data-in-python), which describes different methodologies that can be used to load the ATT&CK data into a script
 - [Python recipes](#Python-Recipes), which provides python3 examples of common ways to query the ATT&CK data once loaded
 
-The latter two sections on the programmatic use of ATT&CK heavily utilize the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically.
+The latter two sections on the programmatic use of ATT&CK heavily utilize the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically. See also the section on [Requirements and imports](#requirements-and-imports).
 
 This document describes how ATT&CK implements and extends the STIX format. To find out more about STIX, please see [the STIX 2.0 website](https://oasis-open.github.io/cti-documentation/stix/intro). 
 
@@ -188,6 +188,38 @@ implementing the DataStore API and can be used interchangeably with the recipes 
 
 This section utilizes the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically.
 
+## Requirements and imports
+Before installing requirements, we recommend setting up a virtual environment:
+1. Create virtual environment:
+    - macOS and Linux: `python3 -m venv env`
+    - Windows: `py -m venv env`
+2. Activate the virtual environment:
+    - macOS and Linux: `source env/bin/activate`
+    - Windows: `env/Scripts/activate.bat`
+
+### stix2
+[stix2 can be installed by following the instructions on their repository](https://github.com/oasis-open/cti-python-stix2#installation). Imports for the recipes in this repository can be done from the base package, for example:
+
+```python
+from stix2 import Filter
+```
+
+However, if you are aiming to extend the ATT&CK dataset with new objects or implement complex workflows, you may need to use the `v20` specifier for some imports. This ensures that the objects use the STIX 2.0 API instead of the STIX 2.1 API. For example:
+
+```python
+from stix2.v20 import AttackPattern
+```
+
+You can see a full list of the classes which have versioned imports [here](https://stix2.readthedocs.io/en/latest/api/stix2.v20.html).
+
+### taxii2client
+[taxii2-client can be installed by following the instructions on their repository](https://github.com/oasis-open/cti-taxii-client#installation). The ATT&CK TAXII server implements the 2.0 version of the TAXII specification, but the default import of `taxii2client` (version 2.0.0 and above) uses the 2.1 version of the TAXII specification, which can lead to 406 responses when connecting to our TAXII server if not accounted for. 
+
+If the TAXII Client is getting a 406 Response, make sure you are running the latest version (`pip install --upgrade stix2` or `pip install --upgrade taxii2-client`). In addition, make sure you are running the 2.0 version of the client (using the `v20` import) as shown below in order to communicate with the ATT&CK TAXII 2.0 Server.
+```python
+from taxii2client.v20 import Collection
+```
+
 ## Access local content
 Many users may opt to access the ATT&CK content via a local copy of the STIX data on this repo. This can be advantageous for several reasons:
 - Doesn't require internet access after the initial download
@@ -199,17 +231,17 @@ Each domain in this repo is formatted according to the [STIX2 FileSystem spec](h
 Therefore you can use a `FileSystemSource` to load a domain, for example to load the enterprise-attack domain:
 
 ```python
-import stix2
+from stix2 import FileSystemSource
 
-src = stix2.FileSystemSource('./cti/enterprise-attack')
+src = FileSystemSource('./cti/enterprise-attack')
 ```
 
 ### Access via bundle
 If you instead prefer to download just the domain bundle, e.g [enterprise-attack.json](/enterprise-attack/enterprise-attack.json), you can still load this using a MemoryStore:
 ```python
-import stix2
+from stix2 import MemoryStore
 
-src = stix2.MemoryStore()
+src = MemoryStore()
 src.load_from_file("enterprise-attack.json")
 ```
 
@@ -231,7 +263,7 @@ The following recipe demonstrates how to access the enterprise-attack data from 
 
 ```python
 from stix2 import TAXIICollectionSource
-from taxii2client import Collection
+from taxii2client.v20 import Collection # only specify v20 if your installed version is >= 2.0.0
 
 collections = {
     "enterprise_attack": "95ecc380-afe9-11e4-9b6c-751b66dd541e",
@@ -252,12 +284,12 @@ access data on a branch of the MITRE/CTI repo (the TAXII server only holds the m
 
 ```python
 import requests
-import stix2
+from stix2 import MemoryStore
 
 def get_data_from_branch(domain, branch="master"):
     """get the ATT&CK STIX data from MITRE/CTI. Domain should be 'enterprise-attack', 'mobile-attack' or 'pre-attack'. Branch should typically be master."""
     stix_json = requests.get(f"https://raw.githubusercontent.com/mitre/cti/{branch}/{domain}/{domain}.json").json()
-    return stix2.MemoryStore(stix_data=stix_json["objects"])
+    return MemoryStore(stix_data=stix_json["objects"])
 
 src = get_data_from_branch("enterprise-attack")
 ```
@@ -270,12 +302,12 @@ In addition to checking out the repo under the tag for a given version or downlo
 
 ```python
 import requests
-import stix2
+from stix2 import MemoryStore
 
 def get_data_from_version(domain, version):
     """get the ATT&CK STIX data for the given version from MITRE/CTI. Domain should be 'enterprise-attack', 'mobile-attack' or 'pre-attack'."""
     stix_json = requests.get(f"https://raw.githubusercontent.com/mitre/cti/ATT%26CK-v{version}/{domain}/{domain}.json").json()
-    return stix2.MemoryStore(stix_data=stix_json["objects"])
+    return MemoryStore(stix_data=stix_json["objects"])
 
 src = get_data_from_version("enterprise-attack", "5.2")
 ```
@@ -299,7 +331,9 @@ domains into a single DataStore. Use any of the methods above to acquire the ind
 a single CompositeDataSource:
 
 ```python
-src = stix2.CompositeDataSource()
+from stix2 import CompositeDataSource
+
+src = CompositeDataSource()
 src.add_data_sources([enterprise_attack_src, pre_attack_src, mobile_attack_src])
 ```
 
@@ -308,7 +342,7 @@ You can then use this CompositeDataSource just as you would the DataSource for a
 # Python recipes
 Below are example python recipes which can be used to work with ATT&CK data. They assume the existence of an object implementing the DataStore API. Any of the methods outlined in the [Accessing ATT&CK data in python](#accessing-ATTCK-Data-in-Python) section should provide an object implementing this API.
 
-This section utilizes the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically.
+This section utilizes the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically. See also the section on [Requirements and imports](#requirements-and-imports).
 
 ## Getting an object
 The recipes in this section address how to query the dataset for a single object.
@@ -324,15 +358,19 @@ g0075 = src.get("intrusion-set--f40eb8ce-2a74-4e56-89a1-227021410142")
 The following recipe can be used to retrieve an object according to its ATT&CK ID:
 
 ```python
-g0075 = src.query([ stix2.Filter("external_references.external_id", "=", "G0075") ])[0]
+from stix2 import Filter
+
+g0075 = src.query([ Filter("external_references.external_id", "=", "G0075") ])[0]
 ```
 
 Note: in prior versions of ATT&CK, mitigations had 1:1 relationships with techniques and shared their technique's ID. Therefore the above method does not work properly for techniques because technique ATTT&CK IDs are not truly unique. By specifying the STIX type you're looking for as `attack-pattern` you can avoid this issue. 
 
 ```python
+from stix2 import Filter
+
 t1134 = src.query([ 
-    stix2.Filter("external_references.external_id", "=", "T1134"), 
-    stix2.Filter("type", "=", "attack-pattern")
+    Filter("external_references.external_id", "=", "T1134"), 
+    Filter("type", "=", "attack-pattern")
 ])[0]
 ```
 
@@ -342,6 +380,8 @@ The old 1:1 mitigations causing this issue are deprecated, so you can also filte
 The following recipe retrieves an object according to its name:
 
 ```python
+from stix2 import Filter
+
 def get_technique_by_name(thesrc, name):
     filt = [
         Filter('type', '=', 'attack-pattern'),
@@ -356,6 +396,8 @@ get_technique_by_name(src, 'System Information Discovery')
 The following methodology can be used to find the group corresponding to a given alias:
 
 ```python
+from stix2 import Filter
+
 def get_group_by_alias(thesrc, alias):
     return thesrc.query([
         Filter('type', '=', 'intrusion-set'),
@@ -376,31 +418,35 @@ The recipes in this section address how to query the dataset for multiple object
 See [The ATT&CK data model](#The-ATTCK-Data-Model) for mappings of ATT&CK type to STIX type.
 
 ```python
+from stix2 import Filter
+
 # use the appropriate STIX type in the query according to the desired ATT&CK type
-groups = src.query([ stix2.Filter("type", "=", "intrusion-set") ])
+groups = src.query([ Filter("type", "=", "intrusion-set") ])
 ```
 
 #### Getting techniques or sub-techniques
 ATT&CK Techniques and sub-techniques are both represented as `attack-pattern` objects. Therefore further parsing is necessary to get specifically techniques or sub-techniques.
 
 ```python
-def get_techniques_or_subtechniques(src, include="both"):
+from stix2 import Filter
+
+def get_techniques_or_subtechniques(thesrc, include="both"):
     """Filter Techniques or Sub-Techniques from ATT&CK Enterprise Domain.
     include argument has three options: "techniques", "subtechniques", or "both"
     depending on the intended behavior."""
     if include == "techniques":
-        query_results = src.query([
-            stix2.Filter('type', '=', 'attack-pattern'),
-            stix2.Filter('x_mitre_is_subtechnique', '=', False)
+        query_results = thesrc.query([
+            Filter('type', '=', 'attack-pattern'),
+            Filter('x_mitre_is_subtechnique', '=', False)
         ])
     elif include == "subtechniques":
-        query_results = src.query([
-            stix2.Filter('type', '=', 'attack-pattern'),
-            stix2.Filter('x_mitre_is_subtechnique', '=', True)
+        query_results = thesrc.query([
+            Filter('type', '=', 'attack-pattern'),
+            Filter('x_mitre_is_subtechnique', '=', True)
         ])
     elif include == "both":
-        query_results = src.query([
-            stix2.Filter('type', '=', 'attack-pattern')
+        query_results = thesrc.query([
+            Filter('type', '=', 'attack-pattern')
         ])
     else:
         raise RuntimeError("Unknown option %s!" % include)
@@ -416,6 +462,8 @@ subtechniques = remove_revoked_deprecated(subtechniques) # see https://github.co
 Sometimes it may be useful to query objects by the content of their description:
 
 ```python
+from stix2 import Filter
+
 def get_techniques_by_content(thesrc, content):
     techniques = src.query([ Filter('type', '=', 'attack-pattern') ])
     return list(filter(lambda t: content.lower() in t.description.lower(), techniques))
@@ -430,6 +478,8 @@ Techniques are associated with one or more platforms. You can query the techniqu
 under a specific platform with the following code:
 
 ```python
+from stix2 import Filter
+
 def get_techniques_by_platform(thesrc, platform):
     return thesrc.query([
         Filter('type', '=', 'attack-pattern'),
@@ -445,21 +495,20 @@ Techniques are related to tactics by their kill_chain_phases property.
 The `phase_name` of each kill chain phase corresponds to the `x_mitre_shortname` of a tactic.
 
 ```python
-def get_tactic_techniques(thesrc, tactic):
-    techs =  thesrc.query([
-        Filter('type', '=', 'attack-pattern'),
-        Filter('kill_chain_phases.phase_name', '=', tactic)
-    ])
+from stix2 import Filter
 
+def get_tactic_techniques(thesrc, tactic):
     # double checking the kill chain is MITRE ATT&CK
     # note: kill_chain_name is different for other domains:
     #    - enterprise: "mitre-attack"
     #    - mobile: "mitre-mobile-attack"
     #    - pre: "pre-attack"
-    return [t for t in techs if {
-            'kill_chain_name' : 'mitre-attack',
-            'phase_name' : tactic,
-    } in t.kill_chain_phases]
+    return thesrc.query([
+        Filter('type', '=', 'attack-pattern'),
+        Filter('kill_chain_phases.phase_name', '=', tactic),
+        Filter('kill_chain_phases.kill_chain_name', '=', 'mitre-attack'),
+    ])
+
 
 # use the x_mitre_shortname as argument
 get_tactic_techniques(src, 'defense-evasion')
@@ -471,10 +520,12 @@ found within the `tactic_refs` property in a matrix. The order of the tactics in
 the ordering of the tactics in that matrix. The following recipe returns a structured list of tactics within each matrix of the input DataStore.
 
 ```python
+from stix2 import Filter
+
 def getTacticsByMatrix(thesrc):
     tactics = {}
     matrix = thesrc.query([
-        stix2.Filter('type', '=', 'x-mitre-matrix'),
+        Filter('type', '=', 'x-mitre-matrix'),
     ])
     
     for i in range(len(matrix)):
@@ -494,6 +545,8 @@ This code could be used within a larger function or script to alert when a new o
 has been added to the ATT&CK catalog. 
 
 ```python
+from stix2 import Filter
+
 def get_created_after(thesrc, timestamp):
     filt = [
         Filter('created', '>', timestamp)
@@ -526,17 +579,17 @@ The argument to each accessor function is a STIX2 MemoryStore to build the relat
 from stix2 import MemoryStore, Filter
 from itertools import chain
 
-def get_related(ms, src_type, rel_type, target_type, reverse=False):
+def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
     """build relationship mappings
        params:
-         ms: MemoryStore to build relationship lookups for
+         thesrc: MemoryStore to build relationship lookups for
          src_type: source type for the relationships, e.g "attack-pattern"
          rel_type: relationship type for the relationships, e.g "uses"
          target_type: target type for the relationship, e.g "intrusion-set"
          reverse: build reverse mapping of target to source
     """
 
-    relationships = ms.query([
+    relationships = thesrc.query([
         Filter('type', '=', 'relationship'),
         Filter('relationship_type', '=', rel_type),
         Filter('revoked', '=', False)
@@ -574,12 +627,12 @@ def get_related(ms, src_type, rel_type, target_type, reverse=False):
                     }]
     # all objects of relevant type
     if not reverse:
-        targets = ms.query([
+        targets = thesrc.query([
             Filter('type', '=', target_type),
             Filter('revoked', '=', False)
         ])
     else:
-        targets = ms.query([
+        targets = thesrc.query([
             Filter('type', '=', src_type),
             Filter('revoked', '=', False)
         ])
@@ -605,49 +658,49 @@ def get_related(ms, src_type, rel_type, target_type, reverse=False):
 
 
 # software:group
-def software_used_by_groups(ms):
+def software_used_by_groups(thesrc):
     """returns group_id => {software, relationship} for each software used by the group."""
-    return get_related(ms, "intrusion-set", "uses", "tool") + get_related(ms, "intrusion-set", "uses", "malware")
+    return get_related(thesrc, "intrusion-set", "uses", "tool") + get_related(thesrc, "intrusion-set", "uses", "malware")
 
-def groups_using_software(ms):
+def groups_using_software(thesrc):
     """returns software_id => {group, relationship} for each group using the software."""
-    return get_related(ms, "intrusion-set", "uses", "tool", reverse=True) + get_related(ms, "intrusion-set", "uses", "malware", reverse=True)
+    return get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True) + get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True)
 
 # technique:group
-def techniques_used_by_groups(ms):
+def techniques_used_by_groups(thesrc):
     """returns group_id => {technique, relationship} for each technique used by the group."""
-    return get_related(ms, "intrusion-set", "uses", "attack-pattern")
+    return get_related(thesrc, "intrusion-set", "uses", "attack-pattern")
 
-def groups_using_technique(ms):
+def groups_using_technique(thesrc):
     """returns technique_id => {group, relationship} for each group using the technique."""
-    return get_related(ms, "intrusion-set", "uses", "attack-pattern", reverse=True)
+    return get_related(thesrc, "intrusion-set", "uses", "attack-pattern", reverse=True)
 
 # technique:software
-def techniques_used_by_software(ms):
+def techniques_used_by_software(thesrc):
     """return software_id => {technique, relationship} for each technique used by the software."""
-    return get_related(ms, "malware", "uses", "attack-pattern") + get_related(ms, "tool", "uses", "attack-pattern")
+    return get_related(thesrc, "malware", "uses", "attack-pattern") + get_related(thesrc, "tool", "uses", "attack-pattern")
 
-def software_using_technique(ms):
+def software_using_technique(thesrc):
     """return technique_id  => {software, relationship} for each software using the technique."""
-    return get_related(ms, "malware", "uses", "attack-pattern", reverse=True) + get_related(ms, "tool", "uses", "attack-pattern", reverse=True)
+    return get_related(thesrc, "malware", "uses", "attack-pattern", reverse=True) + get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True)
 
 # technique:mitigation
-def mitigation_mitigates_techniques(ms):
+def mitigation_mitigates_techniques(thesrc):
     """return mitigation_id => {technique, relationship} for each technique mitigated by the mitigation."""
-    return get_related(ms, "course-of-action", "mitigates", "attack-pattern", reverse=False)
+    return get_related(thesrc, "course-of-action", "mitigates", "attack-pattern", reverse=False)
 
-def technique_mitigated_by_mitigations(ms):
+def technique_mitigated_by_mitigations(thesrc):
     """return technique_id => {mitigation, relationship} for each mitigation of the technique."""
-    return get_related(ms, "course-of-action", "mitigates", "attack-pattern", reverse=True)
+    return get_related(thesrc, "course-of-action", "mitigates", "attack-pattern", reverse=True)
 
 # technique:subtechnique
-def subtechniques_of(ms):
+def subtechniques_of(thesrc):
     """return technique_id => {subtechnique, relationship} for each subtechnique of the technique."""
-    return get_related(ms, "attack-pattern", "subtechnique-of", "attack-pattern", reverse=True)
+    return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern", reverse=True)
 
-def parent_technique_of(ms):
+def parent_technique_of(thesrc):
     """return subtechnique_id => {technique, relationship} describing the parent technique of the subtechnique"""
-    return get_related(ms, "attack-pattern", "subtechnique-of", "attack-pattern")[0]
+    return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern")[0]
 ```
 
 Example usage: 
@@ -674,28 +727,29 @@ The following recipe can be used to retrieve the techniques used by a group's so
 
 ```python
 from stix2.utils import get_type_from_id
+from stix2 import Filter
 
-def get_techniques_by_group_software(src, group_stix_id):
+def get_techniques_by_group_software(thesrc, group_stix_id):
     # get the malware, tools that the group uses
     group_uses = [
-        r for r in src.relationships(group_stix_id, 'uses', source_only=True)
+        r for r in thesrc.relationships(group_stix_id, 'uses', source_only=True)
         if get_type_from_id(r.target_ref) in ['malware', 'tool']
     ]
 
     # get the technique stix ids that the malware, tools use
-    software_uses = src.query([
+    software_uses = thesrc.query([
         Filter('type', '=', 'relationship'),
         Filter('relationship_type', '=', 'uses'),
         Filter('source_ref', 'in', [r.source_ref for r in group_uses])
     ])
 
     #get the techniques themselves
-    return src.query([
+    return thesrc.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('id', 'in', [r.target_ref for r in software_uses])
     ])
 
-get_techniques_by_group_software(fs, "intrusion-set--f047ee18-7985-4946-8bfb-4ed754d3a0dd")
+get_techniques_by_group_software(src, "intrusion-set--f047ee18-7985-4946-8bfb-4ed754d3a0dd")
 ```
 
 ## Working with deprecated and revoked objects
@@ -709,6 +763,8 @@ longer maintained by ATT&CK.
 Revoked and deprecated objects can be removed quite easily:
 
 ```python
+from stix2 import Filter
+
 def remove_revoked_deprecated(stix_objects):
     """Remove any revoked or deprecated objects from queries made to the data source"""
     # Note we use .get() because the property may not be present in the JSON data. The default is False
@@ -720,7 +776,7 @@ def remove_revoked_deprecated(stix_objects):
         )
     )
 
-mitigations = src.query([ stix2.Filter("type", "=", "course-of-action") ])
+mitigations = src.query([ Filter("type", "=", "course-of-action") ])
 mitigations = remove_revoked_deprecated(mitigations)
 ```
 
@@ -729,11 +785,13 @@ mitigations = remove_revoked_deprecated(mitigations)
 When an object is replaced by another object, it is marked with the field `revoked` and a relationship of type `revoked-by` is created where the `source_ref` is the revoked object and the `target_ref` is the revoking object. This relationship can be followed to find the replacing object:
 
 ```python
+from stix2 import Filter
+
 def getRevokedBy(stix_id, thesrc):
     relations = thesrc.relationships(stix_id, 'revoked-by', source_only=True)
     revoked_by = thesrc.query([
-        stix2.Filter('id', 'in', [r.target_ref for r in relations]),
-        stix2.Filter('revoked', '=', False)
+        Filter('id', 'in', [r.target_ref for r in relations]),
+        Filter('revoked', '=', False)
     ])
     if revoked_by is not None:
         revoked_by = revoked_by[0]
