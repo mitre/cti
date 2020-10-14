@@ -119,10 +119,11 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 | `x_mitre_platforms` | string[] | Enterprise & Mobile domains | List of platforms that apply to the technique. |
 | `x_mitre_data_sources` | string[] | Enterprise domain | Sources of information that may be used to identify the action or result of the action being performed. |
 | `x_mitre_is_subtechnique` | boolean | Enterprise domain | If true, this `attack-pattern` is a sub-technique. See [sub-techniques](#sub-techniques). |
+| `x_mitre_system_requirements` | string | Enterprise domain | Additional information on requirements the adversary needs to meet or about the state of the system (software, patch level, etc.) that may be required for the technique to work. |
 | `x_mitre_tactic_types` | string | Mobile domain |  "Post-Adversary Device Access", "Pre-Adversary Device Access", or "Without Adversary Device Access" |
 | `x_mitre_permissions_required` | string[] | Enterprise domain in the _Privilege Escalation_ tactic | The lowest level of permissions the adversary is required to be operating within to perform the technique on a system. |
 | `x_mitre_defense_bypassed` | string[] | Enterprise domain in the _Defense Evasion_ tactic | List of defensive tools, methodologies, or processes the technique can bypass. |
-| `x_mitre_supports_remote` | boolean | Enterprise domain in the _Execution_ tactic | If true, the technique can be used to execute something on a remote system. |
+| `x_mitre_remote_support` | boolean | Enterprise domain in the _Execution_ tactic | If true, the technique can be used to execute something on a remote system. |
 
 Techniques map into tactics by use of their `kill_chain_phases` property. Where the `kill_chain_name` is `mitre-attack`, `mitre-mobile-attack` or `pre-attack` (for enterprise, mobile, and pre-attack domains respectively), the `phase_name` corresponds to the `x_mitre_shortname` property of an `x-mitre-tactic` object.
 
@@ -456,6 +457,23 @@ def get_techniques_or_subtechniques(thesrc, include="both"):
 
 subtechniques = get_techniques_or_subtechniques(src, "subtechniques")
 subtechniques = remove_revoked_deprecated(subtechniques) # see https://github.com/mitre/cti/blob/master/USAGE.md#removing-revoked-and-deprecated-objects
+```
+
+#### Getting software
+Because software are the union of two STIX types (`tool` and `malware`), the process for accessing software is slightly more complicated.
+
+```python
+from itertools import chain
+from stix2 import Filter
+def get_software(thesrc):
+    return list(chain.from_iterable(
+        thesrc.query(f) for f in [
+            Filter("type", "=", "tool"), 
+            Filter("type", "=", "malware")
+        ]
+    ))
+
+get_software(src)
 ```
 
 ### Objects by content
