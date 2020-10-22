@@ -14,7 +14,7 @@ We also recommend reading the [ATT&CK Design and Philosophy Paper](https://attac
 
 # The ATT&CK data model
 
-The data in this repository is STIX2.0 and divided into three folders, one for each domain of ATT&CK. These domains generally follow the same format with a few departures. Domain differences will be noted in the relevant sections of this document. 
+The data in this repository is STIX 2.0 and divided into folders, one for each domain of ATT&CK. These domains generally follow the same format with a few departures. Domain differences will be noted in the relevant sections of this document. 
 
 ATT&CK uses a mix of predefined and custom STIX objects to implement ATT&CK concepts. The following table is a mapping of ATT&CK concepts to STIX 2.0 objects:
 
@@ -267,7 +267,6 @@ from taxii2client.v20 import Collection # only specify v20 if your installed ver
 
 collections = {
     "enterprise_attack": "95ecc380-afe9-11e4-9b6c-751b66dd541e",
-    "pre_attack": "062767bd-02d2-4b72-84ba-56caef0f8658",
     "mobile_attack": "2f669986-b40b-4423-b720-4396ca6a462b"
 }
 
@@ -520,7 +519,7 @@ def get_tactic_techniques(thesrc, tactic):
     # note: kill_chain_name is different for other domains:
     #    - enterprise: "mitre-attack"
     #    - mobile: "mitre-mobile-attack"
-    #    - pre: "ics-attack"
+    #    - ics: "mitre-ics-attack"
     return thesrc.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('kill_chain_phases.phase_name', '=', tactic),
