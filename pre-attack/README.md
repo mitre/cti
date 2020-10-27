@@ -1,0 +1,3 @@
+# &#9888; pre-ATT&CK is deprecated
+
+As of ATT&CK version 8.0, the entire pre-ATT&CK domain has been [deprecated](https://github.com/mitre/cti/blob/master/USAGE.md#working-with-deprecated-and-revoked-objects) in favor of two new tactics in the Enterprise domain tagged with the `PRE` platform. Please see the new [PRE matrix](https://attack.mitre.org/matrices/enterprise/PRE/) for the replacing Enterprise tactics and techniques. All objects within the pre-ATT&CK domain have been marked as deprecated, along with a new description pointing to their new home in Enterprise.

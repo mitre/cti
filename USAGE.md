@@ -14,7 +14,7 @@ We also recommend reading the [ATT&CK Design and Philosophy Paper](https://attac
 
 # The ATT&CK data model
 
-The data in this repository is STIX2.0 and divided into three folders, one for each domain of ATT&CK. These domains generally follow the same format with a few departures. Domain differences will be noted in the relevant sections of this document. 
+The data in this repository is STIX 2.0 and divided into folders, one for each domain of ATT&CK. These domains generally follow the same format with a few departures. Domain differences will be noted in the relevant sections of this document. 
 
 ATT&CK uses a mix of predefined and custom STIX objects to implement ATT&CK concepts. The following table is a mapping of ATT&CK concepts to STIX 2.0 objects:
 
@@ -116,8 +116,8 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 | Field | Type | Applies to | Description | 
 |:------|:-----|:--------|:------------|
 | `x_mitre_detection` | string | All techniques | Strategies for identifying if a technique has been used by an adversary. |
-| `x_mitre_platforms` | string[] | Enterprise & Mobile domains | List of platforms that apply to the technique. |
-| `x_mitre_data_sources` | string[] | Enterprise domain | Sources of information that may be used to identify the action or result of the action being performed. |
+| `x_mitre_platforms` | string[] | All techniques | List of platforms that apply to the technique. |
+| `x_mitre_data_sources` | string[] | Enterprise and ICS domains | Sources of information that may be used to identify the action or result of the action being performed. |
 | `x_mitre_is_subtechnique` | boolean | Enterprise domain | If true, this `attack-pattern` is a sub-technique. See [sub-techniques](#sub-techniques). |
 | `x_mitre_system_requirements` | string | Enterprise domain | Additional information on requirements the adversary needs to meet or about the state of the system (software, patch level, etc.) that may be required for the technique to work. |
 | `x_mitre_tactic_types` | string | Mobile domain |  "Post-Adversary Device Access", "Pre-Adversary Device Access", or "Without Adversary Device Access". |
@@ -125,7 +125,7 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 | `x_mitre_defense_bypassed` | string[] | Enterprise domain in the _Defense Evasion_ tactic | List of defensive tools, methodologies, or processes the technique can bypass. |
 | `x_mitre_remote_support` | boolean | Enterprise domain in the _Execution_ tactic | If true, the technique can be used to execute something on a remote system. |
 
-Techniques map into tactics by use of their `kill_chain_phases` property. Where the `kill_chain_name` is `mitre-attack`, `mitre-mobile-attack` or `pre-attack` (for enterprise, mobile, and pre-attack domains respectively), the `phase_name` corresponds to the `x_mitre_shortname` property of an `x-mitre-tactic` object.
+Techniques map into tactics by use of their `kill_chain_phases` property. Where the `kill_chain_name` is `mitre-attack`, `mitre-mobile-attack`, or `mitre-ics-attack` (for enterprise, mobile, and ics domains respectively), the `phase_name` corresponds to the `x_mitre_shortname` property of an `x-mitre-tactic` object.
 
 #### Sub-Techniques
 
@@ -256,7 +256,6 @@ Users can access the ATT&CK data from the official ATT&CK TAXII server. In TAXII
 
 | domain | collection ID |
 |:-------|:--------------|
-| `pre-attack` | `062767bd-02d2-4b72-84ba-56caef0f8658` |
 | `enterprise-attack` | `95ecc380-afe9-11e4-9b6c-751b66dd541e` |
 | `mobile-attack` | `2f669986-b40b-4423-b720-4396ca6a462b` |
 
@@ -268,7 +267,6 @@ from taxii2client.v20 import Collection # only specify v20 if your installed ver
 
 collections = {
     "enterprise_attack": "95ecc380-afe9-11e4-9b6c-751b66dd541e",
-    "pre_attack": "062767bd-02d2-4b72-84ba-56caef0f8658",
     "mobile_attack": "2f669986-b40b-4423-b720-4396ca6a462b"
 }
 
@@ -288,7 +286,7 @@ import requests
 from stix2 import MemoryStore
 
 def get_data_from_branch(domain, branch="master"):
-    """get the ATT&CK STIX data from MITRE/CTI. Domain should be 'enterprise-attack', 'mobile-attack' or 'pre-attack'. Branch should typically be master."""
+    """get the ATT&CK STIX data from MITRE/CTI. Domain should be 'enterprise-attack', 'mobile-attack' or 'ics-attack'. Branch should typically be master."""
     stix_json = requests.get(f"https://raw.githubusercontent.com/mitre/cti/{branch}/{domain}/{domain}.json").json()
     return MemoryStore(stix_data=stix_json["objects"])
 
@@ -306,7 +304,7 @@ import requests
 from stix2 import MemoryStore
 
 def get_data_from_version(domain, version):
-    """get the ATT&CK STIX data for the given version from MITRE/CTI. Domain should be 'enterprise-attack', 'mobile-attack' or 'pre-attack'."""
+    """get the ATT&CK STIX data for the given version from MITRE/CTI. Domain should be 'enterprise-attack', 'mobile-attack' or 'ics-attack'."""
     stix_json = requests.get(f"https://raw.githubusercontent.com/mitre/cti/ATT%26CK-v{version}/{domain}/{domain}.json").json()
     return MemoryStore(stix_data=stix_json["objects"])
 
@@ -326,7 +324,7 @@ versions = list(map(lambda tag: refToTag.search(tag["ref"]).groups()[0] , filter
 ```
 
 ## Access multiple domains simultaneously
-Because ATT&CK is stored in multiple domains (as of this writing, pre-attack, mobile-attack, and enterprise-attack), the above methodologies will only allow you to work
+Because ATT&CK is stored in multiple domains (as of this writing, enterprise-attack, mobile-attack and ics-attack), the above methodologies will only allow you to work
 with a single domain at a time. While oftentimes the hard separation of domains is advantageous, occasionally it is useful to combine
 domains into a single DataStore. Use any of the methods above to acquire the individual datastores, and then use the following approach to combine them into
 a single CompositeDataSource:
@@ -335,7 +333,7 @@ a single CompositeDataSource:
 from stix2 import CompositeDataSource
 
 src = CompositeDataSource()
-src.add_data_sources([enterprise_attack_src, pre_attack_src, mobile_attack_src])
+src.add_data_sources([enterprise_attack_src, mobile_attack_src, ics_attack_src])
 ```
 
 You can then use this CompositeDataSource just as you would the DataSource for an individual domain.
@@ -521,7 +519,7 @@ def get_tactic_techniques(thesrc, tactic):
     # note: kill_chain_name is different for other domains:
     #    - enterprise: "mitre-attack"
     #    - mobile: "mitre-mobile-attack"
-    #    - pre: "pre-attack"
+    #    - ics: "mitre-ics-attack"
     return thesrc.query([
         Filter('type', '=', 'attack-pattern'),
         Filter('kill_chain_phases.phase_name', '=', tactic),

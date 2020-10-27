@@ -1,3 +1,8 @@
+### Changes to STIX for October 2020 ATT&CK Content Release (ATT&CK-v8.0)
+1. Added new platforms under the enterprise domain: `Network` and `PRE`.
+2. Deprecated the pre-ATT&CK domain. Pre-ATT&CK has been migrated to two new tactics in the Enterprise domain tagged with the `PRE` platform. Please see the new [PRE matrix](https://attack.mitre.org/matrices/enterprise/PRE/) for the replacing Enterprise tactics and techniques. All objects within the pre-ATT&CK domain have been marked as deprecated, along with a new description pointing to their new home in Enterprise.
+3. Added the [ATT&CK for ICS domain](ics-attack).
+
 ### Changes to STIX for July 2020 ATT&CK Content Release (ATT&CK-v7.0)
 1. Added sub-techniques:
     - A sub-technique is an attack-pattern where `x_mitre_is_subtechnique` is `true`. 
