@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--d736035a-07b1-45fd-86bd-884161bc1765",
+    "id": "bundle--80ba3047-5308-4461-9f03-b4440e714852",
     "spec_version": "2.0",
     "objects": [
         {
@@ -40,20 +40,23 @@
                     "phase_name": "impact"
                 }
             ],
-            "modified": "2020-07-14T19:34:47.636Z",
+            "modified": "2020-07-24T15:36:08.042Z",
             "created": "2019-03-29T19:00:55.901Z",
             "x_mitre_is_subtechnique": false,
             "x_mitre_platforms": [
-                "Windows"
+                "Windows",
+                "Linux",
+                "macOS"
             ],
             "x_mitre_permissions_required": [
                 "Administrator",
                 "SYSTEM",
                 "User"
             ],
-            "x_mitre_version": "1.0",
-            "x_mitre_detection": "Monitor processes and command-line arguments to see if critical processes are terminated or stop running.\n\nMonitor Registry edits for modifications to services and startup programs that correspond to services of high importance. Look for changes to service Registry entries that do not correlate with known software, patch cycles, etc. Service information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>.\n\nAlterations to the service binary path or the service startup type changed to disabled may be suspicious.\n\nRemote access tools with built-in features may interact directly with the Windows API to perform these functions outside of typical system utilities. For example, <code>ChangeServiceConfigW</code> may be used by an adversary to prevent services from starting.(Citation: Talos Olympic Destroyer 2018)",
+            "x_mitre_version": "1.1",
+            "x_mitre_detection": "Monitor processes and command-line arguments to see if critical processes are terminated or stop running.\n\nMonitor for edits for modifications to services and startup programs that correspond to services of high importance. Look for changes to services that do not correlate with known software, patch cycles, etc. Windows service information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. Systemd service unit files are stored within the /etc/systemd/system, /usr/lib/systemd/system/, and /home/.config/systemd/user/ directories, as well as associated symbolic links.\n\nAlterations to the service binary path or the service startup type changed to disabled may be suspicious.\n\nRemote access tools with built-in features may interact directly with the Windows API to perform these functions outside of typical system utilities. For example, <code>ChangeServiceConfigW</code> may be used by an adversary to prevent services from starting.(Citation: Talos Olympic Destroyer 2018)",
             "x_mitre_data_sources": [
+                "File monitoring",
                 "Process command-line parameters",
                 "Process monitoring",
                 "Windows Registry",

@@ -1,18 +1,22 @@
 {
     "type": "bundle",
-    "id": "bundle--5d45748f-50eb-4b21-bf7a-6ec4b0c8d435",
+    "id": "bundle--48d11c22-87b5-40c8-9ea7-5d5510e6f76b",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--77e30eee-fd48-40b4-99ec-73e97c158b58",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Android Intent Hijacking",
-            "description": "A malicious app can register to receive intents meant for other applications and may then be able to receive sensitive values such as OAuth authorization codes(Citation: IETF-PKCE).",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "external_references": [
                 {
                     "source_name": "mitre-mobile-attack",
-                    "url": "https://attack.mitre.org/techniques/T1416",
-                    "external_id": "T1416"
+                    "external_id": "T1416",
+                    "url": "https://attack.mitre.org/techniques/T1416"
+                },
+                {
+                    "source_name": "Trend Micro iOS URL Hijacking",
+                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/ios-url-scheme-susceptible-to-hijacking/",
+                    "description": "L. Wu, Y. Zhou, M. Li. (2019, July 12).  iOS URL Scheme Susceptible to Hijacking. Retrieved September 11, 2020."
                 },
                 {
                     "source_name": "IETF-PKCE",
@@ -20,9 +24,10 @@
                     "url": "https://tools.ietf.org/html/rfc7636"
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
+            "description": "Adversaries may register Uniform Resource Identifiers (URIs) to intercept sensitive data.\n\nApplications regularly register URIs with the operating system to act as a response handler for various actions, such as logging into an app using an external account via single sign-on. This allows redirections to that specific URI to be intercepted by the application. If a malicious application were to register for a URI that was already in use by a genuine application, the malicious application may be able to intercept data intended for the genuine application or perform a phishing attack against the genuine application. Intercepted data may include OAuth authorization codes or tokens that could be used by the malicious application to gain access to resources.(Citation: Trend Micro iOS URL Hijacking)(Citation: IETF-PKCE)",
+            "name": "URI Hijacking",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "id": "attack-pattern--77e30eee-fd48-40b4-99ec-73e97c158b58",
             "type": "attack-pattern",
             "kill_chain_phases": [
                 {
@@ -30,16 +35,23 @@
                     "phase_name": "credential-access"
                 }
             ],
-            "modified": "2019-02-03T17:05:31.465Z",
+            "modified": "2020-10-01T12:42:21.628Z",
             "created": "2017-10-25T14:48:32.008Z",
             "x_mitre_platforms": [
-                "Android"
+                "Android",
+                "iOS"
             ],
             "x_mitre_tactic_type": [
                 "Post-Adversary Device Access"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_old_attack_id": "MOB-T1019"
+            "x_mitre_version": "2.0",
+            "x_mitre_old_attack_id": "MOB-T1019",
+            "x_mitre_detection": "On Android, users may be presented with a popup to select the appropriate application to open the URI in. If the user sees an application they do not recognize, they can remove it.",
+            "x_mitre_contributors": [
+                "Leo Zhang, Trend Micro",
+                "Steven Du, Trend Micro"
+            ],
+            "x_mitre_is_subtechnique": false
         }
     ]
 }

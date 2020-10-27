@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--ae3d26b6-28d5-4f0a-b373-a5cec777fdc7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1547.012",
+                    "url": "https://attack.mitre.org/techniques/T1547/012"
+                },
+                {
+                    "source_name": "Microsoft AddPrintProcessor May 2018",
+                    "url": "https://docs.microsoft.com/en-us/windows/win32/printdocs/addprintprocessor",
+                    "description": "Microsoft. (2018, May 31). AddPrintProcessor function. Retrieved October 5, 2020."
+                },
+                {
+                    "source_name": "ESET PipeMon May 2020",
+                    "url": "https://www.welivesecurity.com/2020/05/21/no-game-over-winnti-group/",
+                    "description": "Tartare, M. et al. (2020, May 21). No \u201cGame over\u201d for the Winnti Group. Retrieved August 24, 2020."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Print Processors",
+            "description": "Adversaries may abuse print processors to run malicious DLLs during system boot for persistence and/or privilege escalation. Print processors are DLLs that are loaded by the print spooler service, spoolsv.exe, during boot. \n\nAdversaries may abuse the print spooler service by adding print processors that load malicious DLLs at startup. A print processor can be installed through the <code>AddPrintProcessor</code> API call with an account that has <code>SeLoadDriverPrivilege</code> enabled. Alternatively, a print processor can be registered to the print spooler service by adding the <code>HKLM\\SYSTEM\\\\[CurrentControlSet or ControlSet001]\\Control\\Print\\Environments\\\\[Windows architecture: e.g., Windows x64]\\Print Processors\\\\[user defined]\\Driver</code> Registry key that points to the DLL. For the print processor to be correctly installed, it must be located in the system print-processor directory that can be found with the <code>GetPrintProcessorDirectory</code> API call.(Citation: Microsoft AddPrintProcessor May 2018) After the print processors are installed, the print spooler service, which starts during boot, must be restarted in order for them to run.(Citation: ESET PipeMon May 2020) The print spooler service runs under SYSTEM level permissions, therefore print processors installed by an adversary may run under elevated privileges.",
+            "id": "attack-pattern--2de47683-f398-448f-b947-9abcc3e32fad",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2020-10-09T16:05:36.344Z",
+            "created": "2020-10-05T13:24:49.780Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "SYSTEM"
+            ],
+            "x_mitre_detection": "Monitor process API calls to <code>AddPrintProcessor</code> and <code>GetPrintProcessorDirectory</code>. New print processor DLLs are written to the print processor directory. Also monitor Registry writes to <code>HKLM\\SYSTEM\\ControlSet001\\Control\\Print\\Environments\\\\[Windows architecture]\\Print Processors\\\\[user defined]\\\\Driver</code> or <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Environments\\\\[Windows architecture]\\Print Processors\\\\[user defined]\\Driver</code> as they pertain to print processor installations.\n\nMonitor for abnormal DLLs that are loaded by spoolsv.exe. Print processors that do not correlate with known good software or patching may be suspicious.",
+            "x_mitre_data_sources": [
+                "Process monitoring",
+                "Windows Registry",
+                "File monitoring",
+                "DLL monitoring",
+                "API monitoring"
+            ],
+            "x_mitre_contributors": [
+                "Mathieu Tartare, ESET"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ]
+        }
+    ]
+}

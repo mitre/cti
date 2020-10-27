@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--2043c996-ad0e-478c-9f2c-f33e57d92770",
+    "id": "bundle--c450c18c-485b-4bb2-9373-3d781aaf7013",
     "spec_version": "2.0",
     "objects": [
         {
@@ -29,6 +29,21 @@
                     "description": "Felch, M.. (2018, August 31). Red Teaming Microsoft Part 1 Active Directory Leaks via Azure. Retrieved October 6, 2019.",
                     "url": "https://www.blackhillsinfosec.com/red-teaming-microsoft-part-1-active-directory-leaks-via-azure/",
                     "source_name": "Black Hills Red Teaming MS AD Azure, 2018"
+                },
+                {
+                    "source_name": "AWS List Roles",
+                    "description": "Amazon. (n.d.). List Roles. Retrieved August 11, 2020.",
+                    "url": "https://docs.aws.amazon.com/cli/latest/reference/iam/list-roles.html"
+                },
+                {
+                    "source_name": "AWS List Users",
+                    "url": "https://docs.aws.amazon.com/cli/latest/reference/iam/list-users.html",
+                    "description": "Amazon. (n.d.). List Users. Retrieved August 11, 2020."
+                },
+                {
+                    "source_name": "Google Cloud - IAM Servie Accounts List API",
+                    "url": "https://cloud.google.com/sdk/gcloud/reference/iam/service-accounts/list",
+                    "description": "Google. (2020, June 23). gcloud iam service-accounts list. Retrieved August 4, 2020."
                 }
             ],
             "object_marking_refs": [
@@ -36,7 +51,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Cloud Account",
-            "description": "Adversaries may attempt to get a listing of cloud accounts. Cloud accounts are those created and configured by an organization for use by users, remote support, services, or for administration of resources within a cloud service provider of SaaS application.\n\nWith authenticated access there are several tools that can be used to find accounts. The <code>Get-MsolRoleMember</code> PowerShell cmdlet can be used to obtain account names given a role or permissions group.(Citation: Microsoft msolrolemember)(Citation: GitHub Raindance)\n\nAzure CLI (AZ CLI) also provides an interface to obtain user accounts with authenticated access to a domain. The command <code>az ad user list</code> will list all users within a domain.(Citation: Microsoft AZ CLI)(Citation: Black Hills Red Teaming MS AD Azure, 2018) ",
+            "description": "Adversaries may attempt to get a listing of cloud accounts. Cloud accounts are those created and configured by an organization for use by users, remote support, services, or for administration of resources within a cloud service provider or SaaS application.\n\nWith authenticated access there are several tools that can be used to find accounts. The <code>Get-MsolRoleMember</code> PowerShell cmdlet can be used to obtain account names given a role or permissions group in Office 365.(Citation: Microsoft msolrolemember)(Citation: GitHub Raindance) The Azure CLI (AZ CLI) also provides an interface to obtain user accounts with authenticated access to a domain. The command <code>az ad user list</code> will list all users within a domain.(Citation: Microsoft AZ CLI)(Citation: Black Hills Red Teaming MS AD Azure, 2018) \n\nThe AWS command <code>aws iam list-users</code> may be used to obtain a list of users in the current account while <code>aws iam list-roles</code> can obtain IAM roles that have a specified path prefix.(Citation: AWS List Roles)(Citation: AWS List Users) In GCP, <code>gcloud iam service-accounts list</code> and <code>gcloud projects get-iam-policy</code> may be used to obtain a listing of service accounts and users in a project.(Citation: Google Cloud - IAM Servie Accounts List API)",
             "id": "attack-pattern--8f104855-e5b7-4077-b1f5-bc3103b41abe",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -45,9 +60,14 @@
                     "phase_name": "discovery"
                 }
             ],
-            "modified": "2020-03-13T20:05:15.448Z",
+            "modified": "2020-08-13T16:53:55.390Z",
             "created": "2020-02-21T21:08:36.570Z",
+            "x_mitre_contributors": [
+                "Praetorian"
+            ],
             "x_mitre_data_sources": [
+                "Stackdriver logs",
+                "AWS CloudTrail logs",
                 "Azure activity logs",
                 "Office 365 account logs",
                 "Process monitoring",
@@ -56,8 +76,8 @@
             "x_mitre_permissions_required": [
                 "User"
             ],
-            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information.",
-            "x_mitre_version": "1.0",
+            "x_mitre_detection": "Monitor processes, command-line arguments, and logs for actions that could be taken to gather information about cloud accounts, including the use of calls to cloud APIs that perform account discovery.\n\nSystem and network discovery techniques normally occur throughout an operation as an adversary learns the environment, and also to an extent in normal network operations. Therefore discovery data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.",
+            "x_mitre_version": "1.1",
             "x_mitre_is_subtechnique": true,
             "x_mitre_platforms": [
                 "AWS",

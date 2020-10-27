@@ -1,12 +1,30 @@
 {
     "type": "bundle",
-    "id": "bundle--8786486b-4d57-4460-b527-50abb90ab791",
+    "id": "bundle--f146841b-0855-4d70-8221-2fe11c5d184a",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            "created": "2017-05-31T21:30:46.977Z",
+            "modified": "2020-10-14T15:20:01.069Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "execution"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
             ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--35dd844a-b219-4e2b-a6bb-efa9a75995a9",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Scheduled Task/Job",
+            "description": "Adversaries may abuse task scheduling functionality to facilitate initial or recurring execution of malicious code. Utilities exist within all major operating systems to schedule programs or scripts to be executed at a specified date and time. A task can also be scheduled on a remote system, provided the proper authentication is met (ex: RPC and file and printer sharing in Windows environments). Scheduling a task on a remote system typically requires being a member of an admin or otherwise privileged group on the remote system.(Citation: TechNet Task Scheduler Security)\n\nAdversaries may use task scheduling to execute programs at system startup or on a scheduled basis for persistence. These mechanisms can also be abused to run a process under the context of a specified account (such as one with elevated permissions/privileges).",
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -24,58 +42,40 @@
                     "source_name": "TechNet Task Scheduler Security"
                 }
             ],
-            "description": "Adversaries may abuse task scheduling functionality to facilitate initial or recurring execution of malicious code. Utilities exist within all major operating systems to schedule programs or scripts to be executed at a specified date and time. A task can also be scheduled on a remote system, provided the proper authentication is met (ex: RPC and file and printer sharing in Windows environments). Scheduling a task on a remote system typically requires being a member of an admin or otherwise privileged group on the remote system.(Citation: TechNet Task Scheduler Security)\n\nAdversaries may use task scheduling to execute programs at system startup or on a scheduled basis for persistence. These mechanisms can also be abused to run a process under the context of a specified account (such as one with elevated permissions/privileges).",
-            "name": "Scheduled Task/Job",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "id": "attack-pattern--35dd844a-b219-4e2b-a6bb-efa9a75995a9",
-            "type": "attack-pattern",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "execution"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                }
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2020-03-24T13:45:04.006Z",
-            "created": "2017-05-31T21:30:46.977Z",
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_version": "2.0",
-            "x_mitre_contributors": [
-                "Prashant Verma, Paladion",
-                "Leo Loobeek, @leoloobeek",
-                "Travis Smith, Tripwire",
-                "Alain Homewood, Insomnia Security"
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "macOS"
             ],
+            "x_mitre_remote_support": true,
+            "x_mitre_effective_permissions": [
+                "SYSTEM",
+                "Administrator",
+                "User"
+            ],
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "SYSTEM",
+                "User"
+            ],
+            "x_mitre_detection": "Monitor scheduled task creation from common utilities using command-line invocation. Legitimate scheduled tasks may be created during installation of new software or through system administration functions. Look for changes to tasks that do not correlate with known software, patch cycles, etc. \n\nSuspicious program execution through scheduled tasks may show up as outlier processes that have not been seen before when compared against historical data. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
             "x_mitre_data_sources": [
                 "File monitoring",
                 "Process monitoring",
                 "Process command-line parameters",
                 "Windows event logs"
             ],
-            "x_mitre_detection": "Monitor scheduled task creation from common utilities using command-line invocation. Legitimate scheduled tasks may be created during installation of new software or through system administration functions. Look for changes to tasks that do not correlate with known software, patch cycles, etc. \n\nSuspicious program execution through scheduled tasks may show up as outlier processes that have not been seen before when compared against historical data. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "SYSTEM",
-                "User"
+            "x_mitre_contributors": [
+                "Prashant Verma, Paladion",
+                "Leo Loobeek, @leoloobeek",
+                "Travis Smith, Tripwire",
+                "Alain Homewood, Insomnia Security"
             ],
-            "x_mitre_effective_permissions": [
-                "SYSTEM",
-                "Administrator",
-                "User"
-            ],
-            "x_mitre_remote_support": true,
-            "x_mitre_platforms": [
-                "Windows",
-                "Linux",
-                "macOS"
-            ]
+            "x_mitre_version": "2.0",
+            "x_mitre_is_subtechnique": false
         }
     ]
 }

@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--52170832-6c6a-4422-bada-9d5f2231f65c",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "name": "Modify Control Logic",
+            "description": "Adversaries may place malicious code in a system, which can cause the system to malfunction by modifying its control logic. Control system devices use programming languages (e.g. relay ladder logic) to control physical processes by affecting actuators, which cause machines to operate, based on environment sensor readings. These devices often include the ability to perform remote control logic updates. \n\nProgram code is normally edited in a vendor-specific Integrated Development Environment (IDE) that relies on proprietary tools and features. These IDEs allow an engineer to perform host target development and may have the ability to run the code on the machine it is programmed for. The IDE will transmit the control logic to the testing device, and will perform the required device-specific functions to apply the changes and make them active.\n\nAn adversary may attempt to use this host target IDE to modify device control logic. Even though proprietary tools are often used to edit and update control logic, the process can usually be reverse-engineered and reproduced with open-source tools.\n\nAn adversary can de-calibrate a sensor by removing functions in control logic that account for sensor error. This can be used to change a control process without actually spoofing command messages to a controller or device. \n\nIt is believed this process happened in the lesser known over-pressurizer attacks build into Stuxnet. Pressure sensors are not perfect at translating pressure into an analog output signal, but their errors can be corrected by calibration. The pressure controller can be told what the \u201creal\u201d pressure is for given analog signals and then automatically linearize the measurement to what would be the \u201creal\u201d pressure. If the linearization is overwritten by malicious code on the S7-417 controller, analog pressure readings will be \u201ccorrected\u201d during the attack by the pressure controller, which then interprets all analog pressure readings as perfectly normal pressure no matter how high or low their analog values are. The pressure controller then acts accordingly by never opening the stage exhaust valves. In the meantime, actual pressure keeps rising. (Citation: Stuxnet - Langner - 201311)\n\nIn the Maroochy Attack, Vitek Boden gained remote computer access to the control system and altered data so that whatever function should have occurred at affected pumping stations did not occur or occurred in a different way. The software program installed in the laptop was one developed by Hunter Watertech for its use in changing configurations in the PDS computers. This ultimately led to 800,000 liters of raw sewage being spilled out into the community. (Citation: Maroochy - MITRE - 200808)\n\nData Sources: Sequential event recorder, Controller program, Network protocol analysis, Packet capture",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-ics-attack",
+                    "phase_name": "impair-process-control"
+                },
+                {
+                    "kill_chain_name": "mitre-ics-attack",
+                    "phase_name": "inhibit-response-function"
+                }
+            ],
+            "x_mitre_platforms": [
+                "Windows",
+                "Safety Instrumented System/Protection Relay", 
+                "Field Controller/RTU/PLC/IED"
+            ],
+            "external_references": [
+                {
+                    "url": "https://collaborate.mitre.org/attackics/index.php/Technique/T833",
+                    "source_name": "mitre-ics-attack",
+                    "external_id": "T0833"
+                },
+                {
+                    "description": "Ralph Langner. (2013, November). To Kill a Centrifuge: A Technical Analysis of What Stuxnet's Creators Tried to Achieve. Retrieved March 27, 2018.",
+                    "source_name": "Stuxnet - Langner - 201311",
+                    "url": "https://www.langner.com/wp-content/uploads/2017/03/to-kill-a-centrifuge.pdf"
+                },
+                {
+                    "description": "Marshall Abrams. (2008, July 23). Malicious Control System Cyber Security Attack Case Study\u2013 Maroochy Water Services, Australia. Retrieved March 27, 2018.",
+                    "source_name": "Maroochy - MITRE - 200808",
+                    "url": "https://www.mitre.org/sites/default/files/pdf/08%201145.pdf"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created": "2020-05-21T17:43:26.506Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "Sequential event recorder",
+                "Controller program",
+                "Network protocol analysis",
+                "Packet capture"
+            ],
+            "modified": "2020-05-21T17:43:26.506Z",
+            "type": "attack-pattern",
+            "id": "attack-pattern--e0d74479-86d2-465d-bf36-903ebecef43e"
+        }
+    ]
+}        
