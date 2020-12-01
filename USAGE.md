@@ -29,6 +29,7 @@ ATT&CK uses a mix of predefined and custom STIX objects to implement ATT&CK conc
 | [Group](#groups)                 | [intrusion-set](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230941)  | no |
 | [Software](#software)            | [malware](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230945) or [tool](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230961) | no |
 | [Data Source](#data-source)      | `x-mitre-data-source` | yes |
+
 Two additional object types are found in the ATT&CK catalog:
  
 | STIX object type | About |
@@ -745,11 +746,11 @@ def parent_technique_of(thesrc):
     return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern")[0]
 
 # technique:datasource
-def datasource_detects_techniques(thesrc)
+def datasource_detects_techniques(thesrc):
     """return datasource_id => {technique, relationship} describing the detections of each data source"""
     return get_related(thesrc, "data-source", "detects", "attack-pattern")
 
-def technique_detected_by_datasources(thesrc)
+def technique_detected_by_datasources(thesrc):
     """return technique_id => {datasource, relationship} describing the data sources that can detect the technique"""
     return get_related(thesrc, "data-source", "detects", "attack-pattern", reverse=True)
 ```
