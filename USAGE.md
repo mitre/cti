@@ -28,7 +28,7 @@ ATT&CK uses a mix of predefined and custom STIX objects to implement ATT&CK conc
 | [Mitigation](#mitigations)       | [course-of-action](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230929) | no |
 | [Group](#groups)                 | [intrusion-set](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230941)  | no |
 | [Software](#software)            | [malware](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230945) or [tool](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230961) | no |
-
+| [Data Source](#data-source)      | `x-mitre-data-source` | yes |
 Two additional object types are found in the ATT&CK catalog:
  
 | STIX object type | About |
@@ -70,6 +70,7 @@ The most commonly used ID format is what is referred to as the ATT&CK ID or simp
 | [Mitigation](#mitigations)       | `Mxxxx` |
 | [Group](#groups)                 | `Gxxxx`  |
 | [Software](#software)            | `Sxxxx` |
+| [Data Source](#data-source)      | `DSxxxx` |
 
 ATT&CK IDs are typically, but not always, unique. See [Collisions with Technique ATT&CK IDs](#collisions-with-technique-attck-ids) for an edge case involving ID collisions between mitigations and techniques.
 
@@ -117,7 +118,7 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 |:------|:-----|:--------|:------------|
 | `x_mitre_detection` | string | All techniques | Strategies for identifying if a technique has been used by an adversary. |
 | `x_mitre_platforms` | string[] | All techniques | List of platforms that apply to the technique. |
-| `x_mitre_data_sources` | string[] | Enterprise and ICS domains | Sources of information that may be used to identify the action or result of the action being performed. |
+| `x_mitre_data_sources` | string[] | ICS domain | Sources of information that may be used to identify the action or result of the action being performed. **Note:** in the Enterprise domain data sources are represented via [x-mitre-data-source](#data-source) objects, and their relationship with techniques through relationships of type `detects`. |
 | `x_mitre_is_subtechnique` | boolean | Enterprise domain | If true, this `attack-pattern` is a sub-technique. See [sub-techniques](#sub-techniques). |
 | `x_mitre_system_requirements` | string | Enterprise domain | Additional information on requirements the adversary needs to meet or about the state of the system (software, patch level, etc.) that may be required for the technique to work. |
 | `x_mitre_tactic_types` | string | Mobile domain |  "Post-Adversary Device Access", "Pre-Adversary Device Access", or "Without Adversary Device Access". |
@@ -165,6 +166,15 @@ Both `malware` and `tool` type software depart from the STIX format with the fol
 | `x_mitre_platforms` | string[] | List of platforms that apply to the software. |
 | `x_mitre_aliases` | string[] | List of aliases for the given software |
 
+### Data Source
+
+A Data Source in ATT&CK is defined by an `x-mitre-data-source` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920).
+
+Data Sources extend the generic SDO format with the following field:
+
+| Field | Type | Description |
+|:------|:-----|-------------|
+| `x_mitre_data_components` | string[] | Data components of the data source. Data components are unique to each data source. Please see our [attack-datasources](https://github.com/mitre-attack/attack-datasources) repository for more information on data components. |
 
 ### Relationships
 
@@ -177,8 +187,9 @@ Relationships oftentimes have descriptions which contextualize the relationship 
 | `intrusion-set` | `uses`        | `malware` or `tool` | No | Group using a software. |
 | `intrusion-set` | `uses`        | `attack-pattern`    | No | Group using a technique, which is also considered a procedure example. |
 | `malware` or `tool` | `uses`    | `attack-pattern`    | No | Software using a technique, which is also considered a procedure example. |
-| `course-of-action`  | `mitigates` | `attack-pattern`  | No | Mitigation mitigating technique. |
+| `course-of-action`  | `mitigates` | `attack-pattern`  | No | Mitigation mitigating a technique. |
 | `attack-pattern`    | `subtechnique-of` | `attack-pattern` | Yes | Sub-technique of a technique, where the `source_ref` is the sub-technique and the `target_ref` is the parent technique. |
+| `x-mitre-data-source` | `detects` | `attack-pattern` | Yes | Data source can detect a technique | 
 | any type    | `revoked-by`      | any type | Yes | The target object is a replacement for the source object. Only occurs where the objects are of the same type, and the source object will have the property `revoked = true`. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. |
 
 Note that because groups use software and software uses techniques, groups can be considered indirect users of techniques used by their software. See [Getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software).
@@ -732,6 +743,15 @@ def subtechniques_of(thesrc):
 def parent_technique_of(thesrc):
     """return subtechnique_id => {technique, relationship} describing the parent technique of the subtechnique"""
     return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern")[0]
+
+# technique:datasource
+def datasource_detects_techniques(thesrc)
+    """return datasource_id => {technique, relationship} describing the detections of each data source"""
+    return get_related(thesrc, "data-source", "detects", "attack-pattern")
+
+def technique_detected_by_datasources(thesrc)
+    """return technique_id => {datasource, relationship} describing the data sources that can detect the technique"""
+    return get_related(thesrc, "data-source", "detects", "attack-pattern", reverse=True)
 ```
 
 Example usage: 
