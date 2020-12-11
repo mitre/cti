@@ -194,7 +194,7 @@ Relationships between data sources and techniques include the following addition
 
 | Field | Type | Description |
 |:------|:-----|-------------|
-| `x_mitre_data_components` | string[] | Data components of the detection. Please see our [attack-datasources](https://github.com/mitre-attack/attack-datasources) repository for more information on data components. |
+| `x_mitre_data_components` | string[] | Components of the data source that apply to the given detection. Please see our [attack-datasources](https://github.com/mitre-attack/attack-datasources) repository for more information on data components. |
 
 # Accessing ATT&CK data in python
 There are several ways to acquire the ATT&CK data in Python. All of them will provide an object 
