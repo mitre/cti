@@ -625,7 +625,7 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
 
     relationships = thesrc.query([
         Filter('type', '=', 'relationship'),
-        Filter('relationship_type', '=', rel_type),
+        Filter('relationship_type', '=', rel_type)
     ])
 
     # stix_id => [ { relationship, related_object_id } for each related object ]
