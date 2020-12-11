@@ -190,7 +190,7 @@ Relationships oftentimes have descriptions which contextualize the relationship 
 Note that because groups use software and software uses techniques, groups can be considered indirect users of techniques used by their software. See [Getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software).
 
 #### Detects relationships
-Relationships between data-sources and techniques include the following additional field:
+Relationships between data sources and techniques include the following additional field:
 
 | Field | Type | Description |
 |:------|:-----|-------------|
@@ -749,11 +749,11 @@ def parent_technique_of(thesrc):
 # technique:datasource
 def datasource_detects_techniques(thesrc):
     """return datasource_id => {technique, relationship} describing the detections of each data source"""
-    return get_related(thesrc, "data-source", "detects", "attack-pattern")
+    return get_related(thesrc, "x-mitre-data-source", "detects", "attack-pattern")
 
 def technique_detected_by_datasources(thesrc):
     """return technique_id => {datasource, relationship} describing the data sources that can detect the technique"""
-    return get_related(thesrc, "data-source", "detects", "attack-pattern", reverse=True)
+    return get_related(thesrc, "x-mitre-data-source", "detects", "attack-pattern", reverse=True)
 ```
 
 Example usage: 
