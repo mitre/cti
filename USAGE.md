@@ -626,7 +626,6 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
     relationships = thesrc.query([
         Filter('type', '=', 'relationship'),
         Filter('relationship_type', '=', rel_type),
-        Filter('revoked', '=', False)
     ])
 
     # stix_id => [ { relationship, related_object_id } for each related object ]
@@ -796,7 +795,7 @@ Revoked and deprecated objects are kept in the knowledge base so that workflows 
 broken. We recommend you filter out revoked and deprecated objects from your views whenever possible since they are no 
 longer maintained by ATT&CK.
 
-Revoked and deprecated objects can be removed quite easily:
+We recommend _not_ using built-in STIX filters for removing revoked objects (e.g `Filter('revoked', '=', False)`). This is because the behavior of this specific filter is inconsistent depending on the method of access (using local data or accessing via the TAXII server). We recommend using the following code example to filter revoked objects instead. See [issue #127](https://github.com/mitre/cti/issues/127) for more details.
 
 ```python
 from stix2 import Filter
