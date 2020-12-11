@@ -49,6 +49,7 @@ There are three general ways that ATT&CK extends the STIX 2.0 format:
     |:------|:-----|:------------|
     | `x_mitre_version` | string | The version of the object in format `major.minor` where `major` and `minor` are integers. ATT&CK increments this version number when the object content is updated. |
     | `x_mitre_contributors` | string[] | People and organizations who have contributed to the object. | 
+    | `x_mitre_deprecated` | boolean | See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects). | 
 
 - New relationship types. Unlike custom object types and extended fields, custom relationship types are **not** prefixed with `x_mitre_`. You can find a full list of relationship types in the [Relationships](#Relationships) section, which also mentions whether the type is a default STIX type.
 
@@ -169,6 +170,8 @@ Both `malware` and `tool` type software depart from the STIX format with the fol
 ### Relationships
 
 Objects in ATT&CK are related to each other via STIX [relationship](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230970) objects. These relationships convey concepts like groups using techniques (also called "procedure examples" on the technique pages), the hierarchy of techniques and sub-techniques, and so on. 
+
+Unlike other objects in the dataset, relationships cannot be revoked or deprecated. Relationships are considered deprecated/revoked if one of the objects it is attached to is revoked or deprecated. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. 
 
 Relationships oftentimes have descriptions which contextualize the relationship between the objects.
 
@@ -785,6 +788,8 @@ get_techniques_by_group_software(src, "intrusion-set--f047ee18-7985-4946-8bfb-4e
 
 ## Working with deprecated and revoked objects
 Objects that are deemed no longer beneficial to track as part of the knowledge base are marked as deprecated, and objects which are replaced by a different object are revoked. In both cases, the old object is marked with a field (either `x_mitre_deprecated` or `revoked`) noting their status. In the case of revoked objects, a relationship of type `revoked-by` is also created targeting the replacing object. 
+
+Unlike other objects in the dataset, relationships cannot be revoked or deprecated. Relationships are considered deprecated/revoked if one of the objects it is attached to is revoked or deprecated. 
 
 ### Removing revoked and deprecated objects
 Revoked and deprecated objects are kept in the knowledge base so that workflows relying on those objects are not 
