@@ -102,7 +102,7 @@ Matrices extend the generic SDO format with the following field:
 
 Techniques map into tactics by use of their `kill_chain_phases` property. Where the `kill_chain_name` is `mitre-attack`, `mitre-mobile-attack`, or `mitre-ics-attack` (for enterprise, mobile, and ics domains respectively), the `phase_name` corresponds to the `x_mitre_shortname` property of an `x-mitre-tactic` object. Matrices define their tactics in order using the `tactic_refs` embedded relationships.
 
-<img src="https://raw.githubusercontent.com/mitre-attack/attack-website/master/modules/resources/docs/visualizations/data-model/stix-tactics-techniques.png" alt="matrix, tactic and technique data model" width="500px">
+<img src="https://raw.githubusercontent.com/mitre-attack/attack-website/master/modules/resources/docs/visualizations/data-model/stix-tactics-techniques.png" alt="matrix, tactic and technique data model" width="750px">
 
 ### Tactics
 
@@ -177,7 +177,7 @@ Both `malware` and `tool` type software depart from the STIX format with the fol
 
 Objects in ATT&CK are related to each other via STIX [relationship](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230970) objects. These relationships convey concepts like groups using techniques (also called "procedure examples" on the technique pages), the hierarchy of techniques and sub-techniques, and so on. 
 
-<img src="https://raw.githubusercontent.com/mitre-attack/attack-website/master/modules/resources/docs/visualizations/data-model/stix-relationships.png" alt="relationships data model" width="500px">
+<img src="https://raw.githubusercontent.com/mitre-attack/attack-website/master/modules/resources/docs/visualizations/data-model/stix-relationships.png" alt="relationships data model" width="750px">
 
 Unlike other objects in the dataset, relationships cannot be revoked or deprecated. Relationships are considered deprecated/revoked if one of the objects it is attached to is revoked or deprecated. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. 
 
