@@ -98,6 +98,12 @@ Matrices extend the generic SDO format with the following field:
 |:------|:-----|-------------|
 | `tactic_refs` | string[] | The `tactic_refs` array of the matrix contains an ordered list of `x-mitre-tactic` STIX IDs corresponding to the tactics of the matrix. The order of `tactic_refs` determines the order the tactics should appear within the matrix. |
 
+#### Mapping matrices, tactics and techniques
+
+Techniques map into tactics by use of their `kill_chain_phases` property. Where the `kill_chain_name` is `mitre-attack`, `mitre-mobile-attack`, or `mitre-ics-attack` (for enterprise, mobile, and ics domains respectively), the `phase_name` corresponds to the `x_mitre_shortname` property of an `x-mitre-tactic` object. Matrices define their tactics in order using the `tactic_refs` embedded relationships.
+
+![matrix, tactic and technique data model](https://raw.githubusercontent.com/mitre-attack/attack-website/master/modules/resources/docs/visualizations/data-model/stix-tactics-techniques.png "matrix, tactic and technique data model")
+
 ### Tactics
 
 A Tactic in ATT&CK is defined by an `x-mitre-tactic` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920).
@@ -106,7 +112,7 @@ Tactics extend the generic SDO format with the following field:
 
 | Field | Type | Description |
 |:------|:-----|-------------|
-| `x_mitre_shortname` | string | The `x_mitre_shortname` of the tactic is used for mapping techniques into the tactic. It corresponds to `kill_chain_phases.phase_name` of the techniques in the tactic. |
+| `x_mitre_shortname` | string | The `x_mitre_shortname` of the tactic is used for mapping techniques into the tactic. It corresponds to `kill_chain_phases.phase_name` of the techniques in the tactic. See [mapping matrices, tactics and techniques](#mapping-matrices-tactics-techniques) for more information. |
 
 ### Techniques
 
@@ -126,7 +132,7 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 | `x_mitre_defense_bypassed` | string[] | Enterprise domain in the _Defense Evasion_ tactic | List of defensive tools, methodologies, or processes the technique can bypass. |
 | `x_mitre_remote_support` | boolean | Enterprise domain in the _Execution_ tactic | If true, the technique can be used to execute something on a remote system. |
 
-Techniques map into tactics by use of their `kill_chain_phases` property. Where the `kill_chain_name` is `mitre-attack`, `mitre-mobile-attack`, or `mitre-ics-attack` (for enterprise, mobile, and ics domains respectively), the `phase_name` corresponds to the `x_mitre_shortname` property of an `x-mitre-tactic` object.
+See [mapping matrices, tactics and techniques](#mapping-matrices-tactics-techniques) for more information about how techniques map into tactics and matrices.
 
 #### Sub-Techniques
 
@@ -170,6 +176,8 @@ Both `malware` and `tool` type software depart from the STIX format with the fol
 ### Relationships
 
 Objects in ATT&CK are related to each other via STIX [relationship](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230970) objects. These relationships convey concepts like groups using techniques (also called "procedure examples" on the technique pages), the hierarchy of techniques and sub-techniques, and so on. 
+
+![relationships data model](https://raw.githubusercontent.com/mitre-attack/attack-website/master/modules/resources/docs/visualizations/data-model/stix-relationships.png "relationships data model")
 
 Unlike other objects in the dataset, relationships cannot be revoked or deprecated. Relationships are considered deprecated/revoked if one of the objects it is attached to is revoked or deprecated. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. 
 
