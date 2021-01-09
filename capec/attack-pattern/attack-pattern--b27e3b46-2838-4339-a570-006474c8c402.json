@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--73d2d820-2c78-411a-b4fa-86d8795ed8f4",
+    "id": "bundle--026bfe7a-25e7-4562-b0d7-a8ff5228e01d",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,7 +8,7 @@
             "id": "attack-pattern--b27e3b46-2838-4339-a570-006474c8c402",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
             "created": "2014-06-23T00:00:00.000Z",
-            "modified": "2017-05-01T00:00:00.000Z",
+            "modified": "2020-12-17T00:00:00.000Z",
             "name": "XSS Using MIME Type Mismatch",
             "description": "An adversary creates a file with scripting content but where the specified MIME type of the file is such that scripting is not expected. The adversary tricks the victim into accessing a URL that responds with the script file. Some browsers will detect that the specified MIME type of the file does not match the actual type of its content and will automatically switch to using an interpreter for the real content type. If the browser does not invoke script filters before doing this, the adversary's script may run on the target unsanitized, possibly revealing the victim's cookies or executing arbitrary script in their browser.",
             "external_references": [
@@ -34,7 +34,7 @@
                 },
                 {
                     "source_name": "reference_from_CAPEC",
-                    "description": "OWASP Testing Guide (v4 [DRAFT]), The Open Web Application Security Project (OWASP)",
+                    "description": "OWASP Testing Guide (v4), The Open Web Application Security Project (OWASP)",
                     "url": "http://www.owasp.org/index.php/Testing_for_Stored_Cross_site_scripting_(OWASP-DV-002)",
                     "external_id": "REF-78"
                 }
@@ -47,6 +47,7 @@
                 "For example, the MIME type text/plain may be used where the actual content is text/javascript or text/html. Since text does not contain scripting instructions, the stated MIME type would indicate that filtering is unnecessary. However, if the target application subsequently determines the file's real type and invokes the appropriate interpreter, scripted content could be invoked.",
                 "In another example, img tags in HTML content could reference a renderable type file instead of an expected image file. The file extension and MIME type can describe an image file, but the file content can be text/javascript or text/html resulting in script execution. If the browser assumes all references in img tags are images, and therefore do not need to be filtered for scripts, this would bypass content filters."
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary identifies a webpage that allows uploading content through an HTTP POST request. This is typically a blog or forum where other users will access the uploaded content.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary creates a file with scripting content that they wish to be executed on other users' web browsers. This file is then uploaded through a POST request and the MIME type is specified as a file type that cannot execute scripting content, such as text/plain.</p></li><li> <p>The adversary then attempts to access the uploaded content to see if the browser correctly executes their desired scripting content</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>Once the adversary has determined that their uploaded script will run when accessed, they either wait for users to access the content on their own or they target users to access their content through phishing emails.</p></li><li> <p>The adversary's script can do just about anything, but a common use is to read a user's cookies which may contain a token. This can then be used to launch a Cross Site Request Forgery Attack.</p></li></ol></div>",
             "x_capec_prerequisites": [
                 "The victim must follow a crafted link that references a scripting file that is mis-typed as a non-executable file.",
                 "The victim's browser must detect the true type of a mis-labeled scripting file and invoke the appropriate script interpreter without first performing filtering on the content."
@@ -56,7 +57,7 @@
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.3"
+            "x_capec_version": "3.4"
         }
     ]
 }
