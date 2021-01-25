@@ -670,13 +670,19 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
     if not reverse:
         targets = thesrc.query([
             Filter('type', '=', target_type),
-            Filter('revoked', '=', False)
         ])
     else:
         targets = thesrc.query([
             Filter('type', '=', src_type),
-            Filter('revoked', '=', False)
         ])
+    
+    # remove revoked and deprecated objects from output
+    targets = list(
+        filter(
+            lambda x: x.get("x_mitre_deprecated", False) is False and x.get("revoked", False) is False,
+            stix_objects
+        )
+    )
 
     # build lookup of stixID to stix object
     id_to_target = {}
@@ -701,11 +707,15 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
 # software:group
 def software_used_by_groups(thesrc):
     """returns group_id => {software, relationship} for each software used by the group."""
-    return get_related(thesrc, "intrusion-set", "uses", "tool") + get_related(thesrc, "intrusion-set", "uses", "malware")
+    x = get_related(thesrc, "intrusion-set", "uses", "tool")
+    x.update(get_related(thesrc, "intrusion-set", "uses", "malware"))
+    return x
 
 def groups_using_software(thesrc):
     """returns software_id => {group, relationship} for each group using the software."""
-    return get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True) + get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True)
+    x = get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True)
+    x.update(get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True))
+    return x
 
 # technique:group
 def techniques_used_by_groups(thesrc):
@@ -719,11 +729,15 @@ def groups_using_technique(thesrc):
 # technique:software
 def techniques_used_by_software(thesrc):
     """return software_id => {technique, relationship} for each technique used by the software."""
-    return get_related(thesrc, "malware", "uses", "attack-pattern") + get_related(thesrc, "tool", "uses", "attack-pattern")
+    x = get_related(thesrc, "malware", "uses", "attack-pattern")
+    x.update(get_related(thesrc, "tool", "uses", "attack-pattern"))
+    return x
 
 def software_using_technique(thesrc):
     """return technique_id  => {software, relationship} for each software using the technique."""
-    return get_related(thesrc, "malware", "uses", "attack-pattern", reverse=True) + get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True)
+    x = get_related(thesrc, "malware", "uses", "attack-pattern", reverse=True)
+    x.update(get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True))
+    return x
 
 # technique:mitigation
 def mitigation_mitigates_techniques(thesrc):
