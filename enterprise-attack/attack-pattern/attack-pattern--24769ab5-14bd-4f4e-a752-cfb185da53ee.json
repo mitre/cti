@@ -1,0 +1,79 @@
+{
+    "type": "bundle",
+    "id": "bundle--ea9462a1-2063-472b-9e3a-8f2d44c1f275",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "id": "attack-pattern--24769ab5-14bd-4f4e-a752-cfb185da53ee",
+            "description": "Adversaries may add new domain trusts or modify the properties of existing domain trusts to evade defenses and/or elevate privileges. Domain trust details, such as whether or not a domain is federated, allow authentication and authorization properties to apply between domains for the purpose of accessing shared resources.(Citation: Microsoft - Azure AD Federation) These trust objects may include accounts, credentials, and other authentication material applied to servers, tokens, and domains.\n\nManipulating the domain trusts may allow an adversary to escalate privileges and/or evade defenses by modifying settings to add objects which they control. For example, this may be used to forge [SAML Tokens](https://attack.mitre.org/techniques/T1606/002), without the need to compromise the signing certificate to forge new credentials. Instead, an adversary can manipulate domain trusts to add their own signing certificate.",
+            "name": "Domain Trust Modification",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1484.002",
+                    "url": "https://attack.mitre.org/techniques/T1484/002"
+                },
+                {
+                    "source_name": "Microsoft - Azure AD Federation",
+                    "url": "https://docs.microsoft.com/en-us/azure/active-directory/hybrid/whatis-fed",
+                    "description": "Microsoft. (2018, November 28). What is federation with Azure AD?. Retrieved December 30, 2020."
+                },
+                {
+                    "source_name": "Microsoft - Azure Sentinel ADFSDomainTrustMods",
+                    "url": "https://github.com/Azure/Azure-Sentinel/blob/master/Detections/AuditLogs/ADFSDomainTrustMods.yaml",
+                    "description": "Microsoft. (2020, December). Azure Sentinel Detections. Retrieved December 30, 2020."
+                },
+                {
+                    "source_name": "Sygnia Golden SAML",
+                    "url": "https://www.sygnia.co/golden-saml-advisory",
+                    "description": "Sygnia. (2020, December). Detection and Hunting of Golden SAML Attack. Retrieved January 6, 2021."
+                },
+                {
+                    "source_name": "CISA SolarWinds Cloud Detection",
+                    "url": "https://us-cert.cisa.gov/ncas/alerts/aa21-008a",
+                    "description": "CISA. (2021, January 8). Detecting Post-Compromise Threat Activity in Microsoft Cloud Environments. Retrieved January 8, 2021."
+                },
+                {
+                    "source_name": "Microsoft - Update or Repair Federated domain",
+                    "url": "https://docs.microsoft.com/en-us/office365/troubleshoot/active-directory/update-federated-domain-office-365",
+                    "description": "Microsoft. (2020, September 14). Update or repair the settings of a federated domain in Office 365, Azure, or Intune. Retrieved December 30, 2020."
+                }
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2021-01-11T18:21:20.213Z",
+            "created": "2020-12-28T21:59:02.181Z",
+            "x_mitre_platforms": [
+                "Windows",
+                "Azure AD"
+            ],
+            "x_mitre_contributors": [
+                "Blake Strom, Microsoft 365 Defender"
+            ],
+            "x_mitre_detection": "Monitor for modifications to domain trust settings, such as when a user or application modifies the federation settings on the domain or updates domain authentication from Managed to Federated via ActionTypes <code>Set federation settings on domain</code> and <code>Set domain authentication</code>.(Citation: Microsoft - Azure Sentinel ADFSDomainTrustMods) This may also include monitoring for Event ID 307 which can be correlated to relevant Event ID 510 with the same Instance ID for change details.(Citation: Sygnia Golden SAML)(Citation: CISA SolarWinds Cloud Detection)\n\nMonitor for PowerShell commands such as: <code>Update-MSOLFederatedDomain \u2013DomainName: \"Federated Domain Name\"</code>, or <code>Update-MSOLFederatedDomain \u2013DomainName: \"Federated Domain Name\" \u2013supportmultipledomain</code>.(Citation: Microsoft - Update or Repair Federated domain)",
+            "x_mitre_permissions_required": [
+                "Administrator"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_data_sources": [
+                "Windows event logs",
+                "PowerShell logs",
+                "Azure activity logs"
+            ]
+        }
+    ]
+}

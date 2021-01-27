@@ -1,0 +1,88 @@
+{
+    "type": "bundle",
+    "id": "bundle--d994862f-5a5a-4336-8fe2-519a57fc3f22",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1484.001",
+                    "url": "https://attack.mitre.org/techniques/T1484/001"
+                },
+                {
+                    "source_name": "TechNet Group Policy Basics",
+                    "url": "https://blogs.technet.microsoft.com/musings_of_a_technical_tam/2012/02/13/group-policy-basics-part-1-understanding-the-structure-of-a-group-policy-object/",
+                    "description": "srachui. (2012, February 13). Group Policy Basics \u2013 Part 1: Understanding the Structure of a Group Policy Object. Retrieved March 5, 2019."
+                },
+                {
+                    "source_name": "ADSecurity GPO Persistence 2016",
+                    "url": "https://adsecurity.org/?p=2716",
+                    "description": "Metcalf, S. (2016, March 14). Sneaky Active Directory Persistence #17: Group Policy. Retrieved March 5, 2019."
+                },
+                {
+                    "source_name": "Wald0 Guide to GPOs",
+                    "url": "https://wald0.com/?p=179",
+                    "description": "Robbins, A. (2018, April 2). A Red Teamer\u2019s Guide to GPOs and OUs. Retrieved March 5, 2019."
+                },
+                {
+                    "source_name": "Harmj0y Abusing GPO Permissions",
+                    "url": "http://www.harmj0y.net/blog/redteaming/abusing-gpo-permissions/",
+                    "description": "Schroeder, W. (2016, March 17). Abusing GPO Permissions. Retrieved March 5, 2019."
+                },
+                {
+                    "source_name": "Mandiant M Trends 2016",
+                    "url": "https://www.fireeye.com/content/dam/fireeye-www/current-threats/pdfs/rpt-mtrends-2016.pdf",
+                    "description": "Mandiant. (2016, February 25). Mandiant M-Trends 2016. Retrieved March 5, 2019."
+                },
+                {
+                    "source_name": "Microsoft Hacking Team Breach",
+                    "url": "https://www.microsoft.com/security/blog/2016/06/01/hacking-team-breach-a-cyber-jurassic-park/",
+                    "description": "Microsoft Secure Team. (2016, June 1). Hacking Team Breach: A Cyber Jurassic Park. Retrieved March 5, 2019."
+                },
+                {
+                    "source_name": "Harmj0y SeEnableDelegationPrivilege Right",
+                    "url": "http://www.harmj0y.net/blog/activedirectory/the-most-dangerous-user-right-you-probably-have-never-heard-of/",
+                    "description": "Schroeder, W. (2017, January 10). The Most Dangerous User Right You (Probably) Have Never Heard Of. Retrieved March 5, 2019."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Group Policy Modification",
+            "description": "Adversaries may modify Group Policy Objects (GPOs) to subvert the intended discretionary access controls for a domain, usually with the intention of escalating privileges on the domain. Group policy allows for centralized management of user and computer settings in Active Directory (AD). GPOs are containers for group policy settings made up of files stored within a predicable network path <code>\\\\&lt;DOMAIN&gt;\\SYSVOL\\&lt;DOMAIN&gt;\\Policies\\</code>.(Citation: TechNet Group Policy Basics)(Citation: ADSecurity GPO Persistence 2016) \n\nLike other objects in AD, GPOs have access controls associated with them. By default all user accounts in the domain have permission to read GPOs. It is possible to delegate GPO access control permissions, e.g. write access, to specific users or groups in the domain.\n\nMalicious GPO modifications can be used to implement many other malicious behaviors such as [Scheduled Task/Job](https://attack.mitre.org/techniques/T1053), [Disable or Modify Tools](https://attack.mitre.org/techniques/T1562/001), [Ingress Tool Transfer](https://attack.mitre.org/techniques/T1105), [Create Account](https://attack.mitre.org/techniques/T1136), [Service Execution](https://attack.mitre.org/techniques/T1035),  and more.(Citation: ADSecurity GPO Persistence 2016)(Citation: Wald0 Guide to GPOs)(Citation: Harmj0y Abusing GPO Permissions)(Citation: Mandiant M Trends 2016)(Citation: Microsoft Hacking Team Breach) Since GPOs can control so many user and machine settings in the AD environment, there are a great number of potential attacks that can stem from this GPO abuse.(Citation: Wald0 Guide to GPOs)\n\nFor example, publicly available scripts such as <code>New-GPOImmediateTask</code> can be leveraged to automate the creation of a malicious [Scheduled Task/Job](https://attack.mitre.org/techniques/T1053) by modifying GPO settings, in this case modifying <code>&lt;GPO_PATH&gt;\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml</code>.(Citation: Wald0 Guide to GPOs)(Citation: Harmj0y Abusing GPO Permissions) In some cases an adversary might modify specific user rights like SeEnableDelegationPrivilege, set in <code>&lt;GPO_PATH&gt;\\MACHINE\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf</code>, to achieve a subtle AD backdoor with complete control of the domain because the user account under the adversary's control would then be able to modify GPOs.(Citation: Harmj0y SeEnableDelegationPrivilege Right)",
+            "id": "attack-pattern--5d2be8b9-d24c-4e98-83bf-2f5f79477163",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2021-01-07T21:18:12.645Z",
+            "created": "2020-12-28T21:50:59.844Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "User"
+            ],
+            "x_mitre_detection": "It is possible to detect GPO modifications by monitoring directory service changes using Windows event logs. Several events may be logged for such GPO modifications, including:\n\n* Event ID 5136 - A directory service object was modified\n* Event ID 5137 - A directory service object was created\n* Event ID 5138 - A directory service object was undeleted\n* Event ID 5139 - A directory service object was moved\n* Event ID 5141 - A directory service object was deleted\n\n\nGPO abuse will often be accompanied by some other behavior such as [Scheduled Task/Job](https://attack.mitre.org/techniques/T1053), which will have events associated with it to detect. Subsequent permission value modifications, like those to SeEnableDelegationPrivilege, can also be searched for in events associated with privileges assigned to new logons (Event ID 4672) and assignment of user rights (Event ID 4704).",
+            "x_mitre_data_sources": [
+                "Windows event logs"
+            ],
+            "x_mitre_contributors": [
+                "Itamar Mizrahi, Cymptom",
+                "Tristan Bennett, Seamless Intelligence"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ]
+        }
+    ]
+}

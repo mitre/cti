@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--d3dfb130-dfcb-4cda-9d69-f508ca2f8d5a",
+    "id": "bundle--a28e8e3c-facf-4a49-a9af-8145cf3e4d91",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8,9 +8,6 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "source_ref": "course-of-action--e3388c78-2a8d-47c2-8422-c1398b324462",
-            "target_ref": "attack-pattern--1df0326d-2fbc-4d08-a16b-48365f1e742d",
-            "relationship_type": "mitigates",
             "description": "Clean up SID-History attributes after legitimate account migration is complete.\n\nConsider applying SID Filtering to interforest trusts, such as forest trusts and external trusts, to exclude SID-History from requests to access domain resources. SID Filtering ensures that any authentication requests over a trust only contain SIDs of security principals from the trusted domain (i.e preventing the trusted domain from claiming a user has membership in groups outside of the domain).\n\nSID Filtering of forest trusts is enabled by default, but may have been disabled in some cases to allow a child domain to transitively access forest trusts. SID Filtering of external trusts is automatically enabled on all created external trusts using Server 2003 or later domain controllers. (Citation: Microsoft Trust Considerations Nov 2014) (Citation: Microsoft SID Filtering Quarantining Jan 2009) However note that SID Filtering is not automatically applied to legacy trusts or may have been deliberately disabled to allow inter-domain access to resources.\n\nSID Filtering can be applied by: (Citation: Microsoft Netdom Trust Sept 2012)\n\n* Disabling SIDHistory on forest trusts using the netdom tool (netdom trust /domain: /EnableSIDHistory:no on the domain controller)\n\n* Applying SID Filter Quarantining to external trusts using the netdom tool (<code>netdom trust <TrustingDomainName> /domain:<TrustedDomainName> /quarantine:yes</code> on the domain controller)\n\n* Applying SID Filtering to domain trusts within a single forest is not recommended as it is an unsupported configuration and can cause breaking changes. (Citation: Microsoft Netdom Trust Sept 2012) (Citation: AdSecurity Kerberos GT Aug 2015) If a domain within a forest is untrustworthy then it should not be a member of the forest. In this situation it is necessary to first split the trusted and untrusted domains into separate forests where SID Filtering can be applied to an interforest trust",
             "id": "relationship--6e7ec1a3-853f-40b5-8dc2-fc8d5b46b241",
             "external_references": [
@@ -37,7 +34,10 @@
             ],
             "type": "relationship",
             "modified": "2020-02-18T18:35:21.842Z",
-            "created": "2019-06-24T11:48:11.099Z"
+            "created": "2019-06-24T11:48:11.099Z",
+            "source_ref": "course-of-action--e3388c78-2a8d-47c2-8422-c1398b324462",
+            "relationship_type": "mitigates",
+            "target_ref": "attack-pattern--1df0326d-2fbc-4d08-a16b-48365f1e742d"
         }
     ]
 }

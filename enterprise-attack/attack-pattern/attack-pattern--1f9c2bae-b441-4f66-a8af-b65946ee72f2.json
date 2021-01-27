@@ -1,0 +1,77 @@
+{
+    "type": "bundle",
+    "id": "bundle--975bbaa0-81fe-4a29-b9f2-56dc0df96790",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1606.002",
+                    "url": "https://attack.mitre.org/techniques/T1606/002"
+                },
+                {
+                    "source_name": "Microsoft SolarWinds Steps",
+                    "url": "https://blogs.microsoft.com/on-the-issues/2020/12/13/customers-protect-nation-state-cyberattacks/",
+                    "description": "Lambert, J. (2020, December 13). Important steps for customers to protect themselves from recent nation-state cyberattacks. Retrieved December 17, 2020."
+                },
+                {
+                    "source_name": "Microsoft SAML Token Lifetimes",
+                    "url": "https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-configurable-token-lifetimes",
+                    "description": "Microsoft. (2020, December 14). Configurable token lifetimes in Microsoft Identity Platform. Retrieved December 22, 2020."
+                },
+                {
+                    "source_name": "Cyberark Golden SAML",
+                    "url": "https://www.cyberark.com/resources/threat-research-blog/golden-saml-newly-discovered-attack-technique-forges-authentication-to-cloud-apps",
+                    "description": "Reiner, S. (2017, November 21). Golden SAML: Newly Discovered Attack Technique Forges Authentication to Cloud Apps. Retrieved December 17, 2020."
+                },
+                {
+                    "source_name": "Microsoft SolarWinds Customer Guidance",
+                    "url": "https://msrc-blog.microsoft.com/2020/12/13/customer-guidance-on-recent-nation-state-cyber-attacks/",
+                    "description": "MSRC. (2020, December 13). Customer Guidance on Recent Nation-State Cyber Attacks. Retrieved December 17, 2020."
+                },
+                {
+                    "source_name": "Sygnia Golden SAML",
+                    "url": "https://www.sygnia.co/golden-saml-advisory",
+                    "description": "Sygnia. (2020, December). Detection and Hunting of Golden SAML Attack. Retrieved January 6, 2021."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "SAML Tokens",
+            "description": "An adversary may forge SAML tokens with any permissions claims and lifetimes if they possess a valid SAML token-signing certificate.(Citation: Microsoft SolarWinds Steps) The default lifetime of a SAML token is one hour, but the validity period can be specified in the <code>NotOnOrAfter</code> value of the <code>conditions ...</code> element in a token. This value can be changed using the <code>AccessTokenLifetime</code> in a <code>LifetimeTokenPolicy</code>.(Citation: Microsoft SAML Token Lifetimes) Forged SAML tokens enable adversaries to authenticate across services that use SAML 2.0 as an SSO (single sign-on) mechanism.(Citation: Cyberark Golden SAML)\n\nAn adversary may utilize [Private Keys](https://attack.mitre.org/techniques/T1552/004) to compromise an organization's token-signing certificate to create forged SAML tokens. If the adversary has sufficient permissions to establish a new federation trust with their own Active Directory Federation Services (AD FS) server, they may instead generate their own trusted token-signing certificate.(Citation: Microsoft SolarWinds Customer Guidance) This differs from [Steal Application Access Token](https://attack.mitre.org/techniques/T1528) and other similar behaviors in that the tokens are new and forged by the adversary, rather than stolen or intercepted from legitimate users.\n\nAn adversary may gain administrative Azure AD privileges if a SAML token is forged which claims to represent a highly privileged account. This may lead to [Use Alternate Authentication Material](https://attack.mitre.org/techniques/T1550), which may bypass multi-factor and other authentication protection mechanisms.(Citation: Microsoft SolarWinds Customer Guidance)",
+            "id": "attack-pattern--1f9c2bae-b441-4f66-a8af-b65946ee72f2",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "credential-access"
+                }
+            ],
+            "modified": "2021-01-22T21:07:42.451Z",
+            "created": "2020-12-17T15:24:12.240Z",
+            "x_mitre_permissions_required": [
+                "Administrator"
+            ],
+            "x_mitre_data_sources": [
+                "Windows event logs",
+                "Authentication logs"
+            ],
+            "x_mitre_contributors": [
+                "Blake Strom, Microsoft 365 Defender",
+                "Oleg Kolesnikov, Securonix"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_detection": "This technique may be difficult to detect as SAML tokens are signed by a trusted certificate. The forging process may not be detectable since it is likely to happen outside of a defender's visibility, but subsequent usage of the forged token may be seen. Monitor for anomalous logins using SAML tokens created by a compromised or adversary generated token-signing certificate. These logins may occur on any on-premises resources as well as from any cloud environment that trusts the certificate.(Citation: Microsoft SolarWinds Customer Guidance) Search for logins to service providers using SAML SSO which do not have corresponding 4769, 1200, and 1202 events in the Domain.(Citation: Sygnia Golden SAML)\n\nConsider modifying SAML responses to include custom elements for each service provider. Monitor these custom elements in service provider access logs to detect any anomalous requests.(Citation: Sygnia Golden SAML)",
+            "x_mitre_platforms": [
+                "Azure AD",
+                "SaaS",
+                "Windows",
+                "Office 365"
+            ]
+        }
+    ]
+}
