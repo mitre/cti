@@ -4,7 +4,7 @@
 
 This document describes how to query and manipulate ATT&CK data from either this repository or the ATT&CK TAXII server, as well as the formatting of the data itself.
 
-- [The ATT&CK data model](#the-att-ck-data-model)
+- [The ATT&CK data model](#the-att-ck-data-model). This section describes the format of the data and highlights how it extends the stock STIX 2.0 format
   * [Extensions of the STIX spec](#extensions-of-the-stix-spec)
   * [IDs in ATT&CK](#ids-in-att-ck)
     + [ATT&CK IDs](#att-ck-ids)
@@ -22,7 +22,7 @@ This document describes how to query and manipulate ATT&CK data from either this
     + [Groups](#groups)
     + [Software](#software)
     + [Relationships](#relationships)
-- [Accessing ATT&CK data in python](#accessing-att-ck-data-in-python)
+- [Accessing ATT&CK data in python](#accessing-att-ck-data-in-python). This section describes different methodologies that can be used to load the ATT&CK data into a script
   * [Requirements and imports](#requirements-and-imports)
     + [stix2](#stix2)
     + [taxii2client](#taxii2client)
@@ -34,7 +34,7 @@ This document describes how to query and manipulate ATT&CK data from either this
     + [Access from Github via requests](#access-from-github-via-requests)
   * [Access a specific version of ATT&CK](#access-a-specific-version-of-att-ck)
   * [Access multiple domains simultaneously](#access-multiple-domains-simultaneously)
-- [Python recipes](#python-recipes)
+- [Python recipes](#python-recipes). This section provides python3 examples of common ways to query the ATT&CK data once loaded
   * [Getting an object](#getting-an-object)
     + [By STIX ID](#by-stix-id)
     + [By ATT&CK ID](#by-att-ck-id)
