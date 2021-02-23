@@ -1,16 +1,68 @@
+
+
 # Introduction
 
-This document describes how to query and manipulate ATT&CK data from either this repository or the ATT&CK TAXII server. It is divided into three sections:
+This document describes how to query and manipulate ATT&CK data from either this repository or the ATT&CK TAXII server, as well as the formatting of the data itself.
 
-- [The ATT&CK data model](#the-attck-data-model), which describes the format of the data and highlights how it extends the stock STIX2.0 format
-- [Accessing ATT&CK data in python](#accessing-attck-data-in-python), which describes different methodologies that can be used to load the ATT&CK data into a script
-- [Python recipes](#Python-Recipes), which provides python3 examples of common ways to query the ATT&CK data once loaded
-
-The latter two sections on the programmatic use of ATT&CK heavily utilize the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically. See also the section on [Requirements and imports](#requirements-and-imports).
+The programmatic uses of ATT&CK demonstrated in this document utilize the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically. See also the section on [Requirements and imports](#requirements-and-imports).
 
 This document describes how ATT&CK implements and extends the STIX format. To find out more about STIX, please see [the STIX 2.0 website](https://oasis-open.github.io/cti-documentation/stix/intro). 
 
 We also recommend reading the [ATT&CK Design and Philosophy Paper](https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf), which describes high-level overall approach, intention, and usage of ATT&CK.
+
+## Table of Contents
+
+- [The ATT&CK data model](#the-attck-data-model)
+  * [Extensions of the STIX spec](#extensions-of-the-stix-spec)
+  * [IDs in ATT&CK](#ids-in-attck)
+    + [ATT&CK IDs](#attck-ids)
+    + [STIX IDs](#stix-ids)
+    + [Other IDs](#other-ids)
+  * [ATT&CK Types](#attck-types)
+    + [Matrices](#matrices)
+      - [Mapping matrices, tactics and techniques](#mapping-matrices-tactics-and-techniques)
+    + [Tactics](#tactics)
+    + [Techniques](#techniques)
+      - [Sub-Techniques](#sub-techniques)
+    + [Procedures](#procedures)
+    + [Mitigations](#mitigations)
+      - [Collisions with technique ATT&CK IDs](#collisions-with-technique-attck-ids)
+    + [Groups](#groups)
+    + [Software](#software)
+    + [Relationships](#relationships)
+- [Accessing ATT&CK data in python](#accessing-attck-data-in-python)
+  * [Requirements and imports](#requirements-and-imports)
+    + [stix2](#stix2)
+    + [taxii2client](#taxii2client)
+  * [Access local content](#access-local-content)
+    + [Access via FileSystemSource](#access-via-filesystemsource)
+    + [Access via bundle](#access-via-bundle)
+  * [Access live content](#access-live-content)
+    + [Access from the ATT&CK TAXII server](#access-from-the-attck-taxii-server)
+    + [Access from Github via requests](#access-from-github-via-requests)
+  * [Access a specific version of ATT&CK](#access-a-specific-version-of-attck)
+  * [Access multiple domains simultaneously](#access-multiple-domains-simultaneously)
+- [Python recipes](#python-recipes)
+  * [Getting an object](#getting-an-object)
+    + [By STIX ID](#by-stix-id)
+    + [By ATT&CK ID](#by-attck-id)
+    + [By name](#by-name)
+    + [By alias](#by-alias)
+  * [Getting multiple objects](#getting-multiple-objects)
+    + [Objects by type](#objects-by-type)
+      - [Getting techniques or sub-techniques](#getting-techniques-or-sub-techniques)
+      - [Getting software](#getting-software)
+    + [Objects by content](#objects-by-content)
+    + [Techniques by platform](#techniques-by-platform)
+    + [Techniques by tactic](#techniques-by-tactic)
+    + [Tactics by matrix](#tactics-by-matrix)
+    + [Objects created or modified since a given date](#objects-created-or-modified-since-a-given-date)
+  * [Getting related objects](#getting-related-objects)
+    + [Relationships microlibrary](#relationships-microlibrary)
+    + [Getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software)
+  * [Working with deprecated and revoked objects](#working-with-deprecated-and-revoked-objects)
+    + [Removing revoked and deprecated objects](#removing-revoked-and-deprecated-objects)
+    + [Getting a revoking object](#getting-a-revoking-object)
 
 # The ATT&CK data model
 
@@ -582,9 +634,7 @@ getTacticsByMatrix(src)
 ```
 
 ### Objects created or modified since a given date
-Sometimes you may want to get a list of objects which have been created or modified after a certain time.
-This code could be used within a larger function or script to alert when a new object
-has been added to the ATT&CK catalog. 
+Sometimes you may want to get a list of objects which have been created or modified after a certain time. 
 
 ```python
 from stix2 import Filter
@@ -606,6 +656,8 @@ def get_modified_after(thesrc, timestamp):
     
 get_modified_after(src, "2018-10-01T00:14:20.652Z")
 ```
+
+We don't recommend you use this method to detect a change to the contents of the knowledge base. For detecting an update to the overall knowledge base we recommend using requests to [check the list of released versions of ATT&CK](https://github.com/mitre/cti/blob/master/USAGE.md#access-a-specific-version-of-attck).
 
 ## Getting related objects
 A large part of working with ATT&CK revolves around parsing relationships between objects. It is useful
