@@ -184,6 +184,9 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 | `x_mitre_effective_permissions` | string[] | Enterprise domain in the _Privilege Escalation_ tactic | The level of permissions the adversary will attain by performing the technique. |
 | `x_mitre_defense_bypassed` | string[] | Enterprise domain in the _Defense Evasion_ tactic | List of defensive tools, methodologies, or processes the technique can bypass. |
 | `x_mitre_remote_support` | boolean | Enterprise domain in the _Execution_ tactic | If true, the technique can be used to execute something on a remote system. |
+| `x_mitre_impact_type` | string[] | Enterprise domain in the _Impact_ tactic | Denotes if the technique can be used for
+integrity or availability attacks. |
+
 
 See [mapping matrices, tactics and techniques](#mapping-matrices-tactics-and-techniques) for more information about how techniques map into tactics and matrices.
 
