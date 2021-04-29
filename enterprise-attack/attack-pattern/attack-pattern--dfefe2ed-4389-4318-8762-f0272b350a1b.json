@@ -1,83 +1,86 @@
 {
     "type": "bundle",
-    "id": "bundle--5320237e-6e41-4c70-a99e-310d7f3c8dec",
+    "id": "bundle--f5c18526-de47-4146-acbe-e2464a88fc08",
     "spec_version": "2.0",
     "objects": [
         {
             "id": "attack-pattern--dfefe2ed-4389-4318-8762-f0272b350a1b",
-            "description": "Adversaries may create or modify systemd services to repeatedly execute malicious payloads as part of persistence. The systemd service manager is commonly used for managing background daemon processes (also known as services) and other system resources.(Citation: Linux man-pages: systemd January 2014)(Citation: Freedesktop.org Linux systemd 29SEP2018) Systemd is the default initialization (init) system on many Linux distributions starting with Debian 8, Ubuntu 15.04, CentOS 7, RHEL 7, Fedora 15, and replaces legacy init systems including SysVinit and Upstart while remaining backwards compatible with the aforementioned init systems.\n\nSystemd utilizes configuration files known as service units to control how services boot and under what conditions. By default, these unit files are stored in the <code>/etc/systemd/system</code> and <code>/usr/lib/systemd/system</code> directories and have the file extension <code>.service</code>. Each service unit file may contain numerous directives that can execute system commands:\n\n* ExecStart, ExecStartPre, and ExecStartPost directives cover execution of commands when a services is started manually by 'systemctl' or on system start if the service is set to automatically start. \n* ExecReload directive covers when a service restarts. \n* ExecStop and ExecStopPost directives cover when a service is stopped or manually by 'systemctl'.\n\nAdversaries have used systemd functionality to establish persistent access to victim systems by creating and/or modifying service unit files that cause systemd to execute malicious commands at system boot.(Citation: Anomali Rocke March 2019)\n\nWhile adversaries typically require root privileges to create/modify service unit files in the <code>/etc/systemd/system</code> and <code>/usr/lib/systemd/system</code> directories, low privilege users can create/modify service unit files in directories such as <code>~/.config/systemd/user/</code> to achieve user-level persistence.(Citation: Rapid7 Service Persistence 22JUNE2016)",
-            "name": "Systemd Service",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1543/002",
                     "source_name": "mitre-attack",
-                    "external_id": "T1543.002",
-                    "url": "https://attack.mitre.org/techniques/T1543/002"
+                    "external_id": "T1543.002"
                 },
                 {
-                    "external_id": "CAPEC-550",
+                    "url": "https://capec.mitre.org/data/definitions/550.html",
                     "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/550.html"
+                    "external_id": "CAPEC-550"
                 },
                 {
-                    "external_id": "CAPEC-551",
+                    "url": "https://capec.mitre.org/data/definitions/551.html",
                     "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/551.html"
+                    "external_id": "CAPEC-551"
                 },
                 {
+                    "description": "Linux man-pages. (2014, January). systemd(1) - Linux manual page. Retrieved April 23, 2019.",
                     "source_name": "Linux man-pages: systemd January 2014",
-                    "url": "http://man7.org/linux/man-pages/man1/systemd.1.html",
-                    "description": "Linux man-pages. (2014, January). systemd(1) - Linux manual page. Retrieved April 23, 2019."
+                    "url": "http://man7.org/linux/man-pages/man1/systemd.1.html"
                 },
                 {
+                    "description": "Freedesktop.org. (2018, September 29). systemd System and Service Manager. Retrieved April 23, 2019.",
                     "source_name": "Freedesktop.org Linux systemd 29SEP2018",
-                    "url": "https://www.freedesktop.org/wiki/Software/systemd/",
-                    "description": "Freedesktop.org. (2018, September 29). systemd System and Service Manager. Retrieved April 23, 2019."
+                    "url": "https://www.freedesktop.org/wiki/Software/systemd/"
                 },
                 {
+                    "description": "Anomali Labs. (2019, March 15). Rocke Evolves Its Arsenal With a New Malware Family Written in Golang. Retrieved April 24, 2019.",
                     "source_name": "Anomali Rocke March 2019",
-                    "url": "https://www.anomali.com/blog/rocke-evolves-its-arsenal-with-a-new-malware-family-written-in-golang",
-                    "description": "Anomali Labs. (2019, March 15). Rocke Evolves Its Arsenal With a New Malware Family Written in Golang. Retrieved April 24, 2019."
+                    "url": "https://www.anomali.com/blog/rocke-evolves-its-arsenal-with-a-new-malware-family-written-in-golang"
                 },
                 {
+                    "description": "Rapid7. (2016, June 22). Service Persistence. Retrieved April 23, 2019.",
                     "source_name": "Rapid7 Service Persistence 22JUNE2016",
-                    "url": "https://www.rapid7.com/db/modules/exploit/linux/local/service_persistence",
-                    "description": "Rapid7. (2016, June 22). Service Persistence. Retrieved April 23, 2019."
+                    "url": "https://www.rapid7.com/db/modules/exploit/linux/local/service_persistence"
                 }
             ],
-            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
+                    "phase_name": "persistence",
+                    "kill_chain_name": "mitre-attack"
                 },
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
+                    "phase_name": "privilege-escalation",
+                    "kill_chain_name": "mitre-attack"
                 }
-            ],
-            "modified": "2020-10-09T13:46:29.701Z",
-            "created": "2020-01-17T16:15:19.870Z",
-            "x_mitre_platforms": [
-                "Linux"
-            ],
-            "x_mitre_detection": "Systemd service unit files may be detected by auditing file creation and modification events within the <code>/etc/systemd/system</code>, <code>/usr/lib/systemd/system/</code>, and <code>/home/<username>/.config/systemd/user/</code> directories, as well as associated symbolic links. Suspicious processes or scripts spawned in this manner will have a parent process of \u2018systemd\u2019, a parent process ID of 1, and will usually execute as the \u2018root\u2019 user.\n\nSuspicious systemd services can also be identified by comparing results against a trusted system baseline. Malicious systemd services may be detected by using the systemctl utility to examine system wide services: <code>systemctl list-units -\u2013type=service \u2013all</code>. Analyze the contents of <code>.service</code> files present on the file system and ensure that they refer to legitimate, expected executables.\n\nAuditing the execution and command-line arguments of the 'systemctl' utility, as well related utilities such as <code>/usr/sbin/service</code> may reveal malicious systemd service execution.",
-            "x_mitre_permissions_required": [
-                "User",
-                "root"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.2",
-            "x_mitre_data_sources": [
-                "Process command-line parameters",
-                "Process monitoring",
-                "File monitoring"
             ],
             "x_mitre_contributors": [
                 "Tony Lambert, Red Canary"
+            ],
+            "x_mitre_version": "1.2",
+            "type": "attack-pattern",
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "description": "Adversaries may create or modify systemd services to repeatedly execute malicious payloads as part of persistence. The systemd service manager is commonly used for managing background daemon processes (also known as services) and other system resources.(Citation: Linux man-pages: systemd January 2014)(Citation: Freedesktop.org Linux systemd 29SEP2018) Systemd is the default initialization (init) system on many Linux distributions starting with Debian 8, Ubuntu 15.04, CentOS 7, RHEL 7, Fedora 15, and replaces legacy init systems including SysVinit and Upstart while remaining backwards compatible with the aforementioned init systems.\n\nSystemd utilizes configuration files known as service units to control how services boot and under what conditions. By default, these unit files are stored in the <code>/etc/systemd/system</code> and <code>/usr/lib/systemd/system</code> directories and have the file extension <code>.service</code>. Each service unit file may contain numerous directives that can execute system commands:\n\n* ExecStart, ExecStartPre, and ExecStartPost directives cover execution of commands when a services is started manually by 'systemctl' or on system start if the service is set to automatically start. \n* ExecReload directive covers when a service restarts. \n* ExecStop and ExecStopPost directives cover when a service is stopped or manually by 'systemctl'.\n\nAdversaries have used systemd functionality to establish persistent access to victim systems by creating and/or modifying service unit files that cause systemd to execute malicious commands at system boot.(Citation: Anomali Rocke March 2019)\n\nWhile adversaries typically require root privileges to create/modify service unit files in the <code>/etc/systemd/system</code> and <code>/usr/lib/systemd/system</code> directories, low privilege users can create/modify service unit files in directories such as <code>~/.config/systemd/user/</code> to achieve user-level persistence.(Citation: Rapid7 Service Persistence 22JUNE2016)",
+            "modified": "2020-10-09T13:46:29.701Z",
+            "created": "2020-01-17T16:15:19.870Z",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "File: File Modification",
+                "Process: Process Creation",
+                "Command: Command Execution",
+                "Service: Service Creation",
+                "Service: Service Modification"
+            ],
+            "name": "Systemd Service",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_detection": "Systemd service unit files may be detected by auditing file creation and modification events within the <code>/etc/systemd/system</code>, <code>/usr/lib/systemd/system/</code>, and <code>/home/<username>/.config/systemd/user/</code> directories, as well as associated symbolic links. Suspicious processes or scripts spawned in this manner will have a parent process of \u2018systemd\u2019, a parent process ID of 1, and will usually execute as the \u2018root\u2019 user.\n\nSuspicious systemd services can also be identified by comparing results against a trusted system baseline. Malicious systemd services may be detected by using the systemctl utility to examine system wide services: <code>systemctl list-units -\u2013type=service \u2013all</code>. Analyze the contents of <code>.service</code> files present on the file system and ensure that they refer to legitimate, expected executables.\n\nAuditing the execution and command-line arguments of the 'systemctl' utility, as well related utilities such as <code>/usr/sbin/service</code> may reveal malicious systemd service execution.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_permissions_required": [
+                "User",
+                "root"
             ]
         }
     ]

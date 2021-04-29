@@ -1,68 +1,69 @@
 {
     "type": "bundle",
-    "id": "bundle--65a2d38a-440e-46a5-8d13-593b8d5c0c8c",
+    "id": "bundle--e387a74d-5c9e-4bc6-81b0-0ffefc686a38",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_version": "1.0",
+            "id": "attack-pattern--9e8b28c9-35fe-48ac-a14d-e6cc032dcbcd",
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1574/010",
                     "source_name": "mitre-attack",
-                    "external_id": "T1574.010",
-                    "url": "https://attack.mitre.org/techniques/T1574/010"
+                    "external_id": "T1574.010"
                 },
                 {
-                    "external_id": "CAPEC-17",
+                    "url": "https://capec.mitre.org/data/definitions/17.html",
                     "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/17.html"
+                    "external_id": "CAPEC-17"
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Services File Permissions Weakness",
-            "description": "Adversaries may execute their own malicious payloads by hijacking the binaries used by services. Adversaries may use flaws in the permissions of Windows services to replace the binary that is executed upon service start. These service processes may automatically execute specific binaries as part of their functionality or to perform other actions. If the permissions on the file system directory containing a target binary, or permissions on the binary itself are improperly set, then the target binary may be overwritten with another binary using user-level permissions and executed by the original process. If the original process and thread are running under a higher permissions level, then the replaced binary will also execute under higher-level permissions, which could include SYSTEM.\n\nAdversaries may use this technique to replace legitimate binaries with malicious ones as a means of executing code at a higher permissions level. If the executing process is set to run at a specific time or during a certain event (e.g., system bootup) then this technique can also be used for persistence.",
-            "id": "attack-pattern--9e8b28c9-35fe-48ac-a14d-e6cc032dcbcd",
-            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
+                    "phase_name": "persistence",
+                    "kill_chain_name": "mitre-attack"
                 },
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
+                    "phase_name": "privilege-escalation",
+                    "kill_chain_name": "mitre-attack"
                 },
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
                 }
             ],
-            "modified": "2020-09-16T19:10:04.262Z",
-            "created": "2020-03-12T20:43:53.998Z",
             "x_mitre_contributors": [
                 "Travis Smith, Tripwire",
                 "Stefan Kanthak"
             ],
-            "x_mitre_data_sources": [
-                "Process command-line parameters",
-                "Services",
-                "File monitoring"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_version": "1.0",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "description": "Adversaries may execute their own malicious payloads by hijacking the binaries used by services. Adversaries may use flaws in the permissions of Windows services to replace the binary that is executed upon service start. These service processes may automatically execute specific binaries as part of their functionality or to perform other actions. If the permissions on the file system directory containing a target binary, or permissions on the binary itself are improperly set, then the target binary may be overwritten with another binary using user-level permissions and executed by the original process. If the original process and thread are running under a higher permissions level, then the replaced binary will also execute under higher-level permissions, which could include SYSTEM.\n\nAdversaries may use this technique to replace legitimate binaries with malicious ones as a means of executing code at a higher permissions level. If the executing process is set to run at a specific time or during a certain event (e.g., system bootup) then this technique can also be used for persistence.",
+            "modified": "2020-09-16T19:10:04.262Z",
+            "created": "2020-03-12T20:43:53.998Z",
             "x_mitre_is_subtechnique": true,
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "File: File Modification",
+                "Process: Process Creation",
+                "Service: Service Metadata"
+            ],
+            "type": "attack-pattern",
+            "name": "Services File Permissions Weakness",
             "x_mitre_effective_permissions": [
                 "SYSTEM",
                 "Administrator",
                 "User"
             ],
+            "x_mitre_detection": "Look for changes to binaries and service executables that may normally occur during software updates. If an executable is written, renamed, and/or moved to match an existing service executable, it could be detected and correlated with other suspicious behavior. Hashing of binaries and service executables could be used to detect replacement against historical data.\n\nLook for abnormal process call trees from typical processes and services and for execution of other commands that could relate to Discovery or other adversary techniques. ",
             "x_mitre_permissions_required": [
                 "Administrator",
                 "User"
-            ],
-            "x_mitre_detection": "Look for changes to binaries and service executables that may normally occur during software updates. If an executable is written, renamed, and/or moved to match an existing service executable, it could be detected and correlated with other suspicious behavior. Hashing of binaries and service executables could be used to detect replacement against historical data.\n\nLook for abnormal process call trees from typical processes and services and for execution of other commands that could relate to Discovery or other adversary techniques. ",
-            "x_mitre_platforms": [
-                "Windows"
             ]
         }
     ]

@@ -1,51 +1,70 @@
 {
     "type": "bundle",
-    "id": "bundle--c1f1254d-b65e-4a1d-8ada-0f4fbcf2fe11",
+    "id": "bundle--8384ec15-10e1-4cce-8727-ccc207f27ec8",
     "spec_version": "2.0",
     "objects": [
         {
-            "created": "2017-05-31T21:30:55.066Z",
-            "modified": "2020-03-26T21:12:49.194Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                }
-            ],
-            "type": "attack-pattern",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
+            "name": "Exploitation for Privilege Escalation",
             "external_references": [
                 {
-                    "source_name": "mitre-attack",
                     "url": "https://attack.mitre.org/techniques/T1068",
+                    "source_name": "mitre-attack",
                     "external_id": "T1068"
+                },
+                {
+                    "description": "Hromcova, Z. and Cherpanov, A. (2020, June). INVISIMOLE: THE HIDDEN PART OF THE STORY. Retrieved July 16, 2020.",
+                    "source_name": "ESET InvisiMole June 2020",
+                    "url": "https://www.welivesecurity.com/wp-content/uploads/2020/06/ESET_InvisiMole.pdf"
+                },
+                {
+                    "description": "Reichel, D. and Idrizovic, E. (2020, June 17). AcidBox: Rare Malware Repurposing Turla Group Exploit Targeted Russian Organizations. Retrieved March 16, 2021.",
+                    "source_name": "Unit42 AcidBox June 2020",
+                    "url": "https://unit42.paloaltonetworks.com/acidbox-rare-malware/"
+                },
+                {
+                    "description": "Microsoft. (2020, October 15). Microsoft recommended driver block rules. Retrieved March 16, 2021.",
+                    "source_name": "Microsoft Driver Block Rules",
+                    "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/windows-defender-application-control/microsoft-recommended-driver-block-rules"
                 }
             ],
-            "description": "Adversaries may exploit software vulnerabilities in an attempt to collect elevate privileges. Exploitation of a software vulnerability occurs when an adversary takes advantage of a programming error in a program, service, or within the operating system software or kernel itself to execute adversary-controlled code. Security constructs such as permission levels will often hinder access to information and use of certain techniques, so adversaries will likely need to perform privilege escalation to include use of software exploitation to circumvent those restrictions.\n\nWhen initially gaining access to a system, an adversary may be operating within a lower privileged process which will prevent them from accessing certain resources on the system. Vulnerabilities may exist, usually in operating system components and software commonly running at higher permissions, that can be exploited to gain higher levels of access on the system. This could enable someone to move from unprivileged or user level permissions to SYSTEM or root permissions depending on the component that is vulnerable. This may be a necessary step for an adversary compromising a endpoint system that has been properly configured and limits other privilege escalation methods.",
-            "name": "Exploitation for Privilege Escalation",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "id": "attack-pattern--b21c3b2d-02e6-45b1-980b-e69051040839",
-            "x_mitre_version": "1.2",
-            "x_mitre_data_sources": [
-                "Windows Error Reporting",
-                "Process monitoring",
-                "Application logs"
+            "kill_chain_phases": [
+                {
+                    "phase_name": "privilege-escalation",
+                    "kill_chain_name": "mitre-attack"
+                }
             ],
-            "x_mitre_detection": "Detecting software exploitation may be difficult depending on the tools available. Software exploits may not always succeed or may cause the exploited process to become unstable or crash. Also look for behavior on the endpoint system that might indicate successful compromise, such as abnormal behavior of the processes. This could include suspicious files written to disk, evidence of [Process Injection](https://attack.mitre.org/techniques/T1055) for attempts to hide execution or evidence of Discovery.\n\nHigher privileges are often necessary to perform additional actions such as some methods of [OS Credential Dumping](https://attack.mitre.org/techniques/T1003). Look for additional activity that may indicate an adversary has gained higher privileges.",
+            "x_mitre_detection": "Detecting software exploitation may be difficult depending on the tools available. Software exploits may not always succeed or may cause the exploited process to become unstable or crash. Also look for behavior on the endpoint system that might indicate successful compromise, such as abnormal behavior of the processes. This could include suspicious files written to disk, evidence of [Process Injection](https://attack.mitre.org/techniques/T1055) for attempts to hide execution or evidence of Discovery. Consider monitoring for the presence or loading (ex: Sysmon Event ID 6) of known vulnerable drivers that adversaries may drop and exploit to execute code in kernel mode.(Citation: Microsoft Driver Block Rules)\n\nHigher privileges are often necessary to perform additional actions such as some methods of [OS Credential Dumping](https://attack.mitre.org/techniques/T1003). Look for additional activity that may indicate an adversary has gained higher privileges.",
+            "x_mitre_contributors": [
+                "Joas Antonio dos Santos, @C0d3Cr4zy, Inmetrics",
+                "Yaniv Agman, @AgmanYaniv, Team Nautilus Aqua Security",
+                "Idan Revivo, @idanr86, Team Nautilus Aqua Security"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "type": "attack-pattern",
             "x_mitre_effective_permissions": [
                 "User"
             ],
-            "x_mitre_permissions_required": [
-                "User"
+            "description": "Adversaries may exploit software vulnerabilities in an attempt to elevate privileges. Exploitation of a software vulnerability occurs when an adversary takes advantage of a programming error in a program, service, or within the operating system software or kernel itself to execute adversary-controlled code. Security constructs such as permission levels will often hinder access to information and use of certain techniques, so adversaries will likely need to perform privilege escalation to include use of software exploitation to circumvent those restrictions.\n\nWhen initially gaining access to a system, an adversary may be operating within a lower privileged process which will prevent them from accessing certain resources on the system. Vulnerabilities may exist, usually in operating system components and software commonly running at higher permissions, that can be exploited to gain higher levels of access on the system. This could enable someone to move from unprivileged or user level permissions to SYSTEM or root permissions depending on the component that is vulnerable. This could also enable an adversary to move from a virtualized environment, such as within a virtual machine or container, onto the underlying host. This may be a necessary step for an adversary compromising an endpoint system that has been properly configured and limits other privilege escalation methods.\n\nAdversaries may bring a signed vulnerable driver onto a compromised machine so that they can exploit the vulnerability to execute code in kernel mode. This process is sometimes referred to as Bring Your Own Vulnerable Driver (BYOVD).(Citation: ESET InvisiMole June 2020)(Citation: Unit42 AcidBox June 2020) Adversaries may include the vulnerable driver with files delivered during Initial Access or download it to a compromised system via [Ingress Tool Transfer](https://attack.mitre.org/techniques/T1105) or [Lateral Tool Transfer](https://attack.mitre.org/techniques/T1570).",
+            "modified": "2021-04-22T16:13:34.896Z",
+            "created": "2017-05-31T21:30:55.066Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_data_sources": [
+                "Driver: Driver Load"
+            ],
+            "x_mitre_version": "1.3",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
-                "Windows"
+                "Windows",
+                "Containers"
             ],
-            "x_mitre_is_subtechnique": false
+            "id": "attack-pattern--b21c3b2d-02e6-45b1-980b-e69051040839",
+            "x_mitre_permissions_required": [
+                "User"
+            ]
         }
     ]
 }

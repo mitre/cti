@@ -1,3 +1,10 @@
+### Changes to STIX for April 2021 ATT&CK Content Release (ATT&CK-v9.0)
+1. Replaced `GCP`, `AWS` and `Azure` platforms under the enterprise domain with `IaaS` (Infrastructure as a Service).
+2. Added `Containers` and `Google Workspace` to the platforms of the enterprise domain.
+3. Revised the data sources of the enterprise domain. Data sources are still represented as a string array, but the elements within that array are now formatted `"data source: data component"` to reflect the new data source representation. More information on the new data sources can be found on our [attack-datasources](https://github.com/mitre-attack/attack-datasources) GitHub repository. Note that the data sources in the ICS domain was not affected by this change.
+
+With the release of ATT&CK version 9 we are also hosting an excel representation of the knowledge base on our website. You can find that representation and more about ATT&CK tools on the updated [Working with ATT&CK](https://attack.mitre.org/resources/working-with-attack/) page.
+
 ### Changes to STIX for October 2020 ATT&CK Content Release (ATT&CK-v8.0)
 1. Added new platforms under the enterprise domain: `Network` and `PRE`.
 2. Deprecated the pre-ATT&CK domain. Pre-ATT&CK has been migrated to two new tactics in the Enterprise domain tagged with the `PRE` platform. Please see the new [PRE matrix](https://attack.mitre.org/matrices/enterprise/PRE/) for the replacing Enterprise tactics and techniques. All objects within the pre-ATT&CK domain have been marked as deprecated, along with a new description pointing to their new home in Enterprise.

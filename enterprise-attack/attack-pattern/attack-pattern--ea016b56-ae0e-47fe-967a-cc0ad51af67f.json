@@ -1,84 +1,84 @@
 {
     "type": "bundle",
-    "id": "bundle--86a2e86d-e885-4a63-97c8-65a442c8928b",
+    "id": "bundle--7989f7d2-4566-4f70-9690-6039d1ea1a3d",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_defense_bypassed": [
+                "Anti-virus",
+                "Application control"
+            ],
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1055/008",
                     "source_name": "mitre-attack",
-                    "external_id": "T1055.008",
-                    "url": "https://attack.mitre.org/techniques/T1055/008"
+                    "external_id": "T1055.008"
                 },
                 {
+                    "description": "Kerrisk, M. (2020, February 9). PTRACE(2) - Linux Programmer's Manual. Retrieved February 21, 2020.",
                     "source_name": "PTRACE man",
-                    "url": "http://man7.org/linux/man-pages/man2/ptrace.2.html",
-                    "description": "Kerrisk, M. (2020, February 9). PTRACE(2) - Linux Programmer's Manual. Retrieved February 21, 2020."
+                    "url": "http://man7.org/linux/man-pages/man2/ptrace.2.html"
                 },
                 {
+                    "description": "Jain, S. (2018, July 25). Code injection in running process using ptrace. Retrieved February 21, 2020.",
                     "source_name": "Medium Ptrace JUL 2018",
-                    "url": "https://medium.com/@jain.sm/code-injection-in-running-process-using-ptrace-d3ea7191a4be",
-                    "description": "Jain, S. (2018, July 25). Code injection in running process using ptrace. Retrieved February 21, 2020."
+                    "url": "https://medium.com/@jain.sm/code-injection-in-running-process-using-ptrace-d3ea7191a4be"
                 },
                 {
+                    "description": "Colgan, T. (2015, August 15). Linux-Inject. Retrieved February 21, 2020.",
                     "source_name": "BH Linux Inject",
-                    "url": "https://github.com/gaffe23/linux-inject/blob/master/slides_BHArsenal2015.pdf",
-                    "description": "Colgan, T. (2015, August 15). Linux-Inject. Retrieved February 21, 2020."
+                    "url": "https://github.com/gaffe23/linux-inject/blob/master/slides_BHArsenal2015.pdf"
                 },
                 {
                     "description": "Ligh, M.H. et al.. (2014, July). The Art of Memory Forensics: Detecting Malware and Threats in Windows, Linux, and Mac Memory. Retrieved December 20, 2017.",
                     "source_name": "ArtOfMemoryForensics"
                 },
                 {
-                    "url": "https://www.gnu.org/software/acct/",
                     "description": "GNU. (2010, February 5). The GNU Accounting Utilities. Retrieved December 20, 2017.",
-                    "source_name": "GNU Acct"
+                    "source_name": "GNU Acct",
+                    "url": "https://www.gnu.org/software/acct/"
                 },
                 {
-                    "url": "https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/security_guide/chap-system_auditing",
                     "description": "Jahoda, M. et al.. (2017, March 14). redhat Security Guide - Chapter 7 - System Auditing. Retrieved December 20, 2017.",
-                    "source_name": "RHEL auditd"
+                    "source_name": "RHEL auditd",
+                    "url": "https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/security_guide/chap-system_auditing"
                 },
                 {
-                    "url": "http://www.chokepoint.net/2014/02/detecting-userland-preload-rootkits.html",
                     "description": "stderr. (2014, February 14). Detecting Userland Preload Rootkits. Retrieved December 20, 2017.",
-                    "source_name": "Chokepoint preload rootkits"
+                    "source_name": "Chokepoint preload rootkits",
+                    "url": "http://www.chokepoint.net/2014/02/detecting-userland-preload-rootkits.html"
                 }
+            ],
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "privilege-escalation",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "name": "Ptrace System Calls",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "type": "attack-pattern",
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "description": "Adversaries may inject malicious code into processes via ptrace (process trace) system calls in order to evade process-based defenses as well as possibly elevate privileges. Ptrace system call injection is a method of executing arbitrary code in the address space of a separate live process. \n\nPtrace system call injection involves attaching to and modifying a running process. The ptrace system call enables a debugging process to observe and control another process (and each individual thread), including changing memory and register values.(Citation: PTRACE man) Ptrace system call injection is commonly performed by writing arbitrary code into a running process (ex: <code>malloc</code>) then invoking that memory with <code>PTRACE_SETREGS</code> to set the register containing the next instruction to execute. Ptrace system call injection can also be done with <code>PTRACE_POKETEXT</code>/<code>PTRACE_POKEDATA</code>, which copy data to a specific address in the target processes\u2019 memory (ex: the current address of the next instruction). (Citation: PTRACE man)(Citation: Medium Ptrace JUL 2018) \n\nPtrace system call injection may not be possible targeting processes with high-privileges, and on some system those that are non-child processes.(Citation: BH Linux Inject) \n\nRunning code in the context of another process may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via ptrace system call injection may also evade detection from security products since the execution is masked under a legitimate process. ",
+            "modified": "2020-06-20T22:24:56.734Z",
+            "created": "2020-01-14T01:33:19.065Z",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_data_sources": [
+                "Process: OS API Execution",
+                "Process: Process Access"
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Ptrace System Calls",
-            "description": "Adversaries may inject malicious code into processes via ptrace (process trace) system calls in order to evade process-based defenses as well as possibly elevate privileges. Ptrace system call injection is a method of executing arbitrary code in the address space of a separate live process. \n\nPtrace system call injection involves attaching to and modifying a running process. The ptrace system call enables a debugging process to observe and control another process (and each individual thread), including changing memory and register values.(Citation: PTRACE man) Ptrace system call injection is commonly performed by writing arbitrary code into a running process (ex: <code>malloc</code>) then invoking that memory with <code>PTRACE_SETREGS</code> to set the register containing the next instruction to execute. Ptrace system call injection can also be done with <code>PTRACE_POKETEXT</code>/<code>PTRACE_POKEDATA</code>, which copy data to a specific address in the target processes\u2019 memory (ex: the current address of the next instruction). (Citation: PTRACE man)(Citation: Medium Ptrace JUL 2018) \n\nPtrace system call injection may not be possible targeting processes with high-privileges, and on some system those that are non-child processes.(Citation: BH Linux Inject) \n\nRunning code in the context of another process may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via ptrace system call injection may also evade detection from security products since the execution is masked under a legitimate process. ",
             "id": "attack-pattern--ea016b56-ae0e-47fe-967a-cc0ad51af67f",
-            "type": "attack-pattern",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                }
-            ],
-            "modified": "2020-06-20T22:24:56.734Z",
-            "created": "2020-01-14T01:33:19.065Z",
-            "x_mitre_defense_bypassed": [
-                "Anti-virus",
-                "Application control"
-            ],
-            "x_mitre_data_sources": [
-                "System calls",
-                "Process monitoring"
-            ],
-            "x_mitre_detection": "Monitoring for Linux specific calls such as the ptrace system call should not generate large amounts of data due to their specialized nature, and can be a very effective method to detect some of the common process injection methods.(Citation: ArtOfMemoryForensics)  (Citation: GNU Acct)  (Citation: RHEL auditd)  (Citation: Chokepoint preload rootkits) \n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior. ",
             "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Linux"
-            ]
+            "x_mitre_detection": "Monitoring for Linux specific calls such as the ptrace system call should not generate large amounts of data due to their specialized nature, and can be a very effective method to detect some of the common process injection methods.(Citation: ArtOfMemoryForensics)  (Citation: GNU Acct)  (Citation: RHEL auditd)  (Citation: Chokepoint preload rootkits) \n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior. "
         }
     ]
 }

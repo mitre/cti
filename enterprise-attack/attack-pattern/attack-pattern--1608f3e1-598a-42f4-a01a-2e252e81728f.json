@@ -1,59 +1,58 @@
 {
     "type": "bundle",
-    "id": "bundle--5f2e0a8d-0c67-441e-9290-9798dabb85fb",
+    "id": "bundle--d04df7ac-6017-45da-9280-4f2d008f65c1",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--1608f3e1-598a-42f4-a01a-2e252e81728f",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Email Collection",
-            "description": "Adversaries may target user email to collect sensitive information. Emails may contain sensitive data, including trade secrets or personal information, that can prove valuable to adversaries. Adversaries can collect or forward email from mail servers or clients. ",
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1114",
                     "source_name": "mitre-attack",
-                    "external_id": "T1114",
-                    "url": "https://attack.mitre.org/techniques/T1114"
+                    "external_id": "T1114"
                 },
                 {
                     "description": "McMichael, T.. (2015, June 8). Exchange and Office 365 Mail Forwarding. Retrieved October 8, 2019.",
-                    "url": "https://blogs.technet.microsoft.com/timmcmic/2015/06/08/exchange-and-office-365-mail-forwarding-2/",
-                    "source_name": "Microsoft Tim McMichael Exchange Mail Forwarding 2"
+                    "source_name": "Microsoft Tim McMichael Exchange Mail Forwarding 2",
+                    "url": "https://blogs.technet.microsoft.com/timmcmic/2015/06/08/exchange-and-office-365-mail-forwarding-2/"
                 }
+            ],
+            "kill_chain_phases": [
+                {
+                    "phase_name": "collection",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "x_mitre_version": "2.2",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "type": "attack-pattern",
+            "x_mitre_platforms": [
+                "Windows",
+                "Office 365",
+                "Google Workspace"
+            ],
+            "description": "Adversaries may target user email to collect sensitive information. Emails may contain sensitive data, including trade secrets or personal information, that can prove valuable to adversaries. Adversaries can collect or forward email from mail servers or clients. ",
+            "modified": "2021-04-14T14:22:44.435Z",
+            "created": "2017-05-31T21:31:25.454Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_data_sources": [
+                "File: File Access",
+                "Network Traffic: Network Connection Creation",
+                "Logon Session: Logon Session Creation",
+                "Command: Command Execution",
+                "Application Log: Application Log Content"
+            ],
+            "x_mitre_contributors": [
+                "Swetha Prabakaran, Microsoft Threat Intelligence Center (MSTIC)"
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "type": "attack-pattern",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "collection"
-                }
-            ],
-            "modified": "2020-03-24T18:31:06.417Z",
-            "created": "2017-05-31T21:31:25.454Z",
-            "x_mitre_contributors": [
-                "Swetha Prabakaran, Microsoft Threat Intelligence Center (MSTIC)"
-            ],
-            "x_mitre_is_subtechnique": false,
             "x_mitre_permissions_required": [
                 "User"
             ],
-            "x_mitre_platforms": [
-                "Windows",
-                "Office 365"
-            ],
-            "x_mitre_detection": "There are likely a variety of ways an adversary could collect email from a target, each with a different mechanism for detection.\n\nFile access of local system email files for Exfiltration, unusual processes connecting to an email server within a network, or unusual access patterns or authentication attempts on a public-facing webmail server may all be indicators of malicious activity.\n\nMonitor processes and command-line arguments for actions that could be taken to gather local email files. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).\n\nDetection is challenging because all messages forwarded because of an auto-forwarding rule have the same presentation as a manually forwarded message. It is also possible for the user to not be aware of the addition of such an auto-forwarding rule and not suspect that their account has been compromised; email-forwarding rules alone will not affect the normal usage patterns or operations of the email account.\n\nAuto-forwarded messages generally contain specific detectable artifacts that may be present in the header; such artifacts would be platform-specific. Examples include <code>X-MS-Exchange-Organization-AutoForwarded</code> set to true, <code>X-MailFwdBy</code> and <code>X-Forwarded-To</code>. The <code>forwardingSMTPAddress</code> parameter used in a forwarding process that is managed by administrators and not by user actions. All messages for the mailbox are forwarded to the specified SMTP address. However, unlike typical client-side rules, the message does not appear as forwarded in the mailbox; it appears as if it were sent directly to the specified destination mailbox.(Citation: Microsoft Tim McMichael Exchange Mail Forwarding 2) High volumes of emails that bear the <code>X-MS-Exchange-Organization-AutoForwarded</code> header (indicating auto-forwarding) without a corresponding number of emails that match the appearance of a forwarded message may indicate that further investigation is needed at the administrator level rather than user-level.",
-            "x_mitre_data_sources": [
-                "Office 365 trace logs",
-                "Mail server",
-                "Email gateway",
-                "Authentication logs",
-                "File monitoring",
-                "Process monitoring",
-                "Process use of network"
-            ],
-            "x_mitre_version": "2.1"
+            "id": "attack-pattern--1608f3e1-598a-42f4-a01a-2e252e81728f",
+            "x_mitre_detection": "There are likely a variety of ways an adversary could collect email from a target, each with a different mechanism for detection.\n\nFile access of local system email files for Exfiltration, unusual processes connecting to an email server within a network, or unusual access patterns or authentication attempts on a public-facing webmail server may all be indicators of malicious activity.\n\nMonitor processes and command-line arguments for actions that could be taken to gather local email files. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).\n\nDetection is challenging because all messages forwarded because of an auto-forwarding rule have the same presentation as a manually forwarded message. It is also possible for the user to not be aware of the addition of such an auto-forwarding rule and not suspect that their account has been compromised; email-forwarding rules alone will not affect the normal usage patterns or operations of the email account.\n\nAuto-forwarded messages generally contain specific detectable artifacts that may be present in the header; such artifacts would be platform-specific. Examples include <code>X-MS-Exchange-Organization-AutoForwarded</code> set to true, <code>X-MailFwdBy</code> and <code>X-Forwarded-To</code>. The <code>forwardingSMTPAddress</code> parameter used in a forwarding process that is managed by administrators and not by user actions. All messages for the mailbox are forwarded to the specified SMTP address. However, unlike typical client-side rules, the message does not appear as forwarded in the mailbox; it appears as if it were sent directly to the specified destination mailbox.(Citation: Microsoft Tim McMichael Exchange Mail Forwarding 2) High volumes of emails that bear the <code>X-MS-Exchange-Organization-AutoForwarded</code> header (indicating auto-forwarding) without a corresponding number of emails that match the appearance of a forwarded message may indicate that further investigation is needed at the administrator level rather than user-level."
         }
     ]
 }

@@ -1,94 +1,95 @@
 {
     "type": "bundle",
-    "id": "bundle--93ef07ae-c79b-4125-87dd-6f4b898962ec",
+    "id": "bundle--6fb5bacb-0264-4db8-a2c7-04f6197b750a",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--2959d63f-73fd-46a1-abd2-109d7dcede32",
-            "description": "Adversaries may create or modify Windows services to repeatedly execute malicious payloads as part of persistence. When Windows boots up, it starts programs or applications called services that perform background system functions.(Citation: TechNet Services) Windows service configuration information, including the file path to the service's executable or recovery programs/commands, is stored in the Windows Registry. Service configurations can be modified using utilities such as sc.exe and [Reg](https://attack.mitre.org/software/S0075). \n\nAdversaries may install a new service or modify an existing service by using system utilities to interact with services, by directly modifying the Registry, or by using custom tools to interact with the Windows API. Adversaries may configure services to execute at startup in order to persist on a system.\n\nAn adversary may also incorporate [Masquerading](https://attack.mitre.org/techniques/T1036) by using a service name from a related operating system or benign software, or by modifying existing services to make detection analysis more challenging. Modifying existing services may interrupt their functionality or may enable services that are disabled or otherwise not commonly used. \n\nServices may be created with administrator privileges but are executed under SYSTEM privileges, so an adversary may also use a service to escalate privileges from administrator to SYSTEM. Adversaries may also directly start services through [Service Execution](https://attack.mitre.org/techniques/T1569/002). ",
             "name": "Windows Service",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1543/003",
                     "source_name": "mitre-attack",
-                    "external_id": "T1543.003",
-                    "url": "https://attack.mitre.org/techniques/T1543/003"
+                    "external_id": "T1543.003"
                 },
                 {
-                    "external_id": "CAPEC-478",
+                    "url": "https://capec.mitre.org/data/definitions/478.html",
                     "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/478.html"
+                    "external_id": "CAPEC-478"
                 },
                 {
-                    "external_id": "CAPEC-550",
+                    "url": "https://capec.mitre.org/data/definitions/550.html",
                     "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/550.html"
+                    "external_id": "CAPEC-550"
                 },
                 {
-                    "external_id": "CAPEC-551",
+                    "url": "https://capec.mitre.org/data/definitions/551.html",
                     "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/551.html"
+                    "external_id": "CAPEC-551"
                 },
                 {
-                    "url": "https://technet.microsoft.com/en-us/library/cc772408.aspx",
                     "description": "Microsoft. (n.d.). Services. Retrieved June 7, 2016.",
-                    "source_name": "TechNet Services"
+                    "source_name": "TechNet Services",
+                    "url": "https://technet.microsoft.com/en-us/library/cc772408.aspx"
                 },
                 {
-                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902",
                     "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
-                    "source_name": "TechNet Autoruns"
+                    "source_name": "TechNet Autoruns",
+                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902"
                 },
                 {
-                    "url": "https://docs.microsoft.com/windows/security/threat-protection/auditing/event-4697",
                     "description": "Miroshnikov, A. & Hall, J. (2017, April 18). 4697(S): A service was installed in the system. Retrieved August 7, 2018.",
-                    "source_name": "Microsoft 4697 APR 2017"
+                    "source_name": "Microsoft 4697 APR 2017",
+                    "url": "https://docs.microsoft.com/windows/security/threat-protection/auditing/event-4697"
                 },
                 {
-                    "url": "https://docs.microsoft.com/windows/security/threat-protection/use-windows-event-forwarding-to-assist-in-intrusion-detection",
                     "description": "Hardy, T. & Hall, J. (2018, February 15). Use Windows Event Forwarding to help with intrusion detection. Retrieved August 7, 2018.",
-                    "source_name": "Microsoft Windows Event Forwarding FEB 2018"
+                    "source_name": "Microsoft Windows Event Forwarding FEB 2018",
+                    "url": "https://docs.microsoft.com/windows/security/threat-protection/use-windows-event-forwarding-to-assist-in-intrusion-detection"
                 }
             ],
-            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
+                    "phase_name": "persistence",
+                    "kill_chain_name": "mitre-attack"
                 },
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
+                    "phase_name": "privilege-escalation",
+                    "kill_chain_name": "mitre-attack"
                 }
-            ],
-            "modified": "2020-09-16T15:49:58.490Z",
-            "created": "2020-01-17T19:13:50.402Z",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.1",
-            "x_mitre_detection": "Monitor processes and command-line arguments for actions that could create or modify services. Command-line invocation of tools capable of adding or modifying services may be unusual, depending on how systems are typically used in a particular environment. Services may also be modified through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001), so additional logging may need to be configured to gather the appropriate data. Remote access tools with built-in features may also interact directly with the Windows API to perform these functions outside of typical system utilities. Collect service utility execution and service binary path arguments used for analysis. Service binary paths may even be changed to execute commands or scripts.  \n\nLook for changes to service Registry entries that do not correlate with known software, patch cycles, etc. Service information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. Changes to the binary path and the service startup type changed from manual or disabled to automatic, if it does not typically do so, may be suspicious. Tools such as Sysinternals Autoruns may also be used to detect system service changes that could be attempts at persistence.(Citation: TechNet Autoruns)  \n\nCreation of new services may generate an alterable event (ex: Event ID 4697 and/or 7045 (Citation: Microsoft 4697 APR 2017)(Citation: Microsoft Windows Event Forwarding FEB 2018)). New, benign services may be created during installation of new software.\n\nSuspicious program execution through services may show up as outlier processes that have not been seen before when compared against historical data. Look for abnormal process call trees from known services and for execution of other commands that could relate to Discovery or other adversary techniques. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
-            "x_mitre_effective_permissions": [
-                "Administrator",
-                "SYSTEM"
-            ],
-            "x_mitre_data_sources": [
-                "API monitoring",
-                "Windows event logs",
-                "Process command-line parameters",
-                "Process monitoring",
-                "File monitoring",
-                "Windows Registry"
             ],
             "x_mitre_contributors": [
                 "Matthew Demaske, Adaptforward",
                 "Travis Smith, Tripwire",
                 "Pedro Harrison"
-            ]
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "description": "Adversaries may create or modify Windows services to repeatedly execute malicious payloads as part of persistence. When Windows boots up, it starts programs or applications called services that perform background system functions.(Citation: TechNet Services) Windows service configuration information, including the file path to the service's executable or recovery programs/commands, is stored in the Windows Registry. Service configurations can be modified using utilities such as sc.exe and [Reg](https://attack.mitre.org/software/S0075). \n\nAdversaries may install a new service or modify an existing service by using system utilities to interact with services, by directly modifying the Registry, or by using custom tools to interact with the Windows API. Adversaries may configure services to execute at startup in order to persist on a system.\n\nAn adversary may also incorporate [Masquerading](https://attack.mitre.org/techniques/T1036) by using a service name from a related operating system or benign software, or by modifying existing services to make detection analysis more challenging. Modifying existing services may interrupt their functionality or may enable services that are disabled or otherwise not commonly used. \n\nServices may be created with administrator privileges but are executed under SYSTEM privileges, so an adversary may also use a service to escalate privileges from administrator to SYSTEM. Adversaries may also directly start services through [Service Execution](https://attack.mitre.org/techniques/T1569/002). ",
+            "modified": "2020-09-16T15:49:58.490Z",
+            "created": "2020-01-17T19:13:50.402Z",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_data_sources": [
+                "Service: Service Creation",
+                "Service: Service Modification",
+                "Process: Process Creation",
+                "Process: OS API Execution",
+                "Command: Command Execution",
+                "Windows Registry: Windows Registry Key Creation",
+                "Windows Registry: Windows Registry Key Modification"
+            ],
+            "type": "attack-pattern",
+            "x_mitre_version": "1.1",
+            "x_mitre_effective_permissions": [
+                "Administrator",
+                "SYSTEM"
+            ],
+            "id": "attack-pattern--2959d63f-73fd-46a1-abd2-109d7dcede32",
+            "x_mitre_detection": "Monitor processes and command-line arguments for actions that could create or modify services. Command-line invocation of tools capable of adding or modifying services may be unusual, depending on how systems are typically used in a particular environment. Services may also be modified through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001), so additional logging may need to be configured to gather the appropriate data. Remote access tools with built-in features may also interact directly with the Windows API to perform these functions outside of typical system utilities. Collect service utility execution and service binary path arguments used for analysis. Service binary paths may even be changed to execute commands or scripts.  \n\nLook for changes to service Registry entries that do not correlate with known software, patch cycles, etc. Service information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. Changes to the binary path and the service startup type changed from manual or disabled to automatic, if it does not typically do so, may be suspicious. Tools such as Sysinternals Autoruns may also be used to detect system service changes that could be attempts at persistence.(Citation: TechNet Autoruns)  \n\nCreation of new services may generate an alterable event (ex: Event ID 4697 and/or 7045 (Citation: Microsoft 4697 APR 2017)(Citation: Microsoft Windows Event Forwarding FEB 2018)). New, benign services may be created during installation of new software.\n\nSuspicious program execution through services may show up as outlier processes that have not been seen before when compared against historical data. Look for abnormal process call trees from known services and for execution of other commands that could relate to Discovery or other adversary techniques. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement."
         }
     ]
 }

@@ -1,70 +1,71 @@
 {
     "type": "bundle",
-    "id": "bundle--3bffbbaf-bc8f-464f-b336-7b00e96850bf",
+    "id": "bundle--95b91b4b-d343-40c1-a809-5e7281b98d93",
     "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--7bdca9d5-d500-4d7d-8c52-5fd47baf4c0c",
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1036/004",
                     "source_name": "mitre-attack",
-                    "external_id": "T1036.004",
-                    "url": "https://attack.mitre.org/techniques/T1036/004"
+                    "external_id": "T1036.004"
                 },
                 {
-                    "url": "https://technet.microsoft.com/en-us/library/bb490996.aspx",
                     "description": "Microsoft. (n.d.). Schtasks. Retrieved April 28, 2016.",
-                    "source_name": "TechNet Schtasks"
+                    "source_name": "TechNet Schtasks",
+                    "url": "https://technet.microsoft.com/en-us/library/bb490996.aspx"
                 },
                 {
+                    "description": "Freedesktop.org. (n.d.). systemd.service \u2014 Service unit configuration. Retrieved March 16, 2020.",
                     "source_name": "Systemd Service Units",
-                    "url": "https://www.freedesktop.org/software/systemd/man/systemd.service.html",
-                    "description": "Freedesktop.org. (n.d.). systemd.service \u2014 Service unit configuration. Retrieved March 16, 2020."
+                    "url": "https://www.freedesktop.org/software/systemd/man/systemd.service.html"
                 },
                 {
-                    "url": "http://researchcenter.paloaltonetworks.com/2016/11/unit42-shamoon-2-return-disttrack-wiper/",
                     "description": "Falcone, R.. (2016, November 30). Shamoon 2: Return of the Disttrack Wiper. Retrieved January 11, 2017.",
-                    "source_name": "Palo Alto Shamoon Nov 2016"
+                    "source_name": "Palo Alto Shamoon Nov 2016",
+                    "url": "http://researchcenter.paloaltonetworks.com/2016/11/unit42-shamoon-2-return-disttrack-wiper/"
                 },
                 {
-                    "url": "https://vms.drweb.com/virus/?i=4276269",
                     "description": "Doctor Web. (2014, November 21). Linux.BackDoor.Fysbis.1. Retrieved December 7, 2017.",
-                    "source_name": "Fysbis Dr Web Analysis"
+                    "source_name": "Fysbis Dr Web Analysis",
+                    "url": "https://vms.drweb.com/virus/?i=4276269"
                 }
             ],
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "x_mitre_version": "1.0",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "type": "attack-pattern",
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux"
+            ],
+            "description": "Adversaries may attempt to manipulate the name of a task or service to make it appear legitimate or benign. Tasks/services executed by the Task Scheduler or systemd will typically be given a name and/or description.(Citation: TechNet Schtasks)(Citation: Systemd Service Units) Windows services will have a service name as well as a display name. Many benign tasks and services exist that have commonly associated names. Adversaries may give tasks or services names that are similar or identical to those of legitimate ones.\n\nTasks or services contain other fields, such as a description, that adversaries may attempt to make appear legitimate.(Citation: Palo Alto Shamoon Nov 2016)(Citation: Fysbis Dr Web Analysis)",
+            "modified": "2021-04-24T13:24:45.580Z",
+            "created": "2020-02-10T20:30:07.426Z",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_data_sources": [
+                "Command: Command Execution",
+                "Service: Service Metadata",
+                "Service: Service Creation",
+                "Scheduled Job: Scheduled Job Metadata",
+                "Scheduled Job: Scheduled Job Modification"
+            ],
+            "name": "Masquerade Task or Service",
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Masquerade Task or Service",
-            "description": "Adversaries may attempt to manipulate the name of a task or service to make it appear legitimate or benign. Tasks/services executed by the Task Scheduler or systemd will typically be given a name and/or description.(Citation: TechNet Schtasks)(Citation: Systemd Service Units) Windows services will have a service name as well as a display name. Many benign tasks and services exist that have commonly associated names. Adversaries may give tasks or services names that are similar or identical to those of legitimate ones.\n\nTasks or services contain other fields, such as a description, that adversaries may attempt to make appear legitimate.(Citation: Palo Alto Shamoon Nov 2016)(Citation: Fysbis Dr Web Analysis)",
-            "id": "attack-pattern--7bdca9d5-d500-4d7d-8c52-5fd47baf4c0c",
-            "type": "attack-pattern",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "modified": "2020-03-29T20:21:11.895Z",
-            "created": "2020-02-10T20:30:07.426Z",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "User",
                 "Administrator",
                 "SYSTEM"
             ],
-            "x_mitre_detection": "Look for changes to tasks and services that do not correlate with known software, patch cycles, etc. Suspicious program execution through scheduled tasks or services may show up as outlier processes that have not been seen before when compared against historical data. Monitor processes and command-line arguments for actions that could be taken to create tasks or services. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
-            "x_mitre_data_sources": [
-                "Windows Registry",
-                "Process monitoring",
-                "Process command-line parameters",
-                "Windows event logs"
-            ],
-            "x_mitre_platforms": [
-                "Windows",
-                "Linux"
-            ]
+            "x_mitre_detection": "Look for changes to tasks and services that do not correlate with known software, patch cycles, etc. Suspicious program execution through scheduled tasks or services may show up as outlier processes that have not been seen before when compared against historical data. Monitor processes and command-line arguments for actions that could be taken to create tasks or services. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement."
         }
     ]
 }

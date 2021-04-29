@@ -1,66 +1,67 @@
 {
     "type": "bundle",
-    "id": "bundle--48afcc42-6a59-4294-b9e1-dbd73ba2ad35",
+    "id": "bundle--5ea27e0c-d140-40db-96ef-a4f8f7af1f98",
     "spec_version": "2.0",
     "objects": [
         {
-            "created": "2020-03-13T14:10:43.424Z",
-            "modified": "2020-09-16T16:56:34.583Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "type": "attack-pattern",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1574.007",
-                    "url": "https://attack.mitre.org/techniques/T1574/007"
-                },
-                {
-                    "external_id": "CAPEC-13",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/13.html"
-                },
-                {
-                    "external_id": "CAPEC-38",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/38.html"
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Path Interception by PATH Environment Variable",
-            "description": "Adversaries may execute their own malicious payloads by hijacking environment variables used to load libraries. Adversaries may place a program in an earlier entry in the list of directories stored in the PATH environment variable, which Windows will then execute when it searches sequentially through that PATH listing in search of the binary that was called from a script or the command line.\n\nThe PATH environment variable contains a list of directories. Certain methods of executing a program (namely using cmd.exe or the command-line) rely solely on the PATH environment variable to determine the locations that are searched for a program when the path for the program is not given. If any directories are listed in the PATH environment variable before the Windows directory, <code>%SystemRoot%\\system32</code> (e.g., <code>C:\\Windows\\system32</code>), a program may be placed in the preceding directory that is named the same as a Windows program (such as cmd, PowerShell, or Python), which will be executed when that command is executed from a script or command-line.\n\nFor example, if <code>C:\\example path</code> precedes </code>C:\\Windows\\system32</code> is in the PATH environment variable, a program that is named net.exe and placed in <code>C:\\example path</code> will be called instead of the Windows system \"net\" when \"net\" is executed from the command-line.",
-            "id": "attack-pattern--0c2d00da-7742-49e7-9928-4514e5075d32",
             "x_mitre_defense_bypassed": [
                 "Application control"
             ],
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_detection": "Monitor file creation for files named after partial directories and in locations that may be searched for common processes through the environment variable, or otherwise should not be user writable. Monitor the executing process for process executable paths that are named for partial directories. Monitor file creation for programs that are named after Windows system programs or programs commonly executed without a path (such as \"findstr,\" \"net,\" and \"python\"). If this activity occurs outside of known administration activity, upgrades, installations, or patches, then it may be suspicious.\n\nData and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
-            "x_mitre_data_sources": [
-                "Process monitoring",
-                "File monitoring"
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1574/007",
+                    "source_name": "mitre-attack",
+                    "external_id": "T1574.007"
+                },
+                {
+                    "url": "https://capec.mitre.org/data/definitions/13.html",
+                    "source_name": "capec",
+                    "external_id": "CAPEC-13"
+                },
+                {
+                    "url": "https://capec.mitre.org/data/definitions/38.html",
+                    "source_name": "capec",
+                    "external_id": "CAPEC-38"
+                }
+            ],
+            "kill_chain_phases": [
+                {
+                    "phase_name": "persistence",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "privilege-escalation",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                }
             ],
             "x_mitre_contributors": [
                 "Stefan Kanthak"
             ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "x_mitre_platforms": [
                 "Windows"
-            ]
+            ],
+            "description": "Adversaries may execute their own malicious payloads by hijacking environment variables used to load libraries. Adversaries may place a program in an earlier entry in the list of directories stored in the PATH environment variable, which Windows will then execute when it searches sequentially through that PATH listing in search of the binary that was called from a script or the command line.\n\nThe PATH environment variable contains a list of directories. Certain methods of executing a program (namely using cmd.exe or the command-line) rely solely on the PATH environment variable to determine the locations that are searched for a program when the path for the program is not given. If any directories are listed in the PATH environment variable before the Windows directory, <code>%SystemRoot%\\system32</code> (e.g., <code>C:\\Windows\\system32</code>), a program may be placed in the preceding directory that is named the same as a Windows program (such as cmd, PowerShell, or Python), which will be executed when that command is executed from a script or command-line.\n\nFor example, if <code>C:\\example path</code> precedes </code>C:\\Windows\\system32</code> is in the PATH environment variable, a program that is named net.exe and placed in <code>C:\\example path</code> will be called instead of the Windows system \"net\" when \"net\" is executed from the command-line.",
+            "modified": "2020-09-16T16:56:34.583Z",
+            "created": "2020-03-13T14:10:43.424Z",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "File: File Modification",
+                "Process: Process Creation"
+            ],
+            "type": "attack-pattern",
+            "name": "Path Interception by PATH Environment Variable",
+            "id": "attack-pattern--0c2d00da-7742-49e7-9928-4514e5075d32",
+            "x_mitre_version": "1.0",
+            "x_mitre_detection": "Monitor file creation for files named after partial directories and in locations that may be searched for common processes through the environment variable, or otherwise should not be user writable. Monitor the executing process for process executable paths that are named for partial directories. Monitor file creation for programs that are named after Windows system programs or programs commonly executed without a path (such as \"findstr,\" \"net,\" and \"python\"). If this activity occurs outside of known administration activity, upgrades, installations, or patches, then it may be suspicious.\n\nData and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement."
         }
     ]
 }

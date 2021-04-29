@@ -1,58 +1,66 @@
 {
     "type": "bundle",
-    "id": "bundle--53d2196d-6ed5-4a8a-a193-9f7b3a5a2c88",
+    "id": "bundle--e10d829f-64fc-4fde-a51b-34232e475533",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--a62a8db3-f23a-4d8f-afd6-9dbc77e7813b",
-            "description": "Adversaries may send phishing messages to gain access to victim systems. All forms of phishing are electronically delivered social engineering. Phishing can be targeted, known as spearphishing. In spearphishing, a specific individual, company, or industry will be targeted by the adversary. More generally, adversaries can conduct non-targeted phishing, such as in mass malware spam campaigns.\n\nAdversaries may send victims emails containing malicious attachments or links, typically to execute malicious code on victim systems or to gather credentials for use of [Valid Accounts](https://attack.mitre.org/techniques/T1078). Phishing may also be conducted via third-party services, like social media platforms.",
             "name": "Phishing",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1566",
                     "source_name": "mitre-attack",
-                    "external_id": "T1566",
-                    "url": "https://attack.mitre.org/techniques/T1566"
+                    "external_id": "T1566"
                 },
                 {
-                    "external_id": "CAPEC-98",
+                    "url": "https://capec.mitre.org/data/definitions/98.html",
                     "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/98.html"
+                    "external_id": "CAPEC-98"
+                },
+                {
+                    "description": "Microsoft. (2020, October 13). Anti-spoofing protection in EOP. Retrieved October 19, 2020.",
+                    "source_name": "Microsoft Anti Spoofing",
+                    "url": "https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/anti-spoofing-protection?view=o365-worldwide"
+                },
+                {
+                    "description": "Australian Cyber Security Centre. (2012, December). Mitigating Spoofed Emails Using Sender Policy Framework. Retrieved October 19, 2020.",
+                    "source_name": "ACSC Email Spoofing",
+                    "url": "https://www.cyber.gov.au/sites/default/files/2019-03/spoof_email_sender_policy_framework.pdf"
                 }
             ],
-            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "initial-access"
+                    "phase_name": "initial-access",
+                    "kill_chain_name": "mitre-attack"
                 }
             ],
-            "modified": "2020-10-18T01:55:03.337Z",
-            "created": "2020-03-02T18:45:07.892Z",
+            "x_mitre_contributors": [
+                "Philip Winther"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "type": "attack-pattern",
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
                 "Windows",
                 "SaaS",
-                "Office 365"
+                "Office 365",
+                "Google Workspace"
             ],
-            "x_mitre_detection": "Network intrusion detection systems and email gateways can be used to detect phishing with malicious attachments in transit. Detonation chambers may also be used to identify malicious attachments. Solutions can be signature and behavior based, but adversaries may construct attachments in a way to avoid these systems.\n\nURL inspection within email (including expanding shortened links) can help detect links leading to known malicious sites. Detonation chambers can be used to detect these links and either automatically go to these sites to determine if they're potentially malicious, or wait and capture the content if a user visits the link.\n\nBecause most common third-party services used for phishing via service leverage TLS encryption, SSL/TLS inspection is generally required to detect the initial communication/delivery. With SSL/TLS inspection intrusion detection signatures or other security gateway appliances may be able to detect malware.\n\nAnti-virus can potentially detect malicious documents and files that are downloaded on the user's computer. Many possible detections of follow-on behavior may take place once [User Execution](https://attack.mitre.org/techniques/T1204) occurs.",
+            "description": "Adversaries may send phishing messages to gain access to victim systems. All forms of phishing are electronically delivered social engineering. Phishing can be targeted, known as spearphishing. In spearphishing, a specific individual, company, or industry will be targeted by the adversary. More generally, adversaries can conduct non-targeted phishing, such as in mass malware spam campaigns.\n\nAdversaries may send victims emails containing malicious attachments or links, typically to execute malicious code on victim systems. Phishing may also be conducted via third-party services, like social media platforms. Phishing may also involve social engineering techniques, such as posing as a trusted source.",
+            "modified": "2021-04-14T14:38:43.211Z",
+            "created": "2020-03-02T18:45:07.892Z",
             "x_mitre_is_subtechnique": false,
-            "x_mitre_version": "2.0",
             "x_mitre_data_sources": [
-                "File monitoring",
-                "Packet capture",
-                "Web proxy",
-                "Email gateway",
-                "Mail server",
-                "Network intrusion detection system",
-                "Detonation chamber",
-                "SSL/TLS inspection",
-                "Anti-virus"
-            ]
+                "Application Log: Application Log Content",
+                "Network Traffic: Network Traffic Flow",
+                "Network Traffic: Network Traffic Content"
+            ],
+            "x_mitre_version": "2.1",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "id": "attack-pattern--a62a8db3-f23a-4d8f-afd6-9dbc77e7813b",
+            "x_mitre_detection": "Network intrusion detection systems and email gateways can be used to detect phishing with malicious attachments in transit. Detonation chambers may also be used to identify malicious attachments. Solutions can be signature and behavior based, but adversaries may construct attachments in a way to avoid these systems.\n\nFiltering based on DKIM+SPF or header analysis can help detect when the email sender is spoofed.(Citation: Microsoft Anti Spoofing)(Citation: ACSC Email Spoofing)\n\nURL inspection within email (including expanding shortened links) can help detect links leading to known malicious sites. Detonation chambers can be used to detect these links and either automatically go to these sites to determine if they're potentially malicious, or wait and capture the content if a user visits the link.\n\nBecause most common third-party services used for phishing via service leverage TLS encryption, SSL/TLS inspection is generally required to detect the initial communication/delivery. With SSL/TLS inspection intrusion detection signatures or other security gateway appliances may be able to detect malware.\n\nAnti-virus can potentially detect malicious documents and files that are downloaded on the user's computer. Many possible detections of follow-on behavior may take place once [User Execution](https://attack.mitre.org/techniques/T1204) occurs."
         }
     ]
 }

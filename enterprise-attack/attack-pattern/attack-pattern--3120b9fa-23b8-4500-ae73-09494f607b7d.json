@@ -1,49 +1,50 @@
 {
     "type": "bundle",
-    "id": "bundle--9dffdf5e-159b-41b6-b15e-5cfc9d682ed9",
+    "id": "bundle--37a2e244-630e-4d0c-9469-74e312c1f5f0",
     "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--3120b9fa-23b8-4500-ae73-09494f607b7d",
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1003/007",
                     "source_name": "mitre-attack",
-                    "external_id": "T1003.007",
-                    "url": "https://attack.mitre.org/techniques/T1003/007"
+                    "external_id": "T1003.007"
                 },
                 {
-                    "url": "https://github.com/huntergregal/mimipenguin",
                     "description": "Gregal, H. (2017, May 12). MimiPenguin. Retrieved December 5, 2017.",
-                    "source_name": "MimiPenguin GitHub May 2017"
+                    "source_name": "MimiPenguin GitHub May 2017",
+                    "url": "https://github.com/huntergregal/mimipenguin"
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Proc Filesystem",
-            "description": "Adversaries may gather credentials from information stored in the Proc filesystem or <code>/proc</code>. The Proc filesystem on Linux contains a great deal of information regarding the state of the running operating system. Processes running with root privileges can use this facility to scrape live memory of other running programs. If any of these programs store passwords in clear text or password hashes in memory, these values can then be harvested for either usage or brute force attacks, respectively.\n\nThis functionality has been implemented in the MimiPenguin(Citation: MimiPenguin GitHub May 2017), an open source tool inspired by Mimikatz. The tool dumps process memory, then harvests passwords and hashes by looking for text strings and regex patterns for how given applications such as Gnome Keyring, sshd, and Apache use memory to store such authentication artifacts.",
-            "id": "attack-pattern--3120b9fa-23b8-4500-ae73-09494f607b7d",
-            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "credential-access"
+                    "phase_name": "credential-access",
+                    "kill_chain_name": "mitre-attack"
                 }
             ],
+            "x_mitre_version": "1.0",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "type": "attack-pattern",
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "description": "Adversaries may gather credentials from information stored in the Proc filesystem or <code>/proc</code>. The Proc filesystem on Linux contains a great deal of information regarding the state of the running operating system. Processes running with root privileges can use this facility to scrape live memory of other running programs. If any of these programs store passwords in clear text or password hashes in memory, these values can then be harvested for either usage or brute force attacks, respectively.\n\nThis functionality has been implemented in the MimiPenguin(Citation: MimiPenguin GitHub May 2017), an open source tool inspired by Mimikatz. The tool dumps process memory, then harvests passwords and hashes by looking for text strings and regex patterns for how given applications such as Gnome Keyring, sshd, and Apache use memory to store such authentication artifacts.",
             "modified": "2020-03-19T15:32:18.098Z",
             "created": "2020-02-11T18:46:24.434Z",
+            "x_mitre_is_subtechnique": true,
             "x_mitre_data_sources": [
-                "Process monitoring"
+                "Command: Command Execution",
+                "File: File Access"
+            ],
+            "name": "Proc Filesystem",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "x_mitre_permissions_required": [
                 "root"
             ],
-            "x_mitre_detection": "To obtain the passwords and hashes stored in memory, processes must open a maps file in the /proc filesystem for the process being analyzed. This file is stored under the path <code>/proc/\\*/maps</code>, where the <code>\\*</code> directory is the unique pid of the program being interrogated for such authentication data. The AuditD monitoring tool, which ships stock in many Linux distributions, can be used to watch for hostile processes opening this file in the proc file system, alerting on the pid, process name, and arguments of such programs.",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Linux"
-            ]
+            "x_mitre_detection": "To obtain the passwords and hashes stored in memory, processes must open a maps file in the /proc filesystem for the process being analyzed. This file is stored under the path <code>/proc/\\*/maps</code>, where the <code>\\*</code> directory is the unique pid of the program being interrogated for such authentication data. The AuditD monitoring tool, which ships stock in many Linux distributions, can be used to watch for hostile processes opening this file in the proc file system, alerting on the pid, process name, and arguments of such programs."
         }
     ]
 }

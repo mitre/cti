@@ -1,60 +1,65 @@
 {
     "type": "bundle",
-    "id": "bundle--8d17e320-f481-4e71-9fd5-088b166b7261",
+    "id": "bundle--23918592-40a1-4cbf-8977-856ccb5ba81c",
     "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--d4b96d2c-1032-4b22-9235-2b5b649d0605",
             "external_references": [
                 {
+                    "url": "https://attack.mitre.org/techniques/T1556/001",
                     "source_name": "mitre-attack",
-                    "external_id": "T1556.001",
-                    "url": "https://attack.mitre.org/techniques/T1556/001"
+                    "external_id": "T1556.001"
                 },
                 {
-                    "source_name": "Dell Skeleton",
                     "description": "Dell SecureWorks. (2015, January 12). Skeleton Key Malware Analysis. Retrieved April 8, 2019.",
+                    "source_name": "Dell Skeleton",
                     "url": "https://www.secureworks.com/research/skeleton-key-malware-analysis"
                 },
                 {
-                    "url": "https://technet.microsoft.com/en-us/library/dn487457.aspx",
                     "description": "Microsoft. (2016, April 15). Audit Policy Recommendations. Retrieved June 3, 2016.",
-                    "source_name": "TechNet Audit Policy"
+                    "source_name": "TechNet Audit Policy",
+                    "url": "https://technet.microsoft.com/en-us/library/dn487457.aspx"
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Domain Controller Authentication",
-            "description": "Adversaries may patch the authentication process on a domain controller to bypass the typical authentication mechanisms and enable access to accounts. \n\nMalware may be used to inject false credentials into the authentication process on a domain controller with the intent of creating a backdoor used to access any user\u2019s account and/or credentials (ex: [Skeleton Key](https://attack.mitre.org/software/S0007)). Skeleton key works through a patch on an enterprise domain controller authentication process (LSASS) with credentials that adversaries may use to bypass the standard authentication system. Once patched, an adversary can use the injected password to successfully authenticate as any domain user account (until the the skeleton key is erased from memory by a reboot of the domain controller). Authenticated access may enable unfettered access to hosts and/or resources within single-factor authentication environments.(Citation: Dell Skeleton)",
-            "id": "attack-pattern--d4b96d2c-1032-4b22-9235-2b5b649d0605",
-            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "credential-access"
+                    "phase_name": "credential-access",
+                    "kill_chain_name": "mitre-attack"
                 },
                 {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "persistence",
+                    "kill_chain_name": "mitre-attack"
                 }
             ],
-            "modified": "2020-08-26T14:16:48.125Z",
+            "x_mitre_version": "2.0",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "type": "attack-pattern",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "description": "Adversaries may patch the authentication process on a domain controller to bypass the typical authentication mechanisms and enable access to accounts. \n\nMalware may be used to inject false credentials into the authentication process on a domain controller with the intent of creating a backdoor used to access any user\u2019s account and/or credentials (ex: [Skeleton Key](https://attack.mitre.org/software/S0007)). Skeleton key works through a patch on an enterprise domain controller authentication process (LSASS) with credentials that adversaries may use to bypass the standard authentication system. Once patched, an adversary can use the injected password to successfully authenticate as any domain user account (until the the skeleton key is erased from memory by a reboot of the domain controller). Authenticated access may enable unfettered access to hosts and/or resources within single-factor authentication environments.(Citation: Dell Skeleton)",
+            "modified": "2021-04-20T20:10:26.613Z",
             "created": "2020-02-11T19:05:02.399Z",
+            "x_mitre_is_subtechnique": true,
             "x_mitre_data_sources": [
-                "Authentication logs",
-                "API monitoring",
-                "DLL monitoring"
+                "Logon Session: Logon Session Creation",
+                "Process: OS API Execution",
+                "Process: Process Access",
+                "File: File Modification"
+            ],
+            "name": "Domain Controller Authentication",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "x_mitre_permissions_required": [
                 "Administrator"
             ],
-            "x_mitre_detection": "Monitor for calls to <code>OpenProcess</code> that can be used to manipulate lsass.exe running on a domain controller as well as for malicious modifications to functions exported from authentication-related system DLLs (such as cryptdll.dll and samsrv.dll).(Citation: Dell Skeleton)\n\nConfigure robust, consistent account activity audit policies across the enterprise and with externally accessible services.(Citation: TechNet Audit Policy) Look for suspicious account behavior across systems that share accounts, either user, admin, or service accounts. Examples: one account logged into multiple systems simultaneously; multiple accounts logged into the same machine simultaneously; accounts logged in at odd times or outside of business hours. Activity may be from interactive login sessions or process ownership from accounts being used to execute binaries on a remote system as a particular account. Correlate other security systems with login information (e.g. a user has an active login session but has not entered the building or does not have VPN access). ",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Windows"
-            ]
+            "x_mitre_detection": "Monitor for calls to <code>OpenProcess</code> that can be used to manipulate lsass.exe running on a domain controller as well as for malicious modifications to functions exported from authentication-related system DLLs (such as cryptdll.dll and samsrv.dll).(Citation: Dell Skeleton)\n\nConfigure robust, consistent account activity audit policies across the enterprise and with externally accessible services.(Citation: TechNet Audit Policy) Look for suspicious account behavior across systems that share accounts, either user, admin, or service accounts. Examples: one account logged into multiple systems simultaneously; multiple accounts logged into the same machine simultaneously; accounts logged in at odd times or outside of business hours. Activity may be from interactive login sessions or process ownership from accounts being used to execute binaries on a remote system as a particular account. Correlate other security systems with login information (e.g. a user has an active login session but has not entered the building or does not have VPN access). "
         }
     ]
 }
