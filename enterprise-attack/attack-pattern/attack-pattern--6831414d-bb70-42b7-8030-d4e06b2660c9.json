@@ -1,61 +1,61 @@
 {
     "type": "bundle",
-    "id": "bundle--41dba1df-a26e-447d-9088-9dc2a12b0623",
+    "id": "bundle--1a44de11-63e8-428f-95ca-bcf3c8868e8b",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--6831414d-bb70-42b7-8030-d4e06b2660c9",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1548/001",
                     "source_name": "mitre-attack",
-                    "external_id": "T1548.001"
+                    "external_id": "T1548.001",
+                    "url": "https://attack.mitre.org/techniques/T1548/001"
                 },
                 {
+                    "url": "http://man7.org/linux/man-pages/man2/setuid.2.html",
                     "description": "Michael Kerrisk. (2017, September 15). Linux Programmer's Manual. Retrieved September 21, 2018.",
-                    "source_name": "setuid man page",
-                    "url": "http://man7.org/linux/man-pages/man2/setuid.2.html"
+                    "source_name": "setuid man page"
                 },
                 {
+                    "url": "https://www.welivesecurity.com/2016/07/06/new-osxkeydnap-malware-hungry-credentials/",
                     "description": "Marc-Etienne M.Leveille. (2016, July 6). New OSX/Keydnap malware is hungry for credentials. Retrieved July 3, 2017.",
-                    "source_name": "OSX Keydnap malware",
-                    "url": "https://www.welivesecurity.com/2016/07/06/new-osxkeydnap-malware-hungry-credentials/"
+                    "source_name": "OSX Keydnap malware"
                 }
             ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Setuid and Setgid",
+            "description": "An adversary may perform shell escapes or exploit vulnerabilities in an application with the setsuid or setgid bits to get code running in a different user\u2019s context. On Linux or macOS, when the setuid or setgid bits are set for an application, the application will run with the privileges of the owning user or group respectively. (Citation: setuid man page). Normally an application is run in the current user\u2019s context, regardless of which user or group owns the application. However, there are instances where programs need to be executed in an elevated context to function properly, but the user running them doesn\u2019t need the elevated privileges.\n\nInstead of creating an entry in the sudoers file, which must be done by root, any user can specify the setuid or setgid flag to be set for their own applications. These bits are indicated with an \"s\" instead of an \"x\" when viewing a file's attributes via <code>ls -l</code>. The <code>chmod</code> program can set these bits with via bitmasking, <code>chmod 4777 [file]</code> or via shorthand naming, <code>chmod u+s [file]</code>.\n\nAdversaries can use this mechanism on their own malware to make sure they're able to execute in elevated contexts in the future.(Citation: OSX Keydnap malware).",
+            "id": "attack-pattern--6831414d-bb70-42b7-8030-d4e06b2660c9",
+            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
-                    "phase_name": "privilege-escalation",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
                 },
                 {
-                    "phase_name": "defense-evasion",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
                 }
             ],
-            "x_mitre_version": "1.0",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "type": "attack-pattern",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS"
-            ],
-            "description": "An adversary may perform shell escapes or exploit vulnerabilities in an application with the setsuid or setgid bits to get code running in a different user\u2019s context. On Linux or macOS, when the setuid or setgid bits are set for an application, the application will run with the privileges of the owning user or group respectively. (Citation: setuid man page). Normally an application is run in the current user\u2019s context, regardless of which user or group owns the application. However, there are instances where programs need to be executed in an elevated context to function properly, but the user running them doesn\u2019t need the elevated privileges.\n\nInstead of creating an entry in the sudoers file, which must be done by root, any user can specify the setuid or setgid flag to be set for their own applications. These bits are indicated with an \"s\" instead of an \"x\" when viewing a file's attributes via <code>ls -l</code>. The <code>chmod</code> program can set these bits with via bitmasking, <code>chmod 4777 [file]</code> or via shorthand naming, <code>chmod u+s [file]</code>.\n\nAdversaries can use this mechanism on their own malware to make sure they're able to execute in elevated contexts in the future.(Citation: OSX Keydnap malware).",
             "modified": "2020-03-27T00:43:58.149Z",
             "created": "2020-01-30T14:11:41.212Z",
+            "x_mitre_version": "1.0",
             "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_detection": "Monitor the file system for files that have the setuid or setgid bits set. Monitor for execution of utilities, like chmod, and their command-line arguments to look for setuid or setguid bits being set.",
             "x_mitre_data_sources": [
                 "Command: Command Execution",
                 "File: File Metadata",
                 "File: File Modification"
             ],
-            "name": "Setuid and Setgid",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "x_mitre_detection": "Monitor the file system for files that have the setuid or setgid bits set. Monitor for execution of utilities, like chmod, and their command-line arguments to look for setuid or setguid bits being set."
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS"
+            ]
         }
     ]
 }

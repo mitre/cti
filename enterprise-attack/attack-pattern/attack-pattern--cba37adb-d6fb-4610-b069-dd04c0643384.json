@@ -1,36 +1,42 @@
 {
     "type": "bundle",
-    "id": "bundle--9f559b68-ac4f-4c93-81f4-b9210ade0a36",
+    "id": "bundle--28de54f4-d9b8-4e9f-86b8-040908019afc",
     "spec_version": "2.0",
     "objects": [
         {
             "id": "attack-pattern--cba37adb-d6fb-4610-b069-dd04c0643384",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1518/001",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1518.001"
-                },
-                {
-                    "url": "https://capec.mitre.org/data/definitions/581.html",
-                    "source_name": "capec",
-                    "external_id": "CAPEC-581"
-                },
-                {
-                    "description": "A. Randazzo, B. Manahan and S. Lipton. (2020, April 28). Finding Evil in AWS. Retrieved June 25, 2020.",
-                    "source_name": "Expel IO Evil in AWS",
-                    "url": "https://expel.io/blog/finding-evil-in-aws/"
-                }
-            ],
-            "kill_chain_phases": [
-                {
-                    "phase_name": "discovery",
-                    "kill_chain_name": "mitre-attack"
-                }
-            ],
+            "description": "Adversaries may attempt to get a listing of security software, configurations, defensive tools, and sensors that are installed on a system or in a cloud environment. This may include things such as firewall rules and anti-virus. Adversaries may use the information from [Security Software Discovery](https://attack.mitre.org/techniques/T1518/001) during automated discovery to shape follow-on behaviors, including whether or not the adversary fully infects the target and/or attempts specific actions.\n\nExample commands that can be used to obtain security software information are [netsh](https://attack.mitre.org/software/S0108), <code>reg query</code> with [Reg](https://attack.mitre.org/software/S0075), <code>dir</code> with [cmd](https://attack.mitre.org/software/S0106), and [Tasklist](https://attack.mitre.org/software/S0057), but other indicators of discovery behavior may be more specific to the type of software or security system the adversary is looking for. It is becoming more common to see macOS malware perform checks for LittleSnitch and KnockKnock software.\n\nAdversaries may also utilize cloud APIs to discover the configurations of firewall rules within an environment.(Citation: Expel IO Evil in AWS)",
             "name": "Security Software Discovery",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1518.001",
+                    "url": "https://attack.mitre.org/techniques/T1518/001"
+                },
+                {
+                    "external_id": "CAPEC-581",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/581.html"
+                },
+                {
+                    "source_name": "Expel IO Evil in AWS",
+                    "url": "https://expel.io/blog/finding-evil-in-aws/",
+                    "description": "A. Randazzo, B. Manahan and S. Lipton. (2020, April 28). Finding Evil in AWS. Retrieved June 25, 2020."
+                }
+            ],
             "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "discovery"
+                }
+            ],
+            "modified": "2021-03-29T16:05:00.198Z",
+            "created": "2020-02-21T21:16:18.066Z",
             "x_mitre_platforms": [
                 "Windows",
                 "Azure AD",
@@ -41,24 +47,18 @@
                 "macOS",
                 "Google Workspace"
             ],
-            "description": "Adversaries may attempt to get a listing of security software, configurations, defensive tools, and sensors that are installed on a system or in a cloud environment. This may include things such as firewall rules and anti-virus. Adversaries may use the information from [Security Software Discovery](https://attack.mitre.org/techniques/T1518/001) during automated discovery to shape follow-on behaviors, including whether or not the adversary fully infects the target and/or attempts specific actions.\n\nExample commands that can be used to obtain security software information are [netsh](https://attack.mitre.org/software/S0108), <code>reg query</code> with [Reg](https://attack.mitre.org/software/S0075), <code>dir</code> with [cmd](https://attack.mitre.org/software/S0106), and [Tasklist](https://attack.mitre.org/software/S0057), but other indicators of discovery behavior may be more specific to the type of software or security system the adversary is looking for. It is becoming more common to see macOS malware perform checks for LittleSnitch and KnockKnock software.\n\nAdversaries may also utilize cloud APIs to discover the configurations of firewall rules within an environment.(Citation: Expel IO Evil in AWS)",
-            "modified": "2021-03-29T16:05:00.198Z",
-            "created": "2020-02-21T21:16:18.066Z",
             "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.2",
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as lateral movement, based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).\n\nIn cloud environments, additionally monitor logs for the usage of APIs that may be used to gather information about security software configurations within the environment.",
+            "x_mitre_permissions_required": [
+                "User"
+            ],
             "x_mitre_data_sources": [
                 "Firewall: Firewall Metadata",
                 "Firewall: Firewall Enumeration",
                 "Process: Process Creation",
                 "Command: Command Execution",
                 "Process: OS API Execution"
-            ],
-            "x_mitre_version": "1.2",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as lateral movement, based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).\n\nIn cloud environments, additionally monitor logs for the usage of APIs that may be used to gather information about security software configurations within the environment.",
-            "x_mitre_permissions_required": [
-                "User"
             ]
         }
     ]

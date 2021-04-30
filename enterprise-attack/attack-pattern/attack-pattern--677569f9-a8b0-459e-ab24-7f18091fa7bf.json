@@ -1,56 +1,56 @@
 {
     "type": "bundle",
-    "id": "bundle--7752fa3f-cfcc-4f58-822f-119c2ed15b40",
+    "id": "bundle--04e883c0-f782-4b90-b7f4-cd14c24c45bc",
     "spec_version": "2.0",
     "objects": [
         {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1134.002",
+                    "url": "https://attack.mitre.org/techniques/T1134/002"
+                },
+                {
+                    "url": "https://technet.microsoft.com/en-us/windows-server-docs/identity/ad-ds/manage/component-updates/command-line-process-auditing",
+                    "description": "Mathers, B. (2017, March 7). Command line process auditing. Retrieved April 21, 2017.",
+                    "source_name": "Microsoft Command-line Logging"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Create Process with Token",
+            "description": "Adversaries may create a new process with a duplicated token to escalate privileges and bypass access controls. An adversary can duplicate a desired access token with <code>DuplicateToken(Ex)</code> and use it with <code>CreateProcessWithTokenW</code> to create a new process running under the security context of the impersonated user. This is useful for creating a new process under the security context of a different user.",
+            "id": "attack-pattern--677569f9-a8b0-459e-ab24-7f18091fa7bf",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2020-03-26T21:28:19.476Z",
+            "created": "2020-02-18T16:48:56.582Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
             "x_mitre_defense_bypassed": [
                 "Windows User Account Control",
                 "System access controls",
                 "File system access controls"
             ],
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1134/002",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1134.002"
-                },
-                {
-                    "description": "Mathers, B. (2017, March 7). Command line process auditing. Retrieved April 21, 2017.",
-                    "source_name": "Microsoft Command-line Logging",
-                    "url": "https://technet.microsoft.com/en-us/windows-server-docs/identity/ad-ds/manage/component-updates/command-line-process-auditing"
-                }
-            ],
-            "kill_chain_phases": [
-                {
-                    "phase_name": "defense-evasion",
-                    "kill_chain_name": "mitre-attack"
-                },
-                {
-                    "phase_name": "privilege-escalation",
-                    "kill_chain_name": "mitre-attack"
-                }
-            ],
-            "x_mitre_version": "1.0",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "type": "attack-pattern",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "description": "Adversaries may create a new process with a duplicated token to escalate privileges and bypass access controls. An adversary can duplicate a desired access token with <code>DuplicateToken(Ex)</code> and use it with <code>CreateProcessWithTokenW</code> to create a new process running under the security context of the impersonated user. This is useful for creating a new process under the security context of a different user.",
-            "modified": "2020-03-26T21:28:19.476Z",
-            "created": "2020-02-18T16:48:56.582Z",
-            "x_mitre_is_subtechnique": true,
+            "x_mitre_detection": "If an adversary is using a standard command-line shell, analysts can detect token manipulation by auditing command-line activity. Specifically, analysts should look for use of the <code>runas</code> command. Detailed command-line logging is not enabled by default in Windows.(Citation: Microsoft Command-line Logging)\n\nIf an adversary is using a payload that calls the Windows token APIs directly, analysts can detect token manipulation only through careful analysis of user network activity, examination of running processes, and correlation with other endpoint and network behavior.\n\nAnalysts can also monitor for use of Windows APIs such as <code>DuplicateToken(Ex)</code> and <code>CreateProcessWithTokenW</code> and correlate activity with other suspicious behavior to reduce false positives that may be due to normal benign use by users and administrators.",
             "x_mitre_data_sources": [
                 "Process: OS API Execution",
                 "Command: Command Execution"
             ],
-            "name": "Create Process with Token",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--677569f9-a8b0-459e-ab24-7f18091fa7bf",
-            "x_mitre_detection": "If an adversary is using a standard command-line shell, analysts can detect token manipulation by auditing command-line activity. Specifically, analysts should look for use of the <code>runas</code> command. Detailed command-line logging is not enabled by default in Windows.(Citation: Microsoft Command-line Logging)\n\nIf an adversary is using a payload that calls the Windows token APIs directly, analysts can detect token manipulation only through careful analysis of user network activity, examination of running processes, and correlation with other endpoint and network behavior.\n\nAnalysts can also monitor for use of Windows APIs such as <code>DuplicateToken(Ex)</code> and <code>CreateProcessWithTokenW</code> and correlate activity with other suspicious behavior to reduce false positives that may be due to normal benign use by users and administrators."
+            "x_mitre_platforms": [
+                "Windows"
+            ]
         }
     ]
 }

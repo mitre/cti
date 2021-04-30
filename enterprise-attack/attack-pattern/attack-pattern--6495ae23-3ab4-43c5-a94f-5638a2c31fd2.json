@@ -1,67 +1,67 @@
 {
     "type": "bundle",
-    "id": "bundle--aa3f0d14-0988-4cb1-a4e5-aac754b23be5",
+    "id": "bundle--260854e7-26a9-4bce-a174-2ef3e6485335",
     "spec_version": "2.0",
     "objects": [
         {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1070.001",
+                    "url": "https://attack.mitre.org/techniques/T1070/001"
+                },
+                {
+                    "url": "https://docs.microsoft.com/windows-server/administration/windows-commands/wevtutil",
+                    "description": "Plett, C. et al.. (2017, October 16). wevtutil. Retrieved July 2, 2018.",
+                    "source_name": "Microsoft wevtutil Oct 2017"
+                },
+                {
+                    "url": "https://msdn.microsoft.com/library/system.diagnostics.eventlog.clear.aspx",
+                    "description": "Microsoft. (n.d.). EventLog.Clear Method (). Retrieved July 2, 2018.",
+                    "source_name": "Microsoft EventLog.Clear"
+                },
+                {
+                    "url": "https://docs.microsoft.com/powershell/module/microsoft.powershell.management/clear-eventlog",
+                    "description": "Microsoft. (n.d.). Clear-EventLog. Retrieved July 2, 2018.",
+                    "source_name": "Microsoft Clear-EventLog"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Clear Windows Event Logs",
+            "description": "Adversaries may clear Windows Event Logs to hide the activity of an intrusion. Windows Event Logs are a record of a computer's alerts and notifications. There are three system-defined sources of events: System, Application, and Security, with five event types: Error, Warning, Information, Success Audit, and Failure Audit.\n\nThe event logs can be cleared with the following utility commands:\n\n* <code>wevtutil cl system</code>\n* <code>wevtutil cl application</code>\n* <code>wevtutil cl security</code>\n\nThese logs may also be cleared through other mechanisms, such as the event viewer GUI or [PowerShell](https://attack.mitre.org/techniques/T1059/001).",
+            "id": "attack-pattern--6495ae23-3ab4-43c5-a94f-5638a2c31fd2",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-03-29T21:17:03.732Z",
+            "created": "2020-01-28T17:05:14.707Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_system_requirements": [
+                "Clearing the Windows event logs requires Administrator permissions"
+            ],
             "x_mitre_defense_bypassed": [
                 "Anti Virus",
                 "Host Intrusion Prevention Systems",
                 "Log Analysis"
             ],
-            "id": "attack-pattern--6495ae23-3ab4-43c5-a94f-5638a2c31fd2",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1070/001",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1070.001"
-                },
-                {
-                    "description": "Plett, C. et al.. (2017, October 16). wevtutil. Retrieved July 2, 2018.",
-                    "source_name": "Microsoft wevtutil Oct 2017",
-                    "url": "https://docs.microsoft.com/windows-server/administration/windows-commands/wevtutil"
-                },
-                {
-                    "description": "Microsoft. (n.d.). EventLog.Clear Method (). Retrieved July 2, 2018.",
-                    "source_name": "Microsoft EventLog.Clear",
-                    "url": "https://msdn.microsoft.com/library/system.diagnostics.eventlog.clear.aspx"
-                },
-                {
-                    "description": "Microsoft. (n.d.). Clear-EventLog. Retrieved July 2, 2018.",
-                    "source_name": "Microsoft Clear-EventLog",
-                    "url": "https://docs.microsoft.com/powershell/module/microsoft.powershell.management/clear-eventlog"
-                }
+            "x_mitre_permissions_required": [
+                "Administrator"
             ],
-            "kill_chain_phases": [
-                {
-                    "phase_name": "defense-evasion",
-                    "kill_chain_name": "mitre-attack"
-                }
-            ],
-            "x_mitre_version": "1.0",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "type": "attack-pattern",
-            "x_mitre_system_requirements": [
-                "Clearing the Windows event logs requires Administrator permissions"
-            ],
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "description": "Adversaries may clear Windows Event Logs to hide the activity of an intrusion. Windows Event Logs are a record of a computer's alerts and notifications. There are three system-defined sources of events: System, Application, and Security, with five event types: Error, Warning, Information, Success Audit, and Failure Audit.\n\nThe event logs can be cleared with the following utility commands:\n\n* <code>wevtutil cl system</code>\n* <code>wevtutil cl application</code>\n* <code>wevtutil cl security</code>\n\nThese logs may also be cleared through other mechanisms, such as the event viewer GUI or [PowerShell](https://attack.mitre.org/techniques/T1059/001).",
-            "modified": "2020-03-29T21:17:03.732Z",
-            "created": "2020-01-28T17:05:14.707Z",
-            "x_mitre_is_subtechnique": true,
+            "x_mitre_detection": "Deleting Windows event logs (via native binaries (Citation: Microsoft wevtutil Oct 2017), API functions (Citation: Microsoft EventLog.Clear), or [PowerShell](https://attack.mitre.org/techniques/T1059/001) (Citation: Microsoft Clear-EventLog)) may also generate an alterable event (Event ID 1102: \"The audit log was cleared\").",
             "x_mitre_data_sources": [
                 "Process: OS API Execution",
                 "Command: Command Execution"
             ],
-            "name": "Clear Windows Event Logs",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_detection": "Deleting Windows event logs (via native binaries (Citation: Microsoft wevtutil Oct 2017), API functions (Citation: Microsoft EventLog.Clear), or [PowerShell](https://attack.mitre.org/techniques/T1059/001) (Citation: Microsoft Clear-EventLog)) may also generate an alterable event (Event ID 1102: \"The audit log was cleared\").",
-            "x_mitre_permissions_required": [
-                "Administrator"
+            "x_mitre_platforms": [
+                "Windows"
             ]
         }
     ]

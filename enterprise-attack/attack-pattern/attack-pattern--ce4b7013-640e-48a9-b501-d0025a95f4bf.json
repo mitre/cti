@@ -1,49 +1,52 @@
 {
     "type": "bundle",
-    "id": "bundle--5c346d91-82aa-4343-b946-187642ac0dfe",
+    "id": "bundle--74a2747a-524b-4a97-93be-073e146f56e1",
     "spec_version": "2.0",
     "objects": [
         {
-            "name": "Screensaver",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1546/002",
                     "source_name": "mitre-attack",
-                    "external_id": "T1546.002"
+                    "external_id": "T1546.002",
+                    "url": "https://attack.mitre.org/techniques/T1546/002"
                 },
                 {
-                    "description": "Wikipedia. (2017, November 22). Screensaver. Retrieved December 5, 2017.",
                     "source_name": "Wikipedia Screensaver",
+                    "description": "Wikipedia. (2017, November 22). Screensaver. Retrieved December 5, 2017.",
                     "url": "https://en.wikipedia.org/wiki/Screensaver"
                 },
                 {
-                    "description": "ESET. (2017, August). Gazing at Gazer: Turla\u2019s new second stage backdoor. Retrieved September 14, 2017.",
                     "source_name": "ESET Gazer Aug 2017",
+                    "description": "ESET. (2017, August). Gazing at Gazer: Turla\u2019s new second stage backdoor. Retrieved September 14, 2017.",
                     "url": "https://www.welivesecurity.com/wp-content/uploads/2017/08/eset-gazer.pdf"
                 }
             ],
-            "kill_chain_phases": [
-                {
-                    "phase_name": "privilege-escalation",
-                    "kill_chain_name": "mitre-attack"
-                },
-                {
-                    "phase_name": "persistence",
-                    "kill_chain_name": "mitre-attack"
-                }
-            ],
-            "x_mitre_contributors": [
-                "Bartosz Jerzman"
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "type": "attack-pattern",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
+            "name": "Screensaver",
             "description": "Adversaries may establish persistence by executing malicious content triggered by user inactivity. Screensavers are programs that execute after a configurable time of user inactivity and consist of Portable Executable (PE) files with a .scr file extension.(Citation: Wikipedia Screensaver) The Windows screensaver application scrnsave.scr is located in <code>C:\\Windows\\System32\\</code>, and <code>C:\\Windows\\sysWOW64\\</code>  on 64-bit Windows systems, along with screensavers included with base Windows installations.\n\nThe following screensaver settings are stored in the Registry (<code>HKCU\\Control Panel\\Desktop\\</code>) and could be manipulated to achieve persistence:\n\n* <code>SCRNSAVE.exe</code> - set to malicious PE path\n* <code>ScreenSaveActive</code> - set to '1' to enable the screensaver\n* <code>ScreenSaverIsSecure</code> - set to '0' to not require a password to unlock\n* <code>ScreenSaveTimeout</code> - sets user inactivity timeout before screensaver is executed\n\nAdversaries can use screensaver settings to maintain persistence by setting the screensaver to run malware after a certain timeframe of user inactivity. (Citation: ESET Gazer Aug 2017)",
+            "id": "attack-pattern--ce4b7013-640e-48a9-b501-d0025a95f4bf",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
             "modified": "2020-03-23T12:23:04.955Z",
             "created": "2020-01-24T13:51:01.210Z",
+            "x_mitre_version": "1.0",
             "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_detection": "Monitor process execution and command-line parameters of .scr files. Monitor changes to screensaver configuration changes in the Registry that may not correlate with typical user behavior.\n\nTools such as Sysinternals Autoruns can be used to detect changes to the screensaver binary path in the Registry. Suspicious paths and PE files may indicate outliers among legitimate screensavers in a network and should be investigated.",
             "x_mitre_data_sources": [
                 "Process: Process Creation",
                 "Windows Registry: Windows Registry Key Modification",
@@ -51,15 +54,12 @@
                 "File: File Creation",
                 "File: File Modification"
             ],
-            "x_mitre_version": "1.0",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            "x_mitre_contributors": [
+                "Bartosz Jerzman"
             ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "id": "attack-pattern--ce4b7013-640e-48a9-b501-d0025a95f4bf",
-            "x_mitre_detection": "Monitor process execution and command-line parameters of .scr files. Monitor changes to screensaver configuration changes in the Registry that may not correlate with typical user behavior.\n\nTools such as Sysinternals Autoruns can be used to detect changes to the screensaver binary path in the Registry. Suspicious paths and PE files may indicate outliers among legitimate screensavers in a network and should be investigated."
+            "x_mitre_platforms": [
+                "Windows"
+            ]
         }
     ]
 }

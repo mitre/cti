@@ -1,73 +1,73 @@
 {
     "type": "bundle",
-    "id": "bundle--aa1abd02-9e92-4e15-a45e-d015c481cdda",
+    "id": "bundle--b6acbfbd-59d9-466d-84ff-b444b025436d",
     "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--365be77f-fc0e-42ee-bac8-4faf806d9336",
+            "description": "Adversaries may abuse msiexec.exe to proxy execution of malicious payloads. Msiexec.exe is the command-line utility for the Windows Installer and is thus commonly associated with executing installation packages (.msi).(Citation: Microsoft msiexec) Msiexec.exe is digitally signed by Microsoft.\n\nAdversaries may abuse msiexec.exe to launch local or network accessible MSI files. Msiexec.exe can also execute DLLs.(Citation: LOLBAS Msiexec)(Citation: TrendMicro Msiexec Feb 2018) Since it is signed and native on Windows systems, msiexec.exe can be used to bypass application control solutions that do not account for its potential abuse. Msiexec.exe execution may also be elevated to SYSTEM privileges if the <code>AlwaysInstallElevated</code> policy is enabled.(Citation: Microsoft AlwaysInstallElevated 2018)",
+            "name": "Msiexec",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1218.007",
+                    "url": "https://attack.mitre.org/techniques/T1218/007"
+                },
+                {
+                    "source_name": "Microsoft msiexec",
+                    "url": "https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec",
+                    "description": "Microsoft. (2017, October 15). msiexec. Retrieved January 24, 2020."
+                },
+                {
+                    "description": "LOLBAS. (n.d.). Msiexec.exe. Retrieved April 18, 2019.",
+                    "url": "https://lolbas-project.github.io/lolbas/Binaries/Msiexec/",
+                    "source_name": "LOLBAS Msiexec"
+                },
+                {
+                    "source_name": "TrendMicro Msiexec Feb 2018",
+                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/attack-using-windows-installer-msiexec-exe-leads-lokibot/",
+                    "description": "Co, M. and Sison, G. (2018, February 8). Attack Using Windows Installer msiexec.exe leads to LokiBot. Retrieved April 18, 2019."
+                },
+                {
+                    "source_name": "Microsoft AlwaysInstallElevated 2018",
+                    "url": "https://docs.microsoft.com/en-us/windows/win32/msi/alwaysinstallelevated",
+                    "description": "Microsoft. (2018, May 31). AlwaysInstallElevated. Retrieved December 14, 2020."
+                }
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2020-12-14T18:40:45.170Z",
+            "created": "2020-01-24T14:38:49.266Z",
+            "x_mitre_contributors": [
+                "Alexandros Pappas"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of msiexec.exe. Compare recent invocations of msiexec.exe with prior history of known good arguments and executed MSI files or DLLs to determine anomalous and potentially adversarial activity. Command arguments used before and after the invocation of msiexec.exe may also be useful in determining the origin and purpose of the MSI files or DLLs being executed.",
             "x_mitre_defense_bypassed": [
                 "Digital Certificate Validation",
                 "Application control"
             ],
-            "id": "attack-pattern--365be77f-fc0e-42ee-bac8-4faf806d9336",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1218/007",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1218.007"
-                },
-                {
-                    "description": "Microsoft. (2017, October 15). msiexec. Retrieved January 24, 2020.",
-                    "source_name": "Microsoft msiexec",
-                    "url": "https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/msiexec"
-                },
-                {
-                    "description": "LOLBAS. (n.d.). Msiexec.exe. Retrieved April 18, 2019.",
-                    "source_name": "LOLBAS Msiexec",
-                    "url": "https://lolbas-project.github.io/lolbas/Binaries/Msiexec/"
-                },
-                {
-                    "description": "Co, M. and Sison, G. (2018, February 8). Attack Using Windows Installer msiexec.exe leads to LokiBot. Retrieved April 18, 2019.",
-                    "source_name": "TrendMicro Msiexec Feb 2018",
-                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/attack-using-windows-installer-msiexec-exe-leads-lokibot/"
-                },
-                {
-                    "description": "Microsoft. (2018, May 31). AlwaysInstallElevated. Retrieved December 14, 2020.",
-                    "source_name": "Microsoft AlwaysInstallElevated 2018",
-                    "url": "https://docs.microsoft.com/en-us/windows/win32/msi/alwaysinstallelevated"
-                }
+            "x_mitre_permissions_required": [
+                "User"
             ],
-            "kill_chain_phases": [
-                {
-                    "phase_name": "defense-evasion",
-                    "kill_chain_name": "mitre-attack"
-                }
-            ],
-            "x_mitre_contributors": [
-                "Alexandros Pappas"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "type": "attack-pattern",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "description": "Adversaries may abuse msiexec.exe to proxy execution of malicious payloads. Msiexec.exe is the command-line utility for the Windows Installer and is thus commonly associated with executing installation packages (.msi).(Citation: Microsoft msiexec) Msiexec.exe is digitally signed by Microsoft.\n\nAdversaries may abuse msiexec.exe to launch local or network accessible MSI files. Msiexec.exe can also execute DLLs.(Citation: LOLBAS Msiexec)(Citation: TrendMicro Msiexec Feb 2018) Since it is signed and native on Windows systems, msiexec.exe can be used to bypass application control solutions that do not account for its potential abuse. Msiexec.exe execution may also be elevated to SYSTEM privileges if the <code>AlwaysInstallElevated</code> policy is enabled.(Citation: Microsoft AlwaysInstallElevated 2018)",
-            "modified": "2020-12-14T18:40:45.170Z",
-            "created": "2020-01-24T14:38:49.266Z",
             "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.1",
             "x_mitre_data_sources": [
                 "Process: Process Creation",
                 "Module: Module Load",
                 "Command: Command Execution",
                 "Network Traffic: Network Connection Creation"
-            ],
-            "name": "Msiexec",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of msiexec.exe. Compare recent invocations of msiexec.exe with prior history of known good arguments and executed MSI files or DLLs to determine anomalous and potentially adversarial activity. Command arguments used before and after the invocation of msiexec.exe may also be useful in determining the origin and purpose of the MSI files or DLLs being executed.",
-            "x_mitre_version": "1.1",
-            "x_mitre_permissions_required": [
-                "User"
             ]
         }
     ]

@@ -1,9 +1,58 @@
 {
     "type": "bundle",
-    "id": "bundle--fe092ccd-229c-4369-b560-1564289800b8",
+    "id": "bundle--bbd34e5a-7150-4959-b71d-860546915ede",
     "spec_version": "2.0",
     "objects": [
         {
+            "created": "2020-03-16T15:30:57.711Z",
+            "modified": "2020-03-29T20:59:32.293Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--c726e0a2-a57a-4b7b-a973-d0f013246617",
+            "description": "Adversaries may attempt to make payloads difficult to discover and analyze by delivering files to victims as uncompiled code. Text-based source code files may subvert analysis and scrutiny from protections targeting executables/binaries. These payloads will need to be compiled before execution; typically via native utilities such as csc.exe or GCC/MinGW.(Citation: ClearSky MuddyWater Nov 2018)\n\nSource code payloads may also be encrypted, encoded, and/or embedded within other files, such as those delivered as a [Phishing](https://attack.mitre.org/techniques/T1566). Payloads may also be delivered in formats unrecognizable and inherently benign to the native OS (ex: EXEs on macOS/Linux) before later being (re)compiled into a proper executable binary with a bundled compiler and execution framework.(Citation: TrendMicro WindowsAppMac)",
+            "name": "Compile After Delivery",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1027.004",
+                    "url": "https://attack.mitre.org/techniques/T1027/004"
+                },
+                {
+                    "description": "ClearSky Cyber Security. (2018, November). MuddyWater Operations in Lebanon and Oman: Using an Israeli compromised domain for a two-stage campaign. Retrieved November 29, 2018.",
+                    "url": "https://www.clearskysec.com/wp-content/uploads/2018/11/MuddyWater-Operations-in-Lebanon-and-Oman.pdf",
+                    "source_name": "ClearSky MuddyWater Nov 2018"
+                },
+                {
+                    "source_name": "TrendMicro WindowsAppMac",
+                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/windows-app-runs-on-mac-downloads-info-stealer-and-adware/",
+                    "description": "Trend Micro. (2019, February 11). Windows App Runs on Mac, Downloads Info Stealer and Adware. Retrieved April 25, 2019."
+                }
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_contributors": [
+                "Praetorian",
+                "Ye Yint Min Thu Htut, Offensive Security Team, DBS Bank"
+            ],
+            "x_mitre_data_sources": [
+                "File: File Metadata",
+                "File: File Creation",
+                "Process: Process Creation",
+                "Command: Command Execution"
+            ],
+            "x_mitre_detection": "Monitor the execution file paths and command-line arguments for common compilers, such as csc.exe and GCC/MinGW, and correlate with other suspicious behavior to reduce false positives from normal user and administrator behavior. The compilation of payloads may also generate file creation and/or file write events. Look for non-native binary formats and cross-platform compiler and execution frameworks like Mono and determine if they have a legitimate purpose on the system.(Citation: TrendMicro WindowsAppMac) Typically these should only be used in specific and limited cases, like for software development.",
             "x_mitre_defense_bypassed": [
                 "Signature-based detection",
                 "Host intrusion prevention systems",
@@ -11,63 +60,14 @@
                 "Binary Analysis",
                 "Static File Analysis"
             ],
-            "id": "attack-pattern--c726e0a2-a57a-4b7b-a973-d0f013246617",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1027/004",
-                    "source_name": "mitre-attack",
-                    "external_id": "T1027.004"
-                },
-                {
-                    "description": "ClearSky Cyber Security. (2018, November). MuddyWater Operations in Lebanon and Oman: Using an Israeli compromised domain for a two-stage campaign. Retrieved November 29, 2018.",
-                    "source_name": "ClearSky MuddyWater Nov 2018",
-                    "url": "https://www.clearskysec.com/wp-content/uploads/2018/11/MuddyWater-Operations-in-Lebanon-and-Oman.pdf"
-                },
-                {
-                    "description": "Trend Micro. (2019, February 11). Windows App Runs on Mac, Downloads Info Stealer and Adware. Retrieved April 25, 2019.",
-                    "source_name": "TrendMicro WindowsAppMac",
-                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/windows-app-runs-on-mac-downloads-info-stealer-and-adware/"
-                }
-            ],
-            "kill_chain_phases": [
-                {
-                    "phase_name": "defense-evasion",
-                    "kill_chain_name": "mitre-attack"
-                }
-            ],
-            "x_mitre_detection": "Monitor the execution file paths and command-line arguments for common compilers, such as csc.exe and GCC/MinGW, and correlate with other suspicious behavior to reduce false positives from normal user and administrator behavior. The compilation of payloads may also generate file creation and/or file write events. Look for non-native binary formats and cross-platform compiler and execution frameworks like Mono and determine if they have a legitimate purpose on the system.(Citation: TrendMicro WindowsAppMac) Typically these should only be used in specific and limited cases, like for software development.",
-            "name": "Compile After Delivery",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
-            ],
-            "description": "Adversaries may attempt to make payloads difficult to discover and analyze by delivering files to victims as uncompiled code. Text-based source code files may subvert analysis and scrutiny from protections targeting executables/binaries. These payloads will need to be compiled before execution; typically via native utilities such as csc.exe or GCC/MinGW.(Citation: ClearSky MuddyWater Nov 2018)\n\nSource code payloads may also be encrypted, encoded, and/or embedded within other files, such as those delivered as a [Phishing](https://attack.mitre.org/techniques/T1566). Payloads may also be delivered in formats unrecognizable and inherently benign to the native OS (ex: EXEs on macOS/Linux) before later being (re)compiled into a proper executable binary with a bundled compiler and execution framework.(Citation: TrendMicro WindowsAppMac)",
-            "modified": "2020-03-29T20:59:32.293Z",
-            "created": "2020-03-16T15:30:57.711Z",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_data_sources": [
-                "File: File Metadata",
-                "File: File Creation",
-                "Process: Process Creation",
-                "Command: Command Execution"
-            ],
-            "type": "attack-pattern",
-            "x_mitre_contributors": [
-                "Praetorian",
-                "Ye Yint Min Thu Htut, Offensive Security Team, DBS Bank"
+            "x_mitre_permissions_required": [
+                "User"
             ],
             "x_mitre_system_requirements": [
                 "Compiler software (either native to the system or delivered by the adversary)"
             ],
-            "x_mitre_version": "1.0",
-            "x_mitre_permissions_required": [
-                "User"
-            ]
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0"
         }
     ]
 }

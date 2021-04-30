@@ -1,45 +1,54 @@
 {
     "type": "bundle",
-    "id": "bundle--d42060b3-c615-41c5-b0fa-36ed77ba86f6",
+    "id": "bundle--8db2f02f-3bb8-4777-ab21-0c7483317322",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_defense_bypassed": [
-                "Application control by file name or path"
+            "created": "2017-05-31T21:30:38.511Z",
+            "modified": "2021-04-24T13:24:45.840Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "type": "attack-pattern",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1036",
                     "source_name": "mitre-attack",
-                    "external_id": "T1036"
+                    "external_id": "T1036",
+                    "url": "https://attack.mitre.org/techniques/T1036"
                 },
                 {
-                    "url": "https://capec.mitre.org/data/definitions/177.html",
+                    "external_id": "CAPEC-177",
                     "source_name": "capec",
-                    "external_id": "CAPEC-177"
+                    "url": "https://capec.mitre.org/data/definitions/177.html"
                 },
                 {
-                    "description": "LOLBAS. (n.d.). Living Off The Land Binaries and Scripts (and also Libraries). Retrieved February 10, 2020.",
                     "source_name": "LOLBAS Main Site",
-                    "url": "https://lolbas-project.github.io/"
+                    "url": "https://lolbas-project.github.io/",
+                    "description": "LOLBAS. (n.d.). Living Off The Land Binaries and Scripts (and also Libraries). Retrieved February 10, 2020."
                 },
                 {
-                    "description": "Ewing, P. (2016, October 31). How to Hunt: The Masquerade Ball. Retrieved October 31, 2016.",
                     "source_name": "Elastic Masquerade Ball",
+                    "description": "Ewing, P. (2016, October 31). How to Hunt: The Masquerade Ball. Retrieved October 31, 2016.",
                     "url": "http://pages.endgame.com/rs/627-YBU-612/images/EndgameJournal_The%20Masquerade%20Ball_Pages_R2.pdf"
                 },
                 {
-                    "description": "Carr, N.. (2018, October 25). Nick Carr Status Update Masquerading. Retrieved April 22, 2019.",
                     "source_name": "Twitter ItsReallyNick Masquerading Update",
-                    "url": "https://twitter.com/ItsReallyNick/status/1055321652777619457"
+                    "url": "https://twitter.com/ItsReallyNick/status/1055321652777619457",
+                    "description": "Carr, N.. (2018, October 25). Nick Carr Status Update Masquerading. Retrieved April 22, 2019."
                 }
             ],
-            "kill_chain_phases": [
-                {
-                    "phase_name": "defense-evasion",
-                    "kill_chain_name": "mitre-attack"
-                }
-            ],
+            "description": "Adversaries may attempt to manipulate features of their artifacts to make them appear legitimate or benign to users and/or security tools. Masquerading occurs when the name or location of an object, legitimate or malicious, is manipulated or abused for the sake of evading defenses and observation. This may include manipulating file metadata, tricking users into misidentifying the file type, and giving legitimate task or service names.\n\nRenaming abusable system utilities to evade security monitoring is also a form of [Masquerading](https://attack.mitre.org/techniques/T1036).(Citation: LOLBAS Main Site)",
+            "name": "Masquerading",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "id": "attack-pattern--42e8de7b-37b2-4258-905a-6897815e58e0",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_version": "1.4",
             "x_mitre_contributors": [
                 "Oleg Kolesnikov, Securonix",
                 "Nick Carr, FireEye",
@@ -48,20 +57,6 @@
                 "Elastic",
                 "Bartosz Jerzman"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows",
-                "Containers"
-            ],
-            "description": "Adversaries may attempt to manipulate features of their artifacts to make them appear legitimate or benign to users and/or security tools. Masquerading occurs when the name or location of an object, legitimate or malicious, is manipulated or abused for the sake of evading defenses and observation. This may include manipulating file metadata, tricking users into misidentifying the file type, and giving legitimate task or service names.\n\nRenaming abusable system utilities to evade security monitoring is also a form of [Masquerading](https://attack.mitre.org/techniques/T1036).(Citation: LOLBAS Main Site)",
-            "modified": "2021-04-24T13:24:45.840Z",
-            "created": "2017-05-31T21:30:38.511Z",
-            "x_mitre_is_subtechnique": false,
             "x_mitre_data_sources": [
                 "Image: Image Metadata",
                 "Command: Command Execution",
@@ -73,11 +68,16 @@
                 "Process: Process Metadata",
                 "File: File Modification"
             ],
-            "type": "attack-pattern",
-            "name": "Masquerading",
-            "id": "attack-pattern--42e8de7b-37b2-4258-905a-6897815e58e0",
-            "x_mitre_version": "1.4",
-            "x_mitre_detection": "Collect file hashes; file names that do not match their expected hash are suspect. Perform file monitoring; files with known names but in unusual locations are suspect. Likewise, files that are modified outside of an update or patch are suspect.\n\nIf file names are mismatched between the file name on disk and that of the binary's PE metadata, this is a likely indicator that a binary was renamed after it was compiled. Collecting and comparing disk and resource filenames for binaries by looking to see if the InternalName, OriginalFilename, and/or ProductName match what is expected could provide useful leads, but may not always be indicative of malicious activity. (Citation: Elastic Masquerade Ball) Do not focus on the possible names a file could have, but instead on the command-line arguments that are known to be used and are distinct because it will have a better rate of detection.(Citation: Twitter ItsReallyNick Masquerading Update)\n\nLook for indications of common characters that may indicate an attempt to trick users into misidentifying the file type, such as a space as the last character of a file name or the right-to-left override characters\"\\u202E\", \"[U+202E]\", and \"%E2%80%AE\u201d."
+            "x_mitre_defense_bypassed": [
+                "Application control by file name or path"
+            ],
+            "x_mitre_detection": "Collect file hashes; file names that do not match their expected hash are suspect. Perform file monitoring; files with known names but in unusual locations are suspect. Likewise, files that are modified outside of an update or patch are suspect.\n\nIf file names are mismatched between the file name on disk and that of the binary's PE metadata, this is a likely indicator that a binary was renamed after it was compiled. Collecting and comparing disk and resource filenames for binaries by looking to see if the InternalName, OriginalFilename, and/or ProductName match what is expected could provide useful leads, but may not always be indicative of malicious activity. (Citation: Elastic Masquerade Ball) Do not focus on the possible names a file could have, but instead on the command-line arguments that are known to be used and are distinct because it will have a better rate of detection.(Citation: Twitter ItsReallyNick Masquerading Update)\n\nLook for indications of common characters that may indicate an attempt to trick users into misidentifying the file type, such as a space as the last character of a file name or the right-to-left override characters\"\\u202E\", \"[U+202E]\", and \"%E2%80%AE\u201d.",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows",
+                "Containers"
+            ]
         }
     ]
 }
