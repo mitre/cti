@@ -735,7 +735,7 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
     targets = list(
         filter(
             lambda x: x.get("x_mitre_deprecated", False) is False and x.get("revoked", False) is False,
-            stix_objects
+            targets
         )
     )
 
