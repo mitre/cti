@@ -1,7 +1,7 @@
 # CTI
 This repository contains the MITRE ATT&CK&reg; and CAPEC&trade; datasets expressed in STIX 2.0. See [USAGE](USAGE.md) or [USAGE-CAPEC](USAGE-CAPEC.md) for information on using this content with [python-stix2](https://github.com/oasis-open/cti-python-stix2).
 
-If you are looking for ATT&CK represented in STIX 2.1, please see the [attack-stix-data](https://github.com/mitre-attack/attack-stix-data) GitHub repository. Both MITRE/CTI (this repository) and attack-stix-data will be updated with new ATT&CK releases for the foreseeable future, but the data model of attack-stix-data will include quality-of-life improvements not found on MITRE/CTI. Please see the [attack-stix-data USAGE document](https://github.com/mitre-attack/attack-stix-data) for more information on the improved data model of that repository.
+If you are looking for ATT&CK represented in STIX 2.1, please see the [attack-stix-data](https://github.com/mitre-attack/attack-stix-data) GitHub repository. Both `MITRE/CTI` (this repository) and `attack-stix-data` will be maintained and updated with new ATT&CK releases for the foreseeable future, but the data model of `attack-stix-data` includes quality-of-life improvements not found on MITRE/CTI. Please see the [attack-stix-data USAGE document](https://github.com/mitre-attack/attack-stix-data) for more information on the improved data model of that repository.
 
 ## ATT&CK
 MITRE ATT&CK is a globally-accessible knowledge base of adversary tactics and techniques based on real-world observations. The ATT&CK knowledge base is used as a foundation for the development of specific threat models and methodologies in the private sector, in government, and in the cybersecurity product and service community.
