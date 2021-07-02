@@ -10,6 +10,8 @@ This document describes how ATT&CK implements and extends the STIX format. To fi
 
 We also recommend reading the [ATT&CK Design and Philosophy Paper](https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf), which describes high-level overall approach, intention, and usage of ATT&CK.
 
+If you are looking for ATT&CK data represented in STIX 2.1, please see our [attack-stix-data](https://github.com/mitre-attack/attack-stix-data) GitHub repository. The accompanying [USAGE document](https://github.com/mitre-attack/attack-stix-data/blob/master/USAGE.md) includes more information on the improved data model of that repository.
+
 ## Table of Contents
 
 - [The ATT&CK data model](#the-attck-data-model)
