@@ -235,9 +235,9 @@ Both `malware` and `tool` type software depart from the STIX format with the fol
 
 Data Sources and Data Components represent data which can be used to detect techniques. Data components are nested within a data source but have their own STIX object.
 
-- A data component can only have one parent data source.
-- A data source can have any number of data components.
-- Data components can map to any number of techniques.
+- A Data Component can only have one parent Data Source.
+- A Data Source can have any number of Data Components.
+- Data Components can map to any number of techniques.
 
 The general structure of data sources and data components is as follows:
 
@@ -272,9 +272,9 @@ Data Sources extend the generic SDO format with the following fields:
 
 ### Data Components
 
-Data components are represented as an `x-mitre-data-component` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920). 
+A Data Component in ATT&CK is represented as an `x-mitre-data-component` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920). 
 
-Data Components extend the generic SDO format with the following fields:
+Data Components extend the generic SDO format with the following field:
 
 | Field | Type | Description |
 |:------|:-----|-------------|
