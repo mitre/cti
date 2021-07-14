@@ -29,6 +29,7 @@ We also recommend reading the [ATT&CK Design and Philosophy Paper](https://attac
       - [Collisions with technique ATT&CK IDs](#collisions-with-technique-attck-ids)
     + [Groups](#groups)
     + [Software](#software)
+    + [Data Sources and Data Components](#data-sources-and-data-components)
     + [Relationships](#relationships)
 - [Accessing ATT&CK data in python](#accessing-attck-data-in-python)
   * [Requirements and imports](#requirements-and-imports)
@@ -227,11 +228,60 @@ Both `malware` and `tool` type software depart from the STIX format with the fol
 | Field | Type | Description |
 |:------|:-----|-------------|
 | `x_mitre_platforms` | string[] | List of platforms that apply to the software. |
-| `x_mitre_aliases` | string[] | List of aliases for the given software |
+| `x_mitre_aliases` | string[] | List of aliases for the given software. |
 
-### Data Source
 
-A Data Source in ATT&CK is defined by an `x-mitre-data-source` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920). Data sources do not depart from the generic SDO pattern, however their relationships with techniques do. See [detects relationships](#detects-relationships) for more information.
+## Data Sources and Data Components
+
+Data Sources and Data Components represent categories of data which can be used to detect techniques. Data components are nested within a data source but have their own STIX type.
+
+- A data component can only have one parent data source.
+- A data source can have multiple child data components.
+- Data components can map to any number of techniques.
+
+The general structure of data sources and data components is as follows:
+
+<!-- diagram generated with https://asciiflow.com/ -->
+```
+           "detects"          x_mitre_data_source_ref
+          relationship         embedded relationship
+               │                        │
+┌───────────┐  ▼                        │
+│Technique 1│◄──┐                       │
+└───────────┘   └───┬────────────────┐  ▼  ┌───────────┐
+                    │Data Component 1├────►│           │
+┌───────────┐   ┌───┴────────────────┘     │           │
+│Technique 2│◄──┘                          │Data Source│
+└───────────┘       ┌────────────────┐     │           │
+                ┌───┤Data Component 2├────►│           │
+┌───────────┐   │   └────────────────┘     └───────────┘
+│Technique 3│◄──┘
+└───────────┘
+```
+
+### Data Sources
+
+A Data Source in ATT&CK is defined by an `x-mitre-data-source` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920). 
+
+Data Sources extend the generic SDO format with the following fields:
+
+| Field | Type | Description |
+|:------|:-----|-------------|
+| `x_mitre_platforms` | string[] | List of platforms that apply to the data source. |
+| `x_mitre_collection_layers` | string[] | List of places the data can be collected from. |
+
+### Data Components
+
+Data Components represent a specific detectable element within a data source, and are represented as an `x-mitre-data-component` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920). 
+
+
+Data Components extend the generic SDO format with the following fields:
+
+| Field | Type | Description |
+|:------|:-----|-------------|
+| `x_mitre_data_source_ref` | embedded relationship (string) | STIX ID of the data source this component is a part of. |
+
+
 
 ### Relationships
 
@@ -250,17 +300,10 @@ Relationships oftentimes have descriptions which contextualize the relationship 
 | `malware` or `tool` | `uses`    | `attack-pattern`    | No | Software using a technique, which is also considered a procedure example. |
 | `course-of-action`  | `mitigates` | `attack-pattern`  | No | Mitigation mitigating a technique. |
 | `attack-pattern`    | `subtechnique-of` | `attack-pattern` | Yes | Sub-technique of a technique, where the `source_ref` is the sub-technique and the `target_ref` is the parent technique. |
-| `x-mitre-data-source` | `detects` | `attack-pattern` | Yes | Data source can detect a technique. See also [detects relationships](#detects-relationships). | 
+| `x-mitre-data-component` | `detects` | `attack-pattern` | Yes | Data component detecting a technique. | 
 | any type    | `revoked-by`      | any type | Yes | The target object is a replacement for the source object. Only occurs where the objects are of the same type, and the source object will have the property `revoked = true`. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. |
 
 Note that because groups use software and software uses techniques, groups can be considered indirect users of techniques used by their software. See [Getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software).
-
-#### Detects relationships
-Relationships between data sources and techniques include the following additional field:
-
-| Field | Type | Description |
-|:------|:-----|-------------|
-| `x_mitre_data_components` | string[] | Components of the data source that apply to the given detection. Please see our [attack-datasources](https://github.com/mitre-attack/attack-datasources) repository for more information on data components. |
 
 # Accessing ATT&CK data in python
 There are several ways to acquire the ATT&CK data in Python. All of them will provide an object 
