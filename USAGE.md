@@ -1,16 +1,68 @@
+
+
 # Introduction
 
-This document describes how to query and manipulate ATT&CK data from either this repository or the ATT&CK TAXII server. It is divided into three sections:
+This document describes how to query and manipulate ATT&CK data from either this repository or the ATT&CK TAXII server, as well as the formatting of the data itself.
 
-- [The ATT&CK data model](#the-attck-data-model), which describes the format of the data and highlights how it extends the stock STIX2.0 format
-- [Accessing ATT&CK data in python](#accessing-attck-data-in-python), which describes different methodologies that can be used to load the ATT&CK data into a script
-- [Python recipes](#Python-Recipes), which provides python3 examples of common ways to query the ATT&CK data once loaded
-
-The latter two sections on the programmatic use of ATT&CK heavily utilize the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically. See also the section on [Requirements and imports](#requirements-and-imports).
+The programmatic uses of ATT&CK demonstrated in this document utilize the [stix2 python library](https://github.com/oasis-open/cti-python-stix2). Please refer to the [STIX2 Python API Documentation](https://stix2.readthedocs.io/en/latest/) for more information on how to work with STIX programmatically. See also the section on [Requirements and imports](#requirements-and-imports).
 
 This document describes how ATT&CK implements and extends the STIX format. To find out more about STIX, please see [the STIX 2.0 website](https://oasis-open.github.io/cti-documentation/stix/intro). 
 
 We also recommend reading the [ATT&CK Design and Philosophy Paper](https://attack.mitre.org/docs/ATTACK_Design_and_Philosophy_March_2020.pdf), which describes high-level overall approach, intention, and usage of ATT&CK.
+
+## Table of Contents
+
+- [The ATT&CK data model](#the-attck-data-model)
+  * [Extensions of the STIX spec](#extensions-of-the-stix-spec)
+  * [IDs in ATT&CK](#ids-in-attck)
+    + [ATT&CK IDs](#attck-ids)
+    + [STIX IDs](#stix-ids)
+    + [Other IDs](#other-ids)
+  * [ATT&CK Types](#attck-types)
+    + [Matrices](#matrices)
+      - [Mapping matrices, tactics and techniques](#mapping-matrices-tactics-and-techniques)
+    + [Tactics](#tactics)
+    + [Techniques](#techniques)
+      - [Sub-Techniques](#sub-techniques)
+    + [Procedures](#procedures)
+    + [Mitigations](#mitigations)
+      - [Collisions with technique ATT&CK IDs](#collisions-with-technique-attck-ids)
+    + [Groups](#groups)
+    + [Software](#software)
+    + [Relationships](#relationships)
+- [Accessing ATT&CK data in python](#accessing-attck-data-in-python)
+  * [Requirements and imports](#requirements-and-imports)
+    + [stix2](#stix2)
+    + [taxii2client](#taxii2client)
+  * [Access local content](#access-local-content)
+    + [Access via FileSystemSource](#access-via-filesystemsource)
+    + [Access via bundle](#access-via-bundle)
+  * [Access live content](#access-live-content)
+    + [Access from the ATT&CK TAXII server](#access-from-the-attck-taxii-server)
+    + [Access from Github via requests](#access-from-github-via-requests)
+  * [Access a specific version of ATT&CK](#access-a-specific-version-of-attck)
+  * [Access multiple domains simultaneously](#access-multiple-domains-simultaneously)
+- [Python recipes](#python-recipes)
+  * [Getting an object](#getting-an-object)
+    + [By STIX ID](#by-stix-id)
+    + [By ATT&CK ID](#by-attck-id)
+    + [By name](#by-name)
+    + [By alias](#by-alias)
+  * [Getting multiple objects](#getting-multiple-objects)
+    + [Objects by type](#objects-by-type)
+      - [Getting techniques or sub-techniques](#getting-techniques-or-sub-techniques)
+      - [Getting software](#getting-software)
+    + [Objects by content](#objects-by-content)
+    + [Techniques by platform](#techniques-by-platform)
+    + [Techniques by tactic](#techniques-by-tactic)
+    + [Tactics by matrix](#tactics-by-matrix)
+    + [Objects created or modified since a given date](#objects-created-or-modified-since-a-given-date)
+  * [Getting related objects](#getting-related-objects)
+    + [Relationships microlibrary](#relationships-microlibrary)
+    + [Getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software)
+  * [Working with deprecated and revoked objects](#working-with-deprecated-and-revoked-objects)
+    + [Removing revoked and deprecated objects](#removing-revoked-and-deprecated-objects)
+    + [Getting a revoking object](#getting-a-revoking-object)
 
 # The ATT&CK data model
 
@@ -50,6 +102,7 @@ There are three general ways that ATT&CK extends the STIX 2.0 format:
     |:------|:-----|:------------|
     | `x_mitre_version` | string | The version of the object in format `major.minor` where `major` and `minor` are integers. ATT&CK increments this version number when the object content is updated. |
     | `x_mitre_contributors` | string[] | People and organizations who have contributed to the object. | 
+    | `x_mitre_deprecated` | boolean | See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects). | 
 
 - New relationship types. Unlike custom object types and extended fields, custom relationship types are **not** prefixed with `x_mitre_`. You can find a full list of relationship types in the [Relationships](#Relationships) section, which also mentions whether the type is a default STIX type.
 
@@ -99,6 +152,12 @@ Matrices extend the generic SDO format with the following field:
 |:------|:-----|-------------|
 | `tactic_refs` | string[] | The `tactic_refs` array of the matrix contains an ordered list of `x-mitre-tactic` STIX IDs corresponding to the tactics of the matrix. The order of `tactic_refs` determines the order the tactics should appear within the matrix. |
 
+#### Mapping matrices, tactics and techniques
+
+Techniques map into tactics by use of their `kill_chain_phases` property. Where the `kill_chain_name` is `mitre-attack`, `mitre-mobile-attack`, or `mitre-ics-attack` (for enterprise, mobile, and ics domains respectively), the `phase_name` corresponds to the `x_mitre_shortname` property of an `x-mitre-tactic` object. Matrices define their tactics in order using the `tactic_refs` embedded relationships.
+
+<img src="https://raw.githubusercontent.com/mitre-attack/attack-website/master/modules/resources/docs/visualizations/data-model/stix-tactics-techniques.png" alt="matrix, tactic and technique data model" width="750px">
+
 ### Tactics
 
 A Tactic in ATT&CK is defined by an `x-mitre-tactic` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920).
@@ -107,7 +166,7 @@ Tactics extend the generic SDO format with the following field:
 
 | Field | Type | Description |
 |:------|:-----|-------------|
-| `x_mitre_shortname` | string | The `x_mitre_shortname` of the tactic is used for mapping techniques into the tactic. It corresponds to `kill_chain_phases.phase_name` of the techniques in the tactic. |
+| `x_mitre_shortname` | string | The `x_mitre_shortname` of the tactic is used for mapping techniques into the tactic. It corresponds to `kill_chain_phases.phase_name` of the techniques in the tactic. See [mapping matrices, tactics and techniques](#mapping-matrices-tactics-and-techniques) for more information. |
 
 ### Techniques
 
@@ -121,13 +180,16 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 | `x_mitre_platforms` | string[] | All techniques | List of platforms that apply to the technique. |
 | `x_mitre_data_sources` | string[] | ICS domain | Sources of information that may be used to identify the action or result of the action being performed. **Note:** in the Enterprise domain data sources are represented via [x-mitre-data-source](#data-source) objects, and their relationship with techniques through relationships of type `detects`. `x_mitre_data_sources` will still be provided on enterprise techniques, but only to ease users' transition to the actual data source objects -- this field will likely be removed later to avoid duplication within the data model. |
 | `x_mitre_is_subtechnique` | boolean | Enterprise domain | If true, this `attack-pattern` is a sub-technique. See [sub-techniques](#sub-techniques). |
-| `x_mitre_system_requirements` | string | Enterprise domain | Additional information on requirements the adversary needs to meet or about the state of the system (software, patch level, etc.) that may be required for the technique to work. |
-| `x_mitre_tactic_types` | string | Mobile domain |  "Post-Adversary Device Access", "Pre-Adversary Device Access", or "Without Adversary Device Access". |
+| `x_mitre_system_requirements` | string[] | Enterprise domain | Additional information on requirements the adversary needs to meet or about the state of the system (software, patch level, etc.) that may be required for the technique to work. |
+| `x_mitre_tactic_type` | string[] | Mobile domain |  "Post-Adversary Device Access", "Pre-Adversary Device Access", or "Without Adversary Device Access". |
 | `x_mitre_permissions_required` | string[] | Enterprise domain in the _Privilege Escalation_ tactic | The lowest level of permissions the adversary is required to be operating within to perform the technique on a system. |
+| `x_mitre_effective_permissions` | string[] | Enterprise domain in the _Privilege Escalation_ tactic | The level of permissions the adversary will attain by performing the technique. |
 | `x_mitre_defense_bypassed` | string[] | Enterprise domain in the _Defense Evasion_ tactic | List of defensive tools, methodologies, or processes the technique can bypass. |
 | `x_mitre_remote_support` | boolean | Enterprise domain in the _Execution_ tactic | If true, the technique can be used to execute something on a remote system. |
+| `x_mitre_impact_type` | string[] | Enterprise domain in the _Impact_ tactic | Denotes if the technique can be used for integrity or availability attacks. |
 
-Techniques map into tactics by use of their `kill_chain_phases` property. Where the `kill_chain_name` is `mitre-attack`, `mitre-mobile-attack`, or `mitre-ics-attack` (for enterprise, mobile, and ics domains respectively), the `phase_name` corresponds to the `x_mitre_shortname` property of an `x-mitre-tactic` object.
+
+See [mapping matrices, tactics and techniques](#mapping-matrices-tactics-and-techniques) for more information about how techniques map into tactics and matrices.
 
 #### Sub-Techniques
 
@@ -174,6 +236,10 @@ A Data Source in ATT&CK is defined by an `x-mitre-data-source` object. As a cust
 ### Relationships
 
 Objects in ATT&CK are related to each other via STIX [relationship](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230970) objects. These relationships convey concepts like groups using techniques (also called "procedure examples" on the technique pages), the hierarchy of techniques and sub-techniques, and so on. 
+
+<img src="https://raw.githubusercontent.com/mitre-attack/attack-website/master/modules/resources/docs/visualizations/data-model/stix-relationships.png" alt="relationships data model" width="750px">
+
+Unlike other objects in the dataset, relationships cannot be revoked or deprecated. Relationships are considered deprecated/revoked if one of the objects it is attached to is revoked or deprecated. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. 
 
 Relationships oftentimes have descriptions which contextualize the relationship between the objects.
 
@@ -584,9 +650,7 @@ getTacticsByMatrix(src)
 ```
 
 ### Objects created or modified since a given date
-Sometimes you may want to get a list of objects which have been created or modified after a certain time.
-This code could be used within a larger function or script to alert when a new object
-has been added to the ATT&CK catalog. 
+Sometimes you may want to get a list of objects which have been created or modified after a certain time. 
 
 ```python
 from stix2 import Filter
@@ -608,6 +672,8 @@ def get_modified_after(thesrc, timestamp):
     
 get_modified_after(src, "2018-10-01T00:14:20.652Z")
 ```
+
+We don't recommend you use this method to detect a change to the contents of the knowledge base. For detecting an update to the overall knowledge base we recommend using requests to [check the list of released versions of ATT&CK](https://github.com/mitre/cti/blob/master/USAGE.md#access-a-specific-version-of-attck).
 
 ## Getting related objects
 A large part of working with ATT&CK revolves around parsing relationships between objects. It is useful
@@ -635,8 +701,7 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
 
     relationships = thesrc.query([
         Filter('type', '=', 'relationship'),
-        Filter('relationship_type', '=', rel_type),
-        Filter('revoked', '=', False)
+        Filter('relationship_type', '=', rel_type)
     ])
 
     # stix_id => [ { relationship, related_object_id } for each related object ]
@@ -673,13 +738,19 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
     if not reverse:
         targets = thesrc.query([
             Filter('type', '=', target_type),
-            Filter('revoked', '=', False)
         ])
     else:
         targets = thesrc.query([
             Filter('type', '=', src_type),
-            Filter('revoked', '=', False)
         ])
+    
+    # remove revoked and deprecated objects from output
+    targets = list(
+        filter(
+            lambda x: x.get("x_mitre_deprecated", False) is False and x.get("revoked", False) is False,
+            targets
+        )
+    )
 
     # build lookup of stixID to stix object
     id_to_target = {}
@@ -704,11 +775,15 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
 # software:group
 def software_used_by_groups(thesrc):
     """returns group_id => {software, relationship} for each software used by the group."""
-    return get_related(thesrc, "intrusion-set", "uses", "tool") + get_related(thesrc, "intrusion-set", "uses", "malware")
+    x = get_related(thesrc, "intrusion-set", "uses", "tool")
+    x.update(get_related(thesrc, "intrusion-set", "uses", "malware"))
+    return x
 
 def groups_using_software(thesrc):
     """returns software_id => {group, relationship} for each group using the software."""
-    return get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True) + get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True)
+    x = get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True)
+    x.update(get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True))
+    return x
 
 # technique:group
 def techniques_used_by_groups(thesrc):
@@ -722,11 +797,15 @@ def groups_using_technique(thesrc):
 # technique:software
 def techniques_used_by_software(thesrc):
     """return software_id => {technique, relationship} for each technique used by the software."""
-    return get_related(thesrc, "malware", "uses", "attack-pattern") + get_related(thesrc, "tool", "uses", "attack-pattern")
+    x = get_related(thesrc, "malware", "uses", "attack-pattern")
+    x.update(get_related(thesrc, "tool", "uses", "attack-pattern"))
+    return x
 
 def software_using_technique(thesrc):
     """return technique_id  => {software, relationship} for each software using the technique."""
-    return get_related(thesrc, "malware", "uses", "attack-pattern", reverse=True) + get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True)
+    x = get_related(thesrc, "malware", "uses", "attack-pattern", reverse=True)
+    x.update(get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True))
+    return x
 
 # technique:mitigation
 def mitigation_mitigates_techniques(thesrc):
@@ -808,12 +887,14 @@ get_techniques_by_group_software(src, "intrusion-set--f047ee18-7985-4946-8bfb-4e
 ## Working with deprecated and revoked objects
 Objects that are deemed no longer beneficial to track as part of the knowledge base are marked as deprecated, and objects which are replaced by a different object are revoked. In both cases, the old object is marked with a field (either `x_mitre_deprecated` or `revoked`) noting their status. In the case of revoked objects, a relationship of type `revoked-by` is also created targeting the replacing object. 
 
+Unlike other objects in the dataset, relationships cannot be revoked or deprecated. Relationships are considered deprecated/revoked if one of the objects it is attached to is revoked or deprecated. 
+
 ### Removing revoked and deprecated objects
 Revoked and deprecated objects are kept in the knowledge base so that workflows relying on those objects are not 
 broken. We recommend you filter out revoked and deprecated objects from your views whenever possible since they are no 
 longer maintained by ATT&CK.
 
-Revoked and deprecated objects can be removed quite easily:
+We recommend _not_ using built-in STIX filters for removing revoked objects (e.g `Filter('revoked', '=', False)`). This is because the behavior of this specific filter is inconsistent depending on the method of access (using local data or accessing via the TAXII server). We recommend using the following code example to filter revoked objects instead. See [issue #127](https://github.com/mitre/cti/issues/127) for more details.
 
 ```python
 from stix2 import Filter

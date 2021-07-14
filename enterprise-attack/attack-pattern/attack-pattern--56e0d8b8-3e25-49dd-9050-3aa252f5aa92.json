@@ -1,0 +1,84 @@
+{
+    "type": "bundle",
+    "id": "bundle--fe89026a-9443-49c9-8598-9a4c9b591de6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1610",
+                    "url": "https://attack.mitre.org/techniques/T1610"
+                },
+                {
+                    "source_name": "Docker Containers API",
+                    "url": "https://docs.docker.com/engine/api/v1.41/#tag/Container",
+                    "description": "Docker. (n.d.). Docker Engine API v1.41 Reference - Container. Retrieved March 29, 2021."
+                },
+                {
+                    "source_name": "Kubernetes Dashboard",
+                    "url": "https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/",
+                    "description": "The Kubernetes Authors. (n.d.). Kubernetes Web UI (Dashboard). Retrieved March 29, 2021."
+                },
+                {
+                    "source_name": "Kubeflow Pipelines",
+                    "url": "https://www.kubeflow.org/docs/components/pipelines/overview/pipelines-overview/",
+                    "description": "The Kubeflow Authors. (n.d.). Overview of Kubeflow Pipelines. Retrieved March 29, 2021."
+                },
+                {
+                    "source_name": "Aqua Build Images on Hosts",
+                    "url": "https://blog.aquasec.com/malicious-container-image-docker-container-host",
+                    "description": "Assaf Morag. (2020, July 15). Threat Alert: Attackers Building Malicious Images on Your Hosts. Retrieved March 29, 2021."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Deploy Container",
+            "description": "Adversaries may deploy a container into an environment to facilitate execution or evade defenses. In some cases, adversaries may deploy a new container to execute processes associated with a particular image or deployment, such as processes that execute or download malware. In others, an adversary may deploy a new container configured without network rules, user limitations, etc. to bypass existing defenses within the environment.\n\nContainers can be deployed by various means, such as via Docker's <code>create</code> and <code>start</code> APIs or via a web application such as the Kubernetes dashboard or Kubeflow.(Citation: Docker Containers API)(Citation: Kubernetes Dashboard)(Citation: Kubeflow Pipelines) Adversaries may deploy containers based on retrieved or built malicious images or from benign images that download and execute malicious payloads at runtime.(Citation: Aqua Build Images on Hosts)",
+            "id": "attack-pattern--56e0d8b8-3e25-49dd-9050-3aa252f5aa92",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "execution"
+                }
+            ],
+            "modified": "2021-04-14T12:02:20.641Z",
+            "created": "2021-03-29T16:51:26.020Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_permissions_required": [
+                "User",
+                "root"
+            ],
+            "x_mitre_remote_support": true,
+            "x_mitre_detection": "Monitor for suspicious or unknown container images and pods in your environment. Deploy logging agents on Kubernetes nodes and retrieve logs from sidecar proxies for application pods to detect malicious activity at the cluster level. In Docker, the daemon log provides insight into remote API calls, including those that deploy containers. Logs for management services or applications used to deploy containers other than the native technologies themselves should also be monitored.",
+            "x_mitre_contributors": [
+                "Pawan Kinger, @kingerpawan, Trend Micro",
+                "Alfredo Oliveira, Trend Micro",
+                "Idan Frimark, Cisco",
+                "Center for Threat-Informed Defense (CTID)",
+                "Magno Logan, @magnologan, Trend Micro",
+                "Ariel Shuper, Cisco",
+                "Vishwas Manral, McAfee",
+                "Yossi Weizman, Azure Defender Research Team"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_data_sources": [
+                "Container: Container Creation",
+                "Container: Container Start",
+                "Pod: Pod Creation",
+                "Pod: Pod Modification",
+                "Application Log: Application Log Content"
+            ]
+        }
+    ]
+}

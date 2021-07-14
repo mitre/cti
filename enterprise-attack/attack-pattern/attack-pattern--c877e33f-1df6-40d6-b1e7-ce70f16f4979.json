@@ -1,0 +1,87 @@
+{
+    "type": "bundle",
+    "id": "bundle--9b6f5103-f9ec-4f42-9f67-de916cab213b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1614",
+                    "url": "https://attack.mitre.org/techniques/T1614"
+                },
+                {
+                    "source_name": "FBI Ragnar Locker 2020",
+                    "url": "https://assets.documentcloud.org/documents/20413525/fbi-flash-indicators-of-compromise-ragnar-locker-ransomware-11192020-bc.pdf",
+                    "description": "FBI. (2020, November 19). Indicators of Compromise Associated with Ragnar Locker Ransomware. Retrieved April 1, 2021."
+                },
+                {
+                    "source_name": "Sophos Geolocation 2016",
+                    "url": "https://news.sophos.com/en-us/2016/05/03/location-based-ransomware-threat-research/",
+                    "description": "Wisniewski, C. (2016, May 3). Location-based threats: How cybercriminals target you based on where you live. Retrieved April 1, 2021."
+                },
+                {
+                    "source_name": "Bleepingcomputer RAT malware 2020",
+                    "url": "https://www.bleepingcomputer.com/news/security/new-rat-malware-gets-commands-via-discord-has-ransomware-feature/",
+                    "description": "Abrams, L. (2020, October 23). New RAT malware gets commands via Discord, has ransomware feature. Retrieved April 1, 2021."
+                },
+                {
+                    "source_name": "AWS Instance Identity Documents",
+                    "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-identity-documents.html",
+                    "description": "Amazon. (n.d.). Instance identity documents. Retrieved April 2, 2021."
+                },
+                {
+                    "source_name": "Microsoft Azure Instance Metadata 2021",
+                    "url": "https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service?tabs=windows",
+                    "description": "Microsoft. (2021, February 21). Azure Instance Metadata Service (Windows). Retrieved April 2, 2021."
+                },
+                {
+                    "source_name": "Securelist Trasparent Tribe 2020",
+                    "url": "https://securelist.com/transparent-tribe-part-1/98127/",
+                    "description": "Dedola, G. (2020, August 20). Transparent Tribe: Evolution analysis, part 1. Retrieved April 1, 2021."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "System Location Discovery",
+            "description": "\nAdversaries may gather information in an attempt to calculate the geographical location of a victim host. Adversaries may use the information from [System Location Discovery](https://attack.mitre.org/techniques/T1614) during automated discovery to shape follow-on behaviors, including whether or not the adversary fully infects the target and/or attempts specific actions.\n\nAdversaries may attempt to infer the location of a system using various system checks, such as time zone, keyboard layout, and/or language settings.(Citation: FBI Ragnar Locker 2020)(Citation: Sophos Geolocation 2016)(Citation: Bleepingcomputer RAT malware 2020) Windows API functions such as <code>GetLocaleInfoW</code> can also be used to determine the locale of the host.(Citation: FBI Ragnar Locker 2020) In cloud environments, an instance's availability zone may also be discovered by accessing the instance metadata service from the instance.(Citation: AWS Instance Identity Documents)(Citation: Microsoft Azure Instance Metadata 2021)\n\nAdversaries may also attempt to infer the location of a victim host using IP addressing, such as via online geolocation IP-lookup services.(Citation: Securelist Trasparent Tribe 2020)(Citation: Sophos Geolocation 2016)",
+            "id": "attack-pattern--c877e33f-1df6-40d6-b1e7-ce70f16f4979",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "discovery"
+                }
+            ],
+            "modified": "2021-04-20T19:25:49.977Z",
+            "created": "2021-04-01T16:42:08.735Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system location information. Remote access tools with built-in features may interact directly with the Windows API, such as calling <code> GetLocaleInfoW</code> to gather information.(Citation: FBI Ragnar Locker 2020)\n\nMonitor traffic flows to geo-location service provider sites, such as ip-api and ipinfo.",
+            "x_mitre_data_sources": [
+                "Instance: Instance Metadata",
+                "Process: Process Creation",
+                "Command: Command Execution",
+                "Process: OS API Execution"
+            ],
+            "x_mitre_contributors": [
+                "Pooja Natarajan, NEC Corporation India",
+                "Hiroki Nagahama, NEC Corporation",
+                "Manikantan Srinivasan, NEC Corporation India",
+                "Wes Hurd",
+                "Katie Nickels, Red Canary"
+            ],
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "macOS",
+                "IaaS"
+            ]
+        }
+    ]
+}

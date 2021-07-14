@@ -1,0 +1,64 @@
+{
+    "type": "bundle",
+    "id": "bundle--e07b1274-4f28-412f-99ce-8d4683cf4a97",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "id": "attack-pattern--800f9819-7007-4540-a520-40e655876800",
+            "description": "Adversaries may build a container image directly on a host to bypass defenses that monitor for the retrieval of malicious images from a public registry. A remote <code>build</code> request may be sent to the Docker API that includes a Dockerfile that pulls a vanilla base image, such as alpine, from a public or local registry and then builds a custom image upon it.(Citation: Docker Build Image)\n\nAn adversary may take advantage of that <code>build</code> API to build a custom image on the host that includes malware downloaded from their C2 server, and then they then may utilize [Deploy Container](https://attack.mitre.org/techniques/T1610) using that custom image.(Citation: Aqua Build Images on Hosts) If the base image is pulled from a public registry, defenses will likely not detect the image as malicious since it\u2019s a vanilla image. If the base image already resides in a local registry, the pull may be considered even less suspicious since the image is already in the environment. ",
+            "name": "Build Image on Host",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1612",
+                    "url": "https://attack.mitre.org/techniques/T1612"
+                },
+                {
+                    "source_name": "Docker Build Image",
+                    "url": "https://docs.docker.com/engine/api/v1.41/#operation/ImageBuild",
+                    "description": "Docker. ( null). Docker Engine API v1.41 Reference - Build an Image. Retrieved March 30, 2021."
+                },
+                {
+                    "source_name": "Aqua Build Images on Hosts",
+                    "url": "https://blog.aquasec.com/malicious-container-image-docker-container-host",
+                    "description": "Assaf Morag. (2020, July 15). Threat Alert: Attackers Building Malicious Images on Your Hosts. Retrieved March 29, 2021."
+                }
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2021-04-19T13:39:56.999Z",
+            "created": "2021-03-30T17:54:03.944Z",
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_contributors": [
+                "Assaf Morag, @MoragAssaf, Team Nautilus Aqua Security",
+                "Roi Kol, @roykol1, Team Nautilus Aqua Security",
+                "Michael Katchinskiy, @michael64194968, Team Nautilus Aqua Security",
+                "Vishwas Manral, McAfee"
+            ],
+            "x_mitre_detection": "Monitor for unexpected Docker image build requests to the Docker daemon on hosts in the environment. Additionally monitor for subsequent network communication with anomalous IPs that have never been seen before in the environment that indicate the download of malicious code.",
+            "x_mitre_permissions_required": [
+                "User",
+                "root"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_version": "1.0",
+            "x_mitre_data_sources": [
+                "Image: Image Creation",
+                "Network Traffic: Network Connection Creation",
+                "Network Traffic: Network Traffic Flow",
+                "Network Traffic: Network Traffic Content"
+            ]
+        }
+    ]
+}

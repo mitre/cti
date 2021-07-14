@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--b5253a99-bc7a-4593-8854-6a92905b0673",
+    "id": "bundle--5a99cde4-a294-434b-bdd2-fca328ba4702",
     "spec_version": "2.0",
     "objects": [
         {
@@ -13,7 +13,7 @@
                 {
                     "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
                     "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
-                    "source_name": "Endgame Process Injection July 2017"
+                    "source_name": "Elastic Process Injection July 2017"
                 },
                 {
                     "url": "https://support.microsoft.com/en-us/kb/197571",
@@ -36,7 +36,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "AppInit DLLs",
-            "description": "Adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by AppInit DLLs loaded into processes. Dynamic-link libraries (DLLs) that are specified in the <code>AppInit_DLLs</code> value in the Registry keys <code>HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows</code> or <code>HKEY_LOCAL_MACHINE\\Software\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows</code> are loaded by user32.dll into every process that loads user32.dll. In practice this is nearly every program, since user32.dll is a very common library. (Citation: Endgame Process Injection July 2017)\n\nSimilar to Process Injection, these values can be abused to obtain elevated privileges by causing a malicious DLL to be loaded and run in the context of separate processes on the computer. (Citation: AppInit Registry) Malicious AppInit DLLs may also provide persistence by continuously being triggered by API activity. \n\nThe AppInit DLL functionality is disabled in Windows 8 and later versions when secure boot is enabled. (Citation: AppInit Secure Boot)",
+            "description": "Adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by AppInit DLLs loaded into processes. Dynamic-link libraries (DLLs) that are specified in the <code>AppInit_DLLs</code> value in the Registry keys <code>HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows</code> or <code>HKEY_LOCAL_MACHINE\\Software\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows</code> are loaded by user32.dll into every process that loads user32.dll. In practice this is nearly every program, since user32.dll is a very common library. (Citation: Elastic Process Injection July 2017)\n\nSimilar to Process Injection, these values can be abused to obtain elevated privileges by causing a malicious DLL to be loaded and run in the context of separate processes on the computer. (Citation: AppInit Registry) Malicious AppInit DLLs may also provide persistence by continuously being triggered by API activity. \n\nThe AppInit DLL functionality is disabled in Windows 8 and later versions when secure boot is enabled. (Citation: AppInit Secure Boot)",
             "id": "attack-pattern--cc89ecbd-3d33-4a41-bcca-001e702d18fd",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -49,7 +49,7 @@
                     "phase_name": "persistence"
                 }
             ],
-            "modified": "2020-03-24T20:34:09.996Z",
+            "modified": "2020-11-10T18:29:31.076Z",
             "created": "2020-01-24T14:52:25.589Z",
             "x_mitre_version": "1.0",
             "x_mitre_is_subtechnique": true,
@@ -63,12 +63,12 @@
             "x_mitre_permissions_required": [
                 "Administrator"
             ],
-            "x_mitre_detection": "Monitor DLL loads by processes that load user32.dll and look for DLLs that are not recognized or not normally loaded into a process. Monitor the AppInit_DLLs Registry values for modifications that do not correlate with known software, patch cycles, etc. Monitor and analyze application programming interface (API) calls that are indicative of Registry edits such as <code>RegCreateKeyEx</code> and <code>RegSetValueEx</code>. (Citation: Endgame Process Injection July 2017)\n\nTools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current AppInit DLLs. (Citation: TechNet Autoruns) \n\nLook for abnormal process behavior that may be due to a process loading a malicious DLL. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as making network connections for Command and Control, learning details about the environment through Discovery, and conducting Lateral Movement.",
+            "x_mitre_detection": "Monitor DLL loads by processes that load user32.dll and look for DLLs that are not recognized or not normally loaded into a process. Monitor the AppInit_DLLs Registry values for modifications that do not correlate with known software, patch cycles, etc. Monitor and analyze application programming interface (API) calls that are indicative of Registry edits such as <code>RegCreateKeyEx</code> and <code>RegSetValueEx</code>. (Citation: Elastic Process Injection July 2017)\n\nTools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current AppInit DLLs. (Citation: TechNet Autoruns) \n\nLook for abnormal process behavior that may be due to a process loading a malicious DLL. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as making network connections for Command and Control, learning details about the environment through Discovery, and conducting Lateral Movement.",
             "x_mitre_data_sources": [
-                "Windows Registry",
-                "Process command-line parameters",
-                "Process monitoring",
-                "Loaded DLLs"
+                "Process: Process Creation",
+                "Windows Registry: Windows Registry Key Modification",
+                "Command: Command Execution",
+                "Module: Module Load"
             ],
             "x_mitre_platforms": [
                 "Windows"

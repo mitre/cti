@@ -1,0 +1,95 @@
+{
+    "type": "bundle",
+    "id": "bundle--1d40942c-a670-4489-86ea-a5afa2b39e20",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1553.006",
+                    "url": "https://attack.mitre.org/techniques/T1553/006"
+                },
+                {
+                    "source_name": "Microsoft DSE June 2017",
+                    "url": "https://docs.microsoft.com/en-us/previous-versions/windows/hardware/design/dn653559(v=vs.85)?redirectedfrom=MSDN",
+                    "description": "Microsoft. (2017, June 1). Digital Signatures for Kernel Modules on Windows. Retrieved April 22, 2021."
+                },
+                {
+                    "source_name": "Apple Disable SIP",
+                    "url": "https://developer.apple.com/documentation/security/disabling_and_enabling_system_integrity_protection",
+                    "description": "Apple. (n.d.). Disabling and Enabling System Integrity Protection. Retrieved April 22, 2021."
+                },
+                {
+                    "source_name": "Microsoft Unsigned Driver Apr 2017",
+                    "url": "https://docs.microsoft.com/en-us/windows-hardware/drivers/install/installing-an-unsigned-driver-during-development-and-test",
+                    "description": "Microsoft. (2017, April 20). Installing an Unsigned Driver during Development and Test. Retrieved April 22, 2021."
+                },
+                {
+                    "source_name": "Microsoft TESTSIGNING Feb 2021",
+                    "url": "https://docs.microsoft.com/en-us/windows-hardware/drivers/install/the-testsigning-boot-configuration-option",
+                    "description": "Microsoft. (2021, February 15). Enable Loading of Test Signed Drivers. Retrieved April 22, 2021."
+                },
+                {
+                    "source_name": "FireEye HIKIT Rootkit Part 2",
+                    "url": "https://www.fireeye.com/blog/threat-research/2012/08/hikit-rootkit-advanced-persistent-attack-techniques-part-2.html",
+                    "description": "Glyer, C., Kazanciyan, R. (2012, August 22). The \u201cHikit\u201d Rootkit: Advanced and Persistent Attack Techniques (Part 2). Retrieved May 4, 2020."
+                },
+                {
+                    "source_name": "GitHub Turla Driver Loader",
+                    "url": "https://github.com/hfiref0x/TDL",
+                    "description": "TDL Project. (2016, February 4). TDL (Turla Driver Loader). Retrieved April 22, 2021."
+                },
+                {
+                    "url": "https://blog-assets.f-secure.com/wp-content/uploads/2019/10/15163408/BlackEnergy_Quedagh.pdf",
+                    "description": "F-Secure Labs. (2014). BlackEnergy & Quedagh: The convergence of crimeware and APT attacks. Retrieved March 24, 2016.",
+                    "source_name": "F-Secure BlackEnergy 2014"
+                },
+                {
+                    "source_name": "Unit42 AcidBox June 2020",
+                    "url": "https://unit42.paloaltonetworks.com/acidbox-rare-malware/",
+                    "description": "Reichel, D. and Idrizovic, E. (2020, June 17). AcidBox: Rare Malware Repurposing Turla Group Exploit Targeted Russian Organizations. Retrieved March 16, 2021."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Code Signing Policy Modification",
+            "description": "Adversaries may modify code signing policies to enable execution of unsigned or self-signed code. Code signing provides a level of authenticity on a program from a developer and a guarantee that the program has not been tampered with. Security controls can include enforcement mechanisms to ensure that only valid, signed code can be run on an operating system. \n\nSome of these security controls may be enabled by default, such as Driver Signature Enforcement (DSE) on Windows or System Integrity Protection (SIP) on macOS.(Citation: Microsoft DSE June 2017)(Citation: Apple Disable SIP) Other such controls may be disabled by default but are configurable through application controls, such as only allowing signed Dynamic-Link Libraries (DLLs) to execute on a system. Since it can be useful for developers to modify default signature enforcement policies during the development and testing of applications, disabling of these features may be possible with elevated permissions.(Citation: Microsoft Unsigned Driver Apr 2017)(Citation: Apple Disable SIP)\n\nAdversaries may modify code signing policies in a number of ways, including through use of command-line or GUI utilities, [Modify Registry](https://attack.mitre.org/techniques/T1112), rebooting the computer in a debug/recovery mode, or by altering the value of variables in kernel memory.(Citation: Microsoft TESTSIGNING Feb 2021)(Citation: Apple Disable SIP)(Citation: FireEye HIKIT Rootkit Part 2)(Citation: GitHub Turla Driver Loader) Examples of commands that can modify the code signing policy of a system include <code>bcdedit.exe -set TESTSIGNING ON</code> on Windows and <code>csrutil disable</code> on macOS.(Citation: Microsoft TESTSIGNING Feb 2021)(Citation: Apple Disable SIP) Depending on the implementation, successful modification of a signing policy may require reboot of the compromised system. Additionally, some implementations can introduce visible artifacts for the user (ex: a watermark in the corner of the screen stating the system is in Test Mode). Adversaries may attempt to remove such artifacts.(Citation: F-Secure BlackEnergy 2014)\n\nTo gain access to kernel memory to modify variables related to signature checks, such as modifying <code>g_CiOptions</code> to disable Driver Signature Enforcement, adversaries may conduct [Exploitation for Privilege Escalation](https://attack.mitre.org/techniques/T1068) using a signed, but vulnerable driver.(Citation: Unit42 AcidBox June 2020)(Citation: GitHub Turla Driver Loader)",
+            "id": "attack-pattern--565275d5-fcc3-4b66-b4e7-928e4cac6b8c",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2021-04-26T15:41:39.155Z",
+            "created": "2021-04-23T01:04:57.161Z",
+            "x_mitre_detection": "Monitor processes and command-line arguments for actions that could be taken to modify the code signing policy of a system, such as <code>bcdedit.exe -set TESTSIGNING ON</code>.(Citation: Microsoft TESTSIGNING Feb 2021) Consider monitoring for modifications made to Registry keys associated with code signing policies, such as <code>HKCU\\Software\\Policies\\Microsoft\\Windows NT\\Driver Signing</code>. Modifications to the code signing policy of a system are likely to be rare.",
+            "x_mitre_data_sources": [
+                "Windows Registry: Windows Registry Key Modification",
+                "Command: Command Execution",
+                "Process: Process Creation"
+            ],
+            "x_mitre_contributors": [
+                "Abel Morales, Exabeam"
+            ],
+            "x_mitre_defense_bypassed": [
+                "Application control",
+                "User Mode Signature Validation",
+                "Digital Certificate Validation"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "Administrator"
+            ],
+            "x_mitre_platforms": [
+                "Windows",
+                "macOS"
+            ]
+        }
+    ]
+}

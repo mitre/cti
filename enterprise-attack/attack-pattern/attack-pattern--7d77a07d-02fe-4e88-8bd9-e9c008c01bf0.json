@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--bb8513de-85f9-42c8-b205-eca60423e3af",
+    "id": "bundle--d4abb7ef-cfa7-4e29-abad-79a3f7125ce0",
     "spec_version": "2.0",
     "objects": [
         {
@@ -26,7 +26,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Email Forwarding Rule",
-            "description": "Adversaries may setup email forwarding rules to collect sensitive information. Adversaries may abuse email-forwarding rules to monitor the activities of a victim, steal information, and further gain intelligence on the victim or the victim\u2019s organization to use as part of further exploits or operations.(Citation: US-CERT TA18-068A 2018) Outlook and Outlook Web App (OWA) allow users to create inbox rules for various email functions, including forwarding to a different recipient. Messages can be forwarded to internal or external recipients, and there are no restrictions limiting the extent of this rule. Administrators may also create forwarding rules for user accounts with the same considerations and outcomes.(Citation: Microsoft Tim McMichael Exchange Mail Forwarding 2) \n\nAny user or administrator within the organization (or adversary with valid credentials) can create rules to automatically forward all received messages to another recipient, forward emails to different locations based on the sender, and more.",
+            "description": "Adversaries may setup email forwarding rules to collect sensitive information. Adversaries may abuse email-forwarding rules to monitor the activities of a victim, steal information, and further gain intelligence on the victim or the victim\u2019s organization to use as part of further exploits or operations.(Citation: US-CERT TA18-068A 2018) Outlook and Outlook Web App (OWA) allow users to create inbox rules for various email functions, including forwarding to a different recipient. Similarly, Google Workspace users or administrators can set up mail forwarding rules via the Google Workspace web interface. Messages can be forwarded to internal or external recipients, and there are no restrictions limiting the extent of this rule. Administrators may also create forwarding rules for user accounts with the same considerations and outcomes.(Citation: Microsoft Tim McMichael Exchange Mail Forwarding 2) \n\nAny user or administrator within the organization (or adversary with valid credentials) can create rules to automatically forward all received messages to another recipient, forward emails to different locations based on the sender, and more.",
             "id": "attack-pattern--7d77a07d-02fe-4e88-8bd9-e9c008c01bf0",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -35,27 +35,24 @@
                     "phase_name": "collection"
                 }
             ],
-            "modified": "2020-10-19T22:43:45.509Z",
+            "modified": "2021-03-25T13:08:30.699Z",
             "created": "2020-02-19T18:54:47.103Z",
             "x_mitre_contributors": [
                 "Swetha Prabakaran, Microsoft Threat Intelligence Center (MSTIC)"
             ],
-            "x_mitre_version": "1.0",
+            "x_mitre_version": "1.1",
             "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "User"
             ],
             "x_mitre_detection": "Detection is challenging because all messages forwarded because of an auto-forwarding rule have the same presentation as a manually forwarded message. It is also possible for the user to not be aware of the addition of such an auto-forwarding rule and not suspect that their account has been compromised; email-forwarding rules alone will not affect the normal usage patterns or operations of the email account.\n\nAuto-forwarded messages generally contain specific detectable artifacts that may be present in the header; such artifacts would be platform-specific. Examples include `X-MS-Exchange-Organization-AutoForwarded` set to true, `X-MailFwdBy` and `X-Forwarded-To`. The `forwardingSMTPAddress` parameter used in a forwarding process that is managed by administrators and not by user actions. All messages for the mailbox are forwarded to the specified SMTP address. However, unlike typical client-side rules, the message does not appear as forwarded in the mailbox; it appears as if it were sent directly to the specified destination mailbox.(Citation: Microsoft Tim McMichael Exchange Mail Forwarding 2) High volumes of emails that bear the `X-MS-Exchange-Organization-AutoForwarded` header (indicating auto-forwarding) without a corresponding number of emails that match the appearance of a forwarded message may indicate that further investigation is needed at the administrator level rather than user-level.",
             "x_mitre_data_sources": [
-                "Process use of network",
-                "Process monitoring",
-                "Email gateway",
-                "Mail server",
-                "Office 365 trace logs"
+                "Application Log: Application Log Content"
             ],
             "x_mitre_platforms": [
                 "Office 365",
-                "Windows"
+                "Windows",
+                "Google Workspace"
             ]
         }
     ]

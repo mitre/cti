@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--559abbd8-db16-4d4d-a176-6898e4ecec5f",
+    "id": "bundle--79ac811a-039e-4d26-998d-3e05b938344f",
     "spec_version": "2.0",
     "objects": [
         {
             "id": "attack-pattern--dca670cf-eeec-438f-8185-fd959d9ef211",
-            "description": "Adversaries may use rc.common automatically executed at boot initialization to establish persistence. During the boot process, macOS executes <code>source /etc/rc.common</code>, which is a shell script containing various utility functions. This file also defines routines for processing command-line arguments and for gathering system settings and is thus recommended to include in the start of Startup Item Scripts (Citation: Startup Items). In macOS and OS X, this is now a deprecated mechanism in favor of [Launch Agent](https://attack.mitre.org/techniques/T1543/001) and [Launch Daemon](https://attack.mitre.org/techniques/T1543/004) but is currently still used.\n\nAdversaries can use the rc.common file as a way to hide code for persistence that will execute on each reboot as the root user. (Citation: Methods of Mac Malware Persistence)",
-            "name": "Rc.common",
+            "description": "Adversaries may establish persistence by modifying RC scripts which are executed during a Unix-like system\u2019s startup. These files allow system administrators to map and start custom services at startup for different run levels. RC scripts require root privileges to modify.\n\nAdversaries can establish persistence by adding a malicious binary path or shell commands to <code>rc.local</code>, <code>rc.common</code>, and other RC scripts specific to the Unix-like distribution.(Citation: IranThreats Kittens Dec 2017)(Citation: Intezer HiddenWasp Map 2019) Upon reboot, the system executes the script's contents as root, resulting in persistence.\n\nAdversary abuse of RC scripts is especially effective for lightweight Unix-like distributions using the root user as default, such as IoT or embedded systems.(Citation: intezer-kaiji-malware)\n\nSeveral Unix-like systems have moved to Systemd and deprecated the use of RC scripts. This is now a deprecated mechanism in macOS in favor of [Launchd](https://attack.mitre.org/techniques/T1053/004). (Citation: Apple Developer Doco Archive Launchd)(Citation: Startup Items) This technique can be used on Mac OS X Panther v10.3 and earlier versions which still execute the RC scripts.(Citation: Methods of Mac Malware Persistence) To maintain backwards compatibility some systems, such as Ubuntu, will execute the RC scripts if they exist with the correct file permissions.(Citation: Ubuntu Manpage systemd rc)",
+            "name": "RC Scripts",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
@@ -18,6 +18,26 @@
                     "url": "https://attack.mitre.org/techniques/T1037/004"
                 },
                 {
+                    "source_name": "IranThreats Kittens Dec 2017",
+                    "url": "https://iranthreats.github.io/resources/attribution-flying-rocket-kitten/",
+                    "description": "Iran Threats . (2017, December 5). Flying Kitten to Rocket Kitten, A Case of Ambiguity and Shared Code. Retrieved May 28, 2020."
+                },
+                {
+                    "description": "Sanmillan, I. (2019, May 29). HiddenWasp Malware Stings Targeted Linux Systems. Retrieved June 24, 2019.",
+                    "url": "https://www.intezer.com/blog-hiddenwasp-malware-targeting-linux-systems/",
+                    "source_name": "Intezer HiddenWasp Map 2019"
+                },
+                {
+                    "source_name": "intezer-kaiji-malware",
+                    "url": "https://www.intezer.com/blog/research/kaiji-new-chinese-linux-malware-turning-to-golang/",
+                    "description": "Paul Litvak. (2020, May 4). Kaiji: New Chinese Linux malware turning to Golang. Retrieved December 17, 2020."
+                },
+                {
+                    "source_name": "Apple Developer Doco Archive Launchd",
+                    "url": "https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html",
+                    "description": "Apple. (2016, September 13). Daemons and Services Programming Guide - Creating Launch Daemons and Agents. Retrieved February 24, 2021."
+                },
+                {
                     "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/StartupItems.html",
                     "description": "Apple. (2016, September 13). Startup Items. Retrieved July 11, 2017.",
                     "source_name": "Startup Items"
@@ -26,6 +46,11 @@
                     "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
                     "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
                     "source_name": "Methods of Mac Malware Persistence"
+                },
+                {
+                    "source_name": "Ubuntu Manpage systemd rc",
+                    "url": "http://manpages.ubuntu.com/manpages/bionic/man8/systemd-rc-local-generator.8.html",
+                    "description": "Canonical Ltd.. (n.d.). systemd-rc-local-generator - Compatibility generator for starting /etc/rc.local and        /usr/sbin/halt.local during boot and shutdown. Retrieved February 23, 2021."
                 }
             ],
             "type": "attack-pattern",
@@ -39,21 +64,24 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2020-03-24T23:46:20.433Z",
+            "modified": "2021-04-27T19:58:01.927Z",
             "created": "2020-01-15T16:25:22.260Z",
             "x_mitre_platforms": [
-                "macOS"
+                "macOS",
+                "Linux"
             ],
             "x_mitre_data_sources": [
-                "Process monitoring",
-                "File monitoring"
+                "File: File Creation",
+                "File: File Modification",
+                "Process: Process Creation",
+                "Command: Command Execution"
             ],
-            "x_mitre_detection": "The <code>/etc/rc.common</code> file can be monitored to detect changes from the company policy. Monitor process execution resulting from the rc.common script for unusual or unknown applications or behavior. ",
+            "x_mitre_detection": "Monitor for unexpected changes to RC scripts in the <code>/etc/</code> directory. Monitor process execution resulting from RC scripts for unusual or unknown applications or behavior.\n\nMonitor for <code>/etc/rc.local</code> file creation. Although types of RC scripts vary for each Unix-like distribution, several execute <code>/etc/rc.local</code> if present. ",
             "x_mitre_permissions_required": [
                 "root"
             ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0"
+            "x_mitre_version": "2.0"
         }
     ]
 }

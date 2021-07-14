@@ -1,9 +1,16 @@
 {
     "type": "bundle",
-    "id": "bundle--b18fd61a-f36b-4e65-bec5-13753b2a878b",
+    "id": "bundle--9608288d-cccc-4b4b-ad9a-34c6df9b1b72",
     "spec_version": "2.0",
     "objects": [
         {
+            "id": "attack-pattern--1c4e5d32-1fe9-4116-9d9d-59e3925bd6a2",
+            "description": "Adversaries may match or approximate the name or location of legitimate files or resources when naming/placing them. This is done for the sake of evading defenses and observation. This may be done by placing an executable in a commonly trusted directory (ex: under System32) or giving it the name of a legitimate, trusted program (ex: svchost.exe). In containerized environments, this may also be done by creating a resource in a namespace that matches the naming convention of a container pod or cluster. Alternatively, a file or container image name given may be a close approximation to legitimate programs/images or something innocuous.\n\nAdversaries may also use the same icon of the file they are trying to mimic.",
+            "name": "Match Legitimate Name or Location",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -16,7 +23,7 @@
                     "url": "https://capec.mitre.org/data/definitions/177.html"
                 },
                 {
-                    "source_name": "Endgame Masquerade Ball",
+                    "source_name": "Elastic Masquerade Ball",
                     "description": "Ewing, P. (2016, October 31). How to Hunt: The Masquerade Ball. Retrieved October 31, 2016.",
                     "url": "http://pages.endgame.com/rs/627-YBU-612/images/EndgameJournal_The%20Masquerade%20Ball_Pages_R2.pdf"
                 },
@@ -24,15 +31,13 @@
                     "source_name": "Twitter ItsReallyNick Masquerading Update",
                     "url": "https://twitter.com/ItsReallyNick/status/1055321652777619457",
                     "description": "Carr, N.. (2018, October 25). Nick Carr Status Update Masquerading. Retrieved April 22, 2019."
+                },
+                {
+                    "source_name": "Docker Images",
+                    "url": "https://docs.docker.com/engine/reference/commandline/images/",
+                    "description": "Docker. (n.d.). Docker Images. Retrieved April 6, 2021."
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Match Legitimate Name or Location",
-            "description": "Adversaries may match or approximate the name or location of legitimate files when naming/placing their files. This is done for the sake of evading defenses and observation. This may be done by placing an executable in a commonly trusted directory (ex: under System32) or giving it the name of a legitimate, trusted program (ex: svchost.exe). Alternatively, the filename given may be a close approximation of legitimate programs or something innocuous.\n\nAdversaries may also use the same icon of the file they are trying to mimic.",
-            "id": "attack-pattern--1c4e5d32-1fe9-4116-9d9d-59e3925bd6a2",
             "type": "attack-pattern",
             "kill_chain_phases": [
                 {
@@ -40,24 +45,28 @@
                     "phase_name": "defense-evasion"
                 }
             ],
-            "modified": "2020-06-20T22:11:45.970Z",
+            "modified": "2021-04-20T19:23:37.762Z",
             "created": "2020-02-10T20:43:10.239Z",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_defense_bypassed": [
-                "Application control by file name or path"
-            ],
-            "x_mitre_detection": "Collect file hashes; file names that do not match their expected hash are suspect. Perform file monitoring; files with known names but in unusual locations are suspect. Likewise, files that are modified outside of an update or patch are suspect.\n\nIf file names are mismatched between the file name on disk and that of the binary's PE metadata, this is a likely indicator that a binary was renamed after it was compiled. Collecting and comparing disk and resource filenames for binaries by looking to see if the InternalName, OriginalFilename, and/or ProductName match what is expected could provide useful leads, but may not always be indicative of malicious activity. (Citation: Endgame Masquerade Ball) Do not focus on the possible names a file could have, but instead on the command-line arguments that are known to be used and are distinct because it will have a better rate of detection.(Citation: Twitter ItsReallyNick Masquerading Update)",
-            "x_mitre_data_sources": [
-                "File monitoring",
-                "Process monitoring",
-                "Process command-line parameters",
-                "Binary file metadata"
-            ],
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
-                "Windows"
+                "Windows",
+                "Containers"
+            ],
+            "x_mitre_data_sources": [
+                "Image: Image Metadata",
+                "File: File Metadata",
+                "Process: Process Metadata"
+            ],
+            "x_mitre_detection": "Collect file hashes; file names that do not match their expected hash are suspect. Perform file monitoring; files with known names but in unusual locations are suspect. Likewise, files that are modified outside of an update or patch are suspect.\n\nIf file names are mismatched between the file name on disk and that of the binary's PE metadata, this is a likely indicator that a binary was renamed after it was compiled. Collecting and comparing disk and resource filenames for binaries by looking to see if the InternalName, OriginalFilename, and/or ProductName match what is expected could provide useful leads, but may not always be indicative of malicious activity. (Citation: Elastic Masquerade Ball) Do not focus on the possible names a file could have, but instead on the command-line arguments that are known to be used and are distinct because it will have a better rate of detection.(Citation: Twitter ItsReallyNick Masquerading Update)\n\nIn containerized environments, use image IDs and layer hashes to compare images instead of relying only on their names.(Citation: Docker Images) Monitor for the unexpected creation of new resources within your cluster in Kubernetes, especially those created by atypical users.",
+            "x_mitre_defense_bypassed": [
+                "Application control by file name or path"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.1",
+            "x_mitre_contributors": [
+                "Yossi Weizman, Azure Defender Research Team",
+                "Vishwas Manral, McAfee"
             ]
         }
     ]

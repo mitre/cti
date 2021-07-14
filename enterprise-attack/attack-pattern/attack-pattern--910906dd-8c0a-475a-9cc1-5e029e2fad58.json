@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--0177b195-fb16-4a08-bcc7-2cf4b8953653",
+    "id": "bundle--cf769afc-9e5e-4e9c-8a7b-281f7f8c2b22",
     "spec_version": "2.0",
     "objects": [
         {
@@ -46,6 +46,11 @@
                     "source_name": "Medium Detecting WMI Persistence"
                 },
                 {
+                    "source_name": "Elastic - Hunting for Persistence Part 1",
+                    "url": "https://www.elastic.co/blog/hunting-for-persistence-using-elastic-security-part-1",
+                    "description": "French, D., Murphy, B. (2020, March 24). Adversary tradecraft 101: Hunting for persistence using Elastic Security (Part 1). Retrieved December 21, 2020."
+                },
+                {
                     "source_name": "Microsoft Register-WmiEvent",
                     "url": "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.management/register-wmievent?view=powershell-5.1",
                     "description": "Microsoft. (n.d.). Retrieved January 24, 2020."
@@ -69,19 +74,23 @@
                     "phase_name": "persistence"
                 }
             ],
-            "modified": "2020-05-05T12:02:45.522Z",
+            "modified": "2021-04-13T21:32:54.094Z",
             "created": "2020-01-24T14:07:56.276Z",
-            "x_mitre_version": "1.0",
+            "x_mitre_contributors": [
+                "Brent Murphy, Elastic",
+                "David French, Elastic"
+            ],
+            "x_mitre_version": "1.1",
             "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "Administrator",
                 "SYSTEM"
             ],
-            "x_mitre_detection": "Monitor WMI event subscription entries, comparing current WMI event subscriptions to known good subscriptions for each host. Tools such as Sysinternals Autoruns may also be used to detect WMI changes that could be attempts at persistence. (Citation: TechNet Autoruns) (Citation: Medium Detecting WMI Persistence)\n\nMonitor processes and command-line arguments that can be used to register WMI persistence, such as the <code> Register-WmiEvent</code> [PowerShell](https://attack.mitre.org/techniques/T1086) cmdlet (Citation: Microsoft Register-WmiEvent), as well as those that result from the execution of subscriptions (i.e. spawning from the WmiPrvSe.exe WMI Provider Host process).",
+            "x_mitre_detection": "Monitor WMI event subscription entries, comparing current WMI event subscriptions to known good subscriptions for each host. Tools such as Sysinternals Autoruns may also be used to detect WMI changes that could be attempts at persistence. (Citation: TechNet Autoruns) (Citation: Medium Detecting WMI Persistence) Monitor for the creation of new WMI <code>EventFilter</code>, <code>EventConsumer</code>, and <code>FilterToConsumerBinding</code> events. Event ID 5861 is logged on Windows 10 systems when new <code>EventFilterToConsumerBinding</code> events are created.(Citation: Elastic - Hunting for Persistence Part 1)\n\nMonitor processes and command-line arguments that can be used to register WMI persistence, such as the <code> Register-WmiEvent</code> [PowerShell](https://attack.mitre.org/techniques/T1059/001) cmdlet (Citation: Microsoft Register-WmiEvent), as well as those that result from the execution of subscriptions (i.e. spawning from the WmiPrvSe.exe WMI Provider Host process).",
             "x_mitre_data_sources": [
-                "Process command-line parameters",
-                "Process monitoring",
-                "WMI Objects"
+                "Command: Command Execution",
+                "Process: Process Creation",
+                "WMI: WMI Creation"
             ],
             "x_mitre_platforms": [
                 "Windows"

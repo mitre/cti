@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--d1a27b3c-984d-4dea-b755-73a3c5bd8446",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1611",
+                    "url": "https://attack.mitre.org/techniques/T1611"
+                },
+                {
+                    "source_name": "Docker Overview",
+                    "url": "https://docs.docker.com/get-started/overview/",
+                    "description": "Docker. (n.d.). Docker Overview. Retrieved March 30, 2021."
+                },
+                {
+                    "source_name": "Docker Bind Mounts",
+                    "url": "https://docs.docker.com/storage/bind-mounts/",
+                    "description": "Docker. (n.d.). Use Bind Mounts. Retrieved March 30, 2021."
+                },
+                {
+                    "source_name": "Trend Micro Privileged Container",
+                    "url": "https://www.trendmicro.com/en_us/research/19/l/why-running-a-privileged-container-in-docker-is-a-bad-idea.html",
+                    "description": "Fiser, D., Oliveira, A.. (2019, December 20). Why a Privileged Container in Docker is a Bad Idea. Retrieved March 30, 2021."
+                },
+                {
+                    "source_name": "Intezer Doki July 20",
+                    "url": "https://www.intezer.com/blog/cloud-security/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/",
+                    "description": "Fishbein, N., Kajiloti, M.. (2020, July 28). Watch Your Containers: Doki Infecting Docker Servers in the Cloud. Retrieved March 30, 2021."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Escape to Host",
+            "description": "Adversaries may break out of a container to gain access to the underlying host. This can allow an adversary access to other containerized resources from the host level or to the host itself. In principle, containerized resources should provide a clear separation of application functionality and be isolated from the host environment.(Citation: Docker Overview)\n\nThere are multiple ways an adversary may escape to a host environment. Examples include creating a container configured to mount the host\u2019s filesystem using the bind parameter, which allows the adversary to drop payloads and execute control utilities such as cron on the host, and utilizing a privileged container to run commands on the underlying host.(Citation: Docker Bind Mounts)(Citation: Trend Micro Privileged Container)(Citation: Intezer Doki July 20) Gaining access to the host may provide the adversary with the opportunity to achieve follow-on objectives, such as establishing persistence, moving laterally within the environment, or setting up a command and control channel on the host.",
+            "id": "attack-pattern--4a5b7ade-8bb5-4853-84ed-23f262002665",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2021-04-22T16:14:59.756Z",
+            "created": "2021-03-30T17:38:34.277Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "User",
+                "root"
+            ],
+            "x_mitre_detection": "Monitor for the deployment of suspicious or unknown container images and pods in your environment, particularly containers running as root. Additionally, monitor for unexpected usage of syscalls such as <code>mount</code> (as well as resulting process activity) that may indicate an attempt to escape from a privileged container to host. In Kubernetes, monitor for cluster-level events associated with changing containers' volume configurations.",
+            "x_mitre_contributors": [
+                "Joas Antonio dos Santos, @C0d3Cr4zy, Inmetrics",
+                "Alfredo Oliveira, Trend Micro",
+                "David Fiser, @anu4is, Trend Micro",
+                "Idan Frimark, Cisco",
+                "Magno Logan, @magnologan, Trend Micro",
+                "Ariel Shuper, Cisco",
+                "Yossi Weizman, Azure Defender Research Team",
+                "Vishwas Manral, McAfee"
+            ],
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "Containers"
+            ],
+            "x_mitre_data_sources": [
+                "Container: Container Creation",
+                "Process: OS API Execution",
+                "Process: Process Creation"
+            ]
+        }
+    ]
+}

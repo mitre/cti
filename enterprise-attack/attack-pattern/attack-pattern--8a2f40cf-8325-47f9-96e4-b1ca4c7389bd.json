@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--4b44325e-1de1-4bc4-9d64-e59ec8efcf9a",
+    "id": "bundle--d2df989e-c8d4-47a9-bbf3-7393479c19a7",
     "spec_version": "2.0",
     "objects": [
         {
@@ -11,9 +11,9 @@
                     "url": "https://attack.mitre.org/techniques/T1098/001"
                 },
                 {
-                    "source_name": "Create Azure Service Principal",
-                    "url": "https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli?toc=%2Fazure%2Fazure-resource-manager%2Ftoc.json&view=azure-cli-latest",
-                    "description": "Microsoft. (2020, January 8). Create an Azure service principal with Azure CLI. Retrieved January 19, 2020."
+                    "source_name": "Microsoft SolarWinds Customer Guidance",
+                    "url": "https://msrc-blog.microsoft.com/2020/12/13/customer-guidance-on-recent-nation-state-cyber-attacks/",
+                    "description": "MSRC. (2020, December 13). Customer Guidance on Recent Nation-State Cyber Attacks. Retrieved December 17, 2020."
                 },
                 {
                     "source_name": "Blue Cloud of Death",
@@ -24,11 +24,6 @@
                     "source_name": "Blue Cloud of Death Video",
                     "url": "https://www.youtube.com/watch?v=wQ1CuAPnrLM&feature=youtu.be&t=2815",
                     "description": "Kunz, Bruce. (2018, October 14). Blue Cloud of Death: Red Teaming Azure. Retrieved November 21, 2019."
-                },
-                {
-                    "source_name": "Why AAD Service Principals",
-                    "url": "https://github.com/microsoft/AzureSuperpowers/blob/master/docs/AzureSuperpowers.md#why-aad-service-principals",
-                    "description": "Microsoft. (2019, September 23). Azure Superpowers Lab Manual. Retrieved January 19, 2020."
                 },
                 {
                     "source_name": "Demystifying Azure AD Service Principals",
@@ -56,7 +51,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Additional Cloud Credentials",
-            "description": "Adversaries may add adversary-controlled credentials to a cloud account to maintain persistent access to victim accounts and instances within the environment.\n\nAdversaries may add credentials for Azure Service Principals in addition to existing legitimate credentials(Citation: Create Azure Service Principal) to victim Azure accounts.(Citation: Blue Cloud of Death)(Citation: Blue Cloud of Death Video) Azure Service Principals support both password and certificate credentials.(Citation: Why AAD Service Principals) With sufficient permissions, there are a variety of ways to add credentials including the Azure Portal, Azure command line interface, and Azure or Az [PowerShell](https://attack.mitre.org/techniques/T1059/001) modules.(Citation: Demystifying Azure AD Service Principals)\n\nAfter gaining access through [Cloud Accounts](https://attack.mitre.org/techniques/T1078/004), adversaries may generate or import their own SSH keys using either the <code>CreateKeyPair</code> or <code>ImportKeyPair</code> API in AWS or the <code>gcloud compute os-login ssh-keys add</code> command in GCP.(Citation: GCP SSH Key Add) This allows persistent access to instances within the cloud environment without further usage of the compromised cloud accounts.(Citation: Expel IO Evil in AWS)(Citation: Expel Behind the Scenes)",
+            "description": "Adversaries may add adversary-controlled credentials to a cloud account to maintain persistent access to victim accounts and instances within the environment.\n\nAdversaries may add credentials for Service Principals and Applications in addition to existing legitimate credentials in Azure AD.(Citation: Microsoft SolarWinds Customer Guidance)(Citation: Blue Cloud of Death)(Citation: Blue Cloud of Death Video) These credentials include both x509 keys and passwords.(Citation: Microsoft SolarWinds Customer Guidance) With sufficient permissions, there are a variety of ways to add credentials including the Azure Portal, Azure command line interface, and Azure or Az PowerShell modules.(Citation: Demystifying Azure AD Service Principals)\n\nIn infrastructure-as-a-service (IaaS) environments, after gaining access through [Cloud Accounts](https://attack.mitre.org/techniques/T1078/004), adversaries may generate or import their own SSH keys using either the <code>CreateKeyPair</code> or <code>ImportKeyPair</code> API in AWS or the <code>gcloud compute os-login ssh-keys add</code> command in GCP.(Citation: GCP SSH Key Add) This allows persistent access to instances within the cloud environment without further usage of the compromised cloud accounts.(Citation: Expel IO Evil in AWS)(Citation: Expel Behind the Scenes)",
             "id": "attack-pattern--8a2f40cf-8325-47f9-96e4-b1ca4c7389bd",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -65,31 +60,27 @@
                     "phase_name": "persistence"
                 }
             ],
-            "modified": "2020-10-05T16:43:27.024Z",
+            "modified": "2021-03-08T10:33:01.582Z",
             "created": "2020-01-19T16:10:15.008Z",
             "x_mitre_contributors": [
                 "Expel",
                 "Oleg Kolesnikov, Securonix",
                 "Jannie Li, Microsoft Threat Intelligence\u202fCenter\u202f(MSTIC)"
             ],
-            "x_mitre_version": "2.0",
+            "x_mitre_version": "2.2",
             "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "Administrator",
                 "User"
             ],
-            "x_mitre_detection": "Monitor Azure Activity Logs for service principal modifications. Monitor for the usage of APIs that create or import SSH keys, particularly by unexpected users or accounts such as the root account.\n\nMonitor for use of credentials at unusual times or to unusual systems or services. This may also correlate with other suspicious activity.",
+            "x_mitre_detection": "Monitor Azure Activity Logs for Service Principal and Application modifications. Monitor for the usage of APIs that create or import SSH keys, particularly by unexpected users or accounts such as the root account.\n\nMonitor for use of credentials at unusual times or to unusual systems or services. This may also correlate with other suspicious activity.",
             "x_mitre_data_sources": [
-                "Stackdriver logs",
-                "GCP audit logs",
-                "AWS CloudTrail logs",
-                "Azure activity logs"
+                "User Account: User Account Modification",
+                "Active Directory: Active Directory Object Modification"
             ],
             "x_mitre_platforms": [
-                "Azure AD",
-                "Azure",
-                "AWS",
-                "GCP"
+                "IaaS",
+                "Azure AD"
             ]
         }
     ]

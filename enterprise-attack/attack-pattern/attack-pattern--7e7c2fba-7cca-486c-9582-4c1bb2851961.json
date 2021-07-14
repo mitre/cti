@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--ba8e13f2-3c02-4e04-ac23-95e2c3a1cc2b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "id": "attack-pattern--7e7c2fba-7cca-486c-9582-4c1bb2851961",
+            "description": "Adversaries may abuse specific file formats to subvert Mark-of-the-Web (MOTW) controls. In Windows, when files are downloaded from the Internet, they are tagged with a hidden NTFS Alternate Data Stream (ADS) named <code>Zone.Identifier</code> with a specific value known as the MOTW.(Citation: Microsoft Zone.Identifier 2020) Files that are tagged with MOTW are protected and cannot perform certain actions. For example, starting in MS Office 10, if a MS Office file has the MOTW, it will open in Protected View. Executables tagged with the MOTW will be processed by Windows Defender SmartScreen that compares files with an allowlist of well-known executables. If the file in not known/trusted, SmartScreen will prevent the execution and warn the user not to run it.(Citation: Beek Use of VHD Dec 2020)(Citation: Outflank MotW 2020)(Citation: Intezer Russian APT Dec 2020)\n\nAdversaries may abuse container files such as compressed/archive (.arj, .gzip) and/or disk image (.iso, .vhd) file formats to deliver malicious payloads that may not be tagged with MOTW. Container files downloaded from the Internet will be marked with MOTW but the files within may not inherit the MOTW after the container files are extracted and/or mounted. MOTW is a NTFS feature and many container files do not support NTFS alternative data streams. After a container file is extracted and/or mounted, the files contained within them may be treated as local files on disk and run without protections.(Citation: Beek Use of VHD Dec 2020)(Citation: Outflank MotW 2020)",
+            "name": "Mark-of-the-Web Bypass",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1553.005",
+                    "url": "https://attack.mitre.org/techniques/T1553/005"
+                },
+                {
+                    "source_name": "Microsoft Zone.Identifier 2020",
+                    "url": "https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/6e3f7352-d11c-4d76-8c39-2516a9df36e8",
+                    "description": "Microsoft. (2020, August 31). Zone.Identifier Stream Name. Retrieved February 22, 2021."
+                },
+                {
+                    "source_name": "Beek Use of VHD Dec 2020",
+                    "url": "https://medium.com/swlh/investigating-the-use-of-vhd-files-by-cybercriminals-3f1f08304316",
+                    "description": "Beek, C. (2020, December 3). Investigating the Use of VHD Files By Cybercriminals. Retrieved February 22, 2021."
+                },
+                {
+                    "source_name": "Outflank MotW 2020",
+                    "url": "https://outflank.nl/blog/2020/03/30/mark-of-the-web-from-a-red-teams-perspective/",
+                    "description": "Hegt, S. (2020, March 30). Mark-of-the-Web from a red team\u2019s perspective. Retrieved February 22, 2021."
+                },
+                {
+                    "source_name": "Intezer Russian APT Dec 2020",
+                    "url": "https://www.intezer.com/blog/research/russian-apt-uses-covid-19-lures-to-deliver-zebrocy/",
+                    "description": "Kennedy, J. (2020, December 9). A Zebra in Gopher's Clothing: Russian APT Uses COVID-19 Lures to Deliver Zebrocy. Retrieved February 22, 2021."
+                }
+            ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2021-04-13T22:47:08.289Z",
+            "created": "2021-02-22T14:20:31.650Z",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_contributors": [
+                "Christiaan Beek, @ChristiaanBeek"
+            ],
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "File: File Metadata"
+            ],
+            "x_mitre_detection": "Monitor compressed/archive and image files downloaded from the Internet as the contents may not be tagged with the MOTW. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities.",
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_defense_bypassed": [
+                "Anti-virus, Application control"
+            ]
+        }
+    ]
+}

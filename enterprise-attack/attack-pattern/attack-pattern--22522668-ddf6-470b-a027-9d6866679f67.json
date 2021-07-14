@@ -1,0 +1,89 @@
+{
+    "type": "bundle",
+    "id": "bundle--b4190bc3-1153-413e-82b3-6f3da472f6a1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1547.014",
+                    "url": "https://attack.mitre.org/techniques/T1547/014"
+                },
+                {
+                    "source_name": "Klein Active Setup 2010",
+                    "url": "https://helgeklein.com/blog/2010/04/active-setup-explained/",
+                    "description": "Klein, H. (2010, April 22). Active Setup Explained. Retrieved December 18, 2020."
+                },
+                {
+                    "source_name": "Mandiant Glyer APT 2010",
+                    "url": "https://digital-forensics.sans.org/summit-archives/2010/35-glyer-apt-persistence-mechanisms.pdf",
+                    "description": "Glyer, C. (2010). Examples of Recent APT Persitence Mechanism. Retrieved December 18, 2020."
+                },
+                {
+                    "source_name": "Citizenlab Packrat 2015",
+                    "url": "https://citizenlab.ca/2015/12/packrat-report/",
+                    "description": "Scott-Railton, J., et al. (2015, December 8). Packrat. Retrieved December 18, 2020."
+                },
+                {
+                    "source_name": "FireEye CFR Watering Hole 2012",
+                    "url": "https://www.fireeye.com/blog/threat-research/2012/12/council-foreign-relations-water-hole-attack-details.html",
+                    "description": "Kindlund, D. (2012, December 30). CFR Watering Hole Attack Details. Retrieved December 18, 2020."
+                },
+                {
+                    "source_name": "SECURELIST Bright Star 2015",
+                    "url": "https://securelist.com/whos-really-spreading-through-the-bright-star/68978/",
+                    "description": "Baumgartner, K., Guerrero-Saade, J. (2015, March 4). Who\u2019s Really Spreading through the Bright Star?. Retrieved December 18, 2020."
+                },
+                {
+                    "source_name": "paloalto Tropic Trooper 2016",
+                    "url": "https://unit42.paloaltonetworks.com/unit42-tropic-trooper-targets-taiwanese-government-and-fossil-fuel-provider-with-poison-ivy/",
+                    "description": "Ray, V., et al. (2016, November 22). Tropic Trooper Targets Taiwanese Government and Fossil Fuel Provider With Poison Ivy. Retrieved December 18, 2020."
+                },
+                {
+                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902",
+                    "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
+                    "source_name": "TechNet Autoruns"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Active Setup",
+            "description": "Adversaries may achieve persistence by adding a Registry key to the Active Setup of the local machine. Active Setup is a Windows mechanism that is used to execute programs when a user logs in. The value stored in the Registry key will be executed after a user logs into the computer.(Citation: Klein Active Setup 2010) These programs will be executed under the context of the user and will have the account's associated permissions level.\n\nAdversaries may abuse Active Setup by creating a key under <code> HKLM\\SOFTWARE\\Microsoft\\Active Setup\\Installed Components\\</code> and setting a malicious value for <code>StubPath</code>. This value will serve as the program that will be executed when a user logs into the computer.(Citation: Mandiant Glyer APT 2010)(Citation: Citizenlab Packrat 2015)(Citation: FireEye CFR Watering Hole 2012)(Citation: SECURELIST Bright Star 2015)(Citation: paloalto Tropic Trooper 2016)\n\nAdversaries can abuse these components to execute malware, such as remote access tools, to maintain persistence through system reboots. Adversaries may also use [Masquerading](https://attack.mitre.org/techniques/T1036) to make the Registry entries look as if they are associated with legitimate programs.",
+            "id": "attack-pattern--22522668-ddf6-470b-a027-9d6866679f67",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2021-03-05T22:36:37.414Z",
+            "created": "2020-12-18T16:33:13.098Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "Administrator"
+            ],
+            "x_mitre_detection": "Monitor Registry key additions and/or modifications to <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Active Setup\\Installed Components\\</code>.\n\nTools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing the Active Setup Registry locations and startup folders.(Citation: TechNet Autoruns) Suspicious program execution as startup programs may show up as outlier processes that have not been seen before when compared against historical data.",
+            "x_mitre_data_sources": [
+                "Windows Registry: Windows Registry Key Creation",
+                "Windows Registry: Windows Registry Key Modification",
+                "Process: Process Creation",
+                "Command: Command Execution"
+            ],
+            "x_mitre_contributors": [
+                "Bencherchali Nasreddine, @nas_bench, ELIT Security Team (DSSD)"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ]
+        }
+    ]
+}

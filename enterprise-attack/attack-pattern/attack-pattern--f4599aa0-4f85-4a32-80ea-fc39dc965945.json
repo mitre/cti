@@ -1,11 +1,34 @@
 {
     "type": "bundle",
-    "id": "bundle--83f9e9d5-10c7-48ca-aa0d-d615fdc856c1",
+    "id": "bundle--8716534d-6186-41bc-be06-7e05fd5f3326",
     "spec_version": "2.0",
     "objects": [
         {
-            "created": "2020-01-14T01:26:08.145Z",
-            "modified": "2020-06-20T22:17:59.148Z",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1055.001",
+                    "url": "https://attack.mitre.org/techniques/T1055/001"
+                },
+                {
+                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
+                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
+                    "source_name": "Elastic Process Injection July 2017"
+                },
+                {
+                    "url": "https://www.endgame.com/blog/technical-blog/hunting-memory",
+                    "description": "Desimone, J. (2017, June 13). Hunting in Memory. Retrieved December 7, 2017.",
+                    "source_name": "Elastic HuntingNMemory June 2017"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Dynamic-link Library Injection",
+            "description": "Adversaries may inject dynamic-link libraries (DLLs) into processes in order to evade process-based defenses as well as possibly elevate privileges. DLL injection is a method of executing arbitrary code in the address space of a separate live process.  \n\nDLL injection is commonly performed by writing the path to a DLL in the virtual address space of the target process before loading the DLL by invoking a new thread. The write can be performed with native Windows API calls such as <code>VirtualAllocEx</code> and <code>WriteProcessMemory</code>, then invoked with <code>CreateRemoteThread</code> (which calls the <code>LoadLibrary</code> API responsible for loading the DLL). (Citation: Elastic Process Injection July 2017) \n\nVariations of this method such as reflective DLL injection (writing a self-mapping DLL into a process) and memory module (map DLL when writing into process) overcome the address relocation issue as well as the additional APIs to invoke execution (since these methods load and execute the files in memory by manually preforming the function of <code>LoadLibrary</code>).(Citation: Elastic HuntingNMemory June 2017)(Citation: Elastic Process Injection July 2017) \n\nRunning code in the context of another process may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via DLL injection may also evade detection from security products since the execution is masked under a legitimate process. ",
+            "id": "attack-pattern--f4599aa0-4f85-4a32-80ea-fc39dc965945",
+            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -16,45 +39,21 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "type": "attack-pattern",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1055.001",
-                    "url": "https://attack.mitre.org/techniques/T1055/001"
-                },
-                {
-                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
-                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
-                    "source_name": "Endgame Process Injection July 2017"
-                },
-                {
-                    "url": "https://www.endgame.com/blog/technical-blog/hunting-memory",
-                    "description": "Desimone, J. (2017, June 13). Hunting in Memory. Retrieved December 7, 2017.",
-                    "source_name": "Endgame HuntingNMemory June 2017"
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Dynamic-link Library Injection",
-            "description": "Adversaries may inject dynamic-link libraries (DLLs) into processes in order to evade process-based defenses as well as possibly elevate privileges. DLL injection is a method of executing arbitrary code in the address space of a separate live process.  \n\nDLL injection is commonly performed by writing the path to a DLL in the virtual address space of the target process before loading the DLL by invoking a new thread. The write can be performed with native Windows API calls such as <code>VirtualAllocEx</code> and <code>WriteProcessMemory</code>, then invoked with <code>CreateRemoteThread</code> (which calls the <code>LoadLibrary</code> API responsible for loading the DLL). (Citation: Endgame Process Injection July 2017) \n\nVariations of this method such as reflective DLL injection (writing a self-mapping DLL into a process) and memory module (map DLL when writing into process) overcome the address relocation issue as well as the additional APIs to invoke execution (since these methods load and execute the files in memory by manually preforming the function of <code>LoadLibrary</code>).(Citation: Endgame HuntingNMemory June 2017)(Citation: Endgame Process Injection July 2017) \n\nRunning code in the context of another process may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via DLL injection may also evade detection from security products since the execution is masked under a legitimate process. ",
-            "id": "attack-pattern--f4599aa0-4f85-4a32-80ea-fc39dc965945",
+            "modified": "2020-11-10T18:29:30.879Z",
+            "created": "2020-01-14T01:26:08.145Z",
             "x_mitre_defense_bypassed": [
                 "Application control",
                 "Anti-virus"
             ],
             "x_mitre_data_sources": [
-                "Process monitoring",
-                "DLL monitoring",
-                "File monitoring",
-                "API monitoring"
+                "Module: Module Load",
+                "Process: OS API Execution",
+                "Process: Process Access"
             ],
             "x_mitre_permissions_required": [
                 "User"
             ],
-            "x_mitre_detection": "Monitoring Windows API calls indicative of the various types of code injection may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances for known bad sequences of calls, since benign use of API functions may be common and difficult to distinguish from malicious behavior. Windows API calls such as <code>CreateRemoteThread</code> and those that can be used to modify memory within another process, such as <code>VirtualAllocEx</code>/<code>WriteProcessMemory</code>, may be used for this technique.(Citation: Endgame Process Injection July 2017)\n\nMonitor DLL/PE file events, specifically creation of these binary files as well as the loading of DLLs into processes. Look for DLLs that are not recognized or not normally loaded into a process. \n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior. ",
+            "x_mitre_detection": "Monitoring Windows API calls indicative of the various types of code injection may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances for known bad sequences of calls, since benign use of API functions may be common and difficult to distinguish from malicious behavior. Windows API calls such as <code>CreateRemoteThread</code> and those that can be used to modify memory within another process, such as <code>VirtualAllocEx</code>/<code>WriteProcessMemory</code>, may be used for this technique.(Citation: Elastic Process Injection July 2017)\n\nMonitor DLL/PE file events, specifically creation of these binary files as well as the loading of DLLs into processes. Look for DLLs that are not recognized or not normally loaded into a process. \n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior. ",
             "x_mitre_version": "1.0",
             "x_mitre_is_subtechnique": true,
             "x_mitre_platforms": [

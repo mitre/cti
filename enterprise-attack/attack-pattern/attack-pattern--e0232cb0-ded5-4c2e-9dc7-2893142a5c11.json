@@ -1,0 +1,65 @@
+{
+    "type": "bundle",
+    "id": "bundle--58a5a093-a30f-4308-8153-75be041d8a7d",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1547.013",
+                    "url": "https://attack.mitre.org/techniques/T1547/013"
+                },
+                {
+                    "description": "Free Desktop. (2006, February 13). Desktop Application Autostart Specification. Retrieved September 12, 2019.",
+                    "url": "https://specifications.freedesktop.org/autostart-spec/autostart-spec-latest.html",
+                    "source_name": "Free Desktop Application Autostart Feb 2006"
+                },
+                {
+                    "description": "Free Desktop. (2017, December 24). Recognized Desktop Entry Keys. Retrieved September 12, 2019.",
+                    "url": "https://specifications.freedesktop.org/desktop-entry-spec/1.2/ar01s06.html",
+                    "source_name": "Free Desktop Entry Keys"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "XDG Autostart Entries",
+            "description": "Adversaries may modify XDG autostart entries to execute programs or commands during system boot. Linux desktop environments that are XDG compliant implement functionality for XDG autostart entries. These entries will allow an application to automatically start during the startup of a desktop environment after user logon. By default, XDG autostart entries are stored within the <code>/etc/xdg/autostart</code> or <code>~/.config/autostart</code> directories and have a .desktop file extension.(Citation: Free Desktop Application Autostart Feb 2006)\n\nWithin an XDG autostart entry file, the <code>Type</code> key specifies if the entry is an application (type 1), link (type 2) or directory (type 3). The <code>Name</code> key indicates an arbitrary name assigned by the creator and the <code>Exec</code> key indicates the application and command line arguments to execute.(Citation: Free Desktop Entry Keys)\n\nAdversaries may use XDG autostart entries to maintain persistence by executing malicious commands and payloads, such as remote access tools, during the startup of a desktop environment. Commands included in XDG autostart entries with execute after user logon in the context of the currently logged on user. Adversaries may also use [Masquerading](https://attack.mitre.org/techniques/T1036) to make XDG autostart entries look as if they are associated with legitimate programs.",
+            "id": "attack-pattern--e0232cb0-ded5-4c2e-9dc7-2893142a5c11",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "modified": "2020-11-10T15:55:10.103Z",
+            "created": "2019-09-10T18:13:12.195Z",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_contributors": [
+                "Tony Lambert, Red Canary"
+            ],
+            "x_mitre_detection": "Malicious XDG autostart entries may be detected by auditing file creation and modification events within the <code>/etc/xdg/autostart</code> and <code>~/.config/autostart</code> directories. Depending on individual configurations, defenders may need to query the environment variables <code>$XDG_CONFIG_HOME</code> or <code>$XDG_CONFIG_DIRS</code> to determine the paths of Autostart entries. Autostart entry files not associated with legitimate packages may be considered suspicious. Suspicious entries can also be identified by comparing entries to a trusted system baseline.\n \nSuspicious processes or scripts spawned in this manner will have a parent process of the desktop component implementing the XDG specification and will execute as the logged on user.",
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "File: File Modification",
+                "Process: Process Creation",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_permissions_required": [
+                "User",
+                "root"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ]
+        }
+    ]
+}

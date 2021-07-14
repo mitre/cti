@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--c005bb1f-574b-4b69-ac80-3d704b24c0cd",
+    "id": "bundle--d110e160-9091-4eb2-b5c8-410fd16b08f7",
     "spec_version": "2.0",
     "objects": [
         {
@@ -26,6 +26,11 @@
                     "source_name": "iDefense Rootkit Overview"
                 },
                 {
+                    "source_name": "Apple Kernel Extension Deprecation",
+                    "url": "https://developer.apple.com/support/kernel-extensions/",
+                    "description": "Apple. (n.d.). Deprecated Kernel Extensions and System Extension Alternatives. Retrieved November 4, 2020."
+                },
+                {
                     "url": "https://volatility-labs.blogspot.com/2012/10/phalanx-2-revealed-using-volatility-to.html",
                     "description": "Case, A. (2012, October 10). Phalanx 2 Revealed: Using Volatility to Analyze an Advanced Linux Rootkit. Retrieved April 9, 2018.",
                     "source_name": "Volatility Phalanx2"
@@ -46,7 +51,7 @@
                     "source_name": "GitHub Diamorphine"
                 },
                 {
-                    "url": "https://www.rsaconference.com/writable/presentations/file_upload/ht-r03-malware-persistence-on-os-x-yosemite_final.pdf",
+                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
                     "description": "Wardle, P. (2015, April). Malware Persistence on OS X Yosemite. Retrieved April 6, 2018.",
                     "source_name": "RSAC 2015 San Francisco Patrick Wardle"
                 },
@@ -81,7 +86,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Kernel Modules and Extensions",
-            "description": "Adversaries may modify the kernel to automatically execute programs on system boot. Loadable Kernel Modules (LKMs) are pieces of code that can be loaded and unloaded into the kernel upon demand. They extend the functionality of the kernel without the need to reboot the system. For example, one type of module is the device driver, which allows the kernel to access hardware connected to the system. (Citation: Linux Kernel Programming)\u00a0\n\nWhen used maliciously, LKMs can be a type of kernel-mode [Rootkit](https://attack.mitre.org/techniques/T1014) that run with the highest operating system privilege (Ring 0). (Citation: Linux Kernel Module Programming Guide)\u00a0Common features of LKM based rootkits include: hiding itself, selective hiding of files, processes and network activity, as well as log tampering, providing authenticated backdoors and enabling root access to non-privileged users. (Citation: iDefense Rootkit Overview)\n\nKernel extensions, also called kext, are used for macOS to load functionality onto a system similar to LKMs for Linux. They are loaded and unloaded through <code>kextload</code> and <code>kextunload</code> commands.\n\nAdversaries can use LKMs and kexts to covertly persist on a system and elevate privileges. Examples have been found in the wild and there are some open source projects. (Citation: Volatility Phalanx2) (Citation: CrowdStrike Linux Rootkit) (Citation: GitHub Reptile) (Citation: GitHub Diamorphine)(Citation: RSAC 2015 San Francisco Patrick Wardle) (Citation: Synack Secure Kernel Extension Broken)(Citation: Securelist Ventir) (Citation: Trend Micro Skidmap)",
+            "description": "Adversaries may modify the kernel to automatically execute programs on system boot. Loadable Kernel Modules (LKMs) are pieces of code that can be loaded and unloaded into the kernel upon demand. They extend the functionality of the kernel without the need to reboot the system. For example, one type of module is the device driver, which allows the kernel to access hardware connected to the system. (Citation: Linux Kernel Programming)\u00a0\n\nWhen used maliciously, LKMs can be a type of kernel-mode [Rootkit](https://attack.mitre.org/techniques/T1014) that run with the highest operating system privilege (Ring 0). (Citation: Linux Kernel Module Programming Guide)\u00a0Common features of LKM based rootkits include: hiding itself, selective hiding of files, processes and network activity, as well as log tampering, providing authenticated backdoors and enabling root access to non-privileged users. (Citation: iDefense Rootkit Overview)\n\nKernel extensions, also called kext, are used for macOS to load functionality onto a system similar to LKMs for Linux. They are loaded and unloaded through <code>kextload</code> and <code>kextunload</code> commands. Since macOS Catalina 10.15, kernel extensions have been deprecated on macOS systems.(Citation: Apple Kernel Extension Deprecation)\n\nAdversaries can use LKMs and kexts to covertly persist on a system and elevate privileges. Examples have been found in the wild and there are some open source projects. (Citation: Volatility Phalanx2) (Citation: CrowdStrike Linux Rootkit) (Citation: GitHub Reptile) (Citation: GitHub Diamorphine)(Citation: RSAC 2015 San Francisco Patrick Wardle) (Citation: Synack Secure Kernel Extension Broken)(Citation: Securelist Ventir) (Citation: Trend Micro Skidmap)",
             "id": "attack-pattern--a1b52199-c8c5-438a-9ded-656f1d0888c6",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -94,19 +99,21 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2020-06-30T21:23:15.188Z",
+            "modified": "2021-03-30T00:59:53.716Z",
             "created": "2020-01-24T17:42:23.339Z",
-            "x_mitre_version": "1.0",
+            "x_mitre_version": "1.1",
             "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "root"
             ],
             "x_mitre_detection": "Loading, unloading, and manipulating modules on Linux systems can be detected by monitoring for the following commands:<code>modprobe</code>, <code>insmod</code>, <code>lsmod</code>, <code>rmmod</code>, or <code>modinfo</code> (Citation: Linux Loadable Kernel Module Insert and Remove LKMs) LKMs are typically loaded into <code>/lib/modules</code> and have had the extension .ko (\"kernel object\") since version 2.6 of the Linux kernel. (Citation: Wikipedia Loadable Kernel Module)\n\nFor macOS, monitor for execution of <code>kextload</code> commands and correlate with other unknown or suspicious activity.\n\nAdversaries may run commands on the target system before loading a malicious module in order to ensure that it is properly compiled. (Citation: iDefense Rootkit Overview) Adversaries may also execute commands to identify the exact version of the running Linux kernel and/or download multiple versions of the same .ko (kernel object) files to use the one appropriate for the running system.(Citation: Trend Micro Skidmap) Many LKMs require Linux headers (specific to the target kernel) in order to compile properly.\u00a0These are typically obtained through the operating systems package manager and installed like a normal package. On Ubuntu and Debian based systems this can be accomplished by running: <code>apt-get install linux-headers-$(uname -r)</code> On RHEL and CentOS based systems this can be accomplished by running: <code>yum install kernel-devel-$(uname -r)</code>",
             "x_mitre_data_sources": [
-                "Process monitoring",
-                "Process command-line parameters"
+                "Command: Command Execution",
+                "File: File Creation",
+                "Kernel: Kernel Module Load"
             ],
             "x_mitre_contributors": [
+                "Wayne Silva, F-Secure Countercept",
                 "Anastasios Pingios",
                 "Jeremy Galloway",
                 "Red Canary"

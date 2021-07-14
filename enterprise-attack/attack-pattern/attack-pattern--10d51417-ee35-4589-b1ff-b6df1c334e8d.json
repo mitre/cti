@@ -1,13 +1,13 @@
 {
     "type": "bundle",
-    "id": "bundle--2bf7452d-87ae-4979-954a-59afce09477e",
+    "id": "bundle--2303d8fe-90ef-4246-8129-09c2eb172f8b",
     "spec_version": "2.0",
     "objects": [
         {
             "id": "attack-pattern--10d51417-ee35-4589-b1ff-b6df1c334e8d",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "External Remote Services",
-            "description": "Adversaries may leverage external-facing remote services to initially access and/or persist within a network. Remote services such as VPNs, Citrix, and other access mechanisms allow users to connect to internal enterprise network resources from external locations. There are often remote service gateways that manage connections and credential authentication for these services. Services such as [Windows Remote Management](https://attack.mitre.org/techniques/T1021/006) can also be used externally.\n\nAccess to [Valid Accounts](https://attack.mitre.org/techniques/T1078) to use the service is often a requirement, which could be obtained through credential pharming or by obtaining the credentials from users after compromising the enterprise network.(Citation: Volexity Virtual Private Keylogging) Access to remote services may be used as a redundant or persistent access mechanism during an operation.",
+            "description": "Adversaries may leverage external-facing remote services to initially access and/or persist within a network. Remote services such as VPNs, Citrix, and other access mechanisms allow users to connect to internal enterprise network resources from external locations. There are often remote service gateways that manage connections and credential authentication for these services. Services such as [Windows Remote Management](https://attack.mitre.org/techniques/T1021/006) can also be used externally.\n\nAccess to [Valid Accounts](https://attack.mitre.org/techniques/T1078) to use the service is often a requirement, which could be obtained through credential pharming or by obtaining the credentials from users after compromising the enterprise network.(Citation: Volexity Virtual Private Keylogging) Access to remote services may be used as a redundant or persistent access mechanism during an operation.\n\nAccess may also be gained through an exposed service that doesn\u2019t require authentication. In containerized environments, this may include an exposed Docker API, Kubernetes API server, kubelet, or web application such as the Kubernetes dashboard.(Citation: Trend Micro Exposed Docker Server)(Citation: Unit 42 Hildegard Malware)",
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -23,6 +23,16 @@
                     "url": "https://www.volexity.com/blog/2015/10/07/virtual-private-keylogging-cisco-web-vpns-leveraged-for-access-and-persistence/",
                     "description": "Adair, S. (2015, October 7). Virtual Private Keylogging: Cisco Web VPNs Leveraged for Access and Persistence. Retrieved March 20, 2017.",
                     "source_name": "Volexity Virtual Private Keylogging"
+                },
+                {
+                    "source_name": "Trend Micro Exposed Docker Server",
+                    "url": "https://www.trendmicro.com/en_us/research/20/f/xorddos-kaiji-botnet-malware-variants-target-exposed-docker-servers.html",
+                    "description": "Remillano II, A., et al. (2020, June 20). XORDDoS, Kaiji Variants Target Exposed Docker Servers. Retrieved April 5, 2021."
+                },
+                {
+                    "source_name": "Unit 42 Hildegard Malware",
+                    "url": "https://unit42.paloaltonetworks.com/hildegard-malware-teamtnt/",
+                    "description": "Chen, J. et al. (2021, February 3). Hildegard: New TeamTNT Cryptojacking Malware Targeting Kubernetes. Retrieved April 5, 2021."
                 }
             ],
             "object_marking_refs": [
@@ -39,25 +49,40 @@
                     "phase_name": "initial-access"
                 }
             ],
-            "modified": "2020-06-19T20:07:09.600Z",
+            "modified": "2021-04-22T20:22:02.443Z",
             "created": "2017-05-31T21:31:44.421Z",
             "x_mitre_is_subtechnique": false,
             "x_mitre_platforms": [
                 "Windows",
-                "Linux"
+                "Linux",
+                "Containers"
             ],
             "x_mitre_permissions_required": [
                 "User"
             ],
-            "x_mitre_detection": "Follow best practices for detecting adversary use of [Valid Accounts](https://attack.mitre.org/techniques/T1078) for authenticating to remote services. Collect authentication logs and analyze for unusual access patterns, windows of activity, and access outside of normal business hours.",
+            "x_mitre_detection": "Follow best practices for detecting adversary use of [Valid Accounts](https://attack.mitre.org/techniques/T1078) for authenticating to remote services. Collect authentication logs and analyze for unusual access patterns, windows of activity, and access outside of normal business hours.\n\nWhen authentication is not required to access an exposed remote service, monitor for follow-on activities such as anomalous external use of the exposed API or application.",
             "x_mitre_data_sources": [
-                "Authentication logs"
+                "Application Log: Application Log Content",
+                "Logon Session: Logon Session Metadata",
+                "Network Traffic: Network Traffic Flow"
             ],
             "x_mitre_contributors": [
+                "ExtraHop",
+                "David Fiser, @anu4is, Trend Micro",
+                "Alfredo Oliveira, Trend Micro",
+                "Idan Frimark, Cisco",
+                "Rory McCune, Aqua Security",
+                "Yuval Avrahami, Palo Alto Networks",
+                "Jay Chen, Palo Alto Networks",
+                "Brad Geesaman, @bradgeesaman",
+                "Magno Logan, @magnologan, Trend Micro",
+                "Ariel Shuper, Cisco",
+                "Yossi Weizman, Azure Defender Research Team",
+                "Vishwas Manral, McAfee",
                 "Daniel Oakley",
                 "Travis Smith, Tripwire"
             ],
-            "x_mitre_version": "2.1"
+            "x_mitre_version": "2.2"
         }
     ]
 }
