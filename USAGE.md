@@ -236,7 +236,7 @@ Both `malware` and `tool` type software depart from the STIX format with the fol
 Data Sources and Data Components represent data which can be used to detect techniques. Data components are nested within a data source but have their own STIX object.
 
 - A data component can only have one parent data source.
-- A data source can have multiple child data components.
+- A data source can have any number of data components.
 - Data components can map to any number of techniques.
 
 The general structure of data sources and data components is as follows:
