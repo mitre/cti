@@ -243,20 +243,20 @@ The general structure of data sources and data components is as follows:
 
 <!-- diagram generated with https://asciiflow.com/ -->
 ```
-           "detects"          x_mitre_data_source_ref
-          relationship         embedded relationship
-               │                        │
-┌───────────┐  ▼                        │
-│Technique 1│◄──┐                       │
-└───────────┘   └───┬────────────────┐  ▼  ┌───────────┐
-                    │Data Component 1├────►│           │
-┌───────────┐   ┌───┴────────────────┘     │           │
-│Technique 2│◄──┘                          │Data Source│
-└───────────┘       ┌────────────────┐     │           │
-                ┌───┤Data Component 2├────►│           │
-┌───────────┐   │   └────────────────┘     └───────────┘
-│Technique 3│◄──┘
-└───────────┘
+           "detects"       x_mitre_data_source_ref
+          relationship      embedded relationship
+               │                      │
+┌───────────┐  ▼  ┌────────────────┐  │  ┌───────────┐
+│Technique 1│◄────┤                │  │  │           │
+└───────────┘     │                │  ▼  │           │
+                  │Data Component 1├────►│           │
+┌───────────┐     │                │     │           │
+│Technique 2│◄────┤                │     │Data Source│
+└───────────┘     └────────────────┘     │           │
+                                         │           │
+┌───────────┐     ┌────────────────┐     │           │
+│Technique 3│◄────┤Data Component 2├────►│           │
+└───────────┘     └────────────────┘     └───────────┘
 ```
 
 ### Data Sources
