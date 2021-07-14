@@ -231,7 +231,7 @@ Both `malware` and `tool` type software depart from the STIX format with the fol
 | `x_mitre_aliases` | string[] | List of aliases for the given software. |
 
 
-## Data Sources and Data Components
+### Data Sources and Data Components
 
 Data Sources and Data Components represent data which can be used to detect techniques. Data components are nested within a data source but have their own STIX object.
 
@@ -259,7 +259,7 @@ The general structure of data sources and data components is as follows:
 └───────────┘     └────────────────┘     └───────────┘
 ```
 
-### Data Sources
+#### Data Sources
 
 A Data Source in ATT&CK is defined by an `x-mitre-data-source` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920). 
 
@@ -270,7 +270,7 @@ Data Sources extend the generic SDO format with the following fields:
 | `x_mitre_platforms` | string[] | List of platforms that apply to the data source. |
 | `x_mitre_collection_layers` | string[] | List of places the data can be collected from. |
 
-### Data Components
+#### Data Components
 
 A Data Component in ATT&CK is represented as an `x-mitre-data-component` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920). 
 
