@@ -179,7 +179,7 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 |:------|:-----|:--------|:------------|
 | `x_mitre_detection` | string | All techniques | Strategies for identifying if a technique has been used by an adversary. |
 | `x_mitre_platforms` | string[] | All techniques | List of platforms that apply to the technique. |
-| `x_mitre_data_sources` | string[] | ICS domain | Sources of information that may be used to identify the action or result of the action being performed. **Note:** in the Enterprise domain data sources are represented via [x-mitre-data-source](#data-source) objects, and their relationship with techniques through relationships of type `detects`. `x_mitre_data_sources` will still be provided on enterprise techniques, but only to ease users' transition to the actual data source objects -- this field will likely be removed later to avoid duplication within the data model. |
+| `x_mitre_data_sources` | string[] | Enterprise* & ICS domains | Sources of information that may be used to identify the action or result of the action being performed. |
 | `x_mitre_is_subtechnique` | boolean | Enterprise domain | If true, this `attack-pattern` is a sub-technique. See [sub-techniques](#sub-techniques). |
 | `x_mitre_system_requirements` | string[] | Enterprise domain | Additional information on requirements the adversary needs to meet or about the state of the system (software, patch level, etc.) that may be required for the technique to work. |
 | `x_mitre_tactic_type` | string[] | Mobile domain |  "Post-Adversary Device Access", "Pre-Adversary Device Access", or "Without Adversary Device Access". |
@@ -189,6 +189,8 @@ Techniques depart from the attack-pattern format with the following fields. Doma
 | `x_mitre_remote_support` | boolean | Enterprise domain in the _Execution_ tactic | If true, the technique can be used to execute something on a remote system. |
 | `x_mitre_impact_type` | string[] | Enterprise domain in the _Impact_ tactic | Denotes if the technique can be used for integrity or availability attacks. |
 
+
+\* In the Enterprise domain data sources are represented via [x-mitre-data-source](#data-sources) and [x-mitre-data-component](#data-components) objects, and their relationship with techniques through relationships of type `detects`. The `x_mitre_data_sources` field will still be maintained on enterprise techniques for backwards-compatibility purposes but we advise against its use as it does not include the full context of the data model.
 
 See [mapping matrices, tactics and techniques](#mapping-matrices-tactics-and-techniques) for more information about how techniques map into tactics and matrices.
 
@@ -258,6 +260,8 @@ The general structure of data sources and data components is as follows:
 │Technique 3│◄────┤Data Component 2├────►│           │
 └───────────┘     └────────────────┘     └───────────┘
 ```
+
+Prior to ATT&CK v10 data sources were stored in a `x_mitre_data_sources` field on techniques. This representation is still available for backwards-compatibility purposes, and does properly reflect the current set of data sources. However, because information is lost in that representation we advise against using it except in legacy applications. The ATT&CK for ICS domain still uses only the `x_mitre_data_sources` field.
 
 #### Data Sources
 
