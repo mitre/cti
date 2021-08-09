@@ -1,6 +1,6 @@
 # Introduction
 This document describes how to query and manipulate CAPEC data in this repository. Machine-readable CAPEC data is available in
-a JSON-based [STIX 2.0](https://oasis-open.github.io/cti-documentation/stix/intro) and STIX 2.1 formats.
+a JSON-based [STIX 2.0 and STIX 2.1 formats](https://oasis-open.github.io/cti-documentation/stix/intro). See [Release Notes](#release-notes) for any changes to the generation of the STIX CAPEC data.
 
 STIX 2.x is just JSON and so should be very accessible from Python and other programming languages. If you are using Python, the [python-stix2](https://github.com/oasis-open/cti-python-stix2) library can help you work with the content as shown in the examples below.
 
@@ -15,28 +15,37 @@ The STIX types are found as literal strings assigned to the `type` property of t
 ## Properties
 The following is a table mapping of CAPEC properties to STIX properties. Some of these properties are standard STIX properties, while others were custom-created for compatibility with CAPEC. These properties are accessed from STIX objects as JSON properties.
 
-### Attack Pattern
-| CAPEC 3.0 Property | CAPEC 2.7.1 Property | STIX Properties | STIX type |
-| --------------- | --------------- | --------------- | --------------- |
-**Name** |  **Name** | `name` | string |
-**Description** | **Description/Summary**    | `description` | string
-**Abstraction** | **Pattern\_Abstraction** |`x_capec_abstraction` | enumeration(`Meta, Standard, Detailed`)
-**Alternate\_Terms** | **Alternate\_Terms** | `x_capec_alternate_terms` | list(string)
-**Consequences** | **Attack\_Motivation-Consequences** | `x_capec_consequences` | dictionary(enumeration(`High, Medium, Low`), string)
-**Example\_Instances** | **Examples-Instances** | `x_capec_example_instances` | list(string)
-**Likelihood\_Of\_Attack** | **Typical\_Likelihood\_of\_Exploit/Likelihood** | `x_capec_likelihood_of_attack` | enumeration(`High, Medium, Low`)
+### Attack Pattern Properties
+| CAPEC 3.5 Property | STIX Properties | STIX type |
+| --------------- |  --------------- | --------------- |
+**Name** |  `name` | string |
+**Description** |  `description` | string
+**Abstraction** | `x_capec_abstraction` | enumeration(`Meta, Standard, Detailed`)
+**Alternate\_Terms** |  `x_capec_alternate_terms` | list(string)
+**Consequences** |  `x_capec_consequences` | dictionary(enumeration(`High, Medium, Low`), string)
+**Example\_Instances** | `x_capec_example_instances` | list(string)
+**Execution\_Flows** | `x_capec_execution_flows` | (XHTML) string
+**Likelihood\_Of\_Attack** | `x_capec_likelihood_of_attack` | enumeration(`High, Medium, Low`)
 **Notes** | **Other\_Notes** | `x_capec_notes` | list(string)
-**Prerequisites** | **Attack\_Prerequisites** | `x_capec_prerequisites` | list(string)
-**Skills\_Required** | **Attacker\_Skills\_or\_Knowledge\_Required** | `x_capec_skills_required` | dictionary(string, enumeration(`High, Medium, Low`))
-**Typical\_Severity** | **Typical\_Severity** | `x_capec_typical_severity` | enumeration(`High, Medium, Low`)
-**ID** | **ID** | `external_references[i].external_id where external_references[i].source_name == "capec"` | integer 
-**Related\_Weaknesses** | **Related\_Weaknesses** | `external_references[i].external_id where external_references[i].source_name == "cwe"` | integer 
-**References** | **References** | `external_references[i].external_id where external_references[i].source_name == "reference_from_CAPEC"` | `external-reference`
-**Mitigation** | **Solutions\_and\_Mitigations** | `relationship_type == "mitigates"` | `relationship`
+**Prerequisites** | `x_capec_prerequisites` | list(string)
+**Skills\_Required** | `x_capec_skills_required` | dictionary(string, enumeration(`High, Medium, Low`))
+**Typical\_Severity** |  `x_capec_typical_severity` | enumeration(`High, Medium, Low`)
+**ID** |  `external_references[i].external_id where external_references[i].source_name == "capec"` | integer 
+**Related\_Weaknesses** |  `external_references[i].external_id where external_references[i].source_name == "cwe"` | integer 
+**References** | `external_references[i].external_id where external_references[i].source_name == "reference_from_CAPEC"` | `external-reference`
+**Mitigation** | `relationship_type == "mitigates"` | `relationship`
 
-CAPEC 3.0 properties not mapped (at this time):  **Execution\_Flow**, **Indicators**, **Taxonomy\_Mappings**, **Content\_History**
+### Attack Pattern Relationships
+| CAPEC 3.5 Relationship | STIX Properties | STIX type |
+| --------------- |  --------------- | --------------- |
+**parent_of** | `x_capec_parent_of_refs` | list(identifier)
+**child_of** | `x_capec_child_of_refs` | list(identifier)
+**can_precede** | `x_capec_can_precede_refs` | list(identifier)
+**ca_follow** | `x_capec_can_follow_refs` | list(identifier)
 
-CAPEC 3.0 properties not appropriate to map: **Status**
+CAPEC 3.5 properties not mapped (at this time):  **Indicators**, **Taxonomy\_Mappings**, **Content\_History**
+
+CAPEC 3.5 properties not appropriate to map: **Status**
 
 # Using Python and STIX 2.x
 In this section, we will describe how to query and manipulate CAPEC data that has been stored in a STIX 2.x repository. A Python library has been created for using and creating STIX 2.x data by the OASIS Technical Committee for Cyber Threat Intelligence, which develops the STIX standard. This library abstracts storage and transport details so that the same code can be used to interact with data locally on the filesystem or in memory, or remotely via [TAXII](https://oasis-open.github.io/cti-documentation/taxii/intro). The source code, installation instructions, and basic documentation for the library can be found [here](https://github.com/oasis-open/cti-python-stix2). There is a more thorough [API documentation](http://stix2.readthedocs.io/en/latest/overview.html) as well.
@@ -100,3 +109,5 @@ def get_mitigations_by_attack_pattern(src, ap_stix_id):
 ap = get_attack_pattern_by_capec_id(fs, '66')[0]
 get_mitigations_by_attack_pattern(fs, ap.id)
 ```
+
+## Release Notes
