@@ -1,1 +1,79 @@
-{"type": "bundle", "id": "bundle--89ab9837-95db-4b15-b65f-bede56a6bed2", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--1d1fb93d-ce79-4c64-9987-94577fb894ce", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2020-12-17T00:00:00.000Z", "name": "Escaping a Sandbox by Calling Code in Another Language", "description": "The attacker may submit malicious code of another language to obtain access to privileges that were not intentionally exposed by the sandbox, thus escaping the sandbox. For instance, Java code cannot perform unsafe operations, such as modifying arbitrary memory locations, due to restrictions placed on it by the Byte code Verifier and the JVM. If allowed, Java code can call directly into native C code, which may perform unsafe operations, such as call system calls and modify arbitrary memory locations on their behalf. To provide isolation, Java does not grant untrusted code with unmediated access to native C code. Instead, the sandboxed code is typically allowed to call some subset of the pre-existing native code that is part of standard libraries.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/237.html", "external_id": "CAPEC-237"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/693.html", "external_id": "CWE-693"}, {"source_name": "reference_from_CAPEC", "description": "J. Cappos, J. Rasley, J. Samuel, I. Beschastnikh, C. Barsan, A. Krishnamurthy, T. Anderson, Retaining Sandbox Containment Despite Bugs in Privileged Memory-Safe Code, The 17th ACM Conference on Computer and Communications Security (CCS '10), 2010", "external_id": "REF-91"}, {"source_name": "reference_from_CAPEC", "description": "Malware Protection Center: Threat Research and Response, 2007, Microsoft Corporation", "url": "https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=Exploit%3AJava%2FByteVerify.C", "external_id": "REF-92"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_child_of": ["attack-pattern--4abd48c8-f737-45db-bd7b-97d989ebd471"], "x_capec_consequences": {"Access_Control": ["Bypass Protection Mechanism"], "Authorization": ["Bypass Protection Mechanism", "Execute Unauthorized Commands (Run Arbitrary Code)", "Gain Privileges"], "Accountability": ["Gain Privileges"], "Authentication": ["Gain Privileges"], "Non-Repudiation": ["Gain Privileges"]}, "x_capec_example_instances": ["Exploit: Java/ByteVerify.C is a detection of malicious code that attempts to exploit a vulnerability in the Microsoft Virtual Machine (VM). The VM enables Java programs to run on Windows platforms. The Microsoft Java VM is included in most versions of Windows and Internet Explorer. In some versions of the Microsoft VM, a vulnerability exists because of a flaw in the way the ByteCode Verifier checks code when it is initially being loaded by the Microsoft VM. The ByteCode Verifier is a low level process in the Microsoft VM that is responsible for checking the validity of code - or byte code - as it is initially being loaded into the Microsoft VM. Java/ByteVerify.C attempts to download a file named \"msits.exe\", located in the same virtual directory as the Java applet, into the Windows system folder, and with a random file name. It then tries to execute this specific file. This flaw enables attackers to execute arbitrary code on a user's machine such as writing, downloading and executing additional malware. This vulnerability is addressed by update MS03-011, released in 2003."], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Probing: </b>The attacker probes the target application to see whether calling code of another language is allowed within a sandbox.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker probes the target application to see whether calling code of another language is allowed within a sandbox.</td></tr></tbody></table><li> <p> <b>Analysis: </b>The attacker analyzes the target application to get a list of cross code weaknesses in the standard libraries of the sandbox.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker analyzes the target application to get a list of cross code weaknesses in the standard libraries of the sandbox.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Verify the exploitable security weaknesses: </b>The attacker tries to craft malicious code of another language allowed by the sandbox to verify the security weaknesses of the standard libraries found in the Explore phase.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker tries to explore the security weaknesses by calling malicious code of another language allowed by the sandbox.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Exploit the security weaknesses in the standard libraries: </b>The attacker calls malicious code of another language to exploit the security weaknesses in the standard libraries verified in the Experiment phase. The attacker will be able to obtain access to privileges that were not intentionally exposed by the sandbox, thus escaping the sandbox.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker calls malicious code of another language to exploit the security weaknesses in the standard libraries.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "Low", "x_capec_resources_required": ["None: No specialized resources are required to execute this type of attack."], "x_capec_skills_required": {"High": "The attacker must have a good knowledge of the platform specific mechanisms of signing and verifying code. Most code signing and verification schemes are based on use of cryptography, the attacker needs to have an understand of these cryptographic operations in good detail."}, "x_capec_status": "Draft", "x_capec_typical_severity": "Very High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--5796b65b-bb71-40b0-82a6-5fad278b160e",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "The attacker may submit malicious code of another language to obtain access to privileges that were not intentionally exposed by the sandbox, thus escaping the sandbox. For instance, Java code cannot perform unsafe operations, such as modifying arbitrary memory locations, due to restrictions placed on it by the Byte code Verifier and the JVM. If allowed, Java code can call directly into native C code, which may perform unsafe operations, such as call system calls and modify arbitrary memory locations on their behalf. To provide isolation, Java does not grant untrusted code with unmediated access to native C code. Instead, the sandboxed code is typically allowed to call some subset of the pre-existing native code that is part of standard libraries.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-237",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/237.html"
+                },
+                {
+                    "external_id": "CWE-693",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/693.html"
+                },
+                {
+                    "description": "J. Cappos, J. Rasley, J. Samuel, I. Beschastnikh, C. Barsan, A. Krishnamurthy, T. Anderson, Retaining Sandbox Containment Despite Bugs in Privileged Memory-Safe Code, The 17th ACM Conference on Computer and Communications Security (CCS '10), 2010",
+                    "external_id": "REF-91",
+                    "source_name": "reference_from_CAPEC"
+                },
+                {
+                    "description": "Malware Protection Center: Threat Research and Response, 2007, Microsoft Corporation",
+                    "external_id": "REF-92",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?Name=Exploit%3AJava%2FByteVerify.C"
+                }
+            ],
+            "id": "attack-pattern--1d1fb93d-ce79-4c64-9987-94577fb894ce",
+            "modified": "2020-12-17T00:00:00.000Z",
+            "name": "Escaping a Sandbox by Calling Code in Another Language",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--4abd48c8-f737-45db-bd7b-97d989ebd471"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Accountability": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Bypass Protection Mechanism",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges"
+                ],
+                "Non-Repudiation": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "Exploit: Java/ByteVerify.C is a detection of malicious code that attempts to exploit a vulnerability in the Microsoft Virtual Machine (VM). The VM enables Java programs to run on Windows platforms. The Microsoft Java VM is included in most versions of Windows and Internet Explorer. In some versions of the Microsoft VM, a vulnerability exists because of a flaw in the way the ByteCode Verifier checks code when it is initially being loaded by the Microsoft VM. The ByteCode Verifier is a low level process in the Microsoft VM that is responsible for checking the validity of code - or byte code - as it is initially being loaded into the Microsoft VM. Java/ByteVerify.C attempts to download a file named \"msits.exe\", located in the same virtual directory as the Java applet, into the Windows system folder, and with a random file name. It then tries to execute this specific file. This flaw enables attackers to execute arbitrary code on a user's machine such as writing, downloading and executing additional malware. This vulnerability is addressed by update MS03-011, released in 2003."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Probing: </b>The attacker probes the target application to see whether calling code of another language is allowed within a sandbox.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker probes the target application to see whether calling code of another language is allowed within a sandbox.</td></tr></tbody></table><li> <p> <b>Analysis: </b>The attacker analyzes the target application to get a list of cross code weaknesses in the standard libraries of the sandbox.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker analyzes the target application to get a list of cross code weaknesses in the standard libraries of the sandbox.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Verify the exploitable security weaknesses: </b>The attacker tries to craft malicious code of another language allowed by the sandbox to verify the security weaknesses of the standard libraries found in the Explore phase.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker tries to explore the security weaknesses by calling malicious code of another language allowed by the sandbox.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Exploit the security weaknesses in the standard libraries: </b>The attacker calls malicious code of another language to exploit the security weaknesses in the standard libraries verified in the Experiment phase. The attacker will be able to obtain access to privileges that were not intentionally exposed by the sandbox, thus escaping the sandbox.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker calls malicious code of another language to exploit the security weaknesses in the standard libraries.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "High": "The attacker must have a good knowledge of the platform specific mechanisms of signing and verifying code. Most code signing and verification schemes are based on use of cryptography, the attacker needs to have an understand of these cryptographic operations in good detail."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

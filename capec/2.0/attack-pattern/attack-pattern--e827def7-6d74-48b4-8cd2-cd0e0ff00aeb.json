@@ -1,1 +1,115 @@
-{"type": "bundle", "id": "bundle--c84fe8fc-1d6a-4b50-bff1-4cc00ab1ecc2", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--e827def7-6d74-48b4-8cd2-cd0e0ff00aeb", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2021-06-24T00:00:00.000Z", "name": "Exploiting Multiple Input Interpretation Layers", "description": "An attacker supplies the target software with input data that contains sequences of special characters designed to bypass input validation logic. This exploit relies on the target making multiples passes over the input data and processing a \"layer\" of special characters with each pass. In this manner, the attacker can disguise input that would otherwise be rejected as invalid by concealing it with layers of special/escape characters that are stripped off by subsequent processing steps. The goal is to first discover cases where the input validation layer executes before one or more parsing layers. That is, user input may go through the following logic in an application: <parser1> --> <input validator> --> <parser2>. In such cases, the attacker will need to provide input that will pass through the input validator, but after passing through parser2, will be converted into something that the input validator was supposed to stop.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/43.html", "external_id": "CAPEC-43"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/179.html", "external_id": "CWE-179"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/181.html", "external_id": "CWE-181"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/184.html", "external_id": "CWE-184"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/183.html", "external_id": "CWE-183"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/77.html", "external_id": "CWE-77"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/78.html", "external_id": "CWE-78"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/74.html", "external_id": "CWE-74"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/20.html", "external_id": "CWE-20"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/697.html", "external_id": "CWE-697"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/707.html", "external_id": "CWE-707"}, {"source_name": "reference_from_CAPEC", "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley", "external_id": "REF-1"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_child_of": ["attack-pattern--a1af7c24-25cb-46e5-a27b-ed316e1f91ce"], "x_capec_consequences": {"Integrity": ["Modify Data"], "Confidentiality": ["Gain Privileges", "Read Data"], "Access_Control": ["Gain Privileges"], "Authorization": ["Gain Privileges"]}, "x_capec_example_instances": ["\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Using Escapes</xhtml:div>\n               <xhtml:p>The backslash character provides a good example of the multiple-parser issue. A backslash is used to escape characters in strings, but is also used to delimit directories on the NT file system. When performing a command injection that includes NT paths, there is usually a need to \"double escape\" the backslash. In some cases, a quadruple escape is necessary.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">Original String: C:\\\\\\\\winnt\\\\\\\\system32\\\\\\\\cmd.exe /c\n                  <parsing layer>\n                  Interim String: C:\\\\winnt\\\\system32\\\\cmd.exe /c\n                  <parsing layer>\n                  Final String: C:\\winnt\\system32\\cmd.exe /c</xhtml:div>\n               <xhtml:p>This diagram shows each successive layer of parsing translating the backslash character. A double backslash becomes a single as it is parsed. By using quadruple backslashes, the attacker is able to control the result in the final string.</xhtml:p>\n               <xhtml:p>[REF-1]</xhtml:p>\n            "], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine application/system inputs where bypassing input validation is desired: </b>The attacker first needs to determine all of the application's/system's inputs where input validation is being performed and where they want to bypass it.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>While using an application/system, the attacker discovers an input where validation is stopping them from performing some malicious or unauthorized actions.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Determine which character encodings are accepted by the application/system: </b>The attacker then needs to provide various character encodings to the application/system and determine which ones are accepted. The attacker will need to observe the application's/system's response to the encoded data to determine whether the data was interpreted properly.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine which escape characters are accepted by the application/system. A common escape character is the backslash character, '\\'</td></tr><tr><td>Determine whether URL encoding is accepted by the application/system.</td></tr><tr><td>Determine whether UTF-8 encoding is accepted by the application/system.</td></tr><tr><td>Determine whether UTF-16 encoding is accepted by the application/system.</td></tr><tr><td>Determine if any other encodings are accepted by the application/system.</td></tr></tbody></table><li> <p> <b>Combine multiple encodings accepted by the application.: </b>The attacker now combines encodings accepted by the application. The attacker may combine different encodings or apply the same encoding multiple times.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Combine same encoding multiple times and observe its effects. For example, if special characters are encoded with a leading backslash, then the following encoding may be accepted by the application/system: \"\\\\\\.\". With two parsing layers, this may get converted to \"\\.\" after the first parsing layer, and then, to \".\" after the second. If the input validation layer is between the two parsing layers, then \"\\\\\\.\\\\\\.\" might pass a test for \"..\" but still get converted to \"..\" afterwards. This may enable directory traversal attacks.</td></tr><tr><td>Combine multiple encodings and observe the effects. For example, the attacker might encode \".\" as \"\\.\", and then, encode \"\\.\" as \"&#92;&#46;\", and then, encode that using URL encoding to \"%26%2392%3B%26%2346%3B\"</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Leverage ability to bypass input validation: </b>Attacker leverages their ability to bypass input validation to gain unauthorized access to system. There are many attacks possible, and a few examples are mentioned here.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Gain access to sensitive files.</td></tr><tr><td>Perform command injection.</td></tr><tr><td>Perform SQL injection.</td></tr><tr><td>Perform XSS attacks.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "Medium", "x_capec_prerequisites": ["User input is used to construct a command to be executed on the target system or as part of the file name.", "Multiple parser passes are performed on the data supplied by the user."], "x_capec_skills_required": {"Medium": "Knowledge of various escaping schemes, such as URL escape encoding and XML escape characters."}, "x_capec_status": "Draft", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--15edfb3a-6ce5-4b4c-a977-c9d6d24b603d",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An attacker supplies the target software with input data that contains sequences of special characters designed to bypass input validation logic. This exploit relies on the target making multiples passes over the input data and processing a \"layer\" of special characters with each pass. In this manner, the attacker can disguise input that would otherwise be rejected as invalid by concealing it with layers of special/escape characters that are stripped off by subsequent processing steps. The goal is to first discover cases where the input validation layer executes before one or more parsing layers. That is, user input may go through the following logic in an application: <parser1> --> <input validator> --> <parser2>. In such cases, the attacker will need to provide input that will pass through the input validator, but after passing through parser2, will be converted into something that the input validator was supposed to stop.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-43",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/43.html"
+                },
+                {
+                    "external_id": "CWE-179",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/179.html"
+                },
+                {
+                    "external_id": "CWE-181",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/181.html"
+                },
+                {
+                    "external_id": "CWE-184",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/184.html"
+                },
+                {
+                    "external_id": "CWE-183",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/183.html"
+                },
+                {
+                    "external_id": "CWE-77",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/77.html"
+                },
+                {
+                    "external_id": "CWE-78",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/78.html"
+                },
+                {
+                    "external_id": "CWE-74",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html"
+                },
+                {
+                    "external_id": "CWE-20",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html"
+                },
+                {
+                    "external_id": "CWE-697",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/697.html"
+                },
+                {
+                    "external_id": "CWE-707",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/707.html"
+                },
+                {
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1",
+                    "source_name": "reference_from_CAPEC"
+                }
+            ],
+            "id": "attack-pattern--e827def7-6d74-48b4-8cd2-cd0e0ff00aeb",
+            "modified": "2021-06-24T00:00:00.000Z",
+            "name": "Exploiting Multiple Input Interpretation Layers",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--a1af7c24-25cb-46e5-a27b-ed316e1f91ce"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Using Escapes</xhtml:div>\n               <xhtml:p>The backslash character provides a good example of the multiple-parser issue. A backslash is used to escape characters in strings, but is also used to delimit directories on the NT file system. When performing a command injection that includes NT paths, there is usually a need to \"double escape\" the backslash. In some cases, a quadruple escape is necessary.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">Original String: C:\\\\\\\\winnt\\\\\\\\system32\\\\\\\\cmd.exe /c\n                  <parsing layer>\n                  Interim String: C:\\\\winnt\\\\system32\\\\cmd.exe /c\n                  <parsing layer>\n                  Final String: C:\\winnt\\system32\\cmd.exe /c</xhtml:div>\n               <xhtml:p>This diagram shows each successive layer of parsing translating the backslash character. A double backslash becomes a single as it is parsed. By using quadruple backslashes, the attacker is able to control the result in the final string.</xhtml:p>\n               <xhtml:p>[REF-1]</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine application/system inputs where bypassing input validation is desired: </b>The attacker first needs to determine all of the application's/system's inputs where input validation is being performed and where they want to bypass it.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>While using an application/system, the attacker discovers an input where validation is stopping them from performing some malicious or unauthorized actions.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Determine which character encodings are accepted by the application/system: </b>The attacker then needs to provide various character encodings to the application/system and determine which ones are accepted. The attacker will need to observe the application's/system's response to the encoded data to determine whether the data was interpreted properly.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine which escape characters are accepted by the application/system. A common escape character is the backslash character, '\\'</td></tr><tr><td>Determine whether URL encoding is accepted by the application/system.</td></tr><tr><td>Determine whether UTF-8 encoding is accepted by the application/system.</td></tr><tr><td>Determine whether UTF-16 encoding is accepted by the application/system.</td></tr><tr><td>Determine if any other encodings are accepted by the application/system.</td></tr></tbody></table><li> <p> <b>Combine multiple encodings accepted by the application.: </b>The attacker now combines encodings accepted by the application. The attacker may combine different encodings or apply the same encoding multiple times.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Combine same encoding multiple times and observe its effects. For example, if special characters are encoded with a leading backslash, then the following encoding may be accepted by the application/system: \"\\\\\\.\". With two parsing layers, this may get converted to \"\\.\" after the first parsing layer, and then, to \".\" after the second. If the input validation layer is between the two parsing layers, then \"\\\\\\.\\\\\\.\" might pass a test for \"..\" but still get converted to \"..\" afterwards. This may enable directory traversal attacks.</td></tr><tr><td>Combine multiple encodings and observe the effects. For example, the attacker might encode \".\" as \"\\.\", and then, encode \"\\.\" as \"&#92;&#46;\", and then, encode that using URL encoding to \"%26%2392%3B%26%2346%3B\"</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Leverage ability to bypass input validation: </b>Attacker leverages their ability to bypass input validation to gain unauthorized access to system. There are many attacks possible, and a few examples are mentioned here.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Gain access to sensitive files.</td></tr><tr><td>Perform command injection.</td></tr><tr><td>Perform SQL injection.</td></tr><tr><td>Perform XSS attacks.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "User input is used to construct a command to be executed on the target system or as part of the file name.",
+                "Multiple parser passes are performed on the data supplied by the user."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Knowledge of various escaping schemes, such as URL escape encoding and XML escape characters."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

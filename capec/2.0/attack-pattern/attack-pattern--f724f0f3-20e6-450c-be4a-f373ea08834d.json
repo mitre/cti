@@ -1,1 +1,137 @@
-{"type": "bundle", "id": "bundle--a944f2e2-2e4b-4108-a599-5648aeee9847", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--f724f0f3-20e6-450c-be4a-f373ea08834d", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2020-07-30T00:00:00.000Z", "modified": "2020-12-17T00:00:00.000Z", "name": "Password Spraying", "description": "\n            <xhtml:p>In a Password Spraying attack, an adversary tries a small list (e.g. 3-5) of common or expected passwords, often matching the target's complexity policy, against a known list of user accounts to gain valid credentials. The adversary tries a particular password for each user account, before moving onto the next password in the list. This approach assists the adversary in remaining undetected by avoiding rapid or frequent account lockouts. The adversary may then reattempt the process with additional passwords, once enough time has passed to prevent inducing a lockout. Password Spraying attacks often target management services over commonly used ports such as SSH, FTP, Telnet, LDAP, Kerberos, MySQL, and more. Additional targets include Single Sign-On (SSO) or cloud-based applications/services that utilize federated authentication protocols, and externally facing applications. Successful execution of Password Spraying attacks usually lead to lateral movement within the target, which allows the adversary to impersonate the victim or execute any action that the victim is authorized to perform. If the password chosen by the user is commonly used or easily guessed, this attack will be successful (in the absence of other mitigations). This is a specific instance of the password brute forcing attack pattern.</xhtml:p>\n            <xhtml:p>Password Spraying Attacks are similar to Dictionary-based Password Attacks (CAPEC-16) in that they both leverage precompiled lists (i.e. dictionaries) of username/password combinations to try against a system/application. The primary difference is that Password Spraying Attacks leverage a known list of user accounts and only try one password for each account before moving onto the next password. In contrast, Dictionary-based Password Attacks leverage unknown username/password combinations and are often executed offline against files containing hashed credentials, where inducing an account lockout is not a concern.</xhtml:p>\n            <xhtml:p>Password Spraying Attacks are also similar to Credential Stuffing attacks (CAPEC-600), since both utilize known user accounts and often attack the same targets. Credential Stuffing attacks, however, leverage known username/password combinations, whereas Password Spraying attacks have no insight into known username/password pairs. If a Password Spraying attack succeeds, it may additionally lead to Credential Stuffing attacks on different targets.</xhtml:p>\n         ", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/565.html", "external_id": "CAPEC-565"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/521.html", "external_id": "CWE-521"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/262.html", "external_id": "CWE-262"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/263.html", "external_id": "CWE-263"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/654.html", "external_id": "CWE-654"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/307.html", "external_id": "CWE-307"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/308.html", "external_id": "CWE-308"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/309.html", "external_id": "CWE-309"}, {"source_name": "ATTACK", "description": "Brute Force:Password Spraying", "url": "https://attack.mitre.org/wiki/Technique/T1110/003", "external_id": "T1110.003"}, {"source_name": "reference_from_CAPEC", "description": "ACSC Releases Advisory on Password Spraying Attacks, 2019--08---08, Cybersecurity and Infrastructure Security Agency (CISA)", "url": "https://www.us-cert.gov/ncas/current-activity/2019/08/08/acsc-releases-advisory-password-spraying-attacks", "external_id": "REF-565"}, {"source_name": "reference_from_CAPEC", "description": "Andy Greenberg, A notorious Iranian hacking crew is targeting industrial control systems, 2019--11---23, Ars Technica", "url": "https://arstechnica.com/information-technology/2019/11/a-notorious-iranian-hacking-crew-is-targeting-industrial-control-systems/", "external_id": "REF-566"}, {"source_name": "reference_from_CAPEC", "description": "Alert (TA18-086A): Brute Force Attacks Conducted by Cyber Actors, 2018--03---27, Cybersecurity and Infrastructure Security Agency (CISA)", "url": "https://www.us-cert.gov/ncas/alerts/TA18-086A", "external_id": "REF-567"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_can_precede": ["attack-pattern--03a731ef-751b-43de-9159-9667d4be4d1a", "attack-pattern--22802ed6-ddc6-4da7-b6be-60b10d26198b", "attack-pattern--886a7175-e28a-4e6d-bd22-3b1497e31dc7", "attack-pattern--f2654def-b86d-4ddb-888f-de6b50a103a2", "attack-pattern--2618d0a4-06d0-4bde-8271-2df61ed8297a"], "x_capec_child_of": ["attack-pattern--8d88a81c-bde9-4fb3-acbe-901c783d6427"], "x_capec_consequences": {"Confidentiality": ["Gain Privileges", "Read Data"], "Access_Control": ["Gain Privileges"], "Authentication": ["Gain Privileges"], "Authorization": ["Read Data"], "Integrity": ["Modify Data"]}, "x_capec_example_instances": ["A user selects the phrase \"Password123\" as their password, believing that it would be very difficult to guess. Password Spraying, leveraging a list of commonly used passwords, is used to crack this password and gain access to the account.", "The Iranian hacker group APT33 (AKA Holmium, Refined Kitten, or Elfin) carried out numerous Password Spraying attacks in 2019. On average, APT33 targeted 2,000 organizations per month, with upwards of 10 million authentication attempts each day. The majority of these attacks targeted manufacturers, suppliers, or maintainers of industrial control system equipment."], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine target's password policy: </b>Determine the password policies of the target system/application.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine minimum and maximum allowed password lengths.</td></tr><tr><td>Determine format of allowed passwords (whether they are required or allowed to contain numbers, special characters, etc., or whether they are allowed to contain words from the dictionary).</td></tr><tr><td>Determine account lockout policy (a strict account lockout policy will prevent brute force attacks).</td></tr></tbody></table><li> <p> <b>Select passwords: </b>Pick the passwords to be used in the attack (e.g. commonly used passwords, passwords tailored to individual users, etc.)</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Select passwords based on common use or a particular user's additional details.</td></tr><tr><td>Select passwords based on the target's password complexity policies.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Brute force password: </b>Given the finite space of possible passwords dictated by information determined in the previous steps, try each password for all known user accounts until the target grants access.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Manually or automatically enter the first password for each known user account through the target's interface. In most systems, start with the shortest and simplest possible passwords, because most users tend to select such passwords if allowed to do so.</td></tr><tr><td>Iterate through the remaining passwords for each known user account.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "High", "x_capec_prerequisites": ["The system/application uses one factor password based authentication.", "The system/application does not have a sound password policy that is being enforced.", "The system/application does not implement an effective password throttling mechanism.", "The adversary possesses a list of known user accounts on the target system/application."], "x_capec_resources_required": ["A machine with sufficient resources for the job (e.g. CPU, RAM, HD).", "Applicable password lists.", "A password cracking tool or a custom script that leverages the password list to launch the attack."], "x_capec_skills_required": {"Low": "A Password Spraying attack is very straightforward. A variety of password cracking tools are widely available."}, "x_capec_status": "Draft", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--ddf87167-0855-479f-99a0-f3e8396e86f9",
+    "objects": [
+        {
+            "created": "2020-07-30T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>In a Password Spraying attack, an adversary tries a small list (e.g. 3-5) of common or expected passwords, often matching the target's complexity policy, against a known list of user accounts to gain valid credentials. The adversary tries a particular password for each user account, before moving onto the next password in the list. This approach assists the adversary in remaining undetected by avoiding rapid or frequent account lockouts. The adversary may then reattempt the process with additional passwords, once enough time has passed to prevent inducing a lockout. Password Spraying attacks often target management services over commonly used ports such as SSH, FTP, Telnet, LDAP, Kerberos, MySQL, and more. Additional targets include Single Sign-On (SSO) or cloud-based applications/services that utilize federated authentication protocols, and externally facing applications. Successful execution of Password Spraying attacks usually lead to lateral movement within the target, which allows the adversary to impersonate the victim or execute any action that the victim is authorized to perform. If the password chosen by the user is commonly used or easily guessed, this attack will be successful (in the absence of other mitigations). This is a specific instance of the password brute forcing attack pattern.</xhtml:p>\n            <xhtml:p>Password Spraying Attacks are similar to Dictionary-based Password Attacks (CAPEC-16) in that they both leverage precompiled lists (i.e. dictionaries) of username/password combinations to try against a system/application. The primary difference is that Password Spraying Attacks leverage a known list of user accounts and only try one password for each account before moving onto the next password. In contrast, Dictionary-based Password Attacks leverage unknown username/password combinations and are often executed offline against files containing hashed credentials, where inducing an account lockout is not a concern.</xhtml:p>\n            <xhtml:p>Password Spraying Attacks are also similar to Credential Stuffing attacks (CAPEC-600), since both utilize known user accounts and often attack the same targets. Credential Stuffing attacks, however, leverage known username/password combinations, whereas Password Spraying attacks have no insight into known username/password pairs. If a Password Spraying attack succeeds, it may additionally lead to Credential Stuffing attacks on different targets.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-565",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/565.html"
+                },
+                {
+                    "external_id": "CWE-521",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/521.html"
+                },
+                {
+                    "external_id": "CWE-262",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/262.html"
+                },
+                {
+                    "external_id": "CWE-263",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/263.html"
+                },
+                {
+                    "external_id": "CWE-654",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/654.html"
+                },
+                {
+                    "external_id": "CWE-307",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/307.html"
+                },
+                {
+                    "external_id": "CWE-308",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/308.html"
+                },
+                {
+                    "external_id": "CWE-309",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/309.html"
+                },
+                {
+                    "description": "Brute Force:Password Spraying",
+                    "external_id": "T1110.003",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1110/003"
+                },
+                {
+                    "description": "ACSC Releases Advisory on Password Spraying Attacks, 2019--08---08, Cybersecurity and Infrastructure Security Agency (CISA)",
+                    "external_id": "REF-565",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.us-cert.gov/ncas/current-activity/2019/08/08/acsc-releases-advisory-password-spraying-attacks"
+                },
+                {
+                    "description": "Andy Greenberg, A notorious Iranian hacking crew is targeting industrial control systems, 2019--11---23, Ars Technica",
+                    "external_id": "REF-566",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://arstechnica.com/information-technology/2019/11/a-notorious-iranian-hacking-crew-is-targeting-industrial-control-systems/"
+                },
+                {
+                    "description": "Alert (TA18-086A): Brute Force Attacks Conducted by Cyber Actors, 2018--03---27, Cybersecurity and Infrastructure Security Agency (CISA)",
+                    "external_id": "REF-567",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.us-cert.gov/ncas/alerts/TA18-086A"
+                }
+            ],
+            "id": "attack-pattern--f724f0f3-20e6-450c-be4a-f373ea08834d",
+            "modified": "2020-12-17T00:00:00.000Z",
+            "name": "Password Spraying",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_can_precede_refs": [
+                "attack-pattern--03a731ef-751b-43de-9159-9667d4be4d1a",
+                "attack-pattern--22802ed6-ddc6-4da7-b6be-60b10d26198b",
+                "attack-pattern--886a7175-e28a-4e6d-bd22-3b1497e31dc7",
+                "attack-pattern--f2654def-b86d-4ddb-888f-de6b50a103a2",
+                "attack-pattern--2618d0a4-06d0-4bde-8271-2df61ed8297a"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--8d88a81c-bde9-4fb3-acbe-901c783d6427"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Read Data"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "A user selects the phrase \"Password123\" as their password, believing that it would be very difficult to guess. Password Spraying, leveraging a list of commonly used passwords, is used to crack this password and gain access to the account.",
+                "The Iranian hacker group APT33 (AKA Holmium, Refined Kitten, or Elfin) carried out numerous Password Spraying attacks in 2019. On average, APT33 targeted 2,000 organizations per month, with upwards of 10 million authentication attempts each day. The majority of these attacks targeted manufacturers, suppliers, or maintainers of industrial control system equipment."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine target's password policy: </b>Determine the password policies of the target system/application.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine minimum and maximum allowed password lengths.</td></tr><tr><td>Determine format of allowed passwords (whether they are required or allowed to contain numbers, special characters, etc., or whether they are allowed to contain words from the dictionary).</td></tr><tr><td>Determine account lockout policy (a strict account lockout policy will prevent brute force attacks).</td></tr></tbody></table><li> <p> <b>Select passwords: </b>Pick the passwords to be used in the attack (e.g. commonly used passwords, passwords tailored to individual users, etc.)</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Select passwords based on common use or a particular user's additional details.</td></tr><tr><td>Select passwords based on the target's password complexity policies.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Brute force password: </b>Given the finite space of possible passwords dictated by information determined in the previous steps, try each password for all known user accounts until the target grants access.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Manually or automatically enter the first password for each known user account through the target's interface. In most systems, start with the shortest and simplest possible passwords, because most users tend to select such passwords if allowed to do so.</td></tr><tr><td>Iterate through the remaining passwords for each known user account.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The system/application uses one factor password based authentication.",
+                "The system/application does not have a sound password policy that is being enforced.",
+                "The system/application does not implement an effective password throttling mechanism.",
+                "The adversary possesses a list of known user accounts on the target system/application."
+            ],
+            "x_capec_resources_required": [
+                "A machine with sufficient resources for the job (e.g. CPU, RAM, HD).",
+                "Applicable password lists.",
+                "A password cracking tool or a custom script that leverages the password list to launch the attack."
+            ],
+            "x_capec_skills_required": {
+                "Low": "A Password Spraying attack is very straightforward. A variety of password cracking tools are widely available."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

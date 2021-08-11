@@ -1,1 +1,92 @@
-{"type": "bundle", "id": "bundle--0f68b15f-24c6-4a82-adc9-17d4c7c7c854", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--ebf5cbfb-36d8-4983-9267-9d17bff3817f", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2020-07-30T00:00:00.000Z", "name": "Cross Zone Scripting", "description": "An attacker is able to cause a victim to load content into their web-browser that bypasses security zone controls and gain access to increased privileges to execute scripting code or other web objects such as unsigned ActiveX controls or applets. This is a privilege elevation attack targeted at zone-based web-browser security. In a zone-based model, pages belong to one of a set of zones corresponding to the level of privilege assigned to that page. Pages in an untrusted zone would have a lesser level of access to the system and/or be restricted in the types of executable content it was allowed to invoke. In a cross-zone scripting attack, a page that should be assigned to a less privileged zone is granted the privileges of a more trusted zone. This can be accomplished by exploiting bugs in the browser, exploiting incorrect configuration in the zone controls, through a cross-site scripting attack that causes the attackers' content to be treated as coming from a more trusted page, or by leveraging some piece of system functionality that is accessible from both the trusted and less trusted zone. This attack differs from \"Restful Privilege Escalation\" in that the latter correlates to the inadequate securing of RESTful access methods (such as HTTP DELETE) on the server, while cross-zone scripting attacks the concept of security zones as implemented by a browser.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/104.html", "external_id": "CAPEC-104"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/250.html", "external_id": "CWE-250"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/638.html", "external_id": "CWE-638"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/285.html", "external_id": "CWE-285"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/116.html", "external_id": "CWE-116"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/20.html", "external_id": "CWE-20"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Standard", "x_capec_child_of": ["attack-pattern--c05fff04-b965-4a11-9c18-379dac31969f"], "x_capec_consequences": {"Integrity": ["Modify Data", "Execute Unauthorized Commands (Run Arbitrary Code)"], "Confidentiality": ["Read Data", "Gain Privileges", "Execute Unauthorized Commands (Run Arbitrary Code)"], "Access_Control": ["Gain Privileges"], "Authorization": ["Gain Privileges"], "Availability": ["Execute Unauthorized Commands (Run Arbitrary Code)"]}, "x_capec_example_instances": ["There was a cross zone scripting vulnerability discovered in Skype that allowed one user to upload a video with a maliciously crafted title that contains a script. Subsequently, when the victim attempts to use the \"add video to chat\" feature on attacker's video, the script embedded in the title of the video runs with local zone privileges. Skype is using IE web controls to render internal and external HTML pages. \"Add video to chat\" uses these web controls and they are running in the Local Zone. Any user who searched for the video in Skype with the same keywords as in the title field, would have the attackers' code executing in their browser with local zone privileges to their host machine (e.g. applications on the victim's host system could be executed)."], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find systems susceptible to the attack: </b>Find systems that contain functionality that is accessed from both the internet zone and the local zone. There needs to be a way to supply input to that functionality from the internet zone and that original input needs to be used later on a page from a local zone.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Leverage knowledge of common local zone functionality on targeted platforms to guide attempted injection of code through relevant internet zone mechanisms. In some cases this may be due to standard system configurations enabling shared functionality between internet and local zones. The attacker can search for indicators that these standard configurations are in place.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find the insertion point for the payload: </b>The attacker first needs to find some system functionality or possibly another weakness in the system (e.g. susceptibility to cross site scripting) that would provide the attacker with a mechanism to deliver the payload (i.e. the code to be executed) to the user. The location from which this code is executed in the user's browser needs to be within the local machine zone.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Finding weaknesses in functionality used by both privileged and unprivileged users.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Craft and inject the payload: </b>Develop the payload to be executed in the higher privileged zone in the user's browser. Inject the payload and attempt to lure the victim (if possible) into executing the functionality which unleashes the payload.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker makes it as likely as possible that the vulnerable functionality into which they have injected the payload has a high likelihood of being used by the victim.</td></tr><tr><td>Leverage cross-site scripting vulnerability to inject payload.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "Medium", "x_capec_prerequisites": ["The target must be using a zone-aware browser."], "x_capec_resources_required": ["None: No specialized resources are required to execute this type of attack."], "x_capec_skills_required": {"Medium": "Ability to craft malicious scripts or find them elsewhere and ability to identify functionality that is running web controls in the local zone and to find an injection vector into that functionality"}, "x_capec_status": "Draft", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--77633207-0685-4703-9eba-d457e2e6056b",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An attacker is able to cause a victim to load content into their web-browser that bypasses security zone controls and gain access to increased privileges to execute scripting code or other web objects such as unsigned ActiveX controls or applets. This is a privilege elevation attack targeted at zone-based web-browser security. In a zone-based model, pages belong to one of a set of zones corresponding to the level of privilege assigned to that page. Pages in an untrusted zone would have a lesser level of access to the system and/or be restricted in the types of executable content it was allowed to invoke. In a cross-zone scripting attack, a page that should be assigned to a less privileged zone is granted the privileges of a more trusted zone. This can be accomplished by exploiting bugs in the browser, exploiting incorrect configuration in the zone controls, through a cross-site scripting attack that causes the attackers' content to be treated as coming from a more trusted page, or by leveraging some piece of system functionality that is accessible from both the trusted and less trusted zone. This attack differs from \"Restful Privilege Escalation\" in that the latter correlates to the inadequate securing of RESTful access methods (such as HTTP DELETE) on the server, while cross-zone scripting attacks the concept of security zones as implemented by a browser.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-104",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/104.html"
+                },
+                {
+                    "external_id": "CWE-250",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/250.html"
+                },
+                {
+                    "external_id": "CWE-638",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/638.html"
+                },
+                {
+                    "external_id": "CWE-285",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/285.html"
+                },
+                {
+                    "external_id": "CWE-116",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/116.html"
+                },
+                {
+                    "external_id": "CWE-20",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html"
+                }
+            ],
+            "id": "attack-pattern--ebf5cbfb-36d8-4983-9267-9d17bff3817f",
+            "modified": "2020-07-30T00:00:00.000Z",
+            "name": "Cross Zone Scripting",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Standard",
+            "x_capec_child_of_refs": [
+                "attack-pattern--c05fff04-b965-4a11-9c18-379dac31969f"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Gain Privileges",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "There was a cross zone scripting vulnerability discovered in Skype that allowed one user to upload a video with a maliciously crafted title that contains a script. Subsequently, when the victim attempts to use the \"add video to chat\" feature on attacker's video, the script embedded in the title of the video runs with local zone privileges. Skype is using IE web controls to render internal and external HTML pages. \"Add video to chat\" uses these web controls and they are running in the Local Zone. Any user who searched for the video in Skype with the same keywords as in the title field, would have the attackers' code executing in their browser with local zone privileges to their host machine (e.g. applications on the victim's host system could be executed)."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find systems susceptible to the attack: </b>Find systems that contain functionality that is accessed from both the internet zone and the local zone. There needs to be a way to supply input to that functionality from the internet zone and that original input needs to be used later on a page from a local zone.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Leverage knowledge of common local zone functionality on targeted platforms to guide attempted injection of code through relevant internet zone mechanisms. In some cases this may be due to standard system configurations enabling shared functionality between internet and local zones. The attacker can search for indicators that these standard configurations are in place.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find the insertion point for the payload: </b>The attacker first needs to find some system functionality or possibly another weakness in the system (e.g. susceptibility to cross site scripting) that would provide the attacker with a mechanism to deliver the payload (i.e. the code to be executed) to the user. The location from which this code is executed in the user's browser needs to be within the local machine zone.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Finding weaknesses in functionality used by both privileged and unprivileged users.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Craft and inject the payload: </b>Develop the payload to be executed in the higher privileged zone in the user's browser. Inject the payload and attempt to lure the victim (if possible) into executing the functionality which unleashes the payload.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker makes it as likely as possible that the vulnerable functionality into which they have injected the payload has a high likelihood of being used by the victim.</td></tr><tr><td>Leverage cross-site scripting vulnerability to inject payload.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "The target must be using a zone-aware browser."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Ability to craft malicious scripts or find them elsewhere and ability to identify functionality that is running web controls in the local zone and to find an injection vector into that functionality"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

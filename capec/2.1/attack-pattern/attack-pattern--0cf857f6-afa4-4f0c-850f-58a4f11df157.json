@@ -1,1 +1,81 @@
-{"type": "bundle", "id": "bundle--4533b4f2-c865-489b-a2fd-c2c3a48bf19b", "objects": [{"type": "attack-pattern", "spec_version": "2.1", "id": "attack-pattern--0cf857f6-afa4-4f0c-850f-58a4f11df157", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2020-07-30T00:00:00.000Z", "name": "Web Application Fingerprinting", "description": "An attacker sends a series of probes to a web application in order to elicit version-dependent and type-dependent behavior that assists in identifying the target. An attacker could learn information such as software versions, error pages, and response headers, variations in implementations of the HTTP protocol, directory structures, and other similar information about the targeted service. This information can then be used by an attacker to formulate a targeted attack plan. While web application fingerprinting is not intended to be damaging (although certain activities, such as network scans, can sometimes cause disruptions to vulnerable applications inadvertently) it may often pave the way for more damaging attacks.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/170.html", "external_id": "CAPEC-170"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/497.html", "external_id": "CWE-497"}, {"source_name": "reference_from_CAPEC", "description": "Saumil Shah, An Introduction to HTTP fingerprinting", "url": "http://www.net-square.com/httprint_paper.html", "external_id": "REF-36"}, {"source_name": "reference_from_CAPEC", "description": "OWASP Web Security Testing Guide (v4 [DRAFT]), The Open Web Application Security Project (OWASP)", "url": "https://www.owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/08-Fingerprint_Web_Application_Framework", "external_id": "REF-37"}, {"source_name": "reference_from_CAPEC", "description": "HTTP 1.1 Specification (RFC 2616), IETF RFC", "url": "http://www.ietf.org/rfc/rfc2616.txt", "external_id": "REF-38"}, {"source_name": "reference_from_CAPEC", "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)", "url": "http://projects.webappsec.org/Fingerprinting", "external_id": "REF-39"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_child_of": ["attack-pattern--e7eec058-4cd9-4fa0-8784-ed961d8d7290"], "x_capec_consequences": {"Confidentiality": ["Other (Information Leakage)"]}, "x_capec_example_instances": ["\n               <xhtml:p>An attacker sends malformed requests or requests of nonexistent pages to the server. Consider the following HTTP responses.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Response from Apache 1.3.23</xhtml:div>$ nc apache.server.com80 GET / HTTP/3.0\n                  HTTP/1.1 400 Bad RequestDate: Sun, 15 Jun 2003 17:12: 37 GMTServer: Apache/1.3.23Connection: closeTransfer: chunkedContent-Type: text/HTML; charset=iso-8859-1</xhtml:div>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Response from IIS 5.0</xhtml:div>$ nc iis.server.com 80GET / HTTP/3.0\n                  HTTP/1.1 200 OKServer: Microsoft-IIS/5.0Content-Location: http://iis.example.com/Default.htmDate: Fri, 01 Jan 1999 20:14: 02 GMTContent-Type: text/HTMLAccept-Ranges: bytes Last-Modified: Fri, 01 Jan 1999 20:14: 02 GMTETag: W/e0d362a4c335be1: ae1Content-Length: 133</xhtml:div>\n               <xhtml:p>[REF-37]</xhtml:p>\n            "], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Request fingerprinting: </b>Use automated tools or send web server specific commands to web server and wait for server's response.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use automated tools or send web server specific commands to web server and then receive server's response.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Increase the accuracy of server fingerprinting of Web servers: </b>Attacker usually needs to send several different commands to accurately identify the web server. Attacker can also use automated tools to send requests to the server. The responses of the server may be different in terms of protocol behavior.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Observe the ordering of the several HTTP response headers. The ordering of the header of each server may have unique identities.</td></tr><tr><td>Send bad requests or requests of nonexistent pages to the server.</td></tr><tr><td>Attacker takes existing automated tools to recognize the type and the version of the web server in use.</td></tr></tbody></table><li> <p> <b>Identify Web Application Software: </b>After the web server platform software has been identified, the attacker start to identify web application technologies such as ASP, .NET, PHP and Java on the server.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Examine the file name extensions in URL, for example .php indicates PHP script interfaced with Apache server.</td></tr><tr><td>Examine the HTTP Response Headers. This may leak information about software signatures</td></tr><tr><td>Examine Cookies that may contain server's software information.</td></tr><tr><td>Check error pages.</td></tr></tbody></table><li> <p> <b>Identify Backend Database Version: </b>Determining the database engine type can assist attackers' attempt to successfully execute SQL injection. Some database API such as ODBC will show a database type as part of the driver information when reporting an error.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use tools to send bogus SQL query to the server and check error pages.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "High", "x_capec_prerequisites": ["Any web application can be fingerprinted. However, some configuration choices can limit the useful information an attacker may collect during a fingerprinting attack."], "x_capec_resources_required": ["While simple fingerprinting can be accomplished with only a web browser, for more thorough fingerprinting an attacker requires a variety of tools to collect information about the target. These tools might include protocol analyzers, web-site crawlers, and fuzzing tools. Footprinting a service adequately may also take a few days if the attacker wishes the footprinting attempt to go undetected."], "x_capec_skills_required": {"Low": "Attacker knows how to send HTTP request, SQL query to a web application."}, "x_capec_status": "Draft", "x_capec_typical_severity": "Low", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--e6d35329-c9c5-4824-a7ee-b86eacad76a8",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An attacker sends a series of probes to a web application in order to elicit version-dependent and type-dependent behavior that assists in identifying the target. An attacker could learn information such as software versions, error pages, and response headers, variations in implementations of the HTTP protocol, directory structures, and other similar information about the targeted service. This information can then be used by an attacker to formulate a targeted attack plan. While web application fingerprinting is not intended to be damaging (although certain activities, such as network scans, can sometimes cause disruptions to vulnerable applications inadvertently) it may often pave the way for more damaging attacks.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-170",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/170.html"
+                },
+                {
+                    "external_id": "CWE-497",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/497.html"
+                },
+                {
+                    "description": "Saumil Shah, An Introduction to HTTP fingerprinting",
+                    "external_id": "REF-36",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://www.net-square.com/httprint_paper.html"
+                },
+                {
+                    "description": "OWASP Web Security Testing Guide (v4 [DRAFT]), The Open Web Application Security Project (OWASP)",
+                    "external_id": "REF-37",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/08-Fingerprint_Web_Application_Framework"
+                },
+                {
+                    "description": "HTTP 1.1 Specification (RFC 2616), IETF RFC",
+                    "external_id": "REF-38",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://www.ietf.org/rfc/rfc2616.txt"
+                },
+                {
+                    "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)",
+                    "external_id": "REF-39",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://projects.webappsec.org/Fingerprinting"
+                }
+            ],
+            "id": "attack-pattern--0cf857f6-afa4-4f0c-850f-58a4f11df157",
+            "modified": "2020-07-30T00:00:00.000Z",
+            "name": "Web Application Fingerprinting",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--e7eec058-4cd9-4fa0-8784-ed961d8d7290"
+            ],
+            "x_capec_consequences": {
+                "Confidentiality": [
+                    "Other (Information Leakage)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>An attacker sends malformed requests or requests of nonexistent pages to the server. Consider the following HTTP responses.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Response from Apache 1.3.23</xhtml:div>$ nc apache.server.com80 GET / HTTP/3.0\n                  HTTP/1.1 400 Bad RequestDate: Sun, 15 Jun 2003 17:12: 37 GMTServer: Apache/1.3.23Connection: closeTransfer: chunkedContent-Type: text/HTML; charset=iso-8859-1</xhtml:div>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">\n                  <xhtml:div style=\"color:#32498D; font-weight:bold;\">Response from IIS 5.0</xhtml:div>$ nc iis.server.com 80GET / HTTP/3.0\n                  HTTP/1.1 200 OKServer: Microsoft-IIS/5.0Content-Location: http://iis.example.com/Default.htmDate: Fri, 01 Jan 1999 20:14: 02 GMTContent-Type: text/HTMLAccept-Ranges: bytes Last-Modified: Fri, 01 Jan 1999 20:14: 02 GMTETag: W/e0d362a4c335be1: ae1Content-Length: 133</xhtml:div>\n               <xhtml:p>[REF-37]</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Request fingerprinting: </b>Use automated tools or send web server specific commands to web server and wait for server's response.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use automated tools or send web server specific commands to web server and then receive server's response.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Increase the accuracy of server fingerprinting of Web servers: </b>Attacker usually needs to send several different commands to accurately identify the web server. Attacker can also use automated tools to send requests to the server. The responses of the server may be different in terms of protocol behavior.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Observe the ordering of the several HTTP response headers. The ordering of the header of each server may have unique identities.</td></tr><tr><td>Send bad requests or requests of nonexistent pages to the server.</td></tr><tr><td>Attacker takes existing automated tools to recognize the type and the version of the web server in use.</td></tr></tbody></table><li> <p> <b>Identify Web Application Software: </b>After the web server platform software has been identified, the attacker start to identify web application technologies such as ASP, .NET, PHP and Java on the server.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Examine the file name extensions in URL, for example .php indicates PHP script interfaced with Apache server.</td></tr><tr><td>Examine the HTTP Response Headers. This may leak information about software signatures</td></tr><tr><td>Examine Cookies that may contain server's software information.</td></tr><tr><td>Check error pages.</td></tr></tbody></table><li> <p> <b>Identify Backend Database Version: </b>Determining the database engine type can assist attackers' attempt to successfully execute SQL injection. Some database API such as ODBC will show a database type as part of the driver information when reporting an error.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use tools to send bogus SQL query to the server and check error pages.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Any web application can be fingerprinted. However, some configuration choices can limit the useful information an attacker may collect during a fingerprinting attack."
+            ],
+            "x_capec_resources_required": [
+                "While simple fingerprinting can be accomplished with only a web browser, for more thorough fingerprinting an attacker requires a variety of tools to collect information about the target. These tools might include protocol analyzers, web-site crawlers, and fuzzing tools. Footprinting a service adequately may also take a few days if the attacker wishes the footprinting attempt to go undetected."
+            ],
+            "x_capec_skills_required": {
+                "Low": "Attacker knows how to send HTTP request, SQL query to a web application."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Low",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "type": "bundle"
+}

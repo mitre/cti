@@ -1,1 +1,79 @@
-{"type": "bundle", "id": "bundle--b8e6851a-5ecc-444c-972a-e5df4e8f28a1", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--b2d76f31-f1e3-4797-a19f-246859422074", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2020-12-17T00:00:00.000Z", "name": "Relative Path Traversal", "description": "An attacker exploits a weakness in input validation on the target by supplying a specially constructed path utilizing dot and slash characters for the purpose of obtaining access to arbitrary files or resources. An attacker modifies a known path on the target in order to reach material that is not available through intended channels. These attacks normally involve adding additional path separators (/ or \\) and/or dots (.), or encodings thereof, in various combinations in order to reach parent directories or entirely separate trees of the target's directory structure.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/139.html", "external_id": "CAPEC-139"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/23.html", "external_id": "CWE-23"}, {"source_name": "reference_from_CAPEC", "description": "OWASP Testing Guide (v4), 2010, The Open Web Application Security Project (OWASP)", "url": "https://www.owasp.org/index.php/Testing_for_Path_Traversal_(OWASP-AZ-001)", "external_id": "REF-9"}, {"source_name": "reference_from_CAPEC", "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)", "url": "http://projects.webappsec.org/w/page/13246952/Path-Traversal", "external_id": "REF-10"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_child_of": ["attack-pattern--faf0ec21-da60-4efc-8c8e-7a6b63bea170"], "x_capec_consequences": {"Integrity": ["Modify Data", "Execute Unauthorized Commands (Run Arbitrary Code)"], "Confidentiality": ["Read Data", "Execute Unauthorized Commands (Run Arbitrary Code)"], "Availability": ["Execute Unauthorized Commands (Run Arbitrary Code)", "Unreliable Execution"], "Access_Control": ["Bypass Protection Mechanism"]}, "x_capec_example_instances": ["\n               <xhtml:p>The attacker uses relative path traversal to access files in the application. This is an example of accessing user's password file.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://www.example.com/getProfile.jsp?filename=../../../../etc/passwd</xhtml:div>\n               <xhtml:p>However, the target application employs regular expressions to make sure no relative path sequences are being passed through the application to the web page. The application would replace all matches from this regex with the empty string.</xhtml:p>\n               <xhtml:p>Then an attacker creates special payloads to bypass this filter:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://www.example.com/getProfile.jsp?filename=%2e%2e/%2e%2e/%2e%2e/%2e%2e /etc/passwd</xhtml:div>\n               <xhtml:p>When the application gets this input string, it will be the desired vector by the attacker.</xhtml:p>\n            "], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey application: </b>Using a browser or an automated tool, an attacker follows all public links on a web site. They record all the links they find. They pick out the URL parameters that may related to access to files.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links. Make special note of any links that include parameters in the URL.</td></tr><tr><td>Use a proxy tool to record all links visited during a manual traversal of the web application. Make special note of any links that include parameters in the URL. Manual traversal of this type is frequently necessary to identify forms that are GET method forms rather than POST forms.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browser's plug-in are available to facilitate the analysis or automate the URL discovery.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt variations on input parameters: </b>Possibly using an automated tool, an attacker requests variations on the identified inputs. They send parameters that include variations of payloads.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a list of probe strings as path traversal payload. Different strings may be used for different platforms. Strings contain relative path sequences such as \"../\".</td></tr><tr><td>Use a proxy tool to record results of manual input of relative path traversal probes in known URLs.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Access, modify, or execute arbitrary files.: </b>An attacker injects path traversal syntax into identified vulnerable inputs to cause inappropriate reading, writing or execution of files. An attacker could be able to read directories or files which they are normally not allowed to read. The attacker could also access data outside the web document root, or include scripts, source code and other kinds of files from external websites. Once the attacker accesses arbitrary files, they could also modify files. In particular situations, the attacker could also execute arbitrary code or system commands.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Manipulate file and its path by injecting relative path sequences (e.g. \"../\").</td></tr><tr><td>Download files, modify files, or try to execute shell commands (with binary files).</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "High", "x_capec_prerequisites": ["The target application must accept a string as user input, fail to sanitize combinations of characters in the input that have a special meaning in the context of path navigation, and insert the user-supplied string into path navigation commands."], "x_capec_skills_required": {"Low": "To inject the malicious payload in a web page", "High": "To bypass non trivial filters in the application"}, "x_capec_status": "Draft", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--20b33b81-d359-4f9c-963a-a6a72fb02682",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An attacker exploits a weakness in input validation on the target by supplying a specially constructed path utilizing dot and slash characters for the purpose of obtaining access to arbitrary files or resources. An attacker modifies a known path on the target in order to reach material that is not available through intended channels. These attacks normally involve adding additional path separators (/ or \\) and/or dots (.), or encodings thereof, in various combinations in order to reach parent directories or entirely separate trees of the target's directory structure.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-139",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/139.html"
+                },
+                {
+                    "external_id": "CWE-23",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/23.html"
+                },
+                {
+                    "description": "OWASP Testing Guide (v4), 2010, The Open Web Application Security Project (OWASP)",
+                    "external_id": "REF-9",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.owasp.org/index.php/Testing_for_Path_Traversal_(OWASP-AZ-001)"
+                },
+                {
+                    "description": "WASC Threat Classification 2.0, 2010, The Web Application Security Consortium (WASC)",
+                    "external_id": "REF-10",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://projects.webappsec.org/w/page/13246952/Path-Traversal"
+                }
+            ],
+            "id": "attack-pattern--b2d76f31-f1e3-4797-a19f-246859422074",
+            "modified": "2020-12-17T00:00:00.000Z",
+            "name": "Relative Path Traversal",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--faf0ec21-da60-4efc-8c8e-7a6b63bea170"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Unreliable Execution"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>The attacker uses relative path traversal to access files in the application. This is an example of accessing user's password file.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://www.example.com/getProfile.jsp?filename=../../../../etc/passwd</xhtml:div>\n               <xhtml:p>However, the target application employs regular expressions to make sure no relative path sequences are being passed through the application to the web page. The application would replace all matches from this regex with the empty string.</xhtml:p>\n               <xhtml:p>Then an attacker creates special payloads to bypass this filter:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://www.example.com/getProfile.jsp?filename=%2e%2e/%2e%2e/%2e%2e/%2e%2e /etc/passwd</xhtml:div>\n               <xhtml:p>When the application gets this input string, it will be the desired vector by the attacker.</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey application: </b>Using a browser or an automated tool, an attacker follows all public links on a web site. They record all the links they find. They pick out the URL parameters that may related to access to files.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links. Make special note of any links that include parameters in the URL.</td></tr><tr><td>Use a proxy tool to record all links visited during a manual traversal of the web application. Make special note of any links that include parameters in the URL. Manual traversal of this type is frequently necessary to identify forms that are GET method forms rather than POST forms.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browser's plug-in are available to facilitate the analysis or automate the URL discovery.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt variations on input parameters: </b>Possibly using an automated tool, an attacker requests variations on the identified inputs. They send parameters that include variations of payloads.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a list of probe strings as path traversal payload. Different strings may be used for different platforms. Strings contain relative path sequences such as \"../\".</td></tr><tr><td>Use a proxy tool to record results of manual input of relative path traversal probes in known URLs.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Access, modify, or execute arbitrary files.: </b>An attacker injects path traversal syntax into identified vulnerable inputs to cause inappropriate reading, writing or execution of files. An attacker could be able to read directories or files which they are normally not allowed to read. The attacker could also access data outside the web document root, or include scripts, source code and other kinds of files from external websites. Once the attacker accesses arbitrary files, they could also modify files. In particular situations, the attacker could also execute arbitrary code or system commands.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Manipulate file and its path by injecting relative path sequences (e.g. \"../\").</td></tr><tr><td>Download files, modify files, or try to execute shell commands (with binary files).</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The target application must accept a string as user input, fail to sanitize combinations of characters in the input that have a special meaning in the context of path navigation, and insert the user-supplied string into path navigation commands."
+            ],
+            "x_capec_skills_required": {
+                "High": "To bypass non trivial filters in the application",
+                "Low": "To inject the malicious payload in a web page"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

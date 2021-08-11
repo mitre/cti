@@ -1,1 +1,87 @@
-{"type": "bundle", "id": "bundle--c382dad2-9b0a-4cdf-a65f-405a38984a0c", "objects": [{"type": "attack-pattern", "spec_version": "2.1", "id": "attack-pattern--b89511b6-f0fb-4c1d-a884-a0d5a0d82b4e", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2020-12-17T00:00:00.000Z", "name": "HTTP Request Splitting", "description": "HTTP Request Splitting (also known as HTTP Request Smuggling) is an attack pattern where an attacker attempts to insert additional HTTP requests in the body of the original (enveloping) HTTP request in such a way that the browser interprets it as one request but the web server interprets it as two. There are several ways to perform HTTP request splitting attacks. One way is to include double Content-Length headers in the request to exploit the fact that the devices parsing the request may each use a different header. Another way is to submit an HTTP request with a \"Transfer Encoding: chunked\" in the request header set with setRequestHeader to allow a payload in the HTTP Request that can be considered as another HTTP Request by a subsequent parsing entity. A third way is to use the \"Double CR in an HTTP header\" technique. There are also a few less general techniques targeting specific parsing vulnerabilities in certain web servers.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/105.html", "external_id": "CAPEC-105"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/444.html", "external_id": "CWE-444"}, {"source_name": "WASC", "description": "HTTP Request Splitting", "url": "http://projects.webappsec.org/HTTP-Request-Splitting", "external_id": "24"}, {"source_name": "reference_from_CAPEC", "description": "OWASP Web Security Testing Guide, The Open Web Application Security Project (OWASP)", "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/15-Testing_for_HTTP_Splitting_Smuggling.html", "external_id": "REF-617"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_child_of": ["attack-pattern--9c983530-1927-43ca-addd-63d149cda4a7"], "x_capec_consequences": {"Confidentiality": ["Execute Unauthorized Commands (Run Arbitrary Code)", "Gain Privileges", "Read Data"], "Integrity": ["Execute Unauthorized Commands (Run Arbitrary Code)", "Modify Data"], "Availability": ["Execute Unauthorized Commands (Run Arbitrary Code)"], "Access_Control": ["Gain Privileges"], "Authorization": ["Gain Privileges"]}, "x_capec_example_instances": ["\n               <xhtml:p>Microsoft Internet Explorer versions 5.01 SP4 and prior, 6.0 SP2 and prior, and 7.0 contain a vulnerability that could allow an unauthenticated, remote attacker to conduct HTTP request splitting and smuggling attacks.</xhtml:p>\n               <xhtml:p>The vulnerability is due to an input validation error in the browser that allows attackers to manipulate certain headers to expose the browser to HTTP request splitting and smuggling attacks. Attacks may include cross-site scripting, proxy cache poisoning, and session fixation. In certain instances, an exploit could allow the attacker to bypass web application firewalls or other filtering devices.</xhtml:p>\n               <xhtml:p>Microsoft has confirmed the vulnerability and released software updates</xhtml:p>\n            "], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Investigate Target Environment: </b>Determine the technologies used in the target environment such as types of browsers, web servers, application firewalls, proxies, etc.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Investigation of the target environment to determine the types of technologies used to parse the incoming HTTP requests. Attempt to understand how HTTP Request headers are parsed</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Post a malicious HTTP Request: </b>Post a malicious HTTP request that will be interpreted as multiple HTTP requests when parsed on the server</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Post a malicious HTTP Request utilizing double CR/LF characters in HTTP header to cause request splitting</td></tr><tr><td>Post a malicious HTTP Request utilizing \"Transfer Encoding: chunked\" in the request header to cause request splitting</td></tr><tr><td>Post a malicious HTTP Request utilizing double Content-Length headers to cause request splitting</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "Medium", "x_capec_peer_of": ["attack-pattern--ba694895-a0cf-494e-ace2-bf3488330b80"], "x_capec_prerequisites": ["User-manipulateable HTTP Request headers are processed by the web server"], "x_capec_resources_required": ["A tool that allows for the sending of customized HTTP requests is required."], "x_capec_skills_required": {"Medium": "Good understanding of the HTTP protocol and the parsing mechanisms employed by various web servers"}, "x_capec_status": "Draft", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--fefee578-b885-4265-8d29-a7de08d6d181",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "HTTP Request Splitting (also known as HTTP Request Smuggling) is an attack pattern where an attacker attempts to insert additional HTTP requests in the body of the original (enveloping) HTTP request in such a way that the browser interprets it as one request but the web server interprets it as two. There are several ways to perform HTTP request splitting attacks. One way is to include double Content-Length headers in the request to exploit the fact that the devices parsing the request may each use a different header. Another way is to submit an HTTP request with a \"Transfer Encoding: chunked\" in the request header set with setRequestHeader to allow a payload in the HTTP Request that can be considered as another HTTP Request by a subsequent parsing entity. A third way is to use the \"Double CR in an HTTP header\" technique. There are also a few less general techniques targeting specific parsing vulnerabilities in certain web servers.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-105",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/105.html"
+                },
+                {
+                    "external_id": "CWE-444",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/444.html"
+                },
+                {
+                    "description": "HTTP Request Splitting",
+                    "external_id": "24",
+                    "source_name": "WASC",
+                    "url": "http://projects.webappsec.org/HTTP-Request-Splitting"
+                },
+                {
+                    "description": "OWASP Web Security Testing Guide, The Open Web Application Security Project (OWASP)",
+                    "external_id": "REF-617",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/15-Testing_for_HTTP_Splitting_Smuggling.html"
+                }
+            ],
+            "id": "attack-pattern--b89511b6-f0fb-4c1d-a884-a0d5a0d82b4e",
+            "modified": "2020-12-17T00:00:00.000Z",
+            "name": "HTTP Request Splitting",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--9c983530-1927-43ca-addd-63d149cda4a7"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Microsoft Internet Explorer versions 5.01 SP4 and prior, 6.0 SP2 and prior, and 7.0 contain a vulnerability that could allow an unauthenticated, remote attacker to conduct HTTP request splitting and smuggling attacks.</xhtml:p>\n               <xhtml:p>The vulnerability is due to an input validation error in the browser that allows attackers to manipulate certain headers to expose the browser to HTTP request splitting and smuggling attacks. Attacks may include cross-site scripting, proxy cache poisoning, and session fixation. In certain instances, an exploit could allow the attacker to bypass web application firewalls or other filtering devices.</xhtml:p>\n               <xhtml:p>Microsoft has confirmed the vulnerability and released software updates</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Investigate Target Environment: </b>Determine the technologies used in the target environment such as types of browsers, web servers, application firewalls, proxies, etc.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Investigation of the target environment to determine the types of technologies used to parse the incoming HTTP requests. Attempt to understand how HTTP Request headers are parsed</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Post a malicious HTTP Request: </b>Post a malicious HTTP request that will be interpreted as multiple HTTP requests when parsed on the server</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Post a malicious HTTP Request utilizing double CR/LF characters in HTTP header to cause request splitting</td></tr><tr><td>Post a malicious HTTP Request utilizing \"Transfer Encoding: chunked\" in the request header to cause request splitting</td></tr><tr><td>Post a malicious HTTP Request utilizing double Content-Length headers to cause request splitting</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_peer_of_refs": [
+                "attack-pattern--ba694895-a0cf-494e-ace2-bf3488330b80"
+            ],
+            "x_capec_prerequisites": [
+                "User-manipulateable HTTP Request headers are processed by the web server"
+            ],
+            "x_capec_resources_required": [
+                "A tool that allows for the sending of customized HTTP requests is required."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Good understanding of the HTTP protocol and the parsing mechanisms employed by various web servers"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "type": "bundle"
+}

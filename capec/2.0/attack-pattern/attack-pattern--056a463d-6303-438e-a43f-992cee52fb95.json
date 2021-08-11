@@ -1,1 +1,135 @@
-{"type": "bundle", "id": "bundle--804f81f0-79f0-4e10-959a-f251e45b2475", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--056a463d-6303-438e-a43f-992cee52fb95", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2018-07-31T00:00:00.000Z", "modified": "2020-07-30T00:00:00.000Z", "name": "Use of Captured Hashes (Pass The Hash)", "description": "An adversary obtains (i.e. steals or purchases) legitimate Windows domain credential (e.g. userID and password) hash values to access systems within the domain that leverage the Lan Man (LM) and/or NT Lan Man (NTLM) authentication protocols. When authenticating via LM or NTLM, an authenticating account's plaintext credentials are not required by the protocols for successful authentication. Instead, the hashed credentials are used to determine if an authentication attempt is valid. If an adversary can obtain an account's hashed credentials, the hash values can then be passed to a system or service to authenticate, without needing to brute-force the hashes to obtain their cleartext values. Successful Pass The Hash attacks result in the adversary fully authenticating as the targeted account, which can further allow the adversary to laterally move within the network, impersonate a legitimate user, and/or download/install malware to systems within the domain. This technique can be performed against any operating system that leverages the LM or NTLM protocols even if the operating system is not Windows-based, since these systems/accounts may still authenticate to a Windows domain.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/644.html", "external_id": "CAPEC-644"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/522.html", "external_id": "CWE-522"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/836.html", "external_id": "CWE-836"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/308.html", "external_id": "CWE-308"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/294.html", "external_id": "CWE-294"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/308.html", "external_id": "CWE-308"}, {"source_name": "ATTACK", "description": "Use Alternate Authentication Material:Pass The Hash", "url": "https://attack.mitre.org/wiki/Technique/T1550/002", "external_id": "T1550.002"}, {"source_name": "reference_from_CAPEC", "description": "Dan Goodin, Attackers can use Zoom to steal users\u2019 Windows credentials with no warning, 2020--04---01, Ars Technica", "url": "https://arstechnica.com/information-technology/2020/04/unpatched-zoom-bug-lets-attackers-steal-windows-credentials-with-no-warning/", "external_id": "REF-575"}, {"source_name": "reference_from_CAPEC", "description": "Mor Levi, Assaf Dahan, Amit Serper, Operation Soft Cell: A Worldwide Campaign Against Telecommunications Providers, 2019--06---25, CyberReason", "url": "https://www.cybereason.com/blog/operation-soft-cell-a-worldwide-campaign-against-telecommunications-providers", "external_id": "REF-580"}, {"source_name": "reference_from_CAPEC", "description": "Mitigating Pass-the-Hash and Other Credential Theft v2, Microsoft Corporation", "url": "https://docs.microsoft.com/en-us/previous-versions/dn785092(v=msdn.10)?redirectedfrom=MSDN", "external_id": "REF-581"}, {"source_name": "reference_from_CAPEC", "description": "How Pass-the-Hash works, Microsoft Corporation", "url": "https://docs.microsoft.com/en-us/previous-versions/dn785092(v=msdn.10)?redirectedfrom=MSDN", "external_id": "REF-582"}, {"source_name": "reference_from_CAPEC", "description": "Bashar Ewaida, Pass-the-hash attacks: Tools and Mitigation, 2010--02---23, The SANS Institute", "url": "https://www.sans.org/reading-room/whitepapers/testing/paper/33283", "external_id": "REF-583"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_can_precede": ["attack-pattern--22802ed6-ddc6-4da7-b6be-60b10d26198b", "attack-pattern--f8533ce1-5f23-4660-8f70-1a05af2c70d3", "attack-pattern--2c74d7f3-ccb4-4aea-b7fc-8a4da900ec80", "attack-pattern--191fbdab-d3b3-4ffd-8829-51331c20eaa7"], "x_capec_child_of": ["attack-pattern--2618d0a4-06d0-4bde-8271-2df61ed8297a"], "x_capec_consequences": {"Confidentiality": ["Gain Privileges", "Read Data"], "Access_Control": ["Gain Privileges"], "Authentication": ["Gain Privileges"], "Authorization": ["Read Data"], "Integrity": ["Modify Data"]}, "x_capec_example_instances": ["Adversaries exploited the Zoom video conferencing application during the 2020 COVID-19 pandemic to exfiltrate Windows domain credential hash value pairs from a target system. The attack entailed sending Universal Naming Convention (UNC) paths within the Zoom chat window of an unprotected Zoom call. If the victim clicked on the link, their Windows usernames and the corresponding Net-NTLM-v2 hashes were sent to the address contained in the link. The adversary was then able to infiltrate and laterally move within the Windows domain by passing the acquired credentials to shared network resources. This further provided adversaries with access to Outlook servers and network storage devices. [REF-575]", "Operation Soft Cell, which has been underway since at least 2012, leveraged a modified Mimikatz that dumped NTLM hashes. The acquired hashes were then used to authenticate to other systems within the network via Pass The Hash attacks. [REF-580]"], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Acquire known Windows credential hash value pairs: </b>The adversary must obtain known Windows credential hash value pairs of accounts that exist on the domain.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>An adversary purchases breached Windows credential hash value pairs from the dark web.</td></tr><tr><td>An adversary conducts a sniffing attack to steal Windows credential hash value pairs as they are transmitted.</td></tr><tr><td>An adversary gains access to a Windows domain system/files and exfiltrates Windows credential hash value pairs.</td></tr><tr><td>An adversary examines outward-facing configuration and properties files to discover hardcoded Windows credential hash value pairs.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt domain authentication: </b>Try each Windows credential hash value pair until the target grants access.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Manually or automatically enter each Windows credential hash value pair through the target's interface.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Impersonate: </b>An adversary can use successful experiments or authentications to impersonate an authorized user or system, or to laterally move within the domain</p></li><li> <p> <b>Spoofing: </b>Malicious data can be injected into the target system or into other systems on the domain. The adversary can also pose as a legitimate domain user to perform social engineering attacks.</p></li><li> <p> <b>Data Exfiltration: </b>The adversary can obtain sensitive data contained within domain systems or applications.</p></li></ol></div>", "x_capec_likelihood_of_attack": "Medium", "x_capec_prerequisites": ["The system/application is connected to the Windows domain.", "The system/application leverages the Lan Man (LM) and/or NT Lan Man (NTLM) authentication protocols.", "The adversary possesses known Windows credential hash value pairs that exist on the target domain."], "x_capec_resources_required": ["A list of known Window credential hash value pairs for the targeted domain."], "x_capec_skills_required": {"Low": "Once an adversary obtains a known Windows credential hash value pair, leveraging it is trivial."}, "x_capec_status": "Stable", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--71d04454-2ef1-42b3-9ab6-a248b1ae637d",
+    "objects": [
+        {
+            "created": "2018-07-31T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An adversary obtains (i.e. steals or purchases) legitimate Windows domain credential (e.g. userID and password) hash values to access systems within the domain that leverage the Lan Man (LM) and/or NT Lan Man (NTLM) authentication protocols. When authenticating via LM or NTLM, an authenticating account's plaintext credentials are not required by the protocols for successful authentication. Instead, the hashed credentials are used to determine if an authentication attempt is valid. If an adversary can obtain an account's hashed credentials, the hash values can then be passed to a system or service to authenticate, without needing to brute-force the hashes to obtain their cleartext values. Successful Pass The Hash attacks result in the adversary fully authenticating as the targeted account, which can further allow the adversary to laterally move within the network, impersonate a legitimate user, and/or download/install malware to systems within the domain. This technique can be performed against any operating system that leverages the LM or NTLM protocols even if the operating system is not Windows-based, since these systems/accounts may still authenticate to a Windows domain.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-644",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/644.html"
+                },
+                {
+                    "external_id": "CWE-522",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/522.html"
+                },
+                {
+                    "external_id": "CWE-836",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/836.html"
+                },
+                {
+                    "external_id": "CWE-308",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/308.html"
+                },
+                {
+                    "external_id": "CWE-294",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/294.html"
+                },
+                {
+                    "external_id": "CWE-308",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/308.html"
+                },
+                {
+                    "description": "Use Alternate Authentication Material:Pass The Hash",
+                    "external_id": "T1550.002",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1550/002"
+                },
+                {
+                    "description": "Dan Goodin, Attackers can use Zoom to steal users’ Windows credentials with no warning, 2020--04---01, Ars Technica",
+                    "external_id": "REF-575",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://arstechnica.com/information-technology/2020/04/unpatched-zoom-bug-lets-attackers-steal-windows-credentials-with-no-warning/"
+                },
+                {
+                    "description": "Mor Levi, Assaf Dahan, Amit Serper, Operation Soft Cell: A Worldwide Campaign Against Telecommunications Providers, 2019--06---25, CyberReason",
+                    "external_id": "REF-580",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.cybereason.com/blog/operation-soft-cell-a-worldwide-campaign-against-telecommunications-providers"
+                },
+                {
+                    "description": "Mitigating Pass-the-Hash and Other Credential Theft v2, Microsoft Corporation",
+                    "external_id": "REF-581",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://docs.microsoft.com/en-us/previous-versions/dn785092(v=msdn.10)?redirectedfrom=MSDN"
+                },
+                {
+                    "description": "How Pass-the-Hash works, Microsoft Corporation",
+                    "external_id": "REF-582",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://docs.microsoft.com/en-us/previous-versions/dn785092(v=msdn.10)?redirectedfrom=MSDN"
+                },
+                {
+                    "description": "Bashar Ewaida, Pass-the-hash attacks: Tools and Mitigation, 2010--02---23, The SANS Institute",
+                    "external_id": "REF-583",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.sans.org/reading-room/whitepapers/testing/paper/33283"
+                }
+            ],
+            "id": "attack-pattern--056a463d-6303-438e-a43f-992cee52fb95",
+            "modified": "2020-07-30T00:00:00.000Z",
+            "name": "Use of Captured Hashes (Pass The Hash)",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_can_precede_refs": [
+                "attack-pattern--22802ed6-ddc6-4da7-b6be-60b10d26198b",
+                "attack-pattern--f8533ce1-5f23-4660-8f70-1a05af2c70d3",
+                "attack-pattern--2c74d7f3-ccb4-4aea-b7fc-8a4da900ec80",
+                "attack-pattern--191fbdab-d3b3-4ffd-8829-51331c20eaa7"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--2618d0a4-06d0-4bde-8271-2df61ed8297a"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Read Data"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "Adversaries exploited the Zoom video conferencing application during the 2020 COVID-19 pandemic to exfiltrate Windows domain credential hash value pairs from a target system. The attack entailed sending Universal Naming Convention (UNC) paths within the Zoom chat window of an unprotected Zoom call. If the victim clicked on the link, their Windows usernames and the corresponding Net-NTLM-v2 hashes were sent to the address contained in the link. The adversary was then able to infiltrate and laterally move within the Windows domain by passing the acquired credentials to shared network resources. This further provided adversaries with access to Outlook servers and network storage devices. [REF-575]",
+                "Operation Soft Cell, which has been underway since at least 2012, leveraged a modified Mimikatz that dumped NTLM hashes. The acquired hashes were then used to authenticate to other systems within the network via Pass The Hash attacks. [REF-580]"
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Acquire known Windows credential hash value pairs: </b>The adversary must obtain known Windows credential hash value pairs of accounts that exist on the domain.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>An adversary purchases breached Windows credential hash value pairs from the dark web.</td></tr><tr><td>An adversary conducts a sniffing attack to steal Windows credential hash value pairs as they are transmitted.</td></tr><tr><td>An adversary gains access to a Windows domain system/files and exfiltrates Windows credential hash value pairs.</td></tr><tr><td>An adversary examines outward-facing configuration and properties files to discover hardcoded Windows credential hash value pairs.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt domain authentication: </b>Try each Windows credential hash value pair until the target grants access.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Manually or automatically enter each Windows credential hash value pair through the target's interface.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Impersonate: </b>An adversary can use successful experiments or authentications to impersonate an authorized user or system, or to laterally move within the domain</p></li><li> <p> <b>Spoofing: </b>Malicious data can be injected into the target system or into other systems on the domain. The adversary can also pose as a legitimate domain user to perform social engineering attacks.</p></li><li> <p> <b>Data Exfiltration: </b>The adversary can obtain sensitive data contained within domain systems or applications.</p></li></ol></div>",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "The system/application is connected to the Windows domain.",
+                "The system/application leverages the Lan Man (LM) and/or NT Lan Man (NTLM) authentication protocols.",
+                "The adversary possesses known Windows credential hash value pairs that exist on the target domain."
+            ],
+            "x_capec_resources_required": [
+                "A list of known Window credential hash value pairs for the targeted domain."
+            ],
+            "x_capec_skills_required": {
+                "Low": "Once an adversary obtains a known Windows credential hash value pair, leveraging it is trivial."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

@@ -1,1 +1,51 @@
-{"type": "bundle", "id": "bundle--c668a90c-b1a7-4816-ae3d-6253c3ecdabb", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--3c71639a-ebbd-43a4-8d0d-8a0e4cf9ade3", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2021-06-24T00:00:00.000Z", "name": "Signing Malicious Code", "description": "The adversary extracts credentials used for code signing from a production environment and then uses these credentials to sign malicious content with the developer's key. Many developers use signing keys to sign code or hashes of code. When users or applications verify the signatures are accurate they are led to believe that the code came from the owner of the signing key and that the code has not been modified since the signature was applied. If the adversary has extracted the signing credentials then they can use those credentials to sign their own code bundles. Users or tools that verify the signatures attached to the code will likely assume the code came from the legitimate developer and install or run the code, effectively allowing the adversary to execute arbitrary code on the victim's computer. This differs from CAPEC-673, because the adversary is performing the code signing.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/206.html", "external_id": "CAPEC-206"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/732.html", "external_id": "CWE-732"}, {"source_name": "ATTACK", "description": "Subvert Trust Controls:Code Signing", "url": "https://attack.mitre.org/wiki/Technique/T1553/002", "external_id": "T1553.002"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_child_of": ["attack-pattern--efb74200-657d-438c-aaff-bbd9644dd72d"], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary first attempts to obtain a digital certificate in order to sign their malware or tools. This certificate could be stolen, created by the adversary, or aquired normally through a certificate authority.</p></li><li> <p>Based on the type of certificate obtained, the adversary will create a goal for their attack. This is either a broad or targeted attack. If an adversary was able to steal a certificate from a targeted organization, they could target this organization by pretending to have legitimate code signed by them. In other cases, the adversary would simply sign their malware and pose as legitimate software such that any user might trust it. This is the more broad approach</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary creates their malware and signs it with the obtained digital certificate. The adversary then checks if the code that they signed is valid either through downloading from the targeted source or testing locally.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>Once the malware has been signed, it is then deployed to the desired location. They wait for a trusting user to run their malware, thinking that it is legitimate software. This malware could do a variety of things based on the motivation of the adversary.</p></li></ol></div>", "x_capec_prerequisites": ["The targeted developer must use a signing key to sign code bundles. (Note that not doing this is not a defense - it only means that the adversary does not need to steal the signing key before forging code bundles in the developer's name.)"], "x_capec_resources_required": ["None: No specialized resources are required to execute this type of attack."], "x_capec_status": "Draft", "x_capec_typical_severity": "Very High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--42f76c97-8f75-4db5-92c5-f8a7335252ed",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "The adversary extracts credentials used for code signing from a production environment and then uses these credentials to sign malicious content with the developer's key. Many developers use signing keys to sign code or hashes of code. When users or applications verify the signatures are accurate they are led to believe that the code came from the owner of the signing key and that the code has not been modified since the signature was applied. If the adversary has extracted the signing credentials then they can use those credentials to sign their own code bundles. Users or tools that verify the signatures attached to the code will likely assume the code came from the legitimate developer and install or run the code, effectively allowing the adversary to execute arbitrary code on the victim's computer. This differs from CAPEC-673, because the adversary is performing the code signing.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-206",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/206.html"
+                },
+                {
+                    "external_id": "CWE-732",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/732.html"
+                },
+                {
+                    "description": "Subvert Trust Controls:Code Signing",
+                    "external_id": "T1553.002",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1553/002"
+                }
+            ],
+            "id": "attack-pattern--3c71639a-ebbd-43a4-8d0d-8a0e4cf9ade3",
+            "modified": "2021-06-24T00:00:00.000Z",
+            "name": "Signing Malicious Code",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--efb74200-657d-438c-aaff-bbd9644dd72d"
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary first attempts to obtain a digital certificate in order to sign their malware or tools. This certificate could be stolen, created by the adversary, or aquired normally through a certificate authority.</p></li><li> <p>Based on the type of certificate obtained, the adversary will create a goal for their attack. This is either a broad or targeted attack. If an adversary was able to steal a certificate from a targeted organization, they could target this organization by pretending to have legitimate code signed by them. In other cases, the adversary would simply sign their malware and pose as legitimate software such that any user might trust it. This is the more broad approach</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary creates their malware and signs it with the obtained digital certificate. The adversary then checks if the code that they signed is valid either through downloading from the targeted source or testing locally.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>Once the malware has been signed, it is then deployed to the desired location. They wait for a trusting user to run their malware, thinking that it is legitimate software. This malware could do a variety of things based on the motivation of the adversary.</p></li></ol></div>",
+            "x_capec_prerequisites": [
+                "The targeted developer must use a signing key to sign code bundles. (Note that not doing this is not a defense - it only means that the adversary does not need to steal the signing key before forging code bundles in the developer's name.)"
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

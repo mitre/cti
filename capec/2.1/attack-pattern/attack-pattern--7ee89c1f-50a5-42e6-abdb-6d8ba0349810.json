@@ -1,1 +1,130 @@
-{"type": "bundle", "id": "bundle--3131acca-0f3a-4e6c-afb8-2195e08cdf59", "objects": [{"type": "attack-pattern", "spec_version": "2.1", "id": "attack-pattern--7ee89c1f-50a5-42e6-abdb-6d8ba0349810", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2021-06-24T00:00:00.000Z", "name": "Session Credential Falsification through Prediction", "description": "This attack targets predictable session ID in order to gain privileges. The attacker can predict the session ID used during a transaction to perform spoofing and session hijacking.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/59.html", "external_id": "CAPEC-59"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/290.html", "external_id": "CWE-290"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/330.html", "external_id": "CWE-330"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/331.html", "external_id": "CWE-331"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/346.html", "external_id": "CWE-346"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/488.html", "external_id": "CWE-488"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/539.html", "external_id": "CWE-539"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/200.html", "external_id": "CWE-200"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/6.html", "external_id": "CWE-6"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/285.html", "external_id": "CWE-285"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/384.html", "external_id": "CWE-384"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/693.html", "external_id": "CWE-693"}, {"source_name": "WASC", "description": "Credential/Session Prediction", "url": "http://projects.webappsec.org/Credential/Session-Prediction", "external_id": "18"}, {"source_name": "OWASP Attacks", "description": "Session Prediction", "url": "https://owasp.org/www-community/attacks/Session_Prediction"}, {"source_name": "reference_from_CAPEC", "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley", "external_id": "REF-1"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_child_of": ["attack-pattern--414d0884-4f46-4a51-b4ea-72125c7f5f9e"], "x_capec_consequences": {"Confidentiality": ["Gain Privileges"], "Access_Control": ["Gain Privileges"], "Authorization": ["Gain Privileges"]}, "x_capec_example_instances": ["Jetty before 4.2.27, 5.1 before 5.1.12, 6.0 before 6.0.2, and 6.1 before 6.1.0pre3 generates predictable session identifiers using java.util.random, which makes it easier for remote attackers to guess a session identifier through brute force attacks, bypass authentication requirements, and possibly conduct cross-site request forgery attacks. See also: CVE-2006-6969", "mod_usertrack in Apache 1.3.11 through 1.3.20 generates session ID's using predictable information including host IP address, system time and server process ID, which allows local users to obtain session ID's and bypass authentication when these session ID's are used for authentication. See also: CVE-2001-1534"], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find Session IDs: </b>The attacker interacts with the target host and finds that session IDs are used to authenticate users.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>An attacker makes many anonymous connections and records the session IDs assigned.</td></tr><tr><td>An attacker makes authorized connections and records the session tokens or credentials issued.</td></tr></tbody></table><li> <p> <b>Characterize IDs: </b>The attacker studies the characteristics of the session ID (size, format, etc.). As a results the attacker finds that legitimate session IDs are predictable.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Cryptanalysis. The attacker uses cryptanalysis to determine if the session IDs contain any cryptographic protections.</td></tr><tr><td>Pattern tests. The attacker looks for patterns (odd/even, repetition, multiples, or other arithmetic relationships) between IDs</td></tr><tr><td>Comparison against time. The attacker plots or compares the issued IDs to the time they were issued to check for correlation.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Match issued IDs: </b>The attacker brute forces different values of session ID and manages to predict a valid session ID.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker models the session ID algorithm enough to produce a compatible session IDs, or just one match.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Use matched Session ID: </b>The attacker uses the falsified session ID to access the target system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker loads the session ID into their web browser and browses to restricted data or functionality.</td></tr><tr><td>The attacker loads the session ID into their network communications and impersonates a legitimate user to gain access to data or functionality.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "High", "x_capec_prerequisites": ["The target host uses session IDs to keep track of the users.", "Session IDs are used to control access to resources.", "The session IDs used by the target host are predictable. For example, the session IDs are generated using predictable information (e.g., time)."], "x_capec_skills_required": {"Low": "There are tools to brute force session ID. Those tools require a low level of knowledge.", "Medium": "Predicting Session ID may require more computation work which uses advanced analysis such as statistical analysis."}, "x_capec_status": "Draft", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--c2083f48-71e0-4ec8-a965-976192c81093",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "This attack targets predictable session ID in order to gain privileges. The attacker can predict the session ID used during a transaction to perform spoofing and session hijacking.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-59",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/59.html"
+                },
+                {
+                    "external_id": "CWE-290",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/290.html"
+                },
+                {
+                    "external_id": "CWE-330",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/330.html"
+                },
+                {
+                    "external_id": "CWE-331",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/331.html"
+                },
+                {
+                    "external_id": "CWE-346",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/346.html"
+                },
+                {
+                    "external_id": "CWE-488",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/488.html"
+                },
+                {
+                    "external_id": "CWE-539",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/539.html"
+                },
+                {
+                    "external_id": "CWE-200",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/200.html"
+                },
+                {
+                    "external_id": "CWE-6",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/6.html"
+                },
+                {
+                    "external_id": "CWE-285",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/285.html"
+                },
+                {
+                    "external_id": "CWE-384",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/384.html"
+                },
+                {
+                    "external_id": "CWE-693",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/693.html"
+                },
+                {
+                    "description": "Credential/Session Prediction",
+                    "external_id": "18",
+                    "source_name": "WASC",
+                    "url": "http://projects.webappsec.org/Credential/Session-Prediction"
+                },
+                {
+                    "description": "Session Prediction",
+                    "source_name": "OWASP Attacks",
+                    "url": "https://owasp.org/www-community/attacks/Session_Prediction"
+                },
+                {
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1",
+                    "source_name": "reference_from_CAPEC"
+                }
+            ],
+            "id": "attack-pattern--7ee89c1f-50a5-42e6-abdb-6d8ba0349810",
+            "modified": "2021-06-24T00:00:00.000Z",
+            "name": "Session Credential Falsification through Prediction",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--414d0884-4f46-4a51-b4ea-72125c7f5f9e"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ]
+            },
+            "x_capec_example_instances": [
+                "Jetty before 4.2.27, 5.1 before 5.1.12, 6.0 before 6.0.2, and 6.1 before 6.1.0pre3 generates predictable session identifiers using java.util.random, which makes it easier for remote attackers to guess a session identifier through brute force attacks, bypass authentication requirements, and possibly conduct cross-site request forgery attacks. See also: CVE-2006-6969",
+                "mod_usertrack in Apache 1.3.11 through 1.3.20 generates session ID's using predictable information including host IP address, system time and server process ID, which allows local users to obtain session ID's and bypass authentication when these session ID's are used for authentication. See also: CVE-2001-1534"
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find Session IDs: </b>The attacker interacts with the target host and finds that session IDs are used to authenticate users.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>An attacker makes many anonymous connections and records the session IDs assigned.</td></tr><tr><td>An attacker makes authorized connections and records the session tokens or credentials issued.</td></tr></tbody></table><li> <p> <b>Characterize IDs: </b>The attacker studies the characteristics of the session ID (size, format, etc.). As a results the attacker finds that legitimate session IDs are predictable.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Cryptanalysis. The attacker uses cryptanalysis to determine if the session IDs contain any cryptographic protections.</td></tr><tr><td>Pattern tests. The attacker looks for patterns (odd/even, repetition, multiples, or other arithmetic relationships) between IDs</td></tr><tr><td>Comparison against time. The attacker plots or compares the issued IDs to the time they were issued to check for correlation.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Match issued IDs: </b>The attacker brute forces different values of session ID and manages to predict a valid session ID.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker models the session ID algorithm enough to produce a compatible session IDs, or just one match.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Use matched Session ID: </b>The attacker uses the falsified session ID to access the target system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker loads the session ID into their web browser and browses to restricted data or functionality.</td></tr><tr><td>The attacker loads the session ID into their network communications and impersonates a legitimate user to gain access to data or functionality.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The target host uses session IDs to keep track of the users.",
+                "Session IDs are used to control access to resources.",
+                "The session IDs used by the target host are predictable. For example, the session IDs are generated using predictable information (e.g., time)."
+            ],
+            "x_capec_skills_required": {
+                "Low": "There are tools to brute force session ID. Those tools require a low level of knowledge.",
+                "Medium": "Predicting Session ID may require more computation work which uses advanced analysis such as statistical analysis."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "type": "bundle"
+}

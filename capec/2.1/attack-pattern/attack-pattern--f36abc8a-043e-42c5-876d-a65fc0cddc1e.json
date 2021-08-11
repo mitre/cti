@@ -1,1 +1,102 @@
-{"type": "bundle", "id": "bundle--b2f16312-e72c-47ea-9d89-86788aa94fbc", "objects": [{"type": "attack-pattern", "spec_version": "2.1", "id": "attack-pattern--f36abc8a-043e-42c5-876d-a65fc0cddc1e", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2020-12-17T00:00:00.000Z", "name": "XML Entity Expansion", "description": "An attacker submits an XML document to a target application where the XML document uses nested entity expansion to produce an excessively large output XML. XML allows the definition of macro-like structures that can be used to simplify the creation of complex structures. However, this capability can be abused to create excessive demands on a processor's CPU and memory. A small number of nested expansions can result in an exponential growth in demands on memory.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/197.html", "external_id": "CAPEC-197"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/400.html", "external_id": "CWE-400"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/770.html", "external_id": "CWE-770"}, {"source_name": "WASC", "description": "XML Entity Expansion", "url": "http://projects.webappsec.org/XML-Entity-Expansion", "external_id": "44"}, {"source_name": "reference_from_CAPEC", "description": "Amit Klein, Multiple vendors XML parser (and SOAP/WebServices server) Denial of Service attack using DTD", "url": "http://www.securityfocus.com/archive/1/303509", "external_id": "REF-64"}, {"source_name": "reference_from_CAPEC", "description": "Pete Lindstrom, Attacking & Defending Web Services, 2002, SPiRE Security", "url": "http://www.webtorials.com/main/comnet/cn2003/web-service/24.pdf", "external_id": "REF-65"}, {"source_name": "reference_from_CAPEC", "description": "Elliotte Rusty Harold, Tip: Configure SAX parsers for secure processing, IBM developerWorks, 2005--05---27, IBM", "url": "http://www.ibm.com/developerworks/xml/library/x-tipcfsx.html", "external_id": "REF-66"}, {"source_name": "reference_from_CAPEC", "description": "Bryan Sullivan, XML Denial of Service Attacks and Defenses", "url": "http://msdn.microsoft.com/en-us/magazine/ee335713.aspx", "external_id": "REF-67"}, {"source_name": "reference_from_CAPEC", "description": "Bryan Sullivan, XML Denial of Service Attacks and Defenses", "url": "http://msdn.microsoft.com/en-us/magazine/ee335713.aspx", "external_id": "REF-67"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_can_follow": ["attack-pattern--5cf3eacf-a0c6-4c59-9f97-4f677a90587a"], "x_capec_child_of": ["attack-pattern--8abd01d1-b2a2-4b86-a640-7d3d3b61d27f"], "x_capec_consequences": {"Availability": ["Unreliable Execution (Denial of Service)", "Resource Consumption (Denial of Service)"]}, "x_capec_example_instances": ["\n               <xhtml:p>The most common example of this type of attack is the \"many laughs\" attack (sometimes called the 'billion laughs' attack). For example:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><?xml version=\"1.0\"?><!DOCTYPE lolz [<xhtml:div style=\"margin-left:10px;\"><!ENTITY lol \"lol\"><!ENTITY lol2 \"&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;\"><!ENTITY lol3 \"&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;\"><!ENTITY lol4 \"&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;\"><!ENTITY lol5 \"&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;\"><!ENTITY lol6 \"&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;\"><!ENTITY lol7 \"&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6\"><!ENTITY lol8 \"&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;\"><!ENTITY lol9 \"&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;\"></xhtml:div>\n                  ]><lolz>&lol9;</lolz></xhtml:div>\n               <xhtml:p>This is well formed and valid XML according to the DTD. Each entity increases the number entities by a factor of 10. The line of XML containing lol9; expands out exponentially to a message with 10^9 entities. A small message of a few KBs in size can easily be expanded into a few GB of memory in the parser. By including 3 more entities similar to the lol9 entity in the above code to the DTD, the program could expand out over a TB as there will now be 10^12 entities. Depending on the robustness of the target machine, this can lead to resource depletion, application crash, or even the execution of arbitrary code through a buffer overflow.</xhtml:p>\n            "], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the target: </b>Using a browser or an automated tool, an attacker records all instances of web services to process XML requests.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use an automated tool to record all instances of URLs to process XML requests.</td></tr><tr><td>Use a browser to manually explore the website and analyze how the application processes XML requests.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Launch an XML Entity Expansion attack: </b>The attacker crafts malicious XML message to force recursive entity expansion (or other repeated processing) that completely uses up available server resource.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Send the malicious crafted XML message containing recursive entity uses to the target URL.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "High", "x_capec_prerequisites": ["This type of attack requires that the target must receive XML input but either fail to provide an upper limit for entity expansion or provide a limit that is so large that it does not preclude significant resource consumption."], "x_capec_resources_required": ["None: No specialized resources are required to execute this type of attack."], "x_capec_skills_required": {"Low": "To send recursive entity expansion XML messages."}, "x_capec_status": "Draft", "x_capec_typical_severity": "Medium", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--0a895a0b-3920-4fd1-bef8-c705cb1e99a1",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An attacker submits an XML document to a target application where the XML document uses nested entity expansion to produce an excessively large output XML. XML allows the definition of macro-like structures that can be used to simplify the creation of complex structures. However, this capability can be abused to create excessive demands on a processor's CPU and memory. A small number of nested expansions can result in an exponential growth in demands on memory.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-197",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/197.html"
+                },
+                {
+                    "external_id": "CWE-400",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/400.html"
+                },
+                {
+                    "external_id": "CWE-770",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/770.html"
+                },
+                {
+                    "description": "XML Entity Expansion",
+                    "external_id": "44",
+                    "source_name": "WASC",
+                    "url": "http://projects.webappsec.org/XML-Entity-Expansion"
+                },
+                {
+                    "description": "Amit Klein, Multiple vendors XML parser (and SOAP/WebServices server) Denial of Service attack using DTD",
+                    "external_id": "REF-64",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://www.securityfocus.com/archive/1/303509"
+                },
+                {
+                    "description": "Pete Lindstrom, Attacking & Defending Web Services, 2002, SPiRE Security",
+                    "external_id": "REF-65",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://www.webtorials.com/main/comnet/cn2003/web-service/24.pdf"
+                },
+                {
+                    "description": "Elliotte Rusty Harold, Tip: Configure SAX parsers for secure processing, IBM developerWorks, 2005--05---27, IBM",
+                    "external_id": "REF-66",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://www.ibm.com/developerworks/xml/library/x-tipcfsx.html"
+                },
+                {
+                    "description": "Bryan Sullivan, XML Denial of Service Attacks and Defenses",
+                    "external_id": "REF-67",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://msdn.microsoft.com/en-us/magazine/ee335713.aspx"
+                },
+                {
+                    "description": "Bryan Sullivan, XML Denial of Service Attacks and Defenses",
+                    "external_id": "REF-67",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://msdn.microsoft.com/en-us/magazine/ee335713.aspx"
+                }
+            ],
+            "id": "attack-pattern--f36abc8a-043e-42c5-876d-a65fc0cddc1e",
+            "modified": "2020-12-17T00:00:00.000Z",
+            "name": "XML Entity Expansion",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_can_follow_refs": [
+                "attack-pattern--5cf3eacf-a0c6-4c59-9f97-4f677a90587a"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--8abd01d1-b2a2-4b86-a640-7d3d3b61d27f"
+            ],
+            "x_capec_consequences": {
+                "Availability": [
+                    "Unreliable Execution (Denial of Service)",
+                    "Resource Consumption (Denial of Service)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>The most common example of this type of attack is the \"many laughs\" attack (sometimes called the 'billion laughs' attack). For example:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><?xml version=\"1.0\"?><!DOCTYPE lolz [<xhtml:div style=\"margin-left:10px;\"><!ENTITY lol \"lol\"><!ENTITY lol2 \"&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;\"><!ENTITY lol3 \"&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;\"><!ENTITY lol4 \"&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;\"><!ENTITY lol5 \"&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;\"><!ENTITY lol6 \"&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;\"><!ENTITY lol7 \"&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6\"><!ENTITY lol8 \"&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;\"><!ENTITY lol9 \"&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;\"></xhtml:div>\n                  ]><lolz>&lol9;</lolz></xhtml:div>\n               <xhtml:p>This is well formed and valid XML according to the DTD. Each entity increases the number entities by a factor of 10. The line of XML containing lol9; expands out exponentially to a message with 10^9 entities. A small message of a few KBs in size can easily be expanded into a few GB of memory in the parser. By including 3 more entities similar to the lol9 entity in the above code to the DTD, the program could expand out over a TB as there will now be 10^12 entities. Depending on the robustness of the target machine, this can lead to resource depletion, application crash, or even the execution of arbitrary code through a buffer overflow.</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the target: </b>Using a browser or an automated tool, an attacker records all instances of web services to process XML requests.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use an automated tool to record all instances of URLs to process XML requests.</td></tr><tr><td>Use a browser to manually explore the website and analyze how the application processes XML requests.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Launch an XML Entity Expansion attack: </b>The attacker crafts malicious XML message to force recursive entity expansion (or other repeated processing) that completely uses up available server resource.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Send the malicious crafted XML message containing recursive entity uses to the target URL.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "This type of attack requires that the target must receive XML input but either fail to provide an upper limit for entity expansion or provide a limit that is so large that it does not preclude significant resource consumption."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Low": "To send recursive entity expansion XML messages."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "type": "bundle"
+}

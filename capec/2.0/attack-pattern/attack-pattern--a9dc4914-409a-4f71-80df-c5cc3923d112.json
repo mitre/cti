@@ -1,1 +1,107 @@
-{"type": "bundle", "id": "bundle--cc790709-070f-4d62-8733-83f7ffa830c2", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--a9dc4914-409a-4f71-80df-c5cc3923d112", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2020-12-17T00:00:00.000Z", "name": "Dictionary-based Password Attack", "description": "\n            <xhtml:p>An attacker tries each of the words in a dictionary as passwords to gain access to the system via some user's account. If the password chosen by the user was a word within the dictionary, this attack will be successful (in the absence of other mitigations). This is a specific instance of the password brute forcing attack pattern.</xhtml:p>\n            <xhtml:p>Dictionary Attacks differ from similar attacks such as Password Spraying (CAPEC-565) and Credential Stuffing (CAPEC-600), since they leverage unknown username/password combinations and don't care about inducing account lockouts.</xhtml:p>\n         ", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/16.html", "external_id": "CAPEC-16"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/521.html", "external_id": "CWE-521"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/262.html", "external_id": "CWE-262"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/263.html", "external_id": "CWE-263"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/654.html", "external_id": "CWE-654"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/307.html", "external_id": "CWE-307"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/308.html", "external_id": "CWE-308"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/309.html", "external_id": "CWE-309"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_can_precede": ["attack-pattern--03a731ef-751b-43de-9159-9667d4be4d1a", "attack-pattern--22802ed6-ddc6-4da7-b6be-60b10d26198b", "attack-pattern--886a7175-e28a-4e6d-bd22-3b1497e31dc7", "attack-pattern--f2654def-b86d-4ddb-888f-de6b50a103a2", "attack-pattern--2618d0a4-06d0-4bde-8271-2df61ed8297a"], "x_capec_child_of": ["attack-pattern--8d88a81c-bde9-4fb3-acbe-901c783d6427"], "x_capec_consequences": {"Confidentiality": ["Gain Privileges", "Read Data"], "Access_Control": ["Gain Privileges"], "Authentication": ["Gain Privileges"], "Integrity": ["Modify Data"]}, "x_capec_example_instances": ["A system user selects the word \"treacherous\" as their passwords believing that it would be very difficult to guess. The password-based dictionary attack is used to crack this password and gain access to the account.", "\n               <xhtml:p>The Cisco LEAP challenge/response authentication mechanism uses passwords in a way that is susceptible to dictionary attacks, which makes it easier for remote attackers to gain privileges via brute force password guessing attacks.</xhtml:p>\n               <xhtml:p>Cisco LEAP is a mutual authentication algorithm that supports dynamic derivation of session keys. With Cisco LEAP, mutual authentication relies on a shared secret, the user's logon password (which is known by the client and the network), and is used to respond to challenges between the user and the Remote Authentication Dial-In User Service (RADIUS) server.</xhtml:p>\n               <xhtml:p>Methods exist for someone to write a tool to launch an offline dictionary attack on password-based authentications that leverage Microsoft MS-CHAP, such as Cisco LEAP. The tool leverages large password lists to efficiently launch offline dictionary attacks against LEAP user accounts, collected through passive sniffing or active techniques.</xhtml:p>See also: CVE-2003-1096"], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine application's/system's password policy: </b>Determine the password policies of the target application/system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine minimum and maximum allowed password lengths.</td></tr><tr><td>Determine format of allowed passwords (whether they are required or allowed to contain numbers, special characters, etc., or whether they are allowed to contain words from the dictionary).</td></tr><tr><td>Determine account lockout policy (a strict account lockout policy will prevent brute force attacks).</td></tr></tbody></table><li> <p> <b>Select dictionaries: </b>Pick the dictionaries to be used in the attack (e.g. different languages, specific terminology, etc.)</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Select dictionary based on particular users' preferred languages.</td></tr><tr><td>Select dictionary based on the application/system's supported languages.</td></tr></tbody></table><li> <p> <b>Determine username(s) to target: </b>Determine username(s) whose passwords to crack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Obtain username(s) by sniffing network packets.</td></tr><tr><td>Obtain username(s) by querying application/system (e.g. if upon a failed login attempt, the system indicates whether the entered username was valid or not)</td></tr><tr><td>Obtain usernames from filesystem (e.g. list of directories in C:\\Documents and Settings\\ in Windows, and list in /etc/passwd in UNIX-like systems)</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Use dictionary to crack passwords.: </b>Use a password cracking tool that will leverage the dictionary to feed passwords to the system and see if they work.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Try all words in the dictionary, as well as common misspellings of the words as passwords for the chosen username(s).</td></tr><tr><td>Try common combinations of words in the dictionary, as well as common misspellings of the combinations as passwords for the chosen username(s).</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "Medium", "x_capec_prerequisites": ["The system uses one factor password based authentication.", "The system does not have a sound password policy that is being enforced.", "The system does not implement an effective password throttling mechanism."], "x_capec_resources_required": ["A machine with sufficient resources for the job (e.g. CPU, RAM, HD). Applicable dictionaries are required. Also a password cracking tool or a custom script that leverages the dictionary database to launch the attack."], "x_capec_skills_required": {"Low": "A variety of password cracking tools and dictionaries are available to launch this type of an attack."}, "x_capec_status": "Draft", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--85c114a3-36b5-477d-bfd9-b91888f4e04c",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>An attacker tries each of the words in a dictionary as passwords to gain access to the system via some user's account. If the password chosen by the user was a word within the dictionary, this attack will be successful (in the absence of other mitigations). This is a specific instance of the password brute forcing attack pattern.</xhtml:p>\n            <xhtml:p>Dictionary Attacks differ from similar attacks such as Password Spraying (CAPEC-565) and Credential Stuffing (CAPEC-600), since they leverage unknown username/password combinations and don't care about inducing account lockouts.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-16",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/16.html"
+                },
+                {
+                    "external_id": "CWE-521",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/521.html"
+                },
+                {
+                    "external_id": "CWE-262",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/262.html"
+                },
+                {
+                    "external_id": "CWE-263",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/263.html"
+                },
+                {
+                    "external_id": "CWE-654",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/654.html"
+                },
+                {
+                    "external_id": "CWE-307",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/307.html"
+                },
+                {
+                    "external_id": "CWE-308",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/308.html"
+                },
+                {
+                    "external_id": "CWE-309",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/309.html"
+                }
+            ],
+            "id": "attack-pattern--a9dc4914-409a-4f71-80df-c5cc3923d112",
+            "modified": "2020-12-17T00:00:00.000Z",
+            "name": "Dictionary-based Password Attack",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_can_precede_refs": [
+                "attack-pattern--03a731ef-751b-43de-9159-9667d4be4d1a",
+                "attack-pattern--22802ed6-ddc6-4da7-b6be-60b10d26198b",
+                "attack-pattern--886a7175-e28a-4e6d-bd22-3b1497e31dc7",
+                "attack-pattern--f2654def-b86d-4ddb-888f-de6b50a103a2",
+                "attack-pattern--2618d0a4-06d0-4bde-8271-2df61ed8297a"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--8d88a81c-bde9-4fb3-acbe-901c783d6427"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "A system user selects the word \"treacherous\" as their passwords believing that it would be very difficult to guess. The password-based dictionary attack is used to crack this password and gain access to the account.",
+                "\n               <xhtml:p>The Cisco LEAP challenge/response authentication mechanism uses passwords in a way that is susceptible to dictionary attacks, which makes it easier for remote attackers to gain privileges via brute force password guessing attacks.</xhtml:p>\n               <xhtml:p>Cisco LEAP is a mutual authentication algorithm that supports dynamic derivation of session keys. With Cisco LEAP, mutual authentication relies on a shared secret, the user's logon password (which is known by the client and the network), and is used to respond to challenges between the user and the Remote Authentication Dial-In User Service (RADIUS) server.</xhtml:p>\n               <xhtml:p>Methods exist for someone to write a tool to launch an offline dictionary attack on password-based authentications that leverage Microsoft MS-CHAP, such as Cisco LEAP. The tool leverages large password lists to efficiently launch offline dictionary attacks against LEAP user accounts, collected through passive sniffing or active techniques.</xhtml:p>See also: CVE-2003-1096"
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine application's/system's password policy: </b>Determine the password policies of the target application/system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine minimum and maximum allowed password lengths.</td></tr><tr><td>Determine format of allowed passwords (whether they are required or allowed to contain numbers, special characters, etc., or whether they are allowed to contain words from the dictionary).</td></tr><tr><td>Determine account lockout policy (a strict account lockout policy will prevent brute force attacks).</td></tr></tbody></table><li> <p> <b>Select dictionaries: </b>Pick the dictionaries to be used in the attack (e.g. different languages, specific terminology, etc.)</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Select dictionary based on particular users' preferred languages.</td></tr><tr><td>Select dictionary based on the application/system's supported languages.</td></tr></tbody></table><li> <p> <b>Determine username(s) to target: </b>Determine username(s) whose passwords to crack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Obtain username(s) by sniffing network packets.</td></tr><tr><td>Obtain username(s) by querying application/system (e.g. if upon a failed login attempt, the system indicates whether the entered username was valid or not)</td></tr><tr><td>Obtain usernames from filesystem (e.g. list of directories in C:\\Documents and Settings\\ in Windows, and list in /etc/passwd in UNIX-like systems)</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Use dictionary to crack passwords.: </b>Use a password cracking tool that will leverage the dictionary to feed passwords to the system and see if they work.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Try all words in the dictionary, as well as common misspellings of the words as passwords for the chosen username(s).</td></tr><tr><td>Try common combinations of words in the dictionary, as well as common misspellings of the combinations as passwords for the chosen username(s).</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "The system uses one factor password based authentication.",
+                "The system does not have a sound password policy that is being enforced.",
+                "The system does not implement an effective password throttling mechanism."
+            ],
+            "x_capec_resources_required": [
+                "A machine with sufficient resources for the job (e.g. CPU, RAM, HD). Applicable dictionaries are required. Also a password cracking tool or a custom script that leverages the dictionary database to launch the attack."
+            ],
+            "x_capec_skills_required": {
+                "Low": "A variety of password cracking tools and dictionaries are available to launch this type of an attack."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

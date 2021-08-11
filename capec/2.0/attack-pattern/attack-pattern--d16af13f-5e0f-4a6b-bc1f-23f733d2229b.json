@@ -1,1 +1,86 @@
-{"type": "bundle", "id": "bundle--695d6750-5afc-4b31-889a-6804accfc9e9", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--d16af13f-5e0f-4a6b-bc1f-23f733d2229b", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2021-06-24T00:00:00.000Z", "name": "Redirect Access to Libraries", "description": "An adversary exploits a weakness in the way an application searches for external libraries to manipulate the execution flow to point to an adversary supplied library or code base. This pattern of attack allows the adversary to compromise the application or server via the execution of unauthorized code. An application typically makes calls to functions that are a part of libraries external to the application. These libraries may be part of the operating system or they may be third party libraries. If an adversary can redirect an application's attempts to access these libraries to other libraries that the adversary supplies, the adversary will be able to force the targeted application to execute arbitrary code. This is especially dangerous if the targeted application has enhanced privileges. Access can be redirected through a number of techniques, including the use of symbolic links, search path modification, and relative path manipulation.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/159.html", "external_id": "CAPEC-159"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/706.html", "external_id": "CWE-706"}, {"source_name": "ATTACK", "description": "Hijack Execution Flow:Path Interception by Search Order Hijacking", "url": "https://attack.mitre.org/wiki/Technique/T1574/008", "external_id": "T1574.008"}, {"source_name": "reference_from_CAPEC", "description": "Silvio Cesare, Share Library Call Redirection Via ELF PLT Infection (Issue 56), Phrack Magazine, 2000", "url": "http://phrack.org/issues/56/7.html", "external_id": "REF-29"}, {"source_name": "reference_from_CAPEC", "description": "OWASP Top 10 2007 (2007), The Open Web Application Security Project (OWASP)", "url": "https://www.owasp.org/www-pdf-archive/OWASP_Top_10_2007.pdf", "external_id": "REF-30"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Standard", "x_capec_can_precede": ["attack-pattern--0123fa83-2d47-4398-85f1-30ce114abb9a"], "x_capec_child_of": ["attack-pattern--ce92f5b9-6228-4354-8a1b-72ad7ad3bb84"], "x_capec_consequences": {"Authorization": ["Execute Unauthorized Commands (Run Arbitrary Code)", "Bypass Protection Mechanism"], "Access_Control": ["Bypass Protection Mechanism"]}, "x_capec_example_instances": ["In this example, the attacker using ELF infection that redirects the Procedure Linkage Table (PLT) of an executable allowing redirection to be resident outside of the infected executable. The algorithm at the entry point code is as follows... \u2022 mark the text segment writeable \u2022 save the PLT(GOT) entry \u2022 replace the PLT(GOT) entry with the address of the new lib call The algorithm in the new library call is as follows... \u2022 do the payload of the new lib call \u2022 restore the original PLT(GOT) entry \u2022 call the lib call \u2022 save the PLT(GOT) entry again (if its changed) \u2022 replace the PLT(GOT) entry with the address of the new lib call"], "x_capec_likelihood_of_attack": "High", "x_capec_parent_of": ["attack-pattern--7cb5458d-b646-4a25-ad0a-4c3fabd70a65", "attack-pattern--2e603682-c08c-4af1-8e06-329dc8bbe4b4", "attack-pattern--abdd46ce-dd2d-4430-8032-aa3ee1d262fd", "attack-pattern--bfb6492a-7a88-47c4-aff9-2c8190265328"], "x_capec_prerequisites": ["The target must utilize external libraries and must fail to verify the integrity of these libraries before using them."], "x_capec_skills_required": {"Low": "To modify the entries in the configuration file pointing to malicious libraries", "Medium": "To force symlink and timing issues for redirecting access to libraries", "High": "To reverse engineering the libraries and inject malicious code into the libraries"}, "x_capec_status": "Stable", "x_capec_typical_severity": "Very High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--dfe30af2-75b1-486e-9aeb-ae68f2baa49c",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An adversary exploits a weakness in the way an application searches for external libraries to manipulate the execution flow to point to an adversary supplied library or code base. This pattern of attack allows the adversary to compromise the application or server via the execution of unauthorized code. An application typically makes calls to functions that are a part of libraries external to the application. These libraries may be part of the operating system or they may be third party libraries. If an adversary can redirect an application's attempts to access these libraries to other libraries that the adversary supplies, the adversary will be able to force the targeted application to execute arbitrary code. This is especially dangerous if the targeted application has enhanced privileges. Access can be redirected through a number of techniques, including the use of symbolic links, search path modification, and relative path manipulation.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-159",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/159.html"
+                },
+                {
+                    "external_id": "CWE-706",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/706.html"
+                },
+                {
+                    "description": "Hijack Execution Flow:Path Interception by Search Order Hijacking",
+                    "external_id": "T1574.008",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1574/008"
+                },
+                {
+                    "description": "Silvio Cesare, Share Library Call Redirection Via ELF PLT Infection (Issue 56), Phrack Magazine, 2000",
+                    "external_id": "REF-29",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://phrack.org/issues/56/7.html"
+                },
+                {
+                    "description": "OWASP Top 10 2007 (2007), The Open Web Application Security Project (OWASP)",
+                    "external_id": "REF-30",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.owasp.org/www-pdf-archive/OWASP_Top_10_2007.pdf"
+                }
+            ],
+            "id": "attack-pattern--d16af13f-5e0f-4a6b-bc1f-23f733d2229b",
+            "modified": "2021-06-24T00:00:00.000Z",
+            "name": "Redirect Access to Libraries",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Standard",
+            "x_capec_can_precede_refs": [
+                "attack-pattern--0123fa83-2d47-4398-85f1-30ce114abb9a"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--ce92f5b9-6228-4354-8a1b-72ad7ad3bb84"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Bypass Protection Mechanism"
+                ]
+            },
+            "x_capec_example_instances": [
+                "In this example, the attacker using ELF infection that redirects the Procedure Linkage Table (PLT) of an executable allowing redirection to be resident outside of the infected executable. The algorithm at the entry point code is as follows... • mark the text segment writeable • save the PLT(GOT) entry • replace the PLT(GOT) entry with the address of the new lib call The algorithm in the new library call is as follows... • do the payload of the new lib call • restore the original PLT(GOT) entry • call the lib call • save the PLT(GOT) entry again (if its changed) • replace the PLT(GOT) entry with the address of the new lib call"
+            ],
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_parent_of_refs": [
+                "attack-pattern--7cb5458d-b646-4a25-ad0a-4c3fabd70a65",
+                "attack-pattern--2e603682-c08c-4af1-8e06-329dc8bbe4b4",
+                "attack-pattern--abdd46ce-dd2d-4430-8032-aa3ee1d262fd",
+                "attack-pattern--bfb6492a-7a88-47c4-aff9-2c8190265328"
+            ],
+            "x_capec_prerequisites": [
+                "The target must utilize external libraries and must fail to verify the integrity of these libraries before using them."
+            ],
+            "x_capec_skills_required": {
+                "High": "To reverse engineering the libraries and inject malicious code into the libraries",
+                "Low": "To modify the entries in the configuration file pointing to malicious libraries",
+                "Medium": "To force symlink and timing issues for redirecting access to libraries"
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

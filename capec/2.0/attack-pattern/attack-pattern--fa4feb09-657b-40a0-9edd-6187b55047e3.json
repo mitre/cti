@@ -1,1 +1,104 @@
-{"type": "bundle", "id": "bundle--d3ca76b7-a315-4092-95c8-bd6ea3fd8c88", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--fa4feb09-657b-40a0-9edd-6187b55047e3", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2020-12-17T00:00:00.000Z", "modified": "2020-12-17T00:00:00.000Z", "name": "Root/Jailbreak Detection Evasion via Hooking", "description": "An adversary forces a non-restricted mobile application to load arbitrary code or code files, via Hooking, with the goal of evading Root/Jailbreak detection. Mobile device users often Root/Jailbreak their devices in order to gain administrative control over the mobile operating system and/or to install third-party mobile applications that are not provided by authorized application stores (e.g. Google Play Store and Apple App Store). Adversaries may further leverage these capabilities to escalate privileges or bypass access control on legitimate applications. Although many mobile applications check if a mobile device is Rooted/Jailbroken prior to authorized use of the application, adversaries may be able to \"hook\" code in order to circumvent these checks. Successfully evading Root/Jailbreak detection allows an adversary to execute administrative commands, obtain confidential data, impersonate legitimate users of the application, and more.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/660.html", "external_id": "CAPEC-660"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/829.html", "external_id": "CWE-829"}, {"source_name": "ATTACK", "description": "Process Injection", "url": "https://attack.mitre.org/wiki/Technique/T1055", "external_id": "T1055"}, {"source_name": "reference_from_CAPEC", "description": "Ansgar Kellner, Micha Horlboge, Konrad Rieck, Christian Wressnegger, False Sense of Security: A Study on the Effectivity of Jailbreak Detection in Banking Apps, 2019--06---17, Technische Universit\u00e4t Braunschweig", "url": "https://cybersecurity.att.com/blogs/security-essentials/mobile-phishing", "external_id": "REF-624"}, {"source_name": "reference_from_CAPEC", "description": "San-Tsai Sun, Andrea Cuadros, Konstantin Beznosov, Android Rooting: Methods, Detection, and Evasion, 2019--06---17, Technische Universit\u00e4t Braunschweig", "url": "http://lersse-dl.ece.ubc.ca/record/310/files/p3.pdf?subformat=pdfa", "external_id": "REF-625"}, {"source_name": "reference_from_CAPEC", "description": "Jose Lopes, Who owns your runtime?, 2015--10---12, Nettitude Labs", "url": "https://labs.nettitude.com/blog/ios-and-android-runtime-and-anti-debugging-protections/#hooking", "external_id": "REF-626"}, {"source_name": "reference_from_CAPEC", "description": "Suresh Khutale, Android Root Detection Bypass by Reverse Engineering APK, 2018--03---06, InfoSec Institute", "url": "https://resources.infosecinstitute.com/topic/android-root-detection-bypass-reverse-engineering-apk/", "external_id": "REF-627"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_can_follow": ["attack-pattern--80649f3c-d2f3-4703-9e78-e096673a7517"], "x_capec_child_of": ["attack-pattern--283d665d-e109-4d5d-8993-6fb25e5923d6"], "x_capec_consequences": {"Integrity": ["Execute Unauthorized Commands (Through Root/Jailbreak Detection Evasion via Hooking, the adversary compromises the integrity of the application.)"], "Authorization": ["Execute Unauthorized Commands (Through Root/Jailbreak Detection Evasion via Hooking, the adversary compromises the integrity of the application.)", "Gain Privileges"], "Confidentiality": ["Gain Privileges", "Read Data (An adversary may leverage Root/Jailbreak Detection Evasion via Hooking in order to obtain sensitive information.)"], "Access_Control": ["Read Data (An adversary may leverage Root/Jailbreak Detection Evasion via Hooking in order to obtain sensitive information.)"]}, "x_capec_example_instances": ["An adversary targets a non-restricted iOS banking application in an attempt to compromise sensitive user data. The adversary creates Objective-C runtime code that always returns \"false\" when checking for the existence of the Cydia application. The malicious code is then dynamically loaded into the application via the DYLD_INSERT_LIBRARIES environment variable. When the banking applications checks for Cydia, the hooked code returns \"false\", so the application assumes the device is stock (i.e. not Jailbroken) and allows it to access the application. However, the adversary has just evaded Jailbreak detection and is now able to glean user credentials and/or transaction details.", "An adversary targets a mobile voting application on an Android device with the goal of committing voter fraud. Leveraging the Xposed framework, the adversary is able to create and hook Java code into the application that bypasses Root detection methods. When the voting application attempts to detect a Rooted device by checking for commonly known installed packages associated with Rooting, the hooked code removes the suspicious packages before returning to the application. As a result, the application believes the device is stock (i.e. not Rooted) when in actuality this is not the case. Having evading Root detection, the adversary is now able to cast votes for the candidate of their choosing as a variety of different users."], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify application with attack potential: </b>The adversary searches for and identifies a mobile application that could be exploited for malicious purposes (e.g. banking, voting, or medical applications).</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Search application stores for mobile applications worth exploiting</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Develop code to be hooked into chosen target application: </b>The adversary develops code or leverages existing code that will be hooked into the target application in order to evade Root/Jailbreak detection methods.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Develop code or leverage existing code to bypass Root/Jailbreak detection methods.</td></tr><tr><td>Test the code to see if it works.</td></tr><tr><td>Iteratively develop the code until Root/Jailbreak detection methods are evaded.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Execute code hooking to evade Root/Jailbreak detection methods: </b>Once hooking code has been developed or obtained, execute the code against the target application to evade Root/Jailbreak detection methods.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Hook code into the target application.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "Medium", "x_capec_prerequisites": ["The targeted application must be non-restricted to allow code hooking."], "x_capec_resources_required": ["The adversary must have a Rooted/Jailbroken mobile device.", "The adversary needs to have enough access to the target application to control the included code or file."], "x_capec_skills_required": {"High": "Knowledge about Root/Jailbreak detection and evasion techniques.", "Medium": "Knowledge about code hooking."}, "x_capec_status": "Stable", "x_capec_typical_severity": "Very High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--b7f1f62c-c31f-4729-bd00-dbc7af2d5475",
+    "objects": [
+        {
+            "created": "2020-12-17T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An adversary forces a non-restricted mobile application to load arbitrary code or code files, via Hooking, with the goal of evading Root/Jailbreak detection. Mobile device users often Root/Jailbreak their devices in order to gain administrative control over the mobile operating system and/or to install third-party mobile applications that are not provided by authorized application stores (e.g. Google Play Store and Apple App Store). Adversaries may further leverage these capabilities to escalate privileges or bypass access control on legitimate applications. Although many mobile applications check if a mobile device is Rooted/Jailbroken prior to authorized use of the application, adversaries may be able to \"hook\" code in order to circumvent these checks. Successfully evading Root/Jailbreak detection allows an adversary to execute administrative commands, obtain confidential data, impersonate legitimate users of the application, and more.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-660",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/660.html"
+                },
+                {
+                    "external_id": "CWE-829",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/829.html"
+                },
+                {
+                    "description": "Process Injection",
+                    "external_id": "T1055",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1055"
+                },
+                {
+                    "description": "Ansgar Kellner, Micha Horlboge, Konrad Rieck, Christian Wressnegger, False Sense of Security: A Study on the Effectivity of Jailbreak Detection in Banking Apps, 2019--06---17, Technische Universität Braunschweig",
+                    "external_id": "REF-624",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://cybersecurity.att.com/blogs/security-essentials/mobile-phishing"
+                },
+                {
+                    "description": "San-Tsai Sun, Andrea Cuadros, Konstantin Beznosov, Android Rooting: Methods, Detection, and Evasion, 2019--06---17, Technische Universität Braunschweig",
+                    "external_id": "REF-625",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://lersse-dl.ece.ubc.ca/record/310/files/p3.pdf?subformat=pdfa"
+                },
+                {
+                    "description": "Jose Lopes, Who owns your runtime?, 2015--10---12, Nettitude Labs",
+                    "external_id": "REF-626",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://labs.nettitude.com/blog/ios-and-android-runtime-and-anti-debugging-protections/#hooking"
+                },
+                {
+                    "description": "Suresh Khutale, Android Root Detection Bypass by Reverse Engineering APK, 2018--03---06, InfoSec Institute",
+                    "external_id": "REF-627",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://resources.infosecinstitute.com/topic/android-root-detection-bypass-reverse-engineering-apk/"
+                }
+            ],
+            "id": "attack-pattern--fa4feb09-657b-40a0-9edd-6187b55047e3",
+            "modified": "2020-12-17T00:00:00.000Z",
+            "name": "Root/Jailbreak Detection Evasion via Hooking",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_can_follow_refs": [
+                "attack-pattern--80649f3c-d2f3-4703-9e78-e096673a7517"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--283d665d-e109-4d5d-8993-6fb25e5923d6"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Read Data (An adversary may leverage Root/Jailbreak Detection Evasion via Hooking in order to obtain sensitive information.)"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands (Through Root/Jailbreak Detection Evasion via Hooking, the adversary compromises the integrity of the application.)",
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges",
+                    "Read Data (An adversary may leverage Root/Jailbreak Detection Evasion via Hooking in order to obtain sensitive information.)"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Through Root/Jailbreak Detection Evasion via Hooking, the adversary compromises the integrity of the application.)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "An adversary targets a non-restricted iOS banking application in an attempt to compromise sensitive user data. The adversary creates Objective-C runtime code that always returns \"false\" when checking for the existence of the Cydia application. The malicious code is then dynamically loaded into the application via the DYLD_INSERT_LIBRARIES environment variable. When the banking applications checks for Cydia, the hooked code returns \"false\", so the application assumes the device is stock (i.e. not Jailbroken) and allows it to access the application. However, the adversary has just evaded Jailbreak detection and is now able to glean user credentials and/or transaction details.",
+                "An adversary targets a mobile voting application on an Android device with the goal of committing voter fraud. Leveraging the Xposed framework, the adversary is able to create and hook Java code into the application that bypasses Root detection methods. When the voting application attempts to detect a Rooted device by checking for commonly known installed packages associated with Rooting, the hooked code removes the suspicious packages before returning to the application. As a result, the application believes the device is stock (i.e. not Rooted) when in actuality this is not the case. Having evading Root detection, the adversary is now able to cast votes for the candidate of their choosing as a variety of different users."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify application with attack potential: </b>The adversary searches for and identifies a mobile application that could be exploited for malicious purposes (e.g. banking, voting, or medical applications).</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Search application stores for mobile applications worth exploiting</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Develop code to be hooked into chosen target application: </b>The adversary develops code or leverages existing code that will be hooked into the target application in order to evade Root/Jailbreak detection methods.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Develop code or leverage existing code to bypass Root/Jailbreak detection methods.</td></tr><tr><td>Test the code to see if it works.</td></tr><tr><td>Iteratively develop the code until Root/Jailbreak detection methods are evaded.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Execute code hooking to evade Root/Jailbreak detection methods: </b>Once hooking code has been developed or obtained, execute the code against the target application to evade Root/Jailbreak detection methods.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Hook code into the target application.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "The targeted application must be non-restricted to allow code hooking."
+            ],
+            "x_capec_resources_required": [
+                "The adversary must have a Rooted/Jailbroken mobile device.",
+                "The adversary needs to have enough access to the target application to control the included code or file."
+            ],
+            "x_capec_skills_required": {
+                "High": "Knowledge about Root/Jailbreak detection and evasion techniques.",
+                "Medium": "Knowledge about code hooking."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

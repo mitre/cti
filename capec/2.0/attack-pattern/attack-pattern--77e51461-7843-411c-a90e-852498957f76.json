@@ -1,1 +1,131 @@
-{"type": "bundle", "id": "bundle--0410fcca-87c2-4d57-bf94-ee0ab10ec263", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--77e51461-7843-411c-a90e-852498957f76", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2021-06-24T00:00:00.000Z", "name": "Overflow Buffers", "description": "Buffer Overflow attacks target improper or missing bounds checking on buffer operations, typically triggered by input injected by an adversary. As a consequence, an adversary is able to write past the boundaries of allocated buffer regions in memory, causing a program crash or potentially redirection of execution as per the adversaries' choice.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/100.html", "external_id": "CAPEC-100"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/120.html", "external_id": "CWE-120"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/119.html", "external_id": "CWE-119"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/131.html", "external_id": "CWE-131"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/129.html", "external_id": "CWE-129"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/805.html", "external_id": "CWE-805"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/680.html", "external_id": "CWE-680"}, {"source_name": "WASC", "description": "Buffer Overflow", "url": "http://projects.webappsec.org/Buffer-Overflow", "external_id": "07"}, {"source_name": "OWASP Attacks", "description": "Buffer overflow attack", "url": "https://owasp.org/www-community/attacks/Buffer_overflow_attack"}, {"source_name": "reference_from_CAPEC", "description": "OWASP Vulnerabilities, The Open Web Application Security Project (OWASP)", "url": "https://owasp.org/www-community/vulnerabilities/Buffer_Overflow", "external_id": "REF-620"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Standard", "x_capec_child_of": ["attack-pattern--476ca631-2695-43f8-82f6-83c06a07ae36"], "x_capec_consequences": {"Availability": ["Unreliable Execution", "Execute Unauthorized Commands (Run Arbitrary Code)"], "Confidentiality": ["Execute Unauthorized Commands (Run Arbitrary Code)", "Gain Privileges"], "Integrity": ["Execute Unauthorized Commands (Run Arbitrary Code)"], "Access_Control": ["Gain Privileges"], "Authorization": ["Gain Privileges"]}, "x_capec_example_instances": ["The most straightforward example is an application that reads in input from the user and stores it in an internal buffer but does not check that the size of the input data is less than or equal to the size of the buffer. If the user enters excessive length data, the buffer may overflow leading to the application crashing, or worse, enabling the user to cause execution of injected code.", "Many web servers enforce security in web applications through the use of filter plugins. An example is the SiteMinder plugin used for authentication. An overflow in such a plugin, possibly through a long URL or redirect parameter, can allow an adversary not only to bypass the security checks but also execute arbitrary code on the target web server in the context of the user that runs the web server process."], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary identifies a buffer to target. Buffer regions are either allotted on the stack or the heap, and the exact nature of attack would vary depending on the location of the buffer</p></li><li> <p>Next, the adversary identifies an injection vector to deliver the excessive content to the targeted buffer.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary crafts the content to be injected. If the intent is to simply cause the software to crash, the content need only consist of an excessive quantity of random data. If the intent is to leverage the overflow for execution of arbitrary code, the adversary will craft a set of content that not only overflows the targeted buffer but does so in such a way that the overwritten return address is replaced with one of the adversaries' choosing which points to code injected by the adversary.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The adversary injects the content into the targeted software.</p></li><li> <p>Upon successful exploitation, the system either crashes or control of the program is returned to a location of the adversaries' choice. This can result in execution of arbitrary code or escalated privileges, depending upon the exploited target.</p></li></ol></div>", "x_capec_likelihood_of_attack": "High", "x_capec_parent_of": ["attack-pattern--4a29d66d-8617-4382-b456-578ecdb1609e", "attack-pattern--c4a0c765-e4ca-43c2-996e-08ce13ae8f80", "attack-pattern--d591235a-da3b-4872-8962-27fe44fa1ab0", "attack-pattern--4b856ceb-8bf7-4f0e-b423-89a420455b1d", "attack-pattern--3c08bb9d-43b5-4468-8b38-387c6cb60da7", "attack-pattern--d3634072-88f9-4711-987f-6bff7698bd4c", "attack-pattern--5d5ff43b-cbe7-4986-bfec-cf979f97e6b9", "attack-pattern--8e403d18-af4e-4abd-bd38-0f99f74b4636", "attack-pattern--e61f5dd9-d26e-454f-ab07-171f3dea6e73", "attack-pattern--4cd18074-15c1-4206-8391-115685669623", "attack-pattern--e62000f0-addd-4156-b9fd-469bbb211d45", "attack-pattern--b6a2983b-1d97-4698-b210-961ed0523f33"], "x_capec_prerequisites": ["Targeted software performs buffer operations.", "Targeted software inadequately performs bounds-checking on buffer operations.", "Adversary has the capability to influence the input to buffer operations."], "x_capec_resources_required": ["None: No specialized resources are required to execute this type of attack. Detecting and exploiting a buffer overflow does not require any resources beyond knowledge of and access to the target system."], "x_capec_skills_required": {"Low": "In most cases, overflowing a buffer does not require advanced skills beyond the ability to notice an overflow and stuff an input variable with content.", "High": "In cases of directed overflows, where the motive is to divert the flow of the program or application as per the adversaries' bidding, high level skills are required. This may involve detailed knowledge of the target system architecture and kernel."}, "x_capec_status": "Draft", "x_capec_typical_severity": "Very High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--6f2885c7-64d9-4247-9c7f-2709434d35dc",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "Buffer Overflow attacks target improper or missing bounds checking on buffer operations, typically triggered by input injected by an adversary. As a consequence, an adversary is able to write past the boundaries of allocated buffer regions in memory, causing a program crash or potentially redirection of execution as per the adversaries' choice.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-100",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/100.html"
+                },
+                {
+                    "external_id": "CWE-120",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/120.html"
+                },
+                {
+                    "external_id": "CWE-119",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/119.html"
+                },
+                {
+                    "external_id": "CWE-131",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/131.html"
+                },
+                {
+                    "external_id": "CWE-129",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/129.html"
+                },
+                {
+                    "external_id": "CWE-805",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/805.html"
+                },
+                {
+                    "external_id": "CWE-680",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/680.html"
+                },
+                {
+                    "description": "Buffer Overflow",
+                    "external_id": "07",
+                    "source_name": "WASC",
+                    "url": "http://projects.webappsec.org/Buffer-Overflow"
+                },
+                {
+                    "description": "Buffer overflow attack",
+                    "source_name": "OWASP Attacks",
+                    "url": "https://owasp.org/www-community/attacks/Buffer_overflow_attack"
+                },
+                {
+                    "description": "OWASP Vulnerabilities, The Open Web Application Security Project (OWASP)",
+                    "external_id": "REF-620",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://owasp.org/www-community/vulnerabilities/Buffer_Overflow"
+                }
+            ],
+            "id": "attack-pattern--77e51461-7843-411c-a90e-852498957f76",
+            "modified": "2021-06-24T00:00:00.000Z",
+            "name": "Overflow Buffers",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Standard",
+            "x_capec_child_of_refs": [
+                "attack-pattern--476ca631-2695-43f8-82f6-83c06a07ae36"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Unreliable Execution",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "The most straightforward example is an application that reads in input from the user and stores it in an internal buffer but does not check that the size of the input data is less than or equal to the size of the buffer. If the user enters excessive length data, the buffer may overflow leading to the application crashing, or worse, enabling the user to cause execution of injected code.",
+                "Many web servers enforce security in web applications through the use of filter plugins. An example is the SiteMinder plugin used for authentication. An overflow in such a plugin, possibly through a long URL or redirect parameter, can allow an adversary not only to bypass the security checks but also execute arbitrary code on the target web server in the context of the user that runs the web server process."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary identifies a buffer to target. Buffer regions are either allotted on the stack or the heap, and the exact nature of attack would vary depending on the location of the buffer</p></li><li> <p>Next, the adversary identifies an injection vector to deliver the excessive content to the targeted buffer.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary crafts the content to be injected. If the intent is to simply cause the software to crash, the content need only consist of an excessive quantity of random data. If the intent is to leverage the overflow for execution of arbitrary code, the adversary will craft a set of content that not only overflows the targeted buffer but does so in such a way that the overwritten return address is replaced with one of the adversaries' choosing which points to code injected by the adversary.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The adversary injects the content into the targeted software.</p></li><li> <p>Upon successful exploitation, the system either crashes or control of the program is returned to a location of the adversaries' choice. This can result in execution of arbitrary code or escalated privileges, depending upon the exploited target.</p></li></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_parent_of_refs": [
+                "attack-pattern--4a29d66d-8617-4382-b456-578ecdb1609e",
+                "attack-pattern--c4a0c765-e4ca-43c2-996e-08ce13ae8f80",
+                "attack-pattern--d591235a-da3b-4872-8962-27fe44fa1ab0",
+                "attack-pattern--4b856ceb-8bf7-4f0e-b423-89a420455b1d",
+                "attack-pattern--3c08bb9d-43b5-4468-8b38-387c6cb60da7",
+                "attack-pattern--d3634072-88f9-4711-987f-6bff7698bd4c",
+                "attack-pattern--5d5ff43b-cbe7-4986-bfec-cf979f97e6b9",
+                "attack-pattern--8e403d18-af4e-4abd-bd38-0f99f74b4636",
+                "attack-pattern--e61f5dd9-d26e-454f-ab07-171f3dea6e73",
+                "attack-pattern--4cd18074-15c1-4206-8391-115685669623",
+                "attack-pattern--e62000f0-addd-4156-b9fd-469bbb211d45",
+                "attack-pattern--b6a2983b-1d97-4698-b210-961ed0523f33"
+            ],
+            "x_capec_prerequisites": [
+                "Targeted software performs buffer operations.",
+                "Targeted software inadequately performs bounds-checking on buffer operations.",
+                "Adversary has the capability to influence the input to buffer operations."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack. Detecting and exploiting a buffer overflow does not require any resources beyond knowledge of and access to the target system."
+            ],
+            "x_capec_skills_required": {
+                "High": "In cases of directed overflows, where the motive is to divert the flow of the program or application as per the adversaries' bidding, high level skills are required. This may involve detailed knowledge of the target system architecture and kernel.",
+                "Low": "In most cases, overflowing a buffer does not require advanced skills beyond the ability to notice an overflow and stuff an input variable with content."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

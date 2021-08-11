@@ -1,1 +1,67 @@
-{"type": "bundle", "id": "bundle--18722d83-17fb-4627-ba6a-ea302df632f1", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--abdd46ce-dd2d-4430-8032-aa3ee1d262fd", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2021-06-24T00:00:00.000Z", "name": "Search Order Hijacking", "description": "An adversary exploits a weakness in an application's specification of external libraries to exploit the functionality of the loader where the process loading the library searches first in the same directory in which the process binary resides and then in other directories. Exploitation of this preferential search order can allow an attacker to make the loading process load the adversary's rogue library rather than the legitimate library. This attack can be leveraged with many different libraries and with many different loading processes. No forensic trails are left in the system's registry or file system that an incorrect library had been loaded.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/471.html", "external_id": "CAPEC-471"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/427.html", "external_id": "CWE-427"}, {"source_name": "ATTACK", "description": "Hijack Execution Flow:DLL search order hijacking", "url": "https://attack.mitre.org/wiki/Technique/T1574/001", "external_id": "T1574.001"}, {"source_name": "ATTACK", "description": "Hijack Execution Flow:Dylib Hijacking", "url": "https://attack.mitre.org/wiki/Technique/T1574/004", "external_id": "T1574.004"}, {"source_name": "reference_from_CAPEC", "description": "M Trends Report, 2011, Mandiant", "url": "https://www.mandiant.com", "external_id": "REF-409"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_child_of": ["attack-pattern--d16af13f-5e0f-4a6b-bc1f-23f733d2229b"], "x_capec_example_instances": ["For instance, an attacker with access to the file system may place a malicious ntshrui.dll in the C:\\Windows directory. This DLL normally resides in the System32 folder. Process explorer.exe which also resides in C:\\Windows, upon trying to load the ntshrui.dll from the System32 folder will actually load the DLL supplied by the attacker simply because of the preferential search order. Since the attacker has placed its malicious ntshrui.dll in the same directory as the loading explorer.exe process, the DLL supplied by the attacker will be found first and thus loaded in lieu of the legitimate DLL. Since explorer.exe is loaded during the boot cycle, the attackers' malware is guaranteed to execute.", "macOS and OS X use a common method to look for required dynamic libraries (dylib) to load into a program based on search paths. Adversaries can take advantage of ambiguous paths to plant dylibs to gain privilege escalation or persistence. A common method is to see what dylibs an application uses, then plant a malicious version with the same name higher up in the search path. This typically results in the dylib being in the same folder as the application itself. If the program is configured to run at a higher privilege level than the current user, then when the dylib is loaded into the application, the dylib will also run at that elevated level."], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target general susceptibility: </b>An attacker uses an automated tool or manually finds whether the target application uses dynamically linked libraries and the configuration file or look up table (such as Procedure Linkage Table) which contains the entries for dynamically linked libraries.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker uses a tool such as the OSX \"otool\" utility or manually probes whether the target application uses dynamically linked libraries.</td></tr><tr><td>The attacker finds the configuration files containing the entries to the dynamically linked libraries and modifies the entries to point to the malicious libraries the attacker crafted.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Craft malicious libraries: </b>The attacker uses knowledge gained in the Explore phase to craft malicious libraries that they will redirect the target to leverage. These malicious libraries could have the same APIs as the legitimate library and additional malicious code.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker monitors the file operations performed by the target application using a tool like dtrace or FileMon. And the attacker can delay the operations by using \"sleep(2)\" and \"usleep()\" to prepare the appropriate conditions for the attack, or make the application perform expansive tasks (large files parsing, etc.) depending on the purpose of the application.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Redirect the access to libraries to the malicious libraries: </b>The attacker redirects the target to the malicious libraries they crafted in the Experiment phase. The attacker will be able to force the targeted application to execute arbitrary code when the application attempts to access the legitimate libraries.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker modifies the entries in the configuration files pointing to the malicious libraries they crafted.</td></tr><tr><td>The attacker leverages symlink/timing issues to redirect the target to access the malicious libraries they crafted. See also: CAPEC-132.</td></tr><tr><td>The attacker leverages file search path order issues to redirect the target to access the malicious libraries they crafted. See also: CAPEC-38.</td></tr></tbody></table></ol></div>", "x_capec_prerequisites": ["Attacker has a mechanism to place its malicious libraries in the needed location on the file system."], "x_capec_skills_required": {"Medium": "Ability to create a malicious library."}, "x_capec_status": "Stable", "x_capec_typical_severity": "Medium", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--61bba116-74bd-4dae-8e97-028688cfa788",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An adversary exploits a weakness in an application's specification of external libraries to exploit the functionality of the loader where the process loading the library searches first in the same directory in which the process binary resides and then in other directories. Exploitation of this preferential search order can allow an attacker to make the loading process load the adversary's rogue library rather than the legitimate library. This attack can be leveraged with many different libraries and with many different loading processes. No forensic trails are left in the system's registry or file system that an incorrect library had been loaded.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-471",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/471.html"
+                },
+                {
+                    "external_id": "CWE-427",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/427.html"
+                },
+                {
+                    "description": "Hijack Execution Flow:DLL search order hijacking",
+                    "external_id": "T1574.001",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1574/001"
+                },
+                {
+                    "description": "Hijack Execution Flow:Dylib Hijacking",
+                    "external_id": "T1574.004",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1574/004"
+                },
+                {
+                    "description": "M Trends Report, 2011, Mandiant",
+                    "external_id": "REF-409",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.mandiant.com"
+                }
+            ],
+            "id": "attack-pattern--abdd46ce-dd2d-4430-8032-aa3ee1d262fd",
+            "modified": "2021-06-24T00:00:00.000Z",
+            "name": "Search Order Hijacking",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--d16af13f-5e0f-4a6b-bc1f-23f733d2229b"
+            ],
+            "x_capec_example_instances": [
+                "For instance, an attacker with access to the file system may place a malicious ntshrui.dll in the C:\\Windows directory. This DLL normally resides in the System32 folder. Process explorer.exe which also resides in C:\\Windows, upon trying to load the ntshrui.dll from the System32 folder will actually load the DLL supplied by the attacker simply because of the preferential search order. Since the attacker has placed its malicious ntshrui.dll in the same directory as the loading explorer.exe process, the DLL supplied by the attacker will be found first and thus loaded in lieu of the legitimate DLL. Since explorer.exe is loaded during the boot cycle, the attackers' malware is guaranteed to execute.",
+                "macOS and OS X use a common method to look for required dynamic libraries (dylib) to load into a program based on search paths. Adversaries can take advantage of ambiguous paths to plant dylibs to gain privilege escalation or persistence. A common method is to see what dylibs an application uses, then plant a malicious version with the same name higher up in the search path. This typically results in the dylib being in the same folder as the application itself. If the program is configured to run at a higher privilege level than the current user, then when the dylib is loaded into the application, the dylib will also run at that elevated level."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target general susceptibility: </b>An attacker uses an automated tool or manually finds whether the target application uses dynamically linked libraries and the configuration file or look up table (such as Procedure Linkage Table) which contains the entries for dynamically linked libraries.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker uses a tool such as the OSX \"otool\" utility or manually probes whether the target application uses dynamically linked libraries.</td></tr><tr><td>The attacker finds the configuration files containing the entries to the dynamically linked libraries and modifies the entries to point to the malicious libraries the attacker crafted.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Craft malicious libraries: </b>The attacker uses knowledge gained in the Explore phase to craft malicious libraries that they will redirect the target to leverage. These malicious libraries could have the same APIs as the legitimate library and additional malicious code.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker monitors the file operations performed by the target application using a tool like dtrace or FileMon. And the attacker can delay the operations by using \"sleep(2)\" and \"usleep()\" to prepare the appropriate conditions for the attack, or make the application perform expansive tasks (large files parsing, etc.) depending on the purpose of the application.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Redirect the access to libraries to the malicious libraries: </b>The attacker redirects the target to the malicious libraries they crafted in the Experiment phase. The attacker will be able to force the targeted application to execute arbitrary code when the application attempts to access the legitimate libraries.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The attacker modifies the entries in the configuration files pointing to the malicious libraries they crafted.</td></tr><tr><td>The attacker leverages symlink/timing issues to redirect the target to access the malicious libraries they crafted. See also: CAPEC-132.</td></tr><tr><td>The attacker leverages file search path order issues to redirect the target to access the malicious libraries they crafted. See also: CAPEC-38.</td></tr></tbody></table></ol></div>",
+            "x_capec_prerequisites": [
+                "Attacker has a mechanism to place its malicious libraries in the needed location on the file system."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Ability to create a malicious library."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

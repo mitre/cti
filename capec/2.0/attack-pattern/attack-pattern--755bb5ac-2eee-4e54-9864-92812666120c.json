@@ -1,1 +1,149 @@
-{"type": "bundle", "id": "bundle--964ed710-087c-413d-ab84-247d8e231a31", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--755bb5ac-2eee-4e54-9864-92812666120c", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2020-07-30T00:00:00.000Z", "modified": "2020-12-17T00:00:00.000Z", "name": "Use of Known Kerberos Credentials", "description": "An adversary obtains (i.e. steals or purchases) legitimate Kerberos credentials (e.g. Kerberos service account userID/password or Kerberos Tickets) with the goal of achieving authenticated access to additional systems, applications, or services within the domain. Kerberos is the default authentication method for Windows domains and is utilized for numerous authentication purposes. Attacks leveraging trusted Kerberos credentials can result in numerous consequences, depending on what Kerberos credential is stolen. For example, Kerberos service accounts are typically used to run services or scheduled tasks pertaining to authentication. However, these credentials are often weak and never expire, in addition to possessing local or domain administrator privileges. If an adversary is able to acquire these credentials, it could result in lateral movement within the Windows domain or access to any resources the service account is privileged to access, among other things. Kerberos credentials can be obtained by an adversary via methods such as system breaches, network sniffing attacks, and/or brute force attacks against the Kerberos service account or the hash of a service ticket. Ultimately, successful spoofing and impersonation of trusted Kerberos credentials can lead to an adversary breaking authentication, authorization, and audit controls with the target system or application.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/652.html", "external_id": "CAPEC-652"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/522.html", "external_id": "CWE-522"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/307.html", "external_id": "CWE-307"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/308.html", "external_id": "CWE-308"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/309.html", "external_id": "CWE-309"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/262.html", "external_id": "CWE-262"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/263.html", "external_id": "CWE-263"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/654.html", "external_id": "CWE-654"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/294.html", "external_id": "CWE-294"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/836.html", "external_id": "CWE-836"}, {"source_name": "ATTACK", "description": "Steal or Forge Kerberos Tickets", "url": "https://attack.mitre.org/wiki/Technique/T1558", "external_id": "T1558"}, {"source_name": "reference_from_CAPEC", "description": "BRONZE BUTLER Targets Japanese Enterprises, 2017--10---12, Secureworks\u00ae Counter Threat Unit\u2122 Threat Intelligence", "url": "https://www.secureworks.com/research/bronze-butler-targets-japanese-businesses", "external_id": "REF-584"}, {"source_name": "reference_from_CAPEC", "description": "Kerberoasting Without Mimikatz, 2016--11---01", "url": "https://www.harmj0y.net/blog/powershell/kerberoasting-without-mimikatz/", "external_id": "REF-585"}, {"source_name": "reference_from_CAPEC", "description": "Invoke-Kerberoast", "url": "https://powersploit.readthedocs.io/en/latest/Recon/Invoke-Kerberoast/", "external_id": "REF-586"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Standard", "x_capec_can_follow": ["attack-pattern--bdcdc784-d891-4ca8-847b-38ddca37a6ec"], "x_capec_can_precede": ["attack-pattern--22802ed6-ddc6-4da7-b6be-60b10d26198b"], "x_capec_child_of": ["attack-pattern--886a7175-e28a-4e6d-bd22-3b1497e31dc7"], "x_capec_consequences": {"Confidentiality": ["Gain Privileges", "Read Data"], "Access_Control": ["Gain Privileges"], "Authentication": ["Gain Privileges"], "Authorization": ["Read Data"], "Integrity": ["Modify Data"]}, "x_capec_example_instances": ["Bronze Butler (also known as Tick), has been shown to leverage forged Kerberos Ticket Granting Tickets (TGTs) and Ticket Granting Service (TGS) tickets to maintain administrative access on a number of systems. [REF-584]", "PowerSploit's Invoke-Kerberoast module can be leveraged to request Ticket Granting Service (TGS) tickets and return crackable ticket hashes. [REF-585] [REF-586]"], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Acquire known Kerberos credentials: </b>The adversary must obtain known Kerberos credentials in order to access the target system, application, or service within the domain.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>An adversary purchases breached Kerberos service account username/password combinations or leaked hashed passwords from the dark web.</td></tr><tr><td>An adversary guesses the credentials to a weak Kerberos service account.</td></tr><tr><td>An adversary conducts a sniffing attack to steal Kerberos tickets as they are transmitted.</td></tr><tr><td>An adversary conducts a Kerberoasting attack.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt Kerberos authentication: </b>Try each Kerberos credential against various resources within the domain until the target grants access.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Manually or automatically enter each Kerberos service account credential through the target's interface.</td></tr><tr><td>Attempt a Pass the Ticket attack.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Impersonate: </b>An adversary can use successful experiments or authentications to impersonate an authorized user or system, or to laterally move within the domain</p></li><li> <p> <b>Spoofing: </b>Malicious data can be injected into the target system or into other systems on the domain. The adversary can also pose as a legitimate domain user to perform social engineering attacks.</p></li><li> <p> <b>Data Exfiltration: </b>The adversary can obtain sensitive data contained within domain systems or applications.</p></li></ol></div>", "x_capec_likelihood_of_attack": "Medium", "x_capec_parent_of": ["attack-pattern--9197c7a2-6a03-40da-b2a6-df5f1d69e8fb", "attack-pattern--05740120-81ef-4224-9805-2f0b54d1111f"], "x_capec_prerequisites": ["The system/application is connected to the Windows domain and leverages Kerberos authentication.", "The system/application uses one factor password-based authentication, SSO, and/or cloud-based authentication for Kerberos service accounts.", "The system/application does not have a sound password policy that is being enforced for Kerberos service accounts.", "The system/application does not implement an effective password throttling mechanism for authenticating to Kerberos service accounts.", "The targeted network allows for network sniffing attacks to succeed."], "x_capec_resources_required": ["A valid Kerberos ticket or a known Kerberos service account credential."], "x_capec_skills_required": {"Low": "Once an adversary obtains a known Kerberos credential, leveraging it is trivial."}, "x_capec_status": "Draft", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--ef416bf1-033e-4d38-b89f-8a63ef7f050e",
+    "objects": [
+        {
+            "created": "2020-07-30T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An adversary obtains (i.e. steals or purchases) legitimate Kerberos credentials (e.g. Kerberos service account userID/password or Kerberos Tickets) with the goal of achieving authenticated access to additional systems, applications, or services within the domain. Kerberos is the default authentication method for Windows domains and is utilized for numerous authentication purposes. Attacks leveraging trusted Kerberos credentials can result in numerous consequences, depending on what Kerberos credential is stolen. For example, Kerberos service accounts are typically used to run services or scheduled tasks pertaining to authentication. However, these credentials are often weak and never expire, in addition to possessing local or domain administrator privileges. If an adversary is able to acquire these credentials, it could result in lateral movement within the Windows domain or access to any resources the service account is privileged to access, among other things. Kerberos credentials can be obtained by an adversary via methods such as system breaches, network sniffing attacks, and/or brute force attacks against the Kerberos service account or the hash of a service ticket. Ultimately, successful spoofing and impersonation of trusted Kerberos credentials can lead to an adversary breaking authentication, authorization, and audit controls with the target system or application.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-652",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/652.html"
+                },
+                {
+                    "external_id": "CWE-522",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/522.html"
+                },
+                {
+                    "external_id": "CWE-307",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/307.html"
+                },
+                {
+                    "external_id": "CWE-308",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/308.html"
+                },
+                {
+                    "external_id": "CWE-309",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/309.html"
+                },
+                {
+                    "external_id": "CWE-262",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/262.html"
+                },
+                {
+                    "external_id": "CWE-263",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/263.html"
+                },
+                {
+                    "external_id": "CWE-654",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/654.html"
+                },
+                {
+                    "external_id": "CWE-294",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/294.html"
+                },
+                {
+                    "external_id": "CWE-836",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/836.html"
+                },
+                {
+                    "description": "Steal or Forge Kerberos Tickets",
+                    "external_id": "T1558",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1558"
+                },
+                {
+                    "description": "BRONZE BUTLER Targets Japanese Enterprises, 2017--10---12, Secureworks® Counter Threat Unit™ Threat Intelligence",
+                    "external_id": "REF-584",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.secureworks.com/research/bronze-butler-targets-japanese-businesses"
+                },
+                {
+                    "description": "Kerberoasting Without Mimikatz, 2016--11---01",
+                    "external_id": "REF-585",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.harmj0y.net/blog/powershell/kerberoasting-without-mimikatz/"
+                },
+                {
+                    "description": "Invoke-Kerberoast",
+                    "external_id": "REF-586",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://powersploit.readthedocs.io/en/latest/Recon/Invoke-Kerberoast/"
+                }
+            ],
+            "id": "attack-pattern--755bb5ac-2eee-4e54-9864-92812666120c",
+            "modified": "2020-12-17T00:00:00.000Z",
+            "name": "Use of Known Kerberos Credentials",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Standard",
+            "x_capec_can_follow_refs": [
+                "attack-pattern--bdcdc784-d891-4ca8-847b-38ddca37a6ec"
+            ],
+            "x_capec_can_precede_refs": [
+                "attack-pattern--22802ed6-ddc6-4da7-b6be-60b10d26198b"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--886a7175-e28a-4e6d-bd22-3b1497e31dc7"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authentication": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Read Data"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "Bronze Butler (also known as Tick), has been shown to leverage forged Kerberos Ticket Granting Tickets (TGTs) and Ticket Granting Service (TGS) tickets to maintain administrative access on a number of systems. [REF-584]",
+                "PowerSploit's Invoke-Kerberoast module can be leveraged to request Ticket Granting Service (TGS) tickets and return crackable ticket hashes. [REF-585] [REF-586]"
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Acquire known Kerberos credentials: </b>The adversary must obtain known Kerberos credentials in order to access the target system, application, or service within the domain.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>An adversary purchases breached Kerberos service account username/password combinations or leaked hashed passwords from the dark web.</td></tr><tr><td>An adversary guesses the credentials to a weak Kerberos service account.</td></tr><tr><td>An adversary conducts a sniffing attack to steal Kerberos tickets as they are transmitted.</td></tr><tr><td>An adversary conducts a Kerberoasting attack.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt Kerberos authentication: </b>Try each Kerberos credential against various resources within the domain until the target grants access.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Manually or automatically enter each Kerberos service account credential through the target's interface.</td></tr><tr><td>Attempt a Pass the Ticket attack.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Impersonate: </b>An adversary can use successful experiments or authentications to impersonate an authorized user or system, or to laterally move within the domain</p></li><li> <p> <b>Spoofing: </b>Malicious data can be injected into the target system or into other systems on the domain. The adversary can also pose as a legitimate domain user to perform social engineering attacks.</p></li><li> <p> <b>Data Exfiltration: </b>The adversary can obtain sensitive data contained within domain systems or applications.</p></li></ol></div>",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_parent_of_refs": [
+                "attack-pattern--9197c7a2-6a03-40da-b2a6-df5f1d69e8fb",
+                "attack-pattern--05740120-81ef-4224-9805-2f0b54d1111f"
+            ],
+            "x_capec_prerequisites": [
+                "The system/application is connected to the Windows domain and leverages Kerberos authentication.",
+                "The system/application uses one factor password-based authentication, SSO, and/or cloud-based authentication for Kerberos service accounts.",
+                "The system/application does not have a sound password policy that is being enforced for Kerberos service accounts.",
+                "The system/application does not implement an effective password throttling mechanism for authenticating to Kerberos service accounts.",
+                "The targeted network allows for network sniffing attacks to succeed."
+            ],
+            "x_capec_resources_required": [
+                "A valid Kerberos ticket or a known Kerberos service account credential."
+            ],
+            "x_capec_skills_required": {
+                "Low": "Once an adversary obtains a known Kerberos credential, leveraging it is trivial."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

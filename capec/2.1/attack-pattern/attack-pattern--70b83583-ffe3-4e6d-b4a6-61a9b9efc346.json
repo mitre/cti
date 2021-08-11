@@ -1,1 +1,99 @@
-{"type": "bundle", "id": "bundle--4510f7ec-5428-4e4a-99a5-31f06e4d2e20", "objects": [{"type": "attack-pattern", "spec_version": "2.1", "id": "attack-pattern--70b83583-ffe3-4e6d-b4a6-61a9b9efc346", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2020-12-17T00:00:00.000Z", "name": "Cross-Site Scripting (XSS)", "description": "An adversary embeds malicious scripts in content that will be served to web browsers. The goal of the attack is for the target software, the client-side browser, to execute the script with the users' privilege level. An attack of this type exploits a programs' vulnerabilities that are brought on by allowing remote hosts to execute code and scripts. Web browsers, for example, have some simple security controls in place, but if a remote attacker is allowed to execute scripts (through injecting them in to user-generated content like bulletin boards) then these controls may be bypassed. Further, these attacks are very difficult for an end user to detect.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/63.html", "external_id": "CAPEC-63"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/79.html", "external_id": "CWE-79"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/20.html", "external_id": "CWE-20"}, {"source_name": "WASC", "description": "Cross-Site Scripting", "url": "http://projects.webappsec.org/Cross-Site-Scripting", "external_id": "08"}, {"source_name": "OWASP Attacks", "description": "Cross Site Scripting (XSS)", "url": "https://owasp.org/www-community/attacks/xss"}, {"source_name": "reference_from_CAPEC", "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley", "external_id": "REF-1"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Standard", "x_capec_can_follow": ["attack-pattern--8bd0c718-f126-4397-9754-c5225da7b696", "attack-pattern--94208f8a-f779-4be5-a97b-d9ab781a3f5e"], "x_capec_can_precede": ["attack-pattern--f14acee3-770c-4154-a9b2-9eda908c6a9f"], "x_capec_child_of": ["attack-pattern--7f0f7de2-bf09-4f60-86bb-6933192b7128"], "x_capec_consequences": {"Confidentiality": ["Execute Unauthorized Commands (Run Arbitrary Code)", "Read Data"], "Integrity": ["Execute Unauthorized Commands (Run Arbitrary Code)", "Modify Data"], "Availability": ["Execute Unauthorized Commands (Run Arbitrary Code)"]}, "x_capec_example_instances": ["\n               <xhtml:p>Classic phishing attacks lure users to click on content that appears trustworthy, such as logos, and links that seem to go to their trusted financial institutions and online auction sites. But instead the attacker appends malicious scripts into the otherwise innocent appearing resources. The HTML source for a standard phishing attack looks like this:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\"><a href=\"www.exampletrustedsite.com?Name=<script>maliciousscript</script>\">Trusted Site</a></xhtml:div>\n               <xhtml:p>When the user clicks the link, the appended script also executes on the local user's machine.</xhtml:p>\n            "], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the application for user-controllable inputs: </b>Using a browser or an automated tool, an attacker follows all public links and actions on a web site. They record all the links, the forms, the resources accessed and all other potential entry-points for the web application.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links and analyze the web pages to find entry points. Make special note of any links that include parameters in the URL.</td></tr><tr><td>Use a proxy tool to record all links visited during a manual traversal of the web application.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Probe identified potential entry points for XSS vulnerability: </b>The attacker uses the entry points gathered in the \"Explore\" phase as a target list and injects various common script payloads to determine if an entry point actually represents a vulnerability and to characterize the extent to which the vulnerability can be exploited.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a list of XSS probe strings to inject script in parameters of known URLs. If possible, the probe strings contain a unique identifier.</td></tr><tr><td>Use a proxy tool to record results of manual input of XSS probes in known URLs.</td></tr><tr><td>Use a list of XSS probe strings to inject script into UI entry fields. If possible, the probe strings contain a unique identifier.</td></tr><tr><td>Use a list of XSS probe strings to inject script into resources accessed by the application. If possible, the probe strings contain a unique identifier.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Steal session IDs, credentials, page content, etc.: </b>As the attacker succeeds in exploiting the vulnerability, they can choose to steal user's credentials in order to reuse or to analyze them later on.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Develop malicious JavaScript that is injected through vectors identified during the Experiment Phase and loaded by the victim's browser and sends document information to the attacker.</td></tr><tr><td>Develop malicious JavaScript that injected through vectors identified during the Experiment Phase and takes commands from an attacker's server and then causes the browser to execute appropriately.</td></tr></tbody></table><li> <p> <b>Forceful browsing: </b>When the attacker targets the current application or another one (through CSRF vulnerabilities), the user will then be the one who perform the attacks without being aware of it. These attacks are mostly targeting application logic flaws, but it can also be used to create a widespread attack against a particular website on the user's current network (Internet or not).</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Develop malicious JavaScript that is injected through vectors identified during the Experiment Phase and loaded by the victim's browser and performs actions on the same web site</td></tr><tr><td>Develop malicious JavaScript that injected through vectors identified during the Experiment Phase and takes commands from an attacker's server and then causes the browser to execute request to other web sites (especially the web applications that have CSRF vulnerabilities).</td></tr></tbody></table><li> <p> <b>Content spoofing: </b>By manipulating the content, the attacker targets the information that the user would like to get from the website.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Develop malicious JavaScript that is injected through vectors identified during the Experiment Phase and loaded by the victim's browser and exposes attacker-modified invalid information to the user on the current web page.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "High", "x_capec_parent_of": ["attack-pattern--b1eef783-daae-494c-a418-cd9ada7cbe8b", "attack-pattern--61b17787-fe92-427c-9e6a-6311997d7b2a", "attack-pattern--800f8095-99b6-4bb9-8bc6-8b9727201a2f"], "x_capec_prerequisites": ["Target client software must be a client that allows scripting communication from remote hosts, such as a JavaScript-enabled Web Browser."], "x_capec_resources_required": ["Ability to deploy a custom hostile service for access by targeted clients. Ability to communicate synchronously or asynchronously with client machine."], "x_capec_skills_required": {"Low": "To achieve a redirection and use of less trusted source, an attacker can simply place a script in bulletin board, blog, wiki, or other user-generated content site that are echoed back to other client machines.", "High": "Exploiting a client side vulnerability to inject malicious scripts into the browser's executable process."}, "x_capec_status": "Draft", "x_capec_typical_severity": "Very High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--50021464-2e3e-4916-856e-7e3ba43c9c2c",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An adversary embeds malicious scripts in content that will be served to web browsers. The goal of the attack is for the target software, the client-side browser, to execute the script with the users' privilege level. An attack of this type exploits a programs' vulnerabilities that are brought on by allowing remote hosts to execute code and scripts. Web browsers, for example, have some simple security controls in place, but if a remote attacker is allowed to execute scripts (through injecting them in to user-generated content like bulletin boards) then these controls may be bypassed. Further, these attacks are very difficult for an end user to detect.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-63",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/63.html"
+                },
+                {
+                    "external_id": "CWE-79",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/79.html"
+                },
+                {
+                    "external_id": "CWE-20",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html"
+                },
+                {
+                    "description": "Cross-Site Scripting",
+                    "external_id": "08",
+                    "source_name": "WASC",
+                    "url": "http://projects.webappsec.org/Cross-Site-Scripting"
+                },
+                {
+                    "description": "Cross Site Scripting (XSS)",
+                    "source_name": "OWASP Attacks",
+                    "url": "https://owasp.org/www-community/attacks/xss"
+                },
+                {
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1",
+                    "source_name": "reference_from_CAPEC"
+                }
+            ],
+            "id": "attack-pattern--70b83583-ffe3-4e6d-b4a6-61a9b9efc346",
+            "modified": "2020-12-17T00:00:00.000Z",
+            "name": "Cross-Site Scripting (XSS)",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Standard",
+            "x_capec_can_follow_refs": [
+                "attack-pattern--8bd0c718-f126-4397-9754-c5225da7b696",
+                "attack-pattern--94208f8a-f779-4be5-a97b-d9ab781a3f5e"
+            ],
+            "x_capec_can_precede_refs": [
+                "attack-pattern--f14acee3-770c-4154-a9b2-9eda908c6a9f"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--7f0f7de2-bf09-4f60-86bb-6933192b7128"
+            ],
+            "x_capec_consequences": {
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>Classic phishing attacks lure users to click on content that appears trustworthy, such as logos, and links that seem to go to their trusted financial institutions and online auction sites. But instead the attacker appends malicious scripts into the otherwise innocent appearing resources. The HTML source for a standard phishing attack looks like this:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\"><a href=\"www.exampletrustedsite.com?Name=<script>maliciousscript</script>\">Trusted Site</a></xhtml:div>\n               <xhtml:p>When the user clicks the link, the appended script also executes on the local user's machine.</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the application for user-controllable inputs: </b>Using a browser or an automated tool, an attacker follows all public links and actions on a web site. They record all the links, the forms, the resources accessed and all other potential entry-points for the web application.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links and analyze the web pages to find entry points. Make special note of any links that include parameters in the URL.</td></tr><tr><td>Use a proxy tool to record all links visited during a manual traversal of the web application.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Probe identified potential entry points for XSS vulnerability: </b>The attacker uses the entry points gathered in the \"Explore\" phase as a target list and injects various common script payloads to determine if an entry point actually represents a vulnerability and to characterize the extent to which the vulnerability can be exploited.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a list of XSS probe strings to inject script in parameters of known URLs. If possible, the probe strings contain a unique identifier.</td></tr><tr><td>Use a proxy tool to record results of manual input of XSS probes in known URLs.</td></tr><tr><td>Use a list of XSS probe strings to inject script into UI entry fields. If possible, the probe strings contain a unique identifier.</td></tr><tr><td>Use a list of XSS probe strings to inject script into resources accessed by the application. If possible, the probe strings contain a unique identifier.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Steal session IDs, credentials, page content, etc.: </b>As the attacker succeeds in exploiting the vulnerability, they can choose to steal user's credentials in order to reuse or to analyze them later on.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Develop malicious JavaScript that is injected through vectors identified during the Experiment Phase and loaded by the victim's browser and sends document information to the attacker.</td></tr><tr><td>Develop malicious JavaScript that injected through vectors identified during the Experiment Phase and takes commands from an attacker's server and then causes the browser to execute appropriately.</td></tr></tbody></table><li> <p> <b>Forceful browsing: </b>When the attacker targets the current application or another one (through CSRF vulnerabilities), the user will then be the one who perform the attacks without being aware of it. These attacks are mostly targeting application logic flaws, but it can also be used to create a widespread attack against a particular website on the user's current network (Internet or not).</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Develop malicious JavaScript that is injected through vectors identified during the Experiment Phase and loaded by the victim's browser and performs actions on the same web site</td></tr><tr><td>Develop malicious JavaScript that injected through vectors identified during the Experiment Phase and takes commands from an attacker's server and then causes the browser to execute request to other web sites (especially the web applications that have CSRF vulnerabilities).</td></tr></tbody></table><li> <p> <b>Content spoofing: </b>By manipulating the content, the attacker targets the information that the user would like to get from the website.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Develop malicious JavaScript that is injected through vectors identified during the Experiment Phase and loaded by the victim's browser and exposes attacker-modified invalid information to the user on the current web page.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_parent_of_refs": [
+                "attack-pattern--b1eef783-daae-494c-a418-cd9ada7cbe8b",
+                "attack-pattern--61b17787-fe92-427c-9e6a-6311997d7b2a",
+                "attack-pattern--800f8095-99b6-4bb9-8bc6-8b9727201a2f"
+            ],
+            "x_capec_prerequisites": [
+                "Target client software must be a client that allows scripting communication from remote hosts, such as a JavaScript-enabled Web Browser."
+            ],
+            "x_capec_resources_required": [
+                "Ability to deploy a custom hostile service for access by targeted clients. Ability to communicate synchronously or asynchronously with client machine."
+            ],
+            "x_capec_skills_required": {
+                "High": "Exploiting a client side vulnerability to inject malicious scripts into the browser's executable process.",
+                "Low": "To achieve a redirection and use of less trusted source, an attacker can simply place a script in bulletin board, blog, wiki, or other user-generated content site that are echoed back to other client machines."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "type": "bundle"
+}

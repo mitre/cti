@@ -1,1 +1,143 @@
-{"type": "bundle", "id": "bundle--5bb007a6-6d12-4ae5-ab38-2eb76dc61f63", "objects": [{"type": "attack-pattern", "spec_version": "2.1", "id": "attack-pattern--c70d3f38-8efe-4f47-bba4-db807d270d94", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2021-06-24T00:00:00.000Z", "name": "Leveraging Race Conditions", "description": "The adversary targets a race condition occurring when multiple processes access and manipulate the same resource concurrently, and the outcome of the execution depends on the particular order in which the access takes place. The adversary can leverage a race condition by \"running the race\", modifying the resource and modifying the normal execution flow. For instance, a race condition can occur while accessing a file: the adversary can trick the system by replacing the original file with their version and cause the system to read the malicious file.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/26.html", "external_id": "CAPEC-26"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/368.html", "external_id": "CWE-368"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/363.html", "external_id": "CWE-363"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/366.html", "external_id": "CWE-366"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/370.html", "external_id": "CWE-370"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/362.html", "external_id": "CWE-362"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/662.html", "external_id": "CWE-662"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/689.html", "external_id": "CWE-689"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/667.html", "external_id": "CWE-667"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/665.html", "external_id": "CWE-665"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/1223.html", "external_id": "CWE-1223"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/1254.html", "external_id": "CWE-1254"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/1298.html", "external_id": "CWE-1298"}, {"source_name": "reference_from_CAPEC", "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley", "external_id": "REF-1"}, {"source_name": "reference_from_CAPEC", "description": "Wikipedia, The Wikimedia Foundation, Inc", "url": "http://en.wikipedia.org/wiki/Race_condition", "external_id": "REF-105"}, {"source_name": "reference_from_CAPEC", "description": "David Wheeler, Secure programmer: Prevent race conditions, IBM developerWorks, IBM", "url": "http://www.ibm.com/developerworks/linux/library/l-sprace/index.html", "external_id": "REF-106"}, {"source_name": "reference_from_CAPEC", "description": "Fortify Software, SAMATE - Software Assurance Metrics And Tool Evaluation, 2006--06---22, National Institute of Standards and Technology (NIST)", "url": "http://samate.nist.gov/SRD/view_testcase.php?tID=1598", "external_id": "REF-107"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Meta", "x_capec_consequences": {"Confidentiality": ["Gain Privileges"], "Access_Control": ["Gain Privileges"], "Authorization": ["Gain Privileges"], "Integrity": ["Modify Data"]}, "x_capec_example_instances": ["The Net Direct client for Linux before 6.0.5 in Nortel Application Switch 2424, VPN 3050 and 3070, and SSL VPN Module 1000 extracts and executes files with insecure permissions, which allows local users to exploit a race condition to replace a world-writable file in /tmp/NetClient and cause another user to execute arbitrary code when attempting to execute this client, as demonstrated by replacing /tmp/NetClient/client. See also: CVE-2007-1057", "\n               <xhtml:p>The following code illustrates a file that is accessed multiple times by name in a publicly accessible directory. A race condition exists between the accesses where an attacker can replace the file referenced by the name (see [REF-107]).</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">include <sys/types.h>include <fcntl.h>include <unistd.h>\n                  define FILE \"/tmp/myfile\"define UID 100\n                  void test(char *str){<xhtml:div style=\"margin-left:10px;\">int fd;fd = creat(FILE, 0644);if(fd == -1)<xhtml:div style=\"margin-left:10px;\">return;</xhtml:div>\n                     chown(FILE, UID, -1); /* BAD */close(fd);</xhtml:div>\n                  }\n                  int main(int argc, char **argv){<xhtml:div style=\"margin-left:10px;\">char *userstr;if(argc > 1) {<xhtml:div style=\"margin-left:10px;\">userstr = argv[1];test(userstr);</xhtml:div>\n                     }return 0;</xhtml:div>\n                  }</xhtml:div>\n            "], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary explores to gauge what level of access they have.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary gains access to a resource on the target host. The adversary modifies the targeted resource. The resource's value is used to determine the next normal execution action.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The resource is modified/checked concurrently by multiple processes. By using one of the processes, the adversary is able to modify the value just before it is consumed by a different process. A race condition occurs and is exploited by the adversary to abuse the target host.</p></li></ol></div>", "x_capec_likelihood_of_attack": "High", "x_capec_parent_of": ["attack-pattern--3da1844e-c905-420a-9179-260356a85a05"], "x_capec_prerequisites": ["A resource is accessed/modified concurrently by multiple processes such that a race condition exists.", "The adversary has the ability to modify the resource."], "x_capec_skills_required": {"Medium": "Being able to \"run the race\" requires basic knowledge of concurrent processing including synchonization techniques."}, "x_capec_status": "Stable", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--c03d6406-1c4c-4180-a31b-ee02ab4e381a",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "The adversary targets a race condition occurring when multiple processes access and manipulate the same resource concurrently, and the outcome of the execution depends on the particular order in which the access takes place. The adversary can leverage a race condition by \"running the race\", modifying the resource and modifying the normal execution flow. For instance, a race condition can occur while accessing a file: the adversary can trick the system by replacing the original file with their version and cause the system to read the malicious file.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-26",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/26.html"
+                },
+                {
+                    "external_id": "CWE-368",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/368.html"
+                },
+                {
+                    "external_id": "CWE-363",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/363.html"
+                },
+                {
+                    "external_id": "CWE-366",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/366.html"
+                },
+                {
+                    "external_id": "CWE-370",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/370.html"
+                },
+                {
+                    "external_id": "CWE-362",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/362.html"
+                },
+                {
+                    "external_id": "CWE-662",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/662.html"
+                },
+                {
+                    "external_id": "CWE-689",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/689.html"
+                },
+                {
+                    "external_id": "CWE-667",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/667.html"
+                },
+                {
+                    "external_id": "CWE-665",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/665.html"
+                },
+                {
+                    "external_id": "CWE-1223",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1223.html"
+                },
+                {
+                    "external_id": "CWE-1254",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1254.html"
+                },
+                {
+                    "external_id": "CWE-1298",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1298.html"
+                },
+                {
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1",
+                    "source_name": "reference_from_CAPEC"
+                },
+                {
+                    "description": "Wikipedia, The Wikimedia Foundation, Inc",
+                    "external_id": "REF-105",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://en.wikipedia.org/wiki/Race_condition"
+                },
+                {
+                    "description": "David Wheeler, Secure programmer: Prevent race conditions, IBM developerWorks, IBM",
+                    "external_id": "REF-106",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://www.ibm.com/developerworks/linux/library/l-sprace/index.html"
+                },
+                {
+                    "description": "Fortify Software, SAMATE - Software Assurance Metrics And Tool Evaluation, 2006--06---22, National Institute of Standards and Technology (NIST)",
+                    "external_id": "REF-107",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://samate.nist.gov/SRD/view_testcase.php?tID=1598"
+                }
+            ],
+            "id": "attack-pattern--c70d3f38-8efe-4f47-bba4-db807d270d94",
+            "modified": "2021-06-24T00:00:00.000Z",
+            "name": "Leveraging Race Conditions",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Meta",
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "The Net Direct client for Linux before 6.0.5 in Nortel Application Switch 2424, VPN 3050 and 3070, and SSL VPN Module 1000 extracts and executes files with insecure permissions, which allows local users to exploit a race condition to replace a world-writable file in /tmp/NetClient and cause another user to execute arbitrary code when attempting to execute this client, as demonstrated by replacing /tmp/NetClient/client. See also: CVE-2007-1057",
+                "\n               <xhtml:p>The following code illustrates a file that is accessed multiple times by name in a publicly accessible directory. A race condition exists between the accesses where an attacker can replace the file referenced by the name (see [REF-107]).</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">include <sys/types.h>include <fcntl.h>include <unistd.h>\n                  define FILE \"/tmp/myfile\"define UID 100\n                  void test(char *str){<xhtml:div style=\"margin-left:10px;\">int fd;fd = creat(FILE, 0644);if(fd == -1)<xhtml:div style=\"margin-left:10px;\">return;</xhtml:div>\n                     chown(FILE, UID, -1); /* BAD */close(fd);</xhtml:div>\n                  }\n                  int main(int argc, char **argv){<xhtml:div style=\"margin-left:10px;\">char *userstr;if(argc > 1) {<xhtml:div style=\"margin-left:10px;\">userstr = argv[1];test(userstr);</xhtml:div>\n                     }return 0;</xhtml:div>\n                  }</xhtml:div>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary explores to gauge what level of access they have.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary gains access to a resource on the target host. The adversary modifies the targeted resource. The resource's value is used to determine the next normal execution action.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The resource is modified/checked concurrently by multiple processes. By using one of the processes, the adversary is able to modify the value just before it is consumed by a different process. A race condition occurs and is exploited by the adversary to abuse the target host.</p></li></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_parent_of_refs": [
+                "attack-pattern--3da1844e-c905-420a-9179-260356a85a05"
+            ],
+            "x_capec_prerequisites": [
+                "A resource is accessed/modified concurrently by multiple processes such that a race condition exists.",
+                "The adversary has the ability to modify the resource."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Being able to \"run the race\" requires basic knowledge of concurrent processing including synchonization techniques."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "type": "bundle"
+}

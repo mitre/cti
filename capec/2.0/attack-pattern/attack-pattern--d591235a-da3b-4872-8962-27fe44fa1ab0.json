@@ -1,1 +1,112 @@
-{"type": "bundle", "id": "bundle--edb16a83-2a01-4e70-adf3-4349cc599de4", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--d591235a-da3b-4872-8962-27fe44fa1ab0", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2014-06-23T00:00:00.000Z", "modified": "2018-07-31T00:00:00.000Z", "name": "Filter Failure through Buffer Overflow", "description": "In this attack, the idea is to cause an active filter to fail by causing an oversized transaction. An attacker may try to feed overly long input strings to the program in an attempt to overwhelm the filter (by causing a buffer overflow) and hoping that the filter does not fail securely (i.e. the user input is let into the system unfiltered).", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/24.html", "external_id": "CAPEC-24"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/120.html", "external_id": "CWE-120"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/119.html", "external_id": "CWE-119"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/118.html", "external_id": "CWE-118"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/74.html", "external_id": "CWE-74"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/20.html", "external_id": "CWE-20"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/680.html", "external_id": "CWE-680"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/733.html", "external_id": "CWE-733"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/697.html", "external_id": "CWE-697"}, {"source_name": "reference_from_CAPEC", "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley", "external_id": "REF-1"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_child_of": ["attack-pattern--77e51461-7843-411c-a90e-852498957f76"], "x_capec_consequences": {"Integrity": ["Modify Data", "Execute Unauthorized Commands (Run Arbitrary Code)"], "Confidentiality": ["Execute Unauthorized Commands (Run Arbitrary Code)", "Bypass Protection Mechanism"], "Availability": ["Execute Unauthorized Commands (Run Arbitrary Code)", "Unreliable Execution"], "Access_Control": ["Bypass Protection Mechanism"], "Authorization": ["Bypass Protection Mechanism"]}, "x_capec_example_instances": ["\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Attack Example: Filter Failure in Taylor UUCP Daemon</xhtml:div>\n               <xhtml:p>Sending in arguments that are too long to cause the filter to fail open is one instantiation of the filter failure attack. The Taylor UUCP daemon is designed to remove hostile arguments before they can be executed. If the arguments are too long, however, the daemon fails to remove them. This leaves the door open for attack.</xhtml:p>\n            ", "A filter is used by a web application to filter out characters that may allow the input to jump from the data plane to the control plane when data is used in a SQL statement (chaining this attack with the SQL injection attack). Leveraging a buffer overflow the attacker makes the filter fail insecurely and the tainted data is permitted to enter unfiltered into the system, subsequently causing a SQL injection.", "Audit Truncation and Filters with Buffer Overflow. Sometimes very large transactions can be used to destroy a log file or cause partial logging failures. In this kind of attack, log processing code might be examining a transaction in real-time processing, but the oversized transaction causes a logic branch or an exception of some kind that is trapped. In other words, the transaction is still executed, but the logging or filtering mechanism still fails. This has two consequences, the first being that you can run transactions that are not logged in any way (or perhaps the log entry is completely corrupted). The second consequence is that you might slip through an active filter that otherwise would stop your attack."], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey: </b>The attacker surveys the target application, possibly as a valid and authenticated user</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Spidering web sites for inputs that involve potential filtering</td></tr><tr><td>Brute force guessing of filtered inputs</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt injections: </b>Try to feed overly long data to the system. This can be done manually or a dynamic tool (black box) can be used to automate this. An attacker can also use a custom script for that purpose.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Brute force attack through black box penetration test tool.</td></tr><tr><td>Fuzzing of communications protocols</td></tr><tr><td>Manual testing of possible inputs with attack data.</td></tr></tbody></table><li> <p> <b>Monitor responses: </b>Watch for any indication of failure occurring. Carefully watch to see what happened when filter failure occurred. Did the data get in?</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Boron tagging. Choose clear attack inputs that are easy to notice in output. In binary this is often 0xa5a5a5a5 (alternating 1s and 0s). Another obvious tag value is all zeroes, but it is not always obvious what goes wrong if the null values get into the data.</td></tr><tr><td>Check Log files. An attacker with access to log files can look at the outcome of bad input.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Abuse the system through filter failure: </b>An attacker writes a script to consistently induce the filter failure.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>DoS through filter failure. The attacker causes the system to crash or stay down because of its failure to filter properly.</td></tr><tr><td>Malicious code execution. An attacker introduces a malicious payload and executes arbitrary code on the target system.</td></tr><tr><td>An attacker can use the filter failure to introduce malicious data into the system and leverage a subsequent SQL injection, Cross Site Scripting, Command Injection or similar weakness if it exists.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "High", "x_capec_prerequisites": ["Ability to control the length of data passed to an active filter."], "x_capec_skills_required": {"Low": "An attacker can simply overflow a buffer by inserting a long string into an attacker-modifiable injection vector. The result can be a DoS.", "High": "Exploiting a buffer overflow to inject malicious code into the stack of a software system or even the heap can require a higher skill level."}, "x_capec_status": "Draft", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--1fb5a6b4-57b5-4fa1-a188-6189607ae721",
+    "objects": [
+        {
+            "created": "2014-06-23T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "In this attack, the idea is to cause an active filter to fail by causing an oversized transaction. An attacker may try to feed overly long input strings to the program in an attempt to overwhelm the filter (by causing a buffer overflow) and hoping that the filter does not fail securely (i.e. the user input is let into the system unfiltered).",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-24",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/24.html"
+                },
+                {
+                    "external_id": "CWE-120",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/120.html"
+                },
+                {
+                    "external_id": "CWE-119",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/119.html"
+                },
+                {
+                    "external_id": "CWE-118",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/118.html"
+                },
+                {
+                    "external_id": "CWE-74",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/74.html"
+                },
+                {
+                    "external_id": "CWE-20",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html"
+                },
+                {
+                    "external_id": "CWE-680",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/680.html"
+                },
+                {
+                    "external_id": "CWE-733",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/733.html"
+                },
+                {
+                    "external_id": "CWE-697",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/697.html"
+                },
+                {
+                    "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
+                    "external_id": "REF-1",
+                    "source_name": "reference_from_CAPEC"
+                }
+            ],
+            "id": "attack-pattern--d591235a-da3b-4872-8962-27fe44fa1ab0",
+            "modified": "2018-07-31T00:00:00.000Z",
+            "name": "Filter Failure through Buffer Overflow",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--77e51461-7843-411c-a90e-852498957f76"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Authorization": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Unreliable Execution"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Bypass Protection Mechanism"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Attack Example: Filter Failure in Taylor UUCP Daemon</xhtml:div>\n               <xhtml:p>Sending in arguments that are too long to cause the filter to fail open is one instantiation of the filter failure attack. The Taylor UUCP daemon is designed to remove hostile arguments before they can be executed. If the arguments are too long, however, the daemon fails to remove them. This leaves the door open for attack.</xhtml:p>\n            ",
+                "A filter is used by a web application to filter out characters that may allow the input to jump from the data plane to the control plane when data is used in a SQL statement (chaining this attack with the SQL injection attack). Leveraging a buffer overflow the attacker makes the filter fail insecurely and the tainted data is permitted to enter unfiltered into the system, subsequently causing a SQL injection.",
+                "Audit Truncation and Filters with Buffer Overflow. Sometimes very large transactions can be used to destroy a log file or cause partial logging failures. In this kind of attack, log processing code might be examining a transaction in real-time processing, but the oversized transaction causes a logic branch or an exception of some kind that is trapped. In other words, the transaction is still executed, but the logging or filtering mechanism still fails. This has two consequences, the first being that you can run transactions that are not logged in any way (or perhaps the log entry is completely corrupted). The second consequence is that you might slip through an active filter that otherwise would stop your attack."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey: </b>The attacker surveys the target application, possibly as a valid and authenticated user</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Spidering web sites for inputs that involve potential filtering</td></tr><tr><td>Brute force guessing of filtered inputs</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt injections: </b>Try to feed overly long data to the system. This can be done manually or a dynamic tool (black box) can be used to automate this. An attacker can also use a custom script for that purpose.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Brute force attack through black box penetration test tool.</td></tr><tr><td>Fuzzing of communications protocols</td></tr><tr><td>Manual testing of possible inputs with attack data.</td></tr></tbody></table><li> <p> <b>Monitor responses: </b>Watch for any indication of failure occurring. Carefully watch to see what happened when filter failure occurred. Did the data get in?</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Boron tagging. Choose clear attack inputs that are easy to notice in output. In binary this is often 0xa5a5a5a5 (alternating 1s and 0s). Another obvious tag value is all zeroes, but it is not always obvious what goes wrong if the null values get into the data.</td></tr><tr><td>Check Log files. An attacker with access to log files can look at the outcome of bad input.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Abuse the system through filter failure: </b>An attacker writes a script to consistently induce the filter failure.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>DoS through filter failure. The attacker causes the system to crash or stay down because of its failure to filter properly.</td></tr><tr><td>Malicious code execution. An attacker introduces a malicious payload and executes arbitrary code on the target system.</td></tr><tr><td>An attacker can use the filter failure to introduce malicious data into the system and leverage a subsequent SQL injection, Cross Site Scripting, Command Injection or similar weakness if it exists.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Ability to control the length of data passed to an active filter."
+            ],
+            "x_capec_skills_required": {
+                "High": "Exploiting a buffer overflow to inject malicious code into the stack of a software system or even the heap can require a higher skill level.",
+                "Low": "An attacker can simply overflow a buffer by inserting a long string into an attacker-modifiable injection vector. The result can be a DoS."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

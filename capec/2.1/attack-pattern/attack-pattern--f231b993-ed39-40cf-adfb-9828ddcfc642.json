@@ -1,1 +1,97 @@
-{"type": "bundle", "id": "bundle--39f6787f-0ee9-4801-843e-82c4e545b1fc", "objects": [{"type": "attack-pattern", "spec_version": "2.1", "id": "attack-pattern--f231b993-ed39-40cf-adfb-9828ddcfc642", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2021-06-24T00:00:00.000Z", "modified": "2021-06-24T00:00:00.000Z", "name": "Server Side Request Forgery", "description": "\n            <xhtml:p>An adversary exploits improper input validation by submitting maliciously crafted input to a target application running on a server, with the goal of forcing the server to make a request either to itself, to web services running in the server\u2019s internal network, or to external third parties. If successful, the adversary\u2019s request will be made with the server\u2019s privilege level, bypassing its authentication controls. This ultimately allows the adversary to access sensitive data, execute commands on the server\u2019s network, and make external requests with the stolen identity of the server. Server Side Request Forgery attacks differ from Cross Site Request Forgery attacks in that they target the server itself, whereas CSRF attacks exploit an insecure user authentication mechanism to perform unauthorized actions on the user's behalf.</xhtml:p>\n         ", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/664.html", "external_id": "CAPEC-664"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/918.html", "external_id": "CWE-918"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/20.html", "external_id": "CWE-20"}, {"source_name": "reference_from_CAPEC", "description": "OWASP SSRF Bible, 2017--01---26, OWASP", "url": "https://cheatsheetseries.owasp.org/assets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet_SSRF_Bible.pdf", "external_id": "REF-644"}, {"source_name": "reference_from_CAPEC", "description": "Server Side Request Forgery, PortSwigger", "url": "https://portswigger.net/web-security/ssrf", "external_id": "REF-645"}, {"source_name": "reference_from_CAPEC", "description": "CallStranger Vulnerability, 2020--06---08, Yunus Cadirici", "url": "https://github.com/yunuscadirci/CallStranger", "external_id": "REF-646"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Standard", "x_capec_can_follow": ["attack-pattern--fd669b7d-0e79-473c-9808-a860dfb0c871", "attack-pattern--faf0ec21-da60-4efc-8c8e-7a6b63bea170", "attack-pattern--2a6131f7-30af-4529-be4e-bc3b7bf22009", "attack-pattern--5a33bee7-5ec9-4e75-9bf6-99fdaca8699c", "attack-pattern--fd114e53-fdc0-4eef-8254-40ef0d4ea482"], "x_capec_child_of": ["attack-pattern--8f665166-dfd1-40cb-91e8-b78bee1ceb6a"], "x_capec_consequences": {"Integrity": ["Modify Data"], "Confidentiality": ["Modify Data", "Read Data"], "Availability": ["Modify Data", "Resource Consumption"]}, "x_capec_example_instances": ["\n               <xhtml:p>An e-commerce website allows a customer to filter results by specific categories. When the customer selects the category of choice, the web shop queries a back-end service to retrieve the requested products. The request may look something like:</xhtml:p>\n               <xhtml:div class=\"informative\">\n                  <xhtml:p>POST /product/category HTTP/1.0</xhtml:p>\n                  <xhtml:p>Content-Type: application/x-www-form-urlencoded</xhtml:p>\n                  <xhtml:p>Content-Length: 200</xhtml:p>\n                  <xhtml:p>vulnerableService=http://vulnerableshop.net:8080/product/category/check%3FcategoryName%3DsomeCategory</xhtml:p>\n               </xhtml:div>\n               <xhtml:p>A malicious user can modify the request URL to look like this instead:</xhtml:p>\n               <xhtml:div class=\"attack\">\n                  <xhtml:p>POST /product/category HTTP/1.0</xhtml:p>\n                  <xhtml:p>Content-Type: application/x-www-form-urlencoded</xhtml:p>\n                  <xhtml:p>Content-Length: 200</xhtml:p>\n                  <xhtml:p>vulnerableService=http://localhost/server-status</xhtml:p>\n               </xhtml:div>\n               <xhtml:p>or</xhtml:p>\n               <xhtml:div class=\"attack\">\n                  <xhtml:p>vulnerableService = file:///etc/passwd</xhtml:p>\n               </xhtml:div>\n               <xhtml:p>or</xhtml:p>\n               <xhtml:div class=\"attack\">\n                  <xhtml:p>vulnerableService=dict://localhost:12345/info</xhtml:p>\n               </xhtml:div>\n               <xhtml:p>If the exploit is successful, the server may return the data requested by the adversary</xhtml:p>\n               <xhtml:div class=\"bad\">\n                  <xhtml:p>root:!:0:0::/:/usr/bin/ksh</xhtml:p>\n                  <xhtml:p>daemon:!:1:1::/etc:</xhtml:p>\n                  <xhtml:p>bin:!:2:2::/bin:</xhtml:p>\n                  <xhtml:p>sys:!:3:3::/usr/sys:</xhtml:p>\n                  <xhtml:p>adm:!:4:4::/var/adm:</xhtml:p>\n                  <xhtml:p>uucp:!:5:5::/usr/lib/uucp:</xhtml:p>\n                  <xhtml:p>guest:!:100:100::/home/guest:</xhtml:p>\n                  <xhtml:p>nobody:!:4294967294:4294967294::/:</xhtml:p>\n                  <xhtml:p>lpd:!:9:4294967294::/:</xhtml:p>\n                  <xhtml:p>lp:*:11:11::/var/spool/lp:/bin/false</xhtml:p>\n                  <xhtml:p>invscout:*:200:1::/var/adm/invscout:/usr/bin/ksh</xhtml:p>\n                  <xhtml:p>nuucp:*:6:5:uucp login user:/var/spool/uucppublic:/usr/sbin/uucp/uucico</xhtml:p>\n                  <xhtml:p>paul:!:201:1::/home/paul:/usr/bin/ksh</xhtml:p>\n                  <xhtml:p>jdoe:*:202:1:My name:/home/myname:/usr/bin/ksh</xhtml:p>\n               </xhtml:div>\n            ", "\n               <xhtml:p>The CallStranger attack is an observed example of SSRF. It specifically targets the UPnP (Universal Plug and Play) protocol used by various network devices and gaming consoles. To execute the attack, an adversary performs a scan of the LAN to discover UPnP enabled devices, and subsequently a list of UPnP services they use. Once the UPnP service endpoints are listed, a vulnerability in the UPnP protocol is used to send these endpoints as encrypted to a verification server via the UPnP Callback method. Because the encryption is done on the client side, the server returns an encrypted list of services which is decrypted on the client side. The adversary then has a list of services running the vulnerable UPnP protocol, which the adversary can leverage to make spoofed requests. [REF-646]</xhtml:p>\n            "], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find target application: </b>Find target web application that accepts a user input and retrieves data from the server</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>Examine the HTTP/GET request to view the URL query format</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Attempt manipulating the URL to retrieve an error response/code from the server to determine if URL/request validation is done.</td></tr><tr><td>Use a list of XSS probe strings to specify as parameters to known URLs. If possible, use probe strings with unique identifiers.</td></tr><tr><td>Create a GET request with a common server file path such as /etc/passwd as a parameter and examine output.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Malicious request: </b>Adversary crafts a malicious URL request that assumes the privilege level of the server to query internal or external network services</p></li></ol></div>", "x_capec_likelihood_of_attack": "High", "x_capec_prerequisites": ["Server must be running a web application that processes HTTP requests."], "x_capec_resources_required": ["[None] No specialized resources are required to execute this type of attack."], "x_capec_skills_required": {"Medium": "The adversary will have to detect the vulnerability through an intermediary service or specify maliciously crafted URLs and analyze the server response.", "High": "The adversary will be required to access internal resources, extract information, or leverage the services running on the server to perform unauthorized actions such as traversing the local network or routing a reflected TCP DDoS through them."}, "x_capec_status": "Stable", "x_capec_typical_severity": "High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--1d640760-b0dd-4d1f-ab43-12e6ad20d419",
+    "objects": [
+        {
+            "created": "2021-06-24T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>An adversary exploits improper input validation by submitting maliciously crafted input to a target application running on a server, with the goal of forcing the server to make a request either to itself, to web services running in the server’s internal network, or to external third parties. If successful, the adversary’s request will be made with the server’s privilege level, bypassing its authentication controls. This ultimately allows the adversary to access sensitive data, execute commands on the server’s network, and make external requests with the stolen identity of the server. Server Side Request Forgery attacks differ from Cross Site Request Forgery attacks in that they target the server itself, whereas CSRF attacks exploit an insecure user authentication mechanism to perform unauthorized actions on the user's behalf.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-664",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/664.html"
+                },
+                {
+                    "external_id": "CWE-918",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/918.html"
+                },
+                {
+                    "external_id": "CWE-20",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/20.html"
+                },
+                {
+                    "description": "OWASP SSRF Bible, 2017--01---26, OWASP",
+                    "external_id": "REF-644",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://cheatsheetseries.owasp.org/assets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet_SSRF_Bible.pdf"
+                },
+                {
+                    "description": "Server Side Request Forgery, PortSwigger",
+                    "external_id": "REF-645",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://portswigger.net/web-security/ssrf"
+                },
+                {
+                    "description": "CallStranger Vulnerability, 2020--06---08, Yunus Cadirici",
+                    "external_id": "REF-646",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://github.com/yunuscadirci/CallStranger"
+                }
+            ],
+            "id": "attack-pattern--f231b993-ed39-40cf-adfb-9828ddcfc642",
+            "modified": "2021-06-24T00:00:00.000Z",
+            "name": "Server Side Request Forgery",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Standard",
+            "x_capec_can_follow_refs": [
+                "attack-pattern--fd669b7d-0e79-473c-9808-a860dfb0c871",
+                "attack-pattern--faf0ec21-da60-4efc-8c8e-7a6b63bea170",
+                "attack-pattern--2a6131f7-30af-4529-be4e-bc3b7bf22009",
+                "attack-pattern--5a33bee7-5ec9-4e75-9bf6-99fdaca8699c",
+                "attack-pattern--fd114e53-fdc0-4eef-8254-40ef0d4ea482"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--8f665166-dfd1-40cb-91e8-b78bee1ceb6a"
+            ],
+            "x_capec_consequences": {
+                "Availability": [
+                    "Modify Data",
+                    "Resource Consumption"
+                ],
+                "Confidentiality": [
+                    "Modify Data",
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>An e-commerce website allows a customer to filter results by specific categories. When the customer selects the category of choice, the web shop queries a back-end service to retrieve the requested products. The request may look something like:</xhtml:p>\n               <xhtml:div class=\"informative\">\n                  <xhtml:p>POST /product/category HTTP/1.0</xhtml:p>\n                  <xhtml:p>Content-Type: application/x-www-form-urlencoded</xhtml:p>\n                  <xhtml:p>Content-Length: 200</xhtml:p>\n                  <xhtml:p>vulnerableService=http://vulnerableshop.net:8080/product/category/check%3FcategoryName%3DsomeCategory</xhtml:p>\n               </xhtml:div>\n               <xhtml:p>A malicious user can modify the request URL to look like this instead:</xhtml:p>\n               <xhtml:div class=\"attack\">\n                  <xhtml:p>POST /product/category HTTP/1.0</xhtml:p>\n                  <xhtml:p>Content-Type: application/x-www-form-urlencoded</xhtml:p>\n                  <xhtml:p>Content-Length: 200</xhtml:p>\n                  <xhtml:p>vulnerableService=http://localhost/server-status</xhtml:p>\n               </xhtml:div>\n               <xhtml:p>or</xhtml:p>\n               <xhtml:div class=\"attack\">\n                  <xhtml:p>vulnerableService = file:///etc/passwd</xhtml:p>\n               </xhtml:div>\n               <xhtml:p>or</xhtml:p>\n               <xhtml:div class=\"attack\">\n                  <xhtml:p>vulnerableService=dict://localhost:12345/info</xhtml:p>\n               </xhtml:div>\n               <xhtml:p>If the exploit is successful, the server may return the data requested by the adversary</xhtml:p>\n               <xhtml:div class=\"bad\">\n                  <xhtml:p>root:!:0:0::/:/usr/bin/ksh</xhtml:p>\n                  <xhtml:p>daemon:!:1:1::/etc:</xhtml:p>\n                  <xhtml:p>bin:!:2:2::/bin:</xhtml:p>\n                  <xhtml:p>sys:!:3:3::/usr/sys:</xhtml:p>\n                  <xhtml:p>adm:!:4:4::/var/adm:</xhtml:p>\n                  <xhtml:p>uucp:!:5:5::/usr/lib/uucp:</xhtml:p>\n                  <xhtml:p>guest:!:100:100::/home/guest:</xhtml:p>\n                  <xhtml:p>nobody:!:4294967294:4294967294::/:</xhtml:p>\n                  <xhtml:p>lpd:!:9:4294967294::/:</xhtml:p>\n                  <xhtml:p>lp:*:11:11::/var/spool/lp:/bin/false</xhtml:p>\n                  <xhtml:p>invscout:*:200:1::/var/adm/invscout:/usr/bin/ksh</xhtml:p>\n                  <xhtml:p>nuucp:*:6:5:uucp login user:/var/spool/uucppublic:/usr/sbin/uucp/uucico</xhtml:p>\n                  <xhtml:p>paul:!:201:1::/home/paul:/usr/bin/ksh</xhtml:p>\n                  <xhtml:p>jdoe:*:202:1:My name:/home/myname:/usr/bin/ksh</xhtml:p>\n               </xhtml:div>\n            ",
+                "\n               <xhtml:p>The CallStranger attack is an observed example of SSRF. It specifically targets the UPnP (Universal Plug and Play) protocol used by various network devices and gaming consoles. To execute the attack, an adversary performs a scan of the LAN to discover UPnP enabled devices, and subsequently a list of UPnP services they use. Once the UPnP service endpoints are listed, a vulnerability in the UPnP protocol is used to send these endpoints as encrypted to a verification server via the UPnP Callback method. Because the encryption is done on the client side, the server returns an encrypted list of services which is decrypted on the client side. The adversary then has a list of services running the vulnerable UPnP protocol, which the adversary can leverage to make spoofed requests. [REF-646]</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find target application: </b>Find target web application that accepts a user input and retrieves data from the server</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>Examine the HTTP/GET request to view the URL query format</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Attempt manipulating the URL to retrieve an error response/code from the server to determine if URL/request validation is done.</td></tr><tr><td>Use a list of XSS probe strings to specify as parameters to known URLs. If possible, use probe strings with unique identifiers.</td></tr><tr><td>Create a GET request with a common server file path such as /etc/passwd as a parameter and examine output.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Malicious request: </b>Adversary crafts a malicious URL request that assumes the privilege level of the server to query internal or external network services</p></li></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Server must be running a web application that processes HTTP requests."
+            ],
+            "x_capec_resources_required": [
+                "[None] No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "High": "The adversary will be required to access internal resources, extract information, or leverage the services running on the server to perform unauthorized actions such as traversing the local network or routing a reflected TCP DDoS through them.",
+                "Medium": "The adversary will have to detect the vulnerability through an intermediary service or specify maliciously crafted URLs and analyze the server response."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "type": "bundle"
+}

@@ -1,1 +1,125 @@
-{"type": "bundle", "id": "bundle--9bc09e47-843f-4b66-9e89-baf82fe60bc5", "objects": [{"type": "attack-pattern", "spec_version": "2.1", "id": "attack-pattern--efbf3dcf-9f19-45de-9f49-caa87fd34681", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2021-06-24T00:00:00.000Z", "modified": "2021-06-24T00:00:00.000Z", "name": "Exploitation of Transient Instruction Execution", "description": "An adversary exploits a hardware design flaw in a CPU implementation of transient instruction execution to expose sensitive data and bypass/subvert access control over restricted resources. Typically, the adversary conducts a covert channel attack to target non-discarded microarchitectural changes caused by transient executions such as speculative execution, branch prediction, instruction pipelining, and/or out-of-order execution. The transient execution results in a series of instructions (gadgets) which construct covert channel and access/transfer the secret data.", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/663.html", "external_id": "CAPEC-663"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/1037.html", "external_id": "CWE-1037"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/1303.html", "external_id": "CWE-1303"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/1264.html", "external_id": "CWE-1264"}, {"source_name": "reference_from_CAPEC", "description": "Paul Kocher, Jann Horn, Anders Fogh, Daniel Genkin, Daniel Gruss, Werner Haas, Mike Hamburg, Moritz Lipp, Stefan Mangard, Thomas Prescher, Michael Schwarz, Yuval Yarom, Spectre Attacks: Exploiting Speculative Execution, 2019, Graz University of Technology", "url": "https://spectreattack.com/spectre.pdf", "external_id": "REF-637"}, {"source_name": "reference_from_CAPEC", "description": "Moritz Lipp, Michael Schwarz, Daniel Gruss, Thomas Prescher, Werner Haas, Anders Fogh, Jann Horn, Stefan Mangard, Paul Kocher, Daniel Genkin, Yuval Yarom, Mike Hamburg, Meltdown: Reading Kernel Memory from User Space, 2018, Graz University of Technology", "url": "https://meltdownattack.com/meltdown.pdf", "external_id": "REF-638"}, {"source_name": "reference_from_CAPEC", "description": "Claudio Canella, Jo Van Bulck, Michael Schwarz, Moritz Lipp, Benjamin von Berg, Philipp Ortner, Frank Piessens, Dmitry Evtyushkin, Daniel Gruss, A Systematic Evaluation of Transient Execution Attacks and Defenses, 2019--05---15, Graz University of Technology", "url": "https://arxiv.org/abs/1811.05441", "external_id": "REF-639"}, {"source_name": "reference_from_CAPEC", "description": "Qian Ge, Yuval Yarom, Gernot Heiser, A Survey of Microarchitectural Timing Attacks and Countermeasures on Contemporary Hardware, 2016--12---26, Journal of Cryptographic Engineering", "url": "https://eprint.iacr.org/2016/613.pdf", "external_id": "REF-640"}, {"source_name": "reference_from_CAPEC", "description": "Nael Abu-Ghazaleh, Dmitry Ponomarev, Dmitry Evtyushkin, How the Spectre and Meltdown Hacks Really Worked, 2019--02---28, IEEE Spectrum", "url": "https://spectrum.ieee.org/computing/hardware/how-the-spectre-and-meltdown-hacks-really-worked", "external_id": "REF-641"}, {"source_name": "reference_from_CAPEC", "description": "James Sanders, Spectre and Meltdown explained: A comprehensive guide for professionals, 2019--05---15, TechRepublic", "url": "https://spectrum.ieee.org/computing/hardware/how-the-spectre-and-meltdown-hacks-really-worked", "external_id": "REF-642"}, {"source_name": "reference_from_CAPEC", "description": "Alert (TA18-004A) Meltdown and Spectre Side-Channel Vulnerability Guidance, 2018--01---04, CISA", "url": "https://us-cert.cisa.gov/ncas/alerts/TA18-004A", "external_id": "REF-643"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Standard", "x_capec_can_precede": ["attack-pattern--e244a53a-8c69-462c-8ff2-900a839d48cb"], "x_capec_child_of": ["attack-pattern--649abc91-f615-4c9e-91c9-9e66131e2d78", "attack-pattern--582f33d6-0aa7-4f34-a91e-d767a65adad1"], "x_capec_consequences": {"Confidentiality": ["Read Data"], "Access_Control": ["Bypass Protection Mechanism"], "Authorization": ["Execute Unauthorized Commands"]}, "x_capec_example_instances": ["\n               <xhtml:p>A web browser with user-privileges executes JavaScript code imbedded within a malicious website. The system does not disable shared buffers for the web browser and there is no restriction or check upon user-process execution of flush or evict instructions. The Javascript code executes vulnerable transient instructions upon system to cause microarchitectural changes that establish covert channel and transfer sensitive/secret data into shared cache from address space of either kernel, web browser or another executing process on the system.</xhtml:p>\n            "], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey target application and relevant OS shared code libraries: </b>Adversary identifies vulnerable transient instruction sets and the code/function calls to trigger them as well as instruction sets or code fragments (gadgets) to perform attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Utilize Disassembler and Debugger tools to examine and trace instruction set execution of source code and shared code libraries on a system.</td></tr></tbody></table><li> <p> <b>Explore cache and identify impacts: </b>Utilize tools to understand the impact of transient instruction execution upon address spaces and CPU operations.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Run OS or application specific tools that examine the contents of cache.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Cause conditions for identified transient instruction set execution: </b>Adversary ensures that specific code/instructions of the target process are executed by CPU, so desired transient instructions are executed.</p></li><li> <p> <b>Cause specific secret data to be cached from restricted address space: </b>Executed instruction sets (gadgets) in target address space, initially executed via adversary-chosen transient instructions sets, establish covert channel and transfer secret data across this channel to cache.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Prediction-based - adversary trains CPU to incorrectly predict/speculate conditions for instruction execution to be true, hence executing adversary-chosen transient instructions. These prediction-based methods include: Pattern History Table (PHT)/Input Validation Bypass, Branch Target Buffer (BTB)/Branch Target Injection, Return Stack Buffer (RSB)/Return Address Injection, and Store To Load (STL)/Speculative Store Bypass.</td></tr><tr><td>Exception/Fault-based - adversary has CPU execute transient instructions that raise an exception allowing inaccessible memory space to be accessed via out-of-order execution. These exception/fault-based methods include: Supervisor-only Bypass, Virtual Translation Bypass, System Register Bypass, FPU Register Bypass, Read-only Bypass, Protection Key Bypass, and Bounds Check Bypass.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Perform covert channel attack to obtain/access secret data: </b>Adversary process code removes instructions/data from shared cache set, waits for target process to reinsert them back into cache, to identify location of secret data via a timing method. Adversary continuously repeat this process to identify and access entirety of targeted secret data.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Flush+Reload - adversary frequently flushes targeted memory cache line using a dedicated machine flush instruction, and uses another process to measure time taken for CPU to load victim secret data.</td></tr><tr><td>Evict+Time - adversary causes victim to load target set into cache and measures time for victim process to load this data, setting a baseline. Adversary evicts a specified cache line and causes victim process to execute again, and measures any change in execution time, to determine if cache line was accessed.</td></tr><tr><td>Prime+Probe - adversary primes cache by filling cache line(s) or set(s) with data, after some time victim process evicts this adversary data to replace it with secret data. The adversary then probes/accesses all the previously accessed cache lines detecting cache misses, which determine that their attacker data has been evicted and replaced with secret data from victim process.</td></tr></tbody></table></ol></div>", "x_capec_likelihood_of_attack": "Low", "x_capec_peer_of": ["attack-pattern--c727c058-2c9d-4021-a1ec-81dd030dea59", "attack-pattern--d5e0c12f-6086-491d-86e5-e10a14d1f947", "attack-pattern--aac17300-6cdd-4f50-82c3-da5a01d225ac"], "x_capec_prerequisites": ["The adversary needs at least user execution access to a system and a maliciously crafted program/application/process with unprivileged code to misuse transient instruction set execution of the CPU."], "x_capec_resources_required": ["C2C mechanism or direct access to victim system, capable of dropping malicious program and collecting covert channel attack data.", "Malicious program capable of triggering execution of transient instructions or vulnerable instruction sequences of victim program and performing a covert channel attack to gather data from victim process memory space. Ultimately, the speed with which an attacker discovers a secret is directly proportional to the computational resources of the victim machine."], "x_capec_skills_required": {"High": "Detailed knowledge on compiled binaries and operating system shared libraries of instruction sequences, and layout of application and OS/Kernel address spaces for data leakage."}, "x_capec_status": "Stable", "x_capec_typical_severity": "Very High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--0f11d3de-c74d-4d0b-b909-544ffdd8a842",
+    "objects": [
+        {
+            "created": "2021-06-24T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An adversary exploits a hardware design flaw in a CPU implementation of transient instruction execution to expose sensitive data and bypass/subvert access control over restricted resources. Typically, the adversary conducts a covert channel attack to target non-discarded microarchitectural changes caused by transient executions such as speculative execution, branch prediction, instruction pipelining, and/or out-of-order execution. The transient execution results in a series of instructions (gadgets) which construct covert channel and access/transfer the secret data.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-663",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/663.html"
+                },
+                {
+                    "external_id": "CWE-1037",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1037.html"
+                },
+                {
+                    "external_id": "CWE-1303",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1303.html"
+                },
+                {
+                    "external_id": "CWE-1264",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1264.html"
+                },
+                {
+                    "description": "Paul Kocher, Jann Horn, Anders Fogh, Daniel Genkin, Daniel Gruss, Werner Haas, Mike Hamburg, Moritz Lipp, Stefan Mangard, Thomas Prescher, Michael Schwarz, Yuval Yarom, Spectre Attacks: Exploiting Speculative Execution, 2019, Graz University of Technology",
+                    "external_id": "REF-637",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://spectreattack.com/spectre.pdf"
+                },
+                {
+                    "description": "Moritz Lipp, Michael Schwarz, Daniel Gruss, Thomas Prescher, Werner Haas, Anders Fogh, Jann Horn, Stefan Mangard, Paul Kocher, Daniel Genkin, Yuval Yarom, Mike Hamburg, Meltdown: Reading Kernel Memory from User Space, 2018, Graz University of Technology",
+                    "external_id": "REF-638",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://meltdownattack.com/meltdown.pdf"
+                },
+                {
+                    "description": "Claudio Canella, Jo Van Bulck, Michael Schwarz, Moritz Lipp, Benjamin von Berg, Philipp Ortner, Frank Piessens, Dmitry Evtyushkin, Daniel Gruss, A Systematic Evaluation of Transient Execution Attacks and Defenses, 2019--05---15, Graz University of Technology",
+                    "external_id": "REF-639",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://arxiv.org/abs/1811.05441"
+                },
+                {
+                    "description": "Qian Ge, Yuval Yarom, Gernot Heiser, A Survey of Microarchitectural Timing Attacks and Countermeasures on Contemporary Hardware, 2016--12---26, Journal of Cryptographic Engineering",
+                    "external_id": "REF-640",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://eprint.iacr.org/2016/613.pdf"
+                },
+                {
+                    "description": "Nael Abu-Ghazaleh, Dmitry Ponomarev, Dmitry Evtyushkin, How the Spectre and Meltdown Hacks Really Worked, 2019--02---28, IEEE Spectrum",
+                    "external_id": "REF-641",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://spectrum.ieee.org/computing/hardware/how-the-spectre-and-meltdown-hacks-really-worked"
+                },
+                {
+                    "description": "James Sanders, Spectre and Meltdown explained: A comprehensive guide for professionals, 2019--05---15, TechRepublic",
+                    "external_id": "REF-642",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://spectrum.ieee.org/computing/hardware/how-the-spectre-and-meltdown-hacks-really-worked"
+                },
+                {
+                    "description": "Alert (TA18-004A) Meltdown and Spectre Side-Channel Vulnerability Guidance, 2018--01---04, CISA",
+                    "external_id": "REF-643",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://us-cert.cisa.gov/ncas/alerts/TA18-004A"
+                }
+            ],
+            "id": "attack-pattern--efbf3dcf-9f19-45de-9f49-caa87fd34681",
+            "modified": "2021-06-24T00:00:00.000Z",
+            "name": "Exploitation of Transient Instruction Execution",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Standard",
+            "x_capec_can_precede_refs": [
+                "attack-pattern--e244a53a-8c69-462c-8ff2-900a839d48cb"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--649abc91-f615-4c9e-91c9-9e66131e2d78",
+                "attack-pattern--582f33d6-0aa7-4f34-a91e-d767a65adad1"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>A web browser with user-privileges executes JavaScript code imbedded within a malicious website. The system does not disable shared buffers for the web browser and there is no restriction or check upon user-process execution of flush or evict instructions. The Javascript code executes vulnerable transient instructions upon system to cause microarchitectural changes that establish covert channel and transfer sensitive/secret data into shared cache from address space of either kernel, web browser or another executing process on the system.</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey target application and relevant OS shared code libraries: </b>Adversary identifies vulnerable transient instruction sets and the code/function calls to trigger them as well as instruction sets or code fragments (gadgets) to perform attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Utilize Disassembler and Debugger tools to examine and trace instruction set execution of source code and shared code libraries on a system.</td></tr></tbody></table><li> <p> <b>Explore cache and identify impacts: </b>Utilize tools to understand the impact of transient instruction execution upon address spaces and CPU operations.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Run OS or application specific tools that examine the contents of cache.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Cause conditions for identified transient instruction set execution: </b>Adversary ensures that specific code/instructions of the target process are executed by CPU, so desired transient instructions are executed.</p></li><li> <p> <b>Cause specific secret data to be cached from restricted address space: </b>Executed instruction sets (gadgets) in target address space, initially executed via adversary-chosen transient instructions sets, establish covert channel and transfer secret data across this channel to cache.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Prediction-based - adversary trains CPU to incorrectly predict/speculate conditions for instruction execution to be true, hence executing adversary-chosen transient instructions. These prediction-based methods include: Pattern History Table (PHT)/Input Validation Bypass, Branch Target Buffer (BTB)/Branch Target Injection, Return Stack Buffer (RSB)/Return Address Injection, and Store To Load (STL)/Speculative Store Bypass.</td></tr><tr><td>Exception/Fault-based - adversary has CPU execute transient instructions that raise an exception allowing inaccessible memory space to be accessed via out-of-order execution. These exception/fault-based methods include: Supervisor-only Bypass, Virtual Translation Bypass, System Register Bypass, FPU Register Bypass, Read-only Bypass, Protection Key Bypass, and Bounds Check Bypass.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Perform covert channel attack to obtain/access secret data: </b>Adversary process code removes instructions/data from shared cache set, waits for target process to reinsert them back into cache, to identify location of secret data via a timing method. Adversary continuously repeat this process to identify and access entirety of targeted secret data.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Flush+Reload - adversary frequently flushes targeted memory cache line using a dedicated machine flush instruction, and uses another process to measure time taken for CPU to load victim secret data.</td></tr><tr><td>Evict+Time - adversary causes victim to load target set into cache and measures time for victim process to load this data, setting a baseline. Adversary evicts a specified cache line and causes victim process to execute again, and measures any change in execution time, to determine if cache line was accessed.</td></tr><tr><td>Prime+Probe - adversary primes cache by filling cache line(s) or set(s) with data, after some time victim process evicts this adversary data to replace it with secret data. The adversary then probes/accesses all the previously accessed cache lines detecting cache misses, which determine that their attacker data has been evicted and replaced with secret data from victim process.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_peer_of_refs": [
+                "attack-pattern--c727c058-2c9d-4021-a1ec-81dd030dea59",
+                "attack-pattern--d5e0c12f-6086-491d-86e5-e10a14d1f947",
+                "attack-pattern--aac17300-6cdd-4f50-82c3-da5a01d225ac"
+            ],
+            "x_capec_prerequisites": [
+                "The adversary needs at least user execution access to a system and a maliciously crafted program/application/process with unprivileged code to misuse transient instruction set execution of the CPU."
+            ],
+            "x_capec_resources_required": [
+                "C2C mechanism or direct access to victim system, capable of dropping malicious program and collecting covert channel attack data.",
+                "Malicious program capable of triggering execution of transient instructions or vulnerable instruction sequences of victim program and performing a covert channel attack to gather data from victim process memory space. Ultimately, the speed with which an attacker discovers a secret is directly proportional to the computational resources of the victim machine."
+            ],
+            "x_capec_skills_required": {
+                "High": "Detailed knowledge on compiled binaries and operating system shared libraries of instruction sequences, and layout of application and OS/Kernel address spaces for data leakage."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "type": "bundle"
+}

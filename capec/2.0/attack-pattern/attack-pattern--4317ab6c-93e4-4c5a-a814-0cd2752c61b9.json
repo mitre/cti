@@ -1,1 +1,147 @@
-{"type": "bundle", "id": "bundle--0e5b0f66-817c-44b3-8a8c-e78c95bfe8f5", "spec_version": "2.0", "objects": [{"type": "attack-pattern", "id": "attack-pattern--4317ab6c-93e4-4c5a-a814-0cd2752c61b9", "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd", "created": "2021-06-24T00:00:00.000Z", "modified": "2021-06-24T00:00:00.000Z", "name": "Exploitation of Thunderbolt Protection Flaws", "description": "\n            <xhtml:p>An adversary leverages a firmware weakness within the Thunderbolt protocol, on a computing device to manipulate Thunderbolt controller firmware in order to exploit vulnerabilities in the implementation of authorization and verification schemes within Thunderbolt protection mechanisms. Upon gaining physical access to a target device, the adversary conducts high-level firmware manipulation of the victim Thunderbolt controller SPI (Serial Peripheral Interface) flash, through the use of a SPI Programing device and an external Thunderbolt device, typically as the target device is booting up. If successful, this allows the adversary to modify memory, subvert authentication mechanisms, spoof identities and content, and extract data and memory from the target device. Currently 7 major vulnerabilities exist within Thunderbolt protocol with 9 attack vectors as noted in the Execution Flow.</xhtml:p>\n         ", "external_references": [{"source_name": "capec", "url": "https://capec.mitre.org/data/definitions/665.html", "external_id": "CAPEC-665"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/345.html", "external_id": "CWE-345"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/353.html", "external_id": "CWE-353"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/288.html", "external_id": "CWE-288"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/1188.html", "external_id": "CWE-1188"}, {"source_name": "cwe", "url": "http://cwe.mitre.org/data/definitions/862.html", "external_id": "CWE-862"}, {"source_name": "ATTACK", "description": "Firmware Corruption", "url": "https://attack.mitre.org/wiki/Technique/TT1495", "external_id": "TT1495"}, {"source_name": "ATTACK", "description": "Exploitation for Defensive Evasion", "url": "https://attack.mitre.org/wiki/Technique/TT1211", "external_id": "TT1211"}, {"source_name": "ATTACK", "description": "Modify Authentication Process", "url": "https://attack.mitre.org/wiki/Technique/TT1556", "external_id": "TT1556"}, {"source_name": "reference_from_CAPEC", "description": "Bj\u00f6rn Ruytenberg, Thunderspy When Lighting Strikes Thrice: Breaking Thunderbolt 3 Security, 2020, Eindhoven University of Technology", "url": "https://thunderspy.io/", "external_id": "REF-647"}, {"source_name": "reference_from_CAPEC", "description": "Bj\u00f6rn Ruytenberg, Breaking Thunderbolt Protocol Security: Vulnerability Report, 2020--04---17, Eindhoven University of Technology", "url": "https://thunderspy.io/assets/reports/breaking-thunderbolt-security-bjorn-ruytenberg-20200417.pdf", "external_id": "REF-648"}, {"source_name": "reference_from_CAPEC", "description": "Liam Tung, Thunderbolt flaws affect millions of computers \u2013 even locking unattended devices won't help, 2020--05---11, ZDNet", "url": "https://www.zdnet.com/article/thunderbolt-flaws-affect-millions-of-computers-even-locking-unattended-devices-wont-help/", "external_id": "REF-649"}, {"source_name": "reference_from_CAPEC", "description": "Liam Tung, Microsoft: Worried about Thunderbolt attacks? Get a Windows 10 Secured-Core PC, 2020--05---14, ZDNet", "url": "https://www.zdnet.com/article/microsoft-worried-about-thunderbolt-attacks-get-a-windows-10-secured-core-pc/", "external_id": "REF-650"}, {"source_name": "reference_from_CAPEC", "description": "Jon Porter, Thunderbolt flaw allows access to a PC\u2019s data in minutes, 2020--05---11, The Verge", "url": "https://www.theverge.com/2020/5/11/21254290/thunderbolt-security-vulnerability-thunderspy-encryption-access-intel-laptops", "external_id": "REF-651"}, {"source_name": "reference_from_CAPEC", "description": "Jerry Bryant, MORE INFORMATION ON THUNDERBOLT(TM) SECURITY, 2020--05---10, Intel Corporation", "url": "https://blogs.intel.com/technology/2020/05/more-information-on-thunderspy/#gs.0o6pmk", "external_id": "REF-652"}], "object_marking_refs": ["marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"], "x_capec_abstraction": "Detailed", "x_capec_child_of": ["attack-pattern--a46718a5-0206-44da-a4f8-b1943f85188b"], "x_capec_consequences": {"Access_Control": ["Bypass Protection Mechanism"], "Confidentiality": ["Read Data"], "Integrity": ["Modify Data"], "Authorization": ["Execute Unauthorized Commands"]}, "x_capec_example_instances": ["\n               <xhtml:p>An adversary steals a password protected laptop that contains a Thunderbolt 3 enabled port, from a work environment. The adversary uses a screw driver to remove the back panel of the laptop and connects a SPI Programming device to the Thunderbolt Host Controller SPI Flash of the stolen victim device to interface with it on the adversary's own Thunderbolt enabled device via Thunderbolt cables. The SPI Programming device is utilized to execute scripts/tools from the adversary's own system to copy, parse, and modify the victim's Thunderbolt firmware stored on SPI Flash. The device UUID value is obtained, by computing the appropriate offset based upon Thunderbolt firmware version and the OS of victim device, from the DROM section of victim Thunderbolt host controller firmware image. The firmware image is written to adversary Thunderbolt host controller SPI flash to clone and spoof victim device identity. The adversary reboots the victim device, with the victim device identifying the Thunderbolt connection of the adversary's Thunderbolt device as itself and enables PCIe tunneling. The adversary finally transfers the hard drive and memory contents of victim device across Thunderbolt connection.</xhtml:p>\n            "], "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey physical victim environment and potential Thunderbolt system targets: </b>The adversary monitors the target's physical environment to identify systems with Thunderbolt interfaces, identify potential weaknesses in physical security in addition to periods of nonattendance by the victim over their Thunderbolt interface equipped devices, and when the devices are in locked or sleep state.</p></li><li> <p> <b>Evaluate the target system and its Thunderbolt interface: </b>The adversary determines the device's operating system, Thunderbolt interface version, and any implemented Thunderbolt protections to plan the attack.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Obtain and/or clone firmware image: </b>The adversary physically manipulates Thunderbolt enabled devices to acquire the firmware image from the target and/or adversary Thunderbolt host controller's SPI (Serial Peripheral Interface) flash.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Disassemble victim and/or adversary device enclosure with basic tools to gain access to Thunderbolt controller SPI flash by connecting adversary SPI programmer.</td></tr><tr><td>Adversary connects SPI programmer to adversary-controlled Thunderbolt enabled device to obtain/clone victim thunderbolt controller firmware image through tools/scripts.</td></tr><tr><td>Clone firmware image with SPI programmer and tools/scripts on adversary-controlled device.</td></tr></tbody></table><li> <p> <b>Parse and locate relevant firmware data structures and information based upon Thunderbolt controller model, firmware version, and other information: </b>The acquired victim and/or adversary firmware image is parsed for specific data and other relevant identifiers required for exploitation, based upon the victim device information and firmware version.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Utilize pre-crafted tools/scripts to parse and locate desired firmware data and modify it.</td></tr><tr><td>Locate DROM (Device Read Only Memory) data structure section and calculate/determine appropriate offset to replicate victim device UUID.</td></tr><tr><td>Locate ACL (Access Control List) data structure and calculate/determine appropriate offsets to identify victim device UUID.</td></tr><tr><td>Locate data structure containing challenge-response key information between appropriate offsets.</td></tr></tbody></table><li> <p> <b>Disable Thunderbolt security and prevent future Thunderbolt security modifications (if necessary): </b>The adversary overrides the target device's Thunderbolt Security Level to \"None\" (SL0) and/or enables block protections upon the SPI flash to prevent the ability for the victim to perform and/or recognize future Thunderbolt security modifications as well as update the Thunderbolt firmware.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The adversary-controlled Thunderbolt device, connected to SPI programmer and victim device via Thunderbolt ports, is utilized to execute commands within tools/scripts to disable SPI flash protections, modify Thunderbolt Security Level, and enable malicious SPI flash protections.</td></tr></tbody></table><li> <p> <b>Modify/replace victim Thunderbolt firmware image: </b>The modified victim and/or adversary thunderbolt firmware image is written to attacker SPI flash.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Connect adversary-controlled thunderbolt enabled device to victim device and verify successful execution of malicious actions: </b>The adversary needs to determine if their exploitation of selected vulnerabilities had the intended effects upon victim device.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Observe victim device identify adversary device as the victim device and enables PCIe tunneling.</td></tr><tr><td>Resume victim device from sleep, connect adversary-controlled device and observe security is disabled and Thunderbolt connectivity is restored with PCIe tunneling being enabled.</td></tr><tr><td>Observe that in UEFI or Thunderbolt Management Tool/UI that the Security Level does not match adversary modified Security Level of \"None\" (SL0)</td></tr><tr><td>Observe after installation of Firmware update that within Thunderbolt Management UI the \"NVM version\" is unchanged/same prior to the prompt of successful Firmware update/installation.</td></tr></tbody></table><li> <p> <b>Exfiltration of desired data from victim device to adversary device: </b>Utilize PCIe tunneling to transfer desired data and information from victim device across Thunderbolt connection.</p></li></ol></div>", "x_capec_likelihood_of_attack": "Low", "x_capec_peer_of": ["attack-pattern--96c60498-fdd4-4f9f-a21f-c1a4ee84f0f3", "attack-pattern--bd4f8f46-1bc7-40a9-b15a-e36b7671cf5b", "attack-pattern--22802ed6-ddc6-4da7-b6be-60b10d26198b"], "x_capec_prerequisites": ["The adversary needs at least a few minutes of physical access to a system with an open Thunderbolt port, version 3 or lower, and an external thunderbolt device controlled by the adversary with maliciously crafted software and firmware, via an SPI Programming device, to exploit weaknesses in security protections."], "x_capec_resources_required": ["SPI Programming device capable of modifying/configuring or replacing the firmware of Thunderbolt device stored on SPI Flash of target Thunderbolt controller, as well as modification/spoofing of adversary-controlled Thunderbolt controller.", "Precrafted scripts/tools capable of implementing the modification and replacement of Thunderbolt Firmware.", "Thunderbolt-enabled computing device capable of interfacing with target Thunderbolt device and extracting/dumping data and memory contents of target device."], "x_capec_skills_required": {"High": "Detailed knowledge on scripting and SPI programming in order to configure and modify Thunderbolt controller firmware and software configurations."}, "x_capec_status": "Stable", "x_capec_typical_severity": "Very High", "x_capec_version": "3.5"}]}
+{
+    "id": "bundle--de0b17a4-e414-430f-a399-81788e37db84",
+    "objects": [
+        {
+            "created": "2021-06-24T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>An adversary leverages a firmware weakness within the Thunderbolt protocol, on a computing device to manipulate Thunderbolt controller firmware in order to exploit vulnerabilities in the implementation of authorization and verification schemes within Thunderbolt protection mechanisms. Upon gaining physical access to a target device, the adversary conducts high-level firmware manipulation of the victim Thunderbolt controller SPI (Serial Peripheral Interface) flash, through the use of a SPI Programing device and an external Thunderbolt device, typically as the target device is booting up. If successful, this allows the adversary to modify memory, subvert authentication mechanisms, spoof identities and content, and extract data and memory from the target device. Currently 7 major vulnerabilities exist within Thunderbolt protocol with 9 attack vectors as noted in the Execution Flow.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-665",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/665.html"
+                },
+                {
+                    "external_id": "CWE-345",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/345.html"
+                },
+                {
+                    "external_id": "CWE-353",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/353.html"
+                },
+                {
+                    "external_id": "CWE-288",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/288.html"
+                },
+                {
+                    "external_id": "CWE-1188",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1188.html"
+                },
+                {
+                    "external_id": "CWE-862",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/862.html"
+                },
+                {
+                    "description": "Firmware Corruption",
+                    "external_id": "TT1495",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/TT1495"
+                },
+                {
+                    "description": "Exploitation for Defensive Evasion",
+                    "external_id": "TT1211",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/TT1211"
+                },
+                {
+                    "description": "Modify Authentication Process",
+                    "external_id": "TT1556",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/TT1556"
+                },
+                {
+                    "description": "Björn Ruytenberg, Thunderspy When Lighting Strikes Thrice: Breaking Thunderbolt 3 Security, 2020, Eindhoven University of Technology",
+                    "external_id": "REF-647",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://thunderspy.io/"
+                },
+                {
+                    "description": "Björn Ruytenberg, Breaking Thunderbolt Protocol Security: Vulnerability Report, 2020--04---17, Eindhoven University of Technology",
+                    "external_id": "REF-648",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://thunderspy.io/assets/reports/breaking-thunderbolt-security-bjorn-ruytenberg-20200417.pdf"
+                },
+                {
+                    "description": "Liam Tung, Thunderbolt flaws affect millions of computers – even locking unattended devices won't help, 2020--05---11, ZDNet",
+                    "external_id": "REF-649",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.zdnet.com/article/thunderbolt-flaws-affect-millions-of-computers-even-locking-unattended-devices-wont-help/"
+                },
+                {
+                    "description": "Liam Tung, Microsoft: Worried about Thunderbolt attacks? Get a Windows 10 Secured-Core PC, 2020--05---14, ZDNet",
+                    "external_id": "REF-650",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.zdnet.com/article/microsoft-worried-about-thunderbolt-attacks-get-a-windows-10-secured-core-pc/"
+                },
+                {
+                    "description": "Jon Porter, Thunderbolt flaw allows access to a PC’s data in minutes, 2020--05---11, The Verge",
+                    "external_id": "REF-651",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.theverge.com/2020/5/11/21254290/thunderbolt-security-vulnerability-thunderspy-encryption-access-intel-laptops"
+                },
+                {
+                    "description": "Jerry Bryant, MORE INFORMATION ON THUNDERBOLT(TM) SECURITY, 2020--05---10, Intel Corporation",
+                    "external_id": "REF-652",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://blogs.intel.com/technology/2020/05/more-information-on-thunderspy/#gs.0o6pmk"
+                }
+            ],
+            "id": "attack-pattern--4317ab6c-93e4-4c5a-a814-0cd2752c61b9",
+            "modified": "2021-06-24T00:00:00.000Z",
+            "name": "Exploitation of Thunderbolt Protection Flaws",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--a46718a5-0206-44da-a4f8-b1943f85188b"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>An adversary steals a password protected laptop that contains a Thunderbolt 3 enabled port, from a work environment. The adversary uses a screw driver to remove the back panel of the laptop and connects a SPI Programming device to the Thunderbolt Host Controller SPI Flash of the stolen victim device to interface with it on the adversary's own Thunderbolt enabled device via Thunderbolt cables. The SPI Programming device is utilized to execute scripts/tools from the adversary's own system to copy, parse, and modify the victim's Thunderbolt firmware stored on SPI Flash. The device UUID value is obtained, by computing the appropriate offset based upon Thunderbolt firmware version and the OS of victim device, from the DROM section of victim Thunderbolt host controller firmware image. The firmware image is written to adversary Thunderbolt host controller SPI flash to clone and spoof victim device identity. The adversary reboots the victim device, with the victim device identifying the Thunderbolt connection of the adversary's Thunderbolt device as itself and enables PCIe tunneling. The adversary finally transfers the hard drive and memory contents of victim device across Thunderbolt connection.</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey physical victim environment and potential Thunderbolt system targets: </b>The adversary monitors the target's physical environment to identify systems with Thunderbolt interfaces, identify potential weaknesses in physical security in addition to periods of nonattendance by the victim over their Thunderbolt interface equipped devices, and when the devices are in locked or sleep state.</p></li><li> <p> <b>Evaluate the target system and its Thunderbolt interface: </b>The adversary determines the device's operating system, Thunderbolt interface version, and any implemented Thunderbolt protections to plan the attack.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Obtain and/or clone firmware image: </b>The adversary physically manipulates Thunderbolt enabled devices to acquire the firmware image from the target and/or adversary Thunderbolt host controller's SPI (Serial Peripheral Interface) flash.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Disassemble victim and/or adversary device enclosure with basic tools to gain access to Thunderbolt controller SPI flash by connecting adversary SPI programmer.</td></tr><tr><td>Adversary connects SPI programmer to adversary-controlled Thunderbolt enabled device to obtain/clone victim thunderbolt controller firmware image through tools/scripts.</td></tr><tr><td>Clone firmware image with SPI programmer and tools/scripts on adversary-controlled device.</td></tr></tbody></table><li> <p> <b>Parse and locate relevant firmware data structures and information based upon Thunderbolt controller model, firmware version, and other information: </b>The acquired victim and/or adversary firmware image is parsed for specific data and other relevant identifiers required for exploitation, based upon the victim device information and firmware version.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Utilize pre-crafted tools/scripts to parse and locate desired firmware data and modify it.</td></tr><tr><td>Locate DROM (Device Read Only Memory) data structure section and calculate/determine appropriate offset to replicate victim device UUID.</td></tr><tr><td>Locate ACL (Access Control List) data structure and calculate/determine appropriate offsets to identify victim device UUID.</td></tr><tr><td>Locate data structure containing challenge-response key information between appropriate offsets.</td></tr></tbody></table><li> <p> <b>Disable Thunderbolt security and prevent future Thunderbolt security modifications (if necessary): </b>The adversary overrides the target device's Thunderbolt Security Level to \"None\" (SL0) and/or enables block protections upon the SPI flash to prevent the ability for the victim to perform and/or recognize future Thunderbolt security modifications as well as update the Thunderbolt firmware.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The adversary-controlled Thunderbolt device, connected to SPI programmer and victim device via Thunderbolt ports, is utilized to execute commands within tools/scripts to disable SPI flash protections, modify Thunderbolt Security Level, and enable malicious SPI flash protections.</td></tr></tbody></table><li> <p> <b>Modify/replace victim Thunderbolt firmware image: </b>The modified victim and/or adversary thunderbolt firmware image is written to attacker SPI flash.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Connect adversary-controlled thunderbolt enabled device to victim device and verify successful execution of malicious actions: </b>The adversary needs to determine if their exploitation of selected vulnerabilities had the intended effects upon victim device.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Observe victim device identify adversary device as the victim device and enables PCIe tunneling.</td></tr><tr><td>Resume victim device from sleep, connect adversary-controlled device and observe security is disabled and Thunderbolt connectivity is restored with PCIe tunneling being enabled.</td></tr><tr><td>Observe that in UEFI or Thunderbolt Management Tool/UI that the Security Level does not match adversary modified Security Level of \"None\" (SL0)</td></tr><tr><td>Observe after installation of Firmware update that within Thunderbolt Management UI the \"NVM version\" is unchanged/same prior to the prompt of successful Firmware update/installation.</td></tr></tbody></table><li> <p> <b>Exfiltration of desired data from victim device to adversary device: </b>Utilize PCIe tunneling to transfer desired data and information from victim device across Thunderbolt connection.</p></li></ol></div>",
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_peer_of_refs": [
+                "attack-pattern--96c60498-fdd4-4f9f-a21f-c1a4ee84f0f3",
+                "attack-pattern--bd4f8f46-1bc7-40a9-b15a-e36b7671cf5b",
+                "attack-pattern--22802ed6-ddc6-4da7-b6be-60b10d26198b"
+            ],
+            "x_capec_prerequisites": [
+                "The adversary needs at least a few minutes of physical access to a system with an open Thunderbolt port, version 3 or lower, and an external thunderbolt device controlled by the adversary with maliciously crafted software and firmware, via an SPI Programming device, to exploit weaknesses in security protections."
+            ],
+            "x_capec_resources_required": [
+                "SPI Programming device capable of modifying/configuring or replacing the firmware of Thunderbolt device stored on SPI Flash of target Thunderbolt controller, as well as modification/spoofing of adversary-controlled Thunderbolt controller.",
+                "Precrafted scripts/tools capable of implementing the modification and replacement of Thunderbolt Firmware.",
+                "Thunderbolt-enabled computing device capable of interfacing with target Thunderbolt device and extracting/dumping data and memory contents of target device."
+            ],
+            "x_capec_skills_required": {
+                "High": "Detailed knowledge on scripting and SPI programming in order to configure and modify Thunderbolt controller firmware and software configurations."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.5"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}
