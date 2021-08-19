@@ -793,7 +793,12 @@ def techniques_used_by_software(thesrc):
 def software_using_technique(thesrc):
     """return technique_id  => {software, relationship} for each software using the technique."""
     x = get_related(thesrc, "malware", "uses", "attack-pattern", reverse=True)
-    x.update(get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True))
+    x_tool = get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True)
+    for key in x_tool:
+      if key in x:
+        x[key].extend(x_tool[key])
+      else:
+        x[key] = x_tool[key]
     return x
 
 # technique:mitigation
