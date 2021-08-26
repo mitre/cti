@@ -764,8 +764,13 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
 # software:group
 def software_used_by_groups(thesrc):
     """returns group_id => {software, relationship} for each software used by the group."""
-    x = get_related(thesrc, "intrusion-set", "uses", "tool")
-    x.update(get_related(thesrc, "intrusion-set", "uses", "malware"))
+    x = get_related(thesrc, "intrusion-set", "uses", "malware")
+    x_tool = get_related(thesrc, "intrusion-set", "uses", "tool")
+    for key in x_tool:
+      if key in x:
+        x[key].extend(x_tool[key])
+      else:
+        x[key] = x_tool[key]
     return x
 
 def groups_using_software(thesrc):
