@@ -860,7 +860,7 @@ def technique_mitigated_by_mitigations(thesrc):
     """return technique_id => {mitigation, relationship} for each mitigation of the technique."""
     return get_related(thesrc, "course-of-action", "mitigates", "attack-pattern", reverse=True)
 
-# technique:subtechnique
+# technique:sub-technique
 def subtechniques_of(thesrc):
     """return technique_id => {subtechnique, relationship} for each subtechnique of the technique."""
     return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern", reverse=True)
@@ -869,14 +869,14 @@ def parent_technique_of(thesrc):
     """return subtechnique_id => {technique, relationship} describing the parent technique of the subtechnique"""
     return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern")[0]
 
-# technique:datasource
-def datasource_detects_techniques(thesrc):
-    """return datasource_id => {technique, relationship} describing the detections of each data source"""
-    return get_related(thesrc, "x-mitre-data-source", "detects", "attack-pattern")
+# technique:data-component
+def datacomponent_detects_techniques(thesrc):
+    """return datacomponent_id => {technique, relationship} describing the detections of each data component"""
+    return get_related(thesrc, "x-mitre-data-component", "detects", "attack-pattern")
 
-def technique_detected_by_datasources(thesrc):
-    """return technique_id => {datasource, relationship} describing the data sources that can detect the technique"""
-    return get_related(thesrc, "x-mitre-data-source", "detects", "attack-pattern", reverse=True)
+def technique_detected_by_datacomponents(thesrc):
+    """return technique_id => {datacomponent, relationship} describing the data components that can detect the technique"""
+    return get_related(thesrc, "x-mitre-data-component", "detects", "attack-pattern", reverse=True)
 ```
 
 Example usage: 
