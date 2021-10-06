@@ -30,7 +30,7 @@ Changes to STIX for October 2020 ATT&CK Content Release (ATT&CK-v8.0)
 3. Added the [ATT&CK for ICS domain](ics-attack).
 
 ## 8 July 2020
-### ATT&CK Spec v1.2.0
+### ATT&CK Spec v1.3.0
 Changes to STIX for July 2020 ATT&CK Content Release (ATT&CK-v7.0)
 
 1. Added sub-techniques:
@@ -51,7 +51,7 @@ Changes to STIX for July 2019 ATT&CK Content Release (ATT&CK-v5.0)
 1. Descriptions added to relationships of type `mitigates` under the enterprise domain 
 
 ## 30 April 2019
-### ATT&CK Spec v1.1.1
+### ATT&CK Spec v1.2.0
 Changes to STIX for April 2019 ATT&CK Content Release (ATT&CK-v4.0)
 1. `x_mitre_impact_type` added for enterprise techniques within the `Impact` tactic
 2. Descriptions added to relationships between software/groups
