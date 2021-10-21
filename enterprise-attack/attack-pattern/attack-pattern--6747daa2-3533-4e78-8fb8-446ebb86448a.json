@@ -1,11 +1,34 @@
 {
     "type": "bundle",
-    "id": "bundle--62ea1e7f-58ce-4f02-8815-3fa82eaf5504",
+    "id": "bundle--e33ced61-14e2-4b5e-87fa-696f354d8beb",
     "spec_version": "2.0",
     "objects": [
         {
-            "created": "2020-01-24T20:02:59.149Z",
-            "modified": "2021-03-30T00:51:59.629Z",
+            "id": "attack-pattern--6747daa2-3533-4e78-8fb8-446ebb86448a",
+            "description": "Adversaries can modify property list files (plist files) to execute their code as part of establishing persistence. Plist files are used by macOS applications to store properties and configuration settings for applications and services. Applications use information plist files, <code>Info.plist</code>, to tell the operating system how to handle the application at runtime using structured metadata in the form of keys and values. Plist files are formatted in XML and based on Apple's Core Foundation DTD and can be saved in text or binary format.(Citation: fileinfo plist file description) \n\nAdversaries can modify paths to executed binaries, add command line arguments, and insert key/pair values to plist files in auto-run locations which execute upon user logon or system startup. Through modifying plist files in these locations, adversaries can also execute a malicious dynamic library (dylib) by adding a dictionary containing the <code>DYLD_INSERT_LIBRARIES</code> key combined with a path to a malicious dylib under the <code>EnvironmentVariables</code> key in a plist file. Upon user logon, the plist is called for execution and the malicious dylib is executed within the process space. Persistence can also be achieved by modifying the <code>LSEnvironment</code> key in the application's <code>Info.plist</code> file.(Citation: wardle artofmalware volume1)",
+            "name": "Plist Modification",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1547.011",
+                    "url": "https://attack.mitre.org/techniques/T1547/011"
+                },
+                {
+                    "source_name": "fileinfo plist file description",
+                    "url": "https://fileinfo.com/extension/plist",
+                    "description": "FileInfo.com team. (2019, November 26). .PLIST File Extension. Retrieved October 12, 2021."
+                },
+                {
+                    "source_name": "wardle artofmalware volume1",
+                    "url": "https://taomm.org/vol1/pdfs.html",
+                    "description": "Patrick Wardle. (2020, August 5). The Art of Mac Malware Volume 0x1: Analysis. Retrieved March 19, 2021."
+                }
+            ],
+            "type": "attack-pattern",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -16,61 +39,24 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "type": "attack-pattern",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1547.011",
-                    "url": "https://attack.mitre.org/techniques/T1547/011"
-                },
-                {
-                    "url": "https://researchcenter.paloaltonetworks.com/2016/09/unit42-sofacys-komplex-os-x-trojan/",
-                    "description": "Dani Creus, Tyler Halfpop, Robert Falcone. (2016, September 26). Sofacy's 'Komplex' OS X Trojan. Retrieved July 8, 2017.",
-                    "source_name": "Sofacy Komplex Trojan"
-                },
-                {
-                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
-                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
-                    "source_name": "Methods of Mac Malware Persistence"
-                },
-                {
-                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLoginItems.html",
-                    "description": "Apple. (2016, September 13). Adding Login Items. Retrieved July 11, 2017.",
-                    "source_name": "Adding Login Items"
-                },
-                {
-                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
-                    "description": "Patrick Wardle. (2015). Malware Persistence on OS X Yosemite. Retrieved July 10, 2017.",
-                    "source_name": "Malware Persistence on OS X"
-                },
-                {
-                    "url": "https://blog.malwarebytes.com/threat-analysis/2017/04/new-osx-dok-malware-intercepts-web-traffic/",
-                    "description": "Thomas Reed. (2017, July 7). New OSX.Dok malware intercepts web traffic. Retrieved July 10, 2017.",
-                    "source_name": "OSX.Dok Malware"
-                }
+            "modified": "2021-10-15T14:46:47.383Z",
+            "created": "2020-01-24T20:02:59.149Z",
+            "x_mitre_platforms": [
+                "macOS"
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            "x_mitre_data_sources": [
+                "Service: Service Creation",
+                "Command: Command Execution",
+                "File: File Modification",
+                "Process: Process Creation"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Plist Modification",
-            "description": "Adversaries may modify plist files to run a program during system boot or user login. Property list (plist) files contain all of the information that macOS and OS X uses to configure applications and services. These files are UTF-8 encoded and formatted like XML documents via a series of keys surrounded by < >. They detail when programs should execute, file paths to the executables, program arguments, required OS permissions, and many others. plists are located in certain locations depending on their purpose such as <code>/Library/Preferences</code> (which execute with elevated privileges) and <code>~/Library/Preferences</code> (which execute with a user's privileges). \n\nAdversaries can modify plist files to execute their code as part of establishing persistence. plists may also be used to elevate privileges since they may execute in the context of another user.(Citation: Sofacy Komplex Trojan) \n\nA specific plist used for execution at login is <code>com.apple.loginitems.plist</code>.(Citation: Methods of Mac Malware Persistence) Applications under this plist run under the logged in user's context, and will be started every time the user logs in. Login items installed using the Service Management Framework are not visible in the System Preferences and can only be removed by the application that created them.(Citation: Adding Login Items) Users have direct control over login items installed using a shared file list which are also visible in System Preferences (Citation: Adding Login Items). Some of these applications can open visible dialogs to the user, but they don\u2019t all have to since there is an option to \"hide\" the window. If an adversary can register their own login item or modified an existing one, then they can use it to execute their code for a persistence mechanism each time the user logs in (Citation: Malware Persistence on OS X) (Citation: OSX.Dok Malware). The API method <code> SMLoginItemSetEnabled</code> can be used to set Login Items, but scripting languages like [AppleScript](https://attack.mitre.org/techniques/T1059/002) can do this as well. (Citation: Adding Login Items)",
-            "id": "attack-pattern--6747daa2-3533-4e78-8fb8-446ebb86448a",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
+            "x_mitre_detection": "Monitor for common command-line editors used to modify plist files located in auto-run locations, such as <code>~/LaunchAgents</code>, <code>~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm</code>, and an application's <code>Info.plist</code>. \n\nMonitor for plist file modification immediately followed by code execution from <code>~/Library/Scripts</code> and <code>~/Library/Preferences</code>. Also, monitor for significant changes to any path pointers in a modified plist.\n\nIdentify new services executed from plist modified in the previous user's session. ",
             "x_mitre_permissions_required": [
                 "User",
                 "Administrator"
             ],
-            "x_mitre_detection": "File system monitoring can determine if plist files are being modified. Users should not have permission to modify these in most cases. Some software tools like \"Knock Knock\" can detect persistence mechanisms and point to the specific files that are being referenced. This can be helpful to see what is actually being executed.\n\nAll the login items created via shared file lists are viewable by going to the Apple menu -> System Preferences -> Users & Groups -> Login items. This area (and the corresponding file locations) should be monitored and allowed for known good applications. Otherwise, Login Items are located in <code> Contents/Library/LoginItems </code> within an application bundle, so these paths should be monitored as well.(Citation: Adding Login Items)\n\nMonitor process execution for abnormal process execution resulting from modified plist files. Monitor utilities used to modify plist files or that take a plist file as an argument, which may indicate suspicious activity.",
-            "x_mitre_data_sources": [
-                "File: File Creation",
-                "File: File Modification",
-                "Process: Process Creation"
-            ],
-            "x_mitre_platforms": [
-                "macOS"
-            ]
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.1"
         }
     ]
 }

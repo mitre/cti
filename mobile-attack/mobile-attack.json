@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--4f180473-52fa-4ec2-b24b-5dee2fd95f3a",
+    "id": "bundle--c588e183-77d1-4fd3-9027-3ea1f1d0c86d",
     "spec_version": "2.0",
     "objects": [
         {
@@ -579,6 +579,76 @@
                 "Alex Hinchliffe, Palo Alto Networks"
             ],
             "x_mitre_is_subtechnique": false
+        },
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-mobile-attack",
+                    "external_id": "T1616",
+                    "url": "https://attack.mitre.org/techniques/T1616"
+                },
+                {
+                    "external_id": "APP-41",
+                    "source_name": "NIST Mobile Threat Catalogue",
+                    "url": "https://pages.nist.gov/mobile-threat-catalogue/application-threats/APP-41.html"
+                },
+                {
+                    "external_id": "CEL-42",
+                    "source_name": "NIST Mobile Threat Catalogue",
+                    "url": "https://pages.nist.gov/mobile-threat-catalogue/cellular-threats/CEL-42.html"
+                },
+                {
+                    "external_id": "CEL-36",
+                    "source_name": "NIST Mobile Threat Catalogue",
+                    "url": "https://pages.nist.gov/mobile-threat-catalogue/cellular-threats/CEL-36.html"
+                },
+                {
+                    "external_id": "CEL-18",
+                    "source_name": "NIST Mobile Threat Catalogue",
+                    "url": "https://pages.nist.gov/mobile-threat-catalogue/cellular-threats/CEL-18.html"
+                },
+                {
+                    "source_name": "Android Permissions",
+                    "url": "https://developer.android.com/reference/android/Manifest.permission",
+                    "description": "Google. (2021, August 11). Manifest.permission. Retrieved September 22, 2021."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Call Control",
+            "description": "Adversaries may make, forward, or block phone calls without user authorization. This could be used for adversary goals such as audio surveillance, blocking or forwarding calls from the device owner, or C2 communication.\n\nSeveral permissions may be used to programmatically control phone calls, including:\n\n* `ANSWER_PHONE_CALLS` - Allows the application to answer incoming phone calls(Citation: Android Permissions)\n* `CALL_PHONE` - Allows the application to initiate a phone call without going through the Dialer interface(Citation: Android Permissions)\n* `PROCESS_OUTGOING_CALLS` - Allows the application to see the number being dialed during an outgoing call with the option to redirect the call to a different number or abort the call altogether(Citation: Android Permissions)\n* `MANAGE_OWN_CALLS` - Allows a calling application which manages its own calls through the self-managed `ConnectionService` APIs(Citation: Android Permissions)\n* `BIND_TELECOM_CONNECTION_SERVICE` - Required permission when using a `ConnectionService`(Citation: Android Permissions)\n* `WRITE_CALL_LOG` - Allows an application to write to the device call log, potentially to hide malicious phone calls(Citation: Android Permissions)\n\nWhen granted some of these permissions, an application can make a phone call without opening the dialer first. However, if an application desires to simply redirect the user to the dialer with a phone number filled in, it can launch an Intent using `Intent.ACTION_DIAL`, which requires no specific permissions. This then requires the user to explicitly initiate the call or use some form of [Input Injection](https://attack.mitre.org/techniques/T1516) to programmatically initiate it.",
+            "id": "attack-pattern--351ddf79-2d3a-41b4-9bef-82ea5d3ccd69",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-mobile-attack",
+                    "phase_name": "collection"
+                },
+                {
+                    "kill_chain_name": "mitre-mobile-attack",
+                    "phase_name": "impact"
+                },
+                {
+                    "kill_chain_name": "mitre-mobile-attack",
+                    "phase_name": "command-and-control"
+                }
+            ],
+            "modified": "2021-09-27T18:05:42.788Z",
+            "created": "2021-09-20T13:42:20.824Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_tactic_type": [
+                "Post-Adversary Device Access"
+            ],
+            "x_mitre_detection": "Users can view their default phone app in device settings. Users can review available call logs for irregularities, such as missing or unrecognized calls.",
+            "x_mitre_contributors": [
+                "Gaetan van Diemen, ThreatFabric"
+            ],
+            "x_mitre_platforms": [
+                "Android"
+            ]
         },
         {
             "id": "attack-pattern--6683aa0c-d98a-4f5b-ac57-ca7e9934a760",
@@ -1969,7 +2039,7 @@
             "id": "attack-pattern--fb3fa94a-3aee-4ab0-b7e7-abdf0a51286d",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Exploit SS7 to Redirect Phone Calls/SMS",
-            "description": "An adversary could exploit signaling system vulnerabilities to redirect calls or text messages (SMS) to a phone number under the attacker's control. The adversary could then act as a man-in-the-middle to intercept or manipulate the communication. (Citation: Engel-SS7) (Citation: Engel-SS7-2008) (Citation: 3GPP-Security) (Citation: Positive-SS7) (Citation: CSRIC5-WG10-FinalReport) Interception of SMS messages could enable adversaries to obtain authentication codes used for multi-factor authentication(Citation: TheRegister-SS7).",
+            "description": "An adversary could exploit signaling system vulnerabilities to redirect calls or text messages (SMS) to a phone number under the attacker's control. The adversary could then act as an adversary-in-the-middle to intercept or manipulate the communication. (Citation: Engel-SS7) (Citation: Engel-SS7-2008) (Citation: 3GPP-Security) (Citation: Positive-SS7) (Citation: CSRIC5-WG10-FinalReport) Interception of SMS messages could enable adversaries to obtain authentication codes used for multi-factor authentication(Citation: TheRegister-SS7).",
             "external_references": [
                 {
                     "source_name": "mitre-mobile-attack",
@@ -2022,18 +2092,19 @@
                     "phase_name": "network-effects"
                 }
             ],
-            "modified": "2019-02-03T16:28:52.821Z",
+            "modified": "2021-07-28T18:43:50.490Z",
             "created": "2017-10-25T14:48:06.524Z",
-            "x_mitre_detection": "Network carriers may be able to use firewalls, Intrusion Detection Systems (IDS), or Intrusion Prevention Systems (IPS) to detect and/or block SS7 exploitation as described by the Communications, Security, Reliability, and Interoperability Council (CSRIC). (Citation: CSRIC5-WG10-FinalReport) The CSRIC also suggests threat information sharing between telecommunications industry members.",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_old_attack_id": "MOB-T1052",
+            "x_mitre_version": "1.2",
+            "x_mitre_tactic_type": [
+                "Without Adversary Device Access"
+            ],
             "x_mitre_platforms": [
                 "Android",
                 "iOS"
             ],
-            "x_mitre_tactic_type": [
-                "Without Adversary Device Access"
-            ],
-            "x_mitre_version": "1.1",
-            "x_mitre_old_attack_id": "MOB-T1052"
+            "x_mitre_detection": "Network carriers may be able to use firewalls, Intrusion Detection Systems (IDS), or Intrusion Prevention Systems (IPS) to detect and/or block SS7 exploitation as described by the Communications, Security, Reliability, and Interoperability Council (CSRIC). (Citation: CSRIC5-WG10-FinalReport) The CSRIC also suggests threat information sharing between telecommunications industry members."
         },
         {
             "id": "attack-pattern--52651225-0b3a-482d-aa7e-10618fd063b5",
@@ -2486,6 +2557,43 @@
             "x_mitre_platforms": [
                 "Android",
                 "iOS"
+            ]
+        },
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-mobile-attack",
+                    "external_id": "T1617",
+                    "url": "https://attack.mitre.org/techniques/T1617"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Hooking",
+            "description": "Adversaries may utilize hooking to hide the presence of artifacts associated with their behaviors to evade detection. Hooking can be used to modify return values or data structures of system APIs and function calls. This process typically involves using 3rd party root frameworks, such as Xposed or Magisk, with either a system exploit or pre-existing root access. By including custom modules for root frameworks, adversaries can hook system APIs and alter the return value and/or system data structures to alter functionality/visibility of various aspects of the system.",
+            "id": "attack-pattern--ccde43e4-78f9-4f32-b401-c081e7db71ea",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-mobile-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2021-10-04T20:08:47.559Z",
+            "created": "2021-09-24T14:47:34.182Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_tactic_type": [
+                "Post-Adversary Device Access"
+            ],
+            "x_mitre_detection": "Hooking can be difficult to detect, and therefore enterprises may be better served focusing on detection at other stages of adversarial behavior.",
+            "x_mitre_contributors": [
+                "J\u00f6rg Abraham, EclecticIQ"
+            ],
+            "x_mitre_platforms": [
+                "Android"
             ]
         },
         {
@@ -3098,7 +3206,7 @@
             "id": "attack-pattern--d731c21e-f27d-4756-b418-0e2aaabd6d63",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Manipulate Device Communication",
-            "description": "If network traffic between the mobile device and a remote server is not securely protected, then an attacker positioned on the network may be able to manipulate network communication without being detected. For example, FireEye researchers found in 2014 that 68% of the top 1,000 free applications in the Google Play Store had at least one Transport Layer Security (TLS) implementation vulnerability potentially opening the applications' network traffic to man-in-the-middle attacks (Citation: FireEye-SSL).",
+            "description": "If network traffic between the mobile device and a remote server is not securely protected, then an attacker positioned on the network may be able to manipulate network communication without being detected. For example, FireEye researchers found in 2014 that 68% of the top 1,000 free applications in the Google Play Store had at least one Transport Layer Security (TLS) implementation vulnerability potentially opening the applications' network traffic to adversary-in-the-middle attacks (Citation: FireEye-SSL).",
             "external_references": [
                 {
                     "source_name": "mitre-mobile-attack",
@@ -3119,15 +3227,6 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_platforms": [
-                "Android",
-                "iOS"
-            ],
-            "x_mitre_tactic_type": [
-                "Without Adversary Device Access"
-            ],
-            "x_mitre_version": "1.0",
-            "x_mitre_old_attack_id": "MOB-T1066",
             "type": "attack-pattern",
             "kill_chain_phases": [
                 {
@@ -3135,8 +3234,18 @@
                     "phase_name": "network-effects"
                 }
             ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "created": "2017-10-25T14:48:25.322Z"
+            "modified": "2021-07-28T18:45:08.382Z",
+            "created": "2017-10-25T14:48:25.322Z",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_old_attack_id": "MOB-T1066",
+            "x_mitre_version": "1.1",
+            "x_mitre_tactic_type": [
+                "Without Adversary Device Access"
+            ],
+            "x_mitre_platforms": [
+                "Android",
+                "iOS"
+            ]
         },
         {
             "id": "attack-pattern--a93ccb8f-3996-42e2-b7c7-bb599d4e205f",
@@ -4008,7 +4117,7 @@
             "id": "attack-pattern--a64a820a-cb21-471f-920c-506a2ff04fa5",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "SIM Card Swap",
-            "description": "An adversary could convince the mobile network operator (e.g. through social networking, forged identification, or insider attacks performed by trusted employees) to issue a new SIM card and associate it with an existing phone number and account (Citation: NYGov-Simswap) (Citation: Motherboard-Simswap2). The adversary could then obtain SMS messages or hijack phone calls intended for someone else (Citation: Betanews-Simswap). \n\nOne use case is intercepting authentication messages or phone calls to obtain illicit access to online banking or other online accounts, as many online services allow account password resets by sending an authentication code over SMS to a phone number associated with the account (Citation: Guardian-Simswap) (Citation: Motherboard-Simswap1)(Citation: Krebs-SimSwap)(Citation: TechCrunch-SimSwap).",
+            "description": "An adversary could convince the mobile network operator (e.g. through social networking, forged identification, or insider attacks performed by trusted employees) to issue a new SIM card and associate it with an existing phone number and account.(Citation: NYGov-Simswap)(Citation: Motherboard-Simswap2) The adversary could then obtain SMS messages or hijack phone calls intended for someone else.(Citation: Betanews-Simswap)\n\nOne use case is intercepting authentication messages or phone calls to obtain illicit access to online banking or other online accounts, as many online services allow account password resets by sending an authentication code over SMS to a phone number associated with the account.(Citation: Guardian-Simswap)(Citation: Motherboard-Simswap1)(Citation: Krebs-SimSwap)(Citation: TechCrunch-SimSwap)",
             "external_references": [
                 {
                     "source_name": "mitre-mobile-attack",
@@ -4066,17 +4175,21 @@
                     "phase_name": "network-effects"
                 }
             ],
-            "modified": "2019-02-03T14:13:24.168Z",
+            "modified": "2021-09-30T18:45:26.323Z",
             "created": "2017-10-25T14:48:20.329Z",
-            "x_mitre_platforms": [
-                "Android",
-                "iOS"
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_contributors": [
+                "Karim Hasanen, @_karimhasanen"
             ],
+            "x_mitre_old_attack_id": "MOB-T1054",
+            "x_mitre_version": "1.2",
             "x_mitre_tactic_type": [
                 "Without Adversary Device Access"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_old_attack_id": "MOB-T1054"
+            "x_mitre_platforms": [
+                "Android",
+                "iOS"
+            ]
         },
         {
             "external_references": [
@@ -4736,6 +4849,40 @@
             "x_mitre_tactic_type": [
                 "Post-Adversary Device Access"
             ],
+            "x_mitre_platforms": [
+                "Android"
+            ]
+        },
+        {
+            "external_references": [
+                {
+                    "source_name": "mitre-mobile-attack",
+                    "external_id": "T1618",
+                    "url": "https://attack.mitre.org/techniques/T1618"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "User Evasion",
+            "description": "Adversaries may attempt to avoid detection by hiding malicious behavior from the user. By doing this, an adversary\u2019s modifications would most likely remain installed on the device for longer, allowing the adversary to continue to operate on that device. \n\nWhile there are many ways this can be accomplished, one method is by using the device\u2019s sensors. By utilizing the various motion sensors on a device, such as accelerometer or gyroscope, an application could detect that the device is being interacted with. That way, the application could continue to run while the device is not in use but cease operating while the user is using the device, hiding anything that would indicate malicious activity was ongoing. Accessing the sensors in this way does not require any permissions from the user, so it would be completely transparent.",
+            "id": "attack-pattern--2f0e8d80-4b8b-4f4a-b5cc-132afe7e057d",
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-mobile-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2021-10-12T18:13:25.586Z",
+            "created": "2021-09-30T18:18:52.285Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_tactic_type": [
+                "Post-Adversary Device Access"
+            ],
+            "x_mitre_detection": "Mobile security products may be able to detect some forms of user evasion. Otherwise, the act of hiding malicious activity could be difficult to detect, and therefore enterprises may be better served focusing on detection at other stages of adversarial behavior.",
             "x_mitre_platforms": [
                 "Android"
             ]
@@ -8189,12 +8336,12 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "type": "relationship",
-            "modified": "2019-02-03T16:28:53.048Z",
-            "created": "2017-10-25T14:48:53.733Z",
             "source_ref": "course-of-action--e829ee51-1caf-4665-ba15-7f8979634124",
             "relationship_type": "mitigates",
-            "target_ref": "attack-pattern--fb3fa94a-3aee-4ab0-b7e7-abdf0a51286d"
+            "target_ref": "attack-pattern--fb3fa94a-3aee-4ab0-b7e7-abdf0a51286d",
+            "type": "relationship",
+            "modified": "2021-07-28T18:43:50.746Z",
+            "created": "2017-10-25T14:48:53.733Z"
         },
         {
             "id": "relationship--2bedbf86-2ef0-45bf-950d-b9d072c03bdc",
@@ -11111,11 +11258,11 @@
                     "source_name": "Lookout-Monokle"
                 }
             ],
-            "description": "[Monokle](https://attack.mitre.org/software/S0407) can be controlled via email and SMS/phone call from a set of \"control phones.\"(Citation: Lookout-Monokle)",
+            "description": "[Monokle](https://attack.mitre.org/software/S0407) can be controlled via email and SMS from a set of \"control phones.\"(Citation: Lookout-Monokle)",
             "relationship_type": "uses",
             "id": "relationship--069b2328-442b-491e-962d-d3fe01f0549e",
             "type": "relationship",
-            "modified": "2019-10-14T17:51:37.983Z",
+            "modified": "2021-09-20T13:59:00.839Z",
             "created": "2019-09-04T14:28:15.479Z"
         },
         {
@@ -13025,7 +13172,7 @@
             "relationship_type": "mitigates",
             "id": "relationship--d625bbc3-317c-4f94-a1b6-d51d03d20109",
             "type": "relationship",
-            "modified": "2019-10-18T15:11:37.280Z",
+            "modified": "2021-07-28T18:45:08.600Z",
             "created": "2019-10-18T15:11:37.280Z"
         },
         {
@@ -14522,11 +14669,11 @@
                     "description": "M. Feller. (2020, February 5). Infostealer, Keylogger, and Ransomware in One: Anubis Targets More than 250 Android Applications. Retrieved April 8, 2020."
                 }
             ],
-            "description": "[Anubis](https://attack.mitre.org/software/S0422) can record phone calls and audio, and can make phone calls.(Citation: Cofense Anubis)",
+            "description": "[Anubis](https://attack.mitre.org/software/S0422) can record phone calls and audio.(Citation: Cofense Anubis)",
             "relationship_type": "uses",
             "id": "relationship--e7af5be1-721f-40c5-b647-659243a0a14b",
             "type": "relationship",
-            "modified": "2020-04-08T15:41:19.321Z",
+            "modified": "2021-09-20T13:50:02.057Z",
             "created": "2020-04-08T15:41:19.321Z"
         },
         {
@@ -21345,11 +21492,11 @@
                     "description": "A. Kumar, K. Del Rosso, J. Albrecht, C. Hebeisen. (2020, June 1). Mobile APT Surveillance Campaigns Targeting Uyghurs - A collection of long-running Android tooling connected to a Chinese mAPT actor. Retrieved November 10, 2020."
                 }
             ],
-            "description": "[CarbonSteal](https://attack.mitre.org/software/S0529) can remotely capture device audio, as well as silently accept an incoming phone call.(Citation: Lookout Uyghur Campaign)",
+            "description": "[CarbonSteal](https://attack.mitre.org/software/S0529) can remotely capture device audio.(Citation: Lookout Uyghur Campaign)",
             "relationship_type": "uses",
             "id": "relationship--b4735277-516a-4cd2-9607-a3e415945d93",
             "type": "relationship",
-            "modified": "2020-11-10T17:08:35.800Z",
+            "modified": "2021-09-20T13:54:20.494Z",
             "created": "2020-11-10T17:08:35.800Z"
         },
         {
@@ -25197,16 +25344,16 @@
             "target_ref": "attack-pattern--8197f026-64da-4700-93b9-b55ba55f3b31",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has region-locked their malicious applications during their Operation BULL campaign.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has region-locked their malicious applications during their Operation BULL campaign.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--fd8a4b6d-0e7b-4105-ad7b-576836be6394",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.639Z",
+            "modified": "2021-05-24T13:16:56.406Z",
             "created": "2021-02-08T16:36:20.639Z"
         },
         {
@@ -25218,16 +25365,16 @@
             "target_ref": "attack-pattern--786f488c-cb1f-4602-89c5-86d982ee326b",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has deployed anti-analysis capabilities during their Operation BULL campaign.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has deployed anti-analysis capabilities during their Operation BULL campaign.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--2e7f8995-93ae-41bb-9baf-53178341d93e",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.630Z",
+            "modified": "2021-05-24T13:16:56.403Z",
             "created": "2021-02-08T16:36:20.630Z"
         },
         {
@@ -25239,16 +25386,16 @@
             "target_ref": "attack-pattern--d9db3d46-66ca-44b4-9daa-1ef97cb7465a",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has distributed malicious apps via the Google Play Store and Apple App Store.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has distributed malicious apps via the Google Play Store and Apple App Store.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--c16d8700-dadb-47df-8e17-2716a46ed663",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.623Z",
+            "modified": "2021-05-24T13:16:56.413Z",
             "created": "2021-02-08T16:36:20.623Z"
         },
         {
@@ -25260,16 +25407,16 @@
             "target_ref": "attack-pattern--6683aa0c-d98a-4f5b-ac57-ca7e9934a760",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included phone call and audio recording capabilities in the malicious apps deployed as part of Operation BULL and Operation ROCK.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included phone call and audio recording capabilities in the malicious apps deployed as part of Operation BULL and Operation ROCK.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--3fcd2177-2030-4781-bd19-8b9fa8c6e645",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.655Z",
+            "modified": "2021-05-24T13:16:56.410Z",
             "created": "2021-02-08T16:36:20.655Z"
         },
         {
@@ -25281,16 +25428,16 @@
             "target_ref": "attack-pattern--e2ea7f6b-8d4f-49c3-819d-660530d12b77",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included system information enumeration in the malicious apps deployed as part of Operation BULL and Operation ROCK.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included system information enumeration in the malicious apps deployed as part of Operation BULL and Operation ROCK.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--6ca3e3d9-2db9-4bed-98a0-417ff1e6a78e",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.692Z",
+            "modified": "2021-05-24T13:16:56.443Z",
             "created": "2021-02-08T16:36:20.692Z"
         },
         {
@@ -25302,16 +25449,16 @@
             "target_ref": "attack-pattern--99e6295e-741b-4857-b6e5-64989eb039b4",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included location tracking capabilities in the malicious apps deployed as part of Operation BULL and Operation ROCK.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included location tracking capabilities in the malicious apps deployed as part of Operation BULL and Operation ROCK.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--b5590b50-0aaa-4f43-9b29-f17ee717b551",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.698Z",
+            "modified": "2021-05-24T13:16:56.412Z",
             "created": "2021-02-08T16:36:20.698Z"
         },
         {
@@ -25323,16 +25470,16 @@
             "target_ref": "attack-pattern--ed2c05a1-4f81-4d97-9e1b-aff01c34ae84",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has encrypted C2 communications using AES in CBC mode during Operation BULL and Operation ROCK.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has encrypted C2 communications using AES in CBC mode during Operation BULL and Operation ROCK.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--eef4ffb7-892d-4d3f-826c-0b78d1f22671",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.709Z",
+            "modified": "2021-05-24T13:16:56.408Z",
             "created": "2021-02-08T16:36:20.709Z"
         },
         {
@@ -25344,16 +25491,16 @@
             "target_ref": "attack-pattern--cf28ca46-1fd3-46b4-b1f6-ec0b72361848",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included file enumeration in the malicious apps deployed as part of Operation BULL and Operation ROCK.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included file enumeration in the malicious apps deployed as part of Operation BULL and Operation ROCK.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--383e5b12-061e-45c6-911b-b37187dd9254",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.701Z",
+            "modified": "2021-05-24T13:16:56.399Z",
             "created": "2021-02-08T16:36:20.701Z"
         },
         {
@@ -25365,16 +25512,16 @@
             "target_ref": "attack-pattern--cde2cb84-455e-410c-8aa9-086f2788bcd2",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has installed malicious MDM profiles on iOS devices as part of Operation ROCK.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has installed malicious MDM profiles on iOS devices as part of Operation ROCK.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--b49ecb71-92b3-4813-be4d-9f8c2aa67ccd",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.707Z",
+            "modified": "2021-05-24T13:16:56.474Z",
             "created": "2021-02-08T16:36:20.707Z"
         },
         {
@@ -25386,16 +25533,16 @@
             "target_ref": "attack-pattern--e8b4e1ec-8e3b-484c-9038-4459b1ed8060",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included SMS message exfiltration in the malicious apps deployed as part of Operation BULL and Operation ROCK.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included SMS message exfiltration in the malicious apps deployed as part of Operation BULL and Operation ROCK.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--90d58c65-acb9-4d7b-89b9-f4b35593c861",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.711Z",
+            "modified": "2021-05-24T13:16:56.502Z",
             "created": "2021-02-08T16:36:20.711Z"
         },
         {
@@ -25407,16 +25554,16 @@
             "target_ref": "attack-pattern--53263a67-075e-48fa-974b-91c5b5445db7",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has distributed malicious apps via their own websites during Operation BULL.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has distributed malicious apps via their own websites during Operation BULL.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--d8ee0bd2-3f05-4fc0-854b-63ee92a293ca",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.772Z",
+            "modified": "2021-05-24T13:16:56.472Z",
             "created": "2021-02-08T16:36:20.772Z"
         },
         {
@@ -25428,16 +25575,16 @@
             "target_ref": "attack-pattern--d13fa042-8f26-44e1-a2a8-af0bf8e2ac9a",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has encrypted application strings using AES in ECB mode and Blowfish, and stored strings encoded in hex during Operation BULL. Further, in Operation BULL, encryption keys were stored within the application\u2019s launcher icon file.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has encrypted application strings using AES in ECB mode and Blowfish, and stored strings encoded in hex during Operation BULL. Further, in Operation BULL, encryption keys were stored within the application\u2019s launcher icon file.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--cc4ae06f-0258-4fe9-b63a-334d283e766d",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.774Z",
+            "modified": "2021-05-24T13:16:56.495Z",
             "created": "2021-02-08T16:36:20.774Z"
         },
         {
@@ -25449,16 +25596,16 @@
             "target_ref": "attack-pattern--4e6620ac-c30c-4f6d-918e-fa20cae7c1ce",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included contact list exfiltration in the malicious apps deployed as part of Operation BULL.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included contact list exfiltration in the malicious apps deployed as part of Operation BULL.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--1822e616-ae33-487c-8aa6-4fa81e724184",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.785Z",
+            "modified": "2021-05-24T13:16:56.517Z",
             "created": "2021-02-08T16:36:20.785Z"
         },
         {
@@ -25470,16 +25617,16 @@
             "target_ref": "attack-pattern--a8c31121-852b-46bd-9ba4-674ae5afe7ad",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included keylogging capabilities as part of Operation ROCK.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included keylogging capabilities as part of Operation ROCK.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--9858ae0b-140b-4dd2-8ba9-1ef22183dec3",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.788Z",
+            "modified": "2021-05-24T13:16:56.498Z",
             "created": "2021-02-08T16:36:20.788Z"
         },
         {
@@ -25491,16 +25638,16 @@
             "target_ref": "attack-pattern--6c49d50f-494d-4150-b774-a655022d20a6",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included malware functionality capable of downloading new DEX files at runtime during Operation BULL.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included malware functionality capable of downloading new DEX files at runtime during Operation BULL.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--ffc82546-f4da-4f47-88ec-b215edb1d695",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.799Z",
+            "modified": "2021-05-24T13:16:56.589Z",
             "created": "2021-02-08T16:36:20.799Z"
         },
         {
@@ -25512,16 +25659,16 @@
             "target_ref": "attack-pattern--d8940e76-f9c1-4912-bea6-e21c251370b6",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included video recording in the malicious apps deployed as part of Operation BULL.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has included video recording in the malicious apps deployed as part of Operation BULL.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--4bdda427-2fff-428d-ba19-4bee5d2508e1",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.801Z",
+            "modified": "2021-05-24T13:16:56.571Z",
             "created": "2021-02-08T16:36:20.801Z"
         },
         {
@@ -25533,16 +25680,16 @@
             "target_ref": "attack-pattern--e1c912a9-e305-434b-9172-8a6ce3ec9c4a",
             "external_references": [
                 {
-                    "source_name": "Blackberry Bahamut",
+                    "source_name": "BlackBerry Bahamut",
                     "url": "https://www.blackberry.com/us/en/pdfviewer?file=/content/dam/blackberry-com/asset/enterprise/pdf/direct/report-spark-bahamut.pdf",
-                    "description": "The Blackberry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
+                    "description": "The BlackBerry Research & Intelligence Team. (2020, October). BAHAMUT: Hack-for-Hire Masters of Phishing, Fake News, and Fake Apps. Retrieved February 8, 2021."
                 }
             ],
-            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has exfiltrated local account data and calendar information as part of Operation ROCK.(Citation: Blackberry Bahamut)",
+            "description": "[Windshift](https://attack.mitre.org/groups/G0112) has exfiltrated local account data and calendar information as part of Operation ROCK.(Citation: BlackBerry Bahamut)",
             "relationship_type": "uses",
             "id": "relationship--429a4b02-f774-4b1e-aaef-5fd9c654dd09",
             "type": "relationship",
-            "modified": "2021-02-08T16:36:20.846Z",
+            "modified": "2021-05-24T13:16:56.596Z",
             "created": "2021-02-08T16:36:20.846Z"
         },
         {
@@ -25924,6 +26071,559 @@
             "created": "2021-04-26T15:33:55.905Z"
         },
         {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "course-of-action--1553b156-6767-47f7-9eb4-2a692505666d",
+            "target_ref": "attack-pattern--351ddf79-2d3a-41b4-9bef-82ea5d3ccd69",
+            "relationship_type": "mitigates",
+            "description": "Application vetting services could provide further scrutiny to applications that request permissions related to phone calls.",
+            "id": "relationship--7e030fba-c123-4515-bc4f-482ea0947e2c",
+            "type": "relationship",
+            "modified": "2021-09-27T18:05:43.110Z",
+            "created": "2021-09-20T13:42:21.096Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "course-of-action--653492e3-27be-4a0e-b08c-938dd2b7e0e1",
+            "target_ref": "attack-pattern--351ddf79-2d3a-41b4-9bef-82ea5d3ccd69",
+            "relationship_type": "mitigates",
+            "description": "Users should be encouraged to be very careful with what applications they grant phone call-based permissions to. Further, users should not change their default call handler to applications they do not recognize.",
+            "id": "relationship--afba6b19-7486-4e5a-8fda-e91852b0b354",
+            "type": "relationship",
+            "modified": "2021-09-27T18:05:43.107Z",
+            "created": "2021-09-20T13:42:21.104Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--a3c59d82-2c7c-44e5-a869-68e0a3e5935e",
+            "target_ref": "attack-pattern--351ddf79-2d3a-41b4-9bef-82ea5d3ccd69",
+            "external_references": [
+                {
+                    "source_name": "Cofense Anubis",
+                    "url": "https://cofense.com/infostealer-keylogger-ransomware-one-anubis-targets-250-android-applications/",
+                    "description": "M. Feller. (2020, February 5). Infostealer, Keylogger, and Ransomware in One: Anubis Targets More than 250 Android Applications. Retrieved April 8, 2020."
+                }
+            ],
+            "description": "[Anubis](https://attack.mitre.org/software/S0422) can make phone calls.(Citation: Cofense Anubis)",
+            "relationship_type": "uses",
+            "id": "relationship--6935752c-e400-4dfa-863f-1d44a8f6dd50",
+            "type": "relationship",
+            "modified": "2021-09-20T13:50:02.036Z",
+            "created": "2021-09-20T13:50:02.036Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--007ebf84-4e14-44c7-a5aa-151d5de85320",
+            "target_ref": "attack-pattern--351ddf79-2d3a-41b4-9bef-82ea5d3ccd69",
+            "external_references": [
+                {
+                    "source_name": "Lookout Uyghur Campaign",
+                    "url": "https://www.lookout.com/documents/threat-reports/us/lookout-uyghur-malware-tr-us.pdf",
+                    "description": "A. Kumar, K. Del Rosso, J. Albrecht, C. Hebeisen. (2020, June 1). Mobile APT Surveillance Campaigns Targeting Uyghurs - A collection of long-running Android tooling connected to a Chinese mAPT actor. Retrieved November 10, 2020."
+                }
+            ],
+            "description": "[CarbonSteal](https://attack.mitre.org/software/S0529) can silently accept an incoming phone call.(Citation: Lookout Uyghur Campaign)",
+            "relationship_type": "uses",
+            "id": "relationship--684c17bb-2075-4e1f-9fcb-17408511222d",
+            "type": "relationship",
+            "modified": "2021-09-20T13:54:19.957Z",
+            "created": "2021-09-20T13:54:19.957Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--6a7aaab1-3e0a-48bb-ba66-bbf7665c0a65",
+            "target_ref": "attack-pattern--351ddf79-2d3a-41b4-9bef-82ea5d3ccd69",
+            "external_references": [
+                {
+                    "description": "Bauer A., Kumar A., Hebeisen C., et al. (2019, July). Monokle: The Mobile Surveillance Tooling of the Special Technology Center. Retrieved September 4, 2019.",
+                    "url": "https://www.lookout.com/documents/threat-reports/lookout-discovers-monokle-threat-report.pdf",
+                    "source_name": "Lookout-Monokle"
+                }
+            ],
+            "description": "[Monokle](https://attack.mitre.org/software/S0407) can be controlled via phone call from a set of \"control phones.\"(Citation: Lookout-Monokle)",
+            "relationship_type": "uses",
+            "id": "relationship--716f68ee-1e77-4254-8f67-d8f3c71db678",
+            "type": "relationship",
+            "modified": "2021-09-20T13:59:00.498Z",
+            "created": "2021-09-20T13:59:00.498Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "course-of-action--653492e3-27be-4a0e-b08c-938dd2b7e0e1",
+            "target_ref": "attack-pattern--a64a820a-cb21-471f-920c-506a2ff04fa5",
+            "relationship_type": "mitigates",
+            "description": "Users should be instructed to use forms of multifactor authentication not subject to being intercepted by a SIM card swap, where possible. More secure methods include application-based one-time passcodes (such as Google Authenticator), hardware tokens, and biometrics.",
+            "id": "relationship--b8afc5b9-3ffc-4b3c-b2d8-ee2888a7b6ad",
+            "type": "relationship",
+            "modified": "2021-09-30T18:45:26.853Z",
+            "created": "2021-09-24T13:59:11.505Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "course-of-action--ff4821f6-5afb-481b-8c0f-26c28c0d666c",
+            "target_ref": "attack-pattern--ccde43e4-78f9-4f32-b401-c081e7db71ea",
+            "relationship_type": "mitigates",
+            "description": "Device attestation can often detect rooted devices.",
+            "id": "relationship--290c9d3f-f59b-4e2b-9b7b-115014845c15",
+            "type": "relationship",
+            "modified": "2021-10-04T20:08:48.439Z",
+            "created": "2021-09-24T14:47:34.447Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "course-of-action--1553b156-6767-47f7-9eb4-2a692505666d",
+            "target_ref": "attack-pattern--ccde43e4-78f9-4f32-b401-c081e7db71ea",
+            "relationship_type": "mitigates",
+            "description": "Application vetting services could look for attempts to invoke the superuser (su) binary or modules related to rooting frameworks.",
+            "id": "relationship--c2f436e1-cdd7-4d5c-ae62-9aaa31e47b10",
+            "type": "relationship",
+            "modified": "2021-10-04T20:08:48.537Z",
+            "created": "2021-09-24T14:47:34.459Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "course-of-action--cf2cccb1-cab8-431a-8ecf-f7874d05f433",
+            "target_ref": "attack-pattern--ccde43e4-78f9-4f32-b401-c081e7db71ea",
+            "relationship_type": "mitigates",
+            "description": "Mobile security products can often detect rooted devices.",
+            "id": "relationship--bee919a6-c488-49a0-9848-fff19aa2c276",
+            "type": "relationship",
+            "modified": "2021-10-04T20:08:48.556Z",
+            "created": "2021-09-24T14:47:34.449Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--6a7aaab1-3e0a-48bb-ba66-bbf7665c0a65",
+            "target_ref": "attack-pattern--ccde43e4-78f9-4f32-b401-c081e7db71ea",
+            "external_references": [
+                {
+                    "description": "Bauer A., Kumar A., Hebeisen C., et al. (2019, July). Monokle: The Mobile Surveillance Tooling of the Special Technology Center. Retrieved September 4, 2019.",
+                    "url": "https://www.lookout.com/documents/threat-reports/lookout-discovers-monokle-threat-report.pdf",
+                    "source_name": "Lookout-Monokle"
+                }
+            ],
+            "description": " [Monokle](https://attack.mitre.org/software/S0407) can hook itself to appear invisible to the Process Manager.(Citation: Lookout-Monokle) ",
+            "relationship_type": "uses",
+            "id": "relationship--5d2a3a9f-2467-4ac6-ab64-ffe91ec584da",
+            "type": "relationship",
+            "modified": "2021-09-24T14:52:41.308Z",
+            "created": "2021-09-24T14:52:41.308Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "course-of-action--1553b156-6767-47f7-9eb4-2a692505666d",
+            "target_ref": "attack-pattern--2f0e8d80-4b8b-4f4a-b5cc-132afe7e057d",
+            "relationship_type": "mitigates",
+            "description": "Application vetting services could look for usage of the `SensorManager` class, indicating that the application is attempting to access device sensors.",
+            "id": "relationship--60e02651-278f-4f84-9dbc-cbbadaa18086",
+            "type": "relationship",
+            "modified": "2021-10-12T18:13:25.753Z",
+            "created": "2021-09-30T18:18:52.623Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "course-of-action--cf2cccb1-cab8-431a-8ecf-f7874d05f433",
+            "target_ref": "attack-pattern--2f0e8d80-4b8b-4f4a-b5cc-132afe7e057d",
+            "relationship_type": "mitigates",
+            "description": "Mobile security products that are part of the Samsung Knox for Mobile Threat Defense program could examine running applications while the device is idle, potentially detecting malicious applications that are running primarily when the device is not being used.",
+            "id": "relationship--0fa68550-d0de-405b-acb3-b6a4b219753e",
+            "type": "relationship",
+            "modified": "2021-10-12T18:13:25.784Z",
+            "created": "2021-09-30T18:18:52.628Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--b327a9c0-e709-495c-aa6e-00b042136e2b",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can send an SMS message after the device boots, messages containing logs, messages to adversary-specified numbers with custom content, and can delete all SMS messages on the device.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--c8559423-10b0-4d5e-9057-65cbfd7ee1c0",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:48.728Z",
+            "created": "2021-10-01T14:42:48.728Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--e1c912a9-e305-434b-9172-8a6ce3ec9c4a",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can collect images stored on the device and browser history.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--16955c8e-65ab-4c9a-a8b1-bec4d5a45f8d",
+            "type": "relationship",
+            "modified": "2021-10-12T13:51:41.045Z",
+            "created": "2021-10-01T14:42:48.740Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--6683aa0c-d98a-4f5b-ac57-ca7e9934a760",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can record audio.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--4f6f4def-e76d-4d1b-9416-b6543e7dbc54",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:48.744Z",
+            "created": "2021-10-01T14:42:48.744Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--d8940e76-f9c1-4912-bea6-e21c251370b6",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can record from the device\u2019s camera.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--991ef2f2-c196-4d5d-bd29-504ea25831f4",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:48.815Z",
+            "created": "2021-10-01T14:42:48.815Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--351ddf79-2d3a-41b4-9bef-82ea5d3ccd69",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can open a hidden menu when a specific phone number is called from the infected device.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--5b670281-0054-42b4-8e54-ea01a692f5bf",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:48.900Z",
+            "created": "2021-10-01T14:42:48.900Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--73c26732-6422-4081-8b63-6d0ae93d449e",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can use its keylogger module to take screenshots of the area of the screen that the user tapped.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--eca02e5c-f8de-4436-a7dd-0f656c759a42",
+            "type": "relationship",
+            "modified": "2021-10-06T15:32:46.477Z",
+            "created": "2021-10-01T14:42:48.913Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--e083305c-49e7-4c87-aae8-9689213bffbe",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can run shell commands.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--4aec0738-2c76-4dc7-af8a-87785e658193",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:49.152Z",
+            "created": "2021-10-01T14:42:49.152Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--b3c2e5de-0941-4b57-ba61-af029eb5517a",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can download text files with commands from an FTP server and exfiltrate data via email. It can also perform actions when one of two hardcoded magic SMS strings is received.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--d1318f71-7f70-4820-a3fc-0d05af038733",
+            "type": "relationship",
+            "modified": "2021-10-06T15:32:46.491Z",
+            "created": "2021-10-01T14:42:49.154Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--2f0e8d80-4b8b-4f4a-b5cc-132afe7e057d",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can utilize the device\u2019s sensors to determine when the device is in use and subsequently hide malicious activity. When active, it attempts to hide its malicious activity by turning the screen\u2019s brightness as low as possible and muting the device.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--c2536a3c-bb84-42b7-8ac6-05f26205a4ad",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:49.159Z",
+            "created": "2021-10-01T14:42:49.159Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--fd658820-cbba-4c95-8ac9-0fac6b1099e2",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can hide its icon.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--1f7428d7-6f6e-40d0-aedb-cb0578875ff9",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:49.170Z",
+            "created": "2021-10-01T14:42:49.170Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--c6a146ae-9c63-4606-97ff-e261e76e8380",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can be controlled via IRC using freenode.net servers.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--119b848b-84b4-4f86-a265-0c9eb8680072",
+            "type": "relationship",
+            "modified": "2021-10-14T15:38:53.226Z",
+            "created": "2021-10-01T14:42:49.171Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--e8b4e1ec-8e3b-484c-9038-4459b1ed8060",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can collect SMS messages.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--bb83ee25-8875-4806-9f69-ac39bf7cb402",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:49.178Z",
+            "created": "2021-10-01T14:42:49.178Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--6c49d50f-494d-4150-b774-a655022d20a6",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can download a payload or updates from either its C2 server or email attachments in the adversary\u2019s inbox.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--9e458d77-c856-4b02-82a7-50947b232dc3",
+            "type": "relationship",
+            "modified": "2021-10-06T15:32:46.533Z",
+            "created": "2021-10-01T14:42:49.183Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--c5089859-b21f-40a3-8be4-63e381b8b1c0",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can abuse existing root access to copy components into the system partition.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--02b5cb07-9eb5-4e47-a4df-9c3985ad70fc",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:49.174Z",
+            "created": "2021-10-01T14:42:49.174Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--a8c31121-852b-46bd-9ba4-674ae5afe7ad",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can collect every user screen tap and compare the input to a hardcoded list of coordinates to translate the input to a character.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--4b3cfd7c-5e41-4d9e-8879-b126ba66eaf1",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:49.176Z",
+            "created": "2021-10-01T14:42:49.176Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--702055ac-4e54-4ae9-9527-e23a38e0b160",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can collect data from messaging applications, including WhatsApp, Viber, and Facebook.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--fcc42341-ec3a-4e24-a374-46bed72d061f",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:49.191Z",
+            "created": "2021-10-01T14:42:49.191Z"
+        },
+        {
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "source_ref": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "target_ref": "attack-pattern--99e6295e-741b-4857-b6e5-64989eb039b4",
+            "external_references": [
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) can collect the device\u2019s location information based on cellular network or GPS coordinates.(Citation: SecureList BusyGasper)",
+            "relationship_type": "uses",
+            "id": "relationship--b45cf5e0-7427-4d5c-be2c-22f5231493d1",
+            "type": "relationship",
+            "modified": "2021-10-01T14:42:49.184Z",
+            "created": "2021-10-01T14:42:49.184Z"
+        },
+        {
             "id": "course-of-action--25dc1ce8-eb55-4333-ae30-a7cb4f5894a1",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Application Developer Guidance",
@@ -26223,7 +26923,7 @@
             "id": "intrusion-set--bef4c620-0787-42a8-a96d-b7eb6e85917c",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "APT28",
-            "description": "[APT28](https://attack.mitre.org/groups/G0007) is a threat group that has been attributed to Russia's General Staff Main Intelligence Directorate (GRU) 85th Main Special Service Center (GTsSS) military unit 26165.(Citation: NSA/FBI Drovorub August 2020) This group has been active since at least 2004.(Citation: DOJ GRU Indictment Jul 2018) (Citation: Ars Technica GRU indictment Jul 2018) (Citation: Crowdstrike DNC June 2016) (Citation: FireEye APT28) (Citation: SecureWorks TG-4127) (Citation: FireEye APT28 January 2017) (Citation: GRIZZLY STEPPE JAR) (Citation: Sofacy DealersChoice) (Citation: Palo Alto Sofacy 06-2018) (Citation: Symantec APT28 Oct 2018) (Citation: ESET Zebrocy May 2019)\n\n[APT28](https://attack.mitre.org/groups/G0007) reportedly compromised the Hillary Clinton campaign, the Democratic National Committee, and the Democratic Congressional Campaign Committee in 2016 in an attempt to interfere with the U.S. presidential election. (Citation: Crowdstrike DNC June 2016) In 2018, the US indicted five GRU Unit 26165 officers associated with [APT28](https://attack.mitre.org/groups/G0007) for cyber operations (including close-access operations) conducted between 2014 and 2018 against the World Anti-Doping Agency (WADA), the US Anti-Doping Agency, a US nuclear facility, the Organization for the Prohibition of Chemical Weapons (OPCW), the Spiez Swiss Chemicals Laboratory, and other organizations.(Citation: US District Court Indictment GRU Oct 2018) Some of these were conducted with the assistance of GRU Unit 74455, which is also referred to as [Sandworm Team](https://attack.mitre.org/groups/G0034). ",
+            "description": "[APT28](https://attack.mitre.org/groups/G0007) is a threat group that has been attributed to Russia's General Staff Main Intelligence Directorate (GRU) 85th Main Special Service Center (GTsSS) military unit 26165.(Citation: NSA/FBI Drovorub August 2020)(Citation: Cybersecurity Advisory GRU Brute Force Campaign July 2021) This group has been active since at least 2004.(Citation: DOJ GRU Indictment Jul 2018)(Citation: Ars Technica GRU indictment Jul 2018)(Citation: Crowdstrike DNC June 2016)(Citation: FireEye APT28)(Citation: SecureWorks TG-4127)(Citation: FireEye APT28 January 2017)(Citation: GRIZZLY STEPPE JAR)(Citation: Sofacy DealersChoice)(Citation: Palo Alto Sofacy 06-2018)(Citation: Symantec APT28 Oct 2018)(Citation: ESET Zebrocy May 2019)\n\n[APT28](https://attack.mitre.org/groups/G0007) reportedly compromised the Hillary Clinton campaign, the Democratic National Committee, and the Democratic Congressional Campaign Committee in 2016 in an attempt to interfere with the U.S. presidential election. (Citation: Crowdstrike DNC June 2016) In 2018, the US indicted five GRU Unit 26165 officers associated with [APT28](https://attack.mitre.org/groups/G0007) for cyber operations (including close-access operations) conducted between 2014 and 2018 against the World Anti-Doping Agency (WADA), the US Anti-Doping Agency, a US nuclear facility, the Organization for the Prohibition of Chemical Weapons (OPCW), the Spiez Swiss Chemicals Laboratory, and other organizations.(Citation: US District Court Indictment GRU Oct 2018) Some of these were conducted with the assistance of GRU Unit 74455, which is also referred to as [Sandworm Team](https://attack.mitre.org/groups/G0034). ",
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
@@ -26235,7 +26935,7 @@
                 },
                 {
                     "source_name": "APT28",
-                    "description": "(Citation: FireEye APT28) (Citation: SecureWorks TG-4127) (Citation: Crowdstrike DNC June 2016) (Citation: Kaspersky Sofacy) (Citation: ESET Sednit Part 3) (Citation: Ars Technica GRU indictment Jul 2018)(Citation: Talos Seduploader Oct 2017)(Citation: Symantec APT28 Oct 2018)(Citation: Securelist Sofacy Feb 2018)"
+                    "description": "(Citation: FireEye APT28) (Citation: SecureWorks TG-4127) (Citation: Crowdstrike DNC June 2016) (Citation: Kaspersky Sofacy) (Citation: ESET Sednit Part 3) (Citation: Ars Technica GRU indictment Jul 2018)(Citation: Talos Seduploader Oct 2017)(Citation: Symantec APT28 Oct 2018)(Citation: Securelist Sofacy Feb 2018)(Citation: Cybersecurity Advisory GRU Brute Force Campaign July 2021)"
                 },
                 {
                     "source_name": "SNAKEMACKEREL",
@@ -26251,23 +26951,23 @@
                 },
                 {
                     "source_name": "Sednit",
-                    "description": "This designation has been used in reporting both to refer to the threat group and its associated malware JHUHUGIT. (Citation: FireEye APT28 January 2017) (Citation: SecureWorks TG-4127) (Citation: Kaspersky Sofacy) (Citation: Ars Technica GRU indictment Jul 2018)"
+                    "description": "This designation has been used in reporting both to refer to the threat group and its associated malware JHUHUGIT.(Citation: FireEye APT28 January 2017)(Citation: SecureWorks TG-4127)(Citation: Kaspersky Sofacy)(Citation: Ars Technica GRU indictment Jul 2018)"
                 },
                 {
                     "source_name": "Sofacy",
-                    "description": "This designation has been used in reporting both to refer to the threat group and its associated malware. (Citation: FireEye APT28) (Citation: SecureWorks TG-4127) (Citation: Crowdstrike DNC June 2016) (Citation: ESET Sednit Part 3) (Citation: Ars Technica GRU indictment Jul 2018)(Citation: Talos Seduploader Oct 2017)"
+                    "description": "This designation has been used in reporting both to refer to the threat group and its associated malware.(Citation: FireEye APT28)(Citation: SecureWorks TG-4127)(Citation: Crowdstrike DNC June 2016)(Citation: ESET Sednit Part 3)(Citation: Ars Technica GRU indictment Jul 2018)(Citation: Talos Seduploader Oct 2017)"
                 },
                 {
                     "source_name": "Pawn Storm",
-                    "description": "(Citation: SecureWorks TG-4127) (Citation: ESET Sednit Part 3)(Citation: TrendMicro Pawn Storm Dec 2020) "
+                    "description": "(Citation: SecureWorks TG-4127)(Citation: ESET Sednit Part 3)(Citation: TrendMicro Pawn Storm Dec 2020) "
                 },
                 {
                     "source_name": "Fancy Bear",
-                    "description": "(Citation: Crowdstrike DNC June 2016) (Citation: Kaspersky Sofacy) (Citation: ESET Sednit Part 3) (Citation: Ars Technica GRU indictment Jul 2018)(Citation: Talos Seduploader Oct 2017)(Citation: Symantec APT28 Oct 2018)(Citation: Securelist Sofacy Feb 2018)"
+                    "description": "(Citation: Crowdstrike DNC June 2016)(Citation: Kaspersky Sofacy)(Citation: ESET Sednit Part 3)(Citation: Ars Technica GRU indictment Jul 2018)(Citation: Talos Seduploader Oct 2017)(Citation: Symantec APT28 Oct 2018)(Citation: Securelist Sofacy Feb 2018)(Citation: Cybersecurity Advisory GRU Brute Force Campaign July 2021)"
                 },
                 {
                     "source_name": "STRONTIUM",
-                    "description": "(Citation: Kaspersky Sofacy) (Citation: ESET Sednit Part 3) (Citation: Microsoft STRONTIUM Aug 2019) (Citation: Microsoft STRONTIUM New Patterns Cred Harvesting Sept 2020)(Citation: TrendMicro Pawn Storm Dec 2020) "
+                    "description": "(Citation: Kaspersky Sofacy)(Citation: ESET Sednit Part 3)(Citation: Microsoft STRONTIUM Aug 2019)(Citation: Microsoft STRONTIUM New Patterns Cred Harvesting Sept 2020)(Citation: TrendMicro Pawn Storm Dec 2020)(Citation: Cybersecurity Advisory GRU Brute Force Campaign July 2021)"
                 },
                 {
                     "source_name": "Tsar Team",
@@ -26285,6 +26985,11 @@
                     "source_name": "NSA/FBI Drovorub August 2020",
                     "url": "https://media.defense.gov/2020/Aug/13/2002476465/-1/-1/0/CSA_DROVORUB_RUSSIAN_GRU_MALWARE_AUG_2020.PDF",
                     "description": "NSA/FBI. (2020, August). Russian GRU 85th GTsSS Deploys Previously Undisclosed Drovorub Malware. Retrieved August 25, 2020."
+                },
+                {
+                    "source_name": "Cybersecurity Advisory GRU Brute Force Campaign July 2021",
+                    "url": "https://media.defense.gov/2021/Jul/01/2002753896/-1/-1/1/CSA_GRU_GLOBAL_BRUTE_FORCE_CAMPAIGN_UOO158036-21.PDF",
+                    "description": "NSA, CISA, FBI, NCSC. (2021, July). Russian GRU Conducting Global Brute Force Campaign to Compromise Enterprise and Cloud Environments. Retrieved July 26, 2021."
                 },
                 {
                     "source_name": "DOJ GRU Indictment Jul 2018",
@@ -26401,7 +27106,7 @@
                 "Threat Group-4127",
                 "TG-4127"
             ],
-            "modified": "2021-04-19T21:59:12.033Z",
+            "modified": "2021-10-18T20:34:03.233Z",
             "created": "2017-05-31T21:31:48.664Z",
             "x_mitre_contributors": [
                 "S\u00e9bastien Ruel, CGI",
@@ -26409,7 +27114,7 @@
                 "Emily Ratliff, IBM",
                 "Richard Gold, Digital Shadows"
             ],
-            "x_mitre_version": "3.1"
+            "x_mitre_version": "3.2"
         },
         {
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -26467,9 +27172,9 @@
             "aliases": [
                 "Dark Caracal"
             ],
-            "modified": "2020-06-03T20:22:40.401Z",
+            "modified": "2021-10-11T19:08:18.503Z",
             "created": "2018-10-17T00:14:20.652Z",
-            "x_mitre_version": "1.2"
+            "x_mitre_version": "1.3"
         },
         {
             "type": "intrusion-set",
@@ -26579,9 +27284,9 @@
                 "Quedagh",
                 "VOODOO BEAR"
             ],
-            "modified": "2021-04-13T13:13:09.511Z",
+            "modified": "2021-10-15T21:46:19.437Z",
             "created": "2017-05-31T21:32:04.588Z",
-            "x_mitre_version": "2.0"
+            "x_mitre_version": "2.1"
         },
         {
             "created": "2020-06-25T17:16:39.168Z",
@@ -26956,9 +27661,9 @@
             "labels": [
                 "malware"
             ],
-            "modified": "2021-01-20T16:01:19.142Z",
+            "modified": "2021-09-20T13:50:01.923Z",
             "created": "2020-04-08T15:41:19.114Z",
-            "x_mitre_version": "1.2",
+            "x_mitre_version": "1.3",
             "x_mitre_aliases": [
                 "Anubis"
             ],
@@ -27100,6 +27805,40 @@
         {
             "external_references": [
                 {
+                    "external_id": "S0655",
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/software/S0655"
+                },
+                {
+                    "source_name": "SecureList BusyGasper",
+                    "url": "https://securelist.com/busygasper-the-unfriendly-spy/87627/",
+                    "description": "Alexey Firsh. (2018, August 29). BusyGasper \u2013 the unfriendly spy. Retrieved October 1, 2021."
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "description": "[BusyGasper](https://attack.mitre.org/software/S0655) is Android spyware that has been in use since May 2016. There have been less than 10 victims, all who appear to be located in Russia, that were all infected via physical access to the device.(Citation: SecureList BusyGasper)",
+            "name": "BusyGasper",
+            "id": "malware--e110f94a-e2c5-4f5f-ba78-9c2ab6d2d9e4",
+            "type": "malware",
+            "labels": [
+                "malware"
+            ],
+            "modified": "2021-10-14T15:38:53.014Z",
+            "created": "2021-10-01T14:42:48.234Z",
+            "x_mitre_version": "1.0",
+            "x_mitre_aliases": [
+                "BusyGasper"
+            ],
+            "x_mitre_platforms": [
+                "Android"
+            ]
+        },
+        {
+            "external_references": [
+                {
                     "external_id": "S0555",
                     "source_name": "mitre-attack",
                     "url": "https://attack.mitre.org/software/S0555"
@@ -27132,12 +27871,6 @@
             ]
         },
         {
-            "created": "2020-11-10T16:50:38.917Z",
-            "modified": "2021-04-19T15:40:36.215Z",
-            "labels": [
-                "malware"
-            ],
-            "type": "malware",
             "id": "malware--007ebf84-4e14-44c7-a5aa-151d5de85320",
             "description": "[CarbonSteal](https://attack.mitre.org/software/S0529) is one of a family of four surveillanceware tools that share a common C2 infrastructure. [CarbonSteal](https://attack.mitre.org/software/S0529) primarily deals with audio surveillance. (Citation: Lookout Uyghur Campaign)",
             "name": "CarbonSteal",
@@ -27157,13 +27890,19 @@
                     "description": "A. Kumar, K. Del Rosso, J. Albrecht, C. Hebeisen. (2020, June 1). Mobile APT Surveillance Campaigns Targeting Uyghurs - A collection of long-running Android tooling connected to a Chinese mAPT actor. Retrieved November 10, 2020."
                 }
             ],
+            "type": "malware",
+            "labels": [
+                "malware"
+            ],
+            "modified": "2021-09-20T13:54:19.819Z",
+            "created": "2020-11-10T16:50:38.917Z",
             "x_mitre_platforms": [
                 "Android"
             ],
             "x_mitre_aliases": [
                 "CarbonSteal"
             ],
-            "x_mitre_version": "1.0"
+            "x_mitre_version": "1.1"
         },
         {
             "external_references": [
@@ -28532,9 +29271,9 @@
                     "external_id": "S0407"
                 },
                 {
-                    "source_name": "Lookout-Monokle",
+                    "description": "Bauer A., Kumar A., Hebeisen C., et al. (2019, July). Monokle: The Mobile Surveillance Tooling of the Special Technology Center. Retrieved September 4, 2019.",
                     "url": "https://www.lookout.com/documents/threat-reports/lookout-discovers-monokle-threat-report.pdf",
-                    "description": "Bauer A., Kumar A., Hebeisen C., et al. (2019, July). Monokle: The Mobile Surveillance Tooling of the Special Technology Center. Retrieved September 4, 2019."
+                    "source_name": "Lookout-Monokle"
                 }
             ],
             "object_marking_refs": [
@@ -28548,9 +29287,9 @@
             "labels": [
                 "malware"
             ],
-            "modified": "2020-01-21T15:30:39.236Z",
+            "modified": "2021-09-24T14:52:40.927Z",
             "created": "2019-09-04T14:28:14.181Z",
-            "x_mitre_version": "1.1",
+            "x_mitre_version": "1.2",
             "x_mitre_aliases": [
                 "Monokle"
             ],
@@ -30525,7 +31264,7 @@
                 "x-mitre-tactic--10fa8d8d-1b04-4176-917e-738724239981",
                 "x-mitre-tactic--6ebce653-294a-444a-bffb-14c04c8d137e"
             ],
-            "modified": "2021-02-09T14:28:47.299Z",
+            "modified": "2021-10-12T18:13:25.786Z",
             "created": "2018-10-17T00:14:20.652Z"
         },
         {
@@ -30548,7 +31287,7 @@
                 "x-mitre-tactic--9eb4c21e-4fa8-44c9-b167-dbfc455f9210",
                 "x-mitre-tactic--e78d7d60-41b5-49b7-b0a9-5c5d4cbabe17"
             ],
-            "modified": "2020-07-02T14:18:17.535Z",
+            "modified": "2021-09-30T18:45:26.855Z",
             "created": "2018-10-17T00:14:20.652Z"
         },
         {

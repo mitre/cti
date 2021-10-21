@@ -1,11 +1,11 @@
 {
     "type": "bundle",
-    "id": "bundle--0ba2d6ac-f9f2-4266-9f3e-148d7fcd084f",
+    "id": "bundle--c94269a3-a1d4-47a8-84e7-8bea6d486fde",
     "spec_version": "2.0",
     "objects": [
         {
             "id": "attack-pattern--a542bac9-7bc1-4da7-9a09-96f69e23cc21",
-            "description": "Adversaries may abuse systemd timers to perform task scheduling for initial or recurring execution of malicious code. Systemd timers are unit files with file extension <code>.timer</code> that control services. Timers can be set to run on a calendar event or after a time span relative to a starting point. They can be used as an alternative to [Cron](https://attack.mitre.org/techniques/T1053/003) in Linux environments.(Citation: archlinux Systemd Timers Aug 2020)\n\nEach <code>.timer</code> file must have a corresponding <code>.service</code> file with the same name, e.g., <code>example.timer</code> and <code>example.service</code>. <code>.service</code> files are [Systemd Service](https://attack.mitre.org/techniques/T1543/002) unit files that are managed by the systemd system and service manager.(Citation: Linux man-pages: systemd January 2014) Privileged timers are written to <code>/etc/systemd/system/</code> and <code>/usr/lib/systemd/system</code> while user level are written to <code>~/.config/systemd/user/</code>.\n\nAn adversary may use systemd timers to execute malicious code at system startup or on a scheduled basis for persistence.(Citation: Arch Linux Package Systemd Compromise BleepingComputer 10JUL2018)(Citation: gist Arch package compromise 10JUL2018)(Citation: acroread package compromised Arch Linux Mail 8JUL2018) Timers installed using privileged paths may be used to maintain root level persistence. Adversaries may also install user level timers to achieve user level persistence.",
+            "description": "Adversaries may abuse systemd timers to perform task scheduling for initial or recurring execution of malicious code. Systemd timers are unit files with file extension <code>.timer</code> that control services. Timers can be set to run on a calendar event or after a time span relative to a starting point. They can be used as an alternative to [Cron](https://attack.mitre.org/techniques/T1053/003) in Linux environments.(Citation: archlinux Systemd Timers Aug 2020) Systemd timers may be activated remotely via the <code>systemctl</code> command line utility, which operates over [SSH](https://attack.mitre.org/techniques/T1021/004).(Citation: Systemd Remote Control)\n\nEach <code>.timer</code> file must have a corresponding <code>.service</code> file with the same name, e.g., <code>example.timer</code> and <code>example.service</code>. <code>.service</code> files are [Systemd Service](https://attack.mitre.org/techniques/T1543/002) unit files that are managed by the systemd system and service manager.(Citation: Linux man-pages: systemd January 2014) Privileged timers are written to <code>/etc/systemd/system/</code> and <code>/usr/lib/systemd/system</code> while user level are written to <code>~/.config/systemd/user/</code>.\n\nAn adversary may use systemd timers to execute malicious code at system startup or on a scheduled basis for persistence.(Citation: Arch Linux Package Systemd Compromise BleepingComputer 10JUL2018)(Citation: gist Arch package compromise 10JUL2018)(Citation: acroread package compromised Arch Linux Mail 8JUL2018) Timers installed using privileged paths may be used to maintain root level persistence. Adversaries may also install user level timers to achieve user level persistence.",
             "name": "Systemd Timers",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "object_marking_refs": [
@@ -21,6 +21,11 @@
                     "source_name": "archlinux Systemd Timers Aug 2020",
                     "url": "https://wiki.archlinux.org/index.php/Systemd/Timers",
                     "description": "archlinux. (2020, August 11). systemd/Timers. Retrieved October 12, 2020."
+                },
+                {
+                    "source_name": "Systemd Remote Control",
+                    "url": "https://www.tecmint.com/control-systemd-services-on-remote-linux-server/",
+                    "description": "Aaron Kili. (2018, January 16). How to Control Systemd Services on Remote Linux Server. Retrieved July 26, 2021."
                 },
                 {
                     "source_name": "Linux man-pages: systemd January 2014",
@@ -58,8 +63,9 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2020-10-14T15:20:00.754Z",
+            "modified": "2021-07-27T16:43:25.027Z",
             "created": "2020-10-12T17:50:31.584Z",
+            "x_mitre_remote_support": true,
             "x_mitre_platforms": [
                 "Linux"
             ],
@@ -78,7 +84,7 @@
                 "root"
             ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0"
+            "x_mitre_version": "1.1"
         }
     ]
 }

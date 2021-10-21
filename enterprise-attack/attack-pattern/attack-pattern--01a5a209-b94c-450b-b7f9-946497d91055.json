@@ -1,13 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--bcea474c-6300-4544-9775-25a133d50a91",
+    "id": "bundle--857c9daf-5250-4def-a14c-b175bb8f0385",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--01a5a209-b94c-450b-b7f9-946497d91055",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Windows Management Instrumentation",
-            "description": "Adversaries may abuse Windows Management Instrumentation (WMI) to achieve execution. WMI is a Windows administration feature that provides a uniform environment for local and remote access to Windows system components. It relies on the WMI service for local and remote access and the server message block (SMB) (Citation: Wikipedia SMB) and Remote Procedure Call Service (RPCS) (Citation: TechNet RPC) for remote access. RPCS operates over port 135. (Citation: MSDN WMI)\n\nAn adversary can use WMI to interact with local and remote systems and use it as a means to perform many tactic functions, such as gathering information for Discovery and remote Execution of files as part of Lateral Movement. (Citation: FireEye WMI SANS 2015) (Citation: FireEye WMI 2015)",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -15,34 +14,25 @@
                     "url": "https://attack.mitre.org/techniques/T1047"
                 },
                 {
-                    "url": "https://en.wikipedia.org/wiki/Server_Message_Block",
-                    "description": "Wikipedia. (2016, June 12). Server Message Block. Retrieved June 12, 2016.",
-                    "source_name": "Wikipedia SMB"
-                },
-                {
-                    "url": "https://technet.microsoft.com/en-us/library/cc787851.aspx",
-                    "description": "Microsoft. (2003, March 28). What Is RPC?. Retrieved June 12, 2016.",
-                    "source_name": "TechNet RPC"
-                },
-                {
                     "url": "https://msdn.microsoft.com/en-us/library/aa394582.aspx",
                     "description": "Microsoft. (n.d.). Windows Management Instrumentation. Retrieved April 27, 2016.",
                     "source_name": "MSDN WMI"
                 },
                 {
-                    "source_name": "FireEye WMI SANS 2015",
-                    "url": "https://www.fireeye.com/content/dam/fireeye-www/services/pdfs/sans-dfir-2015.pdf",
-                    "description": "Devon Kerr. (2015). There's Something About WMI. Retrieved May 4, 2020."
-                },
-                {
                     "url": "https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/wp-windows-management-instrumentation.pdf",
                     "description": "Ballenthin, W., et al. (2015). Windows Management Instrumentation (WMI) Offense, Defense, and Forensics. Retrieved March 30, 2016.",
                     "source_name": "FireEye WMI 2015"
+                },
+                {
+                    "source_name": "FireEye WMI SANS 2015",
+                    "url": "https://www.fireeye.com/content/dam/fireeye-www/services/pdfs/sans-dfir-2015.pdf",
+                    "description": "Devon Kerr. (2015). There's Something About WMI. Retrieved May 4, 2020."
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
+            "description": "Adversaries may abuse Windows Management Instrumentation (WMI) to execute malicious commands and payloads. WMI is an administration feature that provides a uniform environment to access Windows system components. The WMI service enables both local and remote access, though the latter is facilitated by [Remote Services](https://attack.mitre.org/techniques/T1021) such as [Distributed Component Object Model](https://attack.mitre.org/techniques/T1021/003) (DCOM) and [Windows Remote Management](https://attack.mitre.org/techniques/T1021/006) (WinRM). (Citation: MSDN WMI) Remote WMI over DCOM operates using port 135, whereas WMI over WinRM operates over port 5985 when using HTTP and 5986 for HTTPS. (Citation: MSDN WMI) (Citation: FireEye WMI 2015)\n\nAn adversary can use WMI to interact with local and remote systems and use it as a means to execute various behaviors, such as gathering information for Discovery as well as remote Execution of files as part of Lateral Movement. (Citation: FireEye WMI SANS 2015) (Citation: FireEye WMI 2015)",
+            "name": "Windows Management Instrumentation",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "id": "attack-pattern--01a5a209-b94c-450b-b7f9-946497d91055",
             "type": "attack-pattern",
             "kill_chain_phases": [
                 {
@@ -50,27 +40,27 @@
                     "phase_name": "execution"
                 }
             ],
-            "modified": "2020-05-13T22:50:51.258Z",
+            "modified": "2021-10-15T23:58:07.715Z",
             "created": "2017-05-31T21:30:44.329Z",
-            "x_mitre_system_requirements": [
-                "WMI service, winmgmt, running.\nHost/network firewalls allowing SMB and WMI ports from source to destination.\nSMB authentication."
+            "x_mitre_contributors": [
+                "@ionstorm"
             ],
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_remote_support": true,
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
-            ],
-            "x_mitre_detection": "Monitor network traffic for WMI connections; the use of WMI in environments that do not typically use WMI may be suspect. Perform process monitoring to capture command-line arguments of \"wmic\" and detect commands that are used to perform remote behavior. (Citation: FireEye WMI 2015)",
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_version": "1.2",
             "x_mitre_data_sources": [
                 "Command: Command Execution",
                 "Process: Process Creation",
                 "Network Traffic: Network Connection Creation"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_is_subtechnique": false
+            "x_mitre_detection": "Monitor network traffic for WMI connections; the use of WMI in environments that do not typically use WMI may be suspect. Perform process monitoring to capture command-line arguments of \"wmic\" and detect commands that are used to perform remote behavior. (Citation: FireEye WMI 2015)",
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
+            ],
+            "x_mitre_remote_support": true,
+            "x_mitre_platforms": [
+                "Windows"
+            ]
         }
     ]
 }

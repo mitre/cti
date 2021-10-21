@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--d110e160-9091-4eb2-b5c8-410fd16b08f7",
+    "id": "bundle--fa1a967e-98dc-4631-8d6a-e45833fcbc38",
     "spec_version": "2.0",
     "objects": [
         {
@@ -79,6 +79,21 @@
                     "url": "https://en.wikipedia.org/wiki/Loadable_kernel_module#Linux",
                     "description": "Wikipedia. (2018, March 17). Loadable kernel module. Retrieved April 9, 2018.",
                     "source_name": "Wikipedia Loadable Kernel Module"
+                },
+                {
+                    "source_name": "User Approved Kernel Extension Pike\u2019s",
+                    "url": "https://pikeralpha.wordpress.com/2017/08/29/user-approved-kernel-extension-loading/",
+                    "description": "Pikeralpha. (2017, August 29). User Approved Kernel Extension Loading\u2026. Retrieved September 23, 2021."
+                },
+                {
+                    "source_name": "Purves Kextpocalypse 2",
+                    "url": "https://richard-purves.com/2017/11/09/mdm-and-the-kextpocalypse-2/",
+                    "description": "Richard Purves. (2017, November 9). MDM and the Kextpocalypse . Retrieved September 23, 2021."
+                },
+                {
+                    "source_name": "Apple Developer Configuration Profile",
+                    "url": "https://developer.apple.com/business/documentation/Configuration-Profile-Reference.pdf",
+                    "description": "Apple. (2019, May 3). Configuration Profile Reference. Retrieved September 23, 2021."
                 }
             ],
             "object_marking_refs": [
@@ -99,15 +114,16 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2021-03-30T00:59:53.716Z",
+            "modified": "2021-10-19T04:03:46.357Z",
             "created": "2020-01-24T17:42:23.339Z",
-            "x_mitre_version": "1.1",
+            "x_mitre_version": "1.2",
             "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "root"
             ],
-            "x_mitre_detection": "Loading, unloading, and manipulating modules on Linux systems can be detected by monitoring for the following commands:<code>modprobe</code>, <code>insmod</code>, <code>lsmod</code>, <code>rmmod</code>, or <code>modinfo</code> (Citation: Linux Loadable Kernel Module Insert and Remove LKMs) LKMs are typically loaded into <code>/lib/modules</code> and have had the extension .ko (\"kernel object\") since version 2.6 of the Linux kernel. (Citation: Wikipedia Loadable Kernel Module)\n\nFor macOS, monitor for execution of <code>kextload</code> commands and correlate with other unknown or suspicious activity.\n\nAdversaries may run commands on the target system before loading a malicious module in order to ensure that it is properly compiled. (Citation: iDefense Rootkit Overview) Adversaries may also execute commands to identify the exact version of the running Linux kernel and/or download multiple versions of the same .ko (kernel object) files to use the one appropriate for the running system.(Citation: Trend Micro Skidmap) Many LKMs require Linux headers (specific to the target kernel) in order to compile properly.\u00a0These are typically obtained through the operating systems package manager and installed like a normal package. On Ubuntu and Debian based systems this can be accomplished by running: <code>apt-get install linux-headers-$(uname -r)</code> On RHEL and CentOS based systems this can be accomplished by running: <code>yum install kernel-devel-$(uname -r)</code>",
+            "x_mitre_detection": "Loading, unloading, and manipulating modules on Linux systems can be detected by monitoring for the following commands: <code>modprobe</code>, <code>insmod</code>, <code>lsmod</code>, <code>rmmod</code>, or <code>modinfo</code> (Citation: Linux Loadable Kernel Module Insert and Remove LKMs) LKMs are typically loaded into <code>/lib/modules</code> and have had the extension .ko (\"kernel object\") since version 2.6 of the Linux kernel. (Citation: Wikipedia Loadable Kernel Module)\n\nAdversaries may run commands on the target system before loading a malicious module in order to ensure that it is properly compiled. (Citation: iDefense Rootkit Overview) Adversaries may also execute commands to identify the exact version of the running Linux kernel and/or download multiple versions of the same .ko (kernel object) files to use the one appropriate for the running system.(Citation: Trend Micro Skidmap) Many LKMs require Linux headers (specific to the target kernel) in order to compile properly.\u00a0These are typically obtained through the operating systems package manager and installed like a normal package. On Ubuntu and Debian based systems this can be accomplished by running: <code>apt-get install linux-headers-$(uname -r)</code> On RHEL and CentOS based systems this can be accomplished by running: <code>yum install kernel-devel-$(uname -r)</code>\n\nOn macOS, monitor for execution of <code>kextload</code> commands and user installed kernel extensions performing abnormal and/or potentially malicious activity (such as creating network connections). Monitor for new rows added in the <code>kext_policy</code> table. KextPolicy stores a list of user approved (non Apple) kernel extensions and a partial history of loaded kernel modules in a SQLite database, <code>/var/db/SystemPolicyConfiguration/KextPolicy</code>.(Citation: User Approved Kernel Extension Pike\u2019s)(Citation: Purves Kextpocalypse 2)(Citation: Apple Developer Configuration Profile)\n",
             "x_mitre_data_sources": [
+                "File: File Modification",
                 "Command: Command Execution",
                 "File: File Creation",
                 "Kernel: Kernel Module Load"
