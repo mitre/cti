@@ -1,11 +1,11 @@
 {
     "type": "bundle",
-    "id": "bundle--ac999bb8-ef68-4d4c-ac7e-6fcab5a26d0b",
+    "id": "bundle--ddc725a8-44f8-4a53-b49d-13d6c7efdc3e",
     "spec_version": "2.0",
     "objects": [
         {
             "created": "2020-02-11T18:27:15.774Z",
-            "modified": "2020-03-23T23:43:46.977Z",
+            "modified": "2021-10-15T14:15:06.853Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -13,13 +13,6 @@
                 }
             ],
             "type": "attack-pattern",
-            "id": "attack-pattern--2db31dcd-54da-405d-acef-b9129b816ed6",
-            "description": "Adversaries may use [Valid Accounts](https://attack.mitre.org/techniques/T1078) to log into remote machines using Secure Shell (SSH). The adversary may then perform actions as the logged-on user.\n\nSSH is a protocol that allows authorized users to open remote shells on other computers. Many Linux and macOS versions come with SSH installed by default, although typically disabled until the user enables it. The SSH server can be configured to use standard password authentication or public-private keypairs in lieu of or in addition to a password. In this authentication scenario, the user\u2019s public key must be in a special file on the computer running the server that lists which keypairs are allowed to login as that user.(Citation: SSH Secure Shell)",
-            "name": "SSH",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -32,25 +25,32 @@
                     "url": "https://capec.mitre.org/data/definitions/555.html"
                 },
                 {
-                    "source_name": "SSH Secure Shell",
-                    "url": "https://www.ssh.com/ssh",
-                    "description": "SSH.COM. (n.d.). SSH (Secure Shell). Retrieved March 23, 2020."
+                    "source_name": "Apple Unified Log Analysis Remote Login and Screen Sharing",
+                    "url": "https://sarah-edwards-xzkc.squarespace.com/blog/2020/4/30/analysis-of-apple-unified-logs-quarantine-edition-entry-6-working-from-home-remote-logins",
+                    "description": "Sarah Edwards. (2020, April 30). Analysis of Apple Unified Logs: Quarantine Edition [Entry 6] \u2013 Working From Home? Remote Logins. Retrieved August 19, 2021."
                 }
             ],
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS"
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0",
-            "x_mitre_detection": "Use of SSH may be legitimate depending on the environment and how it\u2019s used. Other factors, such as access patterns and activity that occurs after a remote login, may indicate suspicious or malicious behavior with SSH. Monitor for user accounts logged into systems they would not normally access or access patterns to multiple systems over a relatively short period of time.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "SSH",
+            "description": "Adversaries may use [Valid Accounts](https://attack.mitre.org/techniques/T1078) to log into remote machines using Secure Shell (SSH). The adversary may then perform actions as the logged-on user.\n\nSSH is a protocol that allows authorized users to open remote shells on other computers. Many Linux and macOS versions come with SSH installed by default, although typically disabled until the user enables it. The SSH server can be configured to use standard password authentication or public-private keypairs in lieu of or in addition to a password. In this authentication scenario, the user\u2019s public key must be in a special file on the computer running the server that lists which keypairs are allowed to login as that user.",
+            "id": "attack-pattern--2db31dcd-54da-405d-acef-b9129b816ed6",
+            "x_mitre_system_requirements": [
+                "An SSH server is configured and running."
+            ],
             "x_mitre_data_sources": [
                 "Process: Process Creation",
                 "Network Traffic: Network Connection Creation",
                 "Logon Session: Logon Session Creation"
             ],
-            "x_mitre_system_requirements": [
-                "An SSH server is configured and running."
+            "x_mitre_detection": "Use of SSH may be legitimate depending on the environment and how it\u2019s used. Other factors, such as access patterns and activity that occurs after a remote login, may indicate suspicious or malicious behavior with SSH. Monitor for user accounts logged into systems they would not normally access or access patterns to multiple systems over a relatively short period of time.\n\nOn macOS systems <code>log show --predicate 'process = \"sshd\"'</code> can be used to review incoming SSH connection attempts for suspicious activity. The command <code>log show --info --predicate 'process = \"ssh\" or eventMessage contains \"ssh\"'</code> can be used to review outgoing SSH connection activity.(Citation: Apple Unified Log Analysis Remote Login and Screen Sharing)\n\nOn Linux systems SSH activity can be found in the logs located in <code>/var/log/auth.log</code> or <code>/var/log/secure</code> depending on the distro you are using.",
+            "x_mitre_version": "1.1",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS"
             ]
         }
     ]

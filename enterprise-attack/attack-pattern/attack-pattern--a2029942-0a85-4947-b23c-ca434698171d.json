@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--eb591824-88ae-413c-ac08-0bce445d1238",
+    "id": "bundle--ddacc9bb-75bb-4089-9a70-b7f5c4d1350e",
     "spec_version": "2.0",
     "objects": [
         {
@@ -31,6 +31,11 @@
                     "source_name": "OSX Keydnap malware"
                 },
                 {
+                    "source_name": "Spoofing credential dialogs",
+                    "url": "https://embracethered.com/blog/posts/2021/spoofing-credential-dialogs/",
+                    "description": "Johann Rehberger. (2021, April 18). Spoofing credential dialogs on macOS Linux and Windows. Retrieved August 19, 2021."
+                },
+                {
                     "source_name": "Enigma Phishing for Credentials Jan 2015",
                     "url": "https://enigma0x3.net/2015/01/21/phishing-for-credentials-if-you-want-it-just-ask/",
                     "description": "Nelson, M. (2015, January 21). Phishing for Credentials: If you want it, just ask!. Retrieved December 17, 2018."
@@ -41,7 +46,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "GUI Input Capture",
-            "description": "Adversaries may mimic common operating system GUI components to prompt users for credentials with a seemingly legitimate prompt. When programs are executed that need additional privileges than are present in the current user context, it is common for the operating system to prompt the user for proper credentials to authorize the elevated privileges for the task (ex: [Bypass User Account Control](https://attack.mitre.org/techniques/T1548/002)).\n\nAdversaries may mimic this functionality to prompt users for credentials with a seemingly legitimate prompt for a number of reasons that mimic normal usage, such as a fake installer requiring additional access or a fake malware removal suite.(Citation: OSX Malware Exploits MacKeeper) This type of prompt can be used to collect credentials via various languages such as AppleScript(Citation: LogRhythm Do You Trust Oct 2014)(Citation: OSX Keydnap malware) and PowerShell(Citation: LogRhythm Do You Trust Oct 2014)(Citation: Enigma Phishing for Credentials Jan 2015). ",
+            "description": "Adversaries may mimic common operating system GUI components to prompt users for credentials with a seemingly legitimate prompt. When programs are executed that need additional privileges than are present in the current user context, it is common for the operating system to prompt the user for proper credentials to authorize the elevated privileges for the task (ex: [Bypass User Account Control](https://attack.mitre.org/techniques/T1548/002)).\n\nAdversaries may mimic this functionality to prompt users for credentials with a seemingly legitimate prompt for a number of reasons that mimic normal usage, such as a fake installer requiring additional access or a fake malware removal suite.(Citation: OSX Malware Exploits MacKeeper) This type of prompt can be used to collect credentials via various languages such as [AppleScript](https://attack.mitre.org/techniques/T1059/002)(Citation: LogRhythm Do You Trust Oct 2014)(Citation: OSX Keydnap malware)(Citation: Spoofing credential dialogs) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).(Citation: LogRhythm Do You Trust Oct 2014)(Citation: Enigma Phishing for Credentials Jan 2015)(Citation: Spoofing credential dialogs) On Linux systems attackers may launch dialog boxes prompting users for credentials from malicious shell scripts or the command line (i.e. [Unix Shell](https://attack.mitre.org/techniques/T1059/004)).(Citation: Spoofing credential dialogs) ",
             "id": "attack-pattern--a2029942-0a85-4947-b23c-ca434698171d",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -54,23 +59,26 @@
                     "phase_name": "credential-access"
                 }
             ],
-            "modified": "2020-03-24T20:56:14.853Z",
+            "modified": "2021-08-24T18:21:07.926Z",
             "created": "2020-02-11T18:58:45.908Z",
             "x_mitre_contributors": [
                 "Matthew Molyett, @s1air, Cisco Talos"
             ],
             "x_mitre_data_sources": [
+                "Script: Script Execution",
+                "Command: Command Execution",
                 "Process: Process Creation"
             ],
             "x_mitre_permissions_required": [
                 "User"
             ],
-            "x_mitre_detection": "Monitor process execution for unusual programs as well as malicious instances of [Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059) that could be used to prompt users for credentials.\n\nInspect and scrutinize input prompts for indicators of illegitimacy, such as non-traditional banners, text, timing, and/or sources.",
-            "x_mitre_version": "1.0",
+            "x_mitre_detection": "Monitor process execution for unusual programs as well as malicious instances of [Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059) that could be used to prompt users for credentials. For example, command/script history including abnormal parameters (such as requests for credentials and/or strings related to creating password prompts) may be malicious.(Citation: Spoofing credential dialogs) \n\nInspect and scrutinize input prompts for indicators of illegitimacy, such as non-traditional banners, text, timing, and/or sources. ",
+            "x_mitre_version": "1.1",
             "x_mitre_is_subtechnique": true,
             "x_mitre_platforms": [
                 "macOS",
-                "Windows"
+                "Windows",
+                "Linux"
             ]
         }
     ]

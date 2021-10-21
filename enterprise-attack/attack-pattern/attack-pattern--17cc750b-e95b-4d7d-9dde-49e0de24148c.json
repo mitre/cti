@@ -1,28 +1,11 @@
 {
     "type": "bundle",
-    "id": "bundle--161abdc8-b9cb-4e29-b169-8c153b8690d1",
+    "id": "bundle--8debe923-c596-4a34-bb5e-ea246c480506",
     "spec_version": "2.0",
     "objects": [
         {
-            "created": "2020-03-13T11:42:14.444Z",
-            "modified": "2020-09-16T19:07:48.590Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "type": "attack-pattern",
             "id": "attack-pattern--17cc750b-e95b-4d7d-9dde-49e0de24148c",
-            "description": "Adversaries may execute their own malicious payloads by hijacking the Registry entries used by services. Adversaries may use flaws in the permissions for registry to redirect from the originally specified executable to one that they control, in order to launch their own code at Service start.  Windows stores local service configuration information in the Registry under <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. The information stored under a service's Registry keys can be manipulated to modify a service's execution parameters through tools such as the service controller, sc.exe,  [PowerShell](https://attack.mitre.org/techniques/T1059/001), or [Reg](https://attack.mitre.org/software/S0075). Access to Registry keys is controlled through Access Control Lists and permissions. (Citation: Registry Key Security)\n\nIf the permissions for users and groups are not properly set and allow access to the Registry keys for a service, then adversaries can change the service binPath/ImagePath to point to a different executable under their control. When the service starts or is restarted, then the adversary-controlled program will execute, allowing the adversary to gain persistence and/or privilege escalation to the account context the service is set to execute under (local/domain account, SYSTEM, LocalService, or NetworkService).\n\nAdversaries may also alter Registry keys associated with service failure parameters (such as <code>FailureCommand</code>) that may be executed in an elevated context anytime the service fails or is intentionally corrupted.(Citation: Kansa Service related collectors)(Citation: Tweet Registry Perms Weakness) ",
+            "description": "Adversaries may execute their own malicious payloads by hijacking the Registry entries used by services. Adversaries may use flaws in the permissions for Registry keys related to services to redirect from the originally specified executable to one that they control, in order to launch their own code when a service starts. Windows stores local service configuration information in the Registry under <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. The information stored under a service's Registry keys can be manipulated to modify a service's execution parameters through tools such as the service controller, sc.exe,  [PowerShell](https://attack.mitre.org/techniques/T1059/001), or [Reg](https://attack.mitre.org/software/S0075). Access to Registry keys is controlled through access control lists and user permissions. (Citation: Registry Key Security)(Citation: malware_hides_service)\n\nIf the permissions for users and groups are not properly set and allow access to the Registry keys for a service, adversaries may change the service's binPath/ImagePath to point to a different executable under their control. When the service starts or is restarted, then the adversary-controlled program will execute, allowing the adversary to establish persistence and/or privilege escalation to the account context the service is set to execute under (local/domain account, SYSTEM, LocalService, or NetworkService).\n\nAdversaries may also alter other Registry keys in the service\u2019s Registry tree. For example, the <code>FailureCommand</code> key may be changed so that the service is executed in an elevated context anytime the service fails or is intentionally corrupted.(Citation: Kansa Service related collectors)(Citation: Tweet Registry Perms Weakness)\n\nThe <code>Performance</code> key contains the name of a driver service's performance DLL and the names of several exported functions in the DLL.(Citation: microsoft_services_registry_tree) If the <code>Performance</code> key is not already present and if an adversary-controlled user has the <code>Create Subkey</code> permission, adversaries may create the <code>Performance</code> key in the service\u2019s Registry tree to point to a malicious DLL.(Citation: insecure_reg_perms)\n\nAdversaries may also add the <code>Parameters</code> key, which stores driver-specific data, or other custom subkeys for their malicious services to establish persistence or enable other malicious activities.(Citation: microsoft_services_registry_tree)(Citation: troj_zegost) Additionally, If adversaries launch their malicious services using svchost.exe, the service\u2019s file may be identified using <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\servicename\\Parameters\\ServiceDll</code>.(Citation: malware_hides_service)",
             "name": "Services Registry Permissions Weakness",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "object_marking_refs": [
@@ -45,6 +28,11 @@
                     "description": "Microsoft. (2018, May 31). Registry Key Security and Access Rights. Retrieved March 16, 2017."
                 },
                 {
+                    "source_name": "malware_hides_service",
+                    "url": "https://www.bleepingcomputer.com/tutorials/how-malware-hides-as-a-service/",
+                    "description": "Lawrence Abrams. (2004, September 10). How Malware hides and is installed as a Service. Retrieved August 30, 2021."
+                },
+                {
                     "source_name": "Kansa Service related collectors",
                     "url": "https://trustedsignal.blogspot.com/2014/05/kansa-service-related-collectors-and.html",
                     "description": "Hull, D.. (2014, May 3). Kansa: Service related collectors and analysis. Retrieved October 10, 2019."
@@ -55,11 +43,43 @@
                     "description": "@r0wdy_. (2017, November 30). Service Recovery Parameters. Retrieved April 9, 2018."
                 },
                 {
+                    "source_name": "microsoft_services_registry_tree",
+                    "url": "https://docs.microsoft.com/en-us/windows-hardware/drivers/install/hklm-system-currentcontrolset-services-registry-tree",
+                    "description": "Microsoft. (2021, August 5). HKLM\\SYSTEM\\CurrentControlSet\\Services Registry Tree. Retrieved August 25, 2021."
+                },
+                {
+                    "source_name": "insecure_reg_perms",
+                    "url": "https://itm4n.github.io/windows-registry-rpceptmapper-eop/",
+                    "description": "Cl\u00e9ment Labro. (2020, November 12). Windows RpcEptMapper Service Insecure Registry Permissions EoP. Retrieved August 25, 2021."
+                },
+                {
+                    "source_name": "troj_zegost",
+                    "url": "https://www.trendmicro.com/vinfo/us/threat-encyclopedia/malware/troj_zegost",
+                    "description": "Trend Micro. (2012, October 9). TROJ_ZEGOST. Retrieved September 2, 2021."
+                },
+                {
                     "source_name": "Autoruns for Windows",
                     "url": "https://docs.microsoft.com/en-us/sysinternals/downloads/autoruns",
                     "description": "Mark Russinovich. (2019, June 28). Autoruns for Windows v13.96. Retrieved March 13, 2020."
                 }
             ],
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "modified": "2021-10-14T23:52:52.058Z",
+            "created": "2020-03-13T11:42:14.444Z",
             "x_mitre_platforms": [
                 "Windows"
             ],
@@ -82,7 +102,7 @@
                 "SYSTEM"
             ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0",
+            "x_mitre_version": "1.1",
             "x_mitre_defense_bypassed": [
                 "Application control"
             ]

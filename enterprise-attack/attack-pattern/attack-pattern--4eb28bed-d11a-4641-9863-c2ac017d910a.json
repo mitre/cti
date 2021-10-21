@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--9c97f2b2-920e-4691-a0eb-4da87341845b",
+    "id": "bundle--8be039cf-fe8d-4850-af58-9d3ed30bc283",
     "spec_version": "2.0",
     "objects": [
         {
@@ -14,6 +14,51 @@
                     "source_name": "Windows Log Events",
                     "url": "https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/",
                     "description": "Franklin Smith. (n.d.). Windows Security Log Events. Retrieved February 21, 2020."
+                },
+                {
+                    "source_name": "EventLog_Core_Technologies",
+                    "url": "https://www.coretechnologies.com/blog/windows-services/eventlog/",
+                    "description": "Core Technologies. (2021, May 24). Essential Windows Services: EventLog / Windows Event Log. Retrieved September 14, 2021."
+                },
+                {
+                    "source_name": "Audit_Policy_Microsoft",
+                    "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/audit-policy",
+                    "description": "Daniel Simpson. (2017, April 19). Audit Policy. Retrieved September 13, 2021."
+                },
+                {
+                    "source_name": "Advanced_sec_audit_policy_settings",
+                    "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/advanced-security-audit-policy-settings",
+                    "description": "Simpson, D. et al. (2017, April 19). Advanced security audit policy settings. Retrieved September 14, 2021."
+                },
+                {
+                    "source_name": "auditpol",
+                    "url": "https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/auditpol",
+                    "description": "Jason Gerend, et al. (2017, October 16). auditpol. Retrieved September 1, 2021."
+                },
+                {
+                    "source_name": "Disable_Win_Event_Logging",
+                    "url": "https://dmcxblue.gitbook.io/red-team-notes-2-0/red-team-techniques/defense-evasion/t1562-impair-defenses/disable-windows-event-logging",
+                    "description": " dmcxblue. (n.d.). Disable Windows Event Logging. Retrieved September 10, 2021."
+                },
+                {
+                    "source_name": "auditpol.exe_STRONTIC",
+                    "url": "https://strontic.github.io/xcyclopedia/library/auditpol.exe-214E0EA1F7F7C27C82D23F183F9D23F1.html",
+                    "description": "STRONTIC. (n.d.). auditpol.exe. Retrieved September 9, 2021."
+                },
+                {
+                    "source_name": "T1562.002_redcanaryco",
+                    "url": "https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1562.002/T1562.002.md",
+                    "description": "redcanaryco. (2021, September 3). T1562.002 - Disable Windows Event Logging. Retrieved September 13, 2021."
+                },
+                {
+                    "source_name": "def_ev_win_event_logging",
+                    "url": "https://www.hackingarticles.in/defense-evasion-windows-event-logging-t1562-002/",
+                    "description": "Chandel, R. (2021, April 22). Defense Evasion: Windows Event Logging (T1562.002). Retrieved September 14, 2021."
+                },
+                {
+                    "source_name": "evt_log_tampering",
+                    "url": "https://svch0st.medium.com/event-log-tampering-part-1-disrupting-the-eventlog-service-8d4b7d67335c",
+                    "description": "svch0st. (2020, September 30). Event Log Tampering Part 1: Disrupting the EventLog Service. Retrieved September 14, 2021."
                 }
             ],
             "object_marking_refs": [
@@ -21,7 +66,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Disable Windows Event Logging",
-            "description": "Adversaries may disable Windows event logging to limit data that can be leveraged for detections and audits. Windows event logs record user and system activity such as login attempts, process creation, and much more.(Citation: Windows Log Events) This data is used by security tools and analysts to generate detections.\n\nAdversaries may targeting system-wide logging or just that of a particular application. By disabling Windows event logging, adversaries can operate while leaving less evidence of a compromise behind.",
+            "description": "Adversaries may disable Windows event logging to limit data that can be leveraged for detections and audits. Windows event logs record user and system activity such as login attempts, process creation, and much more.(Citation: Windows Log Events) This data is used by security tools and analysts to generate detections.\n\nThe EventLog service maintains event logs from various system components and applications.(Citation: EventLog_Core_Technologies) By default, the service automatically starts when a system powers on. An audit policy, maintained by the Local Security Policy (secpol.msc), defines which system events the EventLog service logs. Security audit policy settings can be changed by running secpol.msc, then navigating to <code>Security Settings\\Local Policies\\Audit Policy</code> for basic audit policy settings or <code>Security Settings\\Advanced Audit Policy Configuration</code> for advanced audit policy settings.(Citation: Audit_Policy_Microsoft)(Citation: Advanced_sec_audit_policy_settings) <code>auditpol.exe</code> may also be used to set audit policies.(Citation: auditpol)\n\nAdversaries may target system-wide logging or just that of a particular application. For example, the EventLog service may be disabled using the following PowerShell line: <code>Stop-Service -Name EventLog</code>.(Citation: Disable_Win_Event_Logging) Additionally, adversaries may use <code>auditpol</code> and its sub-commands in a command prompt to disable auditing or clear the audit policy. To enable or disable a specified setting or audit category, adversaries may use the <code>/success</code> or <code>/failure</code> parameters. For example, <code>auditpol /set /category:\u201dAccount Logon\u201d /success:disable /failure:disable</code> turns off auditing for the Account Logon category.(Citation: auditpol.exe_STRONTIC)(Citation: T1562.002_redcanaryco) To clear the audit policy, adversaries may run the following lines: <code>auditpol /clear /y</code> or <code>auditpol /remove /allusers</code>.(Citation: T1562.002_redcanaryco)\n\nBy disabling Windows event logging, adversaries can operate while leaving less evidence of a compromise behind.",
             "id": "attack-pattern--4eb28bed-d11a-4641-9863-c2ac017d910a",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -30,9 +75,12 @@
                     "phase_name": "defense-evasion"
                 }
             ],
-            "modified": "2020-03-29T22:02:33.870Z",
+            "modified": "2021-10-19T13:37:30.534Z",
             "created": "2020-02-21T20:46:36.688Z",
-            "x_mitre_version": "1.0",
+            "x_mitre_contributors": [
+                "Prasanth Sadanala, Cigna Information Protection (CIP) - Threat Response Engineering Team"
+            ],
+            "x_mitre_version": "1.1",
             "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "Administrator"
@@ -40,8 +88,12 @@
             "x_mitre_defense_bypassed": [
                 "Log analysis"
             ],
-            "x_mitre_detection": "Monitor processes and command-line arguments for commands that can be used to disable logging. Lack of event logs may be suspicious.",
+            "x_mitre_detection": "Monitor processes and command-line arguments for commands that can be used to disable logging. For example, [Wevtutil](https://attack.mitre.org/software/S0645), `auditpol`, `sc stop EventLog`, and offensive tooling (such as [Mimikatz](https://attack.mitre.org/software/S0002) and `Invoke-Phant0m`) may be used to clear logs.(Citation: def_ev_win_event_logging)(Citation: evt_log_tampering)  \n\nIn Event Viewer, Event ID 1102 under the \u201cSecurity\u201d Windows Log and Event ID 104 under the \u201cSystem\u201d Windows Log both indicate logs have been cleared.(Citation: def_ev_win_event_logging) `Service Control Manager Event ID 7035` in Event Viewer may indicate the termination of the EventLog service.(Citation: evt_log_tampering) Additionally, gaps in the logs, e.g. non-sequential Event Record IDs, may indicate that the logs may have been tampered.\n\nMonitor the addition of the MiniNT registry key in `HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control`, which may disable Event Viewer.(Citation: def_ev_win_event_logging)",
             "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Script: Script Execution",
+                "Windows Registry: Windows Registry Key Creation",
+                "Application Log: Application Log Content",
                 "Sensor Health: Host Status",
                 "Command: Command Execution"
             ],

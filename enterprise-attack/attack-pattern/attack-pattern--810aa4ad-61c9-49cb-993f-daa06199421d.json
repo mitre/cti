@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--0aedac0b-1fea-4ec3-9ebb-9a18e621aef9",
+    "id": "bundle--7d095e34-7aa8-4e8d-a3b7-8d1a51d35e4f",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,6 +19,11 @@
                     "url": "https://researchcenter.paloaltonetworks.com/2016/09/unit42-sofacys-komplex-os-x-trojan/",
                     "description": "Dani Creus, Tyler Halfpop, Robert Falcone. (2016, September 26). Sofacy's 'Komplex' OS X Trojan. Retrieved July 8, 2017.",
                     "source_name": "Sofacy Komplex Trojan"
+                },
+                {
+                    "source_name": "20 macOS Common Tools and Techniques",
+                    "url": "https://labs.sentinelone.com/20-common-tools-techniques-used-by-macos-threat-actors-malware/",
+                    "description": "Phil Stokes. (2021, February 16). 20 Common Tools & Techniques Used by macOS Threat Actors & Malware. Retrieved August 23, 2021."
                 }
             ],
             "object_marking_refs": [
@@ -26,7 +31,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Launchctl",
-            "description": "Adversaries may abuse launchctl to execute commands or programs. Launchctl controls the macOS launchd process, which handles things like [Launch Agent](https://attack.mitre.org/techniques/T1543/001)s and [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)s, but can execute other commands or programs itself. Launchctl supports taking subcommands on the command-line, interactively, or even redirected from standard input.(Citation: Launchctl Man)\n\nBy loading or reloading [Launch Agent](https://attack.mitre.org/techniques/T1543/001)s or [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)s, adversaries can install persistence or execute changes they made.(Citation: Sofacy Komplex Trojan)\n\nRunning a command from launchctl is as simple as <code>launchctl submit -l <labelName> -- /Path/to/thing/to/execute \"arg\" \"arg\" \"arg\"</code>. Adversaries can abuse this functionality to execute code or even bypass application control if launchctl is an allowed process.",
+            "description": "Adversaries may abuse launchctl to execute commands or programs. Launchctl interfaces with launchd, the service management framework for macOS. Launchctl supports taking subcommands on the command-line, interactively, or even redirected from standard input.(Citation: Launchctl Man)\n\nAdversaries use launchctl to execute commands and programs as [Launch Agent](https://attack.mitre.org/techniques/T1543/001)s or [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)s. Common subcommands include: <code>launchctl load</code>,<code>launchctl unload</code>, and <code>launchctl start</code>. Adversaries can use scripts or manually run the commands <code>launchctl load -w \"%s/Library/LaunchAgents/%s\"</code> or <code>/bin/launchctl load</code> to execute [Launch Agent](https://attack.mitre.org/techniques/T1543/001)s or [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)s.(Citation: Sofacy Komplex Trojan)(Citation: 20 macOS Common Tools and Techniques)\n",
             "id": "attack-pattern--810aa4ad-61c9-49cb-993f-daa06199421d",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -35,15 +40,15 @@
                     "phase_name": "execution"
                 }
             ],
-            "modified": "2020-06-08T23:28:29.079Z",
+            "modified": "2021-10-15T18:40:23.141Z",
             "created": "2020-03-10T18:26:56.187Z",
-            "x_mitre_version": "1.0",
+            "x_mitre_version": "1.1",
             "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "User",
                 "root"
             ],
-            "x_mitre_detection": "KnockKnock can be used to detect persistent programs such as those installed via launchctl as launch agents or launch daemons. Additionally, every launch agent or launch daemon must have a corresponding plist file on disk which can be monitored. Monitor process execution from launchctl/launchd for unusual or unknown processes.",
+            "x_mitre_detection": "Every Launch Agent and Launch Daemon must have a corresponding plist file on disk which can be monitored. Monitor for recently modified or created plist files with a significant change to the executable path executed with the command-line <code>launchctl</code> command. Plist files are located in the root, system, and users <code>/Library/LaunchAgents</code> or <code>/Library/LaunchDaemons</code> folders. \n\nMonitor command-line execution of the <code>launchctl</code> command immediately followed by abnormal network connections. [Launch Agent](https://attack.mitre.org/techniques/T1543/001)s or [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)s with executable paths pointing to <code>/tmp</code> and <code>/Shared</code> folders locations are potentially suspicious. \n\nWhen removing [Launch Agent](https://attack.mitre.org/techniques/T1543/001)s or [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)s ensure the services are unloaded prior to deleting plist files.",
             "x_mitre_data_sources": [
                 "Command: Command Execution",
                 "Process: Process Creation",

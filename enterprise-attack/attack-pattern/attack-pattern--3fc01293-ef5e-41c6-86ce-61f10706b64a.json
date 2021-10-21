@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--3daa705c-24f8-4d0d-85fa-986852bf9569",
+    "id": "bundle--ccc147e4-fb22-4ef1-9884-6e3462df28d2",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,6 +19,41 @@
                     "source_name": "ADSecurity Kerberos Ring Decoder",
                     "url": "https://adsecurity.org/?p=227",
                     "description": "Sean Metcalf. (2014, September 12). Kerberos, Active Directory\u2019s Secret Decoder Ring. Retrieved February 27, 2020."
+                },
+                {
+                    "source_name": "Microsoft Klist",
+                    "url": "https://docs.microsoft.com/windows-server/administration/windows-commands/klist",
+                    "description": "Microsoft. (2021, March 3). klist. Retrieved October 14, 2021."
+                },
+                {
+                    "source_name": "MIT ccache",
+                    "url": "https://web.mit.edu/kerberos/krb5-1.12/doc/basic/ccache_def.html",
+                    "description": "Massachusetts Institute of Technology. (n.d.). MIT Kerberos Documentation: Credential Cache. Retrieved October 4, 2021."
+                },
+                {
+                    "source_name": "Linux Kerberos Tickets",
+                    "url": "https://www.fireeye.com/blog/threat-research/2020/04/kerberos-tickets-on-linux-red-teams.html",
+                    "description": "Trevor Haskell. (2020, April 1). Kerberos Tickets on Linux Red Teams. Retrieved October 4, 2021."
+                },
+                {
+                    "source_name": "Brining MimiKatz to Unix",
+                    "url": "https://labs.portcullis.co.uk/download/eu-18-Wadhwa-Brown-Where-2-worlds-collide-Bringing-Mimikatz-et-al-to-UNIX.pdf",
+                    "description": "Tim Wadhwa-Brown. (2018, November). Where 2 worlds collide Bringing Mimikatz et al to UNIX. Retrieved October 13, 2021."
+                },
+                {
+                    "source_name": "Kekeo",
+                    "url": "https://github.com/gentilkiwi/kekeo",
+                    "description": "Benjamin Delpy. (n.d.). Kekeo. Retrieved October 4, 2021."
+                },
+                {
+                    "source_name": "SpectorOps Bifrost Kerberos macOS 2019",
+                    "url": "https://posts.specterops.io/when-kirbi-walks-the-bifrost-4c727807744f",
+                    "description": "Cody Thomas. (2019, November 14). When Kirbi walks the Bifrost. Retrieved October 6, 2021."
+                },
+                {
+                    "source_name": "macOS kerberos framework MIT",
+                    "url": "http://web.mit.edu/macdev/KfM/Common/Documentation/preferences.html",
+                    "description": "Massachusetts Institute of Technology. (2007, October 27). Kerberos for Macintosh Preferences Documentation. Retrieved October 6, 2021."
                 },
                 {
                     "url": "https://adsecurity.org/?p=1515",
@@ -61,7 +96,7 @@
             ],
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Steal or Forge Kerberos Tickets",
-            "description": "Adversaries may attempt to subvert Kerberos authentication by stealing or forging Kerberos tickets to enable [Pass the Ticket](https://attack.mitre.org/techniques/T1550/003). \n\nKerberos is an authentication protocol widely used in modern Windows domain environments. In Kerberos environments, referred to as \u201crealms\u201d, there are three basic participants: client, service, and Key Distribution Center (KDC).(Citation: ADSecurity Kerberos Ring Decoder) Clients request access to a service and through the exchange of Kerberos tickets, originating from KDC, they are granted access after having successfully authenticated. The KDC is responsible for both authentication and ticket granting.  Attackers may attempt to abuse Kerberos by stealing tickets or forging tickets to enable unauthorized access.",
+            "description": "Adversaries may attempt to subvert Kerberos authentication by stealing or forging Kerberos tickets to enable [Pass the Ticket](https://attack.mitre.org/techniques/T1550/003). Kerberos is an authentication protocol widely used in modern Windows domain environments. In Kerberos environments, referred to as \u201crealms\u201d, there are three basic participants: client, service, and Key Distribution Center (KDC).(Citation: ADSecurity Kerberos Ring Decoder) Clients request access to a service and through the exchange of Kerberos tickets, originating from KDC, they are granted access after having successfully authenticated. The KDC is responsible for both authentication and ticket granting.  Attackers may attempt to abuse Kerberos by stealing tickets or forging tickets to enable unauthorized access.\n\nOn Windows, the built-in <code>klist</code> utility can be used to list and analyze cached Kerberos tickets.(Citation: Microsoft Klist)\n\nLinux systems on Active Directory domains store Kerberos credentials locally in the credential cache file referred to as the \"ccache\". The credentials are stored in the ccache file while they remain valid and generally while a user's session lasts.(Citation: MIT ccache) On modern Redhat Enterprise Linux systems, and derivative distributions, the System Security Services Daemon (SSSD) handles Kerberos tickets. By default SSSD maintains a copy of the ticket database that can be found in <code>/var/lib/sss/secrets/secrets.ldb</code> as well as the corresponding key located in <code>/var/lib/sss/secrets/.secrets.mkey</code>. Both files require root access to read. If an adversary is able to access the database and key, the credential cache Kerberos blob can be extracted and converted into a usable Kerberos ccache file that adversaries may use for [Pass the Ticket](https://attack.mitre.org/techniques/T1550/003). The ccache file may also be converted into a Windows format using tools such as Kekeo.(Citation: Linux Kerberos Tickets)(Citation: Brining MimiKatz to Unix)(Citation: Kekeo)\n\n\nKerberos tickets on macOS are stored in a standard ccache format, similar to Linux. By default, access to these ccache entries is federated through the KCM daemon process via the Mach RPC protocol, which uses the caller's environment to determine access. The storage location for these ccache entries is influenced by the <code>/etc/krb5.conf</code> configuration file and the <code>KRB5CCNAME</code> environment variable which can specify to save them to disk or keep them protected via the KCM daemon. Users can interact with ticket storage using <code>kinit</code>, <code>klist</code>, <code>ktutil</code>, and <code>kcc</code> built-in binaries or via Apple's native Kerberos framework. Adversaries can use open source tools to interact with the ccache files directly or to use the Kerberos framework to call lower-level APIs for extracting the user's TGT or Service Tickets.(Citation: SpectorOps Bifrost Kerberos macOS 2019)(Citation: macOS kerberos framework MIT)\n",
             "id": "attack-pattern--3fc01293-ef5e-41c6-86ce-61f10706b64a",
             "type": "attack-pattern",
             "kill_chain_phases": [
@@ -70,20 +105,32 @@
                     "phase_name": "credential-access"
                 }
             ],
-            "modified": "2020-11-05T16:07:04.189Z",
+            "modified": "2021-10-14T22:56:22.054Z",
             "created": "2020-02-11T19:12:46.830Z",
+            "x_mitre_contributors": [
+                "Tim (Wadhwa-)Brown",
+                "Cody Thomas, SpecterOps"
+            ],
+            "x_mitre_permissions_required": [
+                "User",
+                "root"
+            ],
             "x_mitre_system_requirements": [
                 "Kerberos authentication enabled"
             ],
             "x_mitre_data_sources": [
+                "File: File Access",
+                "Command: Command Execution",
                 "Active Directory: Active Directory Credential Request",
                 "Logon Session: Logon Session Metadata"
             ],
-            "x_mitre_detection": "Monitor for anomalous Kerberos activity, such as malformed or blank fields in Windows logon/logoff events (Event ID 4624, 4672, 4634), RC4 encryption within ticket granting tickets (TGTs), and ticket granting service (TGS) requests without preceding TGT requests.(Citation: ADSecurity Detecting Forged Tickets)(Citation: Stealthbits Detect PtT 2019)(Citation: CERT-EU Golden Ticket Protection)\n\nMonitor the lifetime of TGT tickets for values that differ from the default domain duration.(Citation: Microsoft Kerberos Golden Ticket)\n\nMonitor for indications of [Pass the Ticket](https://attack.mitre.org/techniques/T1550/003) being used to move laterally. \n\nEnable Audit Kerberos Service Ticket Operations to log Kerberos TGS service ticket requests. Particularly investigate irregular patterns of activity (ex: accounts making numerous requests, Event ID 4769, within a small time frame, especially if they also request RC4 encryption [Type 0x17]).(Citation: Microsoft Detecting Kerberoasting Feb 2018) (Citation: AdSecurity Cracking Kerberos Dec 2015)\n\nMonitor for unexpected processes interacting with lsass.exe.(Citation: Medium Detecting Attempts to Steal Passwords from Memory) Common credential dumpers such as [Mimikatz](https://attack.mitre.org/software/S0002) access the LSA Subsystem Service (LSASS) process by opening the process, locating the LSA secrets key, and decrypting the sections in memory where credential details, including Kerberos tickets, are stored.",
-            "x_mitre_version": "1.2",
+            "x_mitre_detection": "Monitor for anomalous Kerberos activity, such as malformed or blank fields in Windows logon/logoff events (Event ID 4624, 4672, 4634), RC4 encryption within ticket granting tickets (TGTs), and ticket granting service (TGS) requests without preceding TGT requests.(Citation: ADSecurity Detecting Forged Tickets)(Citation: Stealthbits Detect PtT 2019)(Citation: CERT-EU Golden Ticket Protection)\n\nMonitor the lifetime of TGT tickets for values that differ from the default domain duration.(Citation: Microsoft Kerberos Golden Ticket)\n\nMonitor for indications of [Pass the Ticket](https://attack.mitre.org/techniques/T1550/003) being used to move laterally. \n\nEnable Audit Kerberos Service Ticket Operations to log Kerberos TGS service ticket requests. Particularly investigate irregular patterns of activity (ex: accounts making numerous requests, Event ID 4769, within a small time frame, especially if they also request RC4 encryption [Type 0x17]).(Citation: Microsoft Detecting Kerberoasting Feb 2018) (Citation: AdSecurity Cracking Kerberos Dec 2015)\n\nMonitor for unexpected processes interacting with lsass.exe.(Citation: Medium Detecting Attempts to Steal Passwords from Memory) Common credential dumpers such as [Mimikatz](https://attack.mitre.org/software/S0002) access the LSA Subsystem Service (LSASS) process by opening the process, locating the LSA secrets key, and decrypting the sections in memory where credential details, including Kerberos tickets, are stored.\n\nMonitor for unusual processes accessing\u00a0<code>secrets.ldb</code> and <code>.secrets.mkey</code> located in <code>/var/lib/sss/secrets/</code>.",
+            "x_mitre_version": "1.3",
             "x_mitre_is_subtechnique": false,
             "x_mitre_platforms": [
-                "Windows"
+                "Windows",
+                "Linux",
+                "macOS"
             ]
         }
     ]

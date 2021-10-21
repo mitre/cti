@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a0f0774e-e82a-4770-9909-9f2a0e1d0149",
+    "id": "bundle--0b4fa9c4-6a6c-4d4b-b414-a88301cd9410",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,12 +19,17 @@
                     "source_name": "Microsoft SharePoint Logging"
                 },
                 {
+                    "source_name": "Sharepoint Sharing Events",
+                    "url": "https://docs.microsoft.com/en-us/microsoft-365/compliance/use-sharing-auditing?view=o365-worldwide#sharepoint-sharing-events",
+                    "description": "Microsoft. (n.d.). Sharepoint Sharing Events. Retrieved October 8, 2021."
+                },
+                {
                     "url": "https://confluence.atlassian.com/confkb/how-to-enable-user-access-logging-182943.html",
                     "description": "Atlassian. (2018, January 9). How to Enable User Access Logging. Retrieved April 4, 2018.",
                     "source_name": "Atlassian Confluence Logging"
                 }
             ],
-            "description": "Adversaries may leverage information repositories to mine valuable information. Information repositories are tools that allow for storage of information, typically to facilitate collaboration or information sharing between users, and can store a wide variety of data that may aid adversaries in further objectives, or direct access to the target information.\n\nThe following is a brief list of example information that may hold potential value to an adversary and may also be found on an information repository:\n\n* Policies, procedures, and standards\n* Physical / logical network diagrams\n* System architecture diagrams\n* Technical system documentation\n* Testing / development credentials\n* Work / project schedules\n* Source code snippets\n* Links to network shares and other internal resources\n\nInformation stored in a repository may vary based on the specific instance or environment. Specific common information repositories include [Sharepoint](https://attack.mitre.org/techniques/T1213/002), [Confluence](https://attack.mitre.org/techniques/T1213/001), and enterprise databases such as SQL Server.",
+            "description": "Adversaries may leverage information repositories to mine valuable information. Information repositories are tools that allow for storage of information, typically to facilitate collaboration or information sharing between users, and can store a wide variety of data that may aid adversaries in further objectives, or direct access to the target information. Adversaries may also abuse external sharing features to share sensitive documents with recipients outside of the organization. \n\nThe following is a brief list of example information that may hold potential value to an adversary and may also be found on an information repository:\n\n* Policies, procedures, and standards\n* Physical / logical network diagrams\n* System architecture diagrams\n* Technical system documentation\n* Testing / development credentials\n* Work / project schedules\n* Source code snippets\n* Links to network shares and other internal resources\n\nInformation stored in a repository may vary based on the specific instance or environment. Specific common information repositories include web-based platforms such as [Sharepoint](https://attack.mitre.org/techniques/T1213/002) and [Confluence](https://attack.mitre.org/techniques/T1213/001), specific services such as Code Repositories, IaaS databases, enterprise databases, and other storage infrastructure such as SQL Server.",
             "name": "Data from Information Repositories",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "id": "attack-pattern--d28ef391-8ed4-45dc-bc4a-2f43abf54416",
@@ -35,11 +40,14 @@
                     "phase_name": "collection"
                 }
             ],
-            "modified": "2021-04-14T14:16:12.151Z",
+            "modified": "2021-10-16T01:35:43.938Z",
             "created": "2018-04-18T17:59:24.739Z",
             "x_mitre_is_subtechnique": false,
-            "x_mitre_version": "3.1",
+            "x_mitre_version": "3.2",
             "x_mitre_contributors": [
+                "Naveen Vijayaraghavan, Nilesh Dherange (Gurucul)",
+                "Regina Elwell",
+                "Isif Ibrahima",
                 "Praetorian",
                 "Milos Stojadinovic"
             ],
@@ -47,7 +55,7 @@
                 "Logon Session: Logon Session Creation",
                 "Application Log: Application Log Content"
             ],
-            "x_mitre_detection": "As information repositories generally have a considerably large user base, detection of malicious use can be non-trivial. At minimum, access to information repositories performed by privileged users (for example, Active Directory Domain, Enterprise, or Schema Administrators) should be closely monitored and alerted upon, as these types of accounts should not generally used to access information repositories. If the capability exists, it may be of value to monitor and alert on users that are retrieving and viewing a large number of documents and pages; this behavior may be indicative of programmatic means being used to retrieve all data within the repository. In environments with high-maturity, it may be possible to leverage User-Behavioral Analytics (UBA) platforms to detect and alert on user based anomalies.\n\nThe user access logging within Microsoft's SharePoint can be configured to report access to certain pages and documents. (Citation: Microsoft SharePoint Logging) The user access logging within Atlassian's Confluence can also be configured to report access to certain pages and documents through AccessLogFilter. (Citation: Atlassian Confluence Logging) Additional log storage and analysis infrastructure will likely be required for more robust detection capabilities.",
+            "x_mitre_detection": "As information repositories generally have a considerably large user base, detection of malicious use can be non-trivial. At minimum, access to information repositories performed by privileged users (for example, Active Directory Domain, Enterprise, or Schema Administrators) should be closely monitored and alerted upon, as these types of accounts should generally not be used to access information repositories. If the capability exists, it may be of value to monitor and alert on users that are retrieving and viewing a large number of documents and pages; this behavior may be indicative of programmatic means being used to retrieve all data within the repository. In environments with high-maturity, it may be possible to leverage User-Behavioral Analytics (UBA) platforms to detect and alert on user based anomalies.\n\nThe user access logging within Microsoft's SharePoint can be configured to report access to certain pages and documents. (Citation: Microsoft SharePoint Logging) Sharepoint audit logging can also be configured to report when a user shares a resource. (Citation: Sharepoint Sharing Events) The user access logging within Atlassian's Confluence can also be configured to report access to certain pages and documents through AccessLogFilter. (Citation: Atlassian Confluence Logging) Additional log storage and analysis infrastructure will likely be required for more robust detection capabilities. ",
             "x_mitre_permissions_required": [
                 "User"
             ],
@@ -57,7 +65,8 @@
                 "macOS",
                 "SaaS",
                 "Office 365",
-                "Google Workspace"
+                "Google Workspace",
+                "IaaS"
             ]
         }
     ]

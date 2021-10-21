@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--b71f8b2b-c2c4-4e2d-8171-af399a6a8377",
+    "id": "bundle--1f605862-aea4-4842-b19e-d5efca7fb771",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,6 +19,11 @@
                     "source_name": "Microsoft Detect Outlook Forms",
                     "url": "https://docs.microsoft.com/en-us/office365/securitycompliance/detect-and-remediate-outlook-rules-forms-attack",
                     "description": "Fox, C., Vangel, D. (2018, April 22). Detect and Remediate Outlook Rules and Custom Forms Injections Attacks in Office 365. Retrieved February 4, 2019."
+                },
+                {
+                    "source_name": "Pfammatter - Hidden Inbox Rules",
+                    "url": "https://blog.compass-security.com/2018/09/hidden-inbox-rules-in-microsoft-exchange/",
+                    "description": "Damian Pfammatter. (2018, September 17). Hidden Inbox Rules in Microsoft Exchange. Retrieved October 12, 2021."
                 },
                 {
                     "source_name": "SensePost NotRuler",
@@ -40,15 +45,18 @@
                     "phase_name": "persistence"
                 }
             ],
-            "modified": "2020-03-26T17:36:15.923Z",
+            "modified": "2021-10-15T20:18:30.700Z",
             "created": "2019-11-07T20:00:25.560Z",
+            "x_mitre_contributors": [
+                "Microsoft Security"
+            ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0",
+            "x_mitre_version": "1.1",
             "x_mitre_permissions_required": [
                 "Administrator",
                 "User"
             ],
-            "x_mitre_detection": "Microsoft has released a PowerShell script to safely gather mail forwarding rules and custom forms in your mail environment as well as steps to interpret the output.(Citation: Microsoft Detect Outlook Forms) SensePost, whose tool [Ruler](https://attack.mitre.org/software/S0358) can be used to carry out malicious rules, forms, and Home Page attacks, has released a tool to detect Ruler usage.(Citation: SensePost NotRuler)\n\nCollect process execution information including process IDs (PID) and parent process IDs (PPID) and look for abnormal chains of activity resulting from Office processes. Non-standard process execution trees may also indicate suspicious or malicious behavior.",
+            "x_mitre_detection": "Microsoft has released a PowerShell script to safely gather mail forwarding rules and custom forms in your mail environment as well as steps to interpret the output.(Citation: Microsoft Detect Outlook Forms) This PowerShell script is ineffective in gathering rules with modified `PRPR_RULE_MSG_NAME` and `PR_RULE_MSG_PROVIDER` properties caused by adversaries using a Microsoft Exchange Server Messaging API Editor (MAPI Editor), so only examination with the Exchange Administration tool MFCMapi can reveal these mail forwarding rules.(Citation: Pfammatter - Hidden Inbox Rules) SensePost, whose tool [Ruler](https://attack.mitre.org/software/S0358) can be used to carry out malicious rules, forms, and Home Page attacks, has released a tool to detect Ruler usage.(Citation: SensePost NotRuler)\n\nCollect process execution information including process IDs (PID) and parent process IDs (PPID) and look for abnormal chains of activity resulting from Office processes. Non-standard process execution trees may also indicate suspicious or malicious behavior.",
             "x_mitre_data_sources": [
                 "Process: Process Creation",
                 "Command: Command Execution",
