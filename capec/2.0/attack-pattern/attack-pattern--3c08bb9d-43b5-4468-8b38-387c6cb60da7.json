@@ -1,5 +1,5 @@
 {
-    "id": "bundle--16e35af3-5973-45c9-b144-72ac0da0b85f",
+    "id": "bundle--f8183a9f-c46f-44c0-bf89-e839cb9e3ab2",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
@@ -44,7 +44,7 @@
                 }
             ],
             "id": "attack-pattern--3c08bb9d-43b5-4468-8b38-387c6cb60da7",
-            "modified": "2014-06-23T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "MIME Conversion",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -77,7 +77,7 @@
             "x_capec_example_instances": [
                 "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Attack Example: Sendmail Overflow</xhtml:div>\n               <xhtml:p>A MIME conversion buffer overflow exists in Sendmail versions 8.8.3 and 8.8.4. Sendmail versions 8.8.3 and 8.8.4 are vulnerable to a buffer overflow in the MIME handling code. By sending a message with specially-crafted headers to the server, a remote attacker can overflow a buffer and execute arbitrary commands on the system with root privileges.</xhtml:p>\n               <xhtml:p>Sendmail performs a 7 bit to 8 bit conversion on email messages. This vulnerability is due to the fact that insufficient bounds checking was performed while performing these conversions. This gave attacker an opportunity to overwrite the internal stack of sendmail while it is executing with root privileges. An attacker first probes the target system to figure out what mail server is used on the system and what version. An attacker could then test out the exploit at their leisure on their own machine running the same version of the mail server before using it in the wild.</xhtml:p>See also: CVE-1999-0047"
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>Determine whether the mail server is unpatched and is potentially vulnerable to one of the known MIME conversion buffer overflows (e.g. Sendmail 8.8.3 and 8.8.4).</p></li><li> <p>Identify places in the system where vulnerable MIME conversion routines may be used.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>Send e-mail messages to the target system with specially crafted headers that trigger the buffer overflow and execute the shell code.</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target mail server: </b>The adversary identifies a target mail server that they wish to attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use Nmap on a system to identify a mail server service.</td></tr></tbody></table><li> <p> <b>Determine viability of attack: </b>Determine whether the mail server is unpatched and is potentially vulnerable to one of the known MIME conversion buffer overflows (e.g. Sendmail 8.8.3 and 8.8.4).</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find injection vector: </b>Identify places in the system where vulnerable MIME conversion routines may be used.</p></li><li> <p> <b>Craft overflow content: </b>The adversary crafts e-mail messages with special headers that will cause a buffer overflow for the vulnerable MIME conversion routine. The intent of this attack is to leverage the overflow for execution of arbitrary code and gain access to the mail server machine, so the adversary will craft an email that not only overflows the targeted buffer but does so in such a way that the overwritten return address is replaced with one of the adversary's choosing.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create malicious shellcode that will execute when the program execution is returned to it.</td></tr><tr><td>Use a NOP-sled in the overflow content to more easily \"slide\" into the malicious code. This is done so that the exact return address need not be correct, only in the range of all of the NOPs</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Overflow the buffer: </b>Send e-mail messages to the target system with specially crafted headers that trigger the buffer overflow and execute the shell code.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The target system uses a mail server.",
@@ -89,7 +89,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

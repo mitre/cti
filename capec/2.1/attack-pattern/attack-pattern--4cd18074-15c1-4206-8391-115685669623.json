@@ -1,10 +1,10 @@
 {
-    "id": "bundle--4de16609-76f6-47e6-a0e3-efff50eeca0b",
+    "id": "bundle--6167af2e-506a-4037-b8b7-d1e25944b751",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "This attack targets the format string vulnerabilities in the syslog() function. An attacker would typically inject malicious input in the format string parameter of the syslog function. This is a common problem, and many public vulnerabilities and associated exploits have been posted.",
+            "description": "This attack targets applications and software that uses the syslog() function insecurely. If an application does not explicitely use a format string parameter in a call to syslog(), user input can be placed in the format string parameter leading to a format string injection attack. Adversaries can then inject malicious format string commands into the function call leading to a buffer overflow. There are many reported software vulnerabilities with the root cause being a misuse of the syslog() function.",
             "external_references": [
                 {
                     "external_id": "CAPEC-67",
@@ -78,7 +78,7 @@
                 }
             ],
             "id": "attack-pattern--4cd18074-15c1-4206-8391-115685669623",
-            "modified": "2020-12-17T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "String Format Overflow in syslog()",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -90,7 +90,8 @@
                 "attack-pattern--ca989a50-b24e-4917-a234-ce4788fa21c7"
             ],
             "x_capec_child_of_refs": [
-                "attack-pattern--77e51461-7843-411c-a90e-852498957f76"
+                "attack-pattern--77e51461-7843-411c-a90e-852498957f76",
+                "attack-pattern--cbabea0a-39ed-4a6f-b752-238fe8c730af"
             ],
             "x_capec_consequences": {
                 "Access_Control": [
@@ -115,14 +116,14 @@
             "x_capec_example_instances": [
                 "Format string vulnerability in TraceEvent function for ntop before 2.1 allows remote attackers to execute arbitrary code by causing format strings to be injected into calls to the syslog function, via (1) an HTTP GET request, (2) a user name in HTTP authentication, or (3) a password in HTTP authentication. See also: CVE-2002-0412"
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The attacker finds that they can inject data to the format string parameter of Syslog().</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The attacker craft a malicious input and inject it into the format string parameter. From now on, the attacker can execute arbitrary code and do more damage.</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target application: </b>The adversary identifies a target application or program to perform the buffer overflow on. In this attack, adversaries look for applications that use syslog() incorrectly.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find injection vector: </b>The adversary identifies an injection vector to deliver the excessive content to the targeted application's buffer. For each user-controllable input that the adversary suspects is vulnerable to format string injection, attempt to inject formatting characters such as %n, %s, etc.. The goal is to manipulate the string creation using these formatting characters.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Inject probe payload which contains formatting characters (%s, %d, %n, etc.) through input parameters.</td></tr></tbody></table><li> <p> <b>Craft overflow content: </b>The adversary crafts the content to be injected. If the intent is to simply cause the software to crash, the content need only consist of an excessive quantity of random data. If the intent is to leverage the overflow for execution of arbitrary code, the adversary will craft a set of content that not only overflows the targeted buffer but does so in such a way that the overwritten return address is replaced with one of the adversaries' choosing which points to code injected by the adversary.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The formatting characters %s and %d are useful for observing memory and trying to print memory addresses. If an adversary has access to the log being written to they can observer this output and use it to help craft their attack.</td></tr><tr><td>The formatting character %n is useful for adding extra data onto the buffer.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Overflow the buffer: </b>Using the injection vector, the adversary supplies the program with the crafted format string injection, causing a buffer.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
-                "The format string argument of the Syslog function can be tainted with user supplied data."
+                "The Syslog function is used without specifying a format string argument, allowing user input to be placed direct into the function call as a format string."
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "type": "bundle"

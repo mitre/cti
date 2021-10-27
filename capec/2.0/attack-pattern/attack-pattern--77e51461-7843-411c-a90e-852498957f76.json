@@ -1,5 +1,5 @@
 {
-    "id": "bundle--6f2885c7-64d9-4247-9c7f-2709434d35dc",
+    "id": "bundle--c0ebdaad-f689-455d-a00d-8c9302e0beaf",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
@@ -60,7 +60,7 @@
                 }
             ],
             "id": "attack-pattern--77e51461-7843-411c-a90e-852498957f76",
-            "modified": "2021-06-24T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "Overflow Buffers",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -93,7 +93,7 @@
                 "The most straightforward example is an application that reads in input from the user and stores it in an internal buffer but does not check that the size of the input data is less than or equal to the size of the buffer. If the user enters excessive length data, the buffer may overflow leading to the application crashing, or worse, enabling the user to cause execution of injected code.",
                 "Many web servers enforce security in web applications through the use of filter plugins. An example is the SiteMinder plugin used for authentication. An overflow in such a plugin, possibly through a long URL or redirect parameter, can allow an adversary not only to bypass the security checks but also execute arbitrary code on the target web server in the context of the user that runs the web server process."
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary identifies a buffer to target. Buffer regions are either allotted on the stack or the heap, and the exact nature of attack would vary depending on the location of the buffer</p></li><li> <p>Next, the adversary identifies an injection vector to deliver the excessive content to the targeted buffer.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary crafts the content to be injected. If the intent is to simply cause the software to crash, the content need only consist of an excessive quantity of random data. If the intent is to leverage the overflow for execution of arbitrary code, the adversary will craft a set of content that not only overflows the targeted buffer but does so in such a way that the overwritten return address is replaced with one of the adversaries' choosing which points to code injected by the adversary.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The adversary injects the content into the targeted software.</p></li><li> <p>Upon successful exploitation, the system either crashes or control of the program is returned to a location of the adversaries' choice. This can result in execution of arbitrary code or escalated privileges, depending upon the exploited target.</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target application: </b>The adversary identifies a target application or program to perform the buffer overflow on. Adversaries often look for applications that accept user input and that perform manual memory management.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find injection vector: </b>The adversary identifies an injection vector to deliver the excessive content to the targeted application's buffer.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Provide large input to a program or application and observe the behavior. If there is a crash, this means that a buffer overflow attack is possible.</td></tr></tbody></table><li> <p> <b>Craft overflow content: </b>The adversary crafts the content to be injected. If the intent is to simply cause the software to crash, the content need only consist of an excessive quantity of random data. If the intent is to leverage the overflow for execution of arbitrary code, the adversary crafts the payload in such a way that the overwritten return address is replaced with one of the adversary's choosing.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create malicious shellcode that will execute when the program execution is returned to it.</td></tr><tr><td>Use a NOP-sled in the overflow content to more easily \"slide\" into the malicious code. This is done so that the exact return address need not be correct, only in the range of all of the NOPs</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Overflow the buffer: </b>Using the injection vector, the adversary injects the crafted overflow content into the buffer.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_parent_of_refs": [
                 "attack-pattern--4a29d66d-8617-4382-b456-578ecdb1609e",
@@ -123,7 +123,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

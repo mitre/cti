@@ -1,10 +1,10 @@
 {
-    "id": "bundle--edc2672a-a059-438b-b5a0-a18129bf8233",
+    "id": "bundle--6b037a07-908a-405b-9eab-25b1dedda7e5",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An attacker can abuse an authentication protocol susceptible to reflection attack in order to defeat it. Doing so allows the attacker illegitimate access to the target system, without possessing the requisite credentials. Reflection attacks are of great concern to authentication protocols that rely on a challenge-handshake or similar mechanism. An attacker can impersonate a legitimate user and can gain illegitimate access to the system by successfully mounting a reflection attack during authentication.",
+            "description": "An adversary can abuse an authentication protocol susceptible to reflection attack in order to defeat it. Doing so allows the adversary illegitimate access to the target system, without possessing the requisite credentials. Reflection attacks are of great concern to authentication protocols that rely on a challenge-handshake or similar mechanism. An adversary can impersonate a legitimate user and can gain illegitimate access to the system by successfully mounting a reflection attack during authentication.",
             "external_references": [
                 {
                     "external_id": "CAPEC-90",
@@ -23,7 +23,7 @@
                 }
             ],
             "id": "attack-pattern--229804f0-b017-4a26-937b-159da866bf9a",
-            "modified": "2021-06-24T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "Reflection Attack in Authentication Protocol",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -52,7 +52,7 @@
             "x_capec_example_instances": [
                 "\n               <xhtml:p>A single sign-on solution for a network uses a fixed pre-shared key with its clients to initiate the sign-on process in order to avoid eavesdropping on the initial exchanges.</xhtml:p>\n               <xhtml:p>An attacker can use a reflection attack to mimic a trusted client on the network to participate in the sign-on exchange.</xhtml:p>\n            "
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Experiment</h3><ol><li> <p>The attacker opens a connection to the target server and sends it a challenge</p></li><li> <p>The server responds by returning the challenge encrypted with a shared secret as well as its own challenge to the attacker</p></li><li> <p>Since the attacker does not possess the shared secret, they initiate a second connection to the server and sends it, as challenge, the challenge received from the server on the first connection</p></li><li> <p>The server treats this as just another handshake and responds by encrypting the challenge and issuing its own to the attacker</p></li><li> <p>The attacker now receives the encrypted challenge on the second connection and sends it as response to the server on the first connection, thereby successfully completing the handshake and authenticating to the server.</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify service with vulnerable handshake authentication: </b>The adversary must first identify a vulnerable authentication protocol. The most common indication of an authentication protocol vulnerable to reflection attack is when the client initiates the handshake, rather than the server. This allows the client to get the server to encrypt targeted data using the server's pre-shared key.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Send challenge to target server: </b>The adversary opens a connection to the target server and sends it a challenge. This challenge is arbitrary and is simply used as a placeholder for the protocol in order to get the server to respond.</p></li><li> <p> <b>Receive server challenge: </b>The server responds by returning the challenge sent encrypted with the server's pre-shared key, as well as its own challenge to the attacker sent in plaintext. We will call this challenge sent by the server \"C\". C is very important and is stored off by the adversary for the next step.</p></li><li> <p> <b>Initiate second handshake: </b>Since the adversary does not possess the pre-shared key, they cannot encrypt C from the previous step in order for the server to authenticate them. To get around this, the adversary initiates a second connection to the server while still keeping the first connection alive. In the second connection, the adversary sends C as the initial client challenge, which rather than being arbitary like the first connection, is very intentional.</p></li><li> <p> <b>Receive encrypted challenge: </b>The server treats the intial client challenge in connection two as an arbitrary client challenge and responds by encrypting C with the pre-shared key. The server also sends a new challenge. The adversary ignores the server challenge and stores the encrypted version of C. The second connection is either terminated or left to expire by the adversary as it is no longer needed.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The adversary now posseses the encrypted version of C that is obtained through connection two. The adversary continues the handshake in connection one by responding to the server with the encrypted version of C, verifying that they have access to the pre-shared key (when they actually do not). Because the server uses the same pre-shared key for all authentication it will decrypt C and authenticate the adversary for the first connection, giving the adversary illegitimate access to the target system.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The attacker must have direct access to the target server in order to successfully mount a reflection attack. An intermediate entity, such as a router or proxy, that handles these exchanges on behalf of the attacker inhibits the attackers' ability to attack the authentication protocol."
@@ -65,7 +65,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

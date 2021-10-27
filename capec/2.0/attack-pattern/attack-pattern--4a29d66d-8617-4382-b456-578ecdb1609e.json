@@ -1,5 +1,5 @@
 {
-    "id": "bundle--e09dcb21-8023-4bd7-b6b6-c7d3c8b259b1",
+    "id": "bundle--5f845f5d-c68e-4940-9c9a-94ec85153e3f",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
@@ -79,7 +79,7 @@
                 }
             ],
             "id": "attack-pattern--4a29d66d-8617-4382-b456-578ecdb1609e",
-            "modified": "2020-12-17T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "Buffer Overflow via Environment Variables",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -117,7 +117,8 @@
                 "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Attack Example: Buffer Overflow in $HOME</xhtml:div>\n               <xhtml:p>A buffer overflow in sccw allows local users to gain root access via the $HOME environmental variable.</xhtml:p>See also: CVE-1999-0906",
                 "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Attack Example: Buffer Overflow in TERM</xhtml:div>\n               <xhtml:p>A buffer overflow in the rlogin program involves its consumption of the TERM environmental variable.</xhtml:p>See also: CVE-1999-0046"
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The attacker tries to find an environment variable which can be overwritten for instance by gathering information about the target host (error pages, software's version number, etc.).</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The attacker manipulates the environment variable to contain excessive-length content to cause a buffer overflow.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The attacker potentially leverages the buffer overflow to inject maliciously crafted code in an attempt to execute privileged command on the target environment.</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target application: </b>The adversary identifies a target application or program to perform the buffer overflow on. In this attack the adversary looks for an application that loads the content of an environment variable into a buffer.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find injection vector: </b>The adversary identifies an injection vector to deliver the excessive content to the targeted application's buffer.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Change the values of environment variables thought to be used by the application to contain excessive data. If the program is loading the value of the environment variable into a buffer, this could cause a crash and an attack vector will be found.</td></tr></tbody></table><li> <p> <b>Craft overflow content: </b>The adversary crafts the content to be injected. If the intent is to simply cause the software to crash, the content need only consist of an excessive quantity of random data. If the intent is to leverage the overflow for execution of arbitrary code, the adversary crafts the payload in such a way that the overwritten return address is replaced with one of the adversary's choosing.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create malicious shellcode that will execute when the program execution is returned to it.</td></tr><tr><td>Use a NOP-sled in the overflow content to more easily \"slide\" into the malicious code. This is done so that the exact return address need not be correct, only in the range of all of the NOPs</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Overflow the buffer: </b>Using the injection vector, the adversary injects the crafted overflow content into the buffer.</p></li></ol></div>",
+            "x_capec_extended_description": "Although the focus of this attack is putting excessive content into an environment variable that is loaded into a buffer, environment variables can be used to assist a classic buffer overflow attack as well. In the case where the buffer used in a traditional buffer overflow attack is not large enough to store the adversary's shell code, they will store the shell code in an environment variable and attempt to return to its address, rather than back into the data they wrote to the buffer.",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The application uses environment variables.",
@@ -131,7 +132,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

@@ -1,10 +1,10 @@
 {
-    "id": "bundle--0c2362ba-5321-4dee-abeb-18163a96eb52",
+    "id": "bundle--6266a299-dc35-4f33-a6c3-de8900c1e1ac",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An adversary corrupts or modifies the content of XML schema information passed between a client and server for the purpose of undermining the security of the target. XML Schemas provide the structure and content definitions for XML documents. Schema poisoning is the ability to manipulate a schema either by replacing or modifying it to compromise the programs that process documents that use this schema. Possible attacks are denial of service attacks by modifying the schema so that it does not contain required information for subsequent processing. For example, the unaltered schema may require a @name attribute in all submitted documents. If the adversary removes this attribute from the schema then documents created using the new grammar may lack this field, which may cause the processing application to enter an unexpected state or record incomplete data. In addition, manipulation of the data types described in the schema may affect the results of calculations taken by the document reader. For example, a float field could be changed to an int field. Finally, the adversary may change the encoding defined in the schema for certain fields allowing the contents to bypass filters that scan for dangerous strings. For example, the modified schema might use a URL encoding instead of ASCII, and a filter that catches a semicolon (;) might fail to detect its URL encoding (%3B).",
+            "description": "An adversary corrupts or modifies the content of XML schema information passed between a client and server for the purpose of undermining the security of the target. XML Schemas provide the structure and content definitions for XML documents. Schema poisoning is the ability to manipulate a schema either by replacing or modifying it to compromise the programs that process documents that use this schema.",
             "external_references": [
                 {
                     "external_id": "CAPEC-146",
@@ -23,7 +23,7 @@
                 }
             ],
             "id": "attack-pattern--ebf4bdc7-73dd-47c4-96e1-1ff471efbcd2",
-            "modified": "2021-06-24T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "XML Schema Poisoning",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -49,6 +49,7 @@
                 "\n               <xhtml:p>XML Schema Poisoning Attacks can often occur locally due to being embedded within the XML document itself or being located on the host within an improperaly protected file. In these cases, the adversary can simply edit the XML schema without the need for additional privileges. An example of the former can be seen below:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\"><?xml version=\"1.0\"?> <!DOCTYPE contact [ <!ELEMENT contact (name,phone,email,address)> <!ELEMENT name (#PCDATA)> <!ELEMENT phone (#PCDATA)> <!ELEMENT email (#PCDATA)> <!ELEMENT address (#PCDATA)> ]> <note> <name>John Smith</name> <phone>555-1234</phone> <email>jsmith@email.com</email> <address>1 Example Lane</address> </note></capec:Code></xhtml:div>\n               <xhtml:p>If the 'name' attribute is required in all submitted documents and this field is removed by the adversary, the application may enter an unexpected state or record incomplete data. Additionally, if this data is needed to perform additional functions, a Denial of Service (DOS) may occur.</xhtml:p>\n            ",
                 "\n               <xhtml:p>XML Schema Poisoning Attacks can also be executed remotely if the HTTP protocol is being used to transport data. :</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\"><?xml version=\"1.0\"?> <!DOCTYPE contact SYSTEM \"http://example.com/contact.dtd\"[ <note> <name>John Smith</name> <phone>555-1234</phone> <email>jsmith@email.com</email> <address>1 Example Lane</address> </note></capec:Code></xhtml:div>\n               <xhtml:p>The HTTP protocol does not encrypt the traffic it transports, so all communication occurs in plaintext. This traffic can be observed and modified by the adversary during transit to alter the XML schema before it reaches the end user. The adversary can perform a Adversary-in-the-Middle (CAPEC-94) Attack to alter the schema in the same way as the previous example and to acheive the same results.</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine if XML schema is local or remote: </b>Because this attack differs slightly if the target uses remote XML schemas versus local schemas, the adversary first needs to determine which of the two are used.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Gain access to XML schema: </b>The adversary gains access to the XML schema so that they can modify the contents.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>For a local scenario, the adversary needs access to the machine that the schema is located on and needs to gain permissions to alter the contents of the file.</td></tr><tr><td>For a remote scenario, the adversary needs to be able to sniff HTTP traffic that contains an XML schema.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Poison XML schema: </b>Once the adversary gains access to the XML schema, they will alter it to achieve a desired effect. Locally, they can simply modify the file. For remote schemas, the adversary will alter the schema in transit by performing an adversary in the middle attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Cause a denial of service by modifying the schema so that it does not contain required information for subsequent processing. For example, the unaltered schema may require a @name attribute in all submitted documents. If the adversary removes this attribute from the schema then documents created using the new grammar may lack this field, which may cause the processing application to enter an unexpected state or record incomplete data.</td></tr><tr><td>Manipulation of the data types described in the schema may affect the results of calculations. For example, a float field could be changed to an int field.</td></tr><tr><td>Change the encoding defined in the schema for certain fields allowing the contents to bypass filters that scan for dangerous strings. For example, the modified schema might use a URL encoding instead of ASCII, and a filter that catches a semicolon (;) might fail to detect its URL encoding (%3B).</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "Low",
             "x_capec_prerequisites": [
                 "Some level of access to modify the target schema.",
@@ -59,7 +60,7 @@
             ],
             "x_capec_status": "Stable",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

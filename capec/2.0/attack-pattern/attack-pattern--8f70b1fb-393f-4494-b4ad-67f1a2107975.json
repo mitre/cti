@@ -1,10 +1,10 @@
 {
-    "id": "bundle--906b6696-f548-41f3-90f0-0c0dea3d8bcd",
+    "id": "bundle--646e53df-fc3c-4c18-ae17-96271ec1a518",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An adversary exploits a few properties of XML(substitution entities and inline DTDs) to cause a denial of service situation due to excessive memory being allocated to fully expand the XML. The result of this denial of service could cause the application to freeze or crash.",
+            "description": "An adversary exploits macro-like substitution to cause a denial of service situation due to excessive memory being allocated to fully expand the data. The result of this denial of service could cause the application to freeze or crash. This involves defining a very large entity and using it multiple times in a single entity substitution. CAPEC-197 is a similar attack pattern, but it is easier to discover and defend against. This attack pattern does not perform multi-level substitution and therefore does not obviously appear to consume extensive resources.",
             "external_references": [
                 {
                     "external_id": "CAPEC-491",
@@ -18,27 +18,37 @@
                 }
             ],
             "id": "attack-pattern--8f70b1fb-393f-4494-b4ad-67f1a2107975",
-            "modified": "2020-12-17T00:00:00.000Z",
-            "name": "XML Quadratic Expansion",
+            "modified": "2021-10-21T00:00:00.000Z",
+            "name": "Quadratic Data Expansion",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
             ],
             "type": "attack-pattern",
             "x_capec_abstraction": "Detailed",
+            "x_capec_alternate_terms": [
+                "XML Entity Expansion (XEE)"
+            ],
             "x_capec_can_follow_refs": [
                 "attack-pattern--5cf3eacf-a0c6-4c59-9f97-4f677a90587a"
             ],
             "x_capec_child_of_refs": [
                 "attack-pattern--8abd01d1-b2a2-4b86-a640-7d3d3b61d27f"
             ],
+            "x_capec_consequences": {
+                "Availability": [
+                    "Unreliable Execution (Denial of Service)",
+                    "Resource Consumption (Denial of Service)"
+                ]
+            },
             "x_capec_example_instances": [
-                "\n               <xhtml:p>In this example the attacker defines one large entity and refers to it many times.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><?xml version=\"1.0\"?><!DOCTYPE bomb [<!ENTITY x \"AAAAA<xhtml:div>\n                     <xhtml:i>... [100K of them] ...</xhtml:i>\n                  </xhtml:div>\n                  AAAA\">]><boom><xhtml:div style=\"margin-left:10px;\"><bang>&x;&x;<xhtml:div>\n                        <xhtml:i>... [100K of them]...</xhtml:i>\n                     </xhtml:div>\n                     &x;&x;</bang></xhtml:div>\n                  </boom></xhtml:div>\n               <xhtml:p>This results in a relatively small message of 100KBs that will expand to a message in the GB range.</xhtml:p>\n            "
+                "\n               <xhtml:p>In this example the attacker defines one large entity and refers to it many times.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><?xml version=\"1.0\"?><!DOCTYPE bomb [<!ENTITY x \"AAAAA<xhtml:em>... [100K of them] ...</xhtml:em>AAAA\">]><b><c>&x;&x;<xhtml:em>... [100K of them]...</xhtml:em>&x;&x;</c></b></xhtml:div>\n               <xhtml:p>This results in a relatively small message of 100KBs that will expand to a message in the GB range.</xhtml:p>\n            "
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the target: </b>An adversary determines the input data stream that is being processed by a data parser that supports using substituion on the victim's side.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use an automated tool to record all instances of URLs to process requests.</td></tr><tr><td>Use a browser to manually explore the website and analyze how the application processes requests.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Craft malicious payload: </b>The adversary crafts malicious message containing nested quadratic expansion that completely uses up available server resource.</p></li><li> <p> <b>Send the message: </b>Send the malicious crafted message to the target URL.</p></li></ol></div>",
             "x_capec_prerequisites": [
-                "This type of attack requires a server that accepts XML data and parses the data."
+                "This type of attack requires a server that accepts serialization data which supports substitution and parses the data."
             ],
             "x_capec_status": "Draft",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

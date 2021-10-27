@@ -1,10 +1,10 @@
 {
-    "id": "bundle--247cec96-6fa3-4f9f-8073-3f3c5a1b6cfe",
+    "id": "bundle--a04f39aa-db11-4624-8633-501959b85c17",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "This attack targets programs running with elevated privileges. The attacker would try to leverage a bug in the running program and get arbitrary code to execute with elevated privileges. For instance an attacker would look for programs that write to the system directories or registry keys (such as HKLM, which stores a number of critical Windows environment variables). These programs are typically running with elevated privileges and have usually not been designed with security in mind. Such programs are excellent exploit targets because they yield lots of power when they break. The malicious user try to execute its code at the same level as a privileged system call.",
+            "description": "This attack targets programs running with elevated privileges. The adversary tries to leverage a vulnerability in the running program and get arbitrary code to execute with elevated privileges.",
             "external_references": [
                 {
                     "external_id": "CAPEC-69",
@@ -28,7 +28,7 @@
                 }
             ],
             "id": "attack-pattern--ca989a50-b24e-4917-a234-ce4788fa21c7",
-            "modified": "2021-06-24T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "Target Programs with Elevated Privileges",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -64,14 +64,11 @@
                     "Execute Unauthorized Commands (Run Arbitrary Code)"
                 ]
             },
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The attacker probes for programs running with elevated privileges.</p></li><li> <p>The attacker finds a bug in a program running with elevated privileges.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The attacker exploits the bug that they have found. For instance, they can try to inject and execute arbitrary code or write to OS resources.</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find programs with elevated priveleges: </b>The adversary probes for programs running with elevated privileges.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Look for programs that write to the system directories or registry keys (such as HKLM, which stores a number of critical Windows environment variables). These programs are typically running with elevated privileges and have usually not been designed with security in mind. Such programs are excellent exploit targets because they yield lots of power when they break.</td></tr></tbody></table><li> <p> <b>Find vulnerability in running program: </b>The adversary looks for a vulnerability in the running program that would allow for arbitrary code execution with the privilege of the running program.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Look for improper input validation</td></tr><tr><td>Look for improper failure safety. For instance when a program fails it may authorize restricted access to anyone.</td></tr><tr><td>Look for a buffer overflow which may be exploited if an adversary can inject unvalidated data.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Execute arbitrary code: </b>The adversary exploits the vulnerability that they have found. For instance, they can try to inject and execute arbitrary code or write to OS resources.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The targeted program runs with elevated OS privileges.",
                 "The targeted program accepts input data from the user or from another program.",
-                "The targeted program does not perform input validation properly.",
-                "The targeted program does not fail safely. For instance when a program fails it may authorize restricted access to anyone.",
-                "The targeted program has a vulnerability such as buffer overflow which may be exploited if a malicious user can inject unvalidated data. For instance a buffer overflow interrupts the program as it executes, and makes it run additional code supplied by the attacker. If the program under attack has elevated privileges to the OS, the attacker can elevate its privileges (such as having root level access).",
                 "The targeted program is giving away information about itself. Before performing such attack, an eventual attacker may need to gather information about the services running on the host target. The more the host target is verbose about the services that are running (version number of application, etc.) the more information can be gather by an attacker.",
                 "This attack often requires communicating with the host target services directly. For instance Telnet may be enough to communicate with the host target."
             ],
@@ -81,7 +78,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "type": "bundle"
