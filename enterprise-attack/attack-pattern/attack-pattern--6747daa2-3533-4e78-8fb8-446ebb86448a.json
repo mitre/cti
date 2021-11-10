@@ -1,34 +1,33 @@
 {
     "type": "bundle",
-    "id": "bundle--e33ced61-14e2-4b5e-87fa-696f354d8beb",
+    "id": "bundle--5154f094-0758-4c2a-bbc2-11654758cece",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--6747daa2-3533-4e78-8fb8-446ebb86448a",
-            "description": "Adversaries can modify property list files (plist files) to execute their code as part of establishing persistence. Plist files are used by macOS applications to store properties and configuration settings for applications and services. Applications use information plist files, <code>Info.plist</code>, to tell the operating system how to handle the application at runtime using structured metadata in the form of keys and values. Plist files are formatted in XML and based on Apple's Core Foundation DTD and can be saved in text or binary format.(Citation: fileinfo plist file description) \n\nAdversaries can modify paths to executed binaries, add command line arguments, and insert key/pair values to plist files in auto-run locations which execute upon user logon or system startup. Through modifying plist files in these locations, adversaries can also execute a malicious dynamic library (dylib) by adding a dictionary containing the <code>DYLD_INSERT_LIBRARIES</code> key combined with a path to a malicious dylib under the <code>EnvironmentVariables</code> key in a plist file. Upon user logon, the plist is called for execution and the malicious dylib is executed within the process space. Persistence can also be achieved by modifying the <code>LSEnvironment</code> key in the application's <code>Info.plist</code> file.(Citation: wardle artofmalware volume1)",
-            "name": "Plist Modification",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1547.011",
-                    "url": "https://attack.mitre.org/techniques/T1547/011"
-                },
-                {
-                    "source_name": "fileinfo plist file description",
-                    "url": "https://fileinfo.com/extension/plist",
-                    "description": "FileInfo.com team. (2019, November 26). .PLIST File Extension. Retrieved October 12, 2021."
-                },
-                {
-                    "source_name": "wardle artofmalware volume1",
-                    "url": "https://taomm.org/vol1/pdfs.html",
-                    "description": "Patrick Wardle. (2020, August 5). The Art of Mac Malware Volume 0x1: Analysis. Retrieved March 19, 2021."
-                }
-            ],
             "type": "attack-pattern",
+            "name": "Plist Modification",
+            "x_mitre_data_sources": [
+                "Service: Service Creation",
+                "Command: Command Execution",
+                "File: File Modification",
+                "Process: Process Creation"
+            ],
+            "x_mitre_version": "1.1",
+            "modified": "2021-10-15T14:46:47.383Z",
+            "created": "2020-01-24T20:02:59.149Z",
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--6747daa2-3533-4e78-8fb8-446ebb86448a",
+            "description": "Adversaries can modify property list files (plist files) to execute their code as part of establishing persistence. Plist files are used by macOS applications to store properties and configuration settings for applications and services. Applications use information plist files, <code>Info.plist</code>, to tell the operating system how to handle the application at runtime using structured metadata in the form of keys and values. Plist files are formatted in XML and based on Apple's Core Foundation DTD and can be saved in text or binary format.(Citation: fileinfo plist file description) \n\nAdversaries can modify paths to executed binaries, add command line arguments, and insert key/pair values to plist files in auto-run locations which execute upon user logon or system startup. Through modifying plist files in these locations, adversaries can also execute a malicious dynamic library (dylib) by adding a dictionary containing the <code>DYLD_INSERT_LIBRARIES</code> key combined with a path to a malicious dylib under the <code>EnvironmentVariables</code> key in a plist file. Upon user logon, the plist is called for execution and the malicious dylib is executed within the process space. Persistence can also be achieved by modifying the <code>LSEnvironment</code> key in the application's <code>Info.plist</code> file.(Citation: wardle artofmalware volume1)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -39,24 +38,25 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2021-10-15T14:46:47.383Z",
-            "created": "2020-01-24T20:02:59.149Z",
-            "x_mitre_platforms": [
-                "macOS"
-            ],
-            "x_mitre_data_sources": [
-                "Service: Service Creation",
-                "Command: Command Execution",
-                "File: File Modification",
-                "Process: Process Creation"
-            ],
             "x_mitre_detection": "Monitor for common command-line editors used to modify plist files located in auto-run locations, such as <code>~/LaunchAgents</code>, <code>~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm</code>, and an application's <code>Info.plist</code>. \n\nMonitor for plist file modification immediately followed by code execution from <code>~/Library/Scripts</code> and <code>~/Library/Preferences</code>. Also, monitor for significant changes to any path pointers in a modified plist.\n\nIdentify new services executed from plist modified in the previous user's session. ",
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.1"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1547/011",
+                    "external_id": "T1547.011",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://fileinfo.com/extension/plist",
+                    "description": "FileInfo.com team. (2019, November 26). .PLIST File Extension. Retrieved October 12, 2021.",
+                    "source_name": "fileinfo plist file description"
+                },
+                {
+                    "url": "https://taomm.org/vol1/pdfs.html",
+                    "description": "Patrick Wardle. (2020, August 5). The Art of Mac Malware Volume 0x1: Analysis. Retrieved March 19, 2021.",
+                    "source_name": "wardle artofmalware volume1"
+                }
+            ]
         }
     ]
 }

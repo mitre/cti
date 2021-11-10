@@ -1,11 +1,32 @@
 {
     "type": "bundle",
-    "id": "bundle--73e2764a-f5dc-447e-b0b4-e4ced68aab18",
+    "id": "bundle--ba510753-b7dc-471f-9561-bb93ea400da6",
     "spec_version": "2.0",
     "objects": [
         {
-            "created": "2020-02-18T16:39:06.289Z",
+            "type": "attack-pattern",
             "modified": "2020-03-26T21:29:18.608Z",
+            "name": "Token Impersonation/Theft",
+            "x_mitre_data_sources": [
+                "Process: OS API Execution",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "created": "2020-02-18T16:39:06.289Z",
+            "x_mitre_defense_bypassed": [
+                "Windows User Account Control",
+                "System access controls",
+                "File system access controls"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--86850eff-2729-40c3-b85e-c4af26da4a2d",
+            "description": "Adversaries may duplicate then impersonate another user's token to escalate privileges and bypass access controls. An adversary can create a new access token that duplicates an existing token using <code>DuplicateToken(Ex)</code>. The token can then be used with <code>ImpersonateLoggedOnUser</code> to allow the calling thread to impersonate a logged on user's security context, or with <code>SetThreadToken</code> to assign the impersonated token to a thread.\n\nAn adversary may do this when they have a specific, existing process they want to assign the new token to. For example, this may be useful for when the target user has a non-network logon session on the system.",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -16,41 +37,20 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--86850eff-2729-40c3-b85e-c4af26da4a2d",
-            "description": "Adversaries may duplicate then impersonate another user's token to escalate privileges and bypass access controls. An adversary can create a new access token that duplicates an existing token using <code>DuplicateToken(Ex)</code>. The token can then be used with <code>ImpersonateLoggedOnUser</code> to allow the calling thread to impersonate a logged on user's security context, or with <code>SetThreadToken</code> to assign the impersonated token to a thread.\n\nAn adversary may do this when they have a specific, existing process they want to assign the new token to. For example, this may be useful for when the target user has a non-network logon session on the system.",
-            "name": "Token Impersonation/Theft",
+            "x_mitre_detection": "If an adversary is using a standard command-line shell, analysts can detect token manipulation by auditing command-line activity. Specifically, analysts should look for use of the <code>runas</code> command. Detailed command-line logging is not enabled by default in Windows.(Citation: Microsoft Command-line Logging)\n\nAnalysts can also monitor for use of Windows APIs such as <code>DuplicateToken(Ex)</code>, <code> ImpersonateLoggedOnUser </code>, and <code> SetThreadToken </code> and correlate activity with other suspicious behavior to reduce false positives that may be due to normal benign use by users and administrators.",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "external_references": [
                 {
-                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1134/001",
                     "external_id": "T1134.001",
-                    "url": "https://attack.mitre.org/techniques/T1134/001"
+                    "source_name": "mitre-attack"
                 },
                 {
-                    "url": "https://technet.microsoft.com/en-us/windows-server-docs/identity/ad-ds/manage/component-updates/command-line-process-auditing",
+                    "source_name": "Microsoft Command-line Logging",
                     "description": "Mathers, B. (2017, March 7). Command line process auditing. Retrieved April 21, 2017.",
-                    "source_name": "Microsoft Command-line Logging"
+                    "url": "https://technet.microsoft.com/en-us/windows-server-docs/identity/ad-ds/manage/component-updates/command-line-process-auditing"
                 }
-            ],
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_data_sources": [
-                "Process: OS API Execution",
-                "Command: Command Execution"
-            ],
-            "x_mitre_detection": "If an adversary is using a standard command-line shell, analysts can detect token manipulation by auditing command-line activity. Specifically, analysts should look for use of the <code>runas</code> command. Detailed command-line logging is not enabled by default in Windows.(Citation: Microsoft Command-line Logging)\n\nAnalysts can also monitor for use of Windows APIs such as <code>DuplicateToken(Ex)</code>, <code> ImpersonateLoggedOnUser </code>, and <code> SetThreadToken </code> and correlate activity with other suspicious behavior to reduce false positives that may be due to normal benign use by users and administrators.",
-            "x_mitre_defense_bypassed": [
-                "Windows User Account Control",
-                "System access controls",
-                "File system access controls"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0"
+            ]
         }
     ]
 }

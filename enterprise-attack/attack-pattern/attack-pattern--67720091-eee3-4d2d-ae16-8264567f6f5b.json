@@ -1,24 +1,38 @@
 {
     "type": "bundle",
-    "id": "bundle--b2fe7bbb-026f-4c0f-b103-37fa7f1c3c8f",
+    "id": "bundle--1f67dd6e-7a4d-4dfe-bee2-143de0dc1705",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1548",
-                    "url": "https://attack.mitre.org/techniques/T1548"
-                }
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Abuse Elevation Control Mechanism",
-            "description": "Adversaries may circumvent mechanisms designed to control elevate privileges to gain higher-level permissions. Most modern systems contain native elevation control mechanisms that are intended to limit privileges that a user can perform on a machine. Authorization has to be granted to specific users in order to perform tasks that can be considered of higher risk. An adversary can perform several methods to take advantage of built-in control mechanisms in order to escalate privileges on a system.",
-            "id": "attack-pattern--67720091-eee3-4d2d-ae16-8264567f6f5b",
             "type": "attack-pattern",
+            "name": "Abuse Elevation Control Mechanism",
+            "x_mitre_data_sources": [
+                "Process: Process Metadata",
+                "Process: Process Creation",
+                "Windows Registry: Windows Registry Key Modification",
+                "Command: Command Execution",
+                "File: File Metadata",
+                "File: File Modification",
+                "Process: OS API Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2020-07-22T21:36:52.825Z",
+            "created": "2020-01-30T13:58:14.373Z",
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "User"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "id": "attack-pattern--67720091-eee3-4d2d-ae16-8264567f6f5b",
+            "description": "Adversaries may circumvent mechanisms designed to control elevate privileges to gain higher-level permissions. Most modern systems contain native elevation control mechanisms that are intended to limit privileges that a user can perform on a machine. Authorization has to be granted to specific users in order to perform tasks that can be considered of higher risk. An adversary can perform several methods to take advantage of built-in control mechanisms in order to escalate privileges on a system.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -29,28 +43,14 @@
                     "phase_name": "defense-evasion"
                 }
             ],
-            "modified": "2020-07-22T21:36:52.825Z",
-            "created": "2020-01-30T13:58:14.373Z",
-            "x_mitre_data_sources": [
-                "Process: Process Metadata",
-                "Process: Process Creation",
-                "Windows Registry: Windows Registry Key Modification",
-                "Command: Command Execution",
-                "File: File Metadata",
-                "File: File Modification",
-                "Process: OS API Execution"
-            ],
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "User"
-            ],
             "x_mitre_detection": "Monitor the file system for files that have the setuid or setgid bits set. Also look for any process API calls for behavior that may be indicative of [Process Injection](https://attack.mitre.org/techniques/T1055) and unusual loaded DLLs through [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1574/001), which indicate attempts to gain access to higher privileged processes. On Linux, auditd can alert every time a user's actual ID and effective ID are different (this is what happens when you sudo).\n\nConsider monitoring for <code>/usr/libexec/security_authtrampoline</code> executions which may indicate that AuthorizationExecuteWithPrivileges is being executed. MacOS system logs may also indicate when AuthorizationExecuteWithPrivileges is being called. Monitoring OS API callbacks for the execution can also be a way to detect this behavior but requires specialized security tooling.\n\nOn Linux, auditd can alert every time a user's actual ID and effective ID are different (this is what happens when you sudo). This technique is abusing normal functionality in macOS and Linux systems, but sudo has the ability to log all input and output based on the <code>LOG_INPUT</code> and <code>LOG_OUTPUT</code> directives in the <code>/etc/sudoers</code> file.\n\nThere are many ways to perform UAC bypasses when a user is in the local administrator group on a system, so it may be difficult to target detection on all variations. Efforts should likely be placed on mitigation and collecting enough information on process launches and actions that could be performed before and after a UAC bypass is performed. Some UAC bypass methods rely on modifying specific, user-accessible Registry settings. Analysts should monitor Registry settings for unauthorized changes.",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1548",
+                    "external_id": "T1548",
+                    "source_name": "mitre-attack"
+                }
             ]
         }
     ]

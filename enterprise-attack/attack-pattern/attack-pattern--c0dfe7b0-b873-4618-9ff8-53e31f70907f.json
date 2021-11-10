@@ -1,34 +1,32 @@
 {
     "type": "bundle",
-    "id": "bundle--52fa3845-243a-4f61-b4cf-c4b53b9943f5",
+    "id": "bundle--792cd33f-d800-47cc-a021-29c0ece36e2c",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--c0dfe7b0-b873-4618-9ff8-53e31f70907f",
-            "description": "Adversaries may use startup items automatically executed at boot initialization to establish persistence. Startup items execute during the final phase of the boot process and contain shell scripts or other executable files along with configuration information used by the system to determine the execution order for all startup items. (Citation: Startup Items)\n\nThis is technically a deprecated technology (superseded by [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)), and thus the appropriate folder, <code>/Library/StartupItems</code> isn\u2019t guaranteed to exist on the system by default, but does appear to exist by default on macOS Sierra. A startup item is a directory whose executable and configuration property list (plist), <code>StartupParameters.plist</code>, reside in the top-level directory. \n\nAn adversary can create the appropriate folders/files in the StartupItems directory to register their own persistence mechanism (Citation: Methods of Mac Malware Persistence). Additionally, since StartupItems run during the bootup phase of macOS, they will run as the elevated root user.",
-            "name": "Startup Items",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1037.005",
-                    "url": "https://attack.mitre.org/techniques/T1037/005"
-                },
-                {
-                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/StartupItems.html",
-                    "description": "Apple. (2016, September 13). Startup Items. Retrieved July 11, 2017.",
-                    "source_name": "Startup Items"
-                },
-                {
-                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
-                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
-                    "source_name": "Methods of Mac Malware Persistence"
-                }
-            ],
             "type": "attack-pattern",
+            "name": "Startup Items",
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "File: File Modification",
+                "Process: Process Creation",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2020-03-24T23:47:39.124Z",
+            "created": "2020-01-15T18:00:33.603Z",
+            "x_mitre_permissions_required": [
+                "Administrator"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--c0dfe7b0-b873-4618-9ff8-53e31f70907f",
+            "description": "Adversaries may use startup items automatically executed at boot initialization to establish persistence. Startup items execute during the final phase of the boot process and contain shell scripts or other executable files along with configuration information used by the system to determine the execution order for all startup items. (Citation: Startup Items)\n\nThis is technically a deprecated technology (superseded by [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)), and thus the appropriate folder, <code>/Library/StartupItems</code> isn\u2019t guaranteed to exist on the system by default, but does appear to exist by default on macOS Sierra. A startup item is a directory whose executable and configuration property list (plist), <code>StartupParameters.plist</code>, reside in the top-level directory. \n\nAn adversary can create the appropriate folders/files in the StartupItems directory to register their own persistence mechanism (Citation: Methods of Mac Malware Persistence). Additionally, since StartupItems run during the bootup phase of macOS, they will run as the elevated root user.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -39,23 +37,25 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2020-03-24T23:47:39.124Z",
-            "created": "2020-01-15T18:00:33.603Z",
-            "x_mitre_platforms": [
-                "macOS"
-            ],
-            "x_mitre_data_sources": [
-                "File: File Creation",
-                "File: File Modification",
-                "Process: Process Creation",
-                "Command: Command Execution"
-            ],
             "x_mitre_detection": "The <code>/Library/StartupItems</code> folder can be monitored for changes. Similarly, the programs that are actually executed from this mechanism should be checked against a whitelist.\n\nMonitor processes that are executed during the bootup process to check for unusual or unknown applications and behavior.",
-            "x_mitre_permissions_required": [
-                "Administrator"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1037/005",
+                    "external_id": "T1037.005",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "source_name": "Startup Items",
+                    "description": "Apple. (2016, September 13). Startup Items. Retrieved July 11, 2017.",
+                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/StartupItems.html"
+                },
+                {
+                    "source_name": "Methods of Mac Malware Persistence",
+                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
+                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf"
+                }
+            ]
         }
     ]
 }

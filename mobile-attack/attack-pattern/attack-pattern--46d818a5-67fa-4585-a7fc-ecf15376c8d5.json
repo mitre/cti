@@ -1,12 +1,23 @@
 {
     "type": "bundle",
-    "id": "bundle--575a65ee-fd2c-4fb2-b70e-c29700f9fc6f",
+    "id": "bundle--280df3cd-719c-4180-a100-6e043b414cfb",
     "spec_version": "2.0",
     "objects": [
         {
             "id": "attack-pattern--46d818a5-67fa-4585-a7fc-ecf15376c8d5",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Modify OS Kernel or Boot Partition",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-mobile-attack"
+                },
+                {
+                    "phase_name": "persistence",
+                    "kill_chain_name": "mitre-mobile-attack"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "description": "If an adversary can escalate privileges, he or she may be able to use those privileges to place malicious code in the device kernel or other boot partition components, where the code may evade detection, may persist after device resets, and may not be removable by the device user. In some cases (e.g., the Samsung Knox warranty bit as described under Detection), the attack may be detected but could result in the device being placed in a state that no longer allows certain functionality.\n\nMany Android devices provide the ability to unlock the bootloader for development purposes, but doing so introduces the potential ability for others to maliciously update the kernel or other boot partition code.\n\nIf the bootloader is not unlocked, it may still be possible to exploit device vulnerabilities to update the code.",
             "external_references": [
                 {
@@ -35,32 +46,21 @@
                     "url": "https://www.apple.com/business/docs/iOS_Security_Guide.pdf"
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
+            "created": "2017-10-25T14:48:31.294Z",
             "x_mitre_detection": "The Android SafetyNet API's remote attestation capability could potentially be used to identify and respond to compromised devices. Samsung KNOX also provides a remote attestation capability on supported Samsung Android devices.\n\nSamsung KNOX devices include a non-reversible Knox warranty bit fuse that is triggered \"if a non-Knox kernel has been loaded on the device\" (Citation: Samsung-KnoxWarrantyBit). If triggered, enterprise Knox container services will no longer be available on the device.\n\nAs described in the iOS Security Guide (Citation: Apple-iOSSecurityGuide), iOS devices will fail to boot or fail to allow device activation if unauthorized modifications are detected.\n\nMany enterprise applications perform their own checks to detect and respond to compromised devices. These checks are not foolproof but can detect common signs of compromise.",
             "x_mitre_platforms": [
                 "Android",
                 "iOS"
             ],
+            "x_mitre_old_attack_id": "MOB-T1001",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2018-10-17T00:14:20.652Z",
+            "x_mitre_version": "1.0",
+            "name": "Modify OS Kernel or Boot Partition",
+            "type": "attack-pattern",
             "x_mitre_tactic_type": [
                 "Post-Adversary Device Access"
-            ],
-            "x_mitre_version": "1.0",
-            "x_mitre_old_attack_id": "MOB-T1001",
-            "type": "attack-pattern",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-mobile-attack",
-                    "phase_name": "defense-evasion"
-                },
-                {
-                    "kill_chain_name": "mitre-mobile-attack",
-                    "phase_name": "persistence"
-                }
-            ],
-            "modified": "2018-10-17T00:14:20.652Z",
-            "created": "2017-10-25T14:48:31.294Z"
+            ]
         }
     ]
 }

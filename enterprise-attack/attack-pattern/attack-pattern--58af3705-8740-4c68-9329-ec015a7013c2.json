@@ -1,49 +1,22 @@
 {
     "type": "bundle",
-    "id": "bundle--1d1e5f5b-8a3a-43bf-aee1-882b6747f71a",
+    "id": "bundle--62557856-d8f2-4528-8a95-9293ad105e3f",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--58af3705-8740-4c68-9329-ec015a7013c2",
-            "description": "Adversaries may execute their own malicious payloads by hijacking the search order used to load other programs. Because some programs do not call other programs using the full path, adversaries may place their own file in the directory where the calling program is located, causing the operating system to launch their malicious software at the request of the calling program.\n\nSearch order hijacking occurs when an adversary abuses the order in which Windows searches for programs that are not given a path. Unlike [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1574/001), the search order differs depending on the method that is used to execute the program. (Citation: Microsoft CreateProcess) (Citation: Windows NT Command Shell) (Citation: Microsoft WinExec) However, it is common for Windows to search in the directory of the initiating program before searching through the Windows system directory. An adversary who finds a program vulnerable to search order hijacking (i.e., a program that does not specify the path to an executable) may take advantage of this vulnerability by creating a program named after the improperly specified program and placing it within the initiating program's directory.\n\nFor example, \"example.exe\" runs \"cmd.exe\" with the command-line argument <code>net user</code>. An adversary may place a program called \"net.exe\" within the same directory as example.exe, \"net.exe\" will be run instead of the Windows system utility net. In addition, if an adversary places a program called \"net.com\" in the same directory as \"net.exe\", then <code>cmd.exe /C net user</code> will execute \"net.com\" instead of \"net.exe\" due to the order of executable extensions defined under PATHEXT. (Citation: Microsoft Environment Property)\n\nSearch order hijacking is also a common practice for hijacking DLL loads and is covered in [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1574/001).",
-            "name": "Path Interception by Search Order Hijacking",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1574.008",
-                    "url": "https://attack.mitre.org/techniques/T1574/008"
-                },
-                {
-                    "external_id": "CAPEC-159",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/159.html"
-                },
-                {
-                    "url": "http://msdn.microsoft.com/en-us/library/ms682425",
-                    "description": "Microsoft. (n.d.). CreateProcess function. Retrieved December 5, 2014.",
-                    "source_name": "Microsoft CreateProcess"
-                },
-                {
-                    "source_name": "Windows NT Command Shell",
-                    "url": "https://docs.microsoft.com/en-us/previous-versions//cc723564(v=technet.10)?redirectedfrom=MSDN#XSLTsection127121120120",
-                    "description": "Tim Hill. (2014, February 2). The Windows NT Command Shell. Retrieved December 5, 2014."
-                },
-                {
-                    "url": "http://msdn.microsoft.com/en-us/library/ms687393",
-                    "description": "Microsoft. (n.d.). WinExec function. Retrieved December 5, 2014.",
-                    "source_name": "Microsoft WinExec"
-                },
-                {
-                    "source_name": "Microsoft Environment Property",
-                    "url": "https://docs.microsoft.com/en-us/previous-versions//fd7hxfdd(v=vs.85)?redirectedfrom=MSDN",
-                    "description": "Microsoft. (2011, October 24). Environment Property. Retrieved July 27, 2016."
-                }
-            ],
             "type": "attack-pattern",
+            "name": "Path Interception by Search Order Hijacking",
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "File: File Modification",
+                "Process: Process Creation"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2020-09-17T19:03:35.217Z",
+            "created": "2020-03-13T17:48:58.999Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -58,32 +31,59 @@
                     "phase_name": "defense-evasion"
                 }
             ],
-            "modified": "2020-09-17T19:03:35.217Z",
-            "created": "2020-03-13T17:48:58.999Z",
+            "id": "attack-pattern--58af3705-8740-4c68-9329-ec015a7013c2",
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_contributors": [
-                "Stefan Kanthak"
-            ],
-            "x_mitre_data_sources": [
-                "File: File Creation",
-                "File: File Modification",
-                "Process: Process Creation"
-            ],
-            "x_mitre_detection": "Monitor file creation for files named after partial directories and in locations that may be searched for common processes through the environment variable, or otherwise should not be user writable. Monitor the executing process for process executable paths that are named for partial directories. Monitor file creation for programs that are named after Windows system programs or programs commonly executed without a path (such as \"findstr,\" \"net,\" and \"python\"). If this activity occurs outside of known administration activity, upgrades, installations, or patches, then it may be suspicious.\n\nData and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.\n",
+            "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "Administrator",
                 "User",
                 "SYSTEM"
             ],
+            "description": "Adversaries may execute their own malicious payloads by hijacking the search order used to load other programs. Because some programs do not call other programs using the full path, adversaries may place their own file in the directory where the calling program is located, causing the operating system to launch their malicious software at the request of the calling program.\n\nSearch order hijacking occurs when an adversary abuses the order in which Windows searches for programs that are not given a path. Unlike [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1574/001), the search order differs depending on the method that is used to execute the program. (Citation: Microsoft CreateProcess) (Citation: Windows NT Command Shell) (Citation: Microsoft WinExec) However, it is common for Windows to search in the directory of the initiating program before searching through the Windows system directory. An adversary who finds a program vulnerable to search order hijacking (i.e., a program that does not specify the path to an executable) may take advantage of this vulnerability by creating a program named after the improperly specified program and placing it within the initiating program's directory.\n\nFor example, \"example.exe\" runs \"cmd.exe\" with the command-line argument <code>net user</code>. An adversary may place a program called \"net.exe\" within the same directory as example.exe, \"net.exe\" will be run instead of the Windows system utility net. In addition, if an adversary places a program called \"net.com\" in the same directory as \"net.exe\", then <code>cmd.exe /C net user</code> will execute \"net.com\" instead of \"net.exe\" due to the order of executable extensions defined under PATHEXT. (Citation: Microsoft Environment Property)\n\nSearch order hijacking is also a common practice for hijacking DLL loads and is covered in [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1574/001).",
             "x_mitre_effective_permissions": [
                 "Administrator",
                 "SYSTEM",
                 "User"
             ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0"
+            "x_mitre_contributors": [
+                "Stefan Kanthak"
+            ],
+            "x_mitre_detection": "Monitor file creation for files named after partial directories and in locations that may be searched for common processes through the environment variable, or otherwise should not be user writable. Monitor the executing process for process executable paths that are named for partial directories. Monitor file creation for programs that are named after Windows system programs or programs commonly executed without a path (such as \"findstr,\" \"net,\" and \"python\"). If this activity occurs outside of known administration activity, upgrades, installations, or patches, then it may be suspicious.\n\nData and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.\n",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1574/008",
+                    "external_id": "T1574.008",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://capec.mitre.org/data/definitions/159.html",
+                    "external_id": "CAPEC-159",
+                    "source_name": "capec"
+                },
+                {
+                    "source_name": "Microsoft CreateProcess",
+                    "description": "Microsoft. (n.d.). CreateProcess function. Retrieved December 5, 2014.",
+                    "url": "http://msdn.microsoft.com/en-us/library/ms682425"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/previous-versions//cc723564(v=technet.10)?redirectedfrom=MSDN#XSLTsection127121120120",
+                    "description": "Tim Hill. (2014, February 2). The Windows NT Command Shell. Retrieved December 5, 2014.",
+                    "source_name": "Windows NT Command Shell"
+                },
+                {
+                    "source_name": "Microsoft WinExec",
+                    "description": "Microsoft. (n.d.). WinExec function. Retrieved December 5, 2014.",
+                    "url": "http://msdn.microsoft.com/en-us/library/ms687393"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/previous-versions//fd7hxfdd(v=vs.85)?redirectedfrom=MSDN",
+                    "description": "Microsoft. (2011, October 24). Environment Property. Retrieved July 27, 2016.",
+                    "source_name": "Microsoft Environment Property"
+                }
+            ]
         }
     ]
 }

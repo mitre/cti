@@ -1,65 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--aaa30c67-908d-46fa-a539-ec54a296a547",
+    "id": "bundle--b3c78e57-8b8f-4934-8573-6438f3b87a3e",
     "spec_version": "2.0",
     "objects": [
         {
-            "created": "2020-02-05T14:54:07.588Z",
-            "modified": "2021-10-14T21:18:32.225Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
             "type": "attack-pattern",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1553",
-                    "url": "https://attack.mitre.org/techniques/T1553"
-                },
-                {
-                    "url": "https://specterops.io/assets/resources/SpecterOps_Subverting_Trust_in_Windows.pdf",
-                    "description": "Graeber, M. (2017, September). Subverting Trust in Windows. Retrieved January 31, 2018.",
-                    "source_name": "SpectorOps Subverting Trust Sept 2017"
-                },
-                {
-                    "url": "https://securelist.com/why-you-shouldnt-completely-trust-files-signed-with-digital-certificates/68593/",
-                    "description": "Ladikov, A. (2015, January 29). Why You Shouldn\u2019t Completely Trust Files Signed with Digital Certificates. Retrieved March 31, 2016.",
-                    "source_name": "Securelist Digital Certificates"
-                },
-                {
-                    "url": "http://www.symantec.com/connect/blogs/how-attackers-steal-private-keys-digital-certificates",
-                    "description": "Shinotsuka, H. (2013, February 22). How Attackers Steal Private Keys from Digital Certificates. Retrieved March 31, 2016.",
-                    "source_name": "Symantec Digital Certificates"
-                },
-                {
-                    "url": "https://posts.specterops.io/code-signing-certificate-cloning-attacks-and-defenses-6f98657fc6ec",
-                    "description": "Graeber, M. (2017, December 22). Code Signing Certificate Cloning Attacks and Defenses. Retrieved April 3, 2018.",
-                    "source_name": "SpectorOps Code Signing Dec 2017"
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2021-10-14T21:18:32.225Z",
             "name": "Subvert Trust Controls",
-            "description": "Adversaries may undermine security controls that will either warn users of untrusted activity or prevent execution of untrusted programs. Operating systems and security products may contain mechanisms to identify programs or websites as possessing some level of trust. Examples of such features would include a program being allowed to run because it is signed by a valid code signing certificate, a program prompting the user with a warning because it has an attribute set from being downloaded from the Internet, or getting an indication that you are about to connect to an untrusted site.\n\nAdversaries may attempt to subvert these trust mechanisms. The method adversaries use will depend on the specific mechanism they seek to subvert. Adversaries may conduct [File and Directory Permissions Modification](https://attack.mitre.org/techniques/T1222) or [Modify Registry](https://attack.mitre.org/techniques/T1112) in support of subverting these controls.(Citation: SpectorOps Subverting Trust Sept 2017) Adversaries may also create or steal code signing certificates to acquire trust on target systems.(Citation: Securelist Digital Certificates)(Citation: Symantec Digital Certificates) ",
-            "id": "attack-pattern--b83e166d-13d7-4b52-8677-dff90c548fd7",
-            "revoked": false,
-            "x_mitre_version": "1.1",
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_defense_bypassed": [
-                "Application control",
-                "Anti-virus",
-                "Autoruns Analysis",
-                "Digital Certificate Validation",
-                "Process whitelisting",
-                "User Mode Signature Validation",
-                "Windows User Account Control"
-            ],
-            "x_mitre_detection": "Collect and analyze signing certificate metadata on software that executes within the environment to look for unusual certificate characteristics and outliers. Periodically baseline registered SIPs and trust providers (Registry entries and files on disk), specifically looking for new, modified, or non-Microsoft entries. (Citation: SpectorOps Subverting Trust Sept 2017) A system's root certificates are unlikely to change frequently. Monitor new certificates installed on a system that could be due to malicious activity.(Citation: SpectorOps Code Signing Dec 2017)\n\nAnalyze Autoruns data for oddities and anomalies, specifically malicious files attempting persistent execution by hiding within auto-starting locations. Autoruns will hide entries signed by Microsoft or Windows by default, so ensure \"Hide Microsoft Entries\" and \"Hide Windows Entries\" are both deselected.(Citation: SpectorOps Subverting Trust Sept 2017) \n\nMonitor and investigate attempts to modify extended file attributes with utilities such as <code>xattr</code>. Built-in system utilities may generate high false positive alerts, so compare against baseline knowledge for how systems are typically used and correlate modification events with other indications of malicious activity where possible. ",
             "x_mitre_data_sources": [
                 "Windows Registry: Windows Registry Key Creation",
                 "Windows Registry: Windows Registry Key Modification",
@@ -69,10 +16,63 @@
                 "File: File Modification",
                 "Module: Module Load"
             ],
+            "x_mitre_version": "1.1",
+            "created": "2020-02-05T14:54:07.588Z",
+            "revoked": false,
+            "x_mitre_defense_bypassed": [
+                "Application control",
+                "Anti-virus",
+                "Autoruns Analysis",
+                "Digital Certificate Validation",
+                "Process whitelisting",
+                "User Mode Signature Validation",
+                "Windows User Account Control"
+            ],
             "x_mitre_platforms": [
                 "Windows",
                 "macOS",
                 "Linux"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "id": "attack-pattern--b83e166d-13d7-4b52-8677-dff90c548fd7",
+            "description": "Adversaries may undermine security controls that will either warn users of untrusted activity or prevent execution of untrusted programs. Operating systems and security products may contain mechanisms to identify programs or websites as possessing some level of trust. Examples of such features would include a program being allowed to run because it is signed by a valid code signing certificate, a program prompting the user with a warning because it has an attribute set from being downloaded from the Internet, or getting an indication that you are about to connect to an untrusted site.\n\nAdversaries may attempt to subvert these trust mechanisms. The method adversaries use will depend on the specific mechanism they seek to subvert. Adversaries may conduct [File and Directory Permissions Modification](https://attack.mitre.org/techniques/T1222) or [Modify Registry](https://attack.mitre.org/techniques/T1112) in support of subverting these controls.(Citation: SpectorOps Subverting Trust Sept 2017) Adversaries may also create or steal code signing certificates to acquire trust on target systems.(Citation: Securelist Digital Certificates)(Citation: Symantec Digital Certificates) ",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_detection": "Collect and analyze signing certificate metadata on software that executes within the environment to look for unusual certificate characteristics and outliers. Periodically baseline registered SIPs and trust providers (Registry entries and files on disk), specifically looking for new, modified, or non-Microsoft entries. (Citation: SpectorOps Subverting Trust Sept 2017) A system's root certificates are unlikely to change frequently. Monitor new certificates installed on a system that could be due to malicious activity.(Citation: SpectorOps Code Signing Dec 2017)\n\nAnalyze Autoruns data for oddities and anomalies, specifically malicious files attempting persistent execution by hiding within auto-starting locations. Autoruns will hide entries signed by Microsoft or Windows by default, so ensure \"Hide Microsoft Entries\" and \"Hide Windows Entries\" are both deselected.(Citation: SpectorOps Subverting Trust Sept 2017) \n\nMonitor and investigate attempts to modify extended file attributes with utilities such as <code>xattr</code>. Built-in system utilities may generate high false positive alerts, so compare against baseline knowledge for how systems are typically used and correlate modification events with other indications of malicious activity where possible. ",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1553",
+                    "external_id": "T1553",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "source_name": "SpectorOps Subverting Trust Sept 2017",
+                    "description": "Graeber, M. (2017, September). Subverting Trust in Windows. Retrieved January 31, 2018.",
+                    "url": "https://specterops.io/assets/resources/SpecterOps_Subverting_Trust_in_Windows.pdf"
+                },
+                {
+                    "source_name": "Securelist Digital Certificates",
+                    "description": "Ladikov, A. (2015, January 29). Why You Shouldn\u2019t Completely Trust Files Signed with Digital Certificates. Retrieved March 31, 2016.",
+                    "url": "https://securelist.com/why-you-shouldnt-completely-trust-files-signed-with-digital-certificates/68593/"
+                },
+                {
+                    "source_name": "Symantec Digital Certificates",
+                    "description": "Shinotsuka, H. (2013, February 22). How Attackers Steal Private Keys from Digital Certificates. Retrieved March 31, 2016.",
+                    "url": "http://www.symantec.com/connect/blogs/how-attackers-steal-private-keys-digital-certificates"
+                },
+                {
+                    "source_name": "SpectorOps Code Signing Dec 2017",
+                    "description": "Graeber, M. (2017, December 22). Code Signing Certificate Cloning Attacks and Defenses. Retrieved April 3, 2018.",
+                    "url": "https://posts.specterops.io/code-signing-certificate-cloning-attacks-and-defenses-6f98657fc6ec"
+                }
             ]
         }
     ]

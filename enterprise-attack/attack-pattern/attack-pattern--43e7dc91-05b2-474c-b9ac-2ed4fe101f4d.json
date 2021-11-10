@@ -1,58 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--76c8911b-5594-45f6-9f55-78ce26bbc8d5",
+    "id": "bundle--f90e1025-f3ae-4aac-846a-16aa3594709d",
     "spec_version": "2.0",
     "objects": [
         {
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1055",
-                    "url": "https://attack.mitre.org/techniques/T1055"
-                },
-                {
-                    "external_id": "CAPEC-640",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/640.html"
-                },
-                {
-                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
-                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
-                    "source_name": "Elastic Process Injection July 2017"
-                },
-                {
-                    "description": "Ligh, M.H. et al.. (2014, July). The Art of Memory Forensics: Detecting Malware and Threats in Windows, Linux, and Mac Memory. Retrieved December 20, 2017.",
-                    "source_name": "ArtOfMemoryForensics"
-                },
-                {
-                    "url": "https://www.gnu.org/software/acct/",
-                    "description": "GNU. (2010, February 5). The GNU Accounting Utilities. Retrieved December 20, 2017.",
-                    "source_name": "GNU Acct"
-                },
-                {
-                    "url": "https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/security_guide/chap-system_auditing",
-                    "description": "Jahoda, M. et al.. (2017, March 14). redhat Security Guide - Chapter 7 - System Auditing. Retrieved December 20, 2017.",
-                    "source_name": "RHEL auditd"
-                },
-                {
-                    "url": "http://www.chokepoint.net/2014/02/detecting-userland-preload-rootkits.html",
-                    "description": "stderr. (2014, February 14). Detecting Userland Preload Rootkits. Retrieved December 20, 2017.",
-                    "source_name": "Chokepoint preload rootkits"
-                },
-                {
-                    "url": "https://docs.microsoft.com/sysinternals/downloads/sysmon",
-                    "description": "Russinovich, M. & Garnier, T. (2017, May 22). Sysmon v6.20. Retrieved December 13, 2017.",
-                    "source_name": "Microsoft Sysmon v6 May 2017"
-                }
-            ],
-            "description": "Adversaries may inject code into processes in order to evade process-based defenses as well as possibly elevate privileges. Process injection is a method of executing arbitrary code in the address space of a separate live process. Running code in the context of another process may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via process injection may also evade detection from security products since the execution is masked under a legitimate process. \n\nThere are many different ways to inject code into a process, many of which abuse legitimate functionalities. These implementations exist for every major OS but are typically platform specific. \n\nMore sophisticated samples may perform multiple process injections to segment modules and further evade detection, utilizing named pipes or other inter-process communication (IPC) mechanisms as a communication channel. ",
-            "name": "Process Injection",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "id": "attack-pattern--43e7dc91-05b2-474c-b9ac-2ed4fe101f4d",
             "type": "attack-pattern",
+            "name": "Process Injection",
+            "x_mitre_data_sources": [
+                "Process: Process Modification",
+                "Module: Module Load",
+                "Process: OS API Execution",
+                "Process: Process Access",
+                "File: File Modification",
+                "File: File Metadata"
+            ],
+            "x_mitre_version": "1.2",
+            "modified": "2021-10-18T12:30:14.852Z",
+            "created": "2017-05-31T21:30:47.843Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -63,32 +30,65 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2021-10-18T12:30:14.852Z",
-            "created": "2017-05-31T21:30:47.843Z",
+            "x_mitre_defense_bypassed": [
+                "Application control",
+                "Anti-virus"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
             "x_mitre_is_subtechnique": false,
-            "x_mitre_version": "1.2",
+            "id": "attack-pattern--43e7dc91-05b2-474c-b9ac-2ed4fe101f4d",
+            "description": "Adversaries may inject code into processes in order to evade process-based defenses as well as possibly elevate privileges. Process injection is a method of executing arbitrary code in the address space of a separate live process. Running code in the context of another process may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via process injection may also evade detection from security products since the execution is masked under a legitimate process. \n\nThere are many different ways to inject code into a process, many of which abuse legitimate functionalities. These implementations exist for every major OS but are typically platform specific. \n\nMore sophisticated samples may perform multiple process injections to segment modules and further evade detection, utilizing named pipes or other inter-process communication (IPC) mechanisms as a communication channel. ",
             "x_mitre_contributors": [
                 "Anastasios Pingios",
                 "Christiaan Beek, @ChristiaanBeek",
                 "Ryan Becwar"
             ],
-            "x_mitre_data_sources": [
-                "Process: Process Modification",
-                "Module: Module Load",
-                "Process: OS API Execution",
-                "Process: Process Access",
-                "File: File Modification",
-                "File: File Metadata"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Application control",
-                "Anti-virus"
-            ],
             "x_mitre_detection": "Monitoring Windows API calls indicative of the various types of code injection may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances for known bad sequences of calls, since benign use of API functions may be common and difficult to distinguish from malicious behavior. Windows API calls such as <code>CreateRemoteThread</code>, <code>SuspendThread</code>/<code>SetThreadContext</code>/<code>ResumeThread</code>, <code>QueueUserAPC</code>/<code>NtQueueApcThread</code>, and those that can be used to modify memory within another process, such as <code>VirtualAllocEx</code>/<code>WriteProcessMemory</code>, may be used for this technique.(Citation: Elastic Process Injection July 2017) \n\nMonitor DLL/PE file events, specifically creation of these binary files as well as the loading of DLLs into processes. Look for DLLs that are not recognized or not normally loaded into a process. \n\nMonitoring for Linux specific calls such as the ptrace system call should not generate large amounts of data due to their specialized nature, and can be a very effective method to detect some of the common process injection methods.(Citation: ArtOfMemoryForensics)  (Citation: GNU Acct)  (Citation: RHEL auditd)  (Citation: Chokepoint preload rootkits) \n\nMonitor for named pipe creation and connection events (Event IDs 17 and 18) for possible indicators of infected processes with external modules.(Citation: Microsoft Sysmon v6 May 2017) \n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior. ",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1055",
+                    "external_id": "T1055",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://capec.mitre.org/data/definitions/640.html",
+                    "external_id": "CAPEC-640",
+                    "source_name": "capec"
+                },
+                {
+                    "source_name": "Elastic Process Injection July 2017",
+                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
+                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process"
+                },
+                {
+                    "description": "Ligh, M.H. et al.. (2014, July). The Art of Memory Forensics: Detecting Malware and Threats in Windows, Linux, and Mac Memory. Retrieved December 20, 2017.",
+                    "source_name": "ArtOfMemoryForensics"
+                },
+                {
+                    "source_name": "GNU Acct",
+                    "description": "GNU. (2010, February 5). The GNU Accounting Utilities. Retrieved December 20, 2017.",
+                    "url": "https://www.gnu.org/software/acct/"
+                },
+                {
+                    "source_name": "RHEL auditd",
+                    "description": "Jahoda, M. et al.. (2017, March 14). redhat Security Guide - Chapter 7 - System Auditing. Retrieved December 20, 2017.",
+                    "url": "https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/security_guide/chap-system_auditing"
+                },
+                {
+                    "source_name": "Chokepoint preload rootkits",
+                    "description": "stderr. (2014, February 14). Detecting Userland Preload Rootkits. Retrieved December 20, 2017.",
+                    "url": "http://www.chokepoint.net/2014/02/detecting-userland-preload-rootkits.html"
+                },
+                {
+                    "source_name": "Microsoft Sysmon v6 May 2017",
+                    "description": "Russinovich, M. & Garnier, T. (2017, May 22). Sysmon v6.20. Retrieved December 13, 2017.",
+                    "url": "https://docs.microsoft.com/sysinternals/downloads/sysmon"
+                }
             ]
         }
     ]

@@ -1,29 +1,39 @@
 {
     "type": "bundle",
-    "id": "bundle--fe853572-aba3-42c2-b90c-445b8e1f0517",
+    "id": "bundle--5e3543f7-a7cc-4b04-be93-b6514d14b46b",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1134.003",
-                    "url": "https://attack.mitre.org/techniques/T1134/003"
-                },
-                {
-                    "url": "https://technet.microsoft.com/en-us/windows-server-docs/identity/ad-ds/manage/component-updates/command-line-process-auditing",
-                    "description": "Mathers, B. (2017, March 7). Command line process auditing. Retrieved April 21, 2017.",
-                    "source_name": "Microsoft Command-line Logging"
-                }
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Make and Impersonate Token",
-            "description": "Adversaries may make and impersonate tokens to escalate privileges and bypass access controls. If an adversary has a username and password but the user is not logged onto the system, the adversary can then create a logon session for the user using the <code>LogonUser</code> function. The function will return a copy of the new session's access token and the adversary can use <code>SetThreadToken</code> to assign the token to a thread.",
-            "id": "attack-pattern--8cdeb020-e31e-4f88-a582-f53dcfbda819",
             "type": "attack-pattern",
+            "name": "Make and Impersonate Token",
+            "x_mitre_data_sources": [
+                "Process: OS API Execution",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2020-02-18T18:03:37.481Z",
+            "created": "2020-02-18T18:03:37.481Z",
+            "id": "attack-pattern--8cdeb020-e31e-4f88-a582-f53dcfbda819",
+            "x_mitre_defense_bypassed": [
+                "Windows User Account Control",
+                "System access controls",
+                "File system access controls"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "User"
+            ],
+            "description": "Adversaries may make and impersonate tokens to escalate privileges and bypass access controls. If an adversary has a username and password but the user is not logged onto the system, the adversary can then create a logon session for the user using the <code>LogonUser</code> function. The function will return a copy of the new session's access token and the adversary can use <code>SetThreadToken</code> to assign the token to a thread.",
+            "x_mitre_effective_permissions": [
+                "SYSTEM"
+            ],
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -34,29 +44,19 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2020-02-18T18:03:37.481Z",
-            "created": "2020-02-18T18:03:37.481Z",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_effective_permissions": [
-                "SYSTEM"
-            ],
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "User"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Windows User Account Control",
-                "System access controls",
-                "File system access controls"
-            ],
             "x_mitre_detection": "If an adversary is using a standard command-line shell, analysts can detect token manipulation by auditing command-line activity. Specifically, analysts should look for use of the <code>runas</code> command. Detailed command-line logging is not enabled by default in Windows.(Citation: Microsoft Command-line Logging)\n\nIf an adversary is using a payload that calls the Windows token APIs directly, analysts can detect token manipulation only through careful analysis of user network activity, examination of running processes, and correlation with other endpoint and network behavior.\n\nAnalysts can also monitor for use of Windows APIs such as <code>LogonUser</code> and <code> SetThreadToken</code> and correlate activity with other suspicious behavior to reduce false positives that may be due to normal benign use by users and administrators.",
-            "x_mitre_data_sources": [
-                "Process: OS API Execution",
-                "Command: Command Execution"
-            ],
-            "x_mitre_platforms": [
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1134/003",
+                    "external_id": "T1134.003",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "source_name": "Microsoft Command-line Logging",
+                    "description": "Mathers, B. (2017, March 7). Command line process auditing. Retrieved April 21, 2017.",
+                    "url": "https://technet.microsoft.com/en-us/windows-server-docs/identity/ad-ds/manage/component-updates/command-line-process-auditing"
+                }
             ]
         }
     ]

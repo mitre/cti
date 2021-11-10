@@ -1,73 +1,73 @@
 {
     "type": "bundle",
-    "id": "bundle--109a914d-9076-4059-906c-b5295568e989",
+    "id": "bundle--b389fc74-423f-461e-8d52-64d135954c38",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1222.001",
-                    "url": "https://attack.mitre.org/techniques/T1222/001"
-                },
-                {
-                    "url": "https://www.hybrid-analysis.com/sample/ef0d2628823e8e0a0de3b08b8eacaf41cf284c086a948bdfd67f4e4373c14e4d?environmentId=100",
-                    "description": "Hybrid Analysis. (2018, June 12). c9b65b764985dfd7a11d3faf599c56b8.exe. Retrieved August 19, 2018.",
-                    "source_name": "Hybrid Analysis Icacls1 June 2018"
-                },
-                {
-                    "url": "https://www.hybrid-analysis.com/sample/22dab012c3e20e3d9291bce14a2bfc448036d3b966c6e78167f4626f5f9e38d6?environmentId=110",
-                    "description": "Hybrid Analysis. (2018, May 30). 2a8efbfadd798f6111340f7c1c956bee.dll. Retrieved August 19, 2018.",
-                    "source_name": "Hybrid Analysis Icacls2 May 2018"
-                },
-                {
-                    "url": "https://docs.microsoft.com/windows/desktop/secauthz/dacls-and-aces",
-                    "description": "Microsoft. (2018, May 30). DACLs and ACEs. Retrieved August 19, 2018.",
-                    "source_name": "Microsoft DACL May 2018"
-                },
-                {
-                    "source_name": "Microsoft Access Control Lists May 2018",
-                    "url": "https://docs.microsoft.com/en-us/windows/win32/secauthz/access-control-lists",
-                    "description": "M. Satran, M. Jacobs. (2018, May 30). Access Control Lists. Retrieved February 4, 2020."
-                },
-                {
-                    "url": "https://www.eventtracker.com/tech-articles/monitoring-file-permission-changes-windows-security-log/",
-                    "description": "Netsurion. (2014, February 19). Monitoring File Permission Changes with the Windows Security Log. Retrieved August 19, 2018.",
-                    "source_name": "EventTracker File Permissions Feb 2014"
-                }
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Windows File and Directory Permissions Modification",
-            "description": "Adversaries may modify file or directory permissions/attributes to evade access control lists (ACLs) and access protected files.(Citation: Hybrid Analysis Icacls1 June 2018)(Citation: Hybrid Analysis Icacls2 May 2018) File and directory permissions are commonly managed by ACLs configured by the file or directory owner, or users with the appropriate permissions. File and directory ACL implementations vary by platform, but generally explicitly designate which users or groups can perform which actions (read, write, execute, etc.).\n\nWindows implements file and directory ACLs as Discretionary Access Control Lists (DACLs).(Citation: Microsoft DACL May 2018) Similar to a standard ACL, DACLs identifies the accounts that are allowed or denied access to a securable object. When an attempt is made to access a securable object, the system checks the access control entries in the DACL in order. If a matching entry is found, access to the object is granted. Otherwise, access is denied.(Citation: Microsoft Access Control Lists May 2018)\n\nAdversaries can interact with the DACLs using built-in Windows commands, such as `icacls`, `cacls`, `takeown`, and `attrib`, which can grant adversaries higher permissions on specific files and folders. Further, [PowerShell](https://attack.mitre.org/techniques/T1059/001) provides cmdlets that can be used to retrieve or modify file and directory DACLs. Specific file and directory modifications may be a required step for many techniques, such as establishing Persistence via [Accessibility Features](https://attack.mitre.org/techniques/T1546/008), [Boot or Logon Initialization Scripts](https://attack.mitre.org/techniques/T1037), or tainting/hijacking other instrumental binary/configuration files via [Hijack Execution Flow](https://attack.mitre.org/techniques/T1574).",
-            "id": "attack-pattern--34e793de-0274-4982-9c1a-246ed1c19dee",
             "type": "attack-pattern",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "modified": "2020-09-01T20:05:05.268Z",
-            "created": "2020-02-04T19:17:41.767Z",
-            "x_mitre_version": "1.1",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator",
-                "SYSTEM"
-            ],
-            "x_mitre_detection": "Monitor and investigate attempts to modify DACLs and file/directory ownership. Many of the commands used to modify DACLs and file/directory ownership are built-in system utilities and may generate a high false positive alert rate, so compare against baseline knowledge for how systems are typically used and correlate modification events with other indications of malicious activity where possible.\n\nConsider enabling file/directory permission change auditing on folders containing key binary/configuration files. For example, Windows Security Log events (Event ID 4670) are created when DACLs are modified.(Citation: EventTracker File Permissions Feb 2014)",
+            "name": "Windows File and Directory Permissions Modification",
             "x_mitre_data_sources": [
                 "Process: Process Creation",
                 "Command: Command Execution",
                 "Active Directory: Active Directory Object Modification",
                 "File: File Metadata"
             ],
+            "x_mitre_version": "1.1",
+            "modified": "2020-09-01T20:05:05.268Z",
+            "created": "2020-02-04T19:17:41.767Z",
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator",
+                "SYSTEM"
+            ],
             "x_mitre_platforms": [
                 "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--34e793de-0274-4982-9c1a-246ed1c19dee",
+            "description": "Adversaries may modify file or directory permissions/attributes to evade access control lists (ACLs) and access protected files.(Citation: Hybrid Analysis Icacls1 June 2018)(Citation: Hybrid Analysis Icacls2 May 2018) File and directory permissions are commonly managed by ACLs configured by the file or directory owner, or users with the appropriate permissions. File and directory ACL implementations vary by platform, but generally explicitly designate which users or groups can perform which actions (read, write, execute, etc.).\n\nWindows implements file and directory ACLs as Discretionary Access Control Lists (DACLs).(Citation: Microsoft DACL May 2018) Similar to a standard ACL, DACLs identifies the accounts that are allowed or denied access to a securable object. When an attempt is made to access a securable object, the system checks the access control entries in the DACL in order. If a matching entry is found, access to the object is granted. Otherwise, access is denied.(Citation: Microsoft Access Control Lists May 2018)\n\nAdversaries can interact with the DACLs using built-in Windows commands, such as `icacls`, `cacls`, `takeown`, and `attrib`, which can grant adversaries higher permissions on specific files and folders. Further, [PowerShell](https://attack.mitre.org/techniques/T1059/001) provides cmdlets that can be used to retrieve or modify file and directory DACLs. Specific file and directory modifications may be a required step for many techniques, such as establishing Persistence via [Accessibility Features](https://attack.mitre.org/techniques/T1546/008), [Boot or Logon Initialization Scripts](https://attack.mitre.org/techniques/T1037), or tainting/hijacking other instrumental binary/configuration files via [Hijack Execution Flow](https://attack.mitre.org/techniques/T1574).",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_detection": "Monitor and investigate attempts to modify DACLs and file/directory ownership. Many of the commands used to modify DACLs and file/directory ownership are built-in system utilities and may generate a high false positive alert rate, so compare against baseline knowledge for how systems are typically used and correlate modification events with other indications of malicious activity where possible.\n\nConsider enabling file/directory permission change auditing on folders containing key binary/configuration files. For example, Windows Security Log events (Event ID 4670) are created when DACLs are modified.(Citation: EventTracker File Permissions Feb 2014)",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1222/001",
+                    "external_id": "T1222.001",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "source_name": "Hybrid Analysis Icacls1 June 2018",
+                    "description": "Hybrid Analysis. (2018, June 12). c9b65b764985dfd7a11d3faf599c56b8.exe. Retrieved August 19, 2018.",
+                    "url": "https://www.hybrid-analysis.com/sample/ef0d2628823e8e0a0de3b08b8eacaf41cf284c086a948bdfd67f4e4373c14e4d?environmentId=100"
+                },
+                {
+                    "source_name": "Hybrid Analysis Icacls2 May 2018",
+                    "description": "Hybrid Analysis. (2018, May 30). 2a8efbfadd798f6111340f7c1c956bee.dll. Retrieved August 19, 2018.",
+                    "url": "https://www.hybrid-analysis.com/sample/22dab012c3e20e3d9291bce14a2bfc448036d3b966c6e78167f4626f5f9e38d6?environmentId=110"
+                },
+                {
+                    "source_name": "Microsoft DACL May 2018",
+                    "description": "Microsoft. (2018, May 30). DACLs and ACEs. Retrieved August 19, 2018.",
+                    "url": "https://docs.microsoft.com/windows/desktop/secauthz/dacls-and-aces"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/windows/win32/secauthz/access-control-lists",
+                    "description": "M. Satran, M. Jacobs. (2018, May 30). Access Control Lists. Retrieved February 4, 2020.",
+                    "source_name": "Microsoft Access Control Lists May 2018"
+                },
+                {
+                    "source_name": "EventTracker File Permissions Feb 2014",
+                    "description": "Netsurion. (2014, February 19). Monitoring File Permission Changes with the Windows Security Log. Retrieved August 19, 2018.",
+                    "url": "https://www.eventtracker.com/tech-articles/monitoring-file-permission-changes-windows-security-log/"
+                }
             ]
         }
     ]

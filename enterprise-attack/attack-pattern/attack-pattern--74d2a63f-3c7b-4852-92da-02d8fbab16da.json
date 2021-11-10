@@ -1,72 +1,72 @@
 {
     "type": "bundle",
-    "id": "bundle--7473289c-5b1b-4e0d-9516-0490cf908d50",
+    "id": "bundle--a74c9a2b-b479-47d7-9d72-ce9612136dbf",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--74d2a63f-3c7b-4852-92da-02d8fbab16da",
-            "description": "An adversary may attempt to block indicators or events typically captured by sensors from being gathered and analyzed. This could include maliciously redirecting (Citation: Microsoft Lamin Sept 2017) or even disabling host-based sensors, such as Event Tracing for Windows (ETW),(Citation: Microsoft About Event Tracing 2018) by tampering settings that control the collection and flow of event telemetry. (Citation: Medium Event Tracing Tampering 2018) These settings may be stored on the system in configuration files and/or in the Registry as well as being accessible via administrative utilities such as [PowerShell](https://attack.mitre.org/techniques/T1059/001) or [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047).\n\nETW interruption can be achieved multiple ways, however most directly by defining conditions using the [PowerShell](https://attack.mitre.org/techniques/T1059/001) <code>Set-EtwTraceProvider</code> cmdlet or by interfacing directly with the Registry to make alterations.\n\nIn the case of network-based reporting of indicators, an adversary may block traffic associated with reporting to prevent central analysis. This may be accomplished by many means, such as stopping a local process responsible for forwarding telemetry and/or creating a host-based firewall rule to block traffic to specific hosts responsible for aggregating events, such as security information and event management (SIEM) products. ",
-            "name": "Indicator Blocking",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1562.006",
-                    "url": "https://attack.mitre.org/techniques/T1562/006"
-                },
-                {
-                    "external_id": "CAPEC-571",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/571.html"
-                },
-                {
-                    "url": "https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?name=Backdoor:Win32/Lamin.A",
-                    "description": "Microsoft. (2009, May 17). Backdoor:Win32/Lamin.A. Retrieved September 6, 2018.",
-                    "source_name": "Microsoft Lamin Sept 2017"
-                },
-                {
-                    "source_name": "Microsoft About Event Tracing 2018",
-                    "url": "https://docs.microsoft.com/en-us/windows/desktop/etw/consuming-events",
-                    "description": "Microsoft. (2018, May 30). About Event Tracing. Retrieved June 7, 2019."
-                },
-                {
-                    "source_name": "Medium Event Tracing Tampering 2018",
-                    "url": "https://medium.com/palantir/tampering-with-windows-event-tracing-background-offense-and-defense-4be7ac62ac63",
-                    "description": "Palantir. (2018, December 24). Tampering with Windows Event Tracing: Background, Offense, and Defense. Retrieved June 7, 2019."
-                }
-            ],
             "type": "attack-pattern",
+            "name": "Indicator Blocking",
+            "x_mitre_data_sources": [
+                "Windows Registry: Windows Registry Key Modification",
+                "Sensor Health: Host Status",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2021-01-13T15:56:04.897Z",
+            "created": "2020-03-19T19:09:30.329Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
                 }
             ],
-            "modified": "2021-01-13T15:56:04.897Z",
-            "created": "2020-03-19T19:09:30.329Z",
+            "x_mitre_defense_bypassed": [
+                "Anti-virus",
+                "Host intrusion prevention systems"
+            ],
             "x_mitre_platforms": [
                 "Windows",
                 "macOS",
                 "Linux"
             ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--74d2a63f-3c7b-4852-92da-02d8fbab16da",
+            "description": "An adversary may attempt to block indicators or events typically captured by sensors from being gathered and analyzed. This could include maliciously redirecting (Citation: Microsoft Lamin Sept 2017) or even disabling host-based sensors, such as Event Tracing for Windows (ETW),(Citation: Microsoft About Event Tracing 2018) by tampering settings that control the collection and flow of event telemetry. (Citation: Medium Event Tracing Tampering 2018) These settings may be stored on the system in configuration files and/or in the Registry as well as being accessible via administrative utilities such as [PowerShell](https://attack.mitre.org/techniques/T1059/001) or [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047).\n\nETW interruption can be achieved multiple ways, however most directly by defining conditions using the [PowerShell](https://attack.mitre.org/techniques/T1059/001) <code>Set-EtwTraceProvider</code> cmdlet or by interfacing directly with the Registry to make alterations.\n\nIn the case of network-based reporting of indicators, an adversary may block traffic associated with reporting to prevent central analysis. This may be accomplished by many means, such as stopping a local process responsible for forwarding telemetry and/or creating a host-based firewall rule to block traffic to specific hosts responsible for aggregating events, such as security information and event management (SIEM) products. ",
             "x_mitre_contributors": [
                 "Rob Smith"
             ],
-            "x_mitre_data_sources": [
-                "Windows Registry: Windows Registry Key Modification",
-                "Sensor Health: Host Status",
-                "Command: Command Execution"
-            ],
             "x_mitre_detection": "Detect lack of reported activity from a host sensor. Different methods of blocking may cause different disruptions in reporting. Systems may suddenly stop reporting all data or only certain kinds of data.\n\nDepending on the types of host information collected, an analyst may be able to detect the event that triggered a process to stop or connection to be blocked. For example, Sysmon will log when its configuration state has changed (Event ID 16) and Windows Management Instrumentation (WMI) may be used to subscribe ETW providers that log any provider removal from a specific trace session. (Citation: Medium Event Tracing Tampering 2018) To detect changes in ETW you can also monitor the registry key which contains configurations for all ETW event providers: <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\AUTOLOGGER_NAME\\{PROVIDER_GUID}</code>",
-            "x_mitre_defense_bypassed": [
-                "Anti-virus",
-                "Host intrusion prevention systems"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1562/006",
+                    "external_id": "T1562.006",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://capec.mitre.org/data/definitions/571.html",
+                    "external_id": "CAPEC-571",
+                    "source_name": "capec"
+                },
+                {
+                    "source_name": "Microsoft Lamin Sept 2017",
+                    "description": "Microsoft. (2009, May 17). Backdoor:Win32/Lamin.A. Retrieved September 6, 2018.",
+                    "url": "https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?name=Backdoor:Win32/Lamin.A"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/windows/desktop/etw/consuming-events",
+                    "description": "Microsoft. (2018, May 30). About Event Tracing. Retrieved June 7, 2019.",
+                    "source_name": "Microsoft About Event Tracing 2018"
+                },
+                {
+                    "url": "https://medium.com/palantir/tampering-with-windows-event-tracing-background-offense-and-defense-4be7ac62ac63",
+                    "description": "Palantir. (2018, December 24). Tampering with Windows Event Tracing: Background, Offense, and Defense. Retrieved June 7, 2019.",
+                    "source_name": "Medium Event Tracing Tampering 2018"
+                }
+            ]
         }
     ]
 }
