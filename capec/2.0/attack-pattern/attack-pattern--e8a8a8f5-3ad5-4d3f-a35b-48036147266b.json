@@ -1,0 +1,99 @@
+{
+    "id": "bundle--f8d7e92d-fa09-40b6-8e3e-c43587a1a579",
+    "objects": [
+        {
+            "created": "2021-10-21T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>An adversary takes advantage of missing or incorrectly configured security identifiers (e.g., tokens), which are used for access control within a System-on-Chip (SoC), to read/write data or execute a given action.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-681",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/681.html"
+                },
+                {
+                    "external_id": "CWE-1259",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1259.html"
+                },
+                {
+                    "external_id": "CWE-1267",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1267.html"
+                },
+                {
+                    "external_id": "CWE-1270",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1270.html"
+                },
+                {
+                    "external_id": "CWE-1294",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1294.html"
+                },
+                {
+                    "external_id": "CWE-1302",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1302.html"
+                },
+                {
+                    "description": "PCIe Device Measurement Requirements, 2018--09, Intel Corporation",
+                    "external_id": "REF-694",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.intel.com/content/dam/www/public/us/en/documents/reference-guides/pcie-device-security-enhancements.pdf"
+                },
+                {
+                    "description": "John Butterworth, Cory Kallenberg, Xeno Kovah, BIOS Chronomancy: Fixing the Core Root of Trust for Measurement, 2013--07---31",
+                    "external_id": "REF-695",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://media.blackhat.com/us-13/US-13-Butterworth-BIOS-Security-Slides.pdf"
+                }
+            ],
+            "id": "attack-pattern--e8a8a8f5-3ad5-4d3f-a35b-48036147266b",
+            "modified": "2021-10-21T00:00:00.000Z",
+            "name": "Exploitation of Improperly Controlled Hardware Security Identifiers",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--92cdcd3d-d734-4442-afc3-4599f261498b",
+                "attack-pattern--aac17300-6cdd-4f50-82c3-da5a01d225ac"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>A system contains a register (divided into four 32-bit registers) that is used to store a 128-bit AES key for encryption/decryption, in addition to an access-policy register. The access-policy register determines which agents may access the AES-key registers, based on a corresponding security identifier. It is assumed the system has two agents: a Main-controller and an Aux-controller, with respective security identifiers \"1\" and \"2\". The Main-controller (ID \"1\") is meant to have access to the AES-key registers, while the Aux-controller (ID \"2\") has access to the access-policy register. If a SoC incorrectly generates security identifier \"1\" for both agents, then both agents will have access to the AES-key registers. This could further result in a Denial-of-Service (DoS) or the execution of an action that in turn could result in privilege escalation or unintended access.</xhtml:p>\n            "
+            ],
+            "x_capec_extended_description": "\n            <xhtml:p>A System-on-Chip (SoC) often implements a security identifier mechanism to differentiate what actions are allowed or disallowed when a transaction originates from an entity. However, these mechanisms may be exploitable due to any number of the following:</xhtml:p>\n            <xhtml:ul>\n               <xhtml:li>The security identifiers are missing</xhtml:li>\n               <xhtml:li>The security identifiers are incorrectly implemented or generated</xhtml:li>\n               <xhtml:li>The security identifiers are generated with an obsolete encoding</xhtml:li>\n               <xhtml:li>The security identifiers are generated and implemented correctly, but are improperly protected</xhtml:li>\n            </xhtml:ul>\n            <xhtml:p>If the security identifiers leveraged by the SoC are missing or misconfigured, an adversary may be able to take advantage of this shortcoming to circumvent the intended access controls. This could result in the adversary gaining unintended access, performing a Denial of Service (DoS), escalating privileges, or spoofing actions from a trusted agent.</xhtml:p>\n         ",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "Awareness of the hardware being leveraged.",
+                "Access to the hardware being leveraged."
+            ],
+            "x_capec_skills_required": {
+                "High": "Intricate knowledge of the identifiers being utilized.",
+                "Medium": "Ability to execute actions within the SoC."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.6"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}
