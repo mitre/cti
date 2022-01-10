@@ -1,10 +1,10 @@
 {
-    "id": "bundle--014365b9-ced9-4372-9f86-874bce767f3e",
+    "id": "bundle--fa5c6e90-6bf3-4cce-b0cd-976b093b6b69",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An attacker sends a SOAP request with an array whose actual length exceeds the length indicated in the request. When a data structure including a SOAP array is instantiated, the sender transmits the size of the array as an explicit parameter along with the data. If the server processing the transmission naively trusts the specified size, then an attacker can intentionally understate the size of the array, possibly resulting in a buffer overflow if the server attempts to read the entire data set into the memory it allocated for a smaller array. This, in turn, can lead to a server crash or even the execution of arbitrary code.",
+            "description": "An attacker sends a SOAP request with an array whose actual length exceeds the length indicated in the request. If the server processing the transmission naively trusts the specified size, then an attacker can intentionally understate the size of the array, possibly resulting in a buffer overflow if the server attempts to read the entire data set into the memory it allocated for a smaller array.",
             "external_references": [
                 {
                     "external_id": "CAPEC-256",
@@ -36,7 +36,7 @@
                 }
             ],
             "id": "attack-pattern--4b856ceb-8bf7-4f0e-b423-89a420455b1d",
-            "modified": "2020-12-17T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "SOAP Array Overflow",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -47,6 +47,7 @@
             "x_capec_child_of_refs": [
                 "attack-pattern--77e51461-7843-411c-a90e-852498957f76"
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target application: </b>The adversary identifies a target application to perform the buffer overflow on. In this attack, adversaries look for applications that utilize SOAP as a communication mechanism.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find injection vector: </b>The adversary identifies an injection vector to deliver the excessive content to the targeted application's buffer.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The adversary creates a SOAP message that incorrectly specifies the size of its array to be smaller than the size of the actual content by a large margin and sends it to the application. If this causes a crash or some unintended behavior, it is likely that this is a valid injection vector.</td></tr></tbody></table><li> <p> <b>Craft overflow content: </b>The adversary crafts the content to be injected. If the intent is to simply cause the software to crash, the content need only consist of an excessive quantity of random data. If the intent is to leverage the overflow for execution of arbitrary code, the adversary crafts the payload in such a way that the overwritten return address is replaced with one of the adversary's choosing.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create malicious shellcode that will execute when the program execution is returned to it.</td></tr><tr><td>Use a NOP-sled in the overflow content to more easily \"slide\" into the malicious code. This is done so that the exact return address need not be correct, only in the range of all of the NOPs</td></tr><tr><td>The adversary will choose a SOAP type that allows them to put shellcode into the buffer when the array is read into the application.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Overflow the buffer: </b>Using the injection vector, the adversary sends the crafted SOAP message to the program, overflowing the buffer.</p></li></ol></div>",
             "x_capec_prerequisites": [
                 "The targeted SOAP server must trust that the array size as stated in messages it receives is correct, but read through the entire content of the message regardless of the stated size of the array."
             ],
@@ -55,7 +56,7 @@
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "type": "bundle"

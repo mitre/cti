@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--70d1c0b5-2f51-48d3-b986-e337828ebdbc",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "name": "HTML Smuggling",
+            "x_mitre_data_sources": [
+                "File: File Creation"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2021-10-18T12:03:12.510Z",
+            "created": "2021-05-20T12:20:42.219Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "id": "attack-pattern--d4dc46e3-5ba5-45b9-8204-010867cacfcb",
+            "x_mitre_defense_bypassed": [
+                "Web content filters",
+                "Anti-virus",
+                "Static file analysis"
+            ],
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "macOS"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "description": "Adversaries may smuggle data and files past content filters by hiding malicious payloads inside of seemingly benign HTML files. HTML documents can store large binary objects known as JavaScript Blobs (immutable data that represents raw bytes) that can later be constructed into file-like objects. Data may also be stored in Data URLs, which enable embedding media type or MIME files inline of HTML documents. HTML5 also introduced a download attribute that may be used to initiate file downloads.(Citation: HTML Smuggling Menlo Security 2020)(Citation: Outlflank HTML Smuggling 2018)\n\nAdversaries may deliver payloads to victims that bypass security controls through HTML Smuggling by abusing JavaScript Blobs and/or HTML5 download attributes. Security controls such as web content filters may not identify smuggled malicious files inside of HTML/JS files, as the content may be based on typically benign MIME types such as <code>text/plain</code> and/or <code>text/html</code>. Malicious files or data can be obfuscated and hidden inside of HTML files through Data URLs and/or JavaScript Blobs and can be deobfuscated when they reach the victim (i.e. [Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140)), potentially bypassing content filters.\n\nFor example, JavaScript Blobs can be abused to dynamically generate malicious files in the victim machine and may be dropped to disk by abusing JavaScript functions such as <code>msSaveBlob</code>.(Citation: HTML Smuggling Menlo Security 2020)(Citation: MSTIC NOBELIUM May 2021)(Citation: Outlflank HTML Smuggling 2018)(Citation: nccgroup Smuggling HTA 2017)",
+            "x_mitre_contributors": [
+                "Stan Hegt, Outflank",
+                "Jonathan Boucher, @crash_wave, Bank of Canada"
+            ],
+            "x_mitre_detection": "Detection of HTML Smuggling is difficult as HTML5 and JavaScript attributes are used by legitimate services and applications. HTML Smuggling can be performed in many ways via JavaScript, developing rules for the different variants, with a combination of different encoding and/or encryption schemes, may be very challenging.(Citation: Outlflank HTML Smuggling 2018) Detecting specific JavaScript and/or HTML5 attribute strings such as <code>Blob</code>, <code>msSaveOrOpenBlob</code>, and/or <code>download</code> may be a good indicator of HTML Smuggling. These strings may also be used by legitimate services therefore it is possible to raise false positives.\n\nConsider monitoring files downloaded from the Internet, possibly by HTML Smuggling, for suspicious activities. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1027/006",
+                    "external_id": "T1027.006",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://www.menlosecurity.com/blog/new-attack-alert-duri",
+                    "description": "Subramanian, K. (2020, August 18). New HTML Smuggling Attack Alert: Duri. Retrieved May 20, 2021.",
+                    "source_name": "HTML Smuggling Menlo Security 2020"
+                },
+                {
+                    "url": "https://outflank.nl/blog/2018/08/14/html-smuggling-explained/",
+                    "description": "Hegt, S. (2018, August 14). HTML smuggling explained. Retrieved May 20, 2021.",
+                    "source_name": "Outlflank HTML Smuggling 2018"
+                },
+                {
+                    "url": "https://www.microsoft.com/security/blog/2021/05/27/new-sophisticated-email-based-attack-from-nobelium/",
+                    "description": "Microsoft Threat Intelligence Center (MSTIC). (2021, May 27). New sophisticated email-based attack from NOBELIUM. Retrieved May 28, 2021.",
+                    "source_name": "MSTIC NOBELIUM May 2021"
+                },
+                {
+                    "url": "https://research.nccgroup.com/2017/08/08/smuggling-hta-files-in-internet-explorer-edge/",
+                    "description": "Warren, R. (2017, August 8). Smuggling HTA files in Internet Explorer/Edge. Retrieved May 20, 2021.",
+                    "source_name": "nccgroup Smuggling HTA 2017"
+                }
+            ]
+        }
+    ]
+}

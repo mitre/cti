@@ -1,0 +1,91 @@
+{
+    "type": "bundle",
+    "id": "bundle--28a26dfc-b686-494d-940f-4fe5a1cfb7d1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "name": "Safe Mode Boot",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Windows Registry: Windows Registry Key Modification",
+                "Windows Registry: Windows Registry Key Creation",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2021-08-31T14:51:47.352Z",
+            "created": "2021-06-23T20:00:27.600Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "id": "attack-pattern--28170e17-8384-415c-8486-2e6b294cb803",
+            "x_mitre_defense_bypassed": [
+                "Host Intrusion Prevention Systems",
+                "Anti-virus"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "Administrator"
+            ],
+            "description": "Adversaries may abuse Windows safe mode to disable endpoint defenses. Safe mode starts up the Windows operating system with a limited set of drivers and services. Third-party security software such as endpoint detection and response (EDR) tools may not start after booting Windows in safe mode. There are two versions of safe mode: Safe Mode and Safe Mode with Networking. It is possible to start additional services after a safe mode boot.(Citation: Microsoft Safe Mode)(Citation: Sophos Snatch Ransomware 2019)\n\nAdversaries may abuse safe mode to disable endpoint defenses that may not start with a limited boot. Hosts can be forced into safe mode after the next reboot via modifications to Boot Configuration Data (BCD) stores, which are files that manage boot application settings.(Citation: Microsoft bcdedit 2021)\n\nAdversaries may also add their malicious applications to the list of minimal services that start in safe mode by modifying relevant Registry values (i.e. [Modify Registry](https://attack.mitre.org/techniques/T1112)). Malicious [Component Object Model](https://attack.mitre.org/techniques/T1559/001) (COM) objects may also be registered and loaded in safe mode.(Citation: Sophos Snatch Ransomware 2019)(Citation: CyberArk Labs Safe Mode 2016)(Citation: Cybereason Nocturnus MedusaLocker 2020)(Citation: BleepingComputer REvil 2021)",
+            "x_mitre_contributors": [
+                "Jorell Magtibay, National Australia Bank Limited",
+                "Kiyohito Yamamoto, RedLark, NTT Communications",
+                "Yusuke Kubo, RedLark, NTT Communications"
+            ],
+            "x_mitre_detection": "Monitor Registry modification and additions for services that may start on safe mode. For example, a program can be forced to start on safe mode boot by adding a <code>\\*</code> in front of the \"Startup\" value name: <code>HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Run\\[\"\\*Startup\"=\"{Path}\"]</code> or by adding a key to <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\SafeBoot\\Minimal</code>.(Citation: BleepingComputer REvil 2021)(Citation: Sophos Snatch Ransomware 2019)\n\nMonitor execution of processes and commands associated with making configuration changes to boot settings, such as <code>bcdedit.exe</code> and <code>bootcfg.exe</code>.(Citation: Microsoft bcdedit 2021)(Citation: Microsoft Bootcfg)(Citation: Sophos Snatch Ransomware 2019)",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1562/009",
+                    "external_id": "T1562.009",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://support.microsoft.com/en-us/windows/start-your-pc-in-safe-mode-in-windows-10-92c27cff-db89-8644-1ce4-b3e5e56fe234",
+                    "description": "Microsoft. (n.d.). Start your PC in safe mode in Windows 10. Retrieved June 23, 2021.",
+                    "source_name": "Microsoft Safe Mode"
+                },
+                {
+                    "url": "https://news.sophos.com/en-us/2019/12/09/snatch-ransomware-reboots-pcs-into-safe-mode-to-bypass-protection/",
+                    "description": "Sophos. (2019, December 9). Snatch ransomware reboots PCs into Safe Mode to bypass protection. Retrieved June 23, 2021.",
+                    "source_name": "Sophos Snatch Ransomware 2019"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/bcdedit",
+                    "description": "Microsoft. (2021, May 27). bcdedit. Retrieved June 23, 2021.",
+                    "source_name": "Microsoft bcdedit 2021"
+                },
+                {
+                    "url": "https://www.cyberark.com/resources/blog/cyberark-labs-from-safe-mode-to-domain-compromise",
+                    "description": "Naim, D.. (2016, September 15). CyberArk Labs: From Safe Mode to Domain Compromise. Retrieved June 23, 2021.",
+                    "source_name": "CyberArk Labs Safe Mode 2016"
+                },
+                {
+                    "url": "https://www.cybereason.com/blog/medusalocker-ransomware",
+                    "description": "Cybereason Nocturnus. (2020, November 19). Cybereason vs. MedusaLocker Ransomware. Retrieved June 23, 2021.",
+                    "source_name": "Cybereason Nocturnus MedusaLocker 2020"
+                },
+                {
+                    "url": "https://www.bleepingcomputer.com/news/security/revil-ransomware-has-a-new-windows-safe-mode-encryption-mode/",
+                    "description": "Abrams, L. (2021, March 19). REvil ransomware has a new \u2018Windows Safe Mode\u2019 encryption mode. Retrieved June 23, 2021.",
+                    "source_name": "BleepingComputer REvil 2021"
+                },
+                {
+                    "url": "https://docs.microsoft.com/windows-server/administration/windows-commands/bootcfg",
+                    "description": "Gerend, J. et al. (2017, October 16). bootcfg. Retrieved August 30, 2021.",
+                    "source_name": "Microsoft Bootcfg"
+                }
+            ]
+        }
+    ]
+}

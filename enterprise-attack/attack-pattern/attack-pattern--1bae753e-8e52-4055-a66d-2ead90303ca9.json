@@ -1,0 +1,65 @@
+{
+    "type": "bundle",
+    "id": "bundle--6c844e32-b75f-4c24-874a-f96d78b8946f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "name": "Mavinject",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2021-10-14T22:11:03.446Z",
+            "created": "2021-09-22T17:45:10.241Z",
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--1bae753e-8e52-4055-a66d-2ead90303ca9",
+            "description": "Adversaries may abuse mavinject.exe to proxy execution of malicious code. Mavinject.exe is the Microsoft Application Virtualization Injector, a Windows utility that can inject code into external processes as part of Microsoft Application Virtualization (App-V).(Citation: LOLBAS Mavinject)\n\nAdversaries may abuse mavinject.exe to inject malicious DLLs into running processes (i.e. [Dynamic-link Library Injection](https://attack.mitre.org/techniques/T1055/001)), allowing for arbitrary code execution (ex. <code>C:\\Windows\\system32\\mavinject.exe PID /INJECTRUNNING PATH_DLL</code>).(Citation: ATT Lazarus TTP Evolution)(Citation: Reaqta Mavinject) Since mavinject.exe is digitally signed by Microsoft, proxying execution via this method may evade detection by security products because the execution is masked under a legitimate process. \n\nIn addition to [Dynamic-link Library Injection](https://attack.mitre.org/techniques/T1055/001), Mavinject.exe can also be abused to perform import descriptor injection via its  <code>/HMODULE</code> command-line parameter (ex. <code>mavinject.exe PID /HMODULE=BASE_ADDRESS PATH_DLL ORDINAL_NUMBER</code>). This command would inject an import table entry consisting of the specified DLL into the module at the given base address.(Citation: Mavinject Functionality Deconstructed)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_detection": "Monitor the execution and arguments of mavinject.exe. Compare recent invocations of mavinject.exe with prior history of known good arguments and injected DLLs to determine anomalous and potentially adversarial activity.\n\nAdversaries may rename abusable binaries to evade detections, but the argument <code>INJECTRUNNING</code> is required for mavinject.exe to perform [Dynamic-link Library Injection](https://attack.mitre.org/techniques/T1055/001) and may therefore be monitored to alert malicious activity.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1218/013",
+                    "external_id": "T1218.013",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://lolbas-project.github.io/lolbas/Binaries/Mavinject/",
+                    "description": "LOLBAS. (n.d.). Mavinject.exe. Retrieved September 22, 2021.",
+                    "source_name": "LOLBAS Mavinject"
+                },
+                {
+                    "url": "https://cybersecurity.att.com/blogs/labs-research/lazarus-campaign-ttps-and-evolution",
+                    "description": "Fernando Martinez. (2021, July 6). Lazarus campaign TTPs and evolution. Retrieved September 22, 2021.",
+                    "source_name": "ATT Lazarus TTP Evolution"
+                },
+                {
+                    "url": "https://reaqta.com/2017/12/mavinject-microsoft-injector/",
+                    "description": "Reaqta. (2017, December 16). From False Positive to True Positive: the story of Mavinject.exe, the Microsoft Injector. Retrieved September 22, 2021.",
+                    "source_name": "Reaqta Mavinject"
+                },
+                {
+                    "url": "https://posts.specterops.io/mavinject-exe-functionality-deconstructed-c29ab2cf5c0e",
+                    "description": "Matt Graeber. (2018, May 29). mavinject.exe Functionality Deconstructed. Retrieved September 22, 2021.",
+                    "source_name": "Mavinject Functionality Deconstructed"
+                }
+            ]
+        }
+    ]
+}

@@ -1,59 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--d2819fd4-7950-420c-8233-49f8e5f140cd",
+    "id": "bundle--850ee57e-91a5-414c-8ba6-173dba3e8e85",
     "spec_version": "2.0",
     "objects": [
         {
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1134",
-                    "url": "https://attack.mitre.org/techniques/T1134"
-                },
-                {
-                    "external_id": "CAPEC-633",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/633.html"
-                },
-                {
-                    "url": "https://pentestlab.blog/2017/04/03/token-manipulation/",
-                    "description": "netbiosX. (2017, April 3). Token Manipulation. Retrieved April 21, 2017.",
-                    "source_name": "Pentestlab Token Manipulation"
-                },
-                {
-                    "url": "https://technet.microsoft.com/en-us/windows-server-docs/identity/ad-ds/manage/component-updates/command-line-process-auditing",
-                    "description": "Mathers, B. (2017, March 7). Command line process auditing. Retrieved April 21, 2017.",
-                    "source_name": "Microsoft Command-line Logging"
-                },
-                {
-                    "url": "https://msdn.microsoft.com/en-us/library/windows/desktop/aa378184(v=vs.85).aspx",
-                    "description": "Microsoft TechNet. (n.d.). Retrieved April 25, 2017.",
-                    "source_name": "Microsoft LogonUser"
-                },
-                {
-                    "url": "https://msdn.microsoft.com/en-us/library/windows/desktop/aa446617(v=vs.85).aspx",
-                    "description": "Microsoft TechNet. (n.d.). Retrieved April 25, 2017.",
-                    "source_name": "Microsoft DuplicateTokenEx"
-                },
-                {
-                    "url": "https://msdn.microsoft.com/en-us/library/windows/desktop/aa378612(v=vs.85).aspx",
-                    "description": "Microsoft TechNet. (n.d.). Retrieved April 25, 2017.",
-                    "source_name": "Microsoft ImpersonateLoggedOnUser"
-                },
-                {
-                    "url": "https://www.blackhat.com/docs/eu-17/materials/eu-17-Atkinson-A-Process-Is-No-One-Hunting-For-Token-Manipulation.pdf",
-                    "description": "Atkinson, J., Winchester, R. (2017, December 7). A Process is No One: Hunting for Token Manipulation. Retrieved December 21, 2017.",
-                    "source_name": "BlackHat Atkinson Winchester Token Manipulation"
-                }
-            ],
-            "description": "Adversaries may modify access tokens to operate under a different user or system security context to perform actions and bypass access controls. Windows uses access tokens to determine the ownership of a running process. A user can manipulate access tokens to make a running process appear as though it is the child of a different process or belongs to someone other than the user that started the process. When this occurs, the process also takes on the security context associated with the new token.\n\nAn adversary can use built-in Windows API functions to copy access tokens from existing processes; this is known as token stealing. These token can then be applied to an existing process (i.e. [Token Impersonation/Theft](https://attack.mitre.org/techniques/T1134/001)) or used to spawn a new process (i.e. [Create Process with Token](https://attack.mitre.org/techniques/T1134/002)). An adversary must already be in a privileged user context (i.e. administrator) to steal a token. However, adversaries commonly use token stealing to elevate their security context from the administrator level to the SYSTEM level. An adversary can then use a token to authenticate to a remote system as the account for that token if the account has appropriate permissions on the remote system.(Citation: Pentestlab Token Manipulation)\n\nAny standard user can use the <code>runas</code> command, and the Windows API functions, to create impersonation tokens; it does not require access to an administrator account. There are also other mechanisms, such as Active Directory fields, that can be used to modify access tokens.",
-            "name": "Access Token Manipulation",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "id": "attack-pattern--dcaa092b-7de9-4a21-977f-7fcb77e89c48",
             "type": "attack-pattern",
+            "name": "Access Token Manipulation",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Process: Process Metadata",
+                "Process: OS API Execution",
+                "User Account: User Account Metadata",
+                "Active Directory: Active Directory Object Modification",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "2.0",
+            "modified": "2021-10-17T14:51:49.334Z",
+            "created": "2017-12-14T16:46:06.044Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -64,8 +30,7 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2021-04-24T13:40:52.952Z",
-            "created": "2017-12-14T16:46:06.044Z",
+            "id": "attack-pattern--dcaa092b-7de9-4a21-977f-7fcb77e89c48",
             "x_mitre_defense_bypassed": [
                 "Windows User Account Control",
                 "System access controls",
@@ -73,32 +38,67 @@
                 "Heuristic Detection",
                 "Host forensic analysis"
             ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
             "x_mitre_is_subtechnique": false,
-            "x_mitre_version": "2.0",
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
+            ],
+            "description": "Adversaries may modify access tokens to operate under a different user or system security context to perform actions and bypass access controls. Windows uses access tokens to determine the ownership of a running process. A user can manipulate access tokens to make a running process appear as though it is the child of a different process or belongs to someone other than the user that started the process. When this occurs, the process also takes on the security context associated with the new token.\n\nAn adversary can use built-in Windows API functions to copy access tokens from existing processes; this is known as token stealing. These token can then be applied to an existing process (i.e. [Token Impersonation/Theft](https://attack.mitre.org/techniques/T1134/001)) or used to spawn a new process (i.e. [Create Process with Token](https://attack.mitre.org/techniques/T1134/002)). An adversary must already be in a privileged user context (i.e. administrator) to steal a token. However, adversaries commonly use token stealing to elevate their security context from the administrator level to the SYSTEM level. An adversary can then use a token to authenticate to a remote system as the account for that token if the account has appropriate permissions on the remote system.(Citation: Pentestlab Token Manipulation)\n\nAny standard user can use the <code>runas</code> command, and the Windows API functions, to create impersonation tokens; it does not require access to an administrator account. There are also other mechanisms, such as Active Directory fields, that can be used to modify access tokens.",
+            "x_mitre_effective_permissions": [
+                "SYSTEM"
+            ],
             "x_mitre_contributors": [
                 "Tom Ueltschi @c_APT_ure",
                 "Travis Smith, Tripwire",
                 "Robby Winchester, @robwinchester3",
                 "Jared Atkinson, @jaredcatkinson"
             ],
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Process: Process Metadata",
-                "Process: OS API Execution",
-                "User Account: User Account Metadata",
-                "Active Directory: Active Directory Object Modification",
-                "Command: Command Execution"
-            ],
             "x_mitre_detection": "If an adversary is using a standard command-line shell, analysts can detect token manipulation by auditing command-line activity. Specifically, analysts should look for use of the <code>runas</code> command. Detailed command-line logging is not enabled by default in Windows.(Citation: Microsoft Command-line Logging)\n\nIf an adversary is using a payload that calls the Windows token APIs directly, analysts can detect token manipulation only through careful analysis of user network activity, examination of running processes, and correlation with other endpoint and network behavior. \n\nThere are many Windows API calls a payload can take advantage of to manipulate access tokens (e.g., <code>LogonUser</code> (Citation: Microsoft LogonUser), <code>DuplicateTokenEx</code>(Citation: Microsoft DuplicateTokenEx), and <code>ImpersonateLoggedOnUser</code>(Citation: Microsoft ImpersonateLoggedOnUser)). Please see the referenced Windows API pages for more information.\n\nQuery systems for process and thread token information and look for inconsistencies such as user owns processes impersonating the local SYSTEM account.(Citation: BlackHat Atkinson Winchester Token Manipulation)\n\nLook for inconsistencies between the various fields that store PPID information, such as the EventHeader ProcessId from data collected via Event Tracing for Windows (ETW), Creator Process ID/Name from Windows event logs, and the ProcessID and ParentProcessID (which are also produced from ETW and other utilities such as Task Manager and Process Explorer). The ETW provided EventHeader ProcessId identifies the actual parent process.",
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
-            ],
-            "x_mitre_effective_permissions": [
-                "SYSTEM"
-            ],
-            "x_mitre_platforms": [
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1134",
+                    "external_id": "T1134",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://capec.mitre.org/data/definitions/633.html",
+                    "external_id": "CAPEC-633",
+                    "source_name": "capec"
+                },
+                {
+                    "source_name": "Pentestlab Token Manipulation",
+                    "description": "netbiosX. (2017, April 3). Token Manipulation. Retrieved April 21, 2017.",
+                    "url": "https://pentestlab.blog/2017/04/03/token-manipulation/"
+                },
+                {
+                    "source_name": "Microsoft Command-line Logging",
+                    "description": "Mathers, B. (2017, March 7). Command line process auditing. Retrieved April 21, 2017.",
+                    "url": "https://technet.microsoft.com/en-us/windows-server-docs/identity/ad-ds/manage/component-updates/command-line-process-auditing"
+                },
+                {
+                    "source_name": "Microsoft LogonUser",
+                    "description": "Microsoft TechNet. (n.d.). Retrieved April 25, 2017.",
+                    "url": "https://msdn.microsoft.com/en-us/library/windows/desktop/aa378184(v=vs.85).aspx"
+                },
+                {
+                    "source_name": "Microsoft DuplicateTokenEx",
+                    "description": "Microsoft TechNet. (n.d.). Retrieved April 25, 2017.",
+                    "url": "https://msdn.microsoft.com/en-us/library/windows/desktop/aa446617(v=vs.85).aspx"
+                },
+                {
+                    "source_name": "Microsoft ImpersonateLoggedOnUser",
+                    "description": "Microsoft TechNet. (n.d.). Retrieved April 25, 2017.",
+                    "url": "https://msdn.microsoft.com/en-us/library/windows/desktop/aa378612(v=vs.85).aspx"
+                },
+                {
+                    "source_name": "BlackHat Atkinson Winchester Token Manipulation",
+                    "description": "Atkinson, J., Winchester, R. (2017, December 7). A Process is No One: Hunting for Token Manipulation. Retrieved December 21, 2017.",
+                    "url": "https://www.blackhat.com/docs/eu-17/materials/eu-17-Atkinson-A-Process-Is-No-One-Hunting-For-Token-Manipulation.pdf"
+                }
             ]
         }
     ]

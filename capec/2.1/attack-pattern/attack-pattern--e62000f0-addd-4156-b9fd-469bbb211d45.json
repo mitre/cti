@@ -1,10 +1,10 @@
 {
-    "id": "bundle--85350ab1-7734-497b-a76e-2038e8fb8337",
+    "id": "bundle--23e9606d-094a-4978-94dc-f89af2e1b1b5",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "This attack targets libraries or shared code modules which are vulnerable to buffer overflow attacks. An attacker who has access to an API may try to embed malicious code in the API function call and exploit a buffer overflow vulnerability in the function's implementation. All clients that make use of the code library thus become vulnerable by association. This has a very broad effect on security across a system, usually affecting more than one software process.",
+            "description": "This attack targets libraries or shared code modules which are vulnerable to buffer overflow attacks. An adversary who has knowledge of known vulnerable libraries or shared code can easily target software that makes use of these libraries. All clients that make use of the code library thus become vulnerable by association. This has a very broad effect on security across a system, usually affecting more than one software process.",
             "external_references": [
                 {
                     "external_id": "CAPEC-8",
@@ -58,7 +58,7 @@
                 }
             ],
             "id": "attack-pattern--e62000f0-addd-4156-b9fd-469bbb211d45",
-            "modified": "2018-07-31T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "Buffer Overflow in an API Call",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -90,7 +90,7 @@
                 "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Attack Example: Libc in FreeBSD</xhtml:div>\n               <xhtml:p>A buffer overflow in the FreeBSD utility setlocale (found in the libc module) puts many programs at risk all at once.</xhtml:p>\n            ",
                 "\n               <xhtml:div style=\"color:#32498D; font-weight:bold;\">Xtlib</xhtml:div>\n               <xhtml:p>A buffer overflow in the Xt library of the X windowing system allows local users to execute commands with root privileges.</xhtml:p>\n            "
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Experiment</h3><ol><li> <p>An attacker can call an API exposed by the target host.</p></li><li> <p>On the probing stage, the attacker injects malicious code using the API call and observes the results. The attacker's goal is to uncover a buffer overflow vulnerability.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The attacker finds a buffer overflow vulnerability, crafts malicious code and injects it through an API call. The attacker can at worst execute remote code on the target host.</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target application: </b>The adversary, with knowledge of vulnerable libraries or shared code modules, identifies a target application or program that makes use of these.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find injection vector: </b>The adversary attempts to use the API, and if they can they send a large amount of data to see if the buffer overflow attack really does work.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Provide large input to a program or application and observe the behavior. If there is a crash, this means that a buffer overflow attack is possible.</td></tr></tbody></table><li> <p> <b>Craft overflow content: </b>The adversary crafts the content to be injected based on their knowledge of the vulnerability and their desired outcome. If the intent is to simply cause the software to crash, the content need only consist of an excessive quantity of random data. If the intent is to leverage the overflow for execution of arbitrary code, the adversary will craft a set of content that not only overflows the targeted buffer but does so in such a way that the overwritten return address is replaced with one of the adversaries' choosing which points to code injected by the adversary.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create malicious shellcode that will execute when the program execution is returned to it.</td></tr><tr><td>Use a NOP-sled in the overflow content to more easily \"slide\" into the malicious code. This is done so that the exact return address need not be correct, only in the range of all of the NOPs</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Overflow the buffer: </b>Using the API as the injection vector, the adversary injects the crafted overflow content into the buffer.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The target host exposes an API to the user.",
@@ -102,7 +102,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "type": "bundle"

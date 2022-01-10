@@ -1,0 +1,77 @@
+{
+    "type": "bundle",
+    "id": "bundle--21ae5291-8805-4024-a6ca-66d4cd18e8d6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "name": "System Language Discovery",
+            "x_mitre_data_sources": [
+                "Windows Registry: Windows Registry Key Access",
+                "Process: Process Creation",
+                "Process: OS API Execution",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2021-10-15T22:00:56.174Z",
+            "created": "2021-08-18T14:06:45.244Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "discovery"
+                }
+            ],
+            "id": "attack-pattern--c1b68a96-3c48-49ea-a6c0-9b27359f9c19",
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "macOS"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "description": "Adversaries may attempt to gather information about the system language of a victim in order to infer the geographical location of that host. This information may be used to shape follow-on behaviors, including whether the adversary infects the target and/or attempts specific actions. This decision may be employed by malware developers and operators to reduce their risk of attracting the attention of specific law enforcement agencies or prosecution/scrutiny from other entities.(Citation: Malware System Language Check)\n\nThere are various sources of data an adversary could use to infer system language, such as system defaults and keyboard layouts. Specific checks will vary based on the target and/or adversary, but may involve behaviors such as [Query Registry](https://attack.mitre.org/techniques/T1012) and calls to [Native API](https://attack.mitre.org/techniques/T1106) functions.(Citation: CrowdStrike Ryuk January 2019) \n\nFor example, on a Windows system adversaries may attempt to infer the language of a system by querying the registry key <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Nls\\Language</code> or parsing the outputs of Windows API functions <code>GetUserDefaultUILanguage</code>, <code>GetSystemDefaultUILanguage</code>, <code>GetKeyboardLayoutList</code> and <code>GetUserDefaultLangID</code>.(Citation: Darkside Ransomware Cybereason)(Citation: Securelist JSWorm)(Citation: SecureList SynAck Doppelg\u00e4nging May 2018)\n\nOn a macOS or Linux system, adversaries may query <code>locale</code> to retrieve the value of the <code>$LANG</code> environment variable.",
+            "x_mitre_contributors": [
+                "Harshal Tupsamudre, Qualys"
+            ],
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system language information. This may include calls to various API functions and interaction with system configuration settings such as the Windows Registry.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1614/001",
+                    "external_id": "T1614.001",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://www.welivesecurity.com/2009/01/15/malware-trying-to-avoid-some-countries/",
+                    "description": "Pierre-Marc Bureau. (2009, January 15). Malware Trying to Avoid Some Countries. Retrieved August 18, 2021.",
+                    "source_name": "Malware System Language Check"
+                },
+                {
+                    "url": "https://www.crowdstrike.com/blog/big-game-hunting-with-ryuk-another-lucrative-targeted-ransomware/",
+                    "description": "Hanel, A. (2019, January 10). Big Game Hunting with Ryuk: Another Lucrative Targeted Ransomware. Retrieved May 12, 2020.",
+                    "source_name": "CrowdStrike Ryuk January 2019"
+                },
+                {
+                    "url": "https://www.cybereason.com/blog/cybereason-vs-darkside-ransomware",
+                    "description": "Cybereason Nocturnus. (2021, April 1). Cybereason vs. Darkside Ransomware. Retrieved August 18, 2021.",
+                    "source_name": "Darkside Ransomware Cybereason"
+                },
+                {
+                    "url": "https://securelist.com/evolution-of-jsworm-ransomware/102428/",
+                    "description": "Fedor Sinitsyn. (2021, May 25). Evolution of JSWorm Ransomware. Retrieved August 18, 2021.",
+                    "source_name": "Securelist JSWorm"
+                },
+                {
+                    "url": "https://securelist.com/synack-targeted-ransomware-uses-the-doppelganging-technique/85431/",
+                    "description": "Ivanov, A. et al. (2018, May 7). SynAck targeted ransomware uses the Doppelg\u00e4nging technique. Retrieved May 22, 2018.",
+                    "source_name": "SecureList SynAck Doppelg\u00e4nging May 2018"
+                }
+            ]
+        }
+    ]
+}

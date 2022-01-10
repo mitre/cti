@@ -1,63 +1,14 @@
 {
     "type": "bundle",
-    "id": "bundle--70ee4929-abcb-440a-8376-1225527f0f39",
+    "id": "bundle--d3a03f23-6e86-4105-979a-d45f6c95b7a1",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--4ff5d6a8-c062-4c68-a778-36fc5edd564f",
-            "description": "Adversaries may abuse control.exe to proxy execution of malicious payloads. The Windows Control Panel process binary (control.exe) handles execution of Control Panel items, which are utilities that allow users to view and adjust computer settings.\n\nControl Panel items are registered executable (.exe) or Control Panel (.cpl) files, the latter are actually renamed dynamic-link library (.dll) files that export a <code>CPlApplet</code> function.(Citation: Microsoft Implementing CPL)(Citation: TrendMicro CPL Malware Jan 2014) For ease of use, Control Panel items typically include graphical menus available to users after being registered and loaded into the Control Panel.(Citation: Microsoft Implementing CPL) Control Panel items can be executed directly from the command line, programmatically via an application programming interface (API) call, or by simply double-clicking the file.(Citation: Microsoft Implementing CPL) (Citation: TrendMicro CPL Malware Jan 2014)(Citation: TrendMicro CPL Malware Dec 2013)\n\nMalicious Control Panel items can be delivered via [Phishing](https://attack.mitre.org/techniques/T1566) campaigns(Citation: TrendMicro CPL Malware Jan 2014)(Citation: TrendMicro CPL Malware Dec 2013) or executed as part of multi-stage malware.(Citation: Palo Alto Reaver Nov 2017) Control Panel items, specifically CPL files, may also bypass application and/or file extension allow lists.\n\nAdversaries may also rename malicious DLL files (.dll) with Control Panel file extensions (.cpl) and register them to <code>HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Control Panel\\Cpls</code>. Even when these registered DLLs do not comply with the CPL file specification and do not export <code>CPlApplet</code> functions, they are loaded and executed through its <code>DllEntryPoint</code> when Control Panel is executed. CPL files not exporting <code>CPlApplet</code> are not directly executable.(Citation: ESET InvisiMole June 2020)",
-            "name": "Control Panel",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1218.002",
-                    "url": "https://attack.mitre.org/techniques/T1218/002"
-                },
-                {
-                    "source_name": "Microsoft Implementing CPL",
-                    "description": "M. (n.d.). Implementing Control Panel Items. Retrieved January 18, 2018.",
-                    "url": "https://msdn.microsoft.com/library/windows/desktop/cc144185.aspx"
-                },
-                {
-                    "url": "https://www.trendmicro.de/cloud-content/us/pdfs/security-intelligence/white-papers/wp-cpl-malware.pdf",
-                    "description": "Merc\u00eas, F. (2014, January 27). CPL Malware - Malicious Control Panel Items. Retrieved January 18, 2018.",
-                    "source_name": "TrendMicro CPL Malware Jan 2014"
-                },
-                {
-                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/control-panel-files-used-as-malicious-attachments/",
-                    "description": "Bernardino, J. (2013, December 17). Control Panel Files Used As Malicious Attachments. Retrieved January 18, 2018.",
-                    "source_name": "TrendMicro CPL Malware Dec 2013"
-                },
-                {
-                    "url": "https://researchcenter.paloaltonetworks.com/2017/11/unit42-new-malware-with-ties-to-sunorcal-discovered/",
-                    "description": "Grunzweig, J. and Miller-Osborn, J. (2017, November 10). New Malware with Ties to SunOrcal Discovered. Retrieved November 16, 2017.",
-                    "source_name": "Palo Alto Reaver Nov 2017"
-                },
-                {
-                    "source_name": "ESET InvisiMole June 2020",
-                    "url": "https://www.welivesecurity.com/wp-content/uploads/2020/06/ESET_InvisiMole.pdf",
-                    "description": "Hromcova, Z. and Cherpanov, A. (2020, June). INVISIMOLE: THE HIDDEN PART OF THE STORY. Retrieved July 16, 2020."
-                }
-            ],
             "type": "attack-pattern",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "modified": "2020-10-21T18:37:11.672Z",
-            "created": "2020-01-23T19:59:52.630Z",
-            "x_mitre_contributors": [
-                "ESET"
-            ],
-            "x_mitre_platforms": [
-                "Windows"
-            ],
+            "name": "Control Panel",
             "x_mitre_data_sources": [
                 "Process: Process Creation",
                 "File: File Creation",
@@ -66,17 +17,66 @@
                 "Command: Command Execution",
                 "Windows Registry: Windows Registry Key Modification"
             ],
-            "x_mitre_detection": "Monitor and analyze activity related to items associated with CPL files, such as the control.exe and the <code>Control_RunDLL</code> and <code>ControlRunDLLAsUser</code> API functions in shell32.dll. When executed from the command line or clicked, control.exe will execute the CPL file (ex: <code>control.exe file.cpl</code>) before [Rundll32](https://attack.mitre.org/techniques/T1218/011) is used to call the CPL's API functions (ex: <code>rundll32.exe shell32.dll,Control_RunDLL file.cpl</code>). CPL files can be executed directly via the CPL API function with just the latter [Rundll32](https://attack.mitre.org/techniques/T1218/011) command, which may bypass detections and/or execution filters for control.exe.(Citation: TrendMicro CPL Malware Jan 2014)\n\nInventory Control Panel items to locate unregistered and potentially malicious files present on systems:\n\n* Executable format registered Control Panel items will have a globally unique identifier (GUID) and registration Registry entries in <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel\\NameSpace</code> and <code>HKEY_CLASSES_ROOT\\CLSID\\{GUID}</code>. These entries may contain information about the Control Panel item such as its display name, path to the local file, and the command executed when opened in the Control Panel. (Citation: Microsoft Implementing CPL)\n* CPL format registered Control Panel items stored in the System32 directory are automatically shown in the Control Panel. Other Control Panel items will have registration entries in the <code>CPLs</code> and <code>Extended Properties</code> Registry keys of <code>HKEY_LOCAL_MACHINE or HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Control Panel</code>. These entries may include information such as a GUID, path to the local file, and a canonical name used to launch the file programmatically (<code> WinExec(\"c:\\windows\\system32\\control.exe {Canonical_Name}\", SW_NORMAL);</code>) or from a command line (<code>control.exe /name {Canonical_Name}</code>).(Citation: Microsoft Implementing CPL)\n* Some Control Panel items are extensible via Shell extensions registered in <code>HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Controls Folder\\{name}\\Shellex\\PropertySheetHandlers</code> where {name} is the predefined name of the system item.(Citation: Microsoft Implementing CPL)\n\nAnalyze new Control Panel items as well as those present on disk for malicious content. Both executable and CPL formats are compliant Portable Executable (PE) images and can be examined using traditional tools and methods, pending anti-reverse-engineering techniques.(Citation: TrendMicro CPL Malware Jan 2014)",
+            "x_mitre_version": "1.1",
+            "modified": "2020-10-21T18:37:11.672Z",
+            "created": "2020-01-23T19:59:52.630Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "id": "attack-pattern--4ff5d6a8-c062-4c68-a778-36fc5edd564f",
             "x_mitre_defense_bypassed": [
                 "Application control"
             ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "User",
                 "Administrator",
                 "SYSTEM"
             ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.1"
+            "description": "Adversaries may abuse control.exe to proxy execution of malicious payloads. The Windows Control Panel process binary (control.exe) handles execution of Control Panel items, which are utilities that allow users to view and adjust computer settings.\n\nControl Panel items are registered executable (.exe) or Control Panel (.cpl) files, the latter are actually renamed dynamic-link library (.dll) files that export a <code>CPlApplet</code> function.(Citation: Microsoft Implementing CPL)(Citation: TrendMicro CPL Malware Jan 2014) For ease of use, Control Panel items typically include graphical menus available to users after being registered and loaded into the Control Panel.(Citation: Microsoft Implementing CPL) Control Panel items can be executed directly from the command line, programmatically via an application programming interface (API) call, or by simply double-clicking the file.(Citation: Microsoft Implementing CPL) (Citation: TrendMicro CPL Malware Jan 2014)(Citation: TrendMicro CPL Malware Dec 2013)\n\nMalicious Control Panel items can be delivered via [Phishing](https://attack.mitre.org/techniques/T1566) campaigns(Citation: TrendMicro CPL Malware Jan 2014)(Citation: TrendMicro CPL Malware Dec 2013) or executed as part of multi-stage malware.(Citation: Palo Alto Reaver Nov 2017) Control Panel items, specifically CPL files, may also bypass application and/or file extension allow lists.\n\nAdversaries may also rename malicious DLL files (.dll) with Control Panel file extensions (.cpl) and register them to <code>HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Control Panel\\Cpls</code>. Even when these registered DLLs do not comply with the CPL file specification and do not export <code>CPlApplet</code> functions, they are loaded and executed through its <code>DllEntryPoint</code> when Control Panel is executed. CPL files not exporting <code>CPlApplet</code> are not directly executable.(Citation: ESET InvisiMole June 2020)",
+            "x_mitre_contributors": [
+                "ESET"
+            ],
+            "x_mitre_detection": "Monitor and analyze activity related to items associated with CPL files, such as the control.exe and the <code>Control_RunDLL</code> and <code>ControlRunDLLAsUser</code> API functions in shell32.dll. When executed from the command line or clicked, control.exe will execute the CPL file (ex: <code>control.exe file.cpl</code>) before [Rundll32](https://attack.mitre.org/techniques/T1218/011) is used to call the CPL's API functions (ex: <code>rundll32.exe shell32.dll,Control_RunDLL file.cpl</code>). CPL files can be executed directly via the CPL API function with just the latter [Rundll32](https://attack.mitre.org/techniques/T1218/011) command, which may bypass detections and/or execution filters for control.exe.(Citation: TrendMicro CPL Malware Jan 2014)\n\nInventory Control Panel items to locate unregistered and potentially malicious files present on systems:\n\n* Executable format registered Control Panel items will have a globally unique identifier (GUID) and registration Registry entries in <code>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\ControlPanel\\NameSpace</code> and <code>HKEY_CLASSES_ROOT\\CLSID\\{GUID}</code>. These entries may contain information about the Control Panel item such as its display name, path to the local file, and the command executed when opened in the Control Panel. (Citation: Microsoft Implementing CPL)\n* CPL format registered Control Panel items stored in the System32 directory are automatically shown in the Control Panel. Other Control Panel items will have registration entries in the <code>CPLs</code> and <code>Extended Properties</code> Registry keys of <code>HKEY_LOCAL_MACHINE or HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Control Panel</code>. These entries may include information such as a GUID, path to the local file, and a canonical name used to launch the file programmatically (<code> WinExec(\"c:\\windows\\system32\\control.exe {Canonical_Name}\", SW_NORMAL);</code>) or from a command line (<code>control.exe /name {Canonical_Name}</code>).(Citation: Microsoft Implementing CPL)\n* Some Control Panel items are extensible via Shell extensions registered in <code>HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Controls Folder\\{name}\\Shellex\\PropertySheetHandlers</code> where {name} is the predefined name of the system item.(Citation: Microsoft Implementing CPL)\n\nAnalyze new Control Panel items as well as those present on disk for malicious content. Both executable and CPL formats are compliant Portable Executable (PE) images and can be examined using traditional tools and methods, pending anti-reverse-engineering techniques.(Citation: TrendMicro CPL Malware Jan 2014)",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1218/002",
+                    "external_id": "T1218.002",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://msdn.microsoft.com/library/windows/desktop/cc144185.aspx",
+                    "description": "M. (n.d.). Implementing Control Panel Items. Retrieved January 18, 2018.",
+                    "source_name": "Microsoft Implementing CPL"
+                },
+                {
+                    "source_name": "TrendMicro CPL Malware Jan 2014",
+                    "description": "Merc\u00eas, F. (2014, January 27). CPL Malware - Malicious Control Panel Items. Retrieved January 18, 2018.",
+                    "url": "https://www.trendmicro.de/cloud-content/us/pdfs/security-intelligence/white-papers/wp-cpl-malware.pdf"
+                },
+                {
+                    "source_name": "TrendMicro CPL Malware Dec 2013",
+                    "description": "Bernardino, J. (2013, December 17). Control Panel Files Used As Malicious Attachments. Retrieved January 18, 2018.",
+                    "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/control-panel-files-used-as-malicious-attachments/"
+                },
+                {
+                    "source_name": "Palo Alto Reaver Nov 2017",
+                    "description": "Grunzweig, J. and Miller-Osborn, J. (2017, November 10). New Malware with Ties to SunOrcal Discovered. Retrieved November 16, 2017.",
+                    "url": "https://researchcenter.paloaltonetworks.com/2017/11/unit42-new-malware-with-ties-to-sunorcal-discovered/"
+                },
+                {
+                    "url": "https://www.welivesecurity.com/wp-content/uploads/2020/06/ESET_InvisiMole.pdf",
+                    "description": "Hromcova, Z. and Cherpanov, A. (2020, June). INVISIMOLE: THE HIDDEN PART OF THE STORY. Retrieved July 16, 2020.",
+                    "source_name": "ESET InvisiMole June 2020"
+                }
+            ]
         }
     ]
 }

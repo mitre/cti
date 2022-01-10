@@ -1,10 +1,10 @@
 {
-    "id": "bundle--e6906439-abea-48e3-b080-4f1cd767fcdb",
+    "id": "bundle--c68d652f-af60-4ea8-8a5d-8062819ca6ca",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "In this attack, the target software is given input that the attacker knows will be modified and expanded in size during processing. This attack relies on the target software failing to anticipate that the expanded data may exceed some internal limit, thereby creating a buffer overflow.",
+            "description": "In this attack, the target software is given input that the adversary knows will be modified and expanded in size during processing. This attack relies on the target software failing to anticipate that the expanded data may exceed some internal limit, thereby creating a buffer overflow.",
             "external_references": [
                 {
                     "external_id": "CAPEC-47",
@@ -63,7 +63,7 @@
                 }
             ],
             "id": "attack-pattern--e61f5dd9-d26e-454f-ab07-171f3dea6e73",
-            "modified": "2020-07-30T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "Buffer Overflow via Parameter Expansion",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -98,7 +98,7 @@
                 "\n               <xhtml:p>Attack Example: FTP glob()</xhtml:p>\n               <xhtml:p>The glob() function in FTP servers has been susceptible to attack as a result of incorrect resizing. This is an ftpd glob() Expansion LIST Heap Overflow Vulnerability. ftp daemon contains a heap-based buffer overflow condition. The overflow occurs when the LIST command is issued with an argument that expands into an oversized string after being processed by glob().</xhtml:p>\n               <xhtml:p>This buffer overflow occurs in memory that is dynamically allocated. It may be possible for attackers to exploit this vulnerability and execute arbitrary code on the affected host.</xhtml:p>\n               <xhtml:p>To exploit this, the attacker must be able to create directories on the target host.</xhtml:p>\n               <xhtml:p>The glob() function is used to expand short-hand notation into complete file names. By sending to the FTP server a request containing a tilde (~) and other wildcard characters in the pathname string, a remote attacker can overflow a buffer and execute arbitrary code on the FTP server to gain root privileges. Once the request is processed, the glob() function expands the user input, which could exceed the expected length. In order to exploit this vulnerability, the attacker must be able to create directories on the FTP server.</xhtml:p>\n               <xhtml:p>[REF-1]</xhtml:p>See also: CVE-2001-0249",
                 "\n               <xhtml:p>Buffer overflow in the glob implementation in libc in NetBSD-current before 20050914, and NetBSD 2.* and 3.* before 20061203, as used by the FTP daemon, allows remote authenticated users to execute arbitrary code via a long pathname that results from path expansion.</xhtml:p>\n               <xhtml:p>The limit computation of an internal buffer was done incorrectly. The size of the buffer in byte was used as element count, even though the elements of the buffer are 2 bytes long. Long expanded path names would therefore overflow the buffer.</xhtml:p>See also: CVE-2006-6652"
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>Consider parts of the program where user supplied data may be expanded by the program. Use a disassembler and other reverse engineering tools to guide the search.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>Find a place where a buffer overflow occurs due to the fact that the new expanded size of the string is not correctly accounted for by the program. This may happen perhaps when the string is copied to another buffer that is big enough to hold the original, but not the expanded string. This may create an opportunity for planting the payload and redirecting program execution to the shell code.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>Write the buffer overflow exploit. To be exploitable, the \"spill over\" amount (e.g. the difference between the expanded string length and the original string length before it was expanded) needs to be sufficient to allow the overflow of the stack return pointer (in the case of a stack overflow), without causing a stack corruption that would crash the program before it gets to execute the shell code. Heap overflow will be more difficult and will require the attacker to get more lucky, by perhaps getting a chance to overwrite some of the accounting information stored as part of using malloc().</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target application: </b>The adversary identifies a target application or program to perform the buffer overflow on. Adversaries often look for applications that accept user input and that perform manual memory management.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find injection vector: </b>The adversary identifies an injection vector to deliver the excessive content to the targeted application's buffer.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>In this attack, the normal method of providing large user input does not work. The program performs bounds checking on the user input, but not the expanded user input. The adversary needs to provide input that they believe will be expanded by the program to overflow a buffer. To identify where this is possible, an adversary either needs to have knowledge of the inner workings of the program or use a disassembler and other reverse engineering tools to guide the search.</td></tr></tbody></table><li> <p> <b>Craft overflow content: </b>The adversary crafts the input to be given to the program. If the intent is to simply cause the software to crash, the input needs only to expand to an excessive quantity of random data. If the intent is to leverage the overflow for execution of arbitrary code, the adversary will craft input that expands in a way that not only overflows the targeted buffer but does so in such a way that the overwritten return address is replaced with one of the adversaries' choosing which points to code injected by the adversary.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create specific files and directories on the system and then give input using path traversal shortcuts to those directories that could expand past an input buffer.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Overflow the buffer: </b>Using the injection vector, the adversary gives the crafted input to the program, overflowing the buffer.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_prerequisites": [
                 "The program expands one of the parameters passed to a function with input controlled by the user, but a later function making use of the expanded parameter erroneously considers the original, not the expanded size of the parameter.",
@@ -112,7 +112,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

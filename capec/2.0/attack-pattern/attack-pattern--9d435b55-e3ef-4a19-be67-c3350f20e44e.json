@@ -1,0 +1,111 @@
+{
+    "id": "bundle--6fb063fe-e512-45fc-aa8f-4d9bff488a9d",
+    "objects": [
+        {
+            "created": "2021-10-21T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>An adversary targets software that constructs NoSQL statements based on user input or with parameters vulnerable to operator replacement in order to achieve a variety of technical impacts such as escalating privileges, bypassing authentication, and/or executing code.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-676",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/676.html"
+                },
+                {
+                    "external_id": "CWE-943",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/943.html"
+                },
+                {
+                    "external_id": "CWE-1286",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1286.html"
+                },
+                {
+                    "description": "Testing for NoSQL Injection, The OWASP Foundation",
+                    "external_id": "REF-668",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05.6-Testing_for_NoSQL_Injection"
+                },
+                {
+                    "description": "Charlie Belmer, NoSql Injection Cheatsheet, 2021--06---07, Null Sweep",
+                    "external_id": "REF-669",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://nullsweep.com/nosql-injection-cheatsheet/"
+                },
+                {
+                    "description": "Patrick Spiegel, NoSql Injection: Fun with Objects and Arrays, The OWASP Foundation",
+                    "external_id": "REF-670",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://owasp.org/www-pdf-archive/GOD16-NOSQL.pdf"
+                },
+                {
+                    "description": "NoSql Injection: Fun with Objects and ArraysNoSQL Injection Attacks and Prevention Techniques, 2019--06, WebOrion",
+                    "external_id": "REF-671",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.theweborion.com/wp-content/uploads/2019/06/NoSQL-Injection-Attacks-and-Prevention-Techniques.pdf"
+                }
+            ],
+            "id": "attack-pattern--9d435b55-e3ef-4a19-be67-c3350f20e44e",
+            "modified": "2021-10-21T00:00:00.000Z",
+            "name": "NoSQL Injection",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Standard",
+            "x_capec_can_follow_refs": [
+                "attack-pattern--70c8a212-72da-4a98-a626-e5d38e5416e3"
+            ],
+            "x_capec_child_of_refs": [
+                "attack-pattern--2fb2b2b8-b7de-45a2-aadb-5849d12fda8f"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data",
+                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>The following examples primarily cite MongoDB, PHP, and NodeJS attacks due to their prominence and popularity. However, please note that these attacks are not exclusive to this NoSQL instance, programming language, or runtime framework.</xhtml:p>\n               <xhtml:p>Within NodeJS, Login Bypass attacks are possible via MongoDB if user-input is not properly validated and sanitized [REF-670].</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">//NodeJS with Express.js<xhtml:div style=\"margin-left:10px;\">db.collection('users').find({<xhtml:div style=\"margin-left:10px;\">\"user\": req.query.user,\"password\": req.query.password</xhtml:div>});</xhtml:div>\n               </xhtml:div>\n               \n               <xhtml:p>The above code works fine if the user were to submit a query like the following:</xhtml:p>\n               <xhtml:p>https://example.org/login?user=patrick&password=1234</xhtml:p>\n               \n               <xhtml:p>But an adversary could submit a malicious query such as the below, which would be interpreted by the code as follows:</xhtml:p>\n               <xhtml:p>https://example.org/login?user=patrick&password[$ne]=</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">//NodeJS with Express.js<xhtml:div style=\"margin-left:10px;\">db.collection('users').find({<xhtml:div style=\"margin-left:10px;\">\"user\": bob,\"password\": {\"&ne\": \"\"}</xhtml:div>});</xhtml:div>\n               </xhtml:div>\n               <xhtml:p>This will result in a Login Bypass attack, as the query will succeed for all values where Bob's password is not an empty string.</xhtml:p>\n            ",
+                "\n               <xhtml:p>MongoDB instances are also vulnerable to JavaScript Injection Attacks when user input is not properly validated and sanitized.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">//PHP with MongoDB<xhtml:div style=\"margin-left:10px;\">db.collection.find({$where: function() {<xhtml:div style=\"margin-left:10px;\">return (this.username == $username) } } );</xhtml:div>\n                  </xhtml:div>\n               </xhtml:div>\n               \n               <xhtml:p>If the user properly specifies a username, then this code will execute as intended. However, an adversary can inject JavaScript into the \"$username\" variable to achieve a NoSQL Injection attack as follows:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">//PHP with MongoDB<xhtml:div style=\"margin-left:10px;\">db.collection.find({$where: function() {<xhtml:div style=\"margin-left:10px;\">return (this.username == 'foo'; sleep(5000) ) } } );</xhtml:div>\n                  </xhtml:div>\n               </xhtml:div>\n               <xhtml:p>This will result in the server sleeping for 5 seconds if the attack was successful. An adversary could supply a larger value to deny service to the application.</xhtml:p>\n            ",
+                "\n               <xhtml:p>If leveraging PHP with MongoDB, operator replacement attacks are possible if special query operators are not properly addressed. The below example from OWASP's \"Test for NoSQL Injection\" displays a simple case of how this could occur.[REF-668]</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">db.myCollection.find({$where: function() {<xhtml:div style=\"margin-left:10px;\">return obj.credits - obj.debits < 0; } } );</xhtml:div>\n               </xhtml:div>\n               \n               <xhtml:p>Even though the above query does not depend on any user input, it is vulnerable to a NoSQL injection attack via operator replacement on the \"$where\" keyword. In this case, the adversary could exploit MongoDB in the following manner:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">$where: function() { //arbitrary JavaScript here }</xhtml:div>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey target application: </b>Due to the number of NoSQL databases available and the numerous language/API combinations of each, the adversary must first survey the target application to learn what technologies are being leveraged and how they interact with user-driven data.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine the technology stack leveraged by the target application, such as the application server, drivers, frameworks, APIs, and databases being utilized.</td></tr><tr><td>Identify areas of the application that interact with user input and may be involved with NoSQL queries.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Identify user-controllable input susceptible to injection: </b>After identifying the technology stack being used and where user-driven input is leveraged, determine the user-controllable input susceptible to injection such as authentication or search forms. For each user-controllable input that the adversary suspects is vulnerable to NoSQL injection, attempt to inject characters or keywords that have special meaning in the given NoSQL database or language (e.g., \"$ne\" for MongoDB or \"$exists\" for PHP/MongoDB), or JavaScript that can be executed within the application. The goal is to create a NoSQL query with an invalid syntax.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use web browser to inject input through text fields or through HTTP GET parameters.</td></tr><tr><td>Use a web application debugging tool such as Tamper Data, TamperIE, WebScarab,etc. to modify HTTP POST parameters, hidden fields, non-freeform fields, etc.</td></tr><tr><td>Use network-level packet injection tools such as netcat to inject input</td></tr><tr><td>Use modified client (modified by reverse engineering) to inject input.</td></tr></tbody></table><li> <p> <b>Experiment with NoSQL Injection vulnerabilities: </b>After determining that a given input is vulnerable to NoSQL Injection, hypothesize what the underlying query looks like. Iteratively try to add logic to the query to extract information from the database, modify/delete information in the database, or execute commands on the server.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use public resources such as OWASP's \"Testing for NoSQL Injection\" [REF-668] or Null Sweep's \"NoSQL Injection Cheatsheet\" [REF-669] and try different approaches for adding logic to NoSQL queries.</td></tr><tr><td>Iteratively add logic to the NoSQL query and use detailed error messages from the server to debug the query.</td></tr><tr><td>Attempt an HTTP Parameter Pollution attack to replace language-specific keywords, such as \"where\" within PHP [CAPEC-460].</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Exploit NoSQL Injection vulnerability: </b>After refining and adding various logic to NoSQL queries, craft and execute the underlying NoSQL query that will be used to attack the target system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Craft and Execute underlying NoSQL query</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>NoSQL database calls are written in an application's programming language, via a custom API call, or formatted in a common convention (e.g., JSON, XML, etc.), any of which the adversary can exploit to achieve the aforementioned goals. NoSQL attacks usually result from improper sanitization and validation of data that originates from a user, either via special character or JavaScript injection. In both cases, the adversary crafts input strings so that when the target software constructs NoSQL statements based on the input, the resulting NoSQL statement performs actions other than those intended by the application. However, unlike traditional SQL Injection attacks, NoSQL injection attacks can also occur in instances where the application does not rely upon user input, as is the case in operator replacements. This entails the adversary overriding reserved NoSQL variable names with ones that have been modified with malicious functionality (e.g., $where in MongoDB). In all cases, depending on the NoSQL API and data model used, successful injection can cause information disclosure, data modification, and code execution at the application level.</xhtml:p>\n            <xhtml:p>Note: NoSQL Injection attacks are executed within a procedural language (e.g., C, C++, Perl), as opposed to the declarative SQL language itself. As a result, NoSQL injection attacks can potentially result in greater impacts than traditional SQL Injection attacks [REF-668].</xhtml:p>\n         ",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "Awareness of the technology stack being leveraged by the target application.",
+                "NoSQL queries used by the application to store, retrieve, or modify data.",
+                "User-controllable input that is not properly validated by the application as part of NoSQL queries.",
+                "Target potentially susceptible to operator replacement attacks."
+            ],
+            "x_capec_resources_required": [
+                "None: No specialized resources are required to execute this type of attack."
+            ],
+            "x_capec_skills_required": {
+                "Low": "For keyword and JavaScript injection attacks, it is fairly simple for someone with basic NoSQL knowledge to perform NoSQL injection, once the target's technology stack has been determined.",
+                "Medium": "For operator replacement attacks, the adversary must also have knowledge of HTTP Parameter Pollution attacks and how to conduct them."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.6"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

@@ -1,77 +1,77 @@
 {
     "type": "bundle",
-    "id": "bundle--0664ad46-b0a3-4047-bd98-3e59ab40c6d9",
+    "id": "bundle--03507fdc-a470-48b1-8c98-3fdd611d95eb",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1558.001",
-                    "url": "https://attack.mitre.org/techniques/T1558/001"
-                },
-                {
-                    "url": "https://adsecurity.org/?p=1640",
-                    "description": "Metcalf, S. (2015, August 7). Kerberos Golden Tickets are Now More Golden. Retrieved December 1, 2017.",
-                    "source_name": "AdSecurity Kerberos GT Aug 2015"
-                },
-                {
-                    "url": "https://cert.europa.eu/static/WhitePapers/UPDATED%20-%20CERT-EU_Security_Whitepaper_2014-007_Kerberos_Golden_Ticket_Protection_v1_4.pdf",
-                    "description": "Abolins, D., Boldea, C., Socha, K., Soria-Machado, M. (2016, April 26). Kerberos Golden Ticket Protection. Retrieved July 13, 2017.",
-                    "source_name": "CERT-EU Golden Ticket Protection"
-                },
-                {
-                    "url": "https://adsecurity.org/?p=1515",
-                    "description": "Metcalf, S. (2015, May 03). Detecting Forged Kerberos Ticket (Golden Ticket & Silver Ticket) Use in Active Directory. Retrieved December 23, 2015.",
-                    "source_name": "ADSecurity Detecting Forged Tickets"
-                },
-                {
-                    "description": "Sean Metcalf. (2014, November 10). Kerberos & KRBTGT: Active Directory\u2019s Domain Kerberos Service Account. Retrieved January 30, 2020.",
-                    "url": "https://adsecurity.org/?p=483",
-                    "source_name": "ADSecurity Kerberos and KRBTGT"
-                },
-                {
-                    "source_name": "Stealthbits Detect PtT 2019",
-                    "url": "https://blog.stealthbits.com/detect-pass-the-ticket-attacks",
-                    "description": "Jeff Warren. (2019, February 19). How to Detect Pass-the-Ticket Attacks. Retrieved February 27, 2020."
-                },
-                {
-                    "source_name": "Microsoft Kerberos Golden Ticket",
-                    "url": "https://gallery.technet.microsoft.com/scriptcenter/Kerberos-Golden-Ticket-b4814285",
-                    "description": "Microsoft. (2015, March 24). Kerberos Golden Ticket Check (Updated). Retrieved February 27, 2020."
-                }
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Golden Ticket",
-            "description": "Adversaries who have the KRBTGT account password hash may forge Kerberos ticket-granting tickets (TGT), also known as a golden ticket.(Citation: AdSecurity Kerberos GT Aug 2015) Golden tickets enable adversaries to generate authentication material for any account in Active Directory.(Citation: CERT-EU Golden Ticket Protection) \n\nUsing a golden ticket, adversaries are then able to request ticket granting service (TGS) tickets, which enable access to specific resources. Golden tickets require adversaries to interact with the Key Distribution Center (KDC) in order to obtain TGS.(Citation: ADSecurity Detecting Forged Tickets)\n\nThe KDC service runs all on domain controllers that are part of an Active Directory domain. KRBTGT is the Kerberos Key Distribution Center (KDC) service account and is responsible for encrypting and signing all Kerberos tickets.(Citation: ADSecurity Kerberos and KRBTGT) The KRBTGT password hash may be obtained using [OS Credential Dumping](https://attack.mitre.org/techniques/T1003) and privileged access to a domain controller.",
-            "id": "attack-pattern--768dce68-8d0d-477a-b01d-0eea98b963a1",
             "type": "attack-pattern",
+            "name": "Golden Ticket",
+            "x_mitre_data_sources": [
+                "Active Directory: Active Directory Credential Request",
+                "Logon Session: Logon Session Metadata"
+            ],
+            "x_mitre_version": "1.1",
+            "modified": "2020-11-05T16:07:03.779Z",
+            "created": "2020-02-11T19:13:33.643Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "credential-access"
                 }
             ],
-            "modified": "2020-11-05T16:07:03.779Z",
-            "created": "2020-02-11T19:13:33.643Z",
-            "x_mitre_contributors": [
-                "Itamar Mizrahi, Cymptom"
+            "id": "attack-pattern--768dce68-8d0d-477a-b01d-0eea98b963a1",
+            "x_mitre_platforms": [
+                "Windows"
             ],
-            "x_mitre_data_sources": [
-                "Active Directory: Active Directory Credential Request",
-                "Logon Session: Logon Session Metadata"
-            ],
+            "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "User"
             ],
+            "description": "Adversaries who have the KRBTGT account password hash may forge Kerberos ticket-granting tickets (TGT), also known as a golden ticket.(Citation: AdSecurity Kerberos GT Aug 2015) Golden tickets enable adversaries to generate authentication material for any account in Active Directory.(Citation: CERT-EU Golden Ticket Protection) \n\nUsing a golden ticket, adversaries are then able to request ticket granting service (TGS) tickets, which enable access to specific resources. Golden tickets require adversaries to interact with the Key Distribution Center (KDC) in order to obtain TGS.(Citation: ADSecurity Detecting Forged Tickets)\n\nThe KDC service runs all on domain controllers that are part of an Active Directory domain. KRBTGT is the Kerberos Key Distribution Center (KDC) service account and is responsible for encrypting and signing all Kerberos tickets.(Citation: ADSecurity Kerberos and KRBTGT) The KRBTGT password hash may be obtained using [OS Credential Dumping](https://attack.mitre.org/techniques/T1003) and privileged access to a domain controller.",
+            "x_mitre_contributors": [
+                "Itamar Mizrahi, Cymptom"
+            ],
             "x_mitre_detection": "Monitor for anomalous Kerberos activity, such as malformed or blank fields in Windows logon/logoff events (Event ID 4624, 4672, 4634), RC4 encryption within TGTs, and TGS requests without preceding TGT requests.(Citation: ADSecurity Kerberos and KRBTGT)(Citation: CERT-EU Golden Ticket Protection)(Citation: Stealthbits Detect PtT 2019)\n\nMonitor the lifetime of TGT tickets for values that differ from the default domain duration.(Citation: Microsoft Kerberos Golden Ticket)\n\nMonitor for indications of [Pass the Ticket](https://attack.mitre.org/techniques/T1550/003) being used to move laterally. \n",
-            "x_mitre_version": "1.1",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1558/001",
+                    "external_id": "T1558.001",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "source_name": "AdSecurity Kerberos GT Aug 2015",
+                    "description": "Metcalf, S. (2015, August 7). Kerberos Golden Tickets are Now More Golden. Retrieved December 1, 2017.",
+                    "url": "https://adsecurity.org/?p=1640"
+                },
+                {
+                    "source_name": "CERT-EU Golden Ticket Protection",
+                    "description": "Abolins, D., Boldea, C., Socha, K., Soria-Machado, M. (2016, April 26). Kerberos Golden Ticket Protection. Retrieved July 13, 2017.",
+                    "url": "https://cert.europa.eu/static/WhitePapers/UPDATED%20-%20CERT-EU_Security_Whitepaper_2014-007_Kerberos_Golden_Ticket_Protection_v1_4.pdf"
+                },
+                {
+                    "source_name": "ADSecurity Detecting Forged Tickets",
+                    "description": "Metcalf, S. (2015, May 03). Detecting Forged Kerberos Ticket (Golden Ticket & Silver Ticket) Use in Active Directory. Retrieved December 23, 2015.",
+                    "url": "https://adsecurity.org/?p=1515"
+                },
+                {
+                    "source_name": "ADSecurity Kerberos and KRBTGT",
+                    "description": "Sean Metcalf. (2014, November 10). Kerberos & KRBTGT: Active Directory\u2019s Domain Kerberos Service Account. Retrieved January 30, 2020.",
+                    "url": "https://adsecurity.org/?p=483"
+                },
+                {
+                    "url": "https://blog.stealthbits.com/detect-pass-the-ticket-attacks",
+                    "description": "Jeff Warren. (2019, February 19). How to Detect Pass-the-Ticket Attacks. Retrieved February 27, 2020.",
+                    "source_name": "Stealthbits Detect PtT 2019"
+                },
+                {
+                    "url": "https://gallery.technet.microsoft.com/scriptcenter/Kerberos-Golden-Ticket-b4814285",
+                    "description": "Microsoft. (2015, March 24). Kerberos Golden Ticket Check (Updated). Retrieved February 27, 2020.",
+                    "source_name": "Microsoft Kerberos Golden Ticket"
+                }
             ]
         }
     ]

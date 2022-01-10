@@ -1,10 +1,10 @@
 {
-    "id": "bundle--d8976e20-b37c-418c-8390-e5088d1dac92",
+    "id": "bundle--974cfd39-61e5-4e4d-b503-a95fb2ca470f",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "Simple Object Access Protocol (SOAP) is used as a communication protocol between a client and server to invoke web services on the server. It is an XML-based protocol, and therefore suffers from many of the same shortcomings as other XML-based protocols. Adviseries can make use these shortcomings to mount an denial of service attack, disclose information and execute arbitrary code. This includes a SOAP parameter tampering attack in which an attacker sends a SOAP message where the field values are other than what the server is likely to expect in order to precipitate non-standard server behavior.",
+            "description": "Simple Object Access Protocol (SOAP) is used as a communication protocol between a client and server to invoke web services on the server. It is an XML-based protocol, and therefore suffers from many of the same shortcomings as other XML-based protocols. Adversaries can make use of these shortcomings and manipulate the content of SOAP paramters, leading to undesirable behavior on the server and allowing the adversary to carry out a number of further attacks.",
             "external_references": [
                 {
                     "external_id": "CAPEC-279",
@@ -24,7 +24,7 @@
                 }
             ],
             "id": "attack-pattern--8e3a14fd-870a-4286-866d-805107c7d922",
-            "modified": "2020-12-17T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "SOAP Manipulation",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -51,12 +51,7 @@
                     "Execute Unauthorized Commands"
                 ]
             },
-            "x_capec_example_instances": [
-                "An attacker could mount a recursive payload attack, which involves deep nesting of XML elements. This can cause XML parser to failed due to a buffer overflow, or even cause it crash, enabling a denial of service attack.",
-                "A lack of a character limit for a field can allow oversized data to be sent, causing a buffer overflow.",
-                "The contents of a text field could contain metacharacters or contextually inappropriate data (for example, sending a non-existent product name in a product name field or using an out-of-order sequence number).",
-                "An adversary corrupts or modifies the content of XML schema for the purpose of undermining the security of the target."
-            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Exploit</h3><ol><li> <p> <b>Find target application: </b>The adversary needs to identify an application that uses SOAP as a communication protocol.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Observe HTTP traffic to an application and look for SOAP headers.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Detect Incorrect SOAP Parameter Handling: </b>The adversary tampers with the SOAP message parameters and looks for indications that the tampering caused a change in behavior of the targeted application.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Send more data than would seem reasonable for a field and see if the server complains.</td></tr><tr><td>Send nonsense data in a field that expects a certain subset, such as product names or sequence numbers, and see if the server complains.</td></tr><tr><td>Send XML metacharacters as data and see how the server responds.</td></tr></tbody></table><li> <p> <b>Manipulate SOAP parameters: </b>The adversary manipulates SOAP parameters in a way that causes undesirable behavior for the server. This can result in denial of service, information disclosure, arbitrary code exection, and more.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create a recursive XML payload that will take up all of the memory on the server when parsed, resulting in a denial of service. This is known as the billion laughs attack.</td></tr><tr><td>Insert XML metacharacters into data fields that could cause the server to go into an error state when parsing. This could lead to a denial of service.</td></tr><tr><td>Insert a large amount of data into a field that should have a character limit, causing a buffer overflow.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_prerequisites": [
                 "An application uses SOAP-based web service api.",
@@ -65,7 +60,7 @@
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

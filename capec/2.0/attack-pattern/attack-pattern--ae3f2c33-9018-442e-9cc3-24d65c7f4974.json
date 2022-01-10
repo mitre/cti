@@ -1,10 +1,10 @@
 {
-    "id": "bundle--95e9555b-bb41-456e-a92d-78636815fa3f",
+    "id": "bundle--5ed22fe7-9482-42e3-ba60-ebae846cb0a9",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An attacker injects content into a server response that is interpreted differently by intermediaries than it is by the target browser. To do this, it takes advantage of inconsistent or incorrect interpretations of the HTTP protocol by various applications. For example, it might use different block terminating characters (CR or LF alone), adding duplicate header fields that browsers interpret as belonging to separate responses, or other techniques. Consequences of this attack can include response-splitting, cross-site scripting, apparent defacement of targeted sites, cache poisoning, or similar actions.",
+            "description": "\n            <xhtml:p>An adversary manipulates and injects malicious content in the form of secret unauthorized HTTP responses, into a single HTTP response from a vulnerable or compromised back-end HTTP agent (e.g., server).</xhtml:p>\n            <xhtml:p>See CanPrecede relationships for possible consequences.</xhtml:p>\n         ",
             "external_references": [
                 {
                     "external_id": "CAPEC-273",
@@ -28,35 +28,107 @@
                     "url": "http://projects.webappsec.org/HTTP-Response-Smuggling"
                 },
                 {
+                    "description": "HTTP 1.1 Specification (RFC 2616), IETF RFC",
+                    "external_id": "REF-38",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://www.ietf.org/rfc/rfc2616.txt"
+                },
+                {
                     "description": "HTTP Response Smuggling, Beyond Security",
                     "external_id": "REF-117",
                     "source_name": "reference_from_CAPEC",
                     "url": "http://www.securiteam.com/securityreviews/5CP0L0AHPC.html"
+                },
+                {
+                    "description": "Robert Auger, HTTP Response Smuggling, 2011--02, The Web Application Security Consortium",
+                    "external_id": "REF-675",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://projects.webappsec.org/w/page/13246930/HTTP%20Response%20Smuggling"
+                },
+                {
+                    "description": "Kazuho Oku, Mozilla Foundation Security Advisory 2006-33 HTTP response smuggling, 2006--06---01, Mozilla Corporation",
+                    "external_id": "REF-676",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.mozilla.org/en-US/security/advisories/mfsa2006-33/"
+                },
+                {
+                    "description": "Testing for HTTP Splitting Smuggling, Open Web Application Security Project",
+                    "external_id": "REF-677",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/15-Testing_for_HTTP_Splitting_Smuggling.html"
+                },
+                {
+                    "description": "Edi Kogan, Daniel Kerman, HTTP Desync Attacks in the Wild and How to Defend Against Them, 2019--10---29, Imperva",
+                    "external_id": "REF-678",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.imperva.com/blog/http-desync-attacks-and-defence-methods/"
                 }
             ],
             "id": "attack-pattern--ae3f2c33-9018-442e-9cc3-24d65c7f4974",
-            "modified": "2020-12-17T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "HTTP Response Smuggling",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
             ],
             "type": "attack-pattern",
             "x_capec_abstraction": "Detailed",
+            "x_capec_alternate_terms": [
+                "HTTP Desync"
+            ],
+            "x_capec_can_precede_refs": [
+                "attack-pattern--8f665166-dfd1-40cb-91e8-b78bee1ceb6a",
+                "attack-pattern--e244a53a-8c69-462c-8ff2-900a839d48cb",
+                "attack-pattern--70b83583-ffe3-4e6d-b4a6-61a9b9efc346",
+                "attack-pattern--63f43efb-7a34-4302-b3dc-8245100fdea9",
+                "attack-pattern--bd4f8f46-1bc7-40a9-b15a-e36b7671cf5b",
+                "attack-pattern--ce92f5b9-6228-4354-8a1b-72ad7ad3bb84"
+            ],
             "x_capec_child_of_refs": [
                 "attack-pattern--9c983530-1927-43ca-addd-63d149cda4a7"
             ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Availability": [
+                    "Execute Unauthorized Commands"
+                ],
+                "Confidentiality": [
+                    "Execute Unauthorized Commands",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Execute Unauthorized Commands",
+                    "Modify Data"
+                ]
+            },
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>When using Undertow, a Java-based web server in Red Hat's Jboss Enterprise Application Platform version 7.0, the code responsible for parsing HTTP requests permitted invalid characters, that could allow the injection of data into HTTP responses from Undertow to clients when used in tandem with a proxy; allowing for web-cache poisoning, XSS, and confidentiality violation of sensitive information from other HTTP requests sent to Undertow. See also: CVE-2017-2666</xhtml:p>\n            ",
+                "\n               <xhtml:p>Mozilla Firefox and Thunderbird before 1.5.04, with various proxy servers, interpreted HTTP responses differently if HTTP response headers included a space between the header name and colon or if HTTP 1.1 headers were sent through a proxy configured with HTTP 1.0, allowing for HTTP Smuggling vulnerability. See also: CVE-2006-2786</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey network to identify target: </b>The adversary performs network reconnaissance by monitoring relevant traffic to identify the network path and parsing of the HTTP messages with the goal of identifying potential targets.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Scan networks to fingerprint HTTP infrastructure and monitor HTTP traffic to identify HTTP network path with a tool such as a Network Protocol Analyzer.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Identify vulnerabilities in targeted HTTP infrastructure and technologies: </b>The adversary sends a variety of benign/ambiguous HTTP requests to observe responses from HTTP infrastructure to intended targets in order to identify differences/discrepancies in the interpretation and parsing of HTTP requests by examining supported HTTP protocol versions, message sizes, and HTTP headers.</p></li><li> <p> <b>Cause differential HTTP responses by experimenting with identified HTTP Response vulnerabilities: </b>The adversary sends maliciously crafted HTTP request to back-end HTTP infrastructure to inject adversary data into HTTP responses (intended for intermediary and/or front-end client/victim HTTP agents communicating with back-end HTTP infrastructure) for the purpose of interfering with the parsing of HTTP response. The intended consequences of the malicious HTTP request and the subsequent adversary injection and manipulation of HTTP responses will be observed to confirm applicability of identified vulnerabilities in the adversary's plan of attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Continue the monitoring of HTTP traffic.</td></tr><tr><td>\n                  <xhtml:p>Inject additional HTTP headers to utilize various combinations of HTTP Headers within a single HTTP message such as: Content-Length & Transfer-Encoding (CL;TE), Transfer-Encoding & Content-Length (TE;CL), or double Transfer-Encoding (TE;TE), so that additional embedded message or data in the body of the original message are unprocessed and treated as part of subsequent messages by the intended target HTTP agent.</xhtml:p>\n                  <xhtml:p>From these HTTP Header combinations the adversary observes any timing delays (usually in the form of HTTP 404 Error response) or any other unintended consequences.</xhtml:p>\n                  <xhtml:ul>\n                     <xhtml:li>For CL;TE and TE;CL HTTP headers combination, the first HTTP agent, in the HTTP message path that receives the HTTP message, takes precedence or only processes the one header but not the other, while the second/final HTTP agent processes the opposite header allowing for embedded HTTP message to be ignored and smuggled to the intended target HTTP agent.</xhtml:li>\n                     <xhtml:li>For TE;TE HTTP headers combination, all HTTP agents in HTTP message path process Transfer-Encoding header, however, adversary obfuscation of one of the Transfer-Encoding headers, by not adhering strictly to the protocol specification, can cause it to be unprocessed/ignored by a designated HTTP agent, hence allowing embedded HTTP messages to be smuggled. See Mitigations for details.</xhtml:li>\n                  </xhtml:ul>\n               </td></tr><tr><td>\n                  <xhtml:p>Construct a very large HTTP message via multiple Content-Length headers of various data lengths that can potentially cause subsequent messages to be ignored by an intermediary HTTP agent (e.g., firewall) and/or eventually parsed separately by the target HTTP agent.</xhtml:p>\n                  <xhtml:p>Note that most modern HTTP infrastructure reject HTTP messages with multiple Content-Length headers.</xhtml:p>\n               </td></tr><tr><td>Monitor HTTP traffic using a tool such as a Network Protocol Analyzer.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Perform HTTP Response Smuggling attack: </b>Using knowledge discovered in the experiment section above, smuggle a message to cause one of the consequences.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Leverage techniques identified in the Experiment Phase.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>In the maliciously manipulated HTTP response, an adversary can add duplicate header fields that HTTP agents interpret as belonging to separate responses.</xhtml:p>\n            <xhtml:p>The combined HTTP response ends up being parsed or interpreted as two or more HTTP responses by the targeted client HTTP agent. This allows malicious HTTP responses to bypass security controls. This is performed by the abuse of interpretation and parsing discrepancies in different intermediary HTTP agents (e.g., load balancer, reverse proxy, web caching proxies, application firewalls, etc.) or client HTTP agents (e.g., web browser) in the path of the malicious HTTP responses.</xhtml:p>\n            <xhtml:p>This attack usually involves the misuse of the HTTP headers: Content-Length and Transfer-Encoding. These abuses are discussed in RFC 2616 #4.4.3 and section #4.2 and are related to ordering and precedence of these headers. [REF-38]</xhtml:p>\n            <xhtml:p>This attack is usually the result of the usage of outdated or incompatible HTTP protocol versions in the HTTP agents.</xhtml:p>\n            <xhtml:p>This differs from CAPEC-33 HTTP Request Smuggling, which is usually an attempt to compromise a back-end HTTP agent via HTTP Request messages. HTTP Response Smuggling is an attempt to compromise a<xhtml:em>client agent (e.g., web browser)</xhtml:em>.</xhtml:p>\n            <xhtml:p>HTTP Splitting (CAPEC-105 and CAPEC-34) is different from HTTP Smuggling due to the fact that during implementation of asynchronous requests, HTTP Splitting requires the embedding/injection of arbitrary HTML headers and content through user input into browser cookies or Ajax web/browser object parameters like XMLHttpRequest.</xhtml:p>\n         ",
+            "x_capec_likelihood_of_attack": "Medium",
             "x_capec_peer_of_refs": [
                 "attack-pattern--d845a25b-b140-438c-91d7-30b709bb6e18"
             ],
             "x_capec_prerequisites": [
-                "The targeted server must allow the attacker to insert content that will appear in the server's response."
+                "A vulnerable or compromised server or domain/site capable of allowing adversary to insert/inject malicious content that will appear in the server's response to target HTTP agents (e.g., proxies and users' web browsers).",
+                "Differences in the way the two HTTP agents parse and interpret HTTP responses and its headers.",
+                "HTTP agents running on HTTP/1.1 that allow for Keep Alive mode, Pipelined queries, and Chunked queries and responses."
             ],
             "x_capec_resources_required": [
-                "None: No specialized resources are required to execute this type of attack."
+                "Tools capable of monitoring HTTP messages, and crafting malicious HTTP messages and/or injecting malicious content into HTTP messages."
             ],
-            "x_capec_status": "Draft",
-            "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.5"
+            "x_capec_skills_required": {
+                "Medium": "Possess knowledge on the exact details in the discrepancies between several targeted HTTP agents in path of an HTTP message in parsing its message structure and individual headers."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

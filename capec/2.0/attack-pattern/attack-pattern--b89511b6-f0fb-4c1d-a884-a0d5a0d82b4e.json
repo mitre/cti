@@ -1,10 +1,10 @@
 {
-    "id": "bundle--c4282563-b203-498d-9a3a-5f9e0ba60e79",
+    "id": "bundle--145293a7-21f8-4cec-b125-4e5e6ca43bb6",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "HTTP Request Splitting (also known as HTTP Request Smuggling) is an attack pattern where an attacker attempts to insert additional HTTP requests in the body of the original (enveloping) HTTP request in such a way that the browser interprets it as one request but the web server interprets it as two. There are several ways to perform HTTP request splitting attacks. One way is to include double Content-Length headers in the request to exploit the fact that the devices parsing the request may each use a different header. Another way is to submit an HTTP request with a \"Transfer Encoding: chunked\" in the request header set with setRequestHeader to allow a payload in the HTTP Request that can be considered as another HTTP Request by a subsequent parsing entity. A third way is to use the \"Double CR in an HTTP header\" technique. There are also a few less general techniques targeting specific parsing vulnerabilities in certain web servers.",
+            "description": "\n            <xhtml:p>An adversary abuses the flexibility and discrepancies in the parsing and interpretation of HTTP Request messages by different intermediary HTTP agents (e.g., load balancer, reverse proxy, web caching proxies, application firewalls, etc.) to split a single HTTP request into multiple unauthorized and malicious HTTP requests to a back-end HTTP agent (e.g., web server).</xhtml:p>\n            <xhtml:p>See CanPrecede relationships for possible consequences.</xhtml:p>\n         ",
             "external_references": [
                 {
                     "external_id": "CAPEC-105",
@@ -12,9 +12,19 @@
                     "url": "https://capec.mitre.org/data/definitions/105.html"
                 },
                 {
-                    "external_id": "CWE-444",
+                    "external_id": "CWE-74",
                     "source_name": "cwe",
-                    "url": "http://cwe.mitre.org/data/definitions/444.html"
+                    "url": "http://cwe.mitre.org/data/definitions/74.html"
+                },
+                {
+                    "external_id": "CWE-138",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/138.html"
+                },
+                {
+                    "external_id": "CWE-436",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/436.html"
                 },
                 {
                     "description": "HTTP Request Splitting",
@@ -23,20 +33,40 @@
                     "url": "http://projects.webappsec.org/HTTP-Request-Splitting"
                 },
                 {
+                    "description": "HTTP Response Smuggling, Beyond Security",
+                    "external_id": "REF-117",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://www.securiteam.com/securityreviews/5CP0L0AHPC.html"
+                },
+                {
                     "description": "OWASP Web Security Testing Guide, The Open Web Application Security Project (OWASP)",
                     "external_id": "REF-617",
                     "source_name": "reference_from_CAPEC",
                     "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/07-Input_Validation_Testing/15-Testing_for_HTTP_Splitting_Smuggling.html"
+                },
+                {
+                    "description": "Robert Auger, HTTP Request Splitting, 2011, The Web Application Security Consortium",
+                    "external_id": "REF-679",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "http://projects.webappsec.org/w/page/13246929/HTTP%20Request%20Splitting"
                 }
             ],
             "id": "attack-pattern--b89511b6-f0fb-4c1d-a884-a0d5a0d82b4e",
-            "modified": "2020-12-17T00:00:00.000Z",
+            "modified": "2021-10-21T00:00:00.000Z",
             "name": "HTTP Request Splitting",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
             ],
             "type": "attack-pattern",
             "x_capec_abstraction": "Detailed",
+            "x_capec_can_precede_refs": [
+                "attack-pattern--8f665166-dfd1-40cb-91e8-b78bee1ceb6a",
+                "attack-pattern--e244a53a-8c69-462c-8ff2-900a839d48cb",
+                "attack-pattern--70b83583-ffe3-4e6d-b4a6-61a9b9efc346",
+                "attack-pattern--63f43efb-7a34-4302-b3dc-8245100fdea9",
+                "attack-pattern--bd4f8f46-1bc7-40a9-b15a-e36b7671cf5b",
+                "attack-pattern--ce92f5b9-6228-4354-8a1b-72ad7ad3bb84"
+            ],
             "x_capec_child_of_refs": [
                 "attack-pattern--9c983530-1927-43ca-addd-63d149cda4a7"
             ],
@@ -48,38 +78,42 @@
                     "Gain Privileges"
                 ],
                 "Availability": [
-                    "Execute Unauthorized Commands (Run Arbitrary Code)"
+                    "Execute Unauthorized Commands"
                 ],
                 "Confidentiality": [
-                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Execute Unauthorized Commands",
                     "Gain Privileges",
                     "Read Data"
                 ],
                 "Integrity": [
-                    "Execute Unauthorized Commands (Run Arbitrary Code)",
+                    "Execute Unauthorized Commands",
                     "Modify Data"
                 ]
             },
             "x_capec_example_instances": [
-                "\n               <xhtml:p>Microsoft Internet Explorer versions 5.01 SP4 and prior, 6.0 SP2 and prior, and 7.0 contain a vulnerability that could allow an unauthenticated, remote attacker to conduct HTTP request splitting and smuggling attacks.</xhtml:p>\n               <xhtml:p>The vulnerability is due to an input validation error in the browser that allows attackers to manipulate certain headers to expose the browser to HTTP request splitting and smuggling attacks. Attacks may include cross-site scripting, proxy cache poisoning, and session fixation. In certain instances, an exploit could allow the attacker to bypass web application firewalls or other filtering devices.</xhtml:p>\n               <xhtml:p>Microsoft has confirmed the vulnerability and released software updates</xhtml:p>\n            "
+                "\n               <xhtml:p>Microsoft Internet Explorer versions 5.01 SP4 and prior, 6.0 SP2 and prior, and 7.0 contain a vulnerability that could allow an unauthenticated, remote adversary to conduct HTTP request splitting and smuggling attacks. The vulnerability is due to an input validation error in the browser that allows adversaries to manipulate certain headers to expose the browser to HTTP request splitting and smuggling attacks. Attacks may include cross-site scripting, proxy cache poisoning, and session fixation. In certain instances, an exploit could allow the adversary to bypass web application firewalls or other filtering devices. Microsoft has confirmed the vulnerability and released software updates.</xhtml:p>\n            "
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Investigate Target Environment: </b>Determine the technologies used in the target environment such as types of browsers, web servers, application firewalls, proxies, etc.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Investigation of the target environment to determine the types of technologies used to parse the incoming HTTP requests. Attempt to understand how HTTP Request headers are parsed</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Post a malicious HTTP Request: </b>Post a malicious HTTP request that will be interpreted as multiple HTTP requests when parsed on the server</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Post a malicious HTTP Request utilizing double CR/LF characters in HTTP header to cause request splitting</td></tr><tr><td>Post a malicious HTTP Request utilizing \"Transfer Encoding: chunked\" in the request header to cause request splitting</td></tr><tr><td>Post a malicious HTTP Request utilizing double Content-Length headers to cause request splitting</td></tr></tbody></table></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey network to identify target: </b>The adversary performs network reconnaissance by monitoring relevant traffic to identify the network path and parsing of the HTTP messages with the goal of identifying potential targets.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Scan networks to fingerprint HTTP infrastructure and monitor HTTP traffic to identify HTTP network path with a tool such as a Network Protocol Analyzer.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Identify vulnerabilities in targeted HTTP infrastructure and technologies: </b>The adversary sends a variety of benign/ambiguous HTTP requests to observe responses from HTTP infrastructure in order to identify differences/discrepancies in the interpretation and parsing of HTTP requests by examining supported HTTP protocol versions, HTTP headers, syntax checking and input filtering.</p></li><li> <p> <b>Cause differential HTTP responses by experimenting with identified HTTP Request vulnerabilities: </b>The adversary sends maliciously crafted HTTP requests with custom strings and embedded web scripts and objects in HTTP headers to interfere with the parsing of intermediary and back-end HTTP infrastructure, followed by normal/benign HTTP request from the adversary or a random user. The intended consequences of the malicious HTTP requests will be observed in the HTTP infrastructure response to the normal/benign HTTP request to confirm applicability of identified vulnerabilities in the adversary's plan of attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Continue the monitoring of HTTP traffic.</td></tr><tr><td>\n                  <xhtml:p>Utilize different sequences of special characters (CR - Carriage Return, LF - Line Feed, HT - Horizontal Tab, SP - Space and etc.) to bypass filtering and back-end encoding and to embed:</xhtml:p>\n                  <xhtml:ul>\n                     <xhtml:li>additional HTTP Requests with their own headers</xhtml:li>\n                     <xhtml:li>malicious web scripts into parameters of HTTP Request headers (e.g., browser cookies like Set-Cookie or Ajax web/browser object parameters like XMLHttpRequest)</xhtml:li>\n                     <xhtml:li>adversary chosen encoding (e.g., UTF-7)</xhtml:li>\n                  </xhtml:ul>\n                  <xhtml:p>to utilize additional special characters (e.g., > and <) filtered by the target HTTP agent.</xhtml:p>\n                  <xhtml:p>Note that certain special characters and character encoding may be applicable only to intermediary and front-end agents with rare configurations or that are not RFC compliant.</xhtml:p>\n               </td></tr><tr><td>Follow an unrecognized (sometimes a RFC compliant) HTTP header with a subsequent HTTP request to potentially cause the HTTP request to be ignored and interpreted as part of the preceding HTTP request.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Perform HTTP Request Splitting attack: </b>Using knowledge discovered in the experiment section above, smuggle a message to cause one of the consequences.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Leverage techniques identified in the Experiment Phase.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>This entails the adversary injecting malicious user input into various standard and/or user defined HTTP headers within a HTTP Request through user input of Carriage Return (CR), Line Feed (LF), Horizontal Tab (HT), Space (SP) characters as well as other valid/RFC compliant special characters and unique character encoding. This malicious user input allows for web script to be injected in HTTP headers as well as into browser cookies or Ajax web/browser object parameters like XMLHttpRequest during implementation of asynchronous requests.</xhtml:p>\n            <xhtml:p>This attack is usually the result of the usage of outdated or incompatible HTTP protocol versions as well as lack of syntax checking and filtering of user input in the HTTP agents receiving HTTP messages in the path.</xhtml:p>\n            <xhtml:p>This differs from CAPEC-34 HTTP Response Splitting, which is usually an attempt to compromise a client agent (e.g., web browser) by sending malicious content in HTTP responses from back-end HTTP infrastructure. HTTP Request Splitting is an attempt to compromise a<xhtml:em>back-end HTTP agent</xhtml:em>via HTTP Request messages.</xhtml:p>\n            <xhtml:p>HTTP Smuggling (CAPEC-33 and CAPEC-273) is different from HTTP Splitting due to the fact it relies upon discrepancies in the interpretation of various HTTP Headers and message sizes and not solely user input of special characters and character encoding. HTTP Smuggling was established to circumvent mitigations against HTTP Request Splitting techniques.</xhtml:p>\n         ",
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_peer_of_refs": [
                 "attack-pattern--ba694895-a0cf-494e-ace2-bf3488330b80"
             ],
             "x_capec_prerequisites": [
-                "User-manipulateable HTTP Request headers are processed by the web server"
+                "An additional intermediary HTTP agent such as an application firewall or a web caching proxy between the adversary and the second agent such as a web server, that sends multiple HTTP messages over same network connection.",
+                "Differences in the way the two HTTP agents parse and interpret HTTP requests and its headers.",
+                "HTTP headers capable of being user-manipulated.",
+                "HTTP agents running on HTTP/1.0 or HTTP/1.1 that allow for Keep Alive mode, Pipelined queries, and Chunked queries and responses."
             ],
             "x_capec_resources_required": [
-                "A tool that allows for the sending of customized HTTP requests is required."
+                "Tools capable of crafting malicious HTTP messages and monitoring HTTP messages responses."
             ],
             "x_capec_skills_required": {
-                "Medium": "Good understanding of the HTTP protocol and the parsing mechanisms employed by various web servers"
+                "Medium": "Possess knowledge on the exact details in the discrepancies between several targeted HTTP agents in path of an HTTP message in parsing its message structure and individual headers."
             },
-            "x_capec_status": "Draft",
+            "x_capec_status": "Stable",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

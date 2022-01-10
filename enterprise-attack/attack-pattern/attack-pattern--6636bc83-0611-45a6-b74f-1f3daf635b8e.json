@@ -1,29 +1,22 @@
 {
     "type": "bundle",
-    "id": "bundle--fe5f5b12-94ca-4e0d-9bd3-be631ea919f9",
+    "id": "bundle--887ce61f-5f67-4680-8279-002733da58f8",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1053.001",
-                    "url": "https://attack.mitre.org/techniques/T1053/001"
-                },
-                {
-                    "source_name": "Kifarunix - Task Scheduling in Linux",
-                    "url": "https://kifarunix.com/scheduling-tasks-using-at-command-in-linux/",
-                    "description": "Koromicha. (2019, September 7). Scheduling tasks using at command in Linux. Retrieved December 3, 2019."
-                }
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "At (Linux)",
-            "description": "Adversaries may abuse the [at](https://attack.mitre.org/software/S0110) utility to perform task scheduling for initial or recurring execution of malicious code. The [at](https://attack.mitre.org/software/S0110) command within Linux operating systems enables administrators to schedule tasks.(Citation: Kifarunix - Task Scheduling in Linux)\n\nAn adversary may use [at](https://attack.mitre.org/software/S0110) in Linux environments to execute programs at system startup or on a scheduled basis for persistence. [at](https://attack.mitre.org/software/S0110) can also be abused to conduct remote Execution as part of Lateral Movement and or to run a process under the context of a specified account.",
-            "id": "attack-pattern--6636bc83-0611-45a6-b74f-1f3daf635b8e",
             "type": "attack-pattern",
+            "name": "At (Linux)",
+            "x_mitre_data_sources": [
+                "Scheduled Job: Scheduled Job Creation",
+                "Command: Command Execution",
+                "Process: Process Creation"
+            ],
+            "x_mitre_version": "1.1",
+            "modified": "2021-10-15T14:36:26.063Z",
+            "created": "2019-12-03T12:59:36.749Z",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -38,19 +31,36 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "modified": "2020-03-23T22:35:13.112Z",
-            "created": "2019-12-03T12:59:36.749Z",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_remote_support": true,
-            "x_mitre_detection": "Monitor scheduled task creation using command-line invocation. Legitimate scheduled tasks may be created during installation of new software or through system administration functions. Look for changes to tasks that do not correlate with known software, patch cycles, etc. \n\nSuspicious program execution through scheduled tasks may show up as outlier processes that have not been seen before when compared against historical data. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
-            "x_mitre_data_sources": [
-                "Scheduled Job: Scheduled Job Creation",
-                "Command: Command Execution",
-                "Process: Process Creation"
-            ],
             "x_mitre_platforms": [
                 "Linux"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--6636bc83-0611-45a6-b74f-1f3daf635b8e",
+            "description": "Adversaries may abuse the [at](https://attack.mitre.org/software/S0110) utility to perform task scheduling for initial, recurring, or future execution of malicious code. The [at](https://attack.mitre.org/software/S0110) command within Linux operating systems enables administrators to schedule tasks.(Citation: Kifarunix - Task Scheduling in Linux)\n\nAn adversary may use [at](https://attack.mitre.org/software/S0110) in Linux environments to execute programs at system startup or on a scheduled basis for persistence. [at](https://attack.mitre.org/software/S0110) can also be abused to conduct remote Execution as part of Lateral Movement and or to run a process under the context of a specified account.\n\nAdversaries may also abuse [at](https://attack.mitre.org/software/S0110) to break out of restricted environments by using a task to spawn an interactive system shell or to run system commands. Similarly, [at](https://attack.mitre.org/software/S0110) may also be used for [Privilege Escalation](https://attack.mitre.org/tactics/TA0004) if the binary is allowed to run as superuser via <code>sudo</code>.(Citation: GTFObins at)",
+            "x_mitre_remote_support": true,
+            "x_mitre_detection": "Monitor scheduled task creation using command-line invocation. Legitimate scheduled tasks may be created during installation of new software or through system administration functions. Look for changes to tasks that do not correlate with known software, patch cycles, etc. \n\nReview all jobs using the <code>atq</code> command and ensure IP addresses stored in the <code>SSH_CONNECTION</code> and <code>SSH_CLIENT</code> variables, machines that created the jobs, are trusted hosts. All [at](https://attack.mitre.org/software/S0110) jobs are stored in <code>/var/spool/cron/atjobs/</code>.(Citation: rowland linux at 2019)\n\nSuspicious program execution through scheduled tasks may show up as outlier processes that have not been seen before when compared against historical data. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1053/001",
+                    "external_id": "T1053.001",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://kifarunix.com/scheduling-tasks-using-at-command-in-linux/",
+                    "description": "Koromicha. (2019, September 7). Scheduling tasks using at command in Linux. Retrieved December 3, 2019.",
+                    "source_name": "Kifarunix - Task Scheduling in Linux"
+                },
+                {
+                    "url": "https://gtfobins.github.io/gtfobins/at/",
+                    "description": "Emilio Pinna, Andrea Cardaci. (n.d.). gtfobins at. Retrieved September 28, 2021.",
+                    "source_name": "GTFObins at"
+                },
+                {
+                    "url": "https://www.linkedin.com/pulse/getting-attacker-ip-address-from-malicious-linux-job-craig-rowland/",
+                    "description": "Craig Rowland. (2019, July 25). Getting an Attacker IP Address from a Malicious Linux At Job. Retrieved October 15, 2021.",
+                    "source_name": "rowland linux at 2019"
+                }
             ]
         }
     ]

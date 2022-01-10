@@ -1,10 +1,10 @@
 {
-    "id": "bundle--b3364800-b6b8-4506-9ebe-d685ac630bc9",
+    "id": "bundle--246d483b-54b2-47ab-9ba2-0d48e3e75648",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "Applications often need to transform data in and out of the XML format by using an XML parser. It may be possible for an adversary to inject data that may have an adverse effect on the XML parser when it is being processed. By nesting XML data and causing this data to be continuously self-referential, an adversary can cause the XML parser to consume more resources while processing, causing excessive memory consumption and CPU utilization. An adversary's goal is to leverage parser failure to their advantage. In most cases this type of an attack will result in a XML Denial of Service (XDoS) due to an application becoming unstable, freezing, or crashing. However it may be possible to cause a crash resulting in arbitrary code execution, leading to a jump from the data plane to the control plane [REF-89]. XDoS is most closely associated with web services, SOAP, and Rest, because remote service requesters can post malicious XML payloads to the service provider designed to exhaust the service provider's memory, CPU, and/or disk space. The main weakness in XDoS is that the service provider generally must inspect, parse, and validate the XML messages to determine routing, workflow, security considerations, and so on. It is exactly these inspection, parsing, and validation routines that XDoS targets. This attack exploits the loosely coupled nature of web services, where the service provider has little to no control over the service requester and any messages the service requester sends.",
+            "description": "Applications often need to transform data in and out of a data format (e.g., XML and YAML) by using a parser. It may be possible for an adversary to inject data that may have an adverse effect on the parser when it is being processed. Many data format languages allow the definition of macro-like structures that can be used to simplify the creation of complex structures. By nesting these structures, causing the data to be repeatedly substituted, an adversary can cause the parser to consume more resources while processing, causing excessive memory consumption and CPU utilization.",
             "external_references": [
                 {
                     "external_id": "CAPEC-230",
@@ -39,8 +39,8 @@
                 }
             ],
             "id": "attack-pattern--8abd01d1-b2a2-4b86-a640-7d3d3b61d27f",
-            "modified": "2021-06-24T00:00:00.000Z",
-            "name": "XML Nested Payloads",
+            "modified": "2021-10-21T00:00:00.000Z",
+            "name": "Serialized Data with Nested Payloads",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
             ],
@@ -72,23 +72,20 @@
                     "Execute Unauthorized Commands"
                 ]
             },
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>An adversary determines the input data stream that is being processed by an XML parser on the victim's side.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>An adversary crafts input data that may have an adverse effect on the operation of the XML parser when the data is parsed on the victim's system.</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>An adversary determines the input data stream that is being processed by a data parser that supports using substitution on the victim's side.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>An adversary crafts input data that may have an adverse effect on the operation of the parser when the data is parsed on the victim's system.</p></li></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>An adversary's goal is to leverage parser failure to their advantage. In most cases this type of an attack will result in a Denial of Service due to an application becoming unstable, freezing, or crashing. However it may be possible to cause a crash resulting in arbitrary code execution, leading to a jump from the data plane to the control plane [REF-89].</xhtml:p>\n            <xhtml:p>This attack is most closely associated with web services using SOAP or a Rest API, because remote service requesters can post malicious payloads to the service provider. The main weakness is that the service provider generally must inspect, parse, and validate the messages to determine routing, workflow, security considerations, and so on. It is exactly these inspection, parsing, and validation routines that this attack targets. This attack exploits the loosely coupled nature of web services, where the service provider has little to no control over the service requester and any messages the service requester sends.</xhtml:p>\n         ",
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_parent_of_refs": [
                 "attack-pattern--f36abc8a-043e-42c5-876d-a65fc0cddc1e",
                 "attack-pattern--8f70b1fb-393f-4494-b4ad-67f1a2107975"
             ],
             "x_capec_prerequisites": [
-                "An application uses an XML parser to perform transformation on user-controllable data.",
-                "An application does not perform sufficient validation to ensure that user-controllable data is safe for an XML parser."
+                "An application's user-controllable data is expressed in a language that supports subsitution.",
+                "An application does not perform sufficient validation to ensure that user-controllable data is not malicious."
             ],
-            "x_capec_skills_required": {
-                "High": "Arbitrary code execution",
-                "Low": "Denial of service"
-            },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

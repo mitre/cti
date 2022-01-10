@@ -1,39 +1,33 @@
 {
     "type": "bundle",
-    "id": "bundle--f7df66ba-58c0-4829-9335-1dddd1ddb73e",
+    "id": "bundle--44b4f79a-f8be-4667-bdb6-a6760dba887f",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1546.011",
-                    "url": "https://attack.mitre.org/techniques/T1546/011"
-                },
-                {
-                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
-                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
-                    "source_name": "Elastic Process Injection July 2017"
-                },
-                {
-                    "source_name": "FireEye Application Shimming",
-                    "url": "http://files.brucon.org/2015/Tomczak_and_Ballenthin_Shims_for_the_Win.pdf",
-                    "description": "Ballenthin, W., Tomczak, J.. (2015). The Real Shim Shary. Retrieved May 4, 2020."
-                },
-                {
-                    "url": "https://www.blackhat.com/docs/eu-15/materials/eu-15-Pierce-Defending-Against-Malicious-Application-Compatibility-Shims-wp.pdf",
-                    "description": "Pierce, Sean. (2015, November). Defending Against Malicious Application Compatibility Shims. Retrieved June 22, 2017.",
-                    "source_name": "Black Hat 2015 App Shim"
-                }
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Application Shimming",
-            "description": "Adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by application shims. The Microsoft Windows Application Compatibility Infrastructure/Framework (Application Shim) was created to allow for backward compatibility of software as the operating system codebase changes over time. For example, the application shimming feature allows developers to apply fixes to applications (without rewriting code) that were created for Windows XP so that it will work with Windows 10. (Citation: Elastic Process Injection July 2017)\n\nWithin the framework, shims are created to act as a buffer between the program (or more specifically, the Import Address Table) and the Windows OS. When a program is executed, the shim cache is referenced to determine if the program requires the use of the shim database (.sdb). If so, the shim database uses hooking to redirect the code as necessary in order to communicate with the OS. \n\nA list of all shims currently installed by the default Windows installer (sdbinst.exe) is kept in:\n\n* <code>%WINDIR%\\AppPatch\\sysmain.sdb</code> and\n* <code>hklm\\software\\microsoft\\windows nt\\currentversion\\appcompatflags\\installedsdb</code>\n\nCustom databases are stored in:\n\n* <code>%WINDIR%\\AppPatch\\custom & %WINDIR%\\AppPatch\\AppPatch64\\Custom</code> and\n* <code>hklm\\software\\microsoft\\windows nt\\currentversion\\appcompatflags\\custom</code>\n\nTo keep shims secure, Windows designed them to run in user mode so they cannot modify the kernel and you must have administrator privileges to install a shim. However, certain shims can be used to [Bypass User Account Control](https://attack.mitre.org/techniques/T1548/002) (UAC and RedirectEXE), inject DLLs into processes (InjectDLL), disable Data Execution Prevention (DisableNX) and Structure Exception Handling (DisableSEH), and intercept memory addresses (GetProcAddress).\n\nUtilizing these shims may allow an adversary to perform several malicious acts such as elevate privileges, install backdoors, disable defenses like Windows Defender, etc. (Citation: FireEye Application Shimming) Shims can also be abused to establish persistence by continuously being invoked by affected programs.",
-            "id": "attack-pattern--42fe883a-21ea-4cfb-b94a-78b6476dcc83",
             "type": "attack-pattern",
+            "name": "Application Shimming",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Windows Registry: Windows Registry Key Modification",
+                "Command: Command Execution",
+                "Module: Module Load",
+                "File: File Modification"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2020-11-10T18:29:31.094Z",
+            "created": "2020-01-24T14:56:24.231Z",
+            "x_mitre_permissions_required": [
+                "Administrator"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--42fe883a-21ea-4cfb-b94a-78b6476dcc83",
+            "description": "Adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by application shims. The Microsoft Windows Application Compatibility Infrastructure/Framework (Application Shim) was created to allow for backward compatibility of software as the operating system codebase changes over time. For example, the application shimming feature allows developers to apply fixes to applications (without rewriting code) that were created for Windows XP so that it will work with Windows 10. (Citation: Elastic Process Injection July 2017)\n\nWithin the framework, shims are created to act as a buffer between the program (or more specifically, the Import Address Table) and the Windows OS. When a program is executed, the shim cache is referenced to determine if the program requires the use of the shim database (.sdb). If so, the shim database uses hooking to redirect the code as necessary in order to communicate with the OS. \n\nA list of all shims currently installed by the default Windows installer (sdbinst.exe) is kept in:\n\n* <code>%WINDIR%\\AppPatch\\sysmain.sdb</code> and\n* <code>hklm\\software\\microsoft\\windows nt\\currentversion\\appcompatflags\\installedsdb</code>\n\nCustom databases are stored in:\n\n* <code>%WINDIR%\\AppPatch\\custom & %WINDIR%\\AppPatch\\AppPatch64\\Custom</code> and\n* <code>hklm\\software\\microsoft\\windows nt\\currentversion\\appcompatflags\\custom</code>\n\nTo keep shims secure, Windows designed them to run in user mode so they cannot modify the kernel and you must have administrator privileges to install a shim. However, certain shims can be used to [Bypass User Account Control](https://attack.mitre.org/techniques/T1548/002) (UAC and RedirectEXE), inject DLLs into processes (InjectDLL), disable Data Execution Prevention (DisableNX) and Structure Exception Handling (DisableSEH), and intercept memory addresses (GetProcAddress).\n\nUtilizing these shims may allow an adversary to perform several malicious acts such as elevate privileges, install backdoors, disable defenses like Windows Defender, etc. (Citation: FireEye Application Shimming) Shims can also be abused to establish persistence by continuously being invoked by affected programs.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -44,23 +38,29 @@
                     "phase_name": "persistence"
                 }
             ],
-            "modified": "2020-11-10T18:29:31.094Z",
-            "created": "2020-01-24T14:56:24.231Z",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_permissions_required": [
-                "Administrator"
-            ],
             "x_mitre_detection": "There are several public tools available that will detect shims that are currently available (Citation: Black Hat 2015 App Shim):\n\n* Shim-Process-Scanner - checks memory of every running process for any shim flags\n* Shim-Detector-Lite - detects installation of custom shim databases\n* Shim-Guard - monitors registry for any shim installations\n* ShimScanner - forensic tool to find active shims in memory\n* ShimCacheMem - Volatility plug-in that pulls shim cache from memory (note: shims are only cached after reboot)\n\nMonitor process execution for sdbinst.exe and command-line arguments for potential indications of application shim abuse.",
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Windows Registry: Windows Registry Key Modification",
-                "Command: Command Execution",
-                "Module: Module Load",
-                "File: File Modification"
-            ],
-            "x_mitre_platforms": [
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1546/011",
+                    "external_id": "T1546.011",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "source_name": "Elastic Process Injection July 2017",
+                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
+                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process"
+                },
+                {
+                    "url": "http://files.brucon.org/2015/Tomczak_and_Ballenthin_Shims_for_the_Win.pdf",
+                    "description": "Ballenthin, W., Tomczak, J.. (2015). The Real Shim Shary. Retrieved May 4, 2020.",
+                    "source_name": "FireEye Application Shimming"
+                },
+                {
+                    "source_name": "Black Hat 2015 App Shim",
+                    "description": "Pierce, Sean. (2015, November). Defending Against Malicious Application Compatibility Shims. Retrieved June 22, 2017.",
+                    "url": "https://www.blackhat.com/docs/eu-15/materials/eu-15-Pierce-Defending-Against-Malicious-Application-Compatibility-Shims-wp.pdf"
+                }
             ]
         }
     ]

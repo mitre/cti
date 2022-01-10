@@ -1,0 +1,94 @@
+{
+    "type": "bundle",
+    "id": "bundle--6cf1426c-b6cf-4a3e-aad7-f5bc94f019d6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "name": "MMC",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "File: File Creation",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2021-10-16T00:13:18.889Z",
+            "created": "2021-09-28T01:36:41.638Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "id": "attack-pattern--ffbcfdb0-de22-4106-9ed3-fc23c8a01407",
+            "x_mitre_defense_bypassed": [
+                "Application control",
+                "Digital Certificate Validation"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
+            ],
+            "description": "Adversaries may abuse mmc.exe to proxy execution of malicious .msc files. Microsoft Management Console, or MMC, is a signed Windows binary and is used in several ways in either its GUI or in a command prompt.(Citation: win_mmc)(Citation: what_is_mmc) MMC can be used to create, open, and save custom consoles that contain administrative tools created by Microsoft, called snap-ins. These snap-ins may be used to manage Windows systems locally or remotely. MMC can also be used to open Microsoft created .msc files to manage system configuration.(Citation: win_msc_files_overview)\n\nFor example, <code>mmc C:\\Users\\foo\\admintools.msc /a</code> will open a custom, saved console msc file in author mode.(Citation: win_mmc) Another common example is <code>mmc gpedit.msc</code>, which will open the Group Policy Editor application window. \n\nAdversaries may use MMC commands to perform malicious tasks. For example, <code>mmc wbadmin.msc delete catalog -quiet</code> deletes the backup catalog on the system (i.e. [Inhibit System Recovery](https://attack.mitre.org/techniques/T1490)) without prompts to the user (Note: <code>wbadmin.msc</code> may only be present by default on Windows Server operating systems).(Citation: win_wbadmin_delete_catalog)(Citation: phobos_virustotal)\n\nAdversaries may also abuse MMC to execute malicious .msc files. For example, adversaries may first create a malicious registry Class Identifier (CLSID) subkey, which uniquely identifies a [Component Object Model](https://attack.mitre.org/techniques/T1559/001) class object.(Citation: win_clsid_key) Then, adversaries may create custom consoles with the \u201cLink to Web Address\u201d snap-in that is linked to the malicious CLSID subkey.(Citation: mmc_vulns) Once the .msc file is saved, adversaries may invoke the malicious CLSID payload with the following command: <code>mmc.exe -Embedding C:\\path\\to\\test.msc</code>.(Citation: abusing_com_reg)",
+            "x_mitre_contributors": [
+                "Wes Hurd"
+            ],
+            "x_mitre_detection": "Monitor processes and command-line parameters for suspicious or malicious use of MMC. Since MMC is a signed Windows binary, verify use of MMC is legitimate and not malicious. \n\nMonitor for creation and use of .msc files. MMC may legitimately be used to call Microsoft-created .msc files, such as <code>services.msc</code> or <code>eventvwr.msc</code>. Invoking non-Microsoft .msc files may be an indicator of malicious activity. ",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1218/014",
+                    "external_id": "T1218.014",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/mmc",
+                    "description": "Microsoft. (2017, October 16). mmc. Retrieved September 20, 2021.",
+                    "source_name": "win_mmc"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/troubleshoot/windows-server/system-management-components/what-is-microsoft-management-console",
+                    "description": "Microsoft. (2020, September 27). What is Microsoft Management Console?. Retrieved October 5, 2021.",
+                    "source_name": "what_is_mmc"
+                },
+                {
+                    "url": "https://www.ghacks.net/2017/06/10/windows-msc-files-overview/",
+                    "description": "Brinkmann, M.. (2017, June 10). Windows .msc files overview. Retrieved September 20, 2021.",
+                    "source_name": "win_msc_files_overview"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/wbadmin-delete-catalog",
+                    "description": "Microsoft. (2017, October 16). wbadmin delete catalog. Retrieved September 20, 2021.",
+                    "source_name": "win_wbadmin_delete_catalog"
+                },
+                {
+                    "url": "https://www.virustotal.com/gui/file/0b4c743246478a6a8c9fa3ff8e04f297507c2f0ea5d61a1284fe65387d172f81/detection ",
+                    "description": "Phobos Ransomware. (2020, December 30). Phobos Ransomware, Fast.exe. Retrieved September 20, 2021.",
+                    "source_name": "phobos_virustotal"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/windows/win32/com/clsid-key-hklm",
+                    "description": "Microsoft. (2018, May 31). CLSID Key. Retrieved September 24, 2021.",
+                    "source_name": "win_clsid_key"
+                },
+                {
+                    "url": "https://research.checkpoint.com/2019/microsoft-management-console-mmc-vulnerabilities/",
+                    "description": "Boxiner, A., Vaknin, E. (2019, June 11). Microsoft Management Console (MMC) Vulnerabilities. Retrieved September 24, 2021.",
+                    "source_name": "mmc_vulns"
+                },
+                {
+                    "url": "https://bohops.com/2018/08/18/abusing-the-com-registry-structure-part-2-loading-techniques-for-evasion-and-persistence/",
+                    "description": "bohops. (2018, August 18). ABUSING THE COM REGISTRY STRUCTURE (PART 2): HIJACKING & LOADING TECHNIQUES. Retrieved September 20, 2021.",
+                    "source_name": "abusing_com_reg"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,100 @@
+{
+    "type": "bundle",
+    "id": "bundle--4ca7b807-0ca1-4882-88ac-e07780725b92",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "name": "IIS Components",
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "File: File Modification",
+                "Command: Command Execution"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2021-10-17T15:06:24.161Z",
+            "created": "2021-06-03T18:44:29.770Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "id": "attack-pattern--b46a801b-fd98-491c-a25a-bca25d6e3001",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "SYSTEM"
+            ],
+            "description": "Adversaries may install malicious components that run on Internet Information Services (IIS) web servers to establish persistence. IIS provides several mechanisms to extend the functionality of the web servers. For example, Internet Server Application Programming Interface (ISAPI) extensions and filters can be installed to examine and/or modify incoming and outgoing IIS web requests. Extensions and filters are deployed as DLL files that export three functions: <code>Get{Extension/Filter}Version</code>, <code>Http{Extension/Filter}Proc</code>, and (optionally) <code>Terminate{Extension/Filter}</code>. IIS modules may also be installed to extend IIS web servers.(Citation: Microsoft ISAPI Extension Overview 2017)(Citation: Microsoft ISAPI Filter Overview 2017)(Citation: IIS Backdoor 2011)(Citation: Trustwave IIS Module 2013)\n\nAdversaries may install malicious ISAPI extensions and filters to observe and/or modify traffic, execute commands on compromised machines, or proxy command and control traffic. ISAPI extensions and filters may have access to all IIS web requests and responses. For example, an adversary may abuse these mechanisms to modify HTTP responses in order to distribute malicious commands/content to previously comprised hosts.(Citation: Microsoft ISAPI Filter Overview 2017)(Citation: Microsoft ISAPI Extension Overview 2017)(Citation: Microsoft ISAPI Extension All Incoming 2017)(Citation: Dell TG-3390)(Citation: Trustwave IIS Module 2013)(Citation: MMPC ISAPI Filter 2012)\n\nAdversaries may also install malicious IIS modules to observe and/or modify traffic. IIS 7.0 introduced modules that provide the same unrestricted access to HTTP requests and responses as ISAPI extensions and filters. IIS modules can be written as a DLL that exports <code>RegisterModule</code>, or as a .NET application that interfaces with ASP.NET APIs to access IIS HTTP requests.(Citation: Microsoft IIS Modules Overview 2007)(Citation: Trustwave IIS Module 2013)(Citation: ESET IIS Malware 2021)",
+            "x_mitre_contributors": [
+                "Wes Hurd"
+            ],
+            "x_mitre_detection": "Monitor for creation and/or modification of files (especially DLLs on webservers) that could be abused as malicious ISAPI extensions/filters or IIS modules. Changes to <code>%windir%\\system32\\inetsrv\\config\\applicationhost.config</code> could indicate an IIS module installation.(Citation: Microsoft IIS Modules Overview 2007)(Citation: ESET IIS Malware 2021)\n\nMonitor execution and command-line arguments of <code>AppCmd.exe</code>, which may be abused to install malicious IIS modules.(Citation: Microsoft IIS Modules Overview 2007)(Citation: Unit 42 RGDoor Jan 2018)(Citation: ESET IIS Malware 2021)",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1505/004",
+                    "external_id": "T1505.004",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/previous-versions/iis/6.0-sdk/ms525172(v=vs.90)",
+                    "description": "Microsoft. (2017, June 16). ISAPI Extension Overview. Retrieved June 3, 2021.",
+                    "source_name": "Microsoft ISAPI Extension Overview 2017"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/previous-versions/iis/6.0-sdk/ms524610(v=vs.90)",
+                    "description": "Microsoft. (2017, June 16). ISAPI Filter Overview. Retrieved June 3, 2021.",
+                    "source_name": "Microsoft ISAPI Filter Overview 2017"
+                },
+                {
+                    "url": "https://web.archive.org/web/20170106175935/http:/esec-lab.sogeti.com/posts/2011/02/02/iis-backdoor.html",
+                    "description": "Julien. (2011, February 2). IIS Backdoor. Retrieved June 3, 2021.",
+                    "source_name": "IIS Backdoor 2011"
+                },
+                {
+                    "url": "https://www.trustwave.com/en-us/resources/blogs/spiderlabs-blog/the-curious-case-of-the-malicious-iis-module/",
+                    "description": "Grunzweig, J. (2013, December 9). The Curious Case of the Malicious IIS Module. Retrieved June 3, 2021.",
+                    "source_name": "Trustwave IIS Module 2013"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/previous-versions/iis/6.0-sdk/ms525696(v=vs.90)",
+                    "description": "Microsoft. (2017, June 16). Intercepting All Incoming IIS Requests. Retrieved June 3, 2021.",
+                    "source_name": "Microsoft ISAPI Extension All Incoming 2017"
+                },
+                {
+                    "url": "https://www.secureworks.com/research/threat-group-3390-targets-organizations-for-cyberespionage",
+                    "description": "Dell SecureWorks Counter Threat Unit Threat Intelligence. (2015, August 5). Threat Group-3390 Targets Organizations for Cyberespionage. Retrieved August 18, 2018.",
+                    "source_name": "Dell TG-3390"
+                },
+                {
+                    "url": "https://web.archive.org/web/20140804175025/http:/blogs.technet.com/b/mmpc/archive/2012/10/03/malware-signed-with-the-adobe-code-signing-certificate.aspx",
+                    "description": "MMPC. (2012, October 3). Malware signed with the Adobe code signing certificate. Retrieved June 3, 2021.",
+                    "source_name": "MMPC ISAPI Filter 2012"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/iis/get-started/introduction-to-iis/iis-modules-overview",
+                    "description": "Microsoft. (2007, November 24). IIS Modules Overview. Retrieved June 17, 2021.",
+                    "source_name": "Microsoft IIS Modules Overview 2007"
+                },
+                {
+                    "url": "https://i.blackhat.com/USA21/Wednesday-Handouts/us-21-Anatomy-Of-Native-Iis-Malware-wp.pdf",
+                    "description": "Hromcov\u00e1, Z., Cherepanov, A. (2021). Anatomy of Native IIS Malware. Retrieved September 9, 2021.",
+                    "source_name": "ESET IIS Malware 2021"
+                },
+                {
+                    "source_name": "Unit 42 RGDoor Jan 2018",
+                    "description": "Falcone, R. (2018, January 25). OilRig uses RGDoor IIS Backdoor on Targets in the Middle East. Retrieved July 6, 2018.",
+                    "url": "https://researchcenter.paloaltonetworks.com/2018/01/unit42-oilrig-uses-rgdoor-iis-backdoor-targets-middle-east/"
+                }
+            ]
+        }
+    ]
+}

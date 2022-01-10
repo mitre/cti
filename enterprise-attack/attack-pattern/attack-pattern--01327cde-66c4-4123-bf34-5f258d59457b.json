@@ -1,52 +1,112 @@
 {
     "type": "bundle",
-    "id": "bundle--210b8139-41e4-43bf-a733-c73e9505d95d",
+    "id": "bundle--486bdcbf-0309-4930-955c-5c559224232f",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1021.005",
-                    "url": "https://attack.mitre.org/techniques/T1021/005"
-                },
-                {
-                    "external_id": "CAPEC-555",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/555.html"
-                }
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "VNC",
-            "description": "Adversaries may use [Valid Accounts](https://attack.mitre.org/techniques/T1078) to remotely control machines using Virtual Network Computing (VNC). The adversary may then perform actions as the logged-on user.\n\nVNC is a desktop sharing system that allows users to remotely control another computer\u2019s display by relaying mouse and keyboard inputs over the network. VNC does not necessarily use standard user credentials. Instead, a VNC client and server may be configured with sets of credentials that are used only for VNC connections.",
-            "id": "attack-pattern--01327cde-66c4-4123-bf34-5f258d59457b",
             "type": "attack-pattern",
+            "name": "VNC",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Network Traffic: Network Connection Creation",
+                "Logon Session: Logon Session Creation"
+            ],
+            "x_mitre_version": "1.1",
+            "modified": "2021-10-07T22:14:25.528Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "created": "2020-02-11T18:28:44.950Z",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--01327cde-66c4-4123-bf34-5f258d59457b",
+            "description": "Adversaries may use [Valid Accounts](https://attack.mitre.org/techniques/T1078) to remotely control machines using Virtual Network Computing (VNC).  VNC is a platform-independent desktop sharing system that uses the RFB (\u201cremote framebuffer\u201d) protocol to enable users to remotely control another computer\u2019s display by relaying the screen, mouse, and keyboard inputs over the network.(Citation: The Remote Framebuffer Protocol)\n\nVNC differs from [Remote Desktop Protocol](https://attack.mitre.org/techniques/T1021/001) as VNC is screen-sharing software rather than resource-sharing software. By default, VNC uses the system's authentication, but it can be configured to use credentials specific to VNC.(Citation: MacOS VNC software for Remote Desktop)(Citation: VNC Authentication)\n\nAdversaries may abuse VNC to perform malicious actions as the logged-on user such as opening documents, downloading files, and running arbitrary commands. An adversary could use VNC to remotely control and monitor a system to collect data and information to pivot to other systems within the network. Specific VNC libraries/implementations have also been susceptible to brute force attacks and memory usage exploitation.(Citation: Hijacking VNC)(Citation: macOS root VNC login without authentication)(Citation: VNC Vulnerabilities)(Citation: Offensive Security VNC Authentication Check)(Citation: Attacking VNC Servers PentestLab)(Citation: Havana authentication bug)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "lateral-movement"
                 }
             ],
-            "modified": "2020-03-23T20:41:21.147Z",
-            "created": "2020-02-11T18:28:44.950Z",
+            "x_mitre_detection": "Use of VNC may be legitimate depending on the environment and how it\u2019s used. Other factors, such as access patterns and activity that occurs after a remote login, may indicate suspicious or malicious behavior using VNC.\n\nOn macOS systems <code>log show --predicate 'process = \"screensharingd\" and eventMessage contains \"Authentication:\"'</code> can be used to review incoming VNC connection attempts for suspicious activity.(Citation: Apple Unified Log Analysis Remote Login and Screen Sharing)\n\nMonitor for use of built-in debugging environment variables (such as those containing credentials or other sensitive information) as well as test/default users on VNC servers, as these can leave openings for adversaries to abuse.(Citation: Gnome Remote Desktop grd-settings)(Citation: Gnome Remote Desktop gschema)",
             "x_mitre_system_requirements": [
                 "VNC server installed and listening for connections."
             ],
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Network Traffic: Network Connection Creation",
-                "Logon Session: Logon Session Creation"
-            ],
-            "x_mitre_detection": "Use of VNC may be legitimate depending on the environment and how it\u2019s used. Other factors, such as access patterns and activity that occurs after a remote login, may indicate suspicious or malicious behavior with VNC.",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1021/005",
+                    "external_id": "T1021.005",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://capec.mitre.org/data/definitions/555.html",
+                    "external_id": "CAPEC-555",
+                    "source_name": "capec"
+                },
+                {
+                    "url": "https://datatracker.ietf.org/doc/html/rfc6143#section-7.2.2",
+                    "description": "T. Richardson, J. Levine, RealVNC Ltd.. (2011, March). The Remote Framebuffer Protocol. Retrieved September 20, 2021.",
+                    "source_name": "The Remote Framebuffer Protocol"
+                },
+                {
+                    "url": "https://support.apple.com/guide/remote-desktop/set-up-a-computer-running-vnc-software-apdbed09830/mac",
+                    "description": "Apple Support. (n.d.). Set up a computer running VNC software for Remote Desktop. Retrieved August 18, 2021.",
+                    "source_name": "MacOS VNC software for Remote Desktop"
+                },
+                {
+                    "url": "https://help.realvnc.com/hc/en-us/articles/360002250097-Setting-up-System-Authentication",
+                    "description": "Tegan. (2019, August 15). Setting up System Authentication. Retrieved September 20, 2021.",
+                    "source_name": "VNC Authentication"
+                },
+                {
+                    "url": "https://int0x33.medium.com/day-70-hijacking-vnc-enum-brute-access-and-crack-d3d18a4601cc",
+                    "description": "Z3RO. (2019, March 10). Day 70: Hijacking VNC (Enum, Brute, Access and Crack). Retrieved September 20, 2021.",
+                    "source_name": "Hijacking VNC"
+                },
+                {
+                    "url": "https://www.tenable.com/blog/detecting-macos-high-sierra-root-account-without-authentication",
+                    "description": "Nick Miles. (2017, November 30). Detecting macOS High Sierra root account without authentication. Retrieved September 20, 2021.",
+                    "source_name": "macOS root VNC login without authentication"
+                },
+                {
+                    "url": "https://www.bleepingcomputer.com/news/security/dozens-of-vnc-vulnerabilities-found-in-linux-windows-solutions/",
+                    "description": "Sergiu Gatlan. (2019, November 22). Dozens of VNC Vulnerabilities Found in Linux, Windows Solutions. Retrieved September 20, 2021.",
+                    "source_name": "VNC Vulnerabilities"
+                },
+                {
+                    "url": "https://www.offensive-security.com/metasploit-unleashed/vnc-authentication/",
+                    "description": "Offensive Security. (n.d.). VNC Authentication. Retrieved October 6, 2021.",
+                    "source_name": "Offensive Security VNC Authentication Check"
+                },
+                {
+                    "url": "https://pentestlab.blog/2012/10/30/attacking-vnc-servers/",
+                    "description": "Administrator, Penetration Testing Lab. (2012, October 30). Attacking VNC Servers. Retrieved October 6, 2021.",
+                    "source_name": "Attacking VNC Servers PentestLab"
+                },
+                {
+                    "url": "http://lists.openstack.org/pipermail/openstack/2013-December/004138.html",
+                    "description": "Jay Pipes. (2013, December 23). Security Breach! Tenant A is seeing the VNC Consoles of Tenant B!. Retrieved October 6, 2021.",
+                    "source_name": "Havana authentication bug"
+                },
+                {
+                    "url": "https://sarah-edwards-xzkc.squarespace.com/blog/2020/4/30/analysis-of-apple-unified-logs-quarantine-edition-entry-6-working-from-home-remote-logins",
+                    "description": "Sarah Edwards. (2020, April 30). Analysis of Apple Unified Logs: Quarantine Edition [Entry 6] \u2013 Working From Home? Remote Logins. Retrieved August 19, 2021.",
+                    "source_name": "Apple Unified Log Analysis Remote Login and Screen Sharing"
+                },
+                {
+                    "url": "https://gitlab.gnome.org/GNOME/gnome-remote-desktop/-/blob/9aa9181e/src/grd-settings.c#L207",
+                    "description": "Pascal Nowack. (n.d.). Retrieved September 21, 2021.",
+                    "source_name": "Gnome Remote Desktop grd-settings"
+                },
+                {
+                    "url": "https://gitlab.gnome.org/GNOME/gnome-remote-desktop/-/blob/9aa9181e/src/org.gnome.desktop.remote-desktop.gschema.xml.in",
+                    "description": "Pascal Nowack. (n.d.). Retrieved September 21, 2021.",
+                    "source_name": "Gnome Remote Desktop gschema"
+                }
             ]
         }
     ]

@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--3c5a0c14-6964-449c-8eeb-3dafdf71c55d",
+    "id": "bundle--660c8e4f-6c20-4502-aaa6-85393de8e364",
     "spec_version": "2.0",
     "objects": [
         {
             "type": "attack-pattern",
             "name": "Manipulate I/O Image",
-            "description": "Adversaries may manipulate the I/O image of PLCs through various means to prevent them from functioning as expected. Methods of I/O image manipulation may include overriding the I/O table via direct memory manipulation or using the override function used for testing PLC programs. (Citation: Guidance - ISA PLC)  \n\nDuring the PLC scan cycle, the state of the actual physical inputs is copied to a portion of the PLC memory, commonly called the input image table. When the program is scanned, it examines the input image table to read the state of a physical input. \n\nWhen the logic determines the state of a physical output, it writes to a portion of the PLC memory commonly called the output image table. The output image may also be examined during the program scan. To update the physical outputs, the output image table contents are copied to the physical outputs after the program is scanned.\n\nOne of the unique characteristics of PLCs is their ability to override the status of a physical discrete input or to override the logic driving a physical output coil and force the output to a desired status.",
+            "description": "Adversaries may manipulate the I/O image of PLCs through various means to prevent them from functioning as expected. Methods of I/O image manipulation may include overriding the I/O table via direct memory manipulation or using the override function used for testing PLC programs. (Citation: Guidance - ISA PLC)  \n\nDuring the scan cycle, a PLC reads the status of all inputs and stores them in an image table.2 The image table is the PLC\u2019s internal storage location where values of inputs/outputs for one scan are stored while it executes the user program. After the PLC has solved the entire logic program, it updates the output image table. The contents of this output image table are written to the corresponding output points in I/O Modules.\n\nOne of the unique characteristics of PLCs is their ability to override the status of a physical discrete input or to override the logic driving a physical output coil and force the output to a desired status.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-ics-attack",
@@ -14,7 +14,6 @@
                 }
             ],
             "x_mitre_platforms": [
-                "Windows",
                 "Field Controller/RTU/PLC/IED"
             ],
             "external_references": [
@@ -27,6 +26,16 @@
                     "description": "Dr. Kelvin T. Erickson. (2010, December). Programmable logic controller hardware. Retrieved March 29, 2018.",
                     "source_name": "Guidance - ISA PLC",
                     "url": "https://www.isa.org/standards-and-publications/isa-publications/intech/2010/december/programmable-logic-controller-hardware/"
+                },
+                {
+                    "description": "Spenneberg, Ralf. (2016). PLC-Blaster. Retrieved June 6, 2019.",
+                    "source_name": "PLC-Blaster 2",
+                    "url": "https://www.blackhat.com/docs/asia-16/materials/asia-16-Spenneberg-PLC-Blaster-A-Worm-Living-Solely-In-The-PLC.pdf"
+                },
+                {
+                    "description": "Nicolas Falliere, Liam O Murchu, Eric Chien. (2011, February). W32.Stuxnet Dossier (Version 1.4). Retrieved September 22, 2017.",
+                    "source_name": "Stuxnet - Symantec - 201102",
+                    "url": "https://www.symantec.com/content/en/us/enterprise/media/security%20response/whitepapers/w32%20stuxnet%20dossier.pdf"
                 }
             ],
             "object_marking_refs": [
@@ -35,10 +44,10 @@
             "created": "2020-05-21T17:43:26.506Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_data_sources": [
-                "Controller program",
-                "Process monitoring"
+                "Operational Databases: Process History/Live Data",
+                "Operational Databases: Device Alarm"
             ],
-            "modified": "2020-05-21T17:43:26.506Z",
+            "modified": "2021-10-14T15:25:32.143Z",
             "id": "attack-pattern--36e9f5bc-ac13-4da4-a2f4-01f4877d9004"
         }
     ]

@@ -1,0 +1,125 @@
+{
+    "type": "bundle",
+    "id": "bundle--747e46b2-d573-47a9-b471-384c2c48a63b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "name": "Login Items",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "File: File Modification",
+                "File: File Creation"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2021-10-18T16:36:37.042Z",
+            "created": "2021-10-05T21:26:15.081Z",
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--84601337-6a55-4ad7-9c35-79e0d1ea2ab3",
+            "description": "Adversaries may add login items to execute upon user login to gain persistence or escalate privileges. Login items are applications, documents, folders, or server connections that are automatically launched when a user logs in.(Citation: Open Login Items Apple) Login items can be added via a shared file list or Service Management Framework.(Citation: Adding Login Items) Shared file list login items can be set using scripting languages such as [AppleScript](https://attack.mitre.org/techniques/T1059/002), whereas the Service Management Framework uses the API call <code>SMLoginItemSetEnabled</code>.\n\nLogin items installed using the Service Management Framework leverage <code>launchd</code>, are not visible in the System Preferences, and can only be removed by the application that created them.(Citation: Adding Login Items)(Citation: SMLoginItemSetEnabled Schroeder 2013) Login items created using a shared file list are visible in System Preferences, can hide the application when it launches, and are executed through LaunchServices, not launchd, to open applications, documents, or URLs without using Finder.(Citation: Launch Services Apple Developer) Users and applications use login items to configure their user environment to launch commonly used services or applications, such as email, chat, and music applications.\n\nAdversaries can utilize [AppleScript](https://attack.mitre.org/techniques/T1059/002) and [Native API](https://attack.mitre.org/techniques/T1106) calls to create a login item to spawn malicious executables.(Citation: ELC Running at startup) Prior to version 10.5 on macOS, adversaries can add login items by using [AppleScript](https://attack.mitre.org/techniques/T1059/002) to send an Apple events to the \u201cSystem Events\u201d process, which has an AppleScript dictionary for manipulating login items.(Citation: Login Items AE) Adversaries can use a command such as <code>tell application \u201cSystem Events\u201d to make login item at end with properties /path/to/executable</code>.(Citation: Startup Items Eclectic)(Citation: hexed osx.dok analysis 2019)(Citation: Add List Remove Login Items Apple Script) This command adds the path of the malicious executable to the login item file list located in <code>~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm</code>.(Citation: Startup Items Eclectic) Adversaries can also use login items to launch executables that can be used to control the victim system remotely or as a means to gain privilege escalation by prompting for user credentials.(Citation: objsee mac malware 2017)(Citation: CheckPoint Dok)(Citation: objsee netwire backdoor 2019)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "x_mitre_detection": "All login items created via shared file lists are viewable by using the System Preferences GUI or in the <code>~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm</code> file.(Citation: Open Login Items Apple)(Citation: Startup Items Eclectic)(Citation: objsee block blocking login items)(Citation: sentinelone macos persist Jun 2019) These locations should be monitored and audited for known good applications.\n\nOtherwise, login Items are located in <code>Contents/Library/LoginItems</code> within an application bundle, so these paths should be monitored as well.(Citation: Adding Login Items) Monitor applications that leverage login items with either the LSUIElement or LSBackgroundOnly key in the Info.plist file set to true.(Citation: Adding Login Items)(Citation: Launch Service Keys Developer Apple)\n\nMonitor processes that start at login for unusual or unknown applications. Usual applications for login items could include what users add to configure their user environment, such as email, chat, or music applications, or what administrators include for organization settings and protections. Check for running applications from login items that also have abnormal behavior,, such as establishing network connections.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1547/015",
+                    "external_id": "T1547.015",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://support.apple.com/guide/mac-help/open-items-automatically-when-you-log-in-mh15189/mac",
+                    "description": "Apple. (n.d.). Open items automatically when you log in on Mac. Retrieved October 1, 2021.",
+                    "source_name": "Open Login Items Apple"
+                },
+                {
+                    "source_name": "Adding Login Items",
+                    "description": "Apple. (2016, September 13). Adding Login Items. Retrieved July 11, 2017.",
+                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLoginItems.html"
+                },
+                {
+                    "url": "https://blog.timschroeder.net/2013/04/21/smloginitemsetenabled-demystified/",
+                    "description": "Tim Schroeder. (2013, April 21). SMLoginItemSetEnabled Demystified. Retrieved October 5, 2021.",
+                    "source_name": "SMLoginItemSetEnabled Schroeder 2013"
+                },
+                {
+                    "url": "https://developer.apple.com/documentation/coreservices/launch_services",
+                    "description": "Apple. (n.d.). Launch Services. Retrieved October 5, 2021.",
+                    "source_name": "Launch Services Apple Developer"
+                },
+                {
+                    "url": "https://eclecticlight.co/2018/05/22/running-at-startup-when-to-use-a-login-item-or-a-launchagent-launchdaemon/",
+                    "description": "hoakley. (2018, May 22). Running at startup: when to use a Login Item or a LaunchAgent/LaunchDaemon. Retrieved October 5, 2021.",
+                    "source_name": "ELC Running at startup"
+                },
+                {
+                    "url": "https://developer.apple.com/library/archive/samplecode/LoginItemsAE/Introduction/Intro.html#//apple_ref/doc/uid/DTS10003788",
+                    "description": "Apple. (n.d.). Login Items AE. Retrieved October 4, 2021.",
+                    "source_name": "Login Items AE"
+                },
+                {
+                    "url": "https://eclecticlight.co/2021/09/16/how-to-run-an-app-or-tool-at-startup/",
+                    "description": "hoakley. (2021, September 16). How to run an app or tool at startup. Retrieved October 5, 2021.",
+                    "source_name": "Startup Items Eclectic"
+                },
+                {
+                    "url": "http://www.hexed.in/2019/07/osxdok-analysis.html",
+                    "description": "fluffybunny. (2019, July 9). OSX.Dok Analysis. Retrieved October 4, 2021.",
+                    "source_name": "hexed osx.dok analysis 2019"
+                },
+                {
+                    "url": "https://gist.github.com/kaloprominat/6111584",
+                    "description": "kaloprominat. (2013, July 30). macos: manage add list remove login items apple script. Retrieved October 5, 2021.",
+                    "source_name": "Add List Remove Login Items Apple Script"
+                },
+                {
+                    "source_name": "objsee mac malware 2017",
+                    "description": "Patrick Wardle. (n.d.). Mac Malware of 2017. Retrieved September 21, 2018.",
+                    "url": "https://objective-see.com/blog/blog_0x25.html"
+                },
+                {
+                    "url": "https://blog.checkpoint.com/2017/04/27/osx-malware-catching-wants-read-https-traffic/",
+                    "description": "Ofer Caspi. (2017, May 4). OSX Malware is Catching Up, and it wants to Read Your HTTPS Traffic. Retrieved October 5, 2021.",
+                    "source_name": "CheckPoint Dok"
+                },
+                {
+                    "url": "https://objective-see.com/blog/blog_0x44.html",
+                    "description": "Patrick Wardle. (2019, June 20). Burned by Fire(fox). Retrieved October 1, 2021.",
+                    "source_name": "objsee netwire backdoor 2019"
+                },
+                {
+                    "url": "https://objective-see.com/blog/blog_0x31.html",
+                    "description": "Patrick Wardle. (2018, July 23). Block Blocking Login Items. Retrieved October 1, 2021.",
+                    "source_name": "objsee block blocking login items"
+                },
+                {
+                    "url": "https://www.sentinelone.com/blog/how-malware-persists-on-macos/",
+                    "description": "Stokes, Phil. (2019, June 17). HOW MALWARE PERSISTS ON MACOS. Retrieved September 10, 2019.",
+                    "source_name": "sentinelone macos persist Jun 2019"
+                },
+                {
+                    "url": "https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/LaunchServicesKeys.html#//apple_ref/doc/uid/TP40009250-SW1",
+                    "description": "Apple. (2018, June 4). Launch Services Keys. Retrieved October 5, 2021.",
+                    "source_name": "Launch Service Keys Developer Apple"
+                }
+            ]
+        }
+    ]
+}

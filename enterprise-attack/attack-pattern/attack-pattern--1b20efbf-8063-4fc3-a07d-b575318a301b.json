@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--52bd58a3-d8fe-4779-9456-8aa63737c658",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "name": "Group Policy Discovery",
+            "x_mitre_data_sources": [
+                "Network Traffic: Network Traffic Content",
+                "Active Directory: Active Directory Object Access",
+                "Script: Script Execution",
+                "Command: Command Execution",
+                "Process: Process Creation"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2021-10-15T23:16:28.296Z",
+            "created": "2021-08-06T13:10:12.916Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "discovery"
+                }
+            ],
+            "id": "attack-pattern--1b20efbf-8063-4fc3-a07d-b575318a301b",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_permissions_required": [
+                "User"
+            ],
+            "description": "Adversaries may gather information on Group Policy settings to identify paths for privilege escalation, security measures applied within a domain, and to discover patterns in domain objects that can be manipulated or used to blend in the environment. Group Policy allows for centralized management of user and computer settings in Active Directory (AD). Group policy objects (GPOs) are containers for group policy settings made up of files stored within a predicable network path <code>\\<DOMAIN>\\SYSVOL\\<DOMAIN>\\Policies\\</code>.(Citation: TechNet Group Policy Basics)(Citation: ADSecurity GPO Persistence 2016)\n\nAdversaries may use commands such as <code>gpresult</code> or various publicly available PowerShell functions, such as <code>Get-DomainGPO</code> and <code>Get-DomainGPOLocalGroup</code>, to gather information on Group Policy settings.(Citation: Microsoft gpresult)(Citation: Github PowerShell Empire) Adversaries may use this information to shape follow-on behaviors, including determining potential attack paths within the target network as well as opportunities to manipulate Group Policy settings (i.e. [Domain Policy Modification](https://attack.mitre.org/techniques/T1484)) for their benefit.",
+            "x_mitre_contributors": [
+                "Ted Samuels, Rapid7",
+                "Jonhnathan Ribeiro, 3CORESec, @_w0rk3r"
+            ],
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities based on the information obtained.\n\nMonitor for suspicious use of <code>gpresult</code>. Monitor for the use of PowerShell functions such as <code>Get-DomainGPO</code> and <code>Get-DomainGPOLocalGroup</code> and processes spawning with command-line arguments containing <code>GPOLocalGroup</code>.\n\nMonitor for abnormal LDAP queries with filters for <code>groupPolicyContainer</code> and high volumes of LDAP traffic to domain controllers. Windows Event ID 4661 can also be used to detect when a directory service has been accessed.",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1615",
+                    "external_id": "T1615",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://blogs.technet.microsoft.com/musings_of_a_technical_tam/2012/02/13/group-policy-basics-part-1-understanding-the-structure-of-a-group-policy-object/",
+                    "description": "srachui. (2012, February 13). Group Policy Basics \u2013 Part 1: Understanding the Structure of a Group Policy Object. Retrieved March 5, 2019.",
+                    "source_name": "TechNet Group Policy Basics"
+                },
+                {
+                    "url": "https://adsecurity.org/?p=2716",
+                    "description": "Metcalf, S. (2016, March 14). Sneaky Active Directory Persistence #17: Group Policy. Retrieved March 5, 2019.",
+                    "source_name": "ADSecurity GPO Persistence 2016"
+                },
+                {
+                    "url": "https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/gpresult",
+                    "description": "Microsoft. (2017, October 16). gpresult. Retrieved August 6, 2021.",
+                    "source_name": "Microsoft gpresult"
+                },
+                {
+                    "source_name": "Github PowerShell Empire",
+                    "description": "Schroeder, W., Warner, J., Nelson, M. (n.d.). Github PowerShellEmpire. Retrieved April 28, 2016.",
+                    "url": "https://github.com/EmpireProject/Empire"
+                }
+            ]
+        }
+    ]
+}

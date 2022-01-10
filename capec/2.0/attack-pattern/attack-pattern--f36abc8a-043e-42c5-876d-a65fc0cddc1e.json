@@ -1,10 +1,10 @@
 {
-    "id": "bundle--5439985b-73c3-4f96-b205-6eed5139d587",
+    "id": "bundle--367cd541-2e19-4384-b914-d8011a8ac5ee",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An attacker submits an XML document to a target application where the XML document uses nested entity expansion to produce an excessively large output XML. XML allows the definition of macro-like structures that can be used to simplify the creation of complex structures. However, this capability can be abused to create excessive demands on a processor's CPU and memory. A small number of nested expansions can result in an exponential growth in demands on memory.",
+            "description": "An adversary submits data to a target application which contains nested exponential data expansion to produce excessively large output. Many data format languages allow the definition of macro-like structures that can be used to simplify the creation of complex structures. However, this capability can be abused to create excessive demands on a processor's CPU and memory. A small number of nested expansions can result in an exponential growth in demands on memory.",
             "external_references": [
                 {
                     "external_id": "CAPEC-197",
@@ -12,14 +12,14 @@
                     "url": "https://capec.mitre.org/data/definitions/197.html"
                 },
                 {
-                    "external_id": "CWE-400",
-                    "source_name": "cwe",
-                    "url": "http://cwe.mitre.org/data/definitions/400.html"
-                },
-                {
                     "external_id": "CWE-770",
                     "source_name": "cwe",
                     "url": "http://cwe.mitre.org/data/definitions/770.html"
+                },
+                {
+                    "external_id": "CWE-776",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/776.html"
                 },
                 {
                     "description": "XML Entity Expansion",
@@ -59,13 +59,18 @@
                 }
             ],
             "id": "attack-pattern--f36abc8a-043e-42c5-876d-a65fc0cddc1e",
-            "modified": "2020-12-17T00:00:00.000Z",
-            "name": "XML Entity Expansion",
+            "modified": "2021-10-21T00:00:00.000Z",
+            "name": "Exponential Data Expansion",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
             ],
             "type": "attack-pattern",
             "x_capec_abstraction": "Detailed",
+            "x_capec_alternate_terms": [
+                "Billion Laughs Attack",
+                "XML Bomb",
+                "XML Entity Expansion (XEE)"
+            ],
             "x_capec_can_follow_refs": [
                 "attack-pattern--5cf3eacf-a0c6-4c59-9f97-4f677a90587a"
             ],
@@ -79,22 +84,23 @@
                 ]
             },
             "x_capec_example_instances": [
-                "\n               <xhtml:p>The most common example of this type of attack is the \"many laughs\" attack (sometimes called the 'billion laughs' attack). For example:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><?xml version=\"1.0\"?><!DOCTYPE lolz [<xhtml:div style=\"margin-left:10px;\"><!ENTITY lol \"lol\"><!ENTITY lol2 \"&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;\"><!ENTITY lol3 \"&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;\"><!ENTITY lol4 \"&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;\"><!ENTITY lol5 \"&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;\"><!ENTITY lol6 \"&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;\"><!ENTITY lol7 \"&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6\"><!ENTITY lol8 \"&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;\"><!ENTITY lol9 \"&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;\"></xhtml:div>\n                  ]><lolz>&lol9;</lolz></xhtml:div>\n               <xhtml:p>This is well formed and valid XML according to the DTD. Each entity increases the number entities by a factor of 10. The line of XML containing lol9; expands out exponentially to a message with 10^9 entities. A small message of a few KBs in size can easily be expanded into a few GB of memory in the parser. By including 3 more entities similar to the lol9 entity in the above code to the DTD, the program could expand out over a TB as there will now be 10^12 entities. Depending on the robustness of the target machine, this can lead to resource depletion, application crash, or even the execution of arbitrary code through a buffer overflow.</xhtml:p>\n            "
+                "\n               <xhtml:p>The most common example of this type of attack is the \"many laughs\" attack (sometimes called the 'billion laughs' attack). For example:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><?xml version=\"1.0\"?><!DOCTYPE lolz [<xhtml:div style=\"margin-left:10px;\"><!ENTITY lol \"lol\"><!ENTITY lol2 \"&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;&lol;\"><!ENTITY lol3 \"&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;&lol2;\"><!ENTITY lol4 \"&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;&lol3;\"><!ENTITY lol5 \"&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;&lol4;\"><!ENTITY lol6 \"&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;&lol5;\"><!ENTITY lol7 \"&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6;&lol6\"><!ENTITY lol8 \"&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;&lol7;\"><!ENTITY lol9 \"&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;&lol8;\"></xhtml:div>\n                  ]><lolz>&lol9;</lolz></xhtml:div>\n               <xhtml:p>This is well formed and valid XML according to the DTD. Each entity increases the number entities by a factor of 10. The line of XML containing lol9; expands out exponentially to a message with 10^9 entities. A small message of a few KBs in size can easily be expanded into a few GB of memory in the parser. By including 3 more entities similar to the lol9 entity in the above code to the DTD, the program could expand out over a TB as there will now be 10^12 entities. Depending on the robustness of the target machine, this can lead to resource depletion, application crash, or even the execution of arbitrary code through a buffer overflow.</xhtml:p>\n            ",
+                "\n               <xhtml:p>This example is similar, but uses YAML. This was used to attack Kubernetes [REF-686]</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\">a: &a [\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\",\"lol\"]b: &b [*a,*a,*a,*a,*a,*a,*a,*a,*a]c: &c [*b,*b,*b,*b,*b,*b,*b,*b,*b]d: &d [*c,*c,*c,*c,*c,*c,*c,*c,*c]e: &e [*d,*d,*d,*d,*d,*d,*d,*d,*d]f: &f [*e,*e,*e,*e,*e,*e,*e,*e,*e]g: &g [*f,*f,*f,*f,*f,*f,*f,*f,*f]h: &h [*g,*g,*g,*g,*g,*g,*g,*g,*g]i: &i [*h,*h,*h,*h,*h,*h,*h,*h,*h]</xhtml:div>\n            "
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the target: </b>Using a browser or an automated tool, an attacker records all instances of web services to process XML requests.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use an automated tool to record all instances of URLs to process XML requests.</td></tr><tr><td>Use a browser to manually explore the website and analyze how the application processes XML requests.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Launch an XML Entity Expansion attack: </b>The attacker crafts malicious XML message to force recursive entity expansion (or other repeated processing) that completely uses up available server resource.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Send the malicious crafted XML message containing recursive entity uses to the target URL.</td></tr></tbody></table></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the target: </b>An adversary determines the input data stream that is being processed by a data parser that supports using subsitituion on the victim's side.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use an automated tool to record all instances of URLs to process requests.</td></tr><tr><td>Use a browser to manually explore the website and analyze how the application processes requests.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Craft malicious payload: </b>The adversary crafts malicious message containing nested exponential expansion that completely uses up available server resource.</p></li><li> <p> <b>Send the message: </b>Send the malicious crafted message to the target URL.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
-                "This type of attack requires that the target must receive XML input but either fail to provide an upper limit for entity expansion or provide a limit that is so large that it does not preclude significant resource consumption."
+                "This type of attack requires that the target must receive input but either fail to provide an upper limit for entity expansion or provide a limit that is so large that it does not preclude significant resource consumption."
             ],
             "x_capec_resources_required": [
                 "None: No specialized resources are required to execute this type of attack."
             ],
             "x_capec_skills_required": {
-                "Low": "To send recursive entity expansion XML messages."
+                "Low": "Ability to craft nested data expansion messages."
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.5"
+            "x_capec_version": "3.6"
         }
     ],
     "spec_version": "2.0",

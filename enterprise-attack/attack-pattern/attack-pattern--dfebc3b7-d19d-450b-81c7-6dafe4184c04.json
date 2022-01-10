@@ -1,68 +1,68 @@
 {
     "type": "bundle",
-    "id": "bundle--4ac3fdd1-6604-4823-ae6a-b1d090bd7d5b",
+    "id": "bundle--c9c09741-454c-42bd-8dee-0d0940cc88ce",
     "spec_version": "2.0",
     "objects": [
         {
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1564.005",
-                    "url": "https://attack.mitre.org/techniques/T1564/005"
-                },
-                {
-                    "source_name": "MalwareTech VFS Nov 2014",
-                    "url": "https://www.malwaretech.com/2014/11/virtual-file-systems-for-beginners.html",
-                    "description": "Hutchins, M. (2014, November 28). Virtual File Systems for Beginners. Retrieved June 22, 2020."
-                },
-                {
-                    "url": "https://www.fireeye.com/blog/threat-research/2015/12/fin1-targets-boot-record.html",
-                    "description": "Andonov, D., et al. (2015, December 7). Thriving Beyond The Operating System: Financial Threat Group Targets Volume Boot Record. Retrieved May 13, 2016.",
-                    "source_name": "FireEye Bootkits"
-                },
-                {
-                    "source_name": "ESET ComRAT May 2020",
-                    "url": "https://www.welivesecurity.com/wp-content/uploads/2020/05/ESET_Turla_ComRAT.pdf",
-                    "description": "Faou, M. (2020, May). From Agent.btz to ComRAT v4: A ten-year journey. Retrieved June 15, 2020."
-                },
-                {
-                    "source_name": "Kaspersky Equation QA",
-                    "description": "Kaspersky Lab's Global Research and Analysis Team. (2015, February). Equation Group: Questions and Answers. Retrieved December 21, 2015.",
-                    "url": "https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2018/03/08064459/Equation_group_questions_and_answers.pdf"
-                }
-            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Hidden File System",
-            "description": "Adversaries may use a hidden file system to conceal malicious activity from users and security tools. File systems provide a structure to store and access data from physical storage. Typically, a user engages with a file system through applications that allow them to access files and directories, which are an abstraction from their physical location (ex: disk sector). Standard file systems include FAT, NTFS, ext4, and APFS. File systems can also contain other structures, such as the Volume Boot Record (VBR) and Master File Table (MFT) in NTFS.(Citation: MalwareTech VFS Nov 2014)\n\nAdversaries may use their own abstracted file system, separate from the standard file system present on the infected system. In doing so, adversaries can hide the presence of malicious components and file input/output from security tools. Hidden file systems, sometimes referred to as virtual file systems, can be implemented in numerous ways. One implementation would be to store a file system in reserved disk space unused by disk structures or standard file system partitions.(Citation: MalwareTech VFS Nov 2014)(Citation: FireEye Bootkits) Another implementation could be for an adversary to drop their own portable partition image as a file on top of the standard file system.(Citation: ESET ComRAT May 2020) Adversaries may also fragment files across the existing file system structure in non-standard ways.(Citation: Kaspersky Equation QA)",
-            "id": "attack-pattern--dfebc3b7-d19d-450b-81c7-6dafe4184c04",
             "type": "attack-pattern",
+            "name": "Hidden File System",
+            "x_mitre_data_sources": [
+                "Windows Registry: Windows Registry Key Modification",
+                "File: File Modification",
+                "Firmware: Firmware Modification"
+            ],
+            "x_mitre_version": "1.0",
+            "modified": "2020-06-29T15:12:11.024Z",
+            "created": "2020-06-28T22:55:55.719Z",
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
+            ],
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "id": "attack-pattern--dfebc3b7-d19d-450b-81c7-6dafe4184c04",
+            "description": "Adversaries may use a hidden file system to conceal malicious activity from users and security tools. File systems provide a structure to store and access data from physical storage. Typically, a user engages with a file system through applications that allow them to access files and directories, which are an abstraction from their physical location (ex: disk sector). Standard file systems include FAT, NTFS, ext4, and APFS. File systems can also contain other structures, such as the Volume Boot Record (VBR) and Master File Table (MFT) in NTFS.(Citation: MalwareTech VFS Nov 2014)\n\nAdversaries may use their own abstracted file system, separate from the standard file system present on the infected system. In doing so, adversaries can hide the presence of malicious components and file input/output from security tools. Hidden file systems, sometimes referred to as virtual file systems, can be implemented in numerous ways. One implementation would be to store a file system in reserved disk space unused by disk structures or standard file system partitions.(Citation: MalwareTech VFS Nov 2014)(Citation: FireEye Bootkits) Another implementation could be for an adversary to drop their own portable partition image as a file on top of the standard file system.(Citation: ESET ComRAT May 2020) Adversaries may also fragment files across the existing file system structure in non-standard ways.(Citation: Kaspersky Equation QA)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
                 }
             ],
-            "modified": "2020-06-29T15:12:11.024Z",
-            "created": "2020-06-28T22:55:55.719Z",
-            "x_mitre_data_sources": [
-                "Windows Registry: Windows Registry Key Modification",
-                "File: File Modification",
-                "Firmware: Firmware Modification"
-            ],
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
-            ],
             "x_mitre_detection": "Detecting the use of a hidden file system may be exceptionally difficult depending on the implementation. Emphasis may be placed on detecting related aspects of the adversary lifecycle, such as how malware interacts with the hidden file system or how a hidden file system is loaded. Consider looking for anomalous interactions with the Registry or with a particular file on disk. Likewise, if the hidden file system is loaded on boot from reserved disk space, consider shifting focus to detecting [Bootkit](https://attack.mitre.org/techniques/T1542/003) activity.",
-            "x_mitre_version": "1.0",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "url": "https://attack.mitre.org/techniques/T1564/005",
+                    "external_id": "T1564.005",
+                    "source_name": "mitre-attack"
+                },
+                {
+                    "url": "https://www.malwaretech.com/2014/11/virtual-file-systems-for-beginners.html",
+                    "description": "Hutchins, M. (2014, November 28). Virtual File Systems for Beginners. Retrieved June 22, 2020.",
+                    "source_name": "MalwareTech VFS Nov 2014"
+                },
+                {
+                    "source_name": "FireEye Bootkits",
+                    "description": "Andonov, D., et al. (2015, December 7). Thriving Beyond The Operating System: Financial Threat Group Targets Volume Boot Record. Retrieved May 13, 2016.",
+                    "url": "https://www.fireeye.com/blog/threat-research/2015/12/fin1-targets-boot-record.html"
+                },
+                {
+                    "url": "https://www.welivesecurity.com/wp-content/uploads/2020/05/ESET_Turla_ComRAT.pdf",
+                    "description": "Faou, M. (2020, May). From Agent.btz to ComRAT v4: A ten-year journey. Retrieved June 15, 2020.",
+                    "source_name": "ESET ComRAT May 2020"
+                },
+                {
+                    "url": "https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2018/03/08064459/Equation_group_questions_and_answers.pdf",
+                    "description": "Kaspersky Lab's Global Research and Analysis Team. (2015, February). Equation Group: Questions and Answers. Retrieved December 21, 2015.",
+                    "source_name": "Kaspersky Equation QA"
+                }
             ]
         }
     ]
