@@ -1,10 +1,10 @@
 {
-    "id": "bundle--76c21e24-b48d-4ccb-8a22-92e483206913",
+    "id": "bundle--cfc09f08-8e17-4037-887d-f90b2846a8e1",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "This pattern of attack is defined by the selection of messages distributed over via multicast or public information channels that are intended for another client by determining the parameter value assigned to that client. This attack allows the adversary to gain access to potentially privileged information, and to possibly perpetrate other attacks through the distribution means by impersonation. If the channel/message being manipulated is an input rather than output mechanism for the system, (such as a command bus), this style of attack could be used to change the adversary's identifier to more a privileged one.",
+            "description": "This pattern of attack is defined by the selection of messages distributed via multicast or public information channels that are intended for another client by determining the parameter value assigned to that client. This attack allows the adversary to gain access to potentially privileged information, and to possibly perpetrate other attacks through the distribution means by impersonation. If the channel/message being manipulated is an input rather than output mechanism for the system, (such as a command bus), this style of attack could be used to change the adversary's identifier to more a privileged one.",
             "external_references": [
                 {
                     "external_id": "CAPEC-12",
@@ -23,7 +23,7 @@
                 }
             ],
             "id": "attack-pattern--d9904019-98fa-4beb-ae5a-f667e516269e",
-            "modified": "2015-12-07T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "Choosing Message Identifier",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -46,10 +46,13 @@
                     "Gain Privileges"
                 ]
             },
-            "x_capec_example_instances": [
-                "A certain B2B interface on a large application codes for messages passed over an MQSeries queue, on a single \"Partners\" channel. Messages on that channel code for their client destination based on a partner_ID field, held by each message. That field is a simple integer. Attackers having access to that channel, perhaps a particularly nosey partner, can simply choose to store messages of another partner's ID and read them as they desire. Note that authentication does not prevent a partner from leveraging this attack on other partners. It simply disallows Attackers without partner status from conducting this attack."
+            "x_capec_domains": [
+                "Communications"
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>Determine the nature of messages being transported as well as the identifiers to be used as part of the attack</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>If required, authenticate to the distribution channel</p></li><li> <p>If any particular client's information is available through the transport means simply by selecting a particular identifier, an attacker can simply provide that particular identifier.</p></li><li> <p>Attackers with client access connecting to output channels could change their channel identifier and see someone else's (perhaps more privileged) data.</p></li></ol></div>",
+            "x_capec_example_instances": [
+                "A certain B2B interface on a large application codes for messages passed over an MQSeries queue, on a single \"Partners\" channel. Messages on that channel code for their client destination based on a partner_ID field, held by each message. That field is a simple integer. Adversaries having access to that channel, perhaps a particularly nosey partner, can simply choose to store messages of another partner's ID and read them as they desire. Note that authentication does not prevent a partner from leveraging this attack on other partners. It simply disallows adversaries without partner status from conducting this attack."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine Nature of Messages: </b>Determine the nature of messages being transported as well as the identifiers to be used as part of the attack</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Authenticate: </b>If required, authenticate to the distribution channel</p></li><li> <p> <b>Identify Known Client Identifiers: </b>If any particular client's information is available through a control channel available to all users, the adversary will discover particular identifiers for targeted clients by observing this channel, or requesting client information through this channel.</p></li><li> <p> <b>Change Message Identifier: </b>Adversaries with client access connecting to output channels could change their channel identifier and see someone else's (perhaps more privileged) data.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_peer_of_refs": [
                 "attack-pattern--2351ee64-dd85-4bc3-bb43-aaa2ca5c1228"
@@ -59,14 +62,14 @@
                 "Distribution means must code (through channel, message identifiers, or convention) message destination in a manner visible within the distribution means itself (such as a control channel) or in the messages themselves."
             ],
             "x_capec_resources_required": [
-                "The Attacker needs the ability to control source code or application configuration responsible for selecting which message/channel id is absorbed from the public distribution means."
+                "The adversary needs the ability to control source code or application configuration responsible for selecting which message/channel id is absorbed from the public distribution means."
             ],
             "x_capec_skills_required": {
-                "Low": "All the attacker needs to discover is the format of the messages on the channel/distribution means and the particular identifier used within the messages."
+                "Low": "All the adversary needs to discover is the format of the messages on the channel/distribution means and the particular identifier used within the messages."
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "type": "bundle"

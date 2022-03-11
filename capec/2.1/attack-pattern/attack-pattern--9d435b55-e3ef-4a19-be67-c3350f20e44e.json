@@ -1,5 +1,5 @@
 {
-    "id": "bundle--5443b917-f1da-4fe3-9ca1-e546be43e9aa",
+    "id": "bundle--43961f8b-810b-4036-9320-7ee9ffe87c05",
     "objects": [
         {
             "created": "2021-10-21T00:00:00.000Z",
@@ -81,6 +81,9 @@
                     "Execute Unauthorized Commands (Run Arbitrary Code)"
                 ]
             },
+            "x_capec_domains": [
+                "Software"
+            ],
             "x_capec_example_instances": [
                 "\n               <xhtml:p>The following examples primarily cite MongoDB, PHP, and NodeJS attacks due to their prominence and popularity. However, please note that these attacks are not exclusive to this NoSQL instance, programming language, or runtime framework.</xhtml:p>\n               <xhtml:p>Within NodeJS, Login Bypass attacks are possible via MongoDB if user-input is not properly validated and sanitized [REF-670].</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">//NodeJS with Express.js<xhtml:div style=\"margin-left:10px;\">db.collection('users').find({<xhtml:div style=\"margin-left:10px;\">\"user\": req.query.user,\"password\": req.query.password</xhtml:div>});</xhtml:div>\n               </xhtml:div>\n               \n               <xhtml:p>The above code works fine if the user were to submit a query like the following:</xhtml:p>\n               <xhtml:p>https://example.org/login?user=patrick&password=1234</xhtml:p>\n               \n               <xhtml:p>But an adversary could submit a malicious query such as the below, which would be interpreted by the code as follows:</xhtml:p>\n               <xhtml:p>https://example.org/login?user=patrick&password[$ne]=</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">//NodeJS with Express.js<xhtml:div style=\"margin-left:10px;\">db.collection('users').find({<xhtml:div style=\"margin-left:10px;\">\"user\": bob,\"password\": {\"&ne\": \"\"}</xhtml:div>});</xhtml:div>\n               </xhtml:div>\n               <xhtml:p>This will result in a Login Bypass attack, as the query will succeed for all values where Bob's password is not an empty string.</xhtml:p>\n            ",
                 "\n               <xhtml:p>MongoDB instances are also vulnerable to JavaScript Injection Attacks when user input is not properly validated and sanitized.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">//PHP with MongoDB<xhtml:div style=\"margin-left:10px;\">db.collection.find({$where: function() {<xhtml:div style=\"margin-left:10px;\">return (this.username == $username) } } );</xhtml:div>\n                  </xhtml:div>\n               </xhtml:div>\n               \n               <xhtml:p>If the user properly specifies a username, then this code will execute as intended. However, an adversary can inject JavaScript into the \"$username\" variable to achieve a NoSQL Injection attack as follows:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">//PHP with MongoDB<xhtml:div style=\"margin-left:10px;\">db.collection.find({$where: function() {<xhtml:div style=\"margin-left:10px;\">return (this.username == 'foo'; sleep(5000) ) } } );</xhtml:div>\n                  </xhtml:div>\n               </xhtml:div>\n               <xhtml:p>This will result in the server sleeping for 5 seconds if the attack was successful. An adversary could supply a larger value to deny service to the application.</xhtml:p>\n            ",
@@ -104,7 +107,7 @@
             },
             "x_capec_status": "Stable",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "type": "bundle"

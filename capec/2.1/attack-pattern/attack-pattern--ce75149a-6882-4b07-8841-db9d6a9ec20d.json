@@ -1,10 +1,10 @@
 {
-    "id": "bundle--55f39f10-395e-43b3-8218-96fd8a66c57d",
+    "id": "bundle--1553c1fc-23e1-40de-97de-eb19dc3395f6",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An adversary who is authorized to send queries to a target sends variants of expected queries in the hope that these modified queries might return information (directly or indirectly through error logs) beyond what the expected set of queries should provide. Many client applications use specific query templates when interacting with a server and often automatically fill in specific fields or attributes. If the server does not verify that the query matches one of the expected templates, an adversary who is allowed to send normal queries could modify their query to try to return additional information. The adversary may not know the names of fields to request or how other modifications will affect the server response, but by attempting multiple plausible variants, they might eventually trigger a server response that divulges sensitive information. Other possible outcomes include server crashes and resource consumption if the unexpected queries cause the server to enter an unstable state or perform excessive computation.",
+            "description": "An adversary who is authorized to send queries to a target sends variants of expected queries in the hope that these modified queries might return information (directly or indirectly through error logs) beyond what the expected set of queries should provide.",
             "external_references": [
                 {
                     "external_id": "CAPEC-261",
@@ -18,7 +18,7 @@
                 }
             ],
             "id": "attack-pattern--ce75149a-6882-4b07-8841-db9d6a9ec20d",
-            "modified": "2021-10-21T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "Fuzzing for garnering other adjacent user/sensitive data",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -29,10 +29,15 @@
             "x_capec_child_of_refs": [
                 "attack-pattern--49132d37-44e8-458c-a06e-0e5b9ac9bbd6"
             ],
+            "x_capec_domains": [
+                "Software",
+                "Hardware"
+            ],
             "x_capec_example_instances": [
                 "\n               <xhtml:p>A client that queries an employee database might have templates such that the user only supplies the target's name and the template dictates the fields to be returned (location, position in the company, phone number, etc.). If the server does not verify that the query matches one of the expected templates, an attacker who is allowed to send normal queries could modify their query to try to return additional information. For this example, additional information might include social security numbers or salaries.</xhtml:p>\n            "
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Observe communication and inputs: </b>The fuzzing adversary observes the target system looking for inputs and communications between modules, subsystems, or systems.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Network sniffing. Using a network sniffer such as wireshark, the adversary observes communications into and out of the target system.</td></tr><tr><td>Monitor API execution. Using a tool such as ktrace, strace, APISpy, or another debugging tool, the adversary observes the system calls and API calls that are made by the target system, and the nature of their parameters.</td></tr><tr><td>Observe inputs using web inspection tools (OWASP's WebScarab, Paros, TamperData, TamperIE, etc.)</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Generate fuzzed inputs: </b>Given a fuzzing tool, a target input or protocol, and limits on time, complexity, and input variety, generate a list of inputs to try. Although fuzzing is random, it is not exhaustive. Parameters like length, composition, and how many variations to try are important to get the most cost-effective impact from the fuzzer.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Boundary cases. Generate fuzz inputs that attack boundary cases of protocol fields, inputs, or other communications limits. Examples include 0xff and 0x00 for single-byte inputs. In binary situations, approach each bit of an individual field with on and off (e.g., 0x80).</td></tr><tr><td>Attempt arguments to system calls or APIs. The variations include payloads that, if they were successful, could lead to a compromise on the system.</td></tr></tbody></table><li> <p> <b>Observe the outcome: </b>Observe the outputs to the inputs fed into the system by fuzzers and see if there are any log or error messages that either provide user/sensitive data or give information about an expected template that could be used to produce this data.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Craft exploit payloads: </b>If the logs did not reveal any user/sensitive data, an adversary will attempt to make the fuzzing inputs form to an expected template</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create variants of expected templates that request additional information</td></tr><tr><td>Create variants that exclude limiting clauses</td></tr><tr><td>Create variants that alter fields taht identify the requester in order to subvert access controls</td></tr><tr><td>Repeat different fuzzing variants until sensitive information is divulged</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>Many client applications use specific query templates when interacting with a server and often automatically fill in specific fields or attributes. If the server does not verify that the query matches one of the expected templates, an adversary who is allowed to send normal queries could modify their query to try to return additional information. The adversary may not know the names of fields to request or how other modifications will affect the server response, but by attempting multiple plausible variants, they might eventually trigger a server response that divulges sensitive information. Other possible outcomes include server crashes and resource consumption if the unexpected queries cause the server to enter an unstable state or perform excessive computation.</xhtml:p>\n         ",
             "x_capec_prerequisites": [
                 "The server must assume that the queries it receives follow specific templates and/or have fields or attributes that follow specific procedures. The server must process queries that it receives without adequately checking or sanitizing queries to ensure they follow these templates."
             ],
@@ -41,7 +46,7 @@
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "type": "bundle"

@@ -1,5 +1,5 @@
 {
-    "id": "bundle--031034bb-b470-42d1-9124-00b3f13b8076",
+    "id": "bundle--9e380f9a-eb32-46ea-9182-d7c5a5cbc7f9",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
@@ -34,7 +34,7 @@
                 }
             ],
             "id": "attack-pattern--b27e3b46-2838-4339-a570-006474c8c402",
-            "modified": "2020-12-17T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "XSS Using MIME Type Mismatch",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -44,11 +44,14 @@
             "x_capec_child_of_refs": [
                 "attack-pattern--800f8095-99b6-4bb9-8bc6-8b9727201a2f"
             ],
+            "x_capec_domains": [
+                "Software"
+            ],
             "x_capec_example_instances": [
                 "For example, the MIME type text/plain may be used where the actual content is text/javascript or text/html. Since text does not contain scripting instructions, the stated MIME type would indicate that filtering is unnecessary. However, if the target application subsequently determines the file's real type and invokes the appropriate interpreter, scripted content could be invoked.",
                 "In another example, img tags in HTML content could reference a renderable type file instead of an expected image file. The file extension and MIME type can describe an image file, but the file content can be text/javascript or text/html resulting in script execution. If the browser assumes all references in img tags are images, and therefore do not need to be filtered for scripts, this would bypass content filters."
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary identifies a webpage that allows uploading content through an HTTP POST request. This is typically a blog or forum where other users will access the uploaded content.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary creates a file with scripting content that they wish to be executed on other users' web browsers. This file is then uploaded through a POST request and the MIME type is specified as a file type that cannot execute scripting content, such as text/plain.</p></li><li> <p>The adversary then attempts to access the uploaded content to see if the browser correctly executes their desired scripting content</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>Once the adversary has determined that their uploaded script will run when accessed, they either wait for users to access the content on their own or they target users to access their content through phishing emails.</p></li><li> <p>The adversary's script can do just about anything, but a common use is to read a user's cookies which may contain a token. This can then be used to launch a Cross Site Request Forgery Attack.</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the application for stored user-controllable inputs: </b>Using a browser or an automated tool, an adversary follows all public links and actions on a web site. They record all areas that allow a user to upload content through an HTTP POST request. This is typically found in blogs or forums.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links and analyze the web pages to file upload features</td></tr><tr><td>Use a proxy tool to record all links visited during a manual traversal of the web application.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Probe identified potential entry points for MIME type mismatch: </b>The adversary uses the entry points gathered in the \"Explore\" phase as a target list and uploads files with scripting content, but whose MIME type is specified as a file type that cannot execute scripting content. If the application only checks the MIME type of the file, it may let the file through, causing the script to be executed by any user who accesses the file.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Upload a script file with a MIME type of text/plain to a forum and then access the uploaded file to see if the script is executed. If possible, the script displays a unique identifier so the adversary knows for certain it was executed when testing.</td></tr></tbody></table><li> <p> <b>Store malicious XSS content: </b>Once the adversary has determined which file upload locations are vulnerable to MIME type mismatch, they will upload a malicious script disguised as a non scripting file. The adversary can have many goals, from stealing session IDs, cookies, credentials, and page content from a victim.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a tool such as BeEF to store a hook into the web application. This will alert the adversary when the victim has accessed the content and will give the adversary control over the victim's browser, allowing them access to cookies, user screenshot, user clipboard, and more complex XSS attacks.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Get victim to view stored content: </b>In order for the attack to be successful, the victim needs to view the stored malicious content on the webpage.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Send a phishing email to the victim containing a URL that will direct them to the malicious stored content.</td></tr><tr><td>Simply wait for a victim to view the content. This is viable in situations where content is posted to a popular public forum.</td></tr></tbody></table></ol></div>",
             "x_capec_prerequisites": [
                 "The victim must follow a crafted link that references a scripting file that is mis-typed as a non-executable file.",
                 "The victim's browser must detect the true type of a mis-labeled scripting file and invoke the appropriate script interpreter without first performing filtering on the content."
@@ -58,7 +61,7 @@
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "spec_version": "2.0",

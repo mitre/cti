@@ -1,5 +1,5 @@
 {
-    "id": "bundle--ebbc3823-df09-47b5-94b9-3b1cb5033303",
+    "id": "bundle--cd6ea138-bfb1-4d87-b99b-ffd8a003b304",
     "objects": [
         {
             "created": "2017-04-15T00:00:00.000Z",
@@ -24,7 +24,7 @@
                 }
             ],
             "id": "attack-pattern--800f8095-99b6-4bb9-8bc6-8b9727201a2f",
-            "modified": "2020-12-17T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "Stored XSS",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -58,10 +58,14 @@
                     "Modify Data (A successful Stored XSS attack can allow an adversary to tamper with application data.)"
                 ]
             },
+            "x_capec_domains": [
+                "Software"
+            ],
             "x_capec_example_instances": [
                 "An adversary determines that a system uses a web based interface for administration. The adversary creates a new user record and supplies a malicious script in the user name field. The user name field is not validated by the system and a new log entry is created detailing the creation of the new user. Later, an administrator reviews the log in the administrative console. When the administrator comes across the new user entry, the browser sees a script and executes it, stealing the administrator's authentication cookie and forwarding it to the adversary. An adversary then uses the received authentication cookie to log in to the system as an administrator, provided that the administrator console can be accessed remotely.",
                 "An online discussion forum allows its members to post HTML-enabled messages, which can also include image tags. An adversary embeds JavaScript in the image tags of their message. The adversary then sends the victim an email advertising free goods and provides a link to the form for how to collect. When the victim visits the forum and reads the message, the malicious script is executed within the victim's browser."
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the application for stored user-controllable inputs: </b>Using a browser or an automated tool, an adversary follows all public links and actions on a web site. They record all the links, the forms, the resources accessed and all other potential entry-points for the web application. The adversary is looking for areas where user input is stored, such as user profiles, shopping carts, file managers, forums, blogs, and logs.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links and analyze the web pages to find entry points.</td></tr><tr><td>Use a proxy tool to record all links visited during a manual traversal of the web application.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Probe identified potential entry points for stored XSS vulnerability: </b>The adversary uses the entry points gathered in the \"Explore\" phase as a target list and injects various common script payloads and special characters to determine if an entry point actually represents a vulnerability and to characterize the extent to which the vulnerability can be exploited.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a list of XSS probe strings to submit script in input fields that could be stored by the web application. If possible, the probe strings contain a unique identifier so they can be queried for after submitting to see if they are stored.</td></tr><tr><td>Use a list of HTML special characters to submit in input fields that could be stored by the web application and check if they were properly encoded, replaced, or filtered out.</td></tr></tbody></table><li> <p> <b>Store malicious XSS content: </b>Once the adversary has determined which stored locations are vulnerable to XSS, they will interact with the web application to store the malicious content. The adversary can have many goals, from stealing session IDs, cookies, credentials, and page content from a victim.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Store a malicious script on a page that will execute when viewed by the victim.</td></tr><tr><td>Use a tool such as BeEF to store a hook into the web application. This will alert the adversary when the victim has accessed the content and will give the adversary control over the victim's browser, allowing them access to cookies, user screenshot, user clipboard, and more complex XSS attacks.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Get victim to view stored content: </b>In order for the attack to be successful, the victim needs to view the stored malicious content on the webpage.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Send a phishing email to the victim containing a URL that will direct them to the malicious stored content.</td></tr><tr><td>Simply wait for a victim to view the content. This is viable in situations where content is posted to a popular public forum.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_parent_of_refs": [
                 "attack-pattern--89697649-1004-4130-a9dd-72182e4c6206",
@@ -88,7 +92,7 @@
             },
             "x_capec_status": "Stable",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "spec_version": "2.0",

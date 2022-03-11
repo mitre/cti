@@ -1,10 +1,10 @@
 {
-    "id": "bundle--9e35e2af-11b9-4133-9107-de7caa714f9f",
+    "id": "bundle--0c7d9c0f-9f84-4567-aef3-ad7790e1ed4b",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An attacker gets access to the database table where hashes of passwords are stored. They then use a rainbow table of pre-computed hash chains to attempt to look up the original password. Once the original password corresponding to the hash is obtained, the attacker uses the original password to gain access to the system. A password rainbow table stores hash chains for various passwords. A password chain is computed, starting from the original password, P, via a reduce(compression) function R and a hash function H. A recurrence relation exists where Xi+1 = R(H(Xi)), X0 = P. Then the hash chain of length n for the original password P can be formed: X1, X2, X3, ... , Xn-2, Xn-1, Xn, H(Xn). P and H(Xn) are then stored together in the rainbow table. Constructing the rainbow tables takes a very long time and is computationally expensive. A separate table needs to be constructed for the various hash algorithms (e.g. SHA1, MD5, etc.). However, once a rainbow table is computed, it can be very effective in cracking the passwords that have been hashed without the use of salt.",
+            "description": "An attacker gets access to the database table where hashes of passwords are stored. They then use a rainbow table of pre-computed hash chains to attempt to look up the original password. Once the original password corresponding to the hash is obtained, the attacker uses the original password to gain access to the system.",
             "external_references": [
                 {
                     "external_id": "CAPEC-55",
@@ -59,7 +59,7 @@
                 }
             ],
             "id": "attack-pattern--a390cb72-b4de-4750-ae05-be556c89f4be",
-            "modified": "2021-06-24T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "Rainbow Table Password Cracking",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -87,10 +87,14 @@
                     "Gain Privileges"
                 ]
             },
+            "x_capec_domains": [
+                "Software"
+            ],
             "x_capec_example_instances": [
                 "BusyBox 1.1.1 does not use a salt when generating passwords, which makes it easier for local users to guess passwords from a stolen password file using techniques such as rainbow tables. See also: CVE-2006-1058"
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine application's/system's password policy: </b>Determine the password policies of the target application/system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine minimum and maximum allowed password lengths.</td></tr><tr><td>Determine format of allowed passwords (whether they are required or allowed to contain numbers, special characters, etc.).</td></tr><tr><td>Determine account lockout policy (a strict account lockout policy will prevent brute force attacks).</td></tr></tbody></table><li> <p> <b>Obtain password hashes: </b>An attacker gets access to the database table storing hashes of passwords or potentially just discovers a hash of an individual password.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Obtain copy of database table or flat file containing password hashes (by breaking access controls, using SQL Injection, etc.)</td></tr><tr><td>Obtain password hashes from platform-specific storage locations (e.g. Windows registry)</td></tr><tr><td>Sniff network packets containing password hashes.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Run rainbow table-based password cracking tool: </b>An attacker finds or writes a password cracking tool that uses a previously computed rainbow table for the right hashing algorithm. It helps if the attacker knows what hashing algorithm was used by the password system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Run rainbow table-based password cracking tool such as Ophcrack or RainbowCrack. Reduction function must depend on application's/system's password policy.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>A password rainbow table stores hash chains for various passwords. A password chain is computed, starting from the original password, P, via a reduce(compression) function R and a hash function H. A recurrence relation exists where Xi+1 = R(H(Xi)), X0 = P. Then the hash chain of length n for the original password P can be formed: X1, X2, X3, ... , Xn-2, Xn-1, Xn, H(Xn). P and H(Xn) are then stored together in the rainbow table. Constructing the rainbow tables takes a very long time and is computationally expensive. A separate table needs to be constructed for the various hash algorithms (e.g. SHA1, MD5, etc.). However, once a rainbow table is computed, it can be very effective in cracking the passwords that have been hashed without the use of salt.</xhtml:p>\n         ",
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_prerequisites": [
                 "Hash of the original password is available to the attacker. For a better chance of success, an attacker should have more than one hash of the original password, and ideally the whole table.",
@@ -105,7 +109,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "spec_version": "2.0",

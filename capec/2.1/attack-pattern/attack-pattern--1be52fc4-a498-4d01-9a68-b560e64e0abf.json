@@ -1,10 +1,10 @@
 {
-    "id": "bundle--11176a35-d831-49cc-ae38-32d2e65d5f20",
+    "id": "bundle--fd00bb35-bd84-4cbc-8c45-8e728341d984",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An adversary takes advantage of incorrectly configured SSL communications that enables access to data intended to be encrypted. The adversary may also use this type of attack to inject commands or other traffic into the encrypted stream to cause compromise of either the client or server.",
+            "description": "An adversary takes advantage of incorrectly configured SSL/TLS communications that enables access to data intended to be encrypted. The adversary may also use this type of attack to inject commands or other traffic into the encrypted stream to cause compromise of either the client or server.",
             "external_references": [
                 {
                     "external_id": "CAPEC-217",
@@ -18,8 +18,8 @@
                 }
             ],
             "id": "attack-pattern--1be52fc4-a498-4d01-9a68-b560e64e0abf",
-            "modified": "2021-06-24T00:00:00.000Z",
-            "name": "Exploiting Incorrectly Configured SSL",
+            "modified": "2022-02-22T00:00:00.000Z",
+            "name": "Exploiting Incorrectly Configured SSL/TLS",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
             ],
@@ -41,22 +41,26 @@
                     "Gain Privileges"
                 ]
             },
-            "x_capec_example_instances": [
-                "Using MITM techniques, an attacker launches a blockwise chosen-boundary attack to obtain plaintext HTTP headers by taking advantage of an SSL session using an encryption protocol in CBC mode with chained initialization vectors (IV). This allows the attacker to recover session IDs, authentication cookies, and possibly other valuable data that can be used for further exploitation. Additionally this could allow for the insertion of data into the stream, allowing for additional attacks (CSRF, SQL inject, etc) to occur."
+            "x_capec_domains": [
+                "Communications"
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>Determine the configuration levels of either the server or client being targeted, preferably both. This is not a hard requirement, as the attacker can simply assume commonly exploitable configuration settings and indiscriminately attempt them.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>Provide controlled access to the server by the client, by either providing a link for the client to click on, or by positioning one's self at a place on the network to intercept and control the flow of data between client and server, e.g. AiTM (adversary in the middle - CAPEC-94).</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>Insert the malicious data into the stream that takes advantage of the configuration flaw.</p></li></ol></div>",
+            "x_capec_example_instances": [
+                "Using MITM techniques, an adversary launches a blockwise chosen-boundary attack to obtain plaintext HTTP headers by taking advantage of an SSL session using an encryption protocol in CBC mode with chained initialization vectors (IV). This allows the adversary to recover session IDs, authentication cookies, and possibly other valuable data that can be used for further exploitation. Additionally this could allow for the insertion of data into the stream, allowing for additional attacks (CSRF, SQL inject, etc) to occur."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine SSL/TLS Configuration: </b>Determine the SSL/TLS configuration of either the server or client being targeted, preferably both. This is not a hard requirement, as the adversary can simply assume commonly exploitable configuration settings and indiscriminately attempt them.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>If the target is a webpage, some of the SSL/TLS configuration can be viewed through the browser's security information, such as the key sizes and cipher being used.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Intercept Communication: </b>Provide controlled access to the server by the client, by either providing a link for the client to click on, or by positioning one's self at a place on the network to intercept and control the flow of data between client and server, e.g. AiTM (adversary in the middle - CAPEC-94).</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create a malicious webpage that looks identical to the target webpage, but routes client traffic to the server such that the adversary can observe the traffic and perform an adverary in the middle attack.</td></tr><tr><td>If the adversary has access to the network that either the client or server is on, the can attempt to use a packet sniffer to perform an adversary in the middle attack.</td></tr><tr><td>Install a packet sniffer through malware directly to a client device that can intercept SSL/TLS traffic and perform an adversary in the middle attack.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Capture or Manipulate Sensitive Data: </b>Once the adversary has the ability to intercept the secure communication, they exploit the incorrectly configured SSL to view the encrypted communication. The adversary can choose to just record the secure communication or manipulate the data to achieve a desired effect.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use known exploits for old SSL and TLS versions.</td></tr><tr><td>Use known exploits for weak ciphers such as DES and RC4.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "SSL/TLS communications become vulnerable to this attack when they use outdated versions and insecure ciphers. Currently, all SSL versions are deprecated and TLS versions 1.0 and 1.1 are also deprecated due to being insecure. It is still possible for later versions of TLS to be insecure if they are configured with insecure ciphers such as 3DES or RC4.",
             "x_capec_likelihood_of_attack": "Low",
             "x_capec_prerequisites": [
                 "Access to the client/server stream."
             ],
             "x_capec_resources_required": [
-                "The attacker needs the ability to sniff traffic, and optionally be able to route said traffic to a system where the sniffing of traffic can take place, and act upon the recovered traffic in real time."
+                "The adversary needs the ability to sniff traffic, and optionally be able to route said traffic to a system where the sniffing of traffic can take place, and act upon the recovered traffic in real time."
             ],
             "x_capec_skills_required": {
-                "High": "The attacker needs real-time access to network traffic in such a manner that the attacker can grab needed information from the SSL stream, possibly influence the decided-upon encryption method and options, and perform automated analysis to decipher encrypted material recovered. Tools exist to automate part of the tasks, but to successfully use these tools in an attack scenario requires detailed understanding of the underlying principles."
+                "High": "The adversary needs real-time access to network traffic in such a manner that the adversary can grab needed information from the SSL stream, possibly influence the decided-upon encryption method and options, and perform automated analysis to decipher encrypted material recovered. Tools exist to automate part of the tasks, but to successfully use these tools in an attack scenario requires detailed understanding of the underlying principles."
             },
             "x_capec_status": "Draft",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "type": "bundle"

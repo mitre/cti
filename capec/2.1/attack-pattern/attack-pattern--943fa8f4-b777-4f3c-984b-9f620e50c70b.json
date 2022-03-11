@@ -1,10 +1,10 @@
 {
-    "id": "bundle--4ec598fc-8b8f-4c2c-91f7-5f19451f9070",
+    "id": "bundle--e4a6cd5e-66f4-4b51-9ce3-05fcb5ba44bd",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "SOA and Web Services often use a registry to perform look up, get schema information, and metadata about services. A poisoned registry can redirect (think phishing for servers) the service requester to a malicious service provider, provide incorrect information in schema or metadata, and delete information about service provider interfaces. WS-Addressing is used to virtualize services, provide return addresses and other routing information, however, unless the WS-Addressing headers are protected they are vulnerable to rewriting. Content in a registry is deployed by the service provider. The registry in an SOA or Web Services system can be accessed by the service requester via UDDI or other protocol.",
+            "description": "SOA and Web Services often use a registry to perform look up, get schema information, and metadata about services. A poisoned registry can redirect (think phishing for servers) the service requester to a malicious service provider, provide incorrect information in schema or metadata, and delete information about service provider interfaces.",
             "external_references": [
                 {
                     "external_id": "CAPEC-51",
@@ -28,7 +28,7 @@
                 }
             ],
             "id": "attack-pattern--943fa8f4-b777-4f3c-984b-9f620e50c70b",
-            "modified": "2021-10-21T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "Poison Web Service Registry",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -52,10 +52,14 @@
                     "Modify Data"
                 ]
             },
+            "x_capec_domains": [
+                "Software"
+            ],
             "x_capec_example_instances": [
                 "\n               <xhtml:p>WS-Addressing provides location and metadata about the service endpoints. An extremely hard to detect attack is an attacker who updates the WS-Addressing header, leaves the standard service request and service provider addressing and header information intact, but adds an additional WS-Addressing Replyto header. In this case the attacker is able to send a copy (like a cc in mail) of every result the service provider generates. So every query to the bank account service, would generate a reply message of the transaction status to both the authorized service requester and an attacker service. This would be extremely hard to detect at runtime.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"informative\"><S:Header><xhtml:div style=\"margin-left:10px;\"><wsa:MessageID><xhtml:div style=\"margin-left:10px;\">http://example.com/Message</xhtml:div>\n                     </wsa:MessageID><wsa:ReplyTo><xhtml:div style=\"margin-left:10px;\"><wsa:Address>http://valid.example/validClient</wsa:Address></xhtml:div>\n                     </wsa:ReplyTo><wsa:ReplyTo><xhtml:div style=\"margin-left:10px;\"><wsa:Address>http://evilsite/evilClient</wsa:Address></xhtml:div>\n                     </wsa:ReplyTo><wsa:FaultTo><xhtml:div style=\"margin-left:10px;\"><wsa:Address>http://validfaults.example/ErrorHandler</wsa:Address></xhtml:div>\n                     </wsa:FaultTo></xhtml:div>\n                  </S:Header></xhtml:div>\n               <xhtml:p>In this example \"evilsite\" is an additional reply to address with full access to all the messages that the authorized (validClient) has access to. Since this is registered with ReplyTo header it will not generate a Soap fault.</xhtml:p>\n            "
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find a target SOA or Web Service: </b>The adversary must first indentify a target SOA or Web Service.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Determine desired outcome: </b>Because poisoning a web service registry can have different outcomes, the adversary must decide how they wish to effect the webservice.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>An adversary can perform a denial of service attack on a web service.</td></tr><tr><td>An adversary can redirect requests or responses to a malicious service.</td></tr></tbody></table><li> <p> <b>Determine if a malicious service needs to be created: </b>If the adversary wishes to redirect requests or responses, they will need to create a malicious service to redirect to.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create a service to that requests are sent to in addition to the legitimate service and simply record the requests.</td></tr><tr><td>Create a service that will give malicious responses to a service provider.</td></tr><tr><td>Act as a malicious service provider and respond to requests in an arbitrary way.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Poison Web Service Registry: </b>Based on the desired outcome, poison the web service registry. This is done by altering the data at rest in the registry or uploading malicious content by spoofing a service provider.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Intercept and change WS-Adressing headers to route to a malicious service or service provider.</td></tr><tr><td>Provide incorrect information in schema or metadata to cause a denial of service.</td></tr><tr><td>Delete information about service procider interfaces to cause a denial of service.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>WS-Addressing is used to virtualize services, provide return addresses and other routing information, however, unless the WS-Addressing headers are protected they are vulnerable to rewriting. Content in a registry is deployed by the service provider. The registry in an SOA or Web Services system can be accessed by the service requester via UDDI or other protocol.</xhtml:p>\n         ",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The attacker must be able to write to resources or redirect access to the service registry."
@@ -68,7 +72,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "type": "bundle"

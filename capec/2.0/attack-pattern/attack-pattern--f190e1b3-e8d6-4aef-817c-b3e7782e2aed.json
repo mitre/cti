@@ -1,10 +1,10 @@
 {
-    "id": "bundle--732a186c-3db5-4bfb-a30d-3b57176ac5a1",
+    "id": "bundle--05aa6171-a37e-424f-a942-59962c464b40",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "The attacker directly or indirectly modifies environment variables used by or controlling the target software. The attacker's goal is to cause the target software to deviate from its expected operation in a manner that benefits the attacker.",
+            "description": "The adversary directly or indirectly modifies environment variables used by or controlling the target software. The adversary's goal is to cause the target software to deviate from its expected operation in a manner that benefits the adversary.",
             "external_references": [
                 {
                     "external_id": "CAPEC-13",
@@ -76,7 +76,7 @@
                 }
             ],
             "id": "attack-pattern--f190e1b3-e8d6-4aef-817c-b3e7782e2aed",
-            "modified": "2021-06-24T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "Subverting Environment Variable Values",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -112,11 +112,14 @@
                     "Execute Unauthorized Commands (Run Arbitrary Code)"
                 ]
             },
+            "x_capec_domains": [
+                "Software"
+            ],
             "x_capec_example_instances": [
-                "Changing the LD_LIBRARY_PATH environment variable in TELNET will cause TELNET to use an alternate (possibly Trojan) version of a function library. The Trojan library must be accessible using the target file system and should include Trojan code that will allow the user to log in with a bad password. This requires that the attacker upload the Trojan library to a specific location on the target. As an alternative to uploading a Trojan file, some file systems support file paths that include remote addresses, such as \\\\172.16.2.100\\shared_files\\trojan_dll.dll. See also: Path Manipulation (CVE-1999-0073)",
+                "Changing the LD_LIBRARY_PATH environment variable in TELNET will cause TELNET to use an alternate (possibly Trojan) version of a function library. The Trojan library must be accessible using the target file system and should include Trojan code that will allow the user to log in with a bad password. This requires that the adversary upload the Trojan library to a specific location on the target. As an alternative to uploading a Trojan file, some file systems support file paths that include remote addresses, such as \\\\172.16.2.100\\shared_files\\trojan_dll.dll. See also: Path Manipulation (CVE-1999-0073)",
                 "The HISTCONTROL environment variable keeps track of what should be saved by the history command and eventually into the ~/.bash_history file when a user logs out. This setting can be configured to ignore commands that start with a space by simply setting it to \"ignorespace\". HISTCONTROL can also be set to ignore duplicate commands by setting it to \"ignoredups\". In some Linux systems, this is set by default to \"ignoreboth\" which covers both of the previous examples. This means that \" ls\" will not be saved, but \"ls\" would be saved by history. HISTCONTROL does not exist by default on macOS, but can be set by the user and will be respected. Adversaries can use this to operate without leaving traces by simply prepending a space to all of their terminal commands."
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The attacker probes the application for information. Which version of the application is running? Are there known environment variables? etc.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The attacker gains control of an environment variable and ties to find out what process(es) the environment variable controls.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The attacker modifies the environment variable to abuse the normal flow of processes or to gain access to privileged resources.</p></li></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Probe target application: </b>The adversary first probes the target application to determine important information about the target. This information could include types software used, software versions, what user input the application consumes, and so on. Most importantly, the adversary tries to determine what environment variables might be used by the underlying software, or even the application itself.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find user-controlled environment variables: </b>Using the information found by probing the application, the adversary attempts to manipulate any user-controlled environment variables they have found are being used by the application, or suspect are being used by the application, and observe the effects of these changes. If the adversary notices any significant changes to the application, they will know that a certain environment variable is important to the application behavior and indicates a possible attack vector.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Alter known environment variables such as \"$PATH\", \"$HOSTNAME\", or \"LD_LIBRARY_PATH\" and see if application behavior changes.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Manipulate user-controlled environment variables: </b>The adversary manipulates the found environment variable(s) to abuse the normal flow of processes or to gain access to privileged resources.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_peer_of_refs": [
                 "attack-pattern--4a29d66d-8617-4382-b456-578ecdb1609e"
@@ -125,7 +128,7 @@
                 "An environment variable is accessible to the user.",
                 "An environment variable used by the application can be tainted with user supplied data.",
                 "Input data used in an environment variable is not validated properly.",
-                "The variables encapsulation is not done properly. For instance setting a variable as public in a class makes it visible and an attacker may attempt to manipulate that variable."
+                "The variables encapsulation is not done properly. For instance setting a variable as public in a class makes it visible and an adversary may attempt to manipulate that variable."
             ],
             "x_capec_skills_required": {
                 "High": "Some more advanced attacks may require knowledge about protocols and probing technique which help controlling a variable. The malicious user may try to understand the authentication mechanism in order to defeat it.",
@@ -133,7 +136,7 @@
             },
             "x_capec_status": "Stable",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "spec_version": "2.0",

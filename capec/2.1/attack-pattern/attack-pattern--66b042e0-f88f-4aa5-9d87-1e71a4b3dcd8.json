@@ -1,10 +1,10 @@
 {
-    "id": "bundle--91adae57-64ee-4c7e-b2be-47b67e1bf2ac",
+    "id": "bundle--b83a8ee6-f813-47cc-ac88-f4f79be3d193",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "The attacker bypasses input validation by using doubled characters in order to perform a cross-site scripting attack. Some filters fail to recognize dangerous sequences if they are preceded by repeated characters. For example, by doubling the < before a script command, (<<script or %3C%3script using URI encoding) the filters of some web applications may fail to recognize the presence of a script tag. If the targeted server is vulnerable to this type of bypass, the attacker can create a crafted URL or other trap to cause a victim to view a page on the targeted server where the malicious content is executed, as per a normal XSS attack.",
+            "description": "The adversary bypasses input validation by using doubled characters in order to perform a cross-site scripting attack. Some filters fail to recognize dangerous sequences if they are preceded by repeated characters. For example, by doubling the < before a script command, (<<script or %3C%3script using URI encoding) the filters of some web applications may fail to recognize the presence of a script tag. If the targeted server is vulnerable to this type of bypass, the adversary can create a crafted URL or other trap to cause a victim to view a page on the targeted server where the malicious content is executed, as per a normal XSS attack.",
             "external_references": [
                 {
                     "external_id": "CAPEC-245",
@@ -24,7 +24,7 @@
                 }
             ],
             "id": "attack-pattern--66b042e0-f88f-4aa5-9d87-1e71a4b3dcd8",
-            "modified": "2017-05-01T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "XSS Using Doubled Characters",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -37,15 +37,21 @@
                 "attack-pattern--800f8095-99b6-4bb9-8bc6-8b9727201a2f",
                 "attack-pattern--b1eef783-daae-494c-a418-cd9ada7cbe8b"
             ],
+            "x_capec_domains": [
+                "Software",
+                "Software",
+                "Software"
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the application for user-controllable inputs: </b>Using a browser or an automated tool, an adversary follows all public links and actions on a web site. They record all the links, the forms, the resources accessed and all other potential entry-points for the web application.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links and analyze the web pages to find entry points. Make special note of any links that include parameters in the URL.</td></tr><tr><td>Use a proxy tool to record all links visited during a manual traversal of the web application.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Probe identified potential entry points for XSS using double characters: </b>The adversary uses the entry points gathered in the \"Explore\" phase as a target list and injects various common script payloads modified to use double characters and doubled special characters to determine if an entry point actually represents a vulnerability and to characterize the extent to which the vulnerability can be exploited.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a list of XSS probe strings using double characters to inject script in parameters of known URLs. If possible, the probe strings contain a unique identifier.</td></tr><tr><td>Use a proxy tool to record results of manual input of XSS probes in known URLs.</td></tr><tr><td>Use a list of doubled HTML special characters to inject into parameters of known URLs and check if they were properly encoded, replaced, or filtered out.</td></tr></tbody></table><li> <p> <b>Craft malicious XSS URL: </b>Once the adversary has determined which parameters are vulnerable to XSS, they will craft a malicious URL containing the XSS exploit. The adversary can have many goals, from stealing session IDs, cookies, credentials, and page content from the victim.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Execute a script using an expression embedded in an HTML attribute, which avoids needing to inject a script tag.</td></tr><tr><td>Send information gathered from the malicious script to a remote endpoint.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Get victim to click URL: </b>In order for the attack to be successful, the victim needs to access the malicious URL.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Send a phishing email to the victim containing the malicious URL. This can be hidden in a hyperlink as to not show the full URL, which might draw suspicion.</td></tr><tr><td>Put the malicious URL on a public forum, where many victims might accidentally click the link.</td></tr></tbody></table></ol></div>",
             "x_capec_prerequisites": [
                 "The targeted web application does not fully normalize input before checking for prohibited syntax. In particular, it must fail to recognize prohibited methods preceded by certain sequences of repeated characters."
             ],
             "x_capec_resources_required": [
-                "The attacker must trick the victim into following a crafted link to a vulnerable server or view a web post where the dangerous commands are executed."
+                "The adversary must trick the victim into following a crafted link to a vulnerable server or view a web post where the dangerous commands are executed."
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "type": "bundle"

@@ -1,10 +1,10 @@
 {
-    "id": "bundle--f5e0ab89-0268-43b0-abfc-acd01758c90b",
+    "id": "bundle--e97f4129-f488-4973-9142-24015d29c87c",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An attack of this type exploits a buffer overflow vulnerability in the handling of binary resources. Binary resources may include music files like MP3, image files like JPEG files, and any other binary file. These attacks may pass unnoticed to the client machine through normal usage of files, such as a browser loading a seemingly innocent JPEG file. This can allow the attacker access to the execution stack and execute arbitrary code in the target process.",
+            "description": "An attack of this type exploits a buffer overflow vulnerability in the handling of binary resources. Binary resources may include music files like MP3, image files like JPEG files, and any other binary file. These attacks may pass unnoticed to the client machine through normal usage of files, such as a browser loading a seemingly innocent JPEG file. This can allow the adversary access to the execution stack and execute arbitrary code in the target process.",
             "external_references": [
                 {
                     "external_id": "CAPEC-44",
@@ -33,7 +33,7 @@
                 }
             ],
             "id": "attack-pattern--d3634072-88f9-4711-987f-6bff7698bd4c",
-            "modified": "2021-10-21T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "Overflow Binary Resource File",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -56,8 +56,12 @@
                     "Execute Unauthorized Commands (Run Arbitrary Code)"
                 ]
             },
+            "x_capec_domains": [
+                "Software",
+                "Software"
+            ],
             "x_capec_example_instances": [
-                "Binary files like music and video files are appended with additional data to cause buffer overflow on target systems. Because these files may be filled with otherwise popular content, the attacker has an excellent vector for wide distribution. There have been numerous cases, for example of malicious screen savers for sports teams that are distributed on the event of the team winning a championship."
+                "Binary files like music and video files are appended with additional data to cause buffer overflow on target systems. Because these files may be filled with otherwise popular content, the adversary has an excellent vector for wide distribution. There have been numerous cases, for example of malicious screen savers for sports teams that are distributed on the event of the team winning a championship."
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target software: </b>The adversary identifies software that uses external binary files in some way. This could be a file upload, downloading a file from a shared location, or other means.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find injection vector: </b>The adversary creates a malicious binary file by altering the header to make the file seem shorter than it is. Additional bytes are added to the end of the file to be placed in the overflowed location. The adversary then deploys the file to the software to determine if a buffer overflow was successful.</p></li><li> <p> <b>Craft overflow content: </b>Once the adversary has determined that this attack is viable, they will specially craft the binary file in a way that achieves the desired behavior. If the source code is available, the adversary can carefully craft the malicious file so that the return address is overwritten to an intended value. If the source code is not available, the adversary will iteratively alter the file in order to overwrite the return address correctly.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Create malicious shellcode that will execute when the program execution is returned to it.</td></tr><tr><td>Use a NOP-sled in the overflow content to more easily \"slide\" into the malicious code. This is done so that the exact return address need not be correct, only in the range of all of the NOPs</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Overflow the buffer: </b>Once the adversary has constructed a file that will effectively overflow the targeted software in the intended way. The file is deployed to the software, either by serving it directly to the software or placing it in a shared location for a victim to load into the software.</p></li></ol></div>",
             "x_capec_extended_description": "This attack pattern is a variant of standard buffer overflow attack using an unexpected vector (binary files) to wrap its attack and open up a new attack vector. The adversary is required to either directly serve the binary content to the victim, or place it in a locale like a MP3 sharing application for the victim to download. The adversary then is notified upon the download or otherwise locates the vulnerability opened up by the buffer overflow.",
@@ -71,7 +75,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "spec_version": "2.0",

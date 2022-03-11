@@ -1,10 +1,10 @@
 {
-    "id": "bundle--73cc3f5e-ef43-47da-8b5d-3cee443351c2",
+    "id": "bundle--87c34bcd-d60c-4521-ae37-1179a46fefbd",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "This attack relies on the attacker using unexpected formats for representing IP addresses. Networked applications may expect network location information in a specific format, such as fully qualified domains names (FQDNs), URL, IP address, or IP Address ranges. If the location information is not validated against a variety of different possible encodings and formats, the adversary can use an alternate format to bypass application access control.",
+            "description": "This attack relies on the adversary using unexpected formats for representing IP addresses. Networked applications may expect network location information in a specific format, such as fully qualified domains names (FQDNs), URL, IP address, or IP Address ranges. If the location information is not validated against a variety of different possible encodings and formats, the adversary can use an alternate format to bypass application access control.",
             "external_references": [
                 {
                     "external_id": "CAPEC-4",
@@ -28,7 +28,7 @@
                 }
             ],
             "id": "attack-pattern--00d91a4c-2645-4bf1-8db7-e7448ef25f17",
-            "modified": "2019-04-04T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "Using Alternative IP Address Encodings",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -50,9 +50,13 @@
                     "Gain Privileges"
                 ]
             },
+            "x_capec_domains": [
+                "Software"
+            ],
             "x_capec_example_instances": [
                 "An adversary identifies an application server that applies a security policy based on the domain and application name. For example, the access control policy covers authentication and authorization for anyone accessing http://example.domain:8080/application. However, by using the IP address of the host instead (http://192.168.0.1:8080/application), the application authentication and authorization controls may be bypassed. The adversary relies on the victim applying policy to the namespace abstraction and not having a default deny policy in place to manage exceptions."
             ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the application for IP addresses as user input: </b>Using a browser, an automated tool or by inspecting the application, an adversary records all entry points to the application where IP addresses are used.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links and analyze the web pages to find entry points. Make special note of any links that include parameters in the URL.</td></tr><tr><td>Use a proxy tool to record all user input entry points visited during a manual traversal of the web application.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery.</td></tr><tr><td>Manually inspect the application to find entry points.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Probe entry points to locate vulnerabilities: </b>The adversary uses the entry points gathered in the \"Explore\" phase as a target list and attempts alternate IP address encodings, observing application behavior. The adversary will also attempt to access the application through an alternate IP address encoding to see if access control changes</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Instead of using a URL, use the IP address that the URL resolves to</td></tr><tr><td>Specify a port directly to a URL input</td></tr><tr><td>Omit or add \"http://\" or \"https://\" to a URL to see if the application behaves differently</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Bypass access control: </b>Using an alternate IP address encoding, the adversary will either access the application or give the alternate encoding as input, bypassing access control restrictions.</p></li></ol></div>",
             "x_capec_likelihood_of_attack": "Medium",
             "x_capec_prerequisites": [
                 "The target software must fail to anticipate all of the possible valid encodings of an IP/web address.",
@@ -66,7 +70,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "type": "bundle"

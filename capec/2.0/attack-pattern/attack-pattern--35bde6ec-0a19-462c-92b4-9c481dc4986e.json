@@ -1,5 +1,5 @@
 {
-    "id": "bundle--660c0695-7624-40ae-a462-4815474b7970",
+    "id": "bundle--39fb364a-1dea-489e-a905-f880e760053d",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
@@ -39,6 +39,9 @@
             "x_capec_child_of_refs": [
                 "attack-pattern--42acc604-a86c-46f7-bd03-6e532c02d85e"
             ],
+            "x_capec_domains": [
+                "Software"
+            ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p>The adversary identifies a database management system running on a machine they would like to gain control over, or on a network they want to move laterally through.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p>The adversary goes about the typical steps of an SQL injection and determines if an injection is possible.</p></li><li> <p>Once the Adversary determines that an SQL injection is possible, they must ensure that the requirements for the attack are met. These are a high privileged session user and batched query support. This is done in similar ways to discovering if an SQL injection is possible.</p></li><li> <p>If the requirements are met, based on the database management system that is running, the adversary will find or create user defined functions (UDFs) that can be loaded as DLLs. An example of a DLL can be found at https://github.com/rapid7/metasploit-framework/tree/master/data/exploits/mysql</p></li><li> <p>In order to load the DLL, the adversary must first find the path to the plugin directory. The command to achieve this is different based on the type of DBMS, but for MySQL, this can be achieved by running the command \"select @@plugin_dir\"</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p>The DLL is then moved into the previously found plugin directory so that the contained functions can be loaded. This can be done in a number of ways; loading from a network share, writing the entire hex encoded string to a file in the plugin directory, or loading the DLL into a table and then into a file. An example using MySQL to load the hex string is as follows. select 0x4d5a9000... into dump file \"{plugin directory}\\\\udf.dll\";</p></li><li> <p>Once the DLL is in the plugin directory, a command is then run to load the UDFs. An example of this in MySQL is \"create function sys_eval returns string soname 'udf.dll';\" The function sys_eval is specific to the example DLL listed above.</p></li><li> <p>Once the adversary has loaded the desired function(s), they will use these to execute arbitrary commands on the compromised system. This is done through a simple select command to the loaded UDF. For example: \"select sys_eval('dir');\". Because the prerequisite to this attack is that the database session user is a super user, this means that the adversary will be able to execute commands with elevated privileges.</p></li></ol></div>",
             "x_capec_prerequisites": [
                 "A vulnerable DBMS is usedA SQL injection exists that gives an attacker access to the database or an attacker has access to the DBMS via other means"
@@ -48,7 +51,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "spec_version": "2.0",

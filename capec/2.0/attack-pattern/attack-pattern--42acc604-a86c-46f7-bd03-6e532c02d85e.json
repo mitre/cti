@@ -1,10 +1,10 @@
 {
-    "id": "bundle--89baf82a-e24f-4238-b1fe-b747ffccfa8c",
+    "id": "bundle--4f4df8de-4c93-412d-85a3-dfdad6981159",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "This attack exploits target software that constructs SQL statements based on user input. An attacker crafts input strings so that when the target software constructs SQL statements based on the input, the resulting SQL statement performs actions other than those the application intended. SQL Injection results from failure of the application to appropriately validate input. When specially crafted user-controlled input consisting of SQL syntax is used without proper validation as part of SQL queries, it is possible to glean information from the database in ways not envisaged during application design. Depending upon the database and the design of the application, it may also be possible to leverage injection to have the database execute system-related commands of the attackers' choice. SQL Injection enables an attacker to interact directly to the database, thus bypassing the application completely. Successful injection can cause information disclosure as well as ability to add or modify data in the database.",
+            "description": "This attack exploits target software that constructs SQL statements based on user input. An attacker crafts input strings so that when the target software constructs SQL statements based on the input, the resulting SQL statement performs actions other than those the application intended. SQL Injection results from failure of the application to appropriately validate input.",
             "external_references": [
                 {
                     "external_id": "CAPEC-66",
@@ -40,7 +40,7 @@
                 }
             ],
             "id": "attack-pattern--42acc604-a86c-46f7-bd03-6e532c02d85e",
-            "modified": "2021-06-24T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "SQL Injection",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -70,10 +70,14 @@
                     "Execute Unauthorized Commands (Run Arbitrary Code)"
                 ]
             },
+            "x_capec_domains": [
+                "Software"
+            ],
             "x_capec_example_instances": [
                 "With PHP-Nuke versions 7.9 and earlier, an attacker can successfully access and modify data, including sensitive contents such as usernames and password hashes, and compromise the application through SQL Injection. The protection mechanism against SQL Injection employs a denylist approach to input validation. However, because of an improper denylist, it is possible to inject content such as \"foo'/**/UNION\" or \"foo UNION/**/\" to bypass validation and glean sensitive information from the database. See also: CVE-2006-5525"
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey application: </b>The attacker first takes an inventory of the functionality exposed by the application.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Spider web sites for all available links</td></tr><tr><td>Sniff network communications with application using a utility such as WireShark.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Determine user-controllable input susceptible to injection: </b>Determine the user-controllable input susceptible to injection. For each user-controllable input that the attacker suspects is vulnerable to SQL injection, attempt to inject characters that have special meaning in SQL (such as a single quote character, a double quote character, two hyphens, a parenthesis, etc.). The goal is to create a SQL query with an invalid syntax.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use web browser to inject input through text fields or through HTTP GET parameters.</td></tr><tr><td>Use a web application debugging tool such as Tamper Data, TamperIE, WebScarab,etc. to modify HTTP POST parameters, hidden fields, non-freeform fields, etc.</td></tr><tr><td>Use network-level packet injection tools such as netcat to inject input</td></tr><tr><td>Use modified client (modified by reverse engineering) to inject input.</td></tr></tbody></table><li> <p> <b>Experiment with SQL Injection vulnerabilities: </b>After determining that a given input is vulnerable to SQL Injection, hypothesize what the underlying query looks like. Iteratively try to add logic to the query to extract information from the database, or to modify or delete information in the database.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use public resources such as \"SQL Injection Cheat Sheet\" at http://ferruh.mavituna.com/makale/sql-injection-cheatsheet/, and try different approaches for adding logic to SQL queries.</td></tr><tr><td>Add logic to query, and use detailed error messages from the server to debug the query. For example, if adding a single quote to a query causes an error message, try : \"' OR 1=1; --\", or something else that would syntactically complete a hypothesized query. Iteratively refine the query.</td></tr><tr><td>Use \"Blind SQL Injection\" techniques to extract information about the database schema.</td></tr><tr><td>If a denial of service attack is the goal, try stacking queries. This does not work on all platforms (most notably, it does not work on Oracle or MySQL). Examples of inputs to try include: \"'; DROP TABLE SYSOBJECTS; --\" and \"'); DROP TABLE SYSOBJECTS; --\". These particular queries will likely not work because the SYSOBJECTS table is generally protected.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Exploit SQL Injection vulnerability: </b>After refining and adding various logic to SQL queries, craft and execute the underlying SQL query that will be used to attack the target system. The goal is to reveal, modify, and/or delete database data, using the knowledge obtained in the previous step. This could entail crafting and executing multiple SQL queries if a denial of service attack is the intent.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Craft and Execute underlying SQL query</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>When specially crafted user-controlled input consisting of SQL syntax is used without proper validation as part of SQL queries, it is possible to glean information from the database in ways not envisaged during application design. Depending upon the database and the design of the application, it may also be possible to leverage injection to have the database execute system-related commands of the attackers' choice. SQL Injection enables an attacker to interact directly to the database, thus bypassing the application completely. Successful injection can cause information disclosure as well as ability to add or modify data in the database.</xhtml:p>\n         ",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_parent_of_refs": [
                 "attack-pattern--89acf77d-723b-43b4-b66d-6eaafed52369",
@@ -94,7 +98,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "spec_version": "2.0",

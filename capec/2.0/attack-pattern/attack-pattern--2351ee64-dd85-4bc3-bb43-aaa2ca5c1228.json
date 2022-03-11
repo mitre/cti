@@ -1,10 +1,10 @@
 {
-    "id": "bundle--b9e8ab99-eed1-4b8f-bfa1-a20a44464ae4",
+    "id": "bundle--da4e24c9-f423-4dcc-b109-33e327ee14c8",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "\n            <xhtml:p>An adversary guesses, obtains, or \"rides\" a trusted identifier (e.g. session ID, resource ID, cookie, etc.) to perform authorized actions under the guise of an authenticated user or service. Attacks leveraging trusted identifiers typically result in the adversary laterally moving within the local network, since users are often allowed to authenticate to systems/applications within the network using the same identifier. This allows the adversary to obtain sensitive data, download/install malware on the system, pose as a legitimate user for social engineering purposes, and more.</xhtml:p>\n            <xhtml:p>Attacks on trusted identifiers take advantage of the fact that some software accepts user input without verifying its authenticity. Many server side processes are vulnerable to these attacks because the server to server communications have not been analyzed from a security perspective or the processes \"trust\" other systems because they are behind a firewall. Similarly, servers that use easy to guess or spoofable schemes for representing digital identity can also be vulnerable. Such systems frequently use schemes without cryptography and digital signatures (or with broken cryptography). Identifiers may be guessed or obtained due to insufficient randomness, poor protection (passed/stored in the clear), lack of integrity (unsigned), or improper correlation with access control policy enforcement points. Exposed configuration and properties files that contain sensitive data may additionally provide an adversary with the information needed to obtain these identifiers. An adversary may also \"ride\" an identifier via a malicious link, as is the case in Cross Site Request Forgery (CSRF) attacks.</xhtml:p>\n            <xhtml:p>Regardless of the attack vector, successful spoofing and impersonation of trusted credentials can lead to an adversary breaking authentication, authorization, and audit controls with the target system or application.</xhtml:p>\n         ",
+            "description": "\n            <xhtml:p>An adversary guesses, obtains, or \"rides\" a trusted identifier (e.g. session ID, resource ID, cookie, etc.) to perform authorized actions under the guise of an authenticated user or service.</xhtml:p>\n         ",
             "external_references": [
                 {
                     "external_id": "CAPEC-21",
@@ -69,7 +69,7 @@
                 }
             ],
             "id": "attack-pattern--2351ee64-dd85-4bc3-bb43-aaa2ca5c1228",
-            "modified": "2021-06-24T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "Exploitation of Trusted Identifiers",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -91,11 +91,15 @@
                     "Modify Data"
                 ]
             },
+            "x_capec_domains": [
+                "Software"
+            ],
             "x_capec_example_instances": [
                 "\n               <xhtml:p>Thin client applications like web applications are particularly vulnerable to session ID attacks. Since the server has very little control over the client, but still must track sessions, data, and objects on the server side, cookies and other mechanisms have been used to pass the key to the session data between the client and server. When these session keys are compromised it is trivial for an adversary to impersonate a user's session in effect, have the same capabilities as the authorized user. There are two main ways for an adversary to exploit session IDs.</xhtml:p>\n               <xhtml:p>A brute force attack involves an adversary repeatedly attempting to query the system with a spoofed session header in the HTTP request. A web server that uses a short session ID can be easily spoofed by trying many possible combinations so the parameters session-ID= 1234 has few possible combinations, and an adversary can retry several hundred or thousand request with little to no issue on their side.</xhtml:p>\n               <xhtml:p>The second method is interception, where a tool such as wireshark is used to sniff the wire and pull off any unprotected session identifiers. The adversary can then use these variables and access the application.</xhtml:p>\n            ",
                 "For example, in a message queuing system that allows service requesters to post messages to its queue through an open channel (such as anonymous FTP), authorization is done through checking group or role membership contained in the posted message. However, there is no proof that the message itself, the information in the message (such group or role membership), or the process that wrote the message to the queue is authentic and authorized to do so."
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the application for Indicators of Susceptibility: </b>Using a variety of methods, until one is found that applies to the target, the adversary probes for cookies, session tokens, or entry points that bypass identifiers altogether.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Spider all available pages</td></tr><tr><td>Attack known bad interfaces</td></tr><tr><td>Search outward-facing configuration and properties files for identifiers.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Fetch samples: </b>The adversary fetches many samples of identifiers. This may be through legitimate access (logging in, legitimate connections, etc.) or via systematic probing.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>An adversary makes many anonymous connections and records the session IDs assigned.</td></tr><tr><td>An adversary makes authorized connections and records the session tokens or credentials issued.</td></tr><tr><td>An adversary gains access to (legitimately or illegitimately) a nearby system (e.g., in the same operations network, DMZ, or local network) and makes a connection from it, attempting to gain the same privileges as a trusted system.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Impersonate: </b>An adversary can use successful experiments or authentications to impersonate an authorized user or system or to laterally move within a system or application</p></li><li> <p> <b>Spoofing: </b>Malicious data can be injected into the target system or into a victim user's system by an adversary. The adversary can also pose as a legitimate user to perform social engineering attacks.</p></li><li> <p> <b>Data Exfiltration: </b>The adversary can obtain sensitive data contained within the system or application.</p></li></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>Attacks leveraging trusted identifiers typically result in the adversary laterally moving within the local network, since users are often allowed to authenticate to systems/applications within the network using the same identifier. This allows the adversary to obtain sensitive data, download/install malware on the system, pose as a legitimate user for social engineering purposes, and more.</xhtml:p>\n            <xhtml:p>Attacks on trusted identifiers take advantage of the fact that some software accepts user input without verifying its authenticity. Many server side processes are vulnerable to these attacks because the server to server communications have not been analyzed from a security perspective or the processes \"trust\" other systems because they are behind a firewall. Similarly, servers that use easy to guess or spoofable schemes for representing digital identity can also be vulnerable. Such systems frequently use schemes without cryptography and digital signatures (or with broken cryptography). Identifiers may be guessed or obtained due to insufficient randomness, poor protection (passed/stored in the clear), lack of integrity (unsigned), or improper correlation with access control policy enforcement points. Exposed configuration and properties files that contain sensitive data may additionally provide an adversary with the information needed to obtain these identifiers. An adversary may also \"ride\" an identifier via a malicious link, as is the case in Cross Site Request Forgery (CSRF) attacks.</xhtml:p>\n            <xhtml:p>Regardless of the attack vector, successful spoofing and impersonation of trusted credentials can lead to an adversary breaking authentication, authorization, and audit controls with the target system or application.</xhtml:p>\n         ",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_parent_of_refs": [
                 "attack-pattern--414d0884-4f46-4a51-b4ea-72125c7f5f9e",
@@ -117,7 +121,7 @@
             },
             "x_capec_status": "Stable",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "spec_version": "2.0",

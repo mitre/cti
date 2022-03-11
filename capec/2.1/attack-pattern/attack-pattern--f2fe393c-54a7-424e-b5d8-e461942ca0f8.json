@@ -1,10 +1,10 @@
 {
-    "id": "bundle--fb46b10c-a8b7-4c4a-80d7-49240908067c",
+    "id": "bundle--16a7a8eb-1277-4e70-96de-3497b76c6c52",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An attacker exploits weaknesses in input validation on IMAP/SMTP servers to execute commands on the server. Web-mail servers often sit between the Internet and the IMAP or SMTP mail server. User requests are received by the web-mail servers which then query the back-end mail server for the requested information and return this response to the user. In an IMAP/SMTP command injection attack, mail-server commands are embedded in parts of the request sent to the web-mail server. If the web-mail server fails to adequately sanitize these requests, these commands are then sent to the back-end mail server when it is queried by the web-mail server, where the commands are then executed. This attack can be especially dangerous since administrators may assume that the back-end server is protected against direct Internet access and therefore may not secure it adequately against the execution of malicious commands.",
+            "description": "An adversary exploits weaknesses in input validation on web-mail servers to execute commands on the IMAP/SMTP server. Web-mail servers often sit between the Internet and the IMAP or SMTP mail server. User requests are received by the web-mail servers which then query the back-end mail server for the requested information and return this response to the user. In an IMAP/SMTP command injection attack, mail-server commands are embedded in parts of the request sent to the web-mail server. If the web-mail server fails to adequately sanitize these requests, these commands are then sent to the back-end mail server when it is queried by the web-mail server, where the commands are then executed. This attack can be especially dangerous since administrators may assume that the back-end server is protected against direct Internet access and therefore may not secure it adequately against the execution of malicious commands.",
             "external_references": [
                 {
                     "external_id": "CAPEC-183",
@@ -24,7 +24,7 @@
                 }
             ],
             "id": "attack-pattern--f2fe393c-54a7-424e-b5d8-e461942ca0f8",
-            "modified": "2020-12-17T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "IMAP/SMTP Command Injection",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -35,6 +35,10 @@
             "x_capec_child_of_refs": [
                 "attack-pattern--2fb2b2b8-b7de-45a2-aadb-5849d12fda8f"
             ],
+            "x_capec_domains": [
+                "Software"
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify Target Web-Mail Server: </b>The adversary first identifies the web-mail server they wish to exploit.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Identify Vulnerable Parameters: </b>Once the adversary has identified a web-mail server, they identify any vulnerable parameters by altering their values in requests. The adversary knows that the parameter is vulnerable if the web-mail server returns an error of any sort. Ideally, the adversary is looking for a descriptive error message.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Assign a null value to a parameter being used by the web-mail server and observe the response.</td></tr><tr><td>Assign a random value to a parameter being used by the web-mail server and observe the response.</td></tr><tr><td>Add additional values to a parameter being used by the web-mail server and observe the response.</td></tr><tr><td>Add non standard special characters (i.e.: \\, ', \", @, #, !, |) to a parameter being used by the web-mail server and observe the response.</td></tr><tr><td>Eliminate a parameter being used by the web-mail server and observe the response.</td></tr></tbody></table><li> <p> <b>Determine Level of Injection: </b>After identifying all vulnerable parameters, the adversary determines what level of injection is possible.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Evaluate error messages to determine what IMAP/SMTP command is being executed for the vulnerable parameter. Sometimes the actually query will be placed in the error message.</td></tr><tr><td>If there aren't descriptive error messages, the adversary will analyze the affected functionality to deduce the possible commands that could be being used by the mail-server.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Inject IMAP/SMTP Commands: </b>The adversary manipulates the vulnerable parameters to inject an IMAP/SMTP command and execute it on the mail-server.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Structure the injection as a header, body, and footer. The header contains the ending of the expected message, the body contains the injection of the new command, and the footer contains the beginning of the expected command.</td></tr><tr><td>Each part of the injection payload needs to be terminated with the CRLF (%0d%0a) sequence.</td></tr></tbody></table></ol></div>",
             "x_capec_prerequisites": [
                 "The target environment must consist of a web-mail server that the attacker can query and a back-end mail server. The back-end mail server need not be directly accessible to the attacker.",
                 "The web-mail server must fail to adequately sanitize fields received from users and passed on to the back-end mail server.",
@@ -45,7 +49,7 @@
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "type": "bundle"

@@ -1,10 +1,10 @@
 {
-    "id": "bundle--ebb324ee-0423-484f-9dba-0d3ffe6c1e70",
+    "id": "bundle--3a7166f6-e842-4a14-a4f2-25864571bd7d",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An attacker sends random, malformed, or otherwise unexpected messages to a target application and observes the application's log or error messages returned. The attacker does not initially know how a target will respond to individual messages but by attempting a large number of message variants they may find a variant that trigger's desired behavior. In this attack, the purpose of the fuzzing is to observe the application's log and error messages, although fuzzing a target can also sometimes cause the target to enter an unstable state, causing a crash. By observing logs and error messages, the attacker can learn details about the configuration of the target application and might be able to cause the target to disclose sensitive information. In applications that return a stack trace along with the error, this can enumerate the chain of methods that led up to the point where the error was encountered. This can not only reveal the names of the methods (some of which may have known weaknesses) but possibly also the location of class files and libraries as well as parameter values. In some cases, the stack trace might even disclose sensitive configuration or user information.",
+            "description": "An attacker sends random, malformed, or otherwise unexpected messages to a target application and observes the application's log or error messages returned. The attacker does not initially know how a target will respond to individual messages but by attempting a large number of message variants they may find a variant that trigger's desired behavior. In this attack, the purpose of the fuzzing is to observe the application's log and error messages, although fuzzing a target can also sometimes cause the target to enter an unstable state, causing a crash.",
             "external_references": [
                 {
                     "external_id": "CAPEC-215",
@@ -23,7 +23,7 @@
                 }
             ],
             "id": "attack-pattern--b5618a54-4646-423d-8676-b2eb56dd4328",
-            "modified": "2021-10-21T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "Fuzzing for application mapping",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -39,11 +39,17 @@
                     "Other (Information Leakage)"
                 ]
             },
+            "x_capec_domains": [
+                "Software",
+                "Hardware",
+                "Software"
+            ],
             "x_capec_example_instances": [
                 "\n               <xhtml:p>The following code generates an error message that leaks the full pathname of the configuration file.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">$ConfigDir = \"/home/myprog/config\";$uname = GetUserInput(\"username\");ExitError(\"Bad hacker!\") if ($uname !~ /^\\w+$/);$file = \"$ConfigDir/$uname.txt\";if (! (-e $file)) { ExitError(\"Error: $file does not exist\"); }...</xhtml:div>\n               <xhtml:p>If this code is running on a server, such as a web application, then the person making the request should not know what the full pathname of the configuration directory is. By submitting a username that does not produce a $file that exists, an attacker could get this pathname. It could then be used to exploit path traversal or symbolic link following problems that may exist elsewhere in the application.</xhtml:p>\n            ",
                 "\n               <xhtml:p>In languages that utilize stack traces, revealing them can give adversaries information that allows them to map functions and file locations for an application. The following Java method prints out a stack trace that exposes the application to this attack pattern.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"bad\">public void httpGet(HttpServletRequest request, HttpServletResponse response) {<xhtml:div style=\"margin-left:10px;\">try {<xhtml:div style=\"margin-left:10px;\">processRequest();</xhtml:div>} catch (Exception ex) {<xhtml:div style=\"margin-left:10px;\">ex.printStackTrace(response.getWriter());</xhtml:div>\n                     <xhtml:div style=\"margin-left:10px;\">return;</xhtml:div>}</xhtml:div>}</xhtml:div>\n               <xhtml:p>If this code is running on a server, such as a web application, then the adversary could cause the exception to be printed through fuzzing.</xhtml:p>\n            "
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Observe communication and inputs: </b>The fuzzing adversary observes the target system looking for inputs and communications between modules, subsystems, or systems.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Network sniffing. Using a network sniffer such as wireshark, the adversary observes communications into and out of the target system.</td></tr><tr><td>Monitor API execution. Using a tool such as ktrace, strace, APISpy, or another debugging tool, the adversary observes the system calls and API calls that are made by the target system, and the nature of their parameters.</td></tr><tr><td>Observe inputs using web inspection tools (OWASP's WebScarab, Paros, TamperData, TamperIE, etc.)</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Generate fuzzed inputs: </b>Given a fuzzing tool, a target input or protocol, and limits on time, complexity, and input variety, generate a list of inputs to try. Although fuzzing is random, it is not exhaustive. Parameters like length, composition, and how many variations to try are important to get the most cost-effective impact from the fuzzer.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Boundary cases. Generate fuzz inputs that attack boundary cases of protocol fields, inputs, or other communications limits. Examples include 0xff and 0x00 for single-byte inputs. In binary situations, approach each bit of an individual field with on and off (e.g., 0x80).</td></tr><tr><td>Attempt arguments to system calls or APIs. The variations include payloads that, if they were successful, could lead to a compromise on the system.</td></tr></tbody></table><li> <p> <b>Observe the outcome: </b>Observe the outputs to the inputs fed into the system by fuzzers and see if there are any log or error messages that might provide information to map the application</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Craft exploit payloads: </b>An adversary usually needs to modify the fuzzing parameters according to the observed error messages to get the desired sensitive information for the application. To defeat correlation, the adversary may try changing the origin IP addresses or client browser identification strings or start a new session from where they left off in obfuscating the attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Modify the parameters in the fuzzing tool according to the observed error messages. Repeat with enough parameters until the application has been sufficiently mapped.</td></tr><tr><td>If the application rejects the large amount of fuzzing messages from the same host machine, the adversary needs to hide the attacks by changing the IP addresses or other credentials.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>By observing logs and error messages, the attacker can learn details about the configuration of the target application and might be able to cause the target to disclose sensitive information. In applications that return a stack trace along with the error, this can enumerate the chain of methods that led up to the point where the error was encountered. This can not only reveal the names of the methods (some of which may have known weaknesses) but possibly also the location of class files and libraries as well as parameter values. In some cases, the stack trace might even disclose sensitive configuration or user information.</xhtml:p>\n         ",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The target application must fail to sanitize incoming messages adequately before processing."
@@ -56,7 +62,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Low",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "spec_version": "2.0",

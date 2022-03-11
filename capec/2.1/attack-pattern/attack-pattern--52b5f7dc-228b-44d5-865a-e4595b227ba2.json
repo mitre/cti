@@ -1,10 +1,10 @@
 {
-    "id": "bundle--e11be9b5-767e-403f-9035-db1df591f8a5",
+    "id": "bundle--6ac61f93-e7af-4846-bc3d-a1c8c324992e",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An adversary inserts invalid characters in identifiers to bypass application filtering of input. Filters may not scan beyond invalid characters but during later stages of processing content that follows these invalid characters may still be processed. This allows the attacker to sneak prohibited commands past filters and perform normally prohibited operations. Invalid characters may include null, carriage return, line feed or tab in an identifier. Successful bypassing of the filter can result in a XSS attack, resulting in the disclosure of web cookies or possibly other results.",
+            "description": "An adversary inserts invalid characters in identifiers to bypass application filtering of input. Filters may not scan beyond invalid characters but during later stages of processing content that follows these invalid characters may still be processed. This allows the adversary to sneak prohibited commands past filters and perform normally prohibited operations. Invalid characters may include null, carriage return, line feed or tab in an identifier. Successful bypassing of the filter can result in a XSS attack, resulting in the disclosure of web cookies or possibly other results.",
             "external_references": [
                 {
                     "external_id": "CAPEC-247",
@@ -18,7 +18,7 @@
                 }
             ],
             "id": "attack-pattern--52b5f7dc-228b-44d5-865a-e4595b227ba2",
-            "modified": "2020-07-30T00:00:00.000Z",
+            "modified": "2022-02-22T00:00:00.000Z",
             "name": "XSS Using Invalid Characters",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -31,6 +31,12 @@
                 "attack-pattern--800f8095-99b6-4bb9-8bc6-8b9727201a2f",
                 "attack-pattern--b1eef783-daae-494c-a418-cd9ada7cbe8b"
             ],
+            "x_capec_domains": [
+                "Software",
+                "Software",
+                "Software"
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the application for user-controllable inputs: </b>Using a browser or an automated tool, an adversary follows all public links and actions on a web site. They record all the links, the forms, the resources accessed and all other potential entry-points for the web application.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links and analyze the web pages to find entry points. Make special note of any links that include parameters in the URL.</td></tr><tr><td>Use a proxy tool to record all links visited during a manual traversal of the web application.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Probe identified potential entry points for XSS vulnerabilities using invalid characters: </b>The adversary uses the entry points gathered in the \"Explore\" phase as a target list and injects various common script payloads and special characters preceded by an invalid character(s) to determine if an entry point actually represents a vulnerability and to characterize the extent to which the vulnerability can be exploited. The adversary is looking for cases where an invalid character causes an input filter to stop processing, allowing the malicious input that follows to bypass the filter</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a list of XSS probe strings preceded by an invalid character(s) such as null, carriage return, line feed, or tab to inject script in parameters of known URLs. If possible, the probe strings contain a unique identifier.</td></tr><tr><td>Use a proxy tool to record results of manual input of XSS probes in known URLs.</td></tr><tr><td>Use a list of HTML special characters preceded by an invalid character(s) to inject into parameters of known URLs and check if they were properly encoded, replaced, or filtered out.</td></tr></tbody></table><li> <p> <b>Craft malicious XSS URL: </b>Once the adversary has determined which parameters are vulnerable to XSS, they will craft a malicious URL containing the XSS exploit. The adversary can have many goals, from stealing session IDs, cookies, credentials, and page content from the victim.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Change a URL parameter to include a malicious script tag preceded by invalid character(s).</td></tr><tr><td>Send information gathered from the malicious script to a remote endpoint.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Get victim to click URL: </b>In order for the attack to be successful, the victim needs to access the malicious URL.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Send a phishing email to the victim containing the malicious URL. This can be hidden in a hyperlink as to not show the full URL, which might draw suspicion.</td></tr><tr><td>Put the malicious URL on a public forum, where many victims might accidentally click the link.</td></tr></tbody></table></ol></div>",
             "x_capec_prerequisites": [
                 "The target must fail to remove invalid characters from input and fail to adequately scan beyond these characters."
             ],
@@ -39,7 +45,7 @@
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.6"
+            "x_capec_version": "3.7"
         }
     ],
     "type": "bundle"
