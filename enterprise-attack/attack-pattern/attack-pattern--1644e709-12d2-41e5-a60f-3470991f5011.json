@@ -1,53 +1,57 @@
 {
     "type": "bundle",
-    "id": "bundle--5f88f089-f7a4-4bcc-ae17-04c520335223",
+    "id": "bundle--bc31a1d5-e8f5-44f8-bcd8-84b31444e41f",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Ed Williams, Trustwave, SpiderLabs"
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "id": "attack-pattern--1644e709-12d2-41e5-a60f-3470991f5011",
             "type": "attack-pattern",
-            "name": "Security Account Manager",
-            "x_mitre_data_sources": [
-                "Command: Command Execution",
-                "Windows Registry: Windows Registry Key Access",
-                "File: File Access"
-            ],
-            "x_mitre_version": "1.0",
-            "modified": "2020-03-25T15:17:30.640Z",
             "created": "2020-02-11T18:42:07.281Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1003.002",
+                    "url": "https://attack.mitre.org/techniques/T1003/002"
+                },
+                {
+                    "url": "https://github.com/Neohapsis/creddump7",
+                    "description": "Flathers, R. (2018, February 19). creddump7. Retrieved April 11, 2018.",
+                    "source_name": "GitHub Creddump7"
+                }
+            ],
+            "modified": "2020-03-25T15:17:30.640Z",
+            "name": "Security Account Manager",
+            "description": "Adversaries may attempt to extract credential material from the Security Account Manager (SAM) database either through in-memory techniques or through the Windows Registry where the SAM database is stored. The SAM is a database file that contains local accounts for the host, typically those found with the <code>net user</code> command. Enumerating the SAM database requires SYSTEM level access.\n\nA number of tools can be used to retrieve the SAM file through in-memory techniques:\n\n* pwdumpx.exe\n* [gsecdump](https://attack.mitre.org/software/S0008)\n* [Mimikatz](https://attack.mitre.org/software/S0002)\n* secretsdump.py\n\nAlternatively, the SAM can be extracted from the Registry with Reg:\n\n* <code>reg save HKLM\\sam sam</code>\n* <code>reg save HKLM\\system system</code>\n\nCreddump7 can then be used to process the SAM database locally to retrieve hashes.(Citation: GitHub Creddump7)\n\nNotes: \n* RID 500 account is the local, built-in administrator.\n* RID 501 is the guest account.\n* User accounts start with a RID of 1,000+.\n",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "credential-access"
                 }
             ],
-            "id": "attack-pattern--1644e709-12d2-41e5-a60f-3470991f5011",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
+            "x_mitre_detection": "Hash dumpers open the Security Accounts Manager (SAM) on the local file system (<code>%SystemRoot%/system32/config/SAM</code>) or create a dump of the Registry SAM key to access stored account password hashes. Some hash dumpers will open the local file system as a device and parse to the SAM table to avoid file access defenses. Others will make an in-memory copy of the SAM table before reading hashes. Detection of compromised [Valid Accounts](https://attack.mitre.org/techniques/T1078) in-use by adversaries may help as well.",
             "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "File: File Access",
+                "Windows Registry: Windows Registry Key Access",
+                "Command: Command Execution"
+            ],
             "x_mitre_permissions_required": [
                 "SYSTEM"
-            ],
-            "description": "Adversaries may attempt to extract credential material from the Security Account Manager (SAM) database either through in-memory techniques or through the Windows Registry where the SAM database is stored. The SAM is a database file that contains local accounts for the host, typically those found with the <code>net user</code> command. Enumerating the SAM database requires SYSTEM level access.\n\nA number of tools can be used to retrieve the SAM file through in-memory techniques:\n\n* pwdumpx.exe\n* [gsecdump](https://attack.mitre.org/software/S0008)\n* [Mimikatz](https://attack.mitre.org/software/S0002)\n* secretsdump.py\n\nAlternatively, the SAM can be extracted from the Registry with Reg:\n\n* <code>reg save HKLM\\sam sam</code>\n* <code>reg save HKLM\\system system</code>\n\nCreddump7 can then be used to process the SAM database locally to retrieve hashes.(Citation: GitHub Creddump7)\n\nNotes: \n* RID 500 account is the local, built-in administrator.\n* RID 501 is the guest account.\n* User accounts start with a RID of 1,000+.\n",
-            "x_mitre_contributors": [
-                "Ed Williams, Trustwave, SpiderLabs"
-            ],
-            "x_mitre_detection": "Hash dumpers open the Security Accounts Manager (SAM) on the local file system (<code>%SystemRoot%/system32/config/SAM</code>) or create a dump of the Registry SAM key to access stored account password hashes. Some hash dumpers will open the local file system as a device and parse to the SAM table to avoid file access defenses. Others will make an in-memory copy of the SAM table before reading hashes. Detection of compromised [Valid Accounts](https://attack.mitre.org/techniques/T1078) in-use by adversaries may help as well.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1003/002",
-                    "external_id": "T1003.002",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "GitHub Creddump7",
-                    "description": "Flathers, R. (2018, February 19). creddump7. Retrieved April 11, 2018.",
-                    "url": "https://github.com/Neohapsis/creddump7"
-                }
             ]
         }
     ]

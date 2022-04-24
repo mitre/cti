@@ -1,49 +1,64 @@
 {
     "type": "bundle",
-    "id": "bundle--c7721423-c465-479e-a593-a696b346048c",
+    "id": "bundle--a7f4bf58-266f-40da-9ec2-7144c01a46b4",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Praetorian",
+                "Ye Yint Min Thu Htut, Offensive Security Team, DBS Bank"
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "id": "attack-pattern--c726e0a2-a57a-4b7b-a973-d0f013246617",
             "type": "attack-pattern",
-            "name": "Compile After Delivery",
+            "created": "2020-03-16T15:30:57.711Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1027/004",
+                    "source_name": "mitre-attack",
                     "external_id": "T1027.004",
-                    "source_name": "mitre-attack"
+                    "url": "https://attack.mitre.org/techniques/T1027/004"
                 },
                 {
-                    "source_name": "ClearSky MuddyWater Nov 2018",
                     "description": "ClearSky Cyber Security. (2018, November). MuddyWater Operations in Lebanon and Oman: Using an Israeli compromised domain for a two-stage campaign. Retrieved November 29, 2018.",
-                    "url": "https://www.clearskysec.com/wp-content/uploads/2018/11/MuddyWater-Operations-in-Lebanon-and-Oman.pdf"
+                    "url": "https://www.clearskysec.com/wp-content/uploads/2018/11/MuddyWater-Operations-in-Lebanon-and-Oman.pdf",
+                    "source_name": "ClearSky MuddyWater Nov 2018"
                 },
                 {
+                    "source_name": "TrendMicro WindowsAppMac",
                     "url": "https://blog.trendmicro.com/trendlabs-security-intelligence/windows-app-runs-on-mac-downloads-info-stealer-and-adware/",
-                    "description": "Trend Micro. (2019, February 11). Windows App Runs on Mac, Downloads Info Stealer and Adware. Retrieved April 25, 2019.",
-                    "source_name": "TrendMicro WindowsAppMac"
+                    "description": "Trend Micro. (2019, February 11). Windows App Runs on Mac, Downloads Info Stealer and Adware. Retrieved April 25, 2019."
                 }
             ],
-            "x_mitre_data_sources": [
-                "File: File Metadata",
-                "File: File Creation",
-                "Process: Process Creation",
-                "Command: Command Execution"
-            ],
-            "x_mitre_version": "1.0",
             "modified": "2020-03-29T20:59:32.293Z",
-            "x_mitre_system_requirements": [
-                "Compiler software (either native to the system or delivered by the adversary)"
-            ],
+            "name": "Compile After Delivery",
+            "description": "Adversaries may attempt to make payloads difficult to discover and analyze by delivering files to victims as uncompiled code. Text-based source code files may subvert analysis and scrutiny from protections targeting executables/binaries. These payloads will need to be compiled before execution; typically via native utilities such as csc.exe or GCC/MinGW.(Citation: ClearSky MuddyWater Nov 2018)\n\nSource code payloads may also be encrypted, encoded, and/or embedded within other files, such as those delivered as a [Phishing](https://attack.mitre.org/techniques/T1566). Payloads may also be delivered in formats unrecognizable and inherently benign to the native OS (ex: EXEs on macOS/Linux) before later being (re)compiled into a proper executable binary with a bundled compiler and execution framework.(Citation: TrendMicro WindowsAppMac)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
                 }
             ],
-            "id": "attack-pattern--c726e0a2-a57a-4b7b-a973-d0f013246617",
+            "x_mitre_detection": "Monitor the execution file paths and command-line arguments for common compilers, such as csc.exe and GCC/MinGW, and correlate with other suspicious behavior to reduce false positives from normal user and administrator behavior. The compilation of payloads may also generate file creation and/or file write events. Look for non-native binary formats and cross-platform compiler and execution frameworks like Mono and determine if they have a legitimate purpose on the system.(Citation: TrendMicro WindowsAppMac) Typically these should only be used in specific and limited cases, like for software development.",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "File: File Metadata",
+                "Process: Process Creation",
+                "File: File Creation",
+                "Command: Command Execution"
+            ],
             "x_mitre_defense_bypassed": [
                 "Signature-based detection",
                 "Host intrusion prevention systems",
@@ -51,23 +66,12 @@
                 "Binary Analysis",
                 "Static File Analysis"
             ],
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
-            ],
-            "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "User"
             ],
-            "description": "Adversaries may attempt to make payloads difficult to discover and analyze by delivering files to victims as uncompiled code. Text-based source code files may subvert analysis and scrutiny from protections targeting executables/binaries. These payloads will need to be compiled before execution; typically via native utilities such as csc.exe or GCC/MinGW.(Citation: ClearSky MuddyWater Nov 2018)\n\nSource code payloads may also be encrypted, encoded, and/or embedded within other files, such as those delivered as a [Phishing](https://attack.mitre.org/techniques/T1566). Payloads may also be delivered in formats unrecognizable and inherently benign to the native OS (ex: EXEs on macOS/Linux) before later being (re)compiled into a proper executable binary with a bundled compiler and execution framework.(Citation: TrendMicro WindowsAppMac)",
-            "x_mitre_contributors": [
-                "Praetorian",
-                "Ye Yint Min Thu Htut, Offensive Security Team, DBS Bank"
-            ],
-            "x_mitre_detection": "Monitor the execution file paths and command-line arguments for common compilers, such as csc.exe and GCC/MinGW, and correlate with other suspicious behavior to reduce false positives from normal user and administrator behavior. The compilation of payloads may also generate file creation and/or file write events. Look for non-native binary formats and cross-platform compiler and execution frameworks like Mono and determine if they have a legitimate purpose on the system.(Citation: TrendMicro WindowsAppMac) Typically these should only be used in specific and limited cases, like for software development.",
-            "created": "2020-03-16T15:30:57.711Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_system_requirements": [
+                "Compiler software (either native to the system or delivered by the adversary)"
+            ]
         }
     ]
 }

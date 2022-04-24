@@ -1,29 +1,57 @@
 {
     "type": "bundle",
-    "id": "bundle--7a65e188-b01d-4939-9fc3-acdc0ed9217d",
+    "id": "bundle--013fe37a-9363-4075-bc8f-48694fd73267",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "type": "attack-pattern",
-            "name": "Logon Script (Mac)",
-            "x_mitre_data_sources": [
-                "File: File Creation",
-                "File: File Modification",
-                "Process: Process Creation",
-                "Command: Command Execution"
-            ],
-            "x_mitre_version": "1.0",
-            "modified": "2020-03-27T16:49:15.786Z",
-            "created": "2020-01-10T16:01:15.995Z",
-            "x_mitre_platforms": [
-                "macOS"
-            ],
-            "x_mitre_is_subtechnique": true,
             "id": "attack-pattern--43ba2b05-cf72-4b6c-8243-03a4aba41ee0",
-            "description": "Adversaries may use macOS logon scripts automatically executed at logon initialization to establish persistence. macOS allows logon scripts (known as login hooks) to be executed whenever a specific user logs into a system. A login hook tells Mac OS X to execute a certain script when a user logs in, but unlike [Startup Items](https://attack.mitre.org/techniques/T1037/005), a login hook executes as the elevated root user.(Citation: creating login hook)\n\nAdversaries may use these login hooks to maintain persistence on a single system.(Citation: S1 macOs Persistence) Access to login hook scripts may allow an adversary to insert additional malicious code. There can only be one login hook at a time though and depending on the access configuration of the hooks, either local credentials or an administrator account may be necessary. ",
+            "created": "2020-01-10T16:01:15.995Z",
+            "x_mitre_version": "2.0",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1037.002",
+                    "url": "https://attack.mitre.org/techniques/T1037/002"
+                },
+                {
+                    "source_name": "Login Scripts Apple Dev",
+                    "url": "https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CustomLogin.html",
+                    "description": "Apple. (2016, September 13). Customizing Login and Logout. Retrieved April 1, 2022."
+                },
+                {
+                    "source_name": "LoginWindowScripts Apple Dev",
+                    "url": "https://developer.apple.com/documentation/devicemanagement/loginwindowscripts",
+                    "description": "Apple. (n.d.). LoginWindowScripts. Retrieved April 1, 2022."
+                },
+                {
+                    "source_name": "Wardle Persistence Chapter",
+                    "url": "https://taomm.org/PDFs/vol1/CH%200x02%20Persistence.pdf",
+                    "description": "Patrick Wardle. (n.d.). Chapter 0x2: Persistence. Retrieved April 13, 2022."
+                },
+                {
+                    "source_name": "S1 macOs Persistence",
+                    "url": "https://www.sentinelone.com/blog/how-malware-persists-on-macos/",
+                    "description": "Stokes, P. (2019, July 17). How Malware Persists on macOS. Retrieved March 27, 2020."
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may use a Login Hook to establish persistence executed upon user logon. A login hook is a plist file that points to a specific script to execute with root privileges upon user logon. The plist file is located in the <code>/Library/Preferences/com.apple.loginwindow.plist</code> file and can be modified using the <code>defaults</code> command-line utility. This behavior is the same for logout hooks where a script can be executed upon user logout. All hooks require administrator permissions to modify or create hooks.(Citation: Login Scripts Apple Dev)(Citation: LoginWindowScripts Apple Dev) \n\nAdversaries can add or insert a path to a malicious script in the <code>com.apple.loginwindow.plist</code> file, using the <code>LoginHook</code> or <code>LogoutHook</code> key-value pair. The malicious script is executed upon the next user login. If a login hook already exists, adversaries can add additional commands to an existing login hook. There can be only one login and logout hook on a system at a time.(Citation: S1 macOs Persistence)(Citation: Wardle Persistence Chapter)\n\n**Note:** Login hooks were deprecated in 10.11 version of macOS in favor of [Launch Daemon](https://attack.mitre.org/techniques/T1543/004) and [Launch Agent](https://attack.mitre.org/techniques/T1543/001) ",
+            "modified": "2022-04-20T16:42:05.094Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Login Hook",
+            "x_mitre_detection": "Monitor logon scripts for unusual access by abnormal users or at abnormal times. Look for files added or modified by unusual accounts outside of normal administration duties. Monitor running process for actions that could be indicative of abnormal programs or executables running upon logon.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -34,25 +62,18 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "x_mitre_detection": "Monitor logon scripts for unusual access by abnormal users or at abnormal times. Look for files added or modified by unusual accounts outside of normal administration duties. Monitor running process for actions that could be indicative of abnormal programs or executables running upon logon.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1037/002",
-                    "external_id": "T1037.002",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "creating login hook",
-                    "description": "Apple. (2011, June 1). Mac OS X: Creating a login hook. Retrieved July 17, 2017.",
-                    "url": "https://support.apple.com/de-at/HT2420"
-                },
-                {
-                    "url": "https://www.sentinelone.com/blog/how-malware-persists-on-macos/",
-                    "description": "Stokes, P. (2019, July 17). How Malware Persists on macOS. Retrieved March 27, 2020.",
-                    "source_name": "S1 macOs Persistence"
-                }
-            ]
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_data_sources": [
+                "Command: Command Execution",
+                "Process: Process Creation",
+                "File: File Modification",
+                "File: File Creation"
+            ],
+            "x_mitre_system_requirements": [],
+            "x_mitre_permissions_required": [],
+            "x_mitre_effective_permissions": [],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

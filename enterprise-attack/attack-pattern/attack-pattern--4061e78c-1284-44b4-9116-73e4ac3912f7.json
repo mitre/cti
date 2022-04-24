@@ -1,68 +1,73 @@
 {
     "type": "bundle",
-    "id": "bundle--f767a0f2-17ca-4105-a7dc-7895cdd6562e",
+    "id": "bundle--8e9367e2-5eda-43bc-b37e-c1db6242c3d0",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Linux",
+                "Windows",
+                "macOS"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Matt Kelly, @breakersall",
+                "Zachary Stanford, @svch0st"
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "type": "attack-pattern",
-            "name": "Remote Access Software",
+            "id": "attack-pattern--4061e78c-1284-44b4-9116-73e4ac3912f7",
+            "created": "2018-04-18T17:59:24.739Z",
+            "x_mitre_version": "2.1",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1219",
+                    "source_name": "mitre-attack",
                     "external_id": "T1219",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "Symantec Living off the Land",
-                    "description": "Wueest, C., Anand, H. (2017, July). Living off the land and fileless attack techniques. Retrieved April 10, 2018.",
-                    "url": "https://www.symantec.com/content/dam/symantec/docs/security-center/white-papers/istr-living-off-the-land-and-fileless-attack-techniques-en.pdf"
+                    "url": "https://attack.mitre.org/techniques/T1219"
                 },
                 {
                     "source_name": "CrowdStrike 2015 Global Threat Report",
-                    "description": "CrowdStrike Intelligence. (2016). 2015 Global Threat Report. Retrieved April 11, 2018.",
-                    "url": "https://go.crowdstrike.com/rs/281-OBQ-266/images/15GlobalThreatReport.pdf"
+                    "url": "https://go.crowdstrike.com/rs/281-OBQ-266/images/15GlobalThreatReport.pdf",
+                    "description": "CrowdStrike Intelligence. (2016). 2015 Global Threat Report. Retrieved April 11, 2018."
                 },
                 {
                     "source_name": "CrySyS Blog TeamSpy",
-                    "description": "CrySyS Lab. (2013, March 20). TeamSpy \u2013 Obshie manevri. Ispolzovat\u2019 tolko s razreshenija S-a. Retrieved April 11, 2018.",
-                    "url": "https://blog.crysys.hu/2013/03/teamspy/"
+                    "url": "https://blog.crysys.hu/2013/03/teamspy/",
+                    "description": "CrySyS Lab. (2013, March 20). TeamSpy \u2013 Obshie manevri. Ispolzovat\u2019 tolko s razreshenija S-a. Retrieved April 11, 2018."
+                },
+                {
+                    "source_name": "Symantec Living off the Land",
+                    "url": "https://www.symantec.com/content/dam/symantec/docs/security-center/white-papers/istr-living-off-the-land-and-fileless-attack-techniques-en.pdf",
+                    "description": "Wueest, C., Anand, H. (2017, July). Living off the land and fileless attack techniques. Retrieved April 10, 2018."
                 }
             ],
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Network Traffic: Network Traffic Flow",
-                "Network Traffic: Network Connection Creation",
-                "Network Traffic: Network Traffic Content"
-            ],
-            "x_mitre_version": "2.0",
-            "modified": "2020-06-20T20:42:37.320Z",
-            "created": "2018-04-18T17:59:24.739Z",
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "An adversary may use legitimate desktop support and remote access software, such as Team Viewer, AnyDesk, Go2Assist, LogMein, AmmyyAdmin, etc, to establish an interactive command and control channel to target systems within networks. These services are commonly used as legitimate technical support software, and may be allowed by application control within a target environment. Remote access tools like VNC, Ammyy, and Teamviewer are used frequently when compared with other legitimate software commonly used by adversaries.(Citation: Symantec Living off the Land)\n\nRemote access tools may be installed and used post-compromise as alternate communications channel for redundant access or as a way to establish an interactive remote desktop session with the target system. They may also be used as a component of malware to establish a reverse connection or back-connect to a service or adversary controlled system. Installation of many remote access tools may also include persistence (ex: the tool's installation routine creates a [Windows Service](https://attack.mitre.org/techniques/T1543/003)).\n\nAdmin tools such as TeamViewer have been used by several groups targeting institutions in countries of interest to the Russian state and criminal campaigns.(Citation: CrowdStrike 2015 Global Threat Report)(Citation: CrySyS Blog TeamSpy)",
+            "modified": "2022-04-21T14:54:10.899Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Remote Access Software",
+            "x_mitre_detection": "Monitor for applications and processes related to remote admin tools. Correlate activity with other suspicious behavior that may reduce false positives if these tools are used by legitimate users and administrators.\n\nAnalyze network data for uncommon data flows (e.g., a client sending significantly more data than it receives from a server). Processes utilizing the network that do not normally have network communication or have never been seen before are suspicious. Analyze packet contents to detect application layer protocols that do not follow the expected protocol for the port that is being used.\n\n[Domain Fronting](https://attack.mitre.org/techniques/T1090/004) may be used in conjunction to avoid defenses. Adversaries will likely need to deploy and/or install these remote tools to compromised systems. It may be possible to detect or prevent the installation of these tools with host-based solutions.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "command-and-control"
                 }
             ],
-            "id": "attack-pattern--4061e78c-1284-44b4-9116-73e4ac3912f7",
-            "x_mitre_network_requirements": true,
             "x_mitre_is_subtechnique": false,
-            "x_mitre_permissions_required": [
-                "User"
+            "x_mitre_data_sources": [
+                "Network Traffic: Network Traffic Content",
+                "Network Traffic: Network Connection Creation",
+                "Process: Process Creation",
+                "Network Traffic: Network Traffic Flow"
             ],
-            "description": "An adversary may use legitimate desktop support and remote access software, such as Team Viewer, Go2Assist, LogMein, AmmyyAdmin, etc, to establish an interactive command and control channel to target systems within networks. These services are commonly used as legitimate technical support software, and may be allowed by application control within a target environment. Remote access tools like VNC, Ammyy, and Teamviewer are used frequently when compared with other legitimate software commonly used by adversaries. (Citation: Symantec Living off the Land)\n\nRemote access tools may be established and used post-compromise as alternate communications channel for redundant access or as a way to establish an interactive remote desktop session with the target system. They may also be used as a component of malware to establish a reverse connection or back-connect to a service or adversary controlled system.\n\nAdmin tools such as TeamViewer have been used by several groups targeting institutions in countries of interest to the Russian state and criminal campaigns. (Citation: CrowdStrike 2015 Global Threat Report) (Citation: CrySyS Blog TeamSpy)",
-            "x_mitre_contributors": [
-                "Matt Kelly, @breakersall"
-            ],
-            "x_mitre_detection": "Monitor for applications and processes related to remote admin tools. Correlate activity with other suspicious behavior that may reduce false positives if these tools are used by legitimate users and administrators.\n\nAnalyze network data for uncommon data flows (e.g., a client sending significantly more data than it receives from a server). Processes utilizing the network that do not normally have network communication or have never been seen before are suspicious. Analyze packet contents to detect application layer protocols that do not follow the expected protocol for the port that is being used.\n\n[Domain Fronting](https://attack.mitre.org/techniques/T1090/004) may be used in conjunction to avoid defenses. Adversaries will likely need to deploy and/or install these remote tools to compromised systems. It may be possible to detect or prevent the installation of these tools with host-based solutions.",
-            "x_mitre_platforms": [
-                "Linux",
-                "Windows",
-                "macOS"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_system_requirements": [],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

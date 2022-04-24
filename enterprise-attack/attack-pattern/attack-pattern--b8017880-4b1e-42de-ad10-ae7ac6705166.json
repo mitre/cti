@@ -1,49 +1,60 @@
 {
     "type": "bundle",
-    "id": "bundle--eac70caa-ad65-42fb-91fe-ec94e2a2b78d",
+    "id": "bundle--8f1ddfc6-db80-441a-90d9-ac500c731713",
     "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "modified": "2020-10-21T01:45:59.246Z",
-            "name": "Network Boundary Bridging",
-            "x_mitre_data_sources": [
-                "Network Traffic: Network Traffic Flow",
-                "Network Traffic: Network Traffic Content"
-            ],
-            "x_mitre_version": "1.0",
-            "created": "2020-10-19T16:08:29.817Z",
-            "x_mitre_permissions_required": [
-                "Administrator"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Router ACL",
-                "Firewall"
-            ],
             "x_mitre_platforms": [
                 "Network"
             ],
-            "x_mitre_is_subtechnique": false,
-            "id": "attack-pattern--b8017880-4b1e-42de-ad10-ae7ac6705166",
-            "description": "Adversaries may bridge network boundaries by compromising perimeter network devices. Breaching these devices may enable an adversary to bypass restrictions on traffic routing that otherwise separate trusted and untrusted networks.\n\nDevices such as routers and firewalls can be used to create boundaries between trusted and untrusted networks.  They achieve this by restricting traffic types to enforce organizational policy in an attempt to reduce the risk inherent in such connections.  Restriction of traffic can be achieved by prohibiting IP addresses, layer 4 protocol ports, or through deep packet inspection to identify applications.  To participate with the rest of the network, these devices can be directly addressable or transparent, but their mode of operation has no bearing on how the adversary can bypass them when compromised.\n\nWhen an adversary takes control of such a boundary device, they can bypass its policy enforcement to pass normally prohibited traffic across the trust boundary between the two separated networks without hinderance.  By achieving sufficient rights on the device, an adversary can reconfigure the device to allow the traffic they want, allowing them to then further achieve goals such as command and control via [Multi-hop Proxy](https://attack.mitre.org/techniques/T1090/003) or exfiltration of data via [Traffic Duplication](https://attack.mitre.org/techniques/T1020/001).  In the cases where a border device separates two separate organizations, the adversary can also facilitate lateral movement into new victim environments.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--b8017880-4b1e-42de-ad10-ae7ac6705166",
+            "created": "2020-10-19T16:08:29.817Z",
+            "x_mitre_version": "1.1",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1599",
+                    "url": "https://attack.mitre.org/techniques/T1599"
+                },
+                {
+                    "source_name": "Kaspersky ThreatNeedle Feb 2021",
+                    "url": "https://securelist.com/lazarus-threatneedle/100803/",
+                    "description": "Vyacheslav Kopeytsev and Seongsu Park. (2021, February 25). Lazarus targets defense industry with ThreatNeedle. Retrieved October 27, 2021."
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may bridge network boundaries by compromising perimeter network devices or internal devices responsible for network segmentation. Breaching these devices may enable an adversary to bypass restrictions on traffic routing that otherwise separate trusted and untrusted networks.\n\nDevices such as routers and firewalls can be used to create boundaries between trusted and untrusted networks.  They achieve this by restricting traffic types to enforce organizational policy in an attempt to reduce the risk inherent in such connections.  Restriction of traffic can be achieved by prohibiting IP addresses, layer 4 protocol ports, or through deep packet inspection to identify applications.  To participate with the rest of the network, these devices can be directly addressable or transparent, but their mode of operation has no bearing on how the adversary can bypass them when compromised.\n\nWhen an adversary takes control of such a boundary device, they can bypass its policy enforcement to pass normally prohibited traffic across the trust boundary between the two separated networks without hinderance.  By achieving sufficient rights on the device, an adversary can reconfigure the device to allow the traffic they want, allowing them to then further achieve goals such as command and control via [Multi-hop Proxy](https://attack.mitre.org/techniques/T1090/003) or exfiltration of data via [Traffic Duplication](https://attack.mitre.org/techniques/T1020/001). Adversaries may also target internal devices responsible for network segmentation and abuse these in conjunction with [Internal Proxy](https://attack.mitre.org/techniques/T1090/001) to achieve the same goals.(Citation: Kaspersky ThreatNeedle Feb 2021)  In the cases where a border device separates two separate organizations, the adversary can also facilitate lateral movement into new victim environments.",
+            "modified": "2022-04-19T21:44:17.057Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Network Boundary Bridging",
+            "x_mitre_detection": "Consider monitoring network traffic on both interfaces of border network devices with out-of-band packet capture or network flow data, using a different device than the one in question.  Look for traffic that should be prohibited by the intended network traffic policy enforcement for the border network device.\n\nMonitor the border network device\u2019s configuration to validate that the policy enforcement sections are what was intended.  Look for rules that are less restrictive, or that allow specific traffic types that were not previously authorized.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
                 }
             ],
-            "x_mitre_detection": "Consider monitoring network traffic on both interfaces of border network devices with out-of-band packet capture or network flow data, using a different device than the one in question.  Look for traffic that should be prohibited by the intended network traffic policy enforcement for the border network device.\n\nMonitor the border network device\u2019s configuration to validate that the policy enforcement sections are what was intended.  Look for rules that are less restrictive, or that allow specific traffic types that were not previously authorized.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1599",
-                    "external_id": "T1599",
-                    "source_name": "mitre-attack"
-                }
-            ]
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_data_sources": [
+                "Network Traffic: Network Traffic Content",
+                "Network Traffic: Network Traffic Flow"
+            ],
+            "x_mitre_system_requirements": [],
+            "x_mitre_defense_bypassed": [
+                "Router ACL",
+                "Firewall"
+            ],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

@@ -1,32 +1,47 @@
 {
     "type": "bundle",
-    "id": "bundle--ed3b219b-0789-4218-bda7-06ab1e203e3a",
+    "id": "bundle--367788f6-d6f6-4768-afb2-e3aad2e10377",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "name": "Launchctl",
-            "x_mitre_data_sources": [
-                "Command: Command Execution",
-                "Process: Process Creation",
-                "Service: Service Creation",
-                "File: File Modification"
-            ],
-            "x_mitre_version": "1.1",
-            "modified": "2021-10-15T18:40:23.141Z",
-            "created": "2020-03-10T18:26:56.187Z",
-            "x_mitre_permissions_required": [
-                "User",
-                "root"
-            ],
             "x_mitre_platforms": [
                 "macOS"
             ],
-            "x_mitre_is_subtechnique": true,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "id": "attack-pattern--810aa4ad-61c9-49cb-993f-daa06199421d",
+            "type": "attack-pattern",
+            "created": "2020-03-10T18:26:56.187Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1569.001",
+                    "url": "https://attack.mitre.org/techniques/T1569/001"
+                },
+                {
+                    "source_name": "Launchctl Man",
+                    "url": "https://ss64.com/osx/launchctl.html",
+                    "description": "SS64. (n.d.). launchctl. Retrieved March 28, 2020."
+                },
+                {
+                    "url": "https://researchcenter.paloaltonetworks.com/2016/09/unit42-sofacys-komplex-os-x-trojan/",
+                    "description": "Dani Creus, Tyler Halfpop, Robert Falcone. (2016, September 26). Sofacy's 'Komplex' OS X Trojan. Retrieved July 8, 2017.",
+                    "source_name": "Sofacy Komplex Trojan"
+                },
+                {
+                    "source_name": "20 macOS Common Tools and Techniques",
+                    "url": "https://labs.sentinelone.com/20-common-tools-techniques-used-by-macos-threat-actors-malware/",
+                    "description": "Phil Stokes. (2021, February 16). 20 Common Tools & Techniques Used by macOS Threat Actors & Malware. Retrieved August 23, 2021."
+                }
+            ],
+            "modified": "2021-10-15T18:40:23.141Z",
+            "name": "Launchctl",
             "description": "Adversaries may abuse launchctl to execute commands or programs. Launchctl interfaces with launchd, the service management framework for macOS. Launchctl supports taking subcommands on the command-line, interactively, or even redirected from standard input.(Citation: Launchctl Man)\n\nAdversaries use launchctl to execute commands and programs as [Launch Agent](https://attack.mitre.org/techniques/T1543/001)s or [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)s. Common subcommands include: <code>launchctl load</code>,<code>launchctl unload</code>, and <code>launchctl start</code>. Adversaries can use scripts or manually run the commands <code>launchctl load -w \"%s/Library/LaunchAgents/%s\"</code> or <code>/bin/launchctl load</code> to execute [Launch Agent](https://attack.mitre.org/techniques/T1543/001)s or [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)s.(Citation: Sofacy Komplex Trojan)(Citation: 20 macOS Common Tools and Techniques)\n",
             "kill_chain_phases": [
                 {
@@ -35,28 +50,18 @@
                 }
             ],
             "x_mitre_detection": "Every Launch Agent and Launch Daemon must have a corresponding plist file on disk which can be monitored. Monitor for recently modified or created plist files with a significant change to the executable path executed with the command-line <code>launchctl</code> command. Plist files are located in the root, system, and users <code>/Library/LaunchAgents</code> or <code>/Library/LaunchDaemons</code> folders. \n\nMonitor command-line execution of the <code>launchctl</code> command immediately followed by abnormal network connections. [Launch Agent](https://attack.mitre.org/techniques/T1543/001)s or [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)s with executable paths pointing to <code>/tmp</code> and <code>/Shared</code> folders locations are potentially suspicious. \n\nWhen removing [Launch Agent](https://attack.mitre.org/techniques/T1543/001)s or [Launch Daemon](https://attack.mitre.org/techniques/T1543/004)s ensure the services are unloaded prior to deleting plist files.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1569/001",
-                    "external_id": "T1569.001",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "url": "https://ss64.com/osx/launchctl.html",
-                    "description": "SS64. (n.d.). launchctl. Retrieved March 28, 2020.",
-                    "source_name": "Launchctl Man"
-                },
-                {
-                    "source_name": "Sofacy Komplex Trojan",
-                    "description": "Dani Creus, Tyler Halfpop, Robert Falcone. (2016, September 26). Sofacy's 'Komplex' OS X Trojan. Retrieved July 8, 2017.",
-                    "url": "https://researchcenter.paloaltonetworks.com/2016/09/unit42-sofacys-komplex-os-x-trojan/"
-                },
-                {
-                    "url": "https://labs.sentinelone.com/20-common-tools-techniques-used-by-macos-threat-actors-malware/",
-                    "description": "Phil Stokes. (2021, February 16). 20 Common Tools & Techniques Used by macOS Threat Actors & Malware. Retrieved August 23, 2021.",
-                    "source_name": "20 macOS Common Tools and Techniques"
-                }
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.1",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "Service: Service Creation",
+                "Process: Process Creation",
+                "File: File Modification",
+                "Command: Command Execution"
+            ],
+            "x_mitre_permissions_required": [
+                "User",
+                "root"
             ]
         }
     ]

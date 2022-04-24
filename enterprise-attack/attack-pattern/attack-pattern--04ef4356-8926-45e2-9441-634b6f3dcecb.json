@@ -1,31 +1,56 @@
 {
     "type": "bundle",
-    "id": "bundle--33149b5c-5c10-42c4-81f7-f1b55b346790",
+    "id": "bundle--e83f530b-66d5-48cf-b19d-aceac6ccb51c",
     "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "modified": "2021-03-30T00:51:58.008Z",
-            "name": "LC_LOAD_DYLIB Addition",
-            "created": "2017-12-14T16:46:06.044Z",
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "id": "attack-pattern--04ef4356-8926-45e2-9441-634b6f3dcecb",
+            "type": "attack-pattern",
+            "created": "2017-12-14T16:46:06.044Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": true,
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1161",
+                    "source_name": "mitre-attack",
                     "external_id": "T1161",
-                    "source_name": "mitre-attack"
+                    "url": "https://attack.mitre.org/techniques/T1161"
                 },
                 {
-                    "source_name": "Writing Bad Malware for OSX",
+                    "url": "https://www.blackhat.com/docs/us-15/materials/us-15-Wardle-Writing-Bad-A-Malware-For-OS-X.pdf",
                     "description": "Patrick Wardle. (2015). Writing Bad @$$ Malware for OS X. Retrieved July 10, 2017.",
-                    "url": "https://www.blackhat.com/docs/us-15/materials/us-15-Wardle-Writing-Bad-A-Malware-For-OS-X.pdf"
+                    "source_name": "Writing Bad Malware for OSX"
                 },
                 {
-                    "source_name": "Malware Persistence on OS X",
+                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
                     "description": "Patrick Wardle. (2015). Malware Persistence on OS X Yosemite. Retrieved July 10, 2017.",
-                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf"
+                    "source_name": "Malware Persistence on OS X"
                 }
+            ],
+            "modified": "2021-03-30T00:51:58.008Z",
+            "name": "LC_LOAD_DYLIB Addition",
+            "description": "Mach-O binaries have a series of headers that are used to perform certain operations when a binary is loaded. The LC_LOAD_DYLIB header in a Mach-O binary tells macOS and OS X which dynamic libraries (dylibs) to load during execution time. These can be added ad-hoc to the compiled binary as long adjustments are made to the rest of the fields and dependencies (Citation: Writing Bad Malware for OSX). There are tools available to perform these changes. Any changes will invalidate digital signatures on binaries because the binary is being modified. Adversaries can remediate this issue by simply removing the LC_CODE_SIGNATURE command from the binary so that the signature isn\u2019t checked at load time (Citation: Malware Persistence on OS X).",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "x_mitre_detection": "Monitor processes for those that may be used to modify binary headers. Monitor file systems for changes to application binaries and invalid checksums/signatures. Changes to binaries that do not line up with application updates or patches are also extremely suspicious.",
+            "x_mitre_version": "1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [],
+            "x_mitre_permissions_required": [
+                "User"
             ]
         }
     ]

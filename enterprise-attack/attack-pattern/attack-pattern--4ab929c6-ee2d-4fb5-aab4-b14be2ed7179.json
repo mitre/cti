@@ -1,22 +1,47 @@
 {
     "type": "bundle",
-    "id": "bundle--2a5c23e4-f8db-45b0-aa8f-787bde72e3c9",
+    "id": "bundle--b3031fb4-c732-4cdb-a7b4-2bbe6fc08612",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "David French, Elastic",
+                "Bobby, Filar, Elastic",
+                "Travis Smith, Tripwire"
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "id": "attack-pattern--4ab929c6-ee2d-4fb5-aab4-b14be2ed7179",
             "type": "attack-pattern",
-            "name": "Shortcut Modification",
-            "x_mitre_data_sources": [
-                "File: File Creation",
-                "File: File Modification",
-                "Process: Process Creation"
-            ],
-            "x_mitre_version": "1.1",
-            "modified": "2021-04-13T21:30:24.555Z",
             "created": "2020-01-24T19:00:32.917Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1547.009",
+                    "url": "https://attack.mitre.org/techniques/T1547/009"
+                },
+                {
+                    "external_id": "CAPEC-132",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/132.html"
+                },
+                {
+                    "source_name": "BSidesSLC 2020 - LNK Elastic",
+                    "url": "https://www.youtube.com/watch?v=nJ0UsyiUEqQ",
+                    "description": "French, D., Filar, B.. (2020, March 21). A Chain Is No Stronger Than Its Weakest LNK. Retrieved November 30, 2020."
+                }
+            ],
+            "modified": "2021-04-13T21:30:24.555Z",
+            "name": "Shortcut Modification",
+            "description": "Adversaries may create or edit shortcuts to run a program during system boot or user login. Shortcuts or symbolic links are ways of referencing other files or programs that will be opened or executed when the shortcut is clicked or executed by a system startup process.\n\nAdversaries could use shortcuts to execute their tools for persistence. They may create a new shortcut as a means of indirection that may use [Masquerading](https://attack.mitre.org/techniques/T1036) to look like a legitimate program. Adversaries could also edit the target path or entirely replace an existing shortcut so their tools will be executed instead of the intended legitimate program.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -27,39 +52,18 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "id": "attack-pattern--4ab929c6-ee2d-4fb5-aab4-b14be2ed7179",
-            "x_mitre_platforms": [
-                "Windows"
-            ],
+            "x_mitre_detection": "Since a shortcut's target path likely will not change, modifications to shortcut files that do not correlate with known software changes, patches, removal, etc., may be suspicious. Analysis should attempt to relate shortcut file change or creation events to other potentially suspicious events based on known adversary behavior such as process launches of unknown executables that make network connections.\n\nMonitor for LNK files created with a Zone Identifier value greater than 1, which may indicate that the LNK file originated from outside of the network.(Citation: BSidesSLC 2020 - LNK Elastic)",
             "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.1",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "File: File Modification",
+                "Process: Process Creation"
+            ],
             "x_mitre_permissions_required": [
                 "Administrator",
                 "User"
-            ],
-            "description": "Adversaries may create or edit shortcuts to run a program during system boot or user login. Shortcuts or symbolic links are ways of referencing other files or programs that will be opened or executed when the shortcut is clicked or executed by a system startup process.\n\nAdversaries could use shortcuts to execute their tools for persistence. They may create a new shortcut as a means of indirection that may use [Masquerading](https://attack.mitre.org/techniques/T1036) to look like a legitimate program. Adversaries could also edit the target path or entirely replace an existing shortcut so their tools will be executed instead of the intended legitimate program.",
-            "x_mitre_contributors": [
-                "David French, Elastic",
-                "Bobby, Filar, Elastic",
-                "Travis Smith, Tripwire"
-            ],
-            "x_mitre_detection": "Since a shortcut's target path likely will not change, modifications to shortcut files that do not correlate with known software changes, patches, removal, etc., may be suspicious. Analysis should attempt to relate shortcut file change or creation events to other potentially suspicious events based on known adversary behavior such as process launches of unknown executables that make network connections.\n\nMonitor for LNK files created with a Zone Identifier value greater than 1, which may indicate that the LNK file originated from outside of the network.(Citation: BSidesSLC 2020 - LNK Elastic)",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1547/009",
-                    "external_id": "T1547.009",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "url": "https://capec.mitre.org/data/definitions/132.html",
-                    "external_id": "CAPEC-132",
-                    "source_name": "capec"
-                },
-                {
-                    "url": "https://www.youtube.com/watch?v=nJ0UsyiUEqQ",
-                    "description": "French, D., Filar, B.. (2020, March 21). A Chain Is No Stronger Than Its Weakest LNK. Retrieved November 30, 2020.",
-                    "source_name": "BSidesSLC 2020 - LNK Elastic"
-                }
             ]
         }
     ]

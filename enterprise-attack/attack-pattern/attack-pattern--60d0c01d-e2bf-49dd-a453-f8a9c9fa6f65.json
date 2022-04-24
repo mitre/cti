@@ -1,33 +1,52 @@
 {
     "type": "bundle",
-    "id": "bundle--fd7741ac-ae9c-4128-8154-b1e841e7de06",
+    "id": "bundle--21e967cf-28ff-4133-af63-a277f474123f",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "name": "Windows Remote Management",
-            "x_mitre_data_sources": [
-                "Service: Service Metadata",
-                "Process: Process Creation",
-                "Network Traffic: Network Connection Creation",
-                "Logon Session: Logon Session Creation",
-                "Command: Command Execution"
-            ],
-            "x_mitre_version": "1.1",
-            "modified": "2021-06-23T19:22:52.870Z",
-            "created": "2020-02-11T18:29:47.757Z",
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
-            ],
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_is_subtechnique": true,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "id": "attack-pattern--60d0c01d-e2bf-49dd-a453-f8a9c9fa6f65",
+            "type": "attack-pattern",
+            "created": "2020-02-11T18:29:47.757Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1021.006",
+                    "url": "https://attack.mitre.org/techniques/T1021/006"
+                },
+                {
+                    "url": "http://msdn.microsoft.com/en-us/library/aa384426",
+                    "description": "Microsoft. (n.d.). Windows Remote Management. Retrieved November 12, 2014.",
+                    "source_name": "Microsoft WinRM"
+                },
+                {
+                    "url": "https://www.slideshare.net/kieranjacobsen/lateral-movement-with-power-shell-2",
+                    "description": "Jacobsen, K. (2014, May 16). Lateral Movement with PowerShell&#91;slides&#93;. Retrieved November 12, 2014.",
+                    "source_name": "Jacobsen 2014"
+                },
+                {
+                    "url": "https://msdn.microsoft.com/en-us/library/aa394582.aspx",
+                    "description": "Microsoft. (n.d.). Windows Management Instrumentation. Retrieved April 27, 2016.",
+                    "source_name": "MSDN WMI"
+                },
+                {
+                    "source_name": "Medium Detecting Lateral Movement",
+                    "url": "https://medium.com/threatpunter/detecting-lateral-movement-using-sysmon-and-splunk-318d3be141bc",
+                    "description": "French, D. (2018, September 30). Detecting Lateral Movement Using Sysmon and Splunk. Retrieved October 11, 2019."
+                }
+            ],
+            "modified": "2021-06-23T19:22:52.870Z",
+            "name": "Windows Remote Management",
             "description": "Adversaries may use [Valid Accounts](https://attack.mitre.org/techniques/T1078) to interact with remote systems using Windows Remote Management (WinRM). The adversary may then perform actions as the logged-on user.\n\nWinRM is the name of both a Windows service and a protocol that allows a user to interact with a remote system (e.g., run an executable, modify the Registry, modify services).(Citation: Microsoft WinRM) It may be called with the `winrm` command or by any number of programs such as PowerShell.(Citation: Jacobsen 2014) WinRM  can be used as a method of remotely interacting with [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047).(Citation: MSDN WMI)",
             "kill_chain_phases": [
                 {
@@ -36,33 +55,19 @@
                 }
             ],
             "x_mitre_detection": "Monitor use of WinRM within an environment by tracking service execution. If it is not normally used or is disabled, then this may be an indicator of suspicious behavior.  Monitor processes created and actions taken by the WinRM process or a WinRM invoked script to correlate it with other related events.(Citation: Medium Detecting Lateral Movement) Also monitor for remote WMI connection attempts (typically over port 5985 when using HTTP and 5986 for HTTPS).",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1021/006",
-                    "external_id": "T1021.006",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "Microsoft WinRM",
-                    "description": "Microsoft. (n.d.). Windows Remote Management. Retrieved November 12, 2014.",
-                    "url": "http://msdn.microsoft.com/en-us/library/aa384426"
-                },
-                {
-                    "source_name": "Jacobsen 2014",
-                    "description": "Jacobsen, K. (2014, May 16). Lateral Movement with PowerShell&#91;slides&#93;. Retrieved November 12, 2014.",
-                    "url": "https://www.slideshare.net/kieranjacobsen/lateral-movement-with-power-shell-2"
-                },
-                {
-                    "source_name": "MSDN WMI",
-                    "description": "Microsoft. (n.d.). Windows Management Instrumentation. Retrieved April 27, 2016.",
-                    "url": "https://msdn.microsoft.com/en-us/library/aa394582.aspx"
-                },
-                {
-                    "url": "https://medium.com/threatpunter/detecting-lateral-movement-using-sysmon-and-splunk-318d3be141bc",
-                    "description": "French, D. (2018, September 30). Detecting Lateral Movement Using Sysmon and Splunk. Retrieved October 11, 2019.",
-                    "source_name": "Medium Detecting Lateral Movement"
-                }
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.1",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "Network Traffic: Network Connection Creation",
+                "Command: Command Execution",
+                "Service: Service Metadata",
+                "Process: Process Creation",
+                "Logon Session: Logon Session Creation"
+            ],
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
             ]
         }
     ]

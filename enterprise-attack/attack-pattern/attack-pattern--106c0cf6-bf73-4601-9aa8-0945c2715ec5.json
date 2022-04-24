@@ -1,36 +1,54 @@
 {
     "type": "bundle",
-    "id": "bundle--082004b2-9ccf-434c-bc62-89e2161a530e",
+    "id": "bundle--8ce1ddf7-4e7d-42ec-99c2-00514a699cb7",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "name": "Create or Modify System Process",
-            "x_mitre_data_sources": [
-                "Service: Service Creation",
-                "Service: Service Modification",
-                "Process: Process Creation",
-                "Process: OS API Execution",
-                "Command: Command Execution",
-                "Windows Registry: Windows Registry Key Creation",
-                "Windows Registry: Windows Registry Key Modification",
-                "File: File Creation",
-                "File: File Modification"
-            ],
-            "x_mitre_version": "1.0",
-            "modified": "2021-11-03T20:11:52.175Z",
-            "created": "2020-01-10T16:03:18.865Z",
             "x_mitre_platforms": [
                 "Windows",
                 "macOS",
                 "Linux"
             ],
-            "x_mitre_is_subtechnique": false,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
             "id": "attack-pattern--106c0cf6-bf73-4601-9aa8-0945c2715ec5",
-            "description": "Adversaries may create or modify system-level processes to repeatedly execute malicious payloads as part of persistence. When operating systems boot up, they can start processes that perform background system functions. On Windows and Linux, these system processes are referred to as services. (Citation: TechNet Services) On macOS, launchd processes known as [Launch Daemon](https://attack.mitre.org/techniques/T1543/004) and [Launch Agent](https://attack.mitre.org/techniques/T1543/001) are run to finish system initialization and load user specific parameters.(Citation: AppleDocs Launch Agent Daemons) \n\nAdversaries may install new services, daemons, or agents that can be configured to execute at startup or a repeatable interval in order to establish persistence. Similarly, adversaries may modify existing services, daemons, or agents to achieve the same effect.  \n\nServices, daemons, or agents may be created with administrator privileges but executed under root/SYSTEM privileges. Adversaries may leverage this functionality to create or modify system processes in order to escalate privileges. (Citation: OSX Malware Detection).  ",
+            "created": "2020-01-10T16:03:18.865Z",
+            "x_mitre_version": "1.1",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1543",
+                    "url": "https://attack.mitre.org/techniques/T1543"
+                },
+                {
+                    "source_name": "AppleDocs Launch Agent Daemons",
+                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html",
+                    "description": "Apple. (n.d.). Creating Launch Daemons and Agents. Retrieved July 10, 2017."
+                },
+                {
+                    "source_name": "TechNet Services",
+                    "url": "https://technet.microsoft.com/en-us/library/cc772408.aspx",
+                    "description": "Microsoft. (n.d.). Services. Retrieved June 7, 2016."
+                },
+                {
+                    "source_name": "OSX Malware Detection",
+                    "url": "https://www.synack.com/wp-content/uploads/2016/03/RSA_OSX_Malware.pdf",
+                    "description": "Patrick Wardle. (2016, February 29). Let's Play Doctor: Practical OS X Malware Detection & Analysis. Retrieved July 10, 2017."
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may create or modify system-level processes to repeatedly execute malicious payloads as part of persistence. When operating systems boot up, they can start processes that perform background system functions. On Windows and Linux, these system processes are referred to as services.(Citation: TechNet Services) On macOS, launchd processes known as [Launch Daemon](https://attack.mitre.org/techniques/T1543/004) and [Launch Agent](https://attack.mitre.org/techniques/T1543/001) are run to finish system initialization and load user specific parameters.(Citation: AppleDocs Launch Agent Daemons) \n\nAdversaries may install new services, daemons, or agents that can be configured to execute at startup or a repeatable interval in order to establish persistence. Similarly, adversaries may modify existing services, daemons, or agents to achieve the same effect.  \n\nServices, daemons, or agents may be created with administrator privileges but executed under root/SYSTEM privileges. Adversaries may leverage this functionality to create or modify system processes in order to escalate privileges.(Citation: OSX Malware Detection)  ",
+            "modified": "2022-04-20T16:52:58.415Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Create or Modify System Process",
+            "x_mitre_detection": "Monitor for changes to system processes that do not correlate with known software, patch cycles, etc., including by comparing results against a trusted system baseline. New, benign system processes may be created during installation of new software. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.  \n\nCommand-line invocation of tools capable of modifying services may be unusual, depending on how systems are typically used in a particular environment. Look for abnormal process call trees from known services and for execution of other commands that could relate to Discovery or other adversary techniques. \n\nMonitor for changes to files associated with system-level processes.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -41,30 +59,24 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "x_mitre_detection": "Monitor for changes to system processes that do not correlate with known software, patch cycles, etc., including by comparing results against a trusted system baseline. New, benign system processes may be created during installation of new software. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.  \n\nCommand-line invocation of tools capable of modifying services may be unusual, depending on how systems are typically used in a particular environment. Look for abnormal process call trees from known services and for execution of other commands that could relate to Discovery or other adversary techniques. \n\nMonitor for changes to files associated with system-level processes.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1543",
-                    "external_id": "T1543",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "TechNet Services",
-                    "description": "Microsoft. (n.d.). Services. Retrieved June 7, 2016.",
-                    "url": "https://technet.microsoft.com/en-us/library/cc772408.aspx"
-                },
-                {
-                    "source_name": "AppleDocs Launch Agent Daemons",
-                    "description": "Apple. (n.d.). Creating Launch Daemons and Agents. Retrieved July 10, 2017.",
-                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html"
-                },
-                {
-                    "source_name": "OSX Malware Detection",
-                    "description": "Patrick Wardle. (2016, February 29). Let's Play Doctor: Practical OS X Malware Detection & Analysis. Retrieved July 10, 2017.",
-                    "url": "https://www.synack.com/wp-content/uploads/2016/03/RSA_OSX_Malware.pdf"
-                }
-            ]
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_data_sources": [
+                "Windows Registry: Windows Registry Key Creation",
+                "Service: Service Creation",
+                "Service: Service Modification",
+                "Command: Command Execution",
+                "File: File Creation",
+                "Driver: Driver Load",
+                "Process: OS API Execution",
+                "Process: Process Creation",
+                "Windows Registry: Windows Registry Key Modification",
+                "File: File Modification"
+            ],
+            "x_mitre_system_requirements": [],
+            "x_mitre_permissions_required": [],
+            "x_mitre_effective_permissions": [],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

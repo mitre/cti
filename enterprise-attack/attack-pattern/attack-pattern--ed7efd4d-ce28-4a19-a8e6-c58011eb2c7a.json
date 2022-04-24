@@ -1,55 +1,43 @@
 {
     "type": "bundle",
-    "id": "bundle--5273f76e-7196-4bdc-827e-36d6634358b4",
+    "id": "bundle--e625cafa-15b6-44c3-a8ac-d10a863428f6",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "name": "Office Test",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1137/002",
-                    "external_id": "T1137.002",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "Hexacorn Office Test",
-                    "description": "Hexacorn. (2014, April 16). Beyond good ol\u2019 Run key, Part 10. Retrieved July 3, 2017.",
-                    "url": "http://www.hexacorn.com/blog/2014/04/16/beyond-good-ol-run-key-part-10/"
-                },
-                {
-                    "source_name": "Palo Alto Office Test Sofacy",
-                    "description": "Falcone, R. (2016, July 20). Technical Walkthrough: Office Test Persistence Method Used In Recent Sofacy Attacks. Retrieved July 3, 2017.",
-                    "url": "https://researchcenter.paloaltonetworks.com/2016/07/unit42-technical-walkthrough-office-test-persistence-method-used-in-recent-sofacy-attacks/"
-                }
-            ],
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Command: Command Execution",
-                "Windows Registry: Windows Registry Key Creation",
-                "Windows Registry: Windows Registry Key Modification",
-                "File: File Creation",
-                "File: File Modification",
-                "Module: Module Load"
-            ],
-            "x_mitre_version": "1.1",
-            "modified": "2021-08-16T21:35:17.618Z",
-            "x_mitre_system_requirements": [
-                "Office 2007, 2010, 2013, and 2016"
-            ],
-            "id": "attack-pattern--ed7efd4d-ce28-4a19-a8e6-c58011eb2c7a",
             "x_mitre_platforms": [
                 "Windows",
                 "Office 365"
             ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "User"
+            "x_mitre_domains": [
+                "enterprise-attack"
             ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "id": "attack-pattern--ed7efd4d-ce28-4a19-a8e6-c58011eb2c7a",
+            "type": "attack-pattern",
+            "created": "2019-11-07T19:44:04.475Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1137.002",
+                    "url": "https://attack.mitre.org/techniques/T1137/002"
+                },
+                {
+                    "url": "http://www.hexacorn.com/blog/2014/04/16/beyond-good-ol-run-key-part-10/",
+                    "description": "Hexacorn. (2014, April 16). Beyond good ol\u2019 Run key, Part 10. Retrieved July 3, 2017.",
+                    "source_name": "Hexacorn Office Test"
+                },
+                {
+                    "url": "https://researchcenter.paloaltonetworks.com/2016/07/unit42-technical-walkthrough-office-test-persistence-method-used-in-recent-sofacy-attacks/",
+                    "description": "Falcone, R. (2016, July 20). Technical Walkthrough: Office Test Persistence Method Used In Recent Sofacy Attacks. Retrieved July 3, 2017.",
+                    "source_name": "Palo Alto Office Test Sofacy"
+                }
+            ],
+            "modified": "2021-08-16T21:35:17.618Z",
+            "name": "Office Test",
             "description": "Adversaries may abuse the Microsoft Office \"Office Test\" Registry key to obtain persistence on a compromised system. An Office Test Registry location exists that allows a user to specify an arbitrary DLL that will be executed every time an Office application is started. This Registry key is thought to be used by Microsoft to load DLLs for testing and debugging purposes while developing Office applications. This Registry key is not created by default during an Office installation.(Citation: Hexacorn Office Test)(Citation: Palo Alto Office Test Sofacy)\n\nThere exist user and global Registry keys for the Office Test feature:\n\n* <code>HKEY_CURRENT_USER\\Software\\Microsoft\\Office test\\Special\\Perf</code>\n* <code>HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Office test\\Special\\Perf</code>\n\nAdversaries may add this Registry key and specify a malicious DLL that will be executed whenever an Office application, such as Word or Excel, is started.",
             "kill_chain_phases": [
                 {
@@ -58,8 +46,25 @@
                 }
             ],
             "x_mitre_detection": "Monitor for the creation of the Office Test Registry key. Many Office-related persistence mechanisms require changes to the Registry and for binaries, files, or scripts to be written to disk or existing files modified to include malicious scripts. Collect events related to Registry key creation and modification for keys that could be used for Office-based persistence. Since v13.52, Autoruns can detect tasks set up using the Office Test Registry key.(Citation: Palo Alto Office Test Sofacy)\n\nConsider monitoring Office processes for anomalous DLL loads.",
-            "created": "2019-11-07T19:44:04.475Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.1",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Command: Command Execution",
+                "Module: Module Load",
+                "File: File Modification",
+                "Windows Registry: Windows Registry Key Modification",
+                "File: File Creation",
+                "Windows Registry: Windows Registry Key Creation"
+            ],
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "User"
+            ],
+            "x_mitre_system_requirements": [
+                "Office 2007, 2010, 2013, and 2016"
+            ]
         }
     ]
 }

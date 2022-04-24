@@ -1,44 +1,16 @@
 {
     "type": "bundle",
-    "id": "bundle--15fbe5fa-9a68-4a74-a242-c2720d230b8e",
+    "id": "bundle--4aa43221-9a99-4306-9e93-5939c3663ceb",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "name": "Office Application Startup",
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Command: Command Execution",
-                "Windows Registry: Windows Registry Key Creation",
-                "Windows Registry: Windows Registry Key Modification",
-                "File: File Creation",
-                "File: File Modification",
-                "Module: Module Load",
-                "Application Log: Application Log Content"
-            ],
-            "x_mitre_version": "1.3",
-            "modified": "2021-10-15T20:18:31.112Z",
-            "created": "2017-12-14T16:46:06.044Z",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                }
-            ],
-            "id": "attack-pattern--2c4d4e92-0ccf-4a97-b54c-86d662988a53",
             "x_mitre_platforms": [
                 "Windows",
                 "Office 365"
             ],
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
+            "x_mitre_domains": [
+                "enterprise-attack"
             ],
-            "description": "Adversaries may leverage Microsoft Office-based applications for persistence between startups. Microsoft Office is a fairly common application suite on Windows-based operating systems within an enterprise network. There are multiple mechanisms that can be used with Office for persistence when an Office-based application is started; this can include the use of Office Template Macros and add-ins.\n\nA variety of features have been discovered in Outlook that can be abused to obtain persistence, such as Outlook rules, forms, and Home Page.(Citation: SensePost Ruler GitHub) These persistence mechanisms can work within Outlook or be used through Office 365.(Citation: TechNet O365 Outlook Rules)",
             "x_mitre_contributors": [
                 "Nick Carr, Mandiant",
                 "Microsoft Threat Intelligence Center (MSTIC)",
@@ -47,44 +19,75 @@
                 "Loic Jaquemet",
                 "Ricardo Dias"
             ],
-            "x_mitre_detection": "Collect process execution information including process IDs (PID) and parent process IDs (PPID) and look for abnormal chains of activity resulting from Office processes. Non-standard process execution trees may also indicate suspicious or malicious behavior. If winword.exe is the parent process for suspicious processes and activity relating to other adversarial techniques, then it could indicate that the application was used maliciously.\n\nMany Office-related persistence mechanisms require changes to the Registry and for binaries, files, or scripts to be written to disk or existing files modified to include malicious scripts. Collect events related to Registry key creation and modification for keys that could be used for Office-based persistence.(Citation: CrowdStrike Outlook Forms)(Citation: Outlook Today Home Page)\n\nMicrosoft has released a PowerShell script to safely gather mail forwarding rules and custom forms in your mail environment as well as steps to interpret the output.(Citation: Microsoft Detect Outlook Forms) SensePost, whose tool [Ruler](https://attack.mitre.org/software/S0358) can be used to carry out malicious rules, forms, and Home Page attacks, has released a tool to detect Ruler usage.(Citation: SensePost NotRuler)",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "id": "attack-pattern--2c4d4e92-0ccf-4a97-b54c-86d662988a53",
+            "type": "attack-pattern",
+            "created": "2017-12-14T16:46:06.044Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1137",
+                    "source_name": "mitre-attack",
                     "external_id": "T1137",
-                    "source_name": "mitre-attack"
+                    "url": "https://attack.mitre.org/techniques/T1137"
                 },
                 {
+                    "source_name": "SensePost Ruler GitHub",
                     "url": "https://github.com/sensepost/ruler",
-                    "description": "SensePost. (2016, August 18). Ruler: A tool to abuse Exchange services. Retrieved February 4, 2019.",
-                    "source_name": "SensePost Ruler GitHub"
+                    "description": "SensePost. (2016, August 18). Ruler: A tool to abuse Exchange services. Retrieved February 4, 2019."
                 },
                 {
+                    "source_name": "TechNet O365 Outlook Rules",
                     "url": "https://blogs.technet.microsoft.com/office365security/defending-against-rules-and-forms-injection/",
-                    "description": "Koeller, B.. (2018, February 21). Defending Against Rules and Forms Injection. Retrieved November 5, 2019.",
-                    "source_name": "TechNet O365 Outlook Rules"
+                    "description": "Koeller, B.. (2018, February 21). Defending Against Rules and Forms Injection. Retrieved November 5, 2019."
                 },
                 {
+                    "source_name": "CrowdStrike Outlook Forms",
                     "url": "https://malware.news/t/using-outlook-forms-for-lateral-movement-and-persistence/13746",
-                    "description": "Parisi, T., et al. (2017, July). Using Outlook Forms for Lateral Movement and Persistence. Retrieved February 5, 2019.",
-                    "source_name": "CrowdStrike Outlook Forms"
+                    "description": "Parisi, T., et al. (2017, July). Using Outlook Forms for Lateral Movement and Persistence. Retrieved February 5, 2019."
                 },
                 {
+                    "source_name": "Outlook Today Home Page",
                     "url": "https://medium.com/@bwtech789/outlook-today-homepage-persistence-33ea9b505943",
-                    "description": "Soutcast. (2018, September 14). Outlook Today Homepage Persistence. Retrieved February 5, 2019.",
-                    "source_name": "Outlook Today Home Page"
+                    "description": "Soutcast. (2018, September 14). Outlook Today Homepage Persistence. Retrieved February 5, 2019."
                 },
                 {
+                    "source_name": "Microsoft Detect Outlook Forms",
                     "url": "https://docs.microsoft.com/en-us/office365/securitycompliance/detect-and-remediate-outlook-rules-forms-attack",
-                    "description": "Fox, C., Vangel, D. (2018, April 22). Detect and Remediate Outlook Rules and Custom Forms Injections Attacks in Office 365. Retrieved February 4, 2019.",
-                    "source_name": "Microsoft Detect Outlook Forms"
+                    "description": "Fox, C., Vangel, D. (2018, April 22). Detect and Remediate Outlook Rules and Custom Forms Injections Attacks in Office 365. Retrieved February 4, 2019."
                 },
                 {
+                    "source_name": "SensePost NotRuler",
                     "url": "https://github.com/sensepost/notruler",
-                    "description": "SensePost. (2017, September 21). NotRuler - The opposite of Ruler, provides blue teams with the ability to detect Ruler usage against Exchange. Retrieved February 4, 2019.",
-                    "source_name": "SensePost NotRuler"
+                    "description": "SensePost. (2017, September 21). NotRuler - The opposite of Ruler, provides blue teams with the ability to detect Ruler usage against Exchange. Retrieved February 4, 2019."
                 }
+            ],
+            "modified": "2021-10-15T20:18:31.112Z",
+            "name": "Office Application Startup",
+            "description": "Adversaries may leverage Microsoft Office-based applications for persistence between startups. Microsoft Office is a fairly common application suite on Windows-based operating systems within an enterprise network. There are multiple mechanisms that can be used with Office for persistence when an Office-based application is started; this can include the use of Office Template Macros and add-ins.\n\nA variety of features have been discovered in Outlook that can be abused to obtain persistence, such as Outlook rules, forms, and Home Page.(Citation: SensePost Ruler GitHub) These persistence mechanisms can work within Outlook or be used through Office 365.(Citation: TechNet O365 Outlook Rules)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "x_mitre_detection": "Collect process execution information including process IDs (PID) and parent process IDs (PPID) and look for abnormal chains of activity resulting from Office processes. Non-standard process execution trees may also indicate suspicious or malicious behavior. If winword.exe is the parent process for suspicious processes and activity relating to other adversarial techniques, then it could indicate that the application was used maliciously.\n\nMany Office-related persistence mechanisms require changes to the Registry and for binaries, files, or scripts to be written to disk or existing files modified to include malicious scripts. Collect events related to Registry key creation and modification for keys that could be used for Office-based persistence.(Citation: CrowdStrike Outlook Forms)(Citation: Outlook Today Home Page)\n\nMicrosoft has released a PowerShell script to safely gather mail forwarding rules and custom forms in your mail environment as well as steps to interpret the output.(Citation: Microsoft Detect Outlook Forms) SensePost, whose tool [Ruler](https://attack.mitre.org/software/S0358) can be used to carry out malicious rules, forms, and Home Page attacks, has released a tool to detect Ruler usage.(Citation: SensePost NotRuler)",
+            "x_mitre_version": "1.3",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "Windows Registry: Windows Registry Key Creation",
+                "Application Log: Application Log Content",
+                "Module: Module Load",
+                "Process: Process Creation",
+                "Command: Command Execution",
+                "File: File Creation",
+                "Windows Registry: Windows Registry Key Modification",
+                "File: File Modification"
+            ],
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
             ]
         }
     ]

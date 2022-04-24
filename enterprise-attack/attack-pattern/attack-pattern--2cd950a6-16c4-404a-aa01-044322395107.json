@@ -1,62 +1,66 @@
 {
     "type": "bundle",
-    "id": "bundle--82f0ebe3-d61f-4596-ad22-2504dcb740de",
+    "id": "bundle--62178eb8-f8f0-4fda-bef4-b2c99ef7d806",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Travis Smith, Tripwire",
+                "Casey Smith"
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "id": "attack-pattern--2cd950a6-16c4-404a-aa01-044322395107",
             "type": "attack-pattern",
-            "name": "InstallUtil",
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Command: Command Execution"
-            ],
-            "x_mitre_version": "1.0",
-            "modified": "2020-06-20T22:34:46.529Z",
             "created": "2020-01-23T19:09:48.811Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1218.004",
+                    "url": "https://attack.mitre.org/techniques/T1218/004"
+                },
+                {
+                    "source_name": "MSDN InstallUtil",
+                    "description": "Microsoft. (n.d.). Installutil.exe (Installer Tool). Retrieved July 1, 2016.",
+                    "url": "https://msdn.microsoft.com/en-us/library/50614e95.aspx"
+                },
+                {
+                    "source_name": "LOLBAS Installutil",
+                    "url": "https://lolbas-project.github.io/lolbas/Binaries/Installutil/",
+                    "description": "LOLBAS. (n.d.). Installutil.exe. Retrieved July 31, 2019."
+                }
+            ],
+            "modified": "2022-03-11T18:47:52.603Z",
+            "name": "InstallUtil",
+            "description": "Adversaries may use InstallUtil to proxy execution of code through a trusted Windows utility. InstallUtil is a command-line utility that allows for installation and uninstallation of resources by executing specific installer components specified in .NET binaries. (Citation: MSDN InstallUtil) The InstallUtil binary may also be digitally signed by Microsoft and located in the .NET directories on a Windows system: <code>C:\\Windows\\Microsoft.NET\\Framework\\v<version>\\InstallUtil.exe</code> and <code>C:\\Windows\\Microsoft.NET\\Framework64\\v<version>\\InstallUtil.exe</code>.\n\nInstallUtil may also be used to bypass application control through use of attributes within the binary that execute the class decorated with the attribute <code>[System.ComponentModel.RunInstaller(true)]</code>. (Citation: LOLBAS Installutil)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
                 }
             ],
-            "id": "attack-pattern--2cd950a6-16c4-404a-aa01-044322395107",
+            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of InstallUtil.exe. Compare recent invocations of InstallUtil.exe with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. Command arguments used before and after the InstallUtil.exe invocation may also be useful in determining the origin and purpose of the binary being executed.",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "2.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "Command: Command Execution",
+                "Process: Process Creation"
+            ],
             "x_mitre_defense_bypassed": [
                 "Digital Certificate Validation",
                 "Application control"
             ],
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_is_subtechnique": true,
             "x_mitre_permissions_required": [
                 "User"
-            ],
-            "description": "Adversaries may use InstallUtil to proxy execution of code through a trusted Windows utility. InstallUtil is a command-line utility that allows for installation and uninstallation of resources by executing specific installer components specified in .NET binaries. (Citation: MSDN InstallUtil) InstallUtil is digitally signed by Microsoft and located in the .NET directories on a Windows system: <code>C:\\Windows\\Microsoft.NET\\Framework\\v<version>\\InstallUtil.exe</code> and <code>C:\\Windows\\Microsoft.NET\\Framework64\\v<version>\\InstallUtil.exe</code>.\n\nInstallUtil may also be used to bypass application control through use of attributes within the binary that execute the class decorated with the attribute <code>[System.ComponentModel.RunInstaller(true)]</code>. (Citation: LOLBAS Installutil)",
-            "x_mitre_contributors": [
-                "Travis Smith, Tripwire",
-                "Casey Smith"
-            ],
-            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of InstallUtil.exe. Compare recent invocations of InstallUtil.exe with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. Command arguments used before and after the InstallUtil.exe invocation may also be useful in determining the origin and purpose of the binary being executed.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1218/004",
-                    "external_id": "T1218.004",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "url": "https://msdn.microsoft.com/en-us/library/50614e95.aspx",
-                    "description": "Microsoft. (n.d.). Installutil.exe (Installer Tool). Retrieved July 1, 2016.",
-                    "source_name": "MSDN InstallUtil"
-                },
-                {
-                    "url": "https://lolbas-project.github.io/lolbas/Binaries/Installutil/",
-                    "description": "LOLBAS. (n.d.). Installutil.exe. Retrieved July 31, 2019.",
-                    "source_name": "LOLBAS Installutil"
-                }
             ]
         }
     ]

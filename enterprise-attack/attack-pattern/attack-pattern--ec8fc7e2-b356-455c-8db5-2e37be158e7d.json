@@ -1,36 +1,49 @@
 {
     "type": "bundle",
-    "id": "bundle--d8b21c33-fdea-4125-a0aa-325f6454bd6c",
+    "id": "bundle--add74b8c-5b27-4e1d-9182-e2d9d8569a01",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "name": "Hidden Files and Directories",
-            "x_mitre_data_sources": [
-                "File: File Creation",
-                "Process: Process Creation",
-                "Command: Command Execution",
-                "File: File Metadata"
-            ],
-            "x_mitre_version": "1.0",
-            "modified": "2020-03-29T22:32:25.985Z",
-            "created": "2020-02-26T17:46:13.128Z",
-            "id": "attack-pattern--ec8fc7e2-b356-455c-8db5-2e37be158e7d",
-            "x_mitre_defense_bypassed": [
-                "Host forensic analysis"
-            ],
             "x_mitre_platforms": [
                 "Windows",
                 "macOS",
                 "Linux"
             ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_permissions_required": [
-                "User"
+            "x_mitre_domains": [
+                "enterprise-attack"
             ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "id": "attack-pattern--ec8fc7e2-b356-455c-8db5-2e37be158e7d",
+            "type": "attack-pattern",
+            "created": "2020-02-26T17:46:13.128Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1564.001",
+                    "url": "https://attack.mitre.org/techniques/T1564/001"
+                },
+                {
+                    "url": "https://researchcenter.paloaltonetworks.com/2016/09/unit42-sofacys-komplex-os-x-trojan/",
+                    "description": "Dani Creus, Tyler Halfpop, Robert Falcone. (2016, September 26). Sofacy's 'Komplex' OS X Trojan. Retrieved July 8, 2017.",
+                    "source_name": "Sofacy Komplex Trojan"
+                },
+                {
+                    "url": "https://blog.malwarebytes.com/threat-analysis/2017/01/new-mac-backdoor-using-antiquated-code/",
+                    "description": "Thomas Reed. (2017, January 18). New Mac backdoor using antiquated code. Retrieved July 5, 2017.",
+                    "source_name": "Antiquated Mac Malware"
+                },
+                {
+                    "url": "https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/reports/Unit_42/unit42-wirelurker.pdf",
+                    "description": "Claud Xiao. (n.d.). WireLurker: A New Era in iOS and OS X Malware. Retrieved July 10, 2017.",
+                    "source_name": "WireLurker"
+                }
+            ],
+            "modified": "2020-03-29T22:32:25.985Z",
+            "name": "Hidden Files and Directories",
             "description": "Adversaries may set files and directories to be hidden to evade detection mechanisms. To prevent normal users from accidentally changing special files on a system, most operating systems have the concept of a \u2018hidden\u2019 file. These files don\u2019t show up when a user browses the file system with a GUI or when using normal commands on the command line. Users must explicitly ask to show the hidden files either via a series of Graphical User Interface (GUI) prompts or with command line switches (<code>dir /a</code> for Windows and <code>ls \u2013a</code> for Linux and macOS).\n\nOn Linux and Mac, users can mark specific files as hidden simply by putting a \u201c.\u201d as the first character in the file or folder name  (Citation: Sofacy Komplex Trojan) (Citation: Antiquated Mac Malware). Files and folders that start with a period, \u2018.\u2019, are by default hidden from being viewed in the Finder application and standard command-line utilities like \u201cls\u201d. Users must specifically change settings to have these files viewable.\n\nFiles on macOS can also be marked with the UF_HIDDEN flag which prevents them from being seen in Finder.app, but still allows them to be seen in Terminal.app (Citation: WireLurker). On Windows, users can mark specific files as hidden by using the attrib.exe binary. Many applications create these hidden files and folders to store information so that it doesn\u2019t clutter up the user\u2019s workspace. For example, SSH utilities create a .ssh folder that\u2019s hidden and contains the user\u2019s known hosts and keys.\n\nAdversaries can use this to their advantage to hide files and folders anywhere on the system and evading a typical user or system analysis that does not incorporate investigation of hidden files.",
             "kill_chain_phases": [
                 {
@@ -39,28 +52,20 @@
                 }
             ],
             "x_mitre_detection": "Monitor the file system and shell commands for files being created with a leading \".\" and the Windows command-line use of attrib.exe to add the hidden attribute.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1564/001",
-                    "external_id": "T1564.001",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "Sofacy Komplex Trojan",
-                    "description": "Dani Creus, Tyler Halfpop, Robert Falcone. (2016, September 26). Sofacy's 'Komplex' OS X Trojan. Retrieved July 8, 2017.",
-                    "url": "https://researchcenter.paloaltonetworks.com/2016/09/unit42-sofacys-komplex-os-x-trojan/"
-                },
-                {
-                    "source_name": "Antiquated Mac Malware",
-                    "description": "Thomas Reed. (2017, January 18). New Mac backdoor using antiquated code. Retrieved July 5, 2017.",
-                    "url": "https://blog.malwarebytes.com/threat-analysis/2017/01/new-mac-backdoor-using-antiquated-code/"
-                },
-                {
-                    "source_name": "WireLurker",
-                    "description": "Claud Xiao. (n.d.). WireLurker: A New Era in iOS and OS X Malware. Retrieved July 10, 2017.",
-                    "url": "https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/reports/Unit_42/unit42-wirelurker.pdf"
-                }
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "Process: Process Creation",
+                "Command: Command Execution",
+                "File: File Metadata"
+            ],
+            "x_mitre_defense_bypassed": [
+                "Host forensic analysis"
+            ],
+            "x_mitre_permissions_required": [
+                "User"
             ]
         }
     ]

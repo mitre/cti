@@ -1,31 +1,67 @@
 {
     "type": "bundle",
-    "id": "bundle--f28e2a0a-cbcc-4e68-a686-d0f07e554b60",
+    "id": "bundle--184789df-17d1-4239-b5c1-37a543d67c0d",
     "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "modified": "2020-01-31T18:59:38.256Z",
-            "name": "InstallUtil",
-            "created": "2017-05-31T21:31:27.510Z",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Casey Smith",
+                "Travis Smith, Tripwire"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "id": "attack-pattern--f792d02f-813d-402b-86a5-ab98cb391d3b",
+            "type": "attack-pattern",
+            "created": "2017-05-31T21:31:27.510Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": true,
             "external_references": [
                 {
-                    "source_name": "mitre-attack",
                     "external_id": "T1118",
-                    "url": "https://attack.mitre.org/techniques/T1118"
+                    "url": "https://attack.mitre.org/techniques/T1118",
+                    "source_name": "mitre-attack"
                 },
                 {
-                    "url": "https://msdn.microsoft.com/en-us/library/50614e95.aspx",
+                    "source_name": "MSDN InstallUtil",
                     "description": "Microsoft. (n.d.). Installutil.exe (Installer Tool). Retrieved July 1, 2016.",
-                    "source_name": "MSDN InstallUtil"
+                    "url": "https://msdn.microsoft.com/en-us/library/50614e95.aspx"
                 },
                 {
+                    "source_name": "LOLBAS Installutil",
                     "url": "https://lolbas-project.github.io/lolbas/Binaries/Installutil/",
-                    "description": "LOLBAS. (n.d.). Installutil.exe. Retrieved July 31, 2019.",
-                    "source_name": "LOLBAS Installutil"
+                    "description": "LOLBAS. (n.d.). Installutil.exe. Retrieved July 31, 2019."
                 }
+            ],
+            "modified": "2020-01-31T18:59:38.256Z",
+            "name": "InstallUtil",
+            "description": "InstallUtil is a command-line utility that allows for installation and uninstallation of resources by executing specific installer components specified in .NET binaries. (Citation: MSDN InstallUtil) InstallUtil is located in the .NET directories on a Windows system: <code>C:\\Windows\\Microsoft.NET\\Framework\\v<version>\\InstallUtil.exe</code> and <code>C:\\Windows\\Microsoft.NET\\Framework64\\v<version>\\InstallUtil.exe</code>. InstallUtil.exe is digitally signed by Microsoft.\n\nAdversaries may use InstallUtil to proxy execution of code through a trusted Windows utility. InstallUtil may also be used to bypass process whitelisting through use of attributes within the binary that execute the class decorated with the attribute <code>[System.ComponentModel.RunInstaller(true)]</code>. (Citation: LOLBAS Installutil)",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-attack"
+                },
+                {
+                    "phase_name": "execution",
+                    "kill_chain_name": "mitre-attack"
+                }
+            ],
+            "x_mitre_detection": "Use process monitoring to monitor the execution and arguments of InstallUtil.exe. Compare recent invocations of InstallUtil.exe with prior history of known good arguments and executed binaries to determine anomalous and potentially adversarial activity. Command arguments used before and after the InstallUtil.exe invocation may also be useful in determining the origin and purpose of the binary being executed.",
+            "x_mitre_version": "1.2",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [],
+            "x_mitre_defense_bypassed": [
+                "Process whitelisting",
+                "Digital Certificate Validation"
+            ],
+            "x_mitre_permissions_required": [
+                "User"
             ]
         }
     ]

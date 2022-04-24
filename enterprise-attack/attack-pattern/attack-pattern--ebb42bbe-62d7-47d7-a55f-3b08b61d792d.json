@@ -1,37 +1,78 @@
 {
     "type": "bundle",
-    "id": "bundle--1f4d6b9e-8cde-49ca-a039-285c6fdbefb4",
+    "id": "bundle--5c0d70c3-4107-4cd6-a210-010e8114069f",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "name": "Domain Policy Modification",
-            "x_mitre_data_sources": [
-                "Active Directory: Active Directory Object Creation",
-                "Active Directory: Active Directory Object Deletion",
-                "Active Directory: Active Directory Object Modification",
-                "Command: Command Execution"
-            ],
-            "x_mitre_version": "2.0",
-            "modified": "2021-02-09T15:52:24.598Z",
-            "created": "2019-03-07T14:10:32.650Z",
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "User"
-            ],
-            "x_mitre_defense_bypassed": [
-                "System access controls",
-                "File system access controls"
-            ],
             "x_mitre_platforms": [
                 "Windows",
                 "Azure AD"
             ],
-            "x_mitre_is_subtechnique": false,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "id": "attack-pattern--ebb42bbe-62d7-47d7-a55f-3b08b61d792d",
+            "type": "attack-pattern",
+            "created": "2019-03-07T14:10:32.650Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1484",
+                    "url": "https://attack.mitre.org/techniques/T1484"
+                },
+                {
+                    "source_name": "ADSecurity GPO Persistence 2016",
+                    "url": "https://adsecurity.org/?p=2716",
+                    "description": "Metcalf, S. (2016, March 14). Sneaky Active Directory Persistence #17: Group Policy. Retrieved March 5, 2019."
+                },
+                {
+                    "description": "Robbins, A. (2018, April 2). A Red Teamer\u2019s Guide to GPOs and OUs. Retrieved March 5, 2019.",
+                    "url": "https://wald0.com/?p=179",
+                    "source_name": "Wald0 Guide to GPOs"
+                },
+                {
+                    "source_name": "Harmj0y Abusing GPO Permissions",
+                    "url": "http://www.harmj0y.net/blog/redteaming/abusing-gpo-permissions/",
+                    "description": "Schroeder, W. (2016, March 17). Abusing GPO Permissions. Retrieved March 5, 2019."
+                },
+                {
+                    "source_name": "Microsoft - Customer Guidance on Recent Nation-State Cyber Attacks",
+                    "url": "https://msrc-blog.microsoft.com/2020/12/13/customer-guidance-on-recent-nation-state-cyber-attacks/",
+                    "description": "MSRC. (2020, December 13). Customer Guidance on Recent Nation-State Cyber Attacks. Retrieved December 30, 2020."
+                },
+                {
+                    "source_name": "Microsoft - Azure Sentinel ADFSDomainTrustMods",
+                    "url": "https://github.com/Azure/Azure-Sentinel/blob/master/Detections/AuditLogs/ADFSDomainTrustMods.yaml",
+                    "description": "Microsoft. (2020, December). Azure Sentinel Detections. Retrieved December 30, 2020."
+                },
+                {
+                    "source_name": "Microsoft 365 Defender Solorigate",
+                    "url": "https://www.microsoft.com/security/blog/2020/12/28/using-microsoft-365-defender-to-coordinate-protection-against-solorigate/",
+                    "description": "Microsoft 365 Defender Team. (2020, December 28). Using Microsoft 365 Defender to protect against Solorigate. Retrieved January 7, 2021."
+                },
+                {
+                    "source_name": "Sygnia Golden SAML",
+                    "url": "https://www.sygnia.co/golden-saml-advisory",
+                    "description": "Sygnia. (2020, December). Detection and Hunting of Golden SAML Attack. Retrieved January 6, 2021."
+                },
+                {
+                    "source_name": "CISA SolarWinds Cloud Detection",
+                    "url": "https://us-cert.cisa.gov/ncas/alerts/aa21-008a",
+                    "description": "CISA. (2021, January 8). Detecting Post-Compromise Threat Activity in Microsoft Cloud Environments. Retrieved January 8, 2021."
+                },
+                {
+                    "source_name": "Microsoft - Update or Repair Federated domain",
+                    "url": "https://docs.microsoft.com/en-us/office365/troubleshoot/active-directory/update-federated-domain-office-365",
+                    "description": "Microsoft. (2020, September 14). Update or repair the settings of a federated domain in Office 365, Azure, or Intune. Retrieved December 30, 2020."
+                }
+            ],
+            "modified": "2021-02-09T15:52:24.598Z",
+            "name": "Domain Policy Modification",
             "description": "Adversaries may modify the configuration settings of a domain to evade defenses and/or escalate privileges in domain environments. Domains provide a centralized means of managing how computer resources (ex: computers, user accounts) can act, and interact with each other, on a network. The policy of the domain also includes configuration settings that may apply between domains in a multi-domain/forest environment. Modifications to domain settings may include altering domain Group Policy Objects (GPOs) or changing trust settings for domains, including federation trusts.\n\nWith sufficient permissions, adversaries can modify domain policy settings. Since domain configuration settings control many of the interactions within the Active Directory (AD) environment, there are a great number of potential attacks that can stem from this abuse. Examples of such abuse include modifying GPOs to push a malicious [Scheduled Task](https://attack.mitre.org/techniques/T1053/005) to computers throughout the domain environment(Citation: ADSecurity GPO Persistence 2016)(Citation: Wald0 Guide to GPOs)(Citation: Harmj0y Abusing GPO Permissions) or modifying domain trusts to include an adversary controlled domain where they can control access tokens that will subsequently be accepted by victim domain resources.(Citation: Microsoft - Customer Guidance on Recent Nation-State Cyber Attacks) Adversaries can also change configuration settings within the AD environment to implement a [Rogue Domain Controller](https://attack.mitre.org/techniques/T1207).\n\nAdversaries may temporarily modify domain policy, carry out a malicious action(s), and then revert the change to remove suspicious indicators.",
             "kill_chain_phases": [
                 {
@@ -44,58 +85,21 @@
                 }
             ],
             "x_mitre_detection": "It may be possible to detect domain policy modifications using Windows event logs. Group policy modifications, for example, may be logged under a variety of Windows event IDs for modifying, creating, undeleting, moving, and deleting directory service objects (Event ID 5136, 5137, 5138, 5139, 5141 respectively). Monitor for modifications to domain trust settings, such as when a user or application modifies the federation settings on the domain or updates domain authentication from Managed to Federated via ActionTypes <code>Set federation settings on domain</code> and <code>Set domain authentication</code>.(Citation: Microsoft - Azure Sentinel ADFSDomainTrustMods)(Citation: Microsoft 365 Defender Solorigate) This may also include monitoring for Event ID 307 which can be correlated to relevant Event ID 510 with the same Instance ID for change details.(Citation: Sygnia Golden SAML)(Citation: CISA SolarWinds Cloud Detection)\n\nConsider monitoring for commands/cmdlets and command-line arguments that may be leveraged to modify domain policy settings.(Citation: Microsoft - Update or Repair Federated domain) Some domain policy modifications, such as changes to federation settings, are likely to be rare.(Citation: Microsoft 365 Defender Solorigate)",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1484",
-                    "external_id": "T1484",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "url": "https://adsecurity.org/?p=2716",
-                    "description": "Metcalf, S. (2016, March 14). Sneaky Active Directory Persistence #17: Group Policy. Retrieved March 5, 2019.",
-                    "source_name": "ADSecurity GPO Persistence 2016"
-                },
-                {
-                    "source_name": "Wald0 Guide to GPOs",
-                    "description": "Robbins, A. (2018, April 2). A Red Teamer\u2019s Guide to GPOs and OUs. Retrieved March 5, 2019.",
-                    "url": "https://wald0.com/?p=179"
-                },
-                {
-                    "url": "http://www.harmj0y.net/blog/redteaming/abusing-gpo-permissions/",
-                    "description": "Schroeder, W. (2016, March 17). Abusing GPO Permissions. Retrieved March 5, 2019.",
-                    "source_name": "Harmj0y Abusing GPO Permissions"
-                },
-                {
-                    "url": "https://msrc-blog.microsoft.com/2020/12/13/customer-guidance-on-recent-nation-state-cyber-attacks/",
-                    "description": "MSRC. (2020, December 13). Customer Guidance on Recent Nation-State Cyber Attacks. Retrieved December 30, 2020.",
-                    "source_name": "Microsoft - Customer Guidance on Recent Nation-State Cyber Attacks"
-                },
-                {
-                    "url": "https://github.com/Azure/Azure-Sentinel/blob/master/Detections/AuditLogs/ADFSDomainTrustMods.yaml",
-                    "description": "Microsoft. (2020, December). Azure Sentinel Detections. Retrieved December 30, 2020.",
-                    "source_name": "Microsoft - Azure Sentinel ADFSDomainTrustMods"
-                },
-                {
-                    "url": "https://www.microsoft.com/security/blog/2020/12/28/using-microsoft-365-defender-to-coordinate-protection-against-solorigate/",
-                    "description": "Microsoft 365 Defender Team. (2020, December 28). Using Microsoft 365 Defender to protect against Solorigate. Retrieved January 7, 2021.",
-                    "source_name": "Microsoft 365 Defender Solorigate"
-                },
-                {
-                    "url": "https://www.sygnia.co/golden-saml-advisory",
-                    "description": "Sygnia. (2020, December). Detection and Hunting of Golden SAML Attack. Retrieved January 6, 2021.",
-                    "source_name": "Sygnia Golden SAML"
-                },
-                {
-                    "url": "https://us-cert.cisa.gov/ncas/alerts/aa21-008a",
-                    "description": "CISA. (2021, January 8). Detecting Post-Compromise Threat Activity in Microsoft Cloud Environments. Retrieved January 8, 2021.",
-                    "source_name": "CISA SolarWinds Cloud Detection"
-                },
-                {
-                    "url": "https://docs.microsoft.com/en-us/office365/troubleshoot/active-directory/update-federated-domain-office-365",
-                    "description": "Microsoft. (2020, September 14). Update or repair the settings of a federated domain in Office 365, Azure, or Intune. Retrieved December 30, 2020.",
-                    "source_name": "Microsoft - Update or Repair Federated domain"
-                }
+            "x_mitre_version": "2.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "Active Directory: Active Directory Object Creation",
+                "Active Directory: Active Directory Object Deletion",
+                "Command: Command Execution",
+                "Active Directory: Active Directory Object Modification"
+            ],
+            "x_mitre_defense_bypassed": [
+                "System access controls",
+                "File system access controls"
+            ],
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "User"
             ]
         }
     ]

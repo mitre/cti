@@ -1,23 +1,43 @@
 {
     "type": "bundle",
-    "id": "bundle--d0782667-3d0c-4f17-9372-f96dadb9acf7",
+    "id": "bundle--9debd050-2fab-4fdf-8864-b2989cde2dbd",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "id": "attack-pattern--8faedf87-dceb-4c35-b2a2-7286f59a3bc3",
             "type": "attack-pattern",
-            "name": "Launchd",
-            "x_mitre_data_sources": [
-                "Scheduled Job: Scheduled Job Creation",
-                "Command: Command Execution",
-                "File: File Modification",
-                "Process: Process Creation"
-            ],
-            "x_mitre_version": "1.0",
-            "modified": "2021-10-07T21:38:03.610Z",
             "created": "2019-12-03T14:15:27.452Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1053.004",
+                    "url": "https://attack.mitre.org/techniques/T1053/004"
+                },
+                {
+                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html",
+                    "description": "Apple. (n.d.). Creating Launch Daemons and Agents. Retrieved July 10, 2017.",
+                    "source_name": "AppleDocs Launch Agent Daemons"
+                },
+                {
+                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
+                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
+                    "source_name": "Methods of Mac Malware Persistence"
+                }
+            ],
+            "modified": "2021-10-07T21:38:03.610Z",
+            "name": "Launchd",
+            "description": "This technique is deprecated due to the inaccurate usage. The report cited did not provide technical detail as to how the malware interacted directly with launchd rather than going through known services. Other system services are used to interact with launchd rather than launchd being used by itself. \n\nAdversaries may abuse the <code>Launchd</code> daemon to perform task scheduling for initial or recurring execution of malicious code. The <code>launchd</code> daemon, native to macOS, is responsible for loading and maintaining services within the operating system. This process loads the parameters for each launch-on-demand system-level daemon from the property list (plist) files found in <code>/System/Library/LaunchDaemons</code> and <code>/Library/LaunchDaemons</code> (Citation: AppleDocs Launch Agent Daemons). These LaunchDaemons have property list files which point to the executables that will be launched (Citation: Methods of Mac Malware Persistence).\n\nAn adversary may use the <code>launchd</code> daemon in macOS environments to schedule new executables to run at system startup or on a scheduled basis for persistence. <code>launchd</code> can also be abused to run a process under the context of a specified account. Daemons, such as <code>launchd</code>, run with the permissions of the root user account, and will operate regardless of which user account is logged in.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -32,35 +52,14 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "x_mitre_deprecated": true,
-            "id": "attack-pattern--8faedf87-dceb-4c35-b2a2-7286f59a3bc3",
-            "x_mitre_platforms": [
-                "macOS"
-            ],
+            "x_mitre_detection": "Monitor scheduled task creation from common utilities using command-line invocation. Legitimate scheduled tasks may be created during installation of new software or through system administration functions. Look for changes to tasks that do not correlate with known software, patch cycles, etc. \n\nSuspicious program execution through scheduled tasks may show up as outlier processes that have not been seen before when compared against historical data. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
             "x_mitre_is_subtechnique": true,
+            "x_mitre_deprecated": true,
+            "x_mitre_version": "1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [],
             "x_mitre_permissions_required": [
                 "root"
-            ],
-            "description": "This technique is deprecated due to the inaccurate usage. The report cited did not provide technical detail as to how the malware interacted directly with launchd rather than going through known services. Other system services are used to interact with launchd rather than launchd being used by itself. \n\nAdversaries may abuse the <code>Launchd</code> daemon to perform task scheduling for initial or recurring execution of malicious code. The <code>launchd</code> daemon, native to macOS, is responsible for loading and maintaining services within the operating system. This process loads the parameters for each launch-on-demand system-level daemon from the property list (plist) files found in <code>/System/Library/LaunchDaemons</code> and <code>/Library/LaunchDaemons</code> (Citation: AppleDocs Launch Agent Daemons). These LaunchDaemons have property list files which point to the executables that will be launched (Citation: Methods of Mac Malware Persistence).\n\nAn adversary may use the <code>launchd</code> daemon in macOS environments to schedule new executables to run at system startup or on a scheduled basis for persistence. <code>launchd</code> can also be abused to run a process under the context of a specified account. Daemons, such as <code>launchd</code>, run with the permissions of the root user account, and will operate regardless of which user account is logged in.",
-            "x_mitre_remote_support": false,
-            "x_mitre_detection": "Monitor scheduled task creation from common utilities using command-line invocation. Legitimate scheduled tasks may be created during installation of new software or through system administration functions. Look for changes to tasks that do not correlate with known software, patch cycles, etc. \n\nSuspicious program execution through scheduled tasks may show up as outlier processes that have not been seen before when compared against historical data. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1053/004",
-                    "external_id": "T1053.004",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "AppleDocs Launch Agent Daemons",
-                    "description": "Apple. (n.d.). Creating Launch Daemons and Agents. Retrieved July 10, 2017.",
-                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html"
-                },
-                {
-                    "source_name": "Methods of Mac Malware Persistence",
-                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
-                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf"
-                }
             ]
         }
     ]

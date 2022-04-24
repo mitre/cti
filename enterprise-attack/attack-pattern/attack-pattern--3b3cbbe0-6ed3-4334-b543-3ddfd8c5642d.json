@@ -1,37 +1,61 @@
 {
     "type": "bundle",
-    "id": "bundle--e55c9961-87f1-4136-927d-84edab09249e",
+    "id": "bundle--447f07ca-87b4-4ec1-8e9e-673bffaa0ba5",
     "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "modified": "2021-07-20T21:57:36.046Z",
-            "name": "Custom Cryptographic Protocol",
-            "created": "2017-05-31T21:30:31.197Z",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "id": "attack-pattern--3b3cbbe0-6ed3-4334-b543-3ddfd8c5642d",
+            "type": "attack-pattern",
+            "created": "2017-05-31T21:30:31.197Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": true,
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1024",
+                    "source_name": "mitre-attack",
                     "external_id": "T1024",
-                    "source_name": "mitre-attack"
+                    "url": "https://attack.mitre.org/techniques/T1024"
                 },
                 {
-                    "source_name": "F-Secure Cosmicduke",
+                    "url": "https://blog.f-secure.com/wp-content/uploads/2019/10/CosmicDuke.pdf",
                     "description": "F-Secure Labs. (2014, July). COSMICDUKE Cosmu with a twist of MiniDuke. Retrieved July 3, 2014.",
-                    "url": "https://blog.f-secure.com/wp-content/uploads/2019/10/CosmicDuke.pdf"
+                    "source_name": "F-Secure Cosmicduke"
                 },
                 {
-                    "source_name": "Fidelis DarkComet",
+                    "url": "https://www.fidelissecurity.com/sites/default/files/FTA_1018_looking_at_the_sky_for_a_dark_comet.pdf",
                     "description": "Fidelis Cybersecurity. (2015, August 4). Looking at the Sky for a DarkComet. Retrieved April 5, 2016.",
-                    "url": "https://www.fidelissecurity.com/sites/default/files/FTA_1018_looking_at_the_sky_for_a_dark_comet.pdf"
+                    "source_name": "Fidelis DarkComet"
                 },
                 {
-                    "source_name": "University of Birmingham C2",
+                    "url": "https://arxiv.org/ftp/arxiv/papers/1408/1408.1136.pdf",
                     "description": "Gardiner, J.,  Cova, M., Nagaraja, S. (2014, February). Command & Control Understanding, Denying and Detecting. Retrieved April 20, 2016.",
-                    "url": "https://arxiv.org/ftp/arxiv/papers/1408/1408.1136.pdf"
+                    "source_name": "University of Birmingham C2"
                 }
-            ]
+            ],
+            "modified": "2021-07-20T21:57:36.046Z",
+            "name": "Custom Cryptographic Protocol",
+            "description": "Adversaries may use a custom cryptographic protocol or algorithm to hide command and control traffic. A simple scheme, such as XOR-ing the plaintext with a fixed key, will produce a very weak ciphertext.\n\nCustom encryption schemes may vary in sophistication. Analysis and reverse engineering of malware samples may be enough to discover the algorithm and encryption key used.\n\nSome adversaries may also attempt to implement their own version of a well-known cryptographic algorithm instead of using a known implementation library, which may lead to unintentional errors. (Citation: F-Secure Cosmicduke)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "command-and-control"
+                }
+            ],
+            "x_mitre_detection": "If malware uses custom encryption with symmetric keys, it may be possible to obtain the algorithm and key from samples and use them to decode network traffic to detect malware communications signatures. (Citation: Fidelis DarkComet)\n\nIn general, analyze network data for uncommon data flows (e.g., a client sending significantly more data than it receives from a server). Processes utilizing the network that do not normally have network communication or have never been seen before are suspicious. Analyze packet contents to detect when communications do not follow the expected protocol behavior for the port that is being used. (Citation: University of Birmingham C2)",
+            "x_mitre_version": "1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": []
         }
     ]
 }

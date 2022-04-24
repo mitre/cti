@@ -1,22 +1,70 @@
 {
     "type": "bundle",
-    "id": "bundle--c5a29022-9cb0-4320-b59b-b01a86e17988",
+    "id": "bundle--8539d4d8-aa23-46ac-adac-5ec57f1808b9",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Windows",
+                "Azure AD",
+                "Office 365",
+                "SaaS",
+                "IaaS",
+                "Linux",
+                "macOS",
+                "Google Workspace",
+                "Containers"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Syed Ummar Farooqh, McAfee",
+                "Prasad Somasamudram, McAfee",
+                "Sekhar Sarukkai, McAfee ",
+                "Jon Sternstein, Stern Security",
+                "Yossi Weizman, Azure Defender Research Team",
+                "Netskope",
+                "Mark Wee",
+                "Praetorian"
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "id": "attack-pattern--b17a1a56-e99c-403c-8948-561df0cffe81",
             "type": "attack-pattern",
-            "name": "Valid Accounts",
-            "x_mitre_data_sources": [
-                "Logon Session: Logon Session Metadata",
-                "User Account: User Account Authentication",
-                "Logon Session: Logon Session Creation"
-            ],
-            "x_mitre_version": "2.3",
-            "modified": "2021-10-19T03:29:48.018Z",
             "created": "2017-05-31T21:31:00.645Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1078",
+                    "url": "https://attack.mitre.org/techniques/T1078"
+                },
+                {
+                    "external_id": "CAPEC-560",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/560.html"
+                },
+                {
+                    "source_name": "CISA MFA PrintNightmare",
+                    "url": "https://www.cisa.gov/uscert/ncas/alerts/aa22-074a",
+                    "description": "Cybersecurity and Infrastructure Security Agency. (2022, March 15). Russian State-Sponsored Cyber Actors Gain Network Access by Exploiting Default Multifactor Authentication Protocols and \u201cPrintNightmare\u201d Vulnerability. Retrieved March 16, 2022."
+                },
+                {
+                    "url": "https://technet.microsoft.com/en-us/library/dn535501.aspx",
+                    "description": "Microsoft. (2016, April 15). Attractive Accounts for Credential Theft. Retrieved June 3, 2016.",
+                    "source_name": "TechNet Credential Theft"
+                },
+                {
+                    "url": "https://technet.microsoft.com/en-us/library/dn487457.aspx",
+                    "description": "Microsoft. (2016, April 15). Audit Policy Recommendations. Retrieved June 3, 2016.",
+                    "source_name": "TechNet Audit Policy"
+                }
+            ],
+            "modified": "2022-04-01T15:20:44.039Z",
+            "name": "Valid Accounts",
+            "description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Compromised credentials may be used to bypass access controls placed on various resources on systems within the network and may even be used for persistent access to remote systems and externally available services, such as VPNs, Outlook Web Access and remote desktop. Compromised credentials may also grant an adversary increased privilege to specific systems or access to restricted areas of the network. Adversaries may choose not to use malware or tools in conjunction with the legitimate access those credentials provide to make it harder to detect their presence.\n\nIn some cases, adversaries may abuse inactive accounts: for example, those belonging to individuals who are no longer part of an organization. Using these accounts may allow the adversary to evade detection, as the original account user will not be present to identify any anomalous activity taking place on their account.(Citation: CISA MFA PrintNightmare)\n\nThe overlap of permissions for local, domain, and cloud accounts across a network of systems is of concern because the adversary may be able to pivot across accounts and systems to reach a high level of access (i.e., domain or enterprise administrator) to bypass access controls set within the enterprise.(Citation: TechNet Credential Theft)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -35,7 +83,14 @@
                     "phase_name": "initial-access"
                 }
             ],
-            "id": "attack-pattern--b17a1a56-e99c-403c-8948-561df0cffe81",
+            "x_mitre_detection": "Configure robust, consistent account activity audit policies across the enterprise and with externally accessible services.(Citation: TechNet Audit Policy) Look for suspicious account behavior across systems that share accounts, either user, admin, or service accounts. Examples: one account logged into multiple systems simultaneously; multiple accounts logged into the same machine simultaneously; accounts logged in at odd times or outside of business hours. Activity may be from interactive login sessions or process ownership from accounts being used to execute binaries on a remote system as a particular account. Correlate other security systems with login information (e.g., a user has an active login session but has not entered the building or does not have VPN access).\n\nPerform regular audits of domain and local system accounts to detect accounts that may have been created by an adversary for persistence. Checks on these accounts could also include whether default accounts such as Guest have been activated. These audits should also include checks on any appliances and applications for default credentials or SSH keys, and if any are discovered, they should be updated immediately.",
+            "x_mitre_version": "2.4",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "Logon Session: Logon Session Metadata",
+                "User Account: User Account Authentication",
+                "Logon Session: Logon Session Creation"
+            ],
             "x_mitre_defense_bypassed": [
                 "Firewall",
                 "Host intrusion prevention systems",
@@ -44,57 +99,13 @@
                 "System access controls",
                 "Anti-virus"
             ],
-            "x_mitre_platforms": [
-                "Windows",
-                "Azure AD",
-                "Office 365",
-                "SaaS",
-                "IaaS",
-                "Linux",
-                "macOS",
-                "Google Workspace",
-                "Containers"
-            ],
-            "x_mitre_is_subtechnique": false,
             "x_mitre_permissions_required": [
                 "User",
                 "Administrator"
             ],
-            "description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion. Compromised credentials may be used to bypass access controls placed on various resources on systems within the network and may even be used for persistent access to remote systems and externally available services, such as VPNs, Outlook Web Access and remote desktop. Compromised credentials may also grant an adversary increased privilege to specific systems or access to restricted areas of the network. Adversaries may choose not to use malware or tools in conjunction with the legitimate access those credentials provide to make it harder to detect their presence.\n\nThe overlap of permissions for local, domain, and cloud accounts across a network of systems is of concern because the adversary may be able to pivot across accounts and systems to reach a high level of access (i.e., domain or enterprise administrator) to bypass access controls set within the enterprise. (Citation: TechNet Credential Theft)",
             "x_mitre_effective_permissions": [
                 "User",
                 "Administrator"
-            ],
-            "x_mitre_contributors": [
-                "Jon Sternstein, Stern Security",
-                "Yossi Weizman, Azure Defender Research Team",
-                "Netskope",
-                "Mark Wee",
-                "Praetorian"
-            ],
-            "x_mitre_detection": "Configure robust, consistent account activity audit policies across the enterprise and with externally accessible services. (Citation: TechNet Audit Policy) Look for suspicious account behavior across systems that share accounts, either user, admin, or service accounts. Examples: one account logged into multiple systems simultaneously; multiple accounts logged into the same machine simultaneously; accounts logged in at odd times or outside of business hours. Activity may be from interactive login sessions or process ownership from accounts being used to execute binaries on a remote system as a particular account. Correlate other security systems with login information (e.g., a user has an active login session but has not entered the building or does not have VPN access).\n\nPerform regular audits of domain and local system accounts to detect accounts that may have been created by an adversary for persistence. Checks on these accounts could also include whether default accounts such as Guest have been activated. These audits should also include checks on any appliances and applications for default credentials or SSH keys, and if any are discovered, they should be updated immediately.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1078",
-                    "external_id": "T1078",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "url": "https://capec.mitre.org/data/definitions/560.html",
-                    "external_id": "CAPEC-560",
-                    "source_name": "capec"
-                },
-                {
-                    "source_name": "TechNet Credential Theft",
-                    "description": "Microsoft. (2016, April 15). Attractive Accounts for Credential Theft. Retrieved June 3, 2016.",
-                    "url": "https://technet.microsoft.com/en-us/library/dn535501.aspx"
-                },
-                {
-                    "source_name": "TechNet Audit Policy",
-                    "description": "Microsoft. (2016, April 15). Audit Policy Recommendations. Retrieved June 3, 2016.",
-                    "url": "https://technet.microsoft.com/en-us/library/dn487457.aspx"
-                }
             ]
         }
     ]

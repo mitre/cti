@@ -1,56 +1,78 @@
 {
     "type": "bundle",
-    "id": "bundle--09f5a407-e30a-4272-b3a9-717ea3f8d76e",
+    "id": "bundle--4d74b79e-4966-4408-9de2-8e27b26567fd",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Praetorian",
+                "Darin Smith, Cisco"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "type": "attack-pattern",
-            "modified": "2021-03-08T10:33:01.280Z",
-            "name": "Transfer Data to Cloud Account",
+            "id": "attack-pattern--d4bdbdea-eaec-4071-b4f9-5105e12ea4b6",
+            "created": "2019-08-30T13:03:04.038Z",
+            "x_mitre_version": "1.2",
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1537",
+                    "source_name": "mitre-attack",
                     "external_id": "T1537",
-                    "source_name": "mitre-attack"
+                    "url": "https://attack.mitre.org/techniques/T1537"
                 },
                 {
+                    "source_name": "AWS EBS Snapshot Sharing",
+                    "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-modifying-snapshot-permissions.html",
+                    "description": "Amazon Web Services. (n.d.). Share an Amazon EBS snapshot. Retrieved March 2, 2022."
+                },
+                {
+                    "source_name": "Azure Shared Access Signature",
+                    "url": "https://docs.microsoft.com/en-us/rest/api/storageservices/delegate-access-with-shared-access-signature",
+                    "description": "Delegate access with a shared access signature. (2019, December 18). Delegate access with a shared access signature. Retrieved March 2, 2022."
+                },
+                {
+                    "source_name": "Azure Blob Snapshots",
+                    "url": "https://docs.microsoft.com/en-us/azure/storage/blobs/snapshots-overview",
+                    "description": "Microsoft Azure. (2021, December 29). Blob snapshots. Retrieved March 2, 2022."
+                },
+                {
+                    "source_name": "DOJ GRU Indictment Jul 2018",
                     "url": "https://www.justice.gov/file/1080281/download",
-                    "description": "Mueller, R. (2018, July 13). Indictment - United States of America vs. VIKTOR BORISOVICH NETYKSHO, et al. Retrieved September 13, 2018.",
-                    "source_name": "DOJ GRU Indictment Jul 2018"
+                    "description": "Mueller, R. (2018, July 13). Indictment - United States of America vs. VIKTOR BORISOVICH NETYKSHO, et al. Retrieved September 13, 2018."
                 }
             ],
-            "x_mitre_data_sources": [
-                "Snapshot: Snapshot Creation",
-                "Snapshot: Snapshot Modification",
-                "Cloud Storage: Cloud Storage Modification",
-                "Cloud Storage: Cloud Storage Creation"
-            ],
-            "x_mitre_version": "1.1",
-            "created": "2019-08-30T13:03:04.038Z",
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may exfiltrate data by transferring the data, including backups of cloud environments, to another cloud account they control on the same service to avoid typical file transfers/downloads and network-based exfiltration detection.\n\nA defender who is monitoring for large transfers to outside the cloud environment through normal file transfers or over command and control channels may not be watching for data transfers to another account within the same cloud provider. Such transfers may utilize existing cloud provider APIs and the internal address space of the cloud provider to blend into normal traffic or avoid data transfers over external network interfaces.\n\nIncidents have been observed where adversaries have created backups of cloud instances and transferred them to separate accounts.(Citation: DOJ GRU Indictment Jul 2018) ",
+            "modified": "2022-04-19T16:11:19.296Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Transfer Data to Cloud Account",
+            "x_mitre_detection": "Monitor account activity for attempts to share data, snapshots, or backups with untrusted or unusual accounts on the same cloud service provider. Monitor for anomalous file transfer activity between accounts and to untrusted VPCs. \n\nIn AWS, sharing an Elastic Block Store (EBS) snapshot, either with specified users or publicly, generates a ModifySnapshotAttribute event in CloudTrail logs.(Citation: AWS EBS Snapshot Sharing) Similarly, in Azure, creating a Shared Access Signature (SAS) URI for a Virtual Hard Disk (VHS) snapshot generates a \"Get Snapshot SAS URL\" event in Activity Logs.(Citation: Azure Blob Snapshots)(Citation: Azure Shared Access Signature)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "exfiltration"
                 }
             ],
-            "id": "attack-pattern--d4bdbdea-eaec-4071-b4f9-5105e12ea4b6",
-            "x_mitre_network_requirements": true,
             "x_mitre_is_subtechnique": false,
-            "x_mitre_permissions_required": [
-                "User"
+            "x_mitre_data_sources": [
+                "Snapshot: Snapshot Creation",
+                "Cloud Storage: Cloud Storage Metadata",
+                "Cloud Storage: Cloud Storage Modification",
+                "Snapshot: Snapshot Modification",
+                "Cloud Storage: Cloud Storage Creation",
+                "Snapshot: Snapshot Metadata"
             ],
-            "description": "Adversaries may exfiltrate data by transferring the data, including backups of cloud environments, to another cloud account they control on the same service to avoid typical file transfers/downloads and network-based exfiltration detection.\n\nA defender who is monitoring for large transfers to outside the cloud environment through normal file transfers or over command and control channels may not be watching for data transfers to another account within the same cloud provider. Such transfers may utilize existing cloud provider APIs and the internal address space of the cloud provider to blend into normal traffic or avoid data transfers over external network interfaces.\n\nIncidents have been observed where adversaries have created backups of cloud instances and transferred them to separate accounts.(Citation: DOJ GRU Indictment Jul 2018) ",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_contributors": [
-                "Praetorian"
-            ],
-            "x_mitre_detection": "Monitor account activity for attempts to share data, snapshots, or backups with untrusted or unusual accounts on the same cloud service provider. Monitor for anomalous file transfer activity between accounts and to untrusted VPCs. ",
-            "x_mitre_platforms": [
-                "IaaS"
-            ],
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_system_requirements": [],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

@@ -1,36 +1,70 @@
 {
     "type": "bundle",
-    "id": "bundle--fdecc420-3c56-4e03-bf8f-b633fe033957",
+    "id": "bundle--136572c9-d9b1-4df6-a45a-5c90090efa6f",
     "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "modified": "2020-11-10T18:29:30.350Z",
-            "name": "AppCert DLLs",
-            "created": "2018-01-16T16:13:52.465Z",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "id": "attack-pattern--4bf5845d-a814-4490-bc5c-ccdee6043025",
+            "type": "attack-pattern",
+            "created": "2018-01-16T16:13:52.465Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": true,
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1182",
+                    "source_name": "mitre-attack",
                     "external_id": "T1182",
-                    "source_name": "mitre-attack"
+                    "url": "https://attack.mitre.org/techniques/T1182"
                 },
                 {
-                    "source_name": "Elastic Process Injection July 2017",
+                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
                     "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
-                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process"
+                    "source_name": "Elastic Process Injection July 2017"
                 },
                 {
-                    "source_name": "TechNet Autoruns",
+                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902",
                     "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
-                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902"
+                    "source_name": "TechNet Autoruns"
                 },
                 {
-                    "source_name": "Sysinternals AppCertDlls Oct 2007",
+                    "url": "https://forum.sysinternals.com/appcertdlls_topic12546.html",
                     "description": "Microsoft. (2007, October 24). Windows Sysinternals - AppCertDlls. Retrieved December 18, 2017.",
-                    "url": "https://forum.sysinternals.com/appcertdlls_topic12546.html"
+                    "source_name": "Sysinternals AppCertDlls Oct 2007"
                 }
+            ],
+            "modified": "2020-11-10T18:29:30.350Z",
+            "name": "AppCert DLLs",
+            "description": "Dynamic-link libraries (DLLs) that are specified in the AppCertDLLs Registry key under <code>HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\Session Manager</code> are loaded into every process that calls the ubiquitously used application programming interface (API) functions CreateProcess, CreateProcessAsUser, CreateProcessWithLoginW, CreateProcessWithTokenW, or WinExec. (Citation: Elastic Process Injection July 2017)\n\nSimilar to [Process Injection](https://attack.mitre.org/techniques/T1055), this value can be abused to obtain persistence and privilege escalation by causing a malicious DLL to be loaded and run in the context of separate processes on the computer.",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "x_mitre_detection": "Monitor DLL loads by processes, specifically looking for DLLs that are not recognized or not normally loaded into a process. Monitor the AppCertDLLs Registry value for modifications that do not correlate with known software, patch cycles, etc. Monitor and analyze application programming interface (API) calls that are indicative of Registry edits such as RegCreateKeyEx and RegSetValueEx. (Citation: Elastic Process Injection July 2017) \n\nTools such as Sysinternals Autoruns may overlook AppCert DLLs as an auto-starting location. (Citation: TechNet Autoruns) (Citation: Sysinternals AppCertDlls Oct 2007)\n\nLook for abnormal process behavior that may be due to a process loading a malicious DLL. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as making network connections for Command and Control, learning details about the environment through Discovery, and conducting Lateral Movement.",
+            "x_mitre_version": "1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [],
+            "x_mitre_permissions_required": [
+                "Administrator",
+                "SYSTEM"
+            ],
+            "x_mitre_effective_permissions": [
+                "Administrator",
+                "SYSTEM"
             ]
         }
     ]

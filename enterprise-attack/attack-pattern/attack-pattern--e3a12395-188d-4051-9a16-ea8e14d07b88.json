@@ -1,60 +1,79 @@
 {
     "type": "bundle",
-    "id": "bundle--9f0bbb8b-f619-4aa7-b0a6-9928f22ea96a",
+    "id": "bundle--eb98d466-a6d8-4244-a9cd-4ceefe233393",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Windows",
+                "IaaS",
+                "Linux",
+                "macOS",
+                "Containers",
+                "Network"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Praetorian"
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "type": "attack-pattern",
-            "name": "Network Service Scanning",
-            "x_mitre_data_sources": [
-                "Command: Command Execution",
-                "Cloud Service: Cloud Service Enumeration",
-                "Network Traffic: Network Traffic Flow"
-            ],
-            "x_mitre_version": "2.2",
-            "modified": "2021-04-09T14:56:26.562Z",
+            "id": "attack-pattern--e3a12395-188d-4051-9a16-ea8e14d07b88",
             "created": "2017-05-31T21:30:43.915Z",
+            "x_mitre_version": "3.0",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1046",
+                    "url": "https://attack.mitre.org/techniques/T1046"
+                },
+                {
+                    "source_name": "apple doco bonjour description",
+                    "url": "https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/NetServices/Introduction.html",
+                    "description": "Apple Inc. (2013, April 23). Bonjour Overview. Retrieved October 11, 2021."
+                },
+                {
+                    "source_name": "CISA AR21-126A FIVEHANDS May 2021",
+                    "url": "https://us-cert.cisa.gov/ncas/analysis-reports/ar21-126a",
+                    "description": "CISA. (2021, May 6). Analysis Report (AR21-126A) FiveHands Ransomware. Retrieved June 7, 2021."
+                },
+                {
+                    "source_name": "macOS APT Activity Bradley",
+                    "url": "https://themittenmac.com/what-does-apt-activity-look-like-on-macos/",
+                    "description": "Jaron Bradley. (2021, November 14). What does APT Activity Look Like on macOS?. Retrieved January 19, 2022."
+                },
+                {
+                    "url": "https://capec.mitre.org/data/definitions/300.html",
+                    "source_name": "capec",
+                    "external_id": "CAPEC-300"
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may attempt to get a listing of services running on remote hosts and local network infrastructure devices, including those that may be vulnerable to remote software exploitation. Common methods to acquire this information include port and/or vulnerability scans using tools that are brought onto a system.(Citation: CISA AR21-126A FIVEHANDS May 2021)   \n\nWithin cloud environments, adversaries may attempt to discover services running on other cloud hosts. Additionally, if the cloud environment is connected to a on-premises environment, adversaries may be able to identify services running on non-cloud systems as well.\n\nWithin macOS environments, adversaries may use the native Bonjour application to discover services running on other macOS hosts within a network. The Bonjour mDNSResponder daemon automatically registers and advertises a host\u2019s registered services on the network. For example, adversaries can use a mDNS query (such as <code>dns-sd -B _ssh._tcp .</code>) to find other systems broadcasting the ssh service.(Citation: apple doco bonjour description)(Citation: macOS APT Activity Bradley)",
+            "modified": "2022-04-20T16:05:30.960Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Network Service Discovery",
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nNormal, benign system and network events from legitimate remote service scanning may be uncommon, depending on the environment and how they are used. Legitimate open port and vulnerability scanning may be conducted within the environment and will need to be deconflicted with any detection capabilities developed. Network intrusion detection systems can also be used to identify scanning activity. Monitor for process use of the networks and inspect intra-network flows to detect port scans.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "discovery"
                 }
             ],
-            "id": "attack-pattern--e3a12395-188d-4051-9a16-ea8e14d07b88",
-            "x_mitre_platforms": [
-                "Windows",
-                "IaaS",
-                "Linux",
-                "macOS",
-                "Containers"
-            ],
             "x_mitre_is_subtechnique": false,
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "SYSTEM",
-                "User"
+            "x_mitre_data_sources": [
+                "Network Traffic: Network Traffic Flow",
+                "Command: Command Execution",
+                "Cloud Service: Cloud Service Enumeration"
             ],
-            "description": "Adversaries may attempt to get a listing of services running on remote hosts, including those that may be vulnerable to remote software exploitation. Methods to acquire this information include port scans and vulnerability scans using tools that are brought onto a system. \n\nWithin cloud environments, adversaries may attempt to discover services running on other cloud hosts. Additionally, if the cloud environment is connected to a on-premises environment, adversaries may be able to identify services running on non-cloud systems as well.",
-            "x_mitre_contributors": [
-                "Praetorian"
-            ],
-            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as Lateral Movement, based on the information obtained.\n\nNormal, benign system and network events from legitimate remote service scanning may be uncommon, depending on the environment and how they are used. Legitimate open port and vulnerability scanning may be conducted within the environment and will need to be deconflicted with any detection capabilities developed. Network intrusion detection systems can also be used to identify scanning activity. Monitor for process use of the networks and inspect intra-network flows to detect port scans.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1046",
-                    "external_id": "T1046",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "url": "https://capec.mitre.org/data/definitions/300.html",
-                    "external_id": "CAPEC-300",
-                    "source_name": "capec"
-                }
-            ]
+            "x_mitre_system_requirements": [],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

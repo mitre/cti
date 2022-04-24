@@ -1,56 +1,78 @@
 {
     "type": "bundle",
-    "id": "bundle--c0ce502f-348a-44e4-91e5-8195cf2b9def",
+    "id": "bundle--532be2d6-1d17-471b-8813-6efe7d590feb",
     "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "modified": "2020-02-17T13:14:31.140Z",
-            "name": "Keychain",
-            "x_mitre_data_sources": [
-                "Command: Command Execution",
-                "Process: OS API Execution",
-                "File: File Access"
-            ],
-            "x_mitre_version": "1.0",
-            "created": "2020-02-12T18:55:24.728Z",
-            "x_mitre_permissions_required": [
-                "Administrator"
-            ],
             "x_mitre_platforms": [
                 "macOS"
             ],
-            "x_mitre_is_subtechnique": true,
-            "id": "attack-pattern--1eaebf46-e361-4437-bc23-d5d65a3b92e3",
-            "description": "Adversaries may collect the keychain storage data from a system to acquire credentials. Keychains are the built-in way for macOS to keep track of users' passwords and credentials for many services and features such as WiFi passwords, websites, secure notes, certificates, and Kerberos. Keychain files are located in <code>~/Library/Keychains/</code>,<code>/Library/Keychains/</code>, and <code>/Network/Library/Keychains/</code>. (Citation: Wikipedia keychain) The <code>security</code> command-line utility, which is built into macOS by default, provides a useful way to manage these credentials.\n\nTo manage their credentials, users have to use additional credentials to access their keychain. If an adversary knows the credentials for the login keychain, then they can get access to all the other credentials stored in this vault. (Citation: External to DA, the OS X Way) By default, the passphrase for the keychain is the user\u2019s logon credentials.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--1eaebf46-e361-4437-bc23-d5d65a3b92e3",
+            "created": "2020-02-12T18:55:24.728Z",
+            "x_mitre_version": "1.1",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1555.001",
+                    "url": "https://attack.mitre.org/techniques/T1555/001"
+                },
+                {
+                    "source_name": "External to DA, the OS X Way",
+                    "url": "http://www.slideshare.net/StephanBorosh/external-to-da-the-os-x-way",
+                    "description": "Alex Rymdeko-Harvey, Steve Borosh. (2016, May 14). External to DA, the OS X Way. Retrieved July 3, 2017."
+                },
+                {
+                    "source_name": "Keychain Services Apple",
+                    "url": "https://developer.apple.com/documentation/security/keychain_services",
+                    "description": "Apple. (n.d.). Keychain Services. Retrieved April 11, 2022."
+                },
+                {
+                    "source_name": "Empire Keychain Decrypt",
+                    "url": "https://github.com/EmpireProject/Empire/blob/08cbd274bef78243d7a8ed6443b8364acd1fc48b/lib/modules/python/collection/osx/keychaindump_decrypt.py",
+                    "description": "Empire. (2018, March 8). Empire keychaindump_decrypt Module. Retrieved April 14, 2022."
+                },
+                {
+                    "source_name": "OSX Keychain Schaumann",
+                    "url": "https://www.netmeister.org/blog/keychain-passwords.html",
+                    "description": "Jan Schaumann. (2015, November 5). Using the OS X Keychain to store and retrieve passwords. Retrieved March 31, 2022."
+                },
+                {
+                    "source_name": "Keychain Decryption Passware",
+                    "url": "https://support.passware.com/hc/en-us/articles/4573379868567-A-Deep-Dive-into-Apple-Keychain-Decryption",
+                    "description": "Yana Gourenko. (n.d.). A Deep Dive into Apple Keychain Decryption. Retrieved April 13, 2022."
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may acquire credentials from Keychain. Keychain (or Keychain Services) is the macOS credential management system that stores account names, passwords, private keys, certificates, sensitive application data, payment data, and secure notes. There are three types of Keychains: Login Keychain, System Keychain, and Local Items (iCloud) Keychain. The default Keychain is the Login Keychain, which stores user passwords and information. The System Keychain stores items accessed by the operating system, such as items shared among users on a host. The Local Items (iCloud) Keychain is used for items synced with Apple\u2019s iCloud service. \n\nKeychains can be viewed and edited through the Keychain Access application or using the command-line utility <code>security</code>. Keychain files are located in <code>~/Library/Keychains/</code>, <code>/Library/Keychains/</code>, and <code>/Network/Library/Keychains/</code>.(Citation: Keychain Services Apple)(Citation: Keychain Decryption Passware)(Citation: OSX Keychain Schaumann)\n\nAdversaries may gather user credentials from Keychain storage/memory. For example, the command <code>security dump-keychain \u2013d</code> will dump all Login Keychain credentials from <code>~/Library/Keychains/login.keychain-db</code>. Adversaries may also directly read Login Keychain credentials from the <code>~/Library/Keychains/login.keychain</code> file. Both methods require a password, where the default password for the Login Keychain is the current user\u2019s password to login to the macOS host.(Citation: External to DA, the OS X Way)(Citation: Empire Keychain Decrypt)  ",
+            "modified": "2022-04-18T20:32:22.122Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Keychain",
+            "x_mitre_detection": "Unlocking the keychain and using passwords from it is a very common process, so there is likely to be a lot of noise in any detection technique. Monitoring of system calls to the keychain can help determine if there is a suspicious process trying to access it.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "credential-access"
                 }
             ],
-            "x_mitre_detection": "Unlocking the keychain and using passwords from it is a very common process, so there is likely to be a lot of noise in any detection technique. Monitoring of system calls to the keychain can help determine if there is a suspicious process trying to access it.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1555/001",
-                    "external_id": "T1555.001",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "Wikipedia keychain",
-                    "description": "Wikipedia. (n.d.). Keychain (software). Retrieved July 5, 2017.",
-                    "url": "https://en.wikipedia.org/wiki/Keychain_(software)"
-                },
-                {
-                    "source_name": "External to DA, the OS X Way",
-                    "description": "Alex Rymdeko-Harvey, Steve Borosh. (2016, May 14). External to DA, the OS X Way. Retrieved July 3, 2017.",
-                    "url": "http://www.slideshare.net/StephanBorosh/external-to-da-the-os-x-way"
-                }
-            ]
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_data_sources": [
+                "Command: Command Execution",
+                "Process: Process Creation",
+                "Process: OS API Execution",
+                "File: File Access"
+            ],
+            "x_mitre_system_requirements": [],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

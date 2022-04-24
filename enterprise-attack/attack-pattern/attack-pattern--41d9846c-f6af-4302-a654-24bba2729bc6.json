@@ -1,34 +1,37 @@
 {
     "type": "bundle",
-    "id": "bundle--4131f307-9385-4fc1-92a6-4c65e0d4af59",
+    "id": "bundle--88c4432c-22cf-47bd-8439-01d08968d84f",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "name": "Thread Execution Hijacking",
-            "x_mitre_data_sources": [
-                "Process: Process Modification",
-                "Process: OS API Execution",
-                "Process: Process Access"
-            ],
-            "x_mitre_version": "1.1",
-            "modified": "2021-10-18T12:22:50.800Z",
-            "created": "2020-01-14T01:28:32.166Z",
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Application control",
-                "Anti-virus"
-            ],
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_is_subtechnique": true,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "id": "attack-pattern--41d9846c-f6af-4302-a654-24bba2729bc6",
+            "type": "attack-pattern",
+            "created": "2020-01-14T01:28:32.166Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1055.003",
+                    "url": "https://attack.mitre.org/techniques/T1055/003"
+                },
+                {
+                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
+                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
+                    "source_name": "Elastic Process Injection July 2017"
+                }
+            ],
+            "modified": "2021-10-18T12:22:50.800Z",
+            "name": "Thread Execution Hijacking",
             "description": "Adversaries may inject malicious code into hijacked processes in order to evade process-based defenses as well as possibly elevate privileges. Thread Execution Hijacking is a method of executing arbitrary code in the address space of a separate live process. \n\nThread Execution Hijacking is commonly performed by suspending an existing process then unmapping/hollowing its memory, which can then be replaced with malicious code or the path to a DLL. A handle to an existing victim process is first created with native Windows API calls such as <code>OpenThread</code>. At this point the process can be suspended then written to, realigned to the injected code, and resumed via <code>SuspendThread </code>, <code>VirtualAllocEx</code>, <code>WriteProcessMemory</code>, <code>SetThreadContext</code>, then <code>ResumeThread</code> respectively.(Citation: Elastic Process Injection July 2017)\n\nThis is very similar to [Process Hollowing](https://attack.mitre.org/techniques/T1055/012) but targets an existing process rather than creating a process in a suspended state.  \n\nRunning code in the context of another process may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via Thread Execution Hijacking may also evade detection from security products since the execution is masked under a legitimate process. ",
             "kill_chain_phases": [
                 {
@@ -41,18 +44,20 @@
                 }
             ],
             "x_mitre_detection": "Monitoring Windows API calls indicative of the various types of code injection may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances for known bad sequences of calls, since benign use of API functions may be common and difficult to distinguish from malicious behavior. Windows API calls such as <code>CreateRemoteThread</code>, <code>SuspendThread</code>/<code>SetThreadContext</code>/<code>ResumeThread</code>, and those that can be used to modify memory within another process, such as <code>VirtualAllocEx</code>/<code>WriteProcessMemory</code>, may be used for this technique.(Citation: Elastic Process Injection July 2017)\n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior. ",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1055/003",
-                    "external_id": "T1055.003",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "Elastic Process Injection July 2017",
-                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
-                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process"
-                }
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_version": "1.1",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [
+                "Process: Process Modification",
+                "Process: Process Access",
+                "Process: OS API Execution"
+            ],
+            "x_mitre_defense_bypassed": [
+                "Application control",
+                "Anti-virus"
+            ],
+            "x_mitre_permissions_required": [
+                "User"
             ]
         }
     ]

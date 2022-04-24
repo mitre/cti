@@ -1,41 +1,73 @@
 {
     "type": "bundle",
-    "id": "bundle--1033776e-9ad7-4805-9015-6959b268eac5",
+    "id": "bundle--cb27dc69-9579-44e9-b815-f342c8ffe8e8",
     "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "modified": "2020-01-24T15:11:53.430Z",
-            "name": "PowerShell Profile",
-            "created": "2019-06-14T18:53:49.472Z",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Allen DeRyke, ICE"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
             "id": "attack-pattern--723e3a2b-ca0d-4daa-ada8-82ea35d3733a",
+            "type": "attack-pattern",
+            "created": "2019-06-14T18:53:49.472Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": true,
             "external_references": [
                 {
-                    "url": "https://attack.mitre.org/techniques/T1504",
+                    "source_name": "mitre-attack",
                     "external_id": "T1504",
-                    "source_name": "mitre-attack"
+                    "url": "https://attack.mitre.org/techniques/T1504"
                 },
                 {
+                    "source_name": "Microsoft About Profiles",
                     "url": "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_profiles?view=powershell-6",
-                    "description": "Microsoft. (2017, November 29). About Profiles. Retrieved June 14, 2019.",
-                    "source_name": "Microsoft About Profiles"
+                    "description": "Microsoft. (2017, November 29). About Profiles. Retrieved June 14, 2019."
                 },
                 {
+                    "source_name": "ESET Turla PowerShell May 2019",
                     "url": "https://www.welivesecurity.com/2019/05/29/turla-powershell-usage/",
-                    "description": "Faou, M. and Dumont R.. (2019, May 29). A dive into Turla PowerShell usage. Retrieved June 14, 2019.",
-                    "source_name": "ESET Turla PowerShell May 2019"
+                    "description": "Faou, M. and Dumont R.. (2019, May 29). A dive into Turla PowerShell usage. Retrieved June 14, 2019."
                 },
                 {
+                    "source_name": "Wits End and Shady PowerShell Profiles",
                     "url": "https://witsendandshady.blogspot.com/2019/06/lab-notes-persistence-and-privilege.html",
-                    "description": "DeRyke, A.. (2019, June 7). Lab Notes: Persistence and Privilege Elevation using the Powershell Profile. Retrieved July 8, 2019.",
-                    "source_name": "Wits End and Shady PowerShell Profiles"
+                    "description": "DeRyke, A.. (2019, June 7). Lab Notes: Persistence and Privilege Elevation using the Powershell Profile. Retrieved July 8, 2019."
                 },
                 {
-                    "source_name": "Malware Archaeology PowerShell Cheat Sheet",
+                    "url": "http://www.malwarearchaeology.com/s/Windows-PowerShell-Logging-Cheat-Sheet-ver-June-2016-v2.pdf",
                     "description": "Malware Archaeology. (2016, June). WINDOWS POWERSHELL LOGGING CHEAT SHEET - Win 7/Win 2008 or later. Retrieved June 24, 2016.",
-                    "url": "http://www.malwarearchaeology.com/s/Windows-PowerShell-Logging-Cheat-Sheet-ver-June-2016-v2.pdf"
+                    "source_name": "Malware Archaeology PowerShell Cheat Sheet"
                 }
+            ],
+            "modified": "2020-01-24T15:11:53.430Z",
+            "name": "PowerShell Profile",
+            "description": "Adversaries may gain persistence and elevate privileges in certain situations by abusing [PowerShell](https://attack.mitre.org/techniques/T1086) profiles. A PowerShell profile  (<code>profile.ps1</code>) is a script that runs when PowerShell starts and can be used as a logon script to customize user environments. PowerShell supports several profiles depending on the user or host program. For example, there can be different profiles for PowerShell host programs such as the PowerShell console, PowerShell ISE or Visual Studio Code. An administrator can also configure a profile that applies to all users and host programs on the local computer. (Citation: Microsoft About Profiles) \n\nAdversaries may modify these profiles to include arbitrary commands, functions, modules, and/or PowerShell drives to gain persistence. Every time a user opens a PowerShell session the modified script will be executed unless the <code>-NoProfile</code> flag is used when it is launched. (Citation: ESET Turla PowerShell May 2019) \n\nAn adversary may also be able to escalate privileges if a script in a PowerShell profile is loaded and executed by an account with higher privileges, such as a domain administrator. (Citation: Wits End and Shady PowerShell Profiles)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "x_mitre_detection": "Locations where <code>profile.ps1</code> can be stored should be monitored for new profiles or modifications. (Citation: Malware Archaeology PowerShell Cheat Sheet) Example profile locations include:\n\n* <code>$PsHome\\Profile.ps1</code>\n* <code>$PsHome\\Microsoft.{HostProgram}_profile.ps1</code>\n* <code>$Home\\My Documents\\PowerShell\\Profile.ps1</code>\n* <code>$Home\\My Documents\\PowerShell\\Microsoft.{HostProgram}_profile.ps1</code>\n\nMonitor abnormal PowerShell commands, unusual loading of PowerShell drives or modules, and/or execution of unknown programs.",
+            "x_mitre_version": "1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": [],
+            "x_mitre_permissions_required": [
+                "User",
+                "Administrator"
             ]
         }
     ]

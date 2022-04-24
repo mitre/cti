@@ -1,20 +1,54 @@
 {
     "type": "bundle",
-    "id": "bundle--4cd44f0b-ae5f-46c3-abd7-5c001a50a1b7",
+    "id": "bundle--d349f26d-1d78-4e7f-9493-00ccd8f043f1",
     "spec_version": "2.0",
     "objects": [
         {
-            "type": "attack-pattern",
-            "modified": "2020-03-24T18:28:07.793Z",
-            "name": "Netsh Helper DLL",
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Windows Registry: Windows Registry Key Modification",
-                "Command: Command Execution",
-                "Module: Module Load"
+            "x_mitre_platforms": [
+                "Windows"
             ],
-            "x_mitre_version": "1.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Matthew Demaske, Adaptforward"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--f63fe421-b1d1-45c0-b8a7-02cd16ff2bed",
             "created": "2020-01-24T14:26:51.207Z",
+            "x_mitre_version": "1.0",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1546.007",
+                    "url": "https://attack.mitre.org/techniques/T1546/007"
+                },
+                {
+                    "source_name": "Demaske Netsh Persistence",
+                    "url": "https://htmlpreview.github.io/?https://github.com/MatthewDemaske/blogbackup/blob/master/netshell.html",
+                    "description": "Demaske, M. (2016, September 23). USING NETSHELL TO EXECUTE EVIL DLLS AND PERSIST ON A HOST. Retrieved April 8, 2017."
+                },
+                {
+                    "source_name": "TechNet Netsh",
+                    "url": "https://technet.microsoft.com/library/bb490939.aspx",
+                    "description": "Microsoft. (n.d.). Using Netsh. Retrieved February 13, 2017."
+                },
+                {
+                    "source_name": "Github Netsh Helper CS Beacon",
+                    "url": "https://github.com/outflankbv/NetshHelperBeacon",
+                    "description": "Smeets, M. (2016, September 26). NetshHelperBeacon. Retrieved February 13, 2017."
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may establish persistence by executing malicious content triggered by Netsh Helper DLLs. Netsh.exe (also referred to as Netshell) is a command-line scripting utility used to interact with the network configuration of a system. It contains functionality to add helper DLLs for extending functionality of the utility.(Citation: TechNet Netsh) The paths to registered netsh.exe helper DLLs are entered into the Windows Registry at <code>HKLM\\SOFTWARE\\Microsoft\\Netsh</code>.\n\nAdversaries can use netsh.exe helper DLLs to trigger execution of arbitrary code in a persistent manner. This execution would take place anytime netsh.exe is executed, which could happen automatically, with another persistence technique, or if other software (ex: VPN) is present on the system that executes netsh.exe as part of its normal functionality.(Citation: Github Netsh Helper CS Beacon)(Citation: Demaske Netsh Persistence)",
+            "modified": "2022-04-20T17:09:17.363Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Netsh Helper DLL",
+            "x_mitre_detection": "It is likely unusual for netsh.exe to have any child processes in most environments. Monitor process executions and investigate any child processes spawned by netsh.exe for malicious behavior. Monitor the <code>HKLM\\SOFTWARE\\Microsoft\\Netsh</code> registry key for any new or suspicious entries that do not correlate with known system files or benign software.(Citation: Demaske Netsh Persistence)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -25,46 +59,21 @@
                     "phase_name": "persistence"
                 }
             ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_data_sources": [
+                "Module: Module Load",
+                "Process: Process Creation",
+                "Windows Registry: Windows Registry Key Modification",
+                "Command: Command Execution"
+            ],
+            "x_mitre_system_requirements": [],
             "x_mitre_permissions_required": [
                 "Administrator",
                 "SYSTEM"
             ],
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "id": "attack-pattern--f63fe421-b1d1-45c0-b8a7-02cd16ff2bed",
-            "description": "Adversaries may establish persistence by executing malicious content triggered by Netsh Helper DLLs. Netsh.exe (also referred to as Netshell) is a command-line scripting utility used to interact with the network configuration of a system. It contains functionality to add helper DLLs for extending functionality of the utility. (Citation: TechNet Netsh) The paths to registered netsh.exe helper DLLs are entered into the Windows Registry at <code>HKLM\\SOFTWARE\\Microsoft\\Netsh</code>.\n\nAdversaries can use netsh.exe helper DLLs to trigger execution of arbitrary code in a persistent manner. This execution would take place anytime netsh.exe is executed, which could happen automatically, with another persistence technique, or if other software (ex: VPN) is present on the system that executes netsh.exe as part of its normal functionality. (Citation: Github Netsh Helper CS Beacon)(Citation: Demaske Netsh Persistence)",
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_contributors": [
-                "Matthew Demaske, Adaptforward"
-            ],
-            "x_mitre_detection": "It is likely unusual for netsh.exe to have any child processes in most environments. Monitor process executions and investigate any child processes spawned by netsh.exe for malicious behavior. Monitor the <code>HKLM\\SOFTWARE\\Microsoft\\Netsh</code> registry key for any new or suspicious entries that do not correlate with known system files or benign software. (Citation: Demaske Netsh Persistence)",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1546/007",
-                    "external_id": "T1546.007",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "source_name": "TechNet Netsh",
-                    "description": "Microsoft. (n.d.). Using Netsh. Retrieved February 13, 2017.",
-                    "url": "https://technet.microsoft.com/library/bb490939.aspx"
-                },
-                {
-                    "source_name": "Github Netsh Helper CS Beacon",
-                    "description": "Smeets, M. (2016, September 26). NetshHelperBeacon. Retrieved February 13, 2017.",
-                    "url": "https://github.com/outflankbv/NetshHelperBeacon"
-                },
-                {
-                    "source_name": "Demaske Netsh Persistence",
-                    "description": "Demaske, M. (2016, September 23). USING NETSHELL TO EXECUTE EVIL DLLS AND PERSIST ON A HOST. Retrieved April 8, 2017.",
-                    "url": "https://htmlpreview.github.io/?https://github.com/MatthewDemaske/blogbackup/blob/master/netshell.html"
-                }
-            ]
+            "x_mitre_effective_permissions": [],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

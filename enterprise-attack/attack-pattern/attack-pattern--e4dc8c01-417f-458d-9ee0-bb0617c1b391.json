@@ -1,0 +1,92 @@
+{
+    "type": "bundle",
+    "id": "bundle--3f51d6cf-e683-4869-913f-b7e0869fd8b2",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "macOS"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "TruKno"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--e4dc8c01-417f-458d-9ee0-bb0617c1b391",
+            "created": "2022-04-01T17:59:46.156Z",
+            "x_mitre_version": "1.0",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1622",
+                    "url": "https://attack.mitre.org/techniques/T1622"
+                },
+                {
+                    "source_name": "Checkpoint Dridex Jan 2021",
+                    "url": "https://research.checkpoint.com/2021/stopping-serial-killer-catching-the-next-strike/",
+                    "description": "Check Point Research. (2021, January 4). Stopping Serial Killer: Catching the Next Strike. Retrieved September 7, 2021."
+                },
+                {
+                    "source_name": "hasherezade debug",
+                    "url": "https://github.com/hasherezade/malware_training_vol1/blob/main/slides/module3/Module3_2_fingerprinting.pdf",
+                    "description": "hasherezade. (2021, June 30). Module 3 - Understanding and countering malware's evasion and self-defence. Retrieved April 1, 2022."
+                },
+                {
+                    "source_name": "AlKhaser Debug",
+                    "url": "https://github.com/LordNoteworthy/al-khaser/tree/master/al-khaser/AntiDebug",
+                    "description": "Noteworthy. (2019, January 6). Al-Khaser. Retrieved April 1, 2022."
+                },
+                {
+                    "source_name": "wardle evilquest partii",
+                    "url": "https://objective-see.com/blog/blog_0x60.html",
+                    "description": "Patrick Wardle. (2020, July 3). OSX.EvilQuest Uncovered part ii: insidious capabilities. Retrieved March 21, 2021."
+                },
+                {
+                    "source_name": "ProcessHacker Github",
+                    "url": "https://github.com/processhacker/processhacker",
+                    "description": "ProcessHacker. (2009, October 27). Process Hacker. Retrieved April 11, 2022."
+                },
+                {
+                    "source_name": "vxunderground debug",
+                    "url": "https://github.com/vxunderground/VX-API/tree/main/Anti%20Debug",
+                    "description": "vxunderground. (2021, June 30). VX-API. Retrieved April 1, 2022."
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may employ various means to detect and avoid debuggers. Debuggers are typically used by defenders to trace and/or analyze the execution of potential malware payloads.(Citation: ProcessHacker Github)\n\nDebugger evasion may include changing behaviors based on the results of the checks for the presence of artifacts indicative of a debugged environment. Similar to [Virtualization/Sandbox Evasion](https://attack.mitre.org/techniques/T1497), if the adversary detects a debugger, they may alter their malware to disengage from the victim or conceal the core functions of the implant. They may also search for debugger artifacts before dropping secondary or additional payloads.\n\nSpecific checks will vary based on the target and/or adversary, but may involve [Native API](https://attack.mitre.org/techniques/T1106) function calls such as <code>IsDebuggerPresent()</code> and <code> NtQueryInformationProcess()</code>, or manually checking the <code>BeingDebugged</code> flag of the Process Environment Block (PEB). Other checks for debugging artifacts may also seek to enumerate hardware breakpoints, interrupt assembly opcodes, time checks, or measurements if exceptions are raised in the current process (assuming a present debugger would \u201cswallow\u201d or handle the potential error).(Citation: hasherezade debug)(Citation: AlKhaser Debug)(Citation: vxunderground debug)\n\nAdversaries may use the information learned from these debugger checks during automated discovery to shape follow-on behaviors. Debuggers can also be evaded by detaching the process or flooding debug logs with meaningless data via messages produced by looping [Native API](https://attack.mitre.org/techniques/T1106) function calls such as <code>OutputDebugStringW()</code>.(Citation: wardle evilquest partii)(Citation: Checkpoint Dridex Jan 2021)",
+            "modified": "2022-04-16T15:05:55.918Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Debugger Evasion",
+            "x_mitre_detection": "Debugger related system checks will likely occur in the first steps of an operation but may also occur throughout as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as lateral movement, based on the information obtained. Detecting actions related to debugger identification may be difficult depending on the adversary's implementation and monitoring required. Monitoring for suspicious [Native API](https://attack.mitre.org/techniques/T1106) function calls as well as processes being spawned that gather a variety of system information or perform other forms of Discovery, especially in a short period of time, may aid in detection.\n\nMonitor debugger logs for signs of abnormal and potentially malicious activity.",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "discovery"
+                }
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_data_sources": [
+                "Command: Command Execution",
+                "Process: Process Creation",
+                "Process: OS API Execution",
+                "Application Log: Application Log Content"
+            ],
+            "x_mitre_system_requirements": [],
+            "x_mitre_defense_bypassed": [],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+        }
+    ]
+}

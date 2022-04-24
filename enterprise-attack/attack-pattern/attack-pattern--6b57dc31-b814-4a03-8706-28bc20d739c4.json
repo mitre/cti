@@ -1,66 +1,88 @@
 {
     "type": "bundle",
-    "id": "bundle--c9ec81ec-4775-429d-862c-8e497c0cf945",
+    "id": "bundle--cd1f0d1c-c5d6-41d4-84e7-1e8177263c32",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "IaaS"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Tony Lambert, Red Canary",
+                "Dror Alon, Palo Alto Networks",
+                "Or Kliger, Palo Alto Networks"
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "type": "attack-pattern",
-            "name": "SSH Authorized Keys",
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Command: Command Execution",
-                "File: File Modification"
-            ],
-            "x_mitre_version": "1.0",
-            "modified": "2020-06-25T16:32:23.367Z",
+            "id": "attack-pattern--6b57dc31-b814-4a03-8706-28bc20d739c4",
             "created": "2020-06-24T12:42:35.144Z",
+            "x_mitre_version": "1.1",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1098.004",
+                    "url": "https://attack.mitre.org/techniques/T1098/004"
+                },
+                {
+                    "source_name": "Venafi SSH Key Abuse",
+                    "url": "https://www.venafi.com/blog/growing-abuse-ssh-keys-commodity-malware-campaigns-now-equipped-ssh-capabilities",
+                    "description": "Blachman, Y. (2020, April 22). Growing Abuse of SSH Keys: Commodity Malware Campaigns Now Equipped with SSH Capabilities. Retrieved June 24, 2020."
+                },
+                {
+                    "source_name": "Google Cloud Privilege Escalation",
+                    "url": "https://about.gitlab.com/blog/2020/02/12/plundering-gcp-escalating-privileges-in-google-cloud-platform/",
+                    "description": "Chris Moberly. (2020, February 12). Tutorial on privilege escalation and post exploitation tactics in Google Cloud Platform environments. Retrieved April 1, 2022."
+                },
+                {
+                    "source_name": "Cybereason Linux Exim Worm",
+                    "url": "https://www.cybereason.com/blog/new-pervasive-worm-exploiting-linux-exim-server-vulnerability",
+                    "description": "Cybereason Nocturnus. (2019, June 13). New Pervasive Worm Exploiting Linux Exim Server Vulnerability. Retrieved June 24, 2020."
+                },
+                {
+                    "source_name": "Google Cloud Add Metadata",
+                    "url": "https://cloud.google.com/sdk/gcloud/reference/compute/instances/add-metadata",
+                    "description": "Google Cloud. (2022, March 31). gcloud compute instances add-metadata. Retrieved April 1, 2022."
+                },
+                {
+                    "source_name": "Azure Update Virtual Machines",
+                    "url": "https://docs.microsoft.com/en-us/rest/api/compute/virtual-machines/update",
+                    "description": "Microsoft. (n.d.). Virtual Machines - Update. Retrieved April 1, 2022."
+                },
+                {
+                    "source_name": "SSH Authorized Keys",
+                    "url": "https://www.ssh.com/ssh/authorized_keys/",
+                    "description": "ssh.com. (n.d.). Authorized_keys File in SSH. Retrieved June 24, 2020."
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may modify the SSH <code>authorized_keys</code> file to maintain persistence on a victim host. Linux distributions and macOS commonly use key-based authentication to secure the authentication process of SSH sessions for remote management. The <code>authorized_keys</code> file in SSH specifies the SSH keys that can be used for logging into the user account for which the file is configured. This file is usually found in the user's home directory under <code>&lt;user-home&gt;/.ssh/authorized_keys</code>.(Citation: SSH Authorized Keys) Users may edit the system\u2019s SSH config file to modify the directives PubkeyAuthentication and RSAAuthentication to the value \u201cyes\u201d to ensure public key and RSA authentication are enabled. The SSH config file is usually located under <code>/etc/ssh/sshd_config</code>.\n\nAdversaries may modify SSH <code>authorized_keys</code> files directly with scripts or shell commands to add their own adversary-supplied public keys. In cloud environments, adversaries may be able to modify the SSH authorized_keys file of a particular virtual machine via the command line interface or rest API. For example, by using the Google Cloud CLI\u2019s \u201cadd-metadata\u201d command an adversary may add SSH keys to a user account.(Citation: Google Cloud Add Metadata)(Citation: Google Cloud Privilege Escalation) Similarly, in Azure, an adversary may update the authorized_keys file of a virtual machine via a PATCH request to the API.(Citation: Azure Update Virtual Machines) This ensures that an adversary possessing the corresponding private key may log in as an existing user via SSH.(Citation: Venafi SSH Key Abuse)(Citation: Cybereason Linux Exim Worm)\n\nWhere authorized_keys files are modified via cloud APIs or command line interfaces, an adversary may achieve privilege escalation on the target virtual machine if they add a key to a higher-privileged user. ",
+            "modified": "2022-04-20T16:26:57.982Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "SSH Authorized Keys",
+            "x_mitre_detection": "Use file integrity monitoring to detect changes made to the <code>authorized_keys</code> file for each user on a system. Monitor for suspicious processes modifying the <code>authorized_keys</code> file. In cloud environments, monitor instances for modification of metadata and configurations.\n\nMonitor for changes to and suspicious processes modifiying <code>/etc/ssh/sshd_config</code>.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "persistence"
                 }
             ],
-            "id": "attack-pattern--6b57dc31-b814-4a03-8706-28bc20d739c4",
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS"
-            ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
+            "x_mitre_data_sources": [
+                "File: File Modification",
+                "Process: Process Creation",
+                "Command: Command Execution"
             ],
-            "description": "Adversaries may modify the SSH <code>authorized_keys</code> file to maintain persistence on a victim host. Linux distributions and macOS commonly use key-based authentication to secure the authentication process of SSH sessions for remote management. The <code>authorized_keys</code> file in SSH specifies the SSH keys that can be used for logging into the user account for which the file is configured. This file is usually found in the user's home directory under <code>&lt;user-home&gt;/.ssh/authorized_keys</code>.(Citation: SSH Authorized Keys) Users may edit the system\u2019s SSH config file to modify the directives PubkeyAuthentication and RSAAuthentication to the value \u201cyes\u201d to ensure public key and RSA authentication are enabled. The SSH config file is usually located under <code>/etc/ssh/sshd_config</code>.\n\nAdversaries may modify SSH <code>authorized_keys</code> files directly with scripts or shell commands to add their own adversary-supplied public keys. This ensures that an adversary possessing the corresponding private key may log in as an existing user via SSH.(Citation: Venafi SSH Key Abuse) (Citation: Cybereason Linux Exim Worm)",
-            "x_mitre_contributors": [
-                "Tony Lambert, Red Canary"
-            ],
-            "x_mitre_detection": "Use file integrity monitoring to detect changes made to the <code>authorized_keys</code> file for each user on a system. Monitor for suspicious processes modifying the <code>authorized_keys</code> file.\n\nMonitor for changes to and suspicious processes modifiying <code>/etc/ssh/sshd_config</code>.",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1098/004",
-                    "external_id": "T1098.004",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "url": "https://www.ssh.com/ssh/authorized_keys/",
-                    "description": "ssh.com. (n.d.). Authorized_keys File in SSH. Retrieved June 24, 2020.",
-                    "source_name": "SSH Authorized Keys"
-                },
-                {
-                    "url": "https://www.venafi.com/blog/growing-abuse-ssh-keys-commodity-malware-campaigns-now-equipped-ssh-capabilities",
-                    "description": "Blachman, Y. (2020, April 22). Growing Abuse of SSH Keys: Commodity Malware Campaigns Now Equipped with SSH Capabilities. Retrieved June 24, 2020.",
-                    "source_name": "Venafi SSH Key Abuse"
-                },
-                {
-                    "url": "https://www.cybereason.com/blog/new-pervasive-worm-exploiting-linux-exim-server-vulnerability",
-                    "description": "Cybereason Nocturnus. (2019, June 13). New Pervasive Worm Exploiting Linux Exim Server Vulnerability. Retrieved June 24, 2020.",
-                    "source_name": "Cybereason Linux Exim Worm"
-                }
-            ]
+            "x_mitre_system_requirements": [],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

@@ -1,75 +1,82 @@
 {
     "type": "bundle",
-    "id": "bundle--1f909a7a-36bc-4e21-8e1a-49695df0e63f",
+    "id": "bundle--86dadc0c-0e00-4b9c-94f1-93312383dbc1",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows",
+                "Network"
+            ],
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_contributors": [
+                "Vikas Singh, Sophos",
+                "Emile Kenning, Sophos",
+                "Austin Clark, @c2defense"
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "type": "attack-pattern",
-            "name": "Impair Command History Logging",
-            "x_mitre_data_sources": [
-                "Sensor Health: Host Status",
-                "Command: Command Execution"
-            ],
-            "x_mitre_version": "2.0",
-            "modified": "2021-04-24T13:59:12.787Z",
+            "id": "attack-pattern--8f504411-cb96-4dac-a537-8d2bb7679c59",
             "created": "2020-02-21T20:56:06.498Z",
+            "x_mitre_version": "2.1",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1562.003",
+                    "url": "https://attack.mitre.org/techniques/T1562/003"
+                },
+                {
+                    "source_name": "Sophos PowerShell command audit",
+                    "url": "https://community.sophos.com/products/intercept/early-access-program/f/live-discover-response-queries/121529/live-discover---powershell-command-audit",
+                    "description": "jak. (2020, June 27). Live Discover - PowerShell command audit. Retrieved August 21, 2020."
+                },
+                {
+                    "source_name": "Microsoft PowerShell Command History",
+                    "url": "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_history?view=powershell-7",
+                    "description": "Microsoft. (2020, May 13). About History. Retrieved September 4, 2020."
+                },
+                {
+                    "source_name": "Sophos PowerShell Command History Forensics",
+                    "url": "https://community.sophos.com/products/malware/b/blog/posts/powershell-command-history-forensics",
+                    "description": "Vikas, S. (2020, August 26). PowerShell Command History Forensics. Retrieved September 4, 2020."
+                },
+                {
+                    "url": "https://capec.mitre.org/data/definitions/13.html",
+                    "source_name": "capec",
+                    "external_id": "CAPEC-13"
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may impair command history logging to hide commands they run on a compromised system. Various command interpreters keep track of the commands users type in their terminal so that users can retrace what they've done. \n\nOn Linux and macOS, command history is tracked in a file pointed to by the environment variable <code>HISTFILE</code>. When a user logs off a system, this information is flushed to a file in the user's home directory called <code>~/.bash_history</code>. The <code>HISTCONTROL</code> environment variable keeps track of what should be saved by the <code>history</code> command and eventually into the <code>~/.bash_history</code> file when a user logs out. <code>HISTCONTROL</code> does not exist by default on macOS, but can be set by the user and will be respected.\n\nAdversaries may clear the history environment variable (<code>unset HISTFILE</code>) or set the command history size to zero (<code>export HISTFILESIZE=0</code>) to prevent logging of commands. Additionally, <code>HISTCONTROL</code> can be configured to ignore commands that start with a space by simply setting it to \"ignorespace\". <code>HISTCONTROL</code> can also be set to ignore duplicate commands by setting it to \"ignoredups\". In some Linux systems, this is set by default to \"ignoreboth\" which covers both of the previous examples. This means that \u201c ls\u201d will not be saved, but \u201cls\u201d would be saved by history. Adversaries can abuse this to operate without leaving traces by simply prepending a space to all of their terminal commands. \n\nOn Windows systems, the <code>PSReadLine</code> module tracks commands used in all PowerShell sessions and writes them to a file (<code>$env:APPDATA\\Microsoft\\Windows\\PowerShell\\PSReadLine\\ConsoleHost_history.txt</code> by default). Adversaries may change where these logs are saved using <code>Set-PSReadLineOption -HistorySavePath {File Path}</code>. This will cause <code>ConsoleHost_history.txt</code> to stop receiving logs. Additionally, it is possible to turn off logging to this file using the PowerShell command <code>Set-PSReadlineOption -HistorySaveStyle SaveNothing</code>.(Citation: Microsoft PowerShell Command History)(Citation: Sophos PowerShell command audit)(Citation: Sophos PowerShell Command History Forensics)\n\nAdversaries may also leverage a [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) on network devices to disable historical command logging.",
+            "modified": "2022-04-20T18:11:45.153Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Impair Command History Logging",
+            "x_mitre_detection": "Correlating a user session with a distinct lack of new commands in their <code>.bash_history</code> can be a clue to suspicious behavior. Additionally, users checking or changing their <code>HISTCONTROL</code>, <code>HISTFILE</code>, or <code>HISTFILESIZE</code> environment variables may be suspicious.\n\nMonitor for modification of PowerShell command history settings through processes being created with <code>-HistorySaveStyle SaveNothing</code> command-line arguments and use of the PowerShell commands <code>Set-PSReadlineOption -HistorySaveStyle SaveNothing</code> and <code>Set-PSReadLineOption -HistorySavePath {File Path}</code>. Further, [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) commands may also be used to clear or disable historical log data with built-in features native to the network device platform.  Monitor such command activity for unexpected or unauthorized use of commands being run by non-standard users from non-standard locations.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
                 }
             ],
-            "id": "attack-pattern--8f504411-cb96-4dac-a537-8d2bb7679c59",
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_data_sources": [
+                "Sensor Health: Host Status",
+                "Command: Command Execution"
+            ],
+            "x_mitre_system_requirements": [],
             "x_mitre_defense_bypassed": [
                 "Host forensic analysis",
                 "Log analysis"
             ],
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "description": "Adversaries may impair command history logging to hide commands they run on a compromised system. Various command interpreters keep track of the commands users type in their terminal so that users can retrace what they've done. \n\nOn Linux and macOS, command history is tracked in a file pointed to by the environment variable <code>HISTFILE</code>. When a user logs off a system, this information is flushed to a file in the user's home directory called <code>~/.bash_history</code>. The <code>HISTCONTROL</code> environment variable keeps track of what should be saved by the <code>history</code> command and eventually into the <code>~/.bash_history</code> file when a user logs out. <code>HISTCONTROL</code> does not exist by default on macOS, but can be set by the user and will be respected.\n\nAdversaries may clear the history environment variable (<code>unset HISTFILE</code>) or set the command history size to zero (<code>export HISTFILESIZE=0</code>) to prevent logging of commands. Additionally, <code>HISTCONTROL</code> can be configured to ignore commands that start with a space by simply setting it to \"ignorespace\". <code>HISTCONTROL</code> can also be set to ignore duplicate commands by setting it to \"ignoredups\". In some Linux systems, this is set by default to \"ignoreboth\" which covers both of the previous examples. This means that \u201c ls\u201d will not be saved, but \u201cls\u201d would be saved by history. Adversaries can abuse this to operate without leaving traces by simply prepending a space to all of their terminal commands.\n\nOn Windows systems, the <code>PSReadLine</code> module tracks commands used in all PowerShell sessions and writes them to a file (<code>$env:APPDATA\\Microsoft\\Windows\\PowerShell\\PSReadLine\\ConsoleHost_history.txt</code> by default). Adversaries may change where these logs are saved using <code>Set-PSReadLineOption -HistorySavePath {File Path}</code>. This will cause <code>ConsoleHost_history.txt</code> to stop receiving logs. Additionally, it is possible to turn off logging to this file using the PowerShell command <code>Set-PSReadlineOption -HistorySaveStyle SaveNothing</code>.(Citation: Microsoft PowerShell Command History)(Citation: Sophos PowerShell command audit)(Citation: Sophos PowerShell Command History Forensics)",
-            "x_mitre_contributors": [
-                "Vikas Singh, Sophos",
-                "Emile Kenning, Sophos"
-            ],
-            "x_mitre_detection": "Correlating a user session with a distinct lack of new commands in their <code>.bash_history</code> can be a clue to suspicious behavior. Additionally, users checking or changing their <code>HISTCONTROL</code>, <code>HISTFILE</code>, or <code>HISTFILESIZE</code> environment variables may be suspicious.\n\nMonitor for modification of PowerShell command history settings through processes being created with <code>-HistorySaveStyle SaveNothing</code> command-line arguments and use of the PowerShell commands <code>Set-PSReadlineOption -HistorySaveStyle SaveNothing</code> and <code>Set-PSReadLineOption -HistorySavePath {File Path}</code>. ",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "url": "https://attack.mitre.org/techniques/T1562/003",
-                    "external_id": "T1562.003",
-                    "source_name": "mitre-attack"
-                },
-                {
-                    "url": "https://capec.mitre.org/data/definitions/13.html",
-                    "external_id": "CAPEC-13",
-                    "source_name": "capec"
-                },
-                {
-                    "url": "https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_history?view=powershell-7",
-                    "description": "Microsoft. (2020, May 13). About History. Retrieved September 4, 2020.",
-                    "source_name": "Microsoft PowerShell Command History"
-                },
-                {
-                    "url": "https://community.sophos.com/products/intercept/early-access-program/f/live-discover-response-queries/121529/live-discover---powershell-command-audit",
-                    "description": "jak. (2020, June 27). Live Discover - PowerShell command audit. Retrieved August 21, 2020.",
-                    "source_name": "Sophos PowerShell command audit"
-                },
-                {
-                    "url": "https://community.sophos.com/products/malware/b/blog/posts/powershell-command-history-forensics",
-                    "description": "Vikas, S. (2020, August 26). PowerShell Command History Forensics. Retrieved September 4, 2020.",
-                    "source_name": "Sophos PowerShell Command History Forensics"
-                }
-            ]
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }
