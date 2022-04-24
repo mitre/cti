@@ -1,67 +1,61 @@
 {
     "type": "bundle",
-    "id": "bundle--1a1c8599-fdce-4ac3-94cb-ebd8f055edd5",
+    "id": "bundle--ec7dc336-224b-4682-ab95-29cfe840576e",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--6c49d50f-494d-4150-b774-a655022d20a6",
-            "kill_chain_phases": [
-                {
-                    "phase_name": "defense-evasion",
-                    "kill_chain_name": "mitre-mobile-attack"
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "name": "Download New Code at Runtime",
-            "external_references": [
-                {
-                    "source_name": "mitre-mobile-attack",
-                    "url": "https://attack.mitre.org/techniques/T1407",
-                    "external_id": "T1407"
-                },
-                {
-                    "source_name": "NIST Mobile Threat Catalogue",
-                    "url": "https://pages.nist.gov/mobile-threat-catalogue/application-threats/APP-20.html",
-                    "external_id": "APP-20"
-                },
-                {
-                    "description": "Sebastian Poeplau, Yanick Fratantonio, Antonio Bianchi, Christopher Kruegel, Giovanni Vigna. (2014, February). Execute This! Analyzing Unsafe and Malicious Dynamic Code Loading in Android Applications. Retrieved December 21, 2016.",
-                    "source_name": "Poeplau-ExecuteThis",
-                    "url": "https://www.internetsociety.org/sites/default/files/10_5_0.pdf"
-                },
-                {
-                    "description": "Tom Sutcliffe. (2014, July 31). Remote code execution on Android devices. Retrieved December 9, 2016.",
-                    "source_name": "Bromium-AndroidRCE",
-                    "url": "https://labs.bromium.com/2014/07/31/remote-code-execution-on-android-devices/"
-                },
-                {
-                    "description": "Jing Xie, Zhaofeng Chen, Jimmy Su. (2016, January 27). HOT OR NOT? THE BENEFITS AND RISKS OF IOS REMOTE HOT PATCHING. Retrieved December 9, 2016.",
-                    "source_name": "FireEye-JSPatch",
-                    "url": "https://www.fireeye.com/blog/threat-research/2016/01/hot_or_not_the_bene.html"
-                },
-                {
-                    "description": "Tielei Wang, Kangjie Lu, Long Lu, Simon Chung, and Wenke Lee. (2013, August). Jekyll on iOS: When Benign Apps Become Evil. Retrieved December 9, 2016.",
-                    "source_name": "Wang",
-                    "url": "https://www.usenix.org/conference/usenixsecurity13/technical-sessions/presentation/wang_tielei"
-                }
-            ],
-            "created": "2017-10-25T14:48:14.460Z",
-            "x_mitre_detection": "Downloading new code at runtime can be difficult to detect, and therefore enterprises may be better served focusing on detection at other stages of adversary behavior.",
             "x_mitre_platforms": [
                 "Android",
                 "iOS"
             ],
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--6c49d50f-494d-4150-b774-a655022d20a6",
+            "created": "2017-10-25T14:48:14.460Z",
+            "x_mitre_version": "1.3",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1407",
+                    "url": "https://attack.mitre.org/techniques/T1407"
+                },
+                {
+                    "source_name": "FireEye-JSPatch",
+                    "url": "https://www.fireeye.com/blog/threat-research/2016/01/hot_or_not_the_bene.html",
+                    "description": "Jing Xie, Zhaofeng Chen, Jimmy Su. (2016, January 27). HOT OR NOT? THE BENEFITS AND RISKS OF IOS REMOTE HOT PATCHING. Retrieved December 9, 2016."
+                },
+                {
+                    "url": "https://pages.nist.gov/mobile-threat-catalogue/application-threats/APP-20.html",
+                    "source_name": "NIST Mobile Threat Catalogue",
+                    "external_id": "APP-20"
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may download and execute dynamic code not included in the original application package after installation. This technique is primarily used to evade static analysis checks and pre-publication scans in official app stores. In some cases, more advanced dynamic or behavioral analysis techniques could detect this behavior. However, in conjunction with [Execution Guardrails](https://attack.mitre.org/techniques/T1627) techniques, detecting malicious code downloaded after installation could be difficult.\n\nOn Android, dynamic code could include native code, Dalvik code, or JavaScript code that utilizes Android WebView\u2019s `JavascriptInterface` capability. \n\nOn iOS, dynamic code could be downloaded and executed through 3rd party libraries such as JSPatch. (Citation: FireEye-JSPatch) ",
+            "modified": "2022-04-06T12:26:31.735Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Download New Code at Runtime",
+            "x_mitre_detection": "Existing network infrastructure may detect network calls to known malicious domains or the transfer of malicious payloads over the network. Mobile security products may provide URL inspection services that could determine if a domain being visited is malicious. Application vetting services could look for indications that the application downloads and executes new code at runtime (e.g., on Android, use of `DexClassLoader`, `System.load`, or the WebView `JavaScriptInterface` capability; on iOS, use of JSPatch or similar capabilities). Unfortunately, this is only a partial mitigation, as additional scrutiny would still need to be applied to applications that use these techniques. These techniques are often used without malicious intent, and  applications may employ other techniques to hide their use of these techniques.",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-mobile-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_is_subtechnique": false,
             "x_mitre_tactic_type": [
                 "Post-Adversary Device Access"
             ],
-            "x_mitre_old_attack_id": "MOB-T1010",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2019-10-09T19:40:52.090Z",
-            "x_mitre_version": "1.2",
-            "type": "attack-pattern",
-            "description": "An app could download and execute dynamic code (not included in the original application package) after installation to evade static analysis techniques (and potentially dynamic analysis techniques) used for application vetting or application store review.(Citation: Poeplau-ExecuteThis)\n\nOn Android, dynamic code could include native code, Dalvik code, or JavaScript code that uses the Android WebView's JavascriptInterface capability.(Citation: Bromium-AndroidRCE)\n\nOn iOS, techniques also exist for executing dynamic code downloaded after application installation.(Citation: FireEye-JSPatch)(Citation: Wang)"
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": []
         }
     ]
 }

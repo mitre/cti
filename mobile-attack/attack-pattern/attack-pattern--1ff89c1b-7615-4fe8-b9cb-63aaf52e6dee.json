@@ -1,0 +1,70 @@
+{
+    "type": "bundle",
+    "id": "bundle--215ae694-9f3a-4e85-b96c-cb67e4ea5365",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "x_mitre_platforms": [
+                "Android",
+                "iOS"
+            ],
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--1ff89c1b-7615-4fe8-b9cb-63aaf52e6dee",
+            "created": "2022-03-30T19:05:17.048Z",
+            "x_mitre_version": "1.0",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1631.001",
+                    "url": "https://attack.mitre.org/techniques/T1631/001"
+                },
+                {
+                    "source_name": "PTRACE man",
+                    "url": "https://man7.org/linux/man-pages/man2/ptrace.2.html",
+                    "description": "M. Kerrisk. (2020, February 9). PTRACE(2) - Linux Programmer's Manual.. Retrieved March 30, 2022."
+                },
+                {
+                    "source_name": "Medium Ptrace JUL 2018",
+                    "url": "https://medium.com/@jain.sm/code-injection-in-running-process-using-ptrace-d3ea7191a4be",
+                    "description": "Shashank Jain. (2018, July 25). Code injection in running process using ptrace. Retrieved March 30, 2022."
+                },
+                {
+                    "source_name": "BH Linux Inject",
+                    "url": "https://github.com/gaffe23/linux-inject/blob/master/slides_BHArsenal2015.pdf",
+                    "description": "Tyler Colgan. (2020, February 21). Linux-Inject. Retrieved March 20, 2022."
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may inject malicious code into processes via ptrace (process trace) system calls in order to evade process-based defenses as well as possibly elevate privileges. Ptrace system call injection is a method of executing arbitrary code in the address space of a separate live process.  \n\nPtrace system call injection involves attaching to and modifying a running process. The ptrace system call enables a debugging process to observe and control another process (and each individual thread), including changing memory and register values.(Citation: PTRACE man) Ptrace system call injection is commonly performed by writing arbitrary code into a running process (e.g., by using `malloc`) then invoking that memory with `PTRACE_SETREGS` to set the register containing the next instruction to execute. Ptrace system call injection can also be done with `PTRACE_POKETEXT`/`PTRACE_POKEDATA`, which copy data to a specific address in the target process's memory (e.g., the current address of the next instruction).(Citation: PTRACE man)(Citation: Medium Ptrace JUL 2018)  \n\nPtrace system call injection may not be possible when targeting processes with high-privileges, and on some systems those that are non-child processes.(Citation: BH Linux Inject)  \n\nRunning code in the context of another process may allow access to the process's memory, system/network resources, and possibly elevated privileges. Execution via ptrace system call injection may also evade detection from security products since the execution is masked under a legitimate process.",
+            "modified": "2022-04-05T17:05:37.431Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Ptrace System Calls",
+            "x_mitre_detection": "Application vetting services could look for misuse of dynamic libraries.",
+            "kill_chain_phases": [
+                {
+                    "phase_name": "defense-evasion",
+                    "kill_chain_name": "mitre-mobile-attack"
+                },
+                {
+                    "phase_name": "privilege-escalation",
+                    "kill_chain_name": "mitre-mobile-attack"
+                }
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_tactic_type": [
+                "Post-Adversary Device Access"
+            ],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": []
+        }
+    ]
+}

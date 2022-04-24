@@ -1,51 +1,85 @@
 {
     "type": "bundle",
-    "id": "bundle--7c22f41f-c29b-43b8-8510-28e5d012c4be",
+    "id": "bundle--c6ebd40e-c208-46d0-b272-5824c0541e5b",
     "spec_version": "2.0",
     "objects": [
         {
-            "id": "attack-pattern--99e6295e-741b-4857-b6e5-64989eb039b4",
-            "kill_chain_phases": [
-                {
-                    "phase_name": "collection",
-                    "kill_chain_name": "mitre-mobile-attack"
-                },
-                {
-                    "phase_name": "discovery",
-                    "kill_chain_name": "mitre-mobile-attack"
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "name": "Location Tracking",
-            "external_references": [
-                {
-                    "source_name": "mitre-mobile-attack",
-                    "url": "https://attack.mitre.org/techniques/T1430",
-                    "external_id": "T1430"
-                },
-                {
-                    "source_name": "NIST Mobile Threat Catalogue",
-                    "url": "https://pages.nist.gov/mobile-threat-catalogue/application-threats/APP-24.html",
-                    "external_id": "APP-24"
-                }
-            ],
-            "created": "2017-10-25T14:48:12.267Z",
-            "x_mitre_detection": "On both Android (6.0 and up) and iOS, the user can view which applications have permission to access device location through the device settings screen, and the user can choose to revoke the permissions.",
             "x_mitre_platforms": [
                 "Android",
                 "iOS"
             ],
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
+            "x_mitre_contributors": [],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--99e6295e-741b-4857-b6e5-64989eb039b4",
+            "created": "2017-10-25T14:48:12.267Z",
+            "x_mitre_version": "1.1",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1430",
+                    "url": "https://attack.mitre.org/techniques/T1430"
+                },
+                {
+                    "source_name": "Palo Alto HenBox",
+                    "url": "https://unit42.paloaltonetworks.com/unit42-henbox-chickens-come-home-roost/",
+                    "description": "A. Hinchliffe, M. Harbison, J. Miller-Osborn, et al. (2018, March 13). HenBox: The Chickens Come Home to Roost. Retrieved September 9, 2019."
+                },
+                {
+                    "source_name": "Android Request Location Permissions",
+                    "url": "https://developer.android.com/training/location/permissions",
+                    "description": "Android Developers. (2022, March 24). Request Location Permissions. Retrieved April 1, 2022."
+                },
+                {
+                    "source_name": "Apple Requesting Authorization for Location Services",
+                    "url": "https://developer.apple.com/documentation/corelocation/requesting_authorization_for_location_services",
+                    "description": "Apple Developers. (n.d.). Requesting Authorization for Location Services. Retrieved April 1, 2022."
+                },
+                {
+                    "source_name": "Google Project Zero Insomnia",
+                    "url": "https://googleprojectzero.blogspot.com/2019/08/implant-teardown.html",
+                    "description": "I. Beer. (2019, August 29). Implant Teardown. Retrieved June 2, 2020."
+                },
+                {
+                    "source_name": "PaloAlto-SpyDealer",
+                    "url": "https://researchcenter.paloaltonetworks.com/2017/07/unit42-spydealer-android-trojan-spying-40-apps/",
+                    "description": "Wenjun Hu, Cong Zheng and Zhi Xu. (2017, July 6). SpyDealer: Android Trojan Spying on More Than 40 Apps. Retrieved September 18, 2018."
+                },
+                {
+                    "url": "https://pages.nist.gov/mobile-threat-catalogue/application-threats/APP-24.html",
+                    "source_name": "NIST Mobile Threat Catalogue",
+                    "external_id": "APP-24"
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may track a device\u2019s physical location through use of standard operating system APIs via malicious or exploited applications on the compromised device. \n\n \n\nOn Android, applications holding the `ACCESS_COAURSE_LOCATION` or `ACCESS_FINE_LOCATION` permissions provide access to the device\u2019s physical location. On Android 10 and up, declaration of the `ACCESS_BACKGROUND_LOCATION` permission in an application\u2019s manifest will allow applications to request location access even when the application is running in the background.(Citation: Android Request Location Permissions) Some adversaries have utilized integration of Baidu map services to retrieve geographical location once the location access permissions had been obtained.(Citation: PaloAlto-SpyDealer)(Citation: Palo Alto HenBox) \n\n \n\nOn iOS, applications must include the `NSLocationWhenInUseUsageDescription`, `NSLocationAlwaysAndWhenInUseUsageDescription`, and/or `NSLocationAlwaysUsageDescription` keys in their `Info.plist` file depending on the extent of requested access to location information.(Citation: Apple Requesting Authorization for Location Services) On iOS 8.0 and up, applications call `requestWhenInUseAuthorization()` to request access to location information when the application is in use or `requestAlwaysAuthorization()` to request access to location information regardless of whether the application is in use. With elevated privileges, an adversary may be able to access location data without explicit user consent with the `com.apple.locationd.preauthorized` entitlement key.(Citation: Google Project Zero Insomnia)",
+            "modified": "2022-04-01T17:05:16.493Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Location Tracking",
+            "x_mitre_detection": "Android applications requesting the `ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION`, or `ACCESS_BACKGROUND_LOCATION` permissions and iOS applications including the `NSLocationWhenInUseUsageDescription`, `NSLocationAlwaysAndWhenInUseUsageDescription`, and/or `NSLocationAlwaysUsageDescription` keys in their `Info.plist` file could be scrutinized during the application vetting process. \n\n \n\nIn both Android (6.0 and up) and iOS, users can view which applications have the permission to access the device location through the device settings screen and revoke permissions as necessary.  ",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-mobile-attack",
+                    "phase_name": "collection"
+                },
+                {
+                    "kill_chain_name": "mitre-mobile-attack",
+                    "phase_name": "discovery"
+                }
+            ],
+            "x_mitre_is_subtechnique": false,
             "x_mitre_tactic_type": [
                 "Post-Adversary Device Access"
             ],
-            "x_mitre_old_attack_id": "MOB-T1033",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2019-10-15T20:01:06.186Z",
-            "x_mitre_version": "1.0",
-            "type": "attack-pattern",
-            "description": "An adversary could use a malicious or exploited application to surreptitiously track the device's physical location through use of standard operating system APIs."
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_data_sources": []
         }
     ]
 }
