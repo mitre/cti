@@ -1,10 +1,62 @@
 {
     "type": "bundle",
-    "id": "bundle--b7279969-8e5b-4a71-956e-fc9f4d6fd9c0",
+    "id": "bundle--43bf281e-d8c1-4de7-915c-af5c10fe6775",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Android",
+                "iOS"
+            ],
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
             "id": "attack-pattern--c4b96c0b-cb58-497a-a1c2-bb447d79d692",
+            "created": "2017-10-25T14:48:19.996Z",
+            "x_mitre_version": "3.0",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1414",
+                    "url": "https://attack.mitre.org/techniques/T1414"
+                },
+                {
+                    "source_name": "Android 10 Privacy Changes",
+                    "url": "https://developer.android.com/about/versions/10/privacy/changes#clipboard-data",
+                    "description": "Android Developers. (n.d.). Privacy changes in Android 10. Retrieved September 11, 2019."
+                },
+                {
+                    "source_name": "UIPPasteboard",
+                    "url": "https://developer.apple.com/documentation/uikit/uipasteboard",
+                    "description": "Apple Developer. (n.d.). UIPasteboard. Retrieved April 1, 2022."
+                },
+                {
+                    "source_name": "Fahl-Clipboard",
+                    "url": "http://saschafahl.de/static/paper/pwmanagers2013.pdf",
+                    "description": "Fahl, S, et al.. (2013). Hey, You, Get Off of My Clipboard. Retrieved August 27, 2019."
+                },
+                {
+                    "source_name": "Github Capture Clipboard 2019",
+                    "url": "https://github.com/grepx/android-clipboard-security",
+                    "description": "Pearce, G. (, January). Retrieved August 8, 2019."
+                },
+                {
+                    "url": "https://pages.nist.gov/mobile-threat-catalogue/application-threats/APP-35.html",
+                    "source_name": "NIST Mobile Threat Catalogue",
+                    "external_id": "APP-35"
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may abuse clipboard manager APIs to obtain sensitive information copied to the device clipboard. For example, passwords being copied and pasted from a password manager application could be captured by a malicious application installed on the device.(Citation: Fahl-Clipboard) \n\n \n\nOn Android, applications can use the `ClipboardManager.OnPrimaryClipChangedListener()` API to register as a listener and monitor the clipboard for changes. However, starting in Android 10, this can only be used if the application is in the foreground, or is set as the device\u2019s default input method editor (IME).(Citation: Github Capture Clipboard 2019)(Citation: Android 10 Privacy Changes) \n\n \n\nOn iOS, this can be accomplished by accessing the `UIPasteboard.general.string` field. However, starting in iOS 14, upon accessing the clipboard, the user will be shown a system notification if the accessed text originated in a different application. For example, if the user copies the text of an iMessage from the Messages application, the notification will read \u201capplication_name has pasted from Messages\u201d when the text was pasted in a different application.(Citation: UIPPasteboard)",
+            "modified": "2022-04-19T19:29:45.323Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Clipboard Data",
+            "x_mitre_detection": "Application vetting services could detect usage of standard clipboard APIs.",
             "kill_chain_phases": [
                 {
                     "phase_name": "collection",
@@ -15,52 +67,12 @@
                     "kill_chain_name": "mitre-mobile-attack"
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "name": "Capture Clipboard Data",
-            "external_references": [
-                {
-                    "source_name": "mitre-mobile-attack",
-                    "url": "https://attack.mitre.org/techniques/T1414",
-                    "external_id": "T1414"
-                },
-                {
-                    "source_name": "NIST Mobile Threat Catalogue",
-                    "url": "https://pages.nist.gov/mobile-threat-catalogue/application-threats/APP-35.html",
-                    "external_id": "APP-35"
-                },
-                {
-                    "source_name": "Fahl-Clipboard",
-                    "description": "Fahl, S, et al.. (2013). Hey, You, Get Off of My Clipboard. Retrieved August 27, 2019.",
-                    "url": "http://saschafahl.de/static/paper/pwmanagers2013.pdf"
-                },
-                {
-                    "source_name": "Github Capture Clipboard 2019",
-                    "description": "Pearce, G. (, January). Retrieved August 8, 2019.",
-                    "url": "https://github.com/grepx/android-clipboard-security"
-                },
-                {
-                    "source_name": "Android 10 Privacy Changes",
-                    "description": "Android Developers. (n.d.). Privacy changes in Android 10. Retrieved September 11, 2019.",
-                    "url": "https://developer.android.com/about/versions/10/privacy/changes#clipboard-data"
-                }
-            ],
-            "created": "2017-10-25T14:48:19.996Z",
-            "x_mitre_detection": "Capturing clipboard content can be difficult to detect, and therefore enterprises may be better served focusing on detection at other stages of adversarial behavior.",
-            "x_mitre_platforms": [
-                "Android",
-                "iOS"
-            ],
+            "x_mitre_is_subtechnique": false,
             "x_mitre_tactic_type": [
                 "Post-Adversary Device Access"
             ],
-            "x_mitre_old_attack_id": "MOB-T1017",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2019-09-13T20:46:26.223Z",
-            "x_mitre_version": "2.0",
-            "type": "attack-pattern",
-            "description": "Adversaries may abuse Clipboard Manager APIs to obtain sensitive information copied to the global clipboard. For example, passwords being copy-and-pasted from a password manager app could be captured by another application installed on the device.(Citation: Fahl-Clipboard)\n\nOn Android, <code>ClipboardManager.OnPrimaryClipChangedListener</code> can be used by applications to register as a listener and monitor the clipboard for changes.(Citation: Github Capture Clipboard 2019)\n\nAndroid 10 mitigates this technique by preventing applications from accessing clipboard data unless the application is on the foreground or is set as the device\u2019s default input method editor (IME).(Citation: Android 10 Privacy Changes)"
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

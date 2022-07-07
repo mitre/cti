@@ -1,45 +1,54 @@
 {
     "type": "bundle",
-    "id": "bundle--1d5ac7ce-f19b-4b7b-a812-182b871c90f1",
+    "id": "bundle--763720f5-0c6b-4012-96d6-5f806df1e71e",
     "spec_version": "2.0",
     "objects": [
         {
+            "x_mitre_platforms": [
+                "Android",
+                "iOS"
+            ],
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "type": "attack-pattern",
             "id": "attack-pattern--1b51f5bc-b97a-498a-8dbd-bc6b1901bf19",
+            "created": "2017-10-25T14:48:33.926Z",
+            "x_mitre_version": "2.0",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "external_id": "T1424",
+                    "url": "https://attack.mitre.org/techniques/T1424"
+                },
+                {
+                    "source_name": "Android-SELinuxChanges",
+                    "url": "https://code.google.com/p/android/issues/detail?id=205565",
+                    "description": "Various. (2016, March 31). Overly restrictive SELinux filesystem permissions in Android N. Retrieved December 21, 2016."
+                }
+            ],
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "Adversaries may attempt to get information about running processes on a device. Information obtained could be used to gain an understanding of common software/applications running on devices within a network. Adversaries may use the information from [Process Discovery](https://attack.mitre.org/techniques/T1424) during automated discovery to shape follow-on behaviors, including whether or not the adversary fully infects the target and/or attempts specific actions. \n\n \n\nRecent Android security enhancements have made it more difficult to obtain a list of running processes. On Android 7 and later, there is no way for an application to obtain the process list without abusing elevated privileges. This is due to the Android kernel utilizing the `hidepid` mount feature. Prior to Android 7, applications could utilize the `ps` command or examine the `/proc` directory on the device.(Citation: Android-SELinuxChanges) \n\n \n\nIn iOS, applications have previously been able to use the `sysctl` command to obtain a list of running processes. This functionality has been removed in later iOS versions. ",
+            "modified": "2022-03-30T20:32:19.942Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "Process Discovery",
+            "x_mitre_detection": "Mobile security products can typically detect rooted devices, which is an indication that Process Discovery is possible. Application vetting could potentially detect when applications attempt to abuse root access or root the system itself. Further, application vetting services could look for attempted usage of legacy process discovery mechanisms, such as the usage of `ps` or inspection of the `/proc` directory.",
             "kill_chain_phases": [
                 {
                     "phase_name": "discovery",
                     "kill_chain_name": "mitre-mobile-attack"
                 }
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "description": "On Android versions prior to 5, applications can observe information about other processes that are running through methods in the ActivityManager class. On Android versions prior to 7, applications can obtain this information by executing the <code>ps</code> command, or by examining the <code>/proc</code> directory. Starting in Android version 7, use of the Linux kernel's <code>hidepid</code> feature prevents applications (without escalated privileges) from accessing this information (Citation: Android-SELinuxChanges).",
-            "external_references": [
-                {
-                    "source_name": "mitre-mobile-attack",
-                    "url": "https://attack.mitre.org/techniques/T1424",
-                    "external_id": "T1424"
-                },
-                {
-                    "source_name": "Android-SELinuxChanges",
-                    "description": "Various. (2016, March 31). Overly restrictive SELinux filesystem permissions in Android N. Retrieved December 21, 2016.",
-                    "url": "https://code.google.com/p/android/issues/detail?id=205565"
-                }
-            ],
-            "created": "2017-10-25T14:48:33.926Z",
-            "x_mitre_platforms": [
-                "Android"
-            ],
-            "x_mitre_old_attack_id": "MOB-T1027",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2018-10-17T00:14:20.652Z",
-            "x_mitre_version": "1.0",
-            "name": "Process Discovery",
-            "type": "attack-pattern",
+            "x_mitre_is_subtechnique": false,
             "x_mitre_tactic_type": [
                 "Post-Adversary Device Access"
-            ]
+            ],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }
