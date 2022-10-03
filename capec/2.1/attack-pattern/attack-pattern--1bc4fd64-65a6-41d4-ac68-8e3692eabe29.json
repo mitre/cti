@@ -1,10 +1,10 @@
 {
-    "id": "bundle--6d8b117a-0028-41c6-a80d-5cae9fb7256e",
+    "id": "bundle--30d024b0-d68c-4d8d-9523-55d29b0ed727",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "When web services require callees to authenticate, they sometimes issue a token / secret to the caller that the caller is to use to sign their web service calls. In one such scheme the caller, when constructing a request, would concatenate all of the parameters passed to the web service with the provided authentication token and then generate a hash of the concatenated string (e.g., MD5, SHA1, etc.). That hash then forms the signature that is passed to the web service which is used on the server side to verify the origin authenticity and integrity of the message. There is a practical attack against an authentication scheme of this nature that makes use of the hash function extension / padding weakness. Leveraging this weakness, an attacker, who does not know the secret token, is able to modify the parameters passed to the web service by generating their own call and still generate a legitimate signature hash (as described in the notes). Because of the iterative design of the hash function, it is possible, from only the hash of a message and its length, to compute the hash of longer messages that start with the initial message and include the padding required for the initial message to reach a multiple of 512 bits. It is important to note that the attack not limited to MD5 and will work on other hash functions such as SHA1.",
+            "description": "An adversary utilizes a hash function extension/padding weakness, to modify the parameters passed to the web service requesting authentication by generating their own call in order to generate a legitimate signature hash (as described in the notes), without knowledge of the secret token sometimes provided by the web service.",
             "external_references": [
                 {
                     "external_id": "CAPEC-461",
@@ -29,7 +29,7 @@
                 }
             ],
             "id": "attack-pattern--1bc4fd64-65a6-41d4-ac68-8e3692eabe29",
-            "modified": "2021-10-21T00:00:00.000Z",
+            "modified": "2022-09-29T00:00:00.000Z",
             "name": "Web Services API Signature Forgery Leveraging Hash Function Extension Weakness",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -47,6 +47,7 @@
                 "To leverage an attack against the has function extension / padding weakness, consider the message to be passed to the web service is M (this message includes the parameters passed to the web service concatenated with the secret token / key bytes). The message M is hashed and that hash is passed to the web service and is used for authentication. The attacker does not know M, but can see Hash (M) and Length (M). The attacker can then compute Hash (M || Padding (M) || M') for any M'. The attacker does not know the entire message M, specifically the attacker does not know the secret bytes, but that does not matter. The attacker is still able to sign their own message M' and make the called web service verify the integrity of the message without an error."
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find a vulnerable web service: </b>The adversary finds a web service that uses a vulnerable authentication scheme, where an authentication token is concatenated with the parameters of a request and then hashed</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Read application documentation to learn about authentication schemes being used</td></tr><tr><td>Observe web service traffic to look for vulnerable authentication schemes</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Attempt adding padding to parameters: </b>An adversary tests if they can simply add padding to the parameters of a request such that the request is technically changed, with the hash remaining the same</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Exploit the hash function extension / padding weakness with only padding to test the weakness</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Add malicious parameters to request: </b>Add malicious parameters to a captured request in addition to what is already present. Do this by exploiting the padding weakness of the hash function and send the request to the web service so that it believes it is authenticated and acts on the extra parameters.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Exploit the hash function extension / padding weakness by adding malicious parameters to a web service request such that it is still deemed authentic</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>When web services require callees to authenticate, they sometimes issue a token / secret to the caller that the caller is to use to sign their web service calls. In one such scheme the caller, when constructing a request, would concatenate all of the parameters passed to the web service with the provided authentication token and then generate a hash of the concatenated string (e.g., MD5, SHA1, etc.). That hash then forms the signature that is passed to the web service which is used on the server side to verify the origin authenticity and integrity of the message. Because of the iterative design of the hash function, it is possible, from only the hash of a message and its length, for an adversary to conduct signature forgery by computing the hash of longer messages that start with the initial message and include the padding required for the initial message to reach a multiple of 512 bits. It is important to note that the attack not limited to MD5 and will work on other hash functions such as SHA1.</xhtml:p>\n         ",
             "x_capec_prerequisites": [
                 "Web services check the signature of the API calls",
                 "Authentication tokens / secrets are shared between the server and the legitimate client",
@@ -63,7 +64,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.7"
+            "x_capec_version": "3.8"
         }
     ],
     "type": "bundle"

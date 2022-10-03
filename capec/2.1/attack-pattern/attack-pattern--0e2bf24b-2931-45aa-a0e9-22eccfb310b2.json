@@ -1,10 +1,10 @@
 {
-    "id": "bundle--ac9b99b5-e40c-49d1-b6dd-d068502910fc",
+    "id": "bundle--2fb1bdc6-5027-4a56-9e0f-056bfa54aada",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
             "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
-            "description": "An adversary distributes a link (or possibly some other query structure) with a request to a third party web server that is malformed and also contains a block of exploit code in order to have the exploit become live code in the resulting error page. When the third party web server receives the crafted request and notes the error it then creates an error message that echoes the malformed message, including the exploit. Doing this converts the exploit portion of the message into to valid language elements that are executed by the viewing browser. When a victim executes the query provided by the adversary the infected error message is returned including the exploit code which then runs in the victim's browser. XSS can result in execution of code as well as data leakage (e.g. session cookies can be sent to the adversary). This type of attack is especially dangerous since the exploit appears to come from the third party web server, who the victim may trust and hence be more vulnerable to deception.",
+            "description": "An adversary distributes a link (or possibly some other query structure) with a request to a third party web server that is malformed and also contains a block of exploit code in order to have the exploit become live code in the resulting error page.",
             "external_references": [
                 {
                     "external_id": "CAPEC-198",
@@ -18,7 +18,7 @@
                 }
             ],
             "id": "attack-pattern--0e2bf24b-2931-45aa-a0e9-22eccfb310b2",
-            "modified": "2022-02-22T00:00:00.000Z",
+            "modified": "2022-09-29T00:00:00.000Z",
             "name": "XSS Targeting Error Pages",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -37,6 +37,7 @@
                 "Software"
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey the application for user-controllable inputs as URL parameters: </b>Using a browser or an automated tool, an adversary follows all public links and actions on a web site. They record all the links, the forms, the resources accessed and all other potential entry-points for the web application, looking for URLs which use parameters.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a spidering tool to follow and record all links and analyze the web pages to find entry points. Make note of any links that include parameters in the URL.</td></tr><tr><td>Use a proxy tool to record all links visited during a manual traversal of the web application.</td></tr><tr><td>Use a browser to manually explore the website and analyze how it is constructed. Many browsers' plugins are available to facilitate the analysis or automate the discovery.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Cause application to return error page: </b>The adversary uses the URLs gathered in the \"Explore\" phase as a target list and injects various common script payloads and special characters into the parameters to see if an error page occurs, and if the injected payload is executed by the error page.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a list of XSS probe strings to inject script in parameters of known URLs. If possible, the probe strings contain a unique identifier.</td></tr><tr><td>Use a proxy tool to record results of manual input of XSS probes in known URLs.</td></tr><tr><td>Use a list of HTML special characters to inject into parameters of known URLs and check if they caused errors</td></tr></tbody></table><li> <p> <b>Craft malicious XSS URL: </b>Once the adversary has determined which parameters are vulnerable to XSS through an error page, they will craft a malicious URL containing the XSS exploit. The adversary can have many goals, from stealing session IDs, cookies, credentials, and page content from the victim.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Change a URL parameter to include a malicious script tag.</td></tr><tr><td>Send information gathered from the malicious script to a remote endpoint.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Get victim to click URL: </b>In order for the attack to be successful, the victim needs to access the malicious URL.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Send a phishing email to the victim containing the malicious URL. This can be hidden in a hyperlink as to not show the full URL, which might draw suspicion.</td></tr><tr><td>Put the malicious URL on a public forum, where many victims might accidentally click the link.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>When the third party web server receives the crafted request and notes the error it then creates an error message that echoes the malformed message, including the exploit. Doing this converts the exploit portion of the message into to valid language elements that are executed by the viewing browser. When a victim executes the query provided by the adversary the infected error message is returned including the exploit code which then runs in the victim's browser. XSS can result in execution of code as well as data leakage (e.g. session cookies can be sent to the attacker). This type of attack is especially dangerous since the exploit appears to come from the third party web server, who the victim may trust and hence be more vulnerable to deception.</xhtml:p>\n         ",
             "x_capec_prerequisites": [
                 "A third party web server which fails to adequately sanitize messages sent in error pages.",
                 "The victim must be made to execute a query crafted by the adversary which results in the infected error report."
@@ -46,7 +47,7 @@
             ],
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "Medium",
-            "x_capec_version": "3.7"
+            "x_capec_version": "3.8"
         }
     ],
     "type": "bundle"

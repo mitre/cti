@@ -1,5 +1,5 @@
 {
-    "id": "bundle--732e0779-f3e9-44cc-838a-50cbe99523d1",
+    "id": "bundle--f3017e35-a1d8-4dfd-b424-b57a4b5340c2",
     "objects": [
         {
             "created": "2021-06-24T00:00:00.000Z",
@@ -106,6 +106,9 @@
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey target application and relevant OS shared code libraries: </b>Adversary identifies vulnerable transient instruction sets and the code/function calls to trigger them as well as instruction sets or code fragments (gadgets) to perform attack.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Utilize Disassembler and Debugger tools to examine and trace instruction set execution of source code and shared code libraries on a system.</td></tr></tbody></table><li> <p> <b>Explore cache and identify impacts: </b>Utilize tools to understand the impact of transient instruction execution upon address spaces and CPU operations.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Run OS or application specific tools that examine the contents of cache.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Cause conditions for identified transient instruction set execution: </b>Adversary ensures that specific code/instructions of the target process are executed by CPU, so desired transient instructions are executed.</p></li><li> <p> <b>Cause specific secret data to be cached from restricted address space: </b>Executed instruction sets (gadgets) in target address space, initially executed via adversary-chosen transient instructions sets, establish covert channel and transfer secret data across this channel to cache.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Prediction-based - adversary trains CPU to incorrectly predict/speculate conditions for instruction execution to be true, hence executing adversary-chosen transient instructions. These prediction-based methods include: Pattern History Table (PHT)/Input Validation Bypass, Branch Target Buffer (BTB)/Branch Target Injection, Return Stack Buffer (RSB)/Return Address Injection, and Store To Load (STL)/Speculative Store Bypass.</td></tr><tr><td>Exception/Fault-based - adversary has CPU execute transient instructions that raise an exception allowing inaccessible memory space to be accessed via out-of-order execution. These exception/fault-based methods include: Supervisor-only Bypass, Virtual Translation Bypass, System Register Bypass, FPU Register Bypass, Read-only Bypass, Protection Key Bypass, and Bounds Check Bypass.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Perform covert channel attack to obtain/access secret data: </b>Adversary process code removes instructions/data from shared cache set, waits for target process to reinsert them back into cache, to identify location of secret data via a timing method. Adversary continuously repeat this process to identify and access entirety of targeted secret data.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Flush+Reload - adversary frequently flushes targeted memory cache line using a dedicated machine flush instruction, and uses another process to measure time taken for CPU to load victim secret data.</td></tr><tr><td>Evict+Time - adversary causes victim to load target set into cache and measures time for victim process to load this data, setting a baseline. Adversary evicts a specified cache line and causes victim process to execute again, and measures any change in execution time, to determine if cache line was accessed.</td></tr><tr><td>Prime+Probe - adversary primes cache by filling cache line(s) or set(s) with data, after some time victim process evicts this adversary data to replace it with secret data. The adversary then probes/accesses all the previously accessed cache lines detecting cache misses, which determine that their attacker data has been evicted and replaced with secret data from victim process.</td></tr></tbody></table></ol></div>",
             "x_capec_likelihood_of_attack": "Low",
+            "x_capec_parent_of_refs": [
+                "attack-pattern--faa02de4-0f9b-4881-a088-b2a4d64475fd"
+            ],
             "x_capec_peer_of_refs": [
                 "attack-pattern--c727c058-2c9d-4021-a1ec-81dd030dea59",
                 "attack-pattern--d5e0c12f-6086-491d-86e5-e10a14d1f947",
@@ -123,7 +126,7 @@
             },
             "x_capec_status": "Stable",
             "x_capec_typical_severity": "Very High",
-            "x_capec_version": "3.7"
+            "x_capec_version": "3.8"
         }
     ],
     "type": "bundle"

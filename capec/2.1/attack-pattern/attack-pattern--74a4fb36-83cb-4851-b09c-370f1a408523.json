@@ -1,5 +1,5 @@
 {
-    "id": "bundle--fcc3d88c-6db4-4f18-8ad0-09bb1372ce03",
+    "id": "bundle--5124eb7b-11b0-4622-b801-36d8724acc4c",
     "objects": [
         {
             "created": "2014-06-23T00:00:00.000Z",
@@ -17,6 +17,12 @@
                     "url": "http://cwe.mitre.org/data/definitions/430.html"
                 },
                 {
+                    "description": "Masquerading: Space after Filename",
+                    "external_id": "T1036.006",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1036/006"
+                },
+                {
                     "description": "G. Hoglund, G. McGraw, Exploiting Software: How to Break Code, 2004--02, Addison-Wesley",
                     "external_id": "REF-1",
                     "source_name": "reference_from_CAPEC"
@@ -29,7 +35,7 @@
                 }
             ],
             "id": "attack-pattern--74a4fb36-83cb-4851-b09c-370f1a408523",
-            "modified": "2022-02-22T00:00:00.000Z",
+            "modified": "2022-09-29T00:00:00.000Z",
             "name": "Cause Web Server Misclassification",
             "object_marking_refs": [
                 "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
@@ -56,7 +62,7 @@
                 "Software"
             ],
             "x_capec_example_instances": [
-                "\n               <xhtml:p>J2EE application servers are supposed to execute Java Server Pages (JSP). There have been disclosure issues relating to Orion Application Server, where an attacker that appends either a period (.) or space characters to the end of a legitimate Http request, then the server displays the full source code in the attackers' web browser.</xhtml:p>\n               <xhtml:div style=\"margin-left:10px;\" class=\"attack\">http://victim.site/login.jsp.</xhtml:div>\n               <xhtml:p>Since remote data and directory access may be accessed directly from the JSP, this is a potentially very serious issue.</xhtml:p>\n               <xhtml:p>[REF-6]</xhtml:p>\n            "
+                "\n               <xhtml:p>J2EE application servers are supposed to execute Java Server Pages (JSP). There have been disclosure issues relating to Orion Application Server, where an attacker that appends either a period (.) or space characters to the end of a legitimate Http request, then the server displays the full source code in the attackers' web browser.</xhtml:p>\n               <xhtml:div style=\"margin-left:1em;\" class=\"attack\">http://victim.site/login.jsp.</xhtml:div>\n               <xhtml:p>Since remote data and directory access may be accessed directly from the JSP, this is a potentially very serious issue.</xhtml:p>\n               <xhtml:p>[REF-6]</xhtml:p>\n            "
             ],
             "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Footprint file input vectors: </b>Manually or using an automated tool, an attacker searches for all input locations where a user has control over the filenames or MIME types of files submitted to the web server.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Attacker manually crawls application to identify file inputs</td></tr><tr><td>Attacker uses an automated tool to crawl application identify file inputs</td></tr><tr><td>Attacker manually assesses strength of access control protecting native application files from user control</td></tr><tr><td>Attacker explores potential for submitting files directly to the web server via independently constructed HTTP Requests</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>File misclassification shotgunning: </b>An attacker makes changes to file extensions and MIME types typically processed by web servers and looks for abnormal behavior.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Attacker submits files with switched extensions (e.g. .php on a .jsp file) to web server.</td></tr><tr><td>Attacker adds extra characters (e.g. adding an extra . after the file extension) to filenames of files submitted to web server.</td></tr></tbody></table><li> <p> <b>File misclassification sniping: </b>Understanding how certain file types are processed by web servers, an attacker crafts varying file payloads and modifies their file extension or MIME type to be that of the targeted type to see if the web server is vulnerable to misclassification of that type.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Craft a malicious file payload, modify file extension to the targeted file type and submit it to the web server.</td></tr><tr><td>Craft a malicious file payload, modify its associated MIME type to the targeted file type and submit it to the web server.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Disclose information: </b>The attacker, by manipulating a file extension or MIME type is able to make the web server return raw information (not executed).</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Manipulate the file names that are explicitly sent to the server.</td></tr><tr><td>Manipulate the MIME sent in order to confuse the web server.</td></tr></tbody></table></ol></div>",
             "x_capec_extended_description": "\n            <xhtml:p>This type of vulnerability has been found in many widely used servers including IIS, Lotus Domino, and Orion. The attacker's job in this case is straightforward, standard communication protocols and methods are used and are generally appended with malicious information at the tail end of an otherwise legitimate request. The attack payload varies, but it could be special characters like a period or simply appending a tag that has a special meaning for operations on the server side like .jsp for a java application server. The essence of this attack is that the attacker deceives the server into executing functionality based on the name of the request, i.e. login.jsp, not the contents.</xhtml:p>\n         ",
@@ -74,7 +80,7 @@
             },
             "x_capec_status": "Draft",
             "x_capec_typical_severity": "High",
-            "x_capec_version": "3.7"
+            "x_capec_version": "3.8"
         }
     ],
     "type": "bundle"
