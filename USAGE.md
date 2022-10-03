@@ -883,10 +883,19 @@ def software_used_by_campaign(thesrc):
     return x
 
 def campaigns_using_software(thesrc):
-    """returns software_id => {campaign, relationship} for each campaign using the software"""
+    """returns software_id => {campaign, relationship} for each campaign using the software."""
     x = get_related(thesrc, "campaign", "uses", "tool", reverse=True)
     x.update(get_related(thesrc, "campaign", "uses", "malware", reverse=True))
     return x
+
+# campaign:group
+def campaigns_attributed_to_group(thesrc):
+    """returns group_id => {campaign, relationship} for each campaign attributed to the group."""
+    return get_related(thesrc, "campaign", "attributed-to", "intrusion-set")
+
+def groups_attributing_to_campaign(thesrc):
+    """returns campaign_id => {group, relationship} for each group attributing to the campaign."""
+    return get_related(thesrc, "campaign", "attributed-to", "intrusion-set", reverse=True)
 
 # technique:group
 def techniques_used_by_groups(thesrc):
