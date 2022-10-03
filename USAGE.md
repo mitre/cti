@@ -870,6 +870,24 @@ def groups_using_software(thesrc):
     x.update(get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True))
     return x
 
+# software:campaign
+def software_used_by_campaign(thesrc):
+    """returns campaign_id => {software, relationship} for each software used by the campaign."""
+    x = get_related(thesrc, "campaign", "uses", "malware")
+    x_tool = get_related(thesrc, "campaign", "uses", "tool")
+    for key in x_tool:
+        if key in x:
+            x[key].extend(x_tool[key])
+        else:
+            x[key] = x_tool[key]
+    return x
+
+def campaigns_using_software(thesrc):
+    """returns software_id => {campaign, relationship} for each campaign using the software"""
+    x = get_related(thesrc, "campaign", "uses", "tool", reverse=True)
+    x.update(get_related(thesrc, "campaign", "uses", "malware", reverse=True))
+    return x
+
 # technique:group
 def techniques_used_by_groups(thesrc):
     """returns group_id => {technique, relationship} for each technique used by the group."""
