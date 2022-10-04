@@ -900,12 +900,43 @@ def groups_attributing_to_campaign(thesrc):
 
 # technique:group
 def techniques_used_by_groups(thesrc):
-    """returns group_id => {technique, relationship} for each technique used by the group."""
-    return get_related(thesrc, "intrusion-set", "uses", "attack-pattern")
+    """returns group_id => {technique, relationship} for each technique used by the group and each
+       technique used by campaigns attributed to the group."""
+    techniques_used_by_groups = get_related(thesrc, "intrusion-set", "uses", "attack-pattern") # group_id => {technique, relationship}
+    campaigns_attributed_to_group = {
+        "campaigns": get_related(thesrc, "campaign", "attributed-to", "intrusion-set"), # group_id => {campaign, relationship}
+        "techniques": get_related(thesrc, "campaign", "uses", "attack-pattern") # campaign_id => {technique, relationship}
+    }
+    for group_id in campaigns_attributed_to_group["campaigns"]:
+        techniques_used_by_campaigns = []
+        for campaign in campaigns_attributed_to_group["campaigns"][group_id]:
+            campaign_id = campaign["object"]["id"]
+            if campaign_id in campaigns_attributed_to_group["techniques"]:
+                techniques_used_by_campaigns.append(campaigns_attributed_to_group["techniques"][campaign_id])
+        if group_id in techniques_used_by_groups:
+            techniques_used_by_groups[group_id].extend(techniques_used_by_campaigns)
+        else:
+            techniques_used_by_groups[group_id] = techniques_used_by_campaigns
+    return techniques_used_by_groups
 
 def groups_using_technique(thesrc):
     """returns technique_id => {group, relationship} for each group using the technique."""
-    return get_related(thesrc, "intrusion-set", "uses", "attack-pattern", reverse=True)
+    groups_using_techniques = get_related(thesrc, "intrusion-set", "uses", "attack-pattern", reverse=True) # technique_id => {group, relationship}
+    groups_attributing_to_campaigns = {
+        "campaigns": get_related(thesrc, "campaign", "uses", "attack-pattern", reverse=True), # technique_id => {campaign, relationship}
+        "groups": get_related(thesrc, "campaign", "attributed-to", "intrusion-set", reverse=True) # campaign_id => {group, relationship}
+    }
+    for technique_id in groups_attributing_to_campaigns["campaigns"]:
+        campaigns_attributed_to_group = []
+        for campaign in groups_attributing_to_campaigns["techniques"][technique_id]:
+            campaign_id = campaign["object"]["id"]
+            if campaign_id in groups_attributing_to_campaigns["groups"]:
+                campaigns_attributed_to_group.append(groups_attributing_to_campaigns["groups"][campaign_id])
+        if technique_id in groups_using_techniques:
+            groups_using_techniques[technique_id].extend(campaigns_attributed_to_group)
+        else:
+            groups_using_techniques[technique_id] = campaigns_attributed_to_group
+    return groups_using_techniques
 
 # technique:campaign
 def techniques_used_by_campaigns(thesrc):
