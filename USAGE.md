@@ -868,13 +868,51 @@ def software_used_by_groups(thesrc):
     """returns group_id => {software, relationship} for each software used by the group."""
     tools_used_by_group = get_related(thesrc, "intrusion-set", "uses", "tool")
     malware_used_by_group = get_related(thesrc, "intrusion-set", "uses", "malware")
-    return {**tools_used_by_group, **malware_used_by_group}
+    software_used_by_group = {**tools_used_by_group, **malware_used_by_group} # group_id -> {software, relationship}
+
+    tools_used_by_campaign = get_related(thesrc, "campaign", "uses", "tool")
+    malware_used_by_campaign = get_related(thesrc, "campaign", "uses", "malware")
+    campaigns_attributed_to_group = {
+        "campaigns": get_related(thesrc, "campaign", "attributed-to", "intrusion-set"), # group_id => {campaign, relationship}
+        "software": {**campaigns_using_malware, **campaigns_using_tool} # campaign_id => {software, relationship}
+    }
+
+    for group_id in campaigns_attributed_to_group["campaigns"]:
+        software_used_by_campaigns = []
+        for campaign in campaigns_attributed_to_group["campaigns"][group_id]:
+            campaign_id = campaign["object"]["id"]
+            if campaign_id in campaigns_attributed_to_group["software"]:
+                software_used_by_campaigns.append(campaigns_attributed_to_group["software"][campaign_id])
+        if group_id in software_used_by_group:
+            software_used_by_group[group_id].extend(software_used_by_campaigns)
+        else:
+            software_used_by_group[group_id] = software_used_by_campaigns
+    return software_used_by_group
 
 def groups_using_software(thesrc):
     """returns software_id => {group, relationship} for each group using the software."""
     groups_using_tool = get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True)
     groups_using_malware = get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True)
-    return {**groups_using_tool, **groups_using_malware}
+    groups_using_software = {**groups_using_tool, **groups_using_malware} # software_id => {group, relationship}
+
+    campaigns_using_tools = get_related(thesrc, "campaign", "uses", "tool", reverse=True)
+    campaigns_using_malware = get_related(thesrc, "campaign", "uses", "malware", reverse=True)
+    groups_attributing_to_campaigns = {
+        "campaigns": {**campaigns_using_tools, **campaigns_using_malware},# software_id => {campaign, relationship}
+        "groups": get_related(thesrc, "campaign", "attributed-to", "intrusion-set", reverse=True) # campaign_id => {group, relationship}
+    }
+
+    for software_id in groups_attributing_to_campaigns["campaigns"]:
+        groups_attributed_to_campaigns = []
+        for campaign in groups_attributing_to_campaigns["campaigns"][software_id]:
+            campaign_id = campaign["object"]["id"]
+            if campaign_id in groups_attributing_to_campaigns["groups"]:
+                groups_attributed_to_campaigns.append(groups_attributing_to_campaigns["groups"][campaign_id])
+        if software_id in groups_using_software:
+            groups_using_software[software_id].extend(groups_attributed_to_campaigns)
+        else:
+            groups_using_software[software_id] = groups_attributed_to_campaigns
+    return groups_using_software
 
 # software:campaign
 def software_used_by_campaigns(thesrc):
