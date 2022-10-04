@@ -760,7 +760,7 @@ to track not only the related object but the relationship itself because a descr
 present to contextualize the nature of the relationship. The following recipes demonstrate
 some common uses of relationships.
 
-### Relationships microlibrary
+#### Relationships microlibrary
 
 The following microlibrary can be used to build a lookup table of stixID to related objects and relationships.
 The argument to each accessor function is a STIX2 MemoryStore to build the relationship mappings from.
@@ -768,7 +768,6 @@ The argument to each accessor function is a STIX2 MemoryStore to build the relat
 ```python
 from pprint import pprint
 from stix2 import MemoryStore, Filter
-
 
 # See section below on "Removing revoked and deprecated objects"
 def remove_revoked_deprecated(stix_objects):
@@ -781,7 +780,6 @@ def remove_revoked_deprecated(stix_objects):
             stix_objects
         )
     )
-
 
 def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
     """build relationship mappings
@@ -866,10 +864,12 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
 # software:group
 def software_used_by_groups(thesrc):
     """returns group_id => {software, relationship} for each software used by the group."""
+    # get all software used by groups
     tools_used_by_group = get_related(thesrc, "intrusion-set", "uses", "tool")
     malware_used_by_group = get_related(thesrc, "intrusion-set", "uses", "malware")
     software_used_by_group = {**tools_used_by_group, **malware_used_by_group} # group_id -> {software, relationship}
 
+    # get groups attributing to campaigns and all software used by campaigns
     tools_used_by_campaign = get_related(thesrc, "campaign", "uses", "tool")
     malware_used_by_campaign = get_related(thesrc, "campaign", "uses", "malware")
     campaigns_attributed_to_group = {
@@ -879,10 +879,13 @@ def software_used_by_groups(thesrc):
 
     for group_id in campaigns_attributed_to_group["campaigns"]:
         software_used_by_campaigns = []
+        # check if attributed campaign is using software
         for campaign in campaigns_attributed_to_group["campaigns"][group_id]:
             campaign_id = campaign["object"]["id"]
             if campaign_id in campaigns_attributed_to_group["software"]:
                 software_used_by_campaigns.append(campaigns_attributed_to_group["software"][campaign_id])
+        
+        # update software used by group to include software used by a groups attributed campaign
         if group_id in software_used_by_group:
             software_used_by_group[group_id].extend(software_used_by_campaigns)
         else:
@@ -891,10 +894,12 @@ def software_used_by_groups(thesrc):
 
 def groups_using_software(thesrc):
     """returns software_id => {group, relationship} for each group using the software."""
+    # get all groups using software
     groups_using_tool = get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True)
     groups_using_malware = get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True)
     groups_using_software = {**groups_using_tool, **groups_using_malware} # software_id => {group, relationship}
 
+    # get campaigns attributed to groups and all campaigns using software
     campaigns_using_tools = get_related(thesrc, "campaign", "uses", "tool", reverse=True)
     campaigns_using_malware = get_related(thesrc, "campaign", "uses", "malware", reverse=True)
     groups_attributing_to_campaigns = {
@@ -904,10 +909,13 @@ def groups_using_software(thesrc):
 
     for software_id in groups_attributing_to_campaigns["campaigns"]:
         groups_attributed_to_campaigns = []
+        # check if campaign is attributed to group
         for campaign in groups_attributing_to_campaigns["campaigns"][software_id]:
             campaign_id = campaign["object"]["id"]
             if campaign_id in groups_attributing_to_campaigns["groups"]:
                 groups_attributed_to_campaigns.append(groups_attributing_to_campaigns["groups"][campaign_id])
+        
+        # update groups using software to include software used by a groups attributed campaign
         if software_id in groups_using_software:
             groups_using_software[software_id].extend(groups_attributed_to_campaigns)
         else:
@@ -940,17 +948,24 @@ def groups_attributing_to_campaign(thesrc):
 def techniques_used_by_groups(thesrc):
     """returns group_id => {technique, relationship} for each technique used by the group and each
        technique used by campaigns attributed to the group."""
+    # get all techniques used by groups
     techniques_used_by_groups = get_related(thesrc, "intrusion-set", "uses", "attack-pattern") # group_id => {technique, relationship}
+
+    # get groups attributing to campaigns and all techniques used by campaigns
     campaigns_attributed_to_group = {
         "campaigns": get_related(thesrc, "campaign", "attributed-to", "intrusion-set"), # group_id => {campaign, relationship}
         "techniques": get_related(thesrc, "campaign", "uses", "attack-pattern") # campaign_id => {technique, relationship}
     }
+
     for group_id in campaigns_attributed_to_group["campaigns"]:
         techniques_used_by_campaigns = []
+        # check if attributed campaign is using technique
         for campaign in campaigns_attributed_to_group["campaigns"][group_id]:
             campaign_id = campaign["object"]["id"]
             if campaign_id in campaigns_attributed_to_group["techniques"]:
                 techniques_used_by_campaigns.append(campaigns_attributed_to_group["techniques"][campaign_id])
+
+        # update techniques used by groups to include techniques used by a groups attributed campaign
         if group_id in techniques_used_by_groups:
             techniques_used_by_groups[group_id].extend(techniques_used_by_campaigns)
         else:
@@ -959,17 +974,24 @@ def techniques_used_by_groups(thesrc):
 
 def groups_using_technique(thesrc):
     """returns technique_id => {group, relationship} for each group using the technique."""
+    # get all groups using techniques
     groups_using_techniques = get_related(thesrc, "intrusion-set", "uses", "attack-pattern", reverse=True) # technique_id => {group, relationship}
+
+    # get campaigns attributed to groups and all campaigns using techniques
     groups_attributing_to_campaigns = {
         "campaigns": get_related(thesrc, "campaign", "uses", "attack-pattern", reverse=True), # technique_id => {campaign, relationship}
         "groups": get_related(thesrc, "campaign", "attributed-to", "intrusion-set", reverse=True) # campaign_id => {group, relationship}
     }
+
     for technique_id in groups_attributing_to_campaigns["campaigns"]:
         campaigns_attributed_to_group = []
+        # check if campaign is attributed to group
         for campaign in groups_attributing_to_campaigns["techniques"][technique_id]:
             campaign_id = campaign["object"]["id"]
             if campaign_id in groups_attributing_to_campaigns["groups"]:
                 campaigns_attributed_to_group.append(groups_attributing_to_campaigns["groups"][campaign_id])
+        
+        # update groups using techniques to include techniques used by a groups attributed campaign
         if technique_id in groups_using_techniques:
             groups_using_techniques[technique_id].extend(campaigns_attributed_to_group)
         else:
@@ -1041,6 +1063,7 @@ pprint(group_id_to_software["intrusion-set--2a158b0a-7ef8-43cb-9985-bf34d1e12050
 #     }
 # ]
 ```
+
 #### Getting techniques used by a group's software
 
 Because a group uses software, and software uses techniques, groups can be considered indirect users of techniques used by their software.
