@@ -760,14 +760,28 @@ to track not only the related object but the relationship itself because a descr
 present to contextualize the nature of the relationship. The following recipes demonstrate
 some common uses of relationships.
 
-#### Relationships microlibrary
+### Relationships microlibrary
 
 The following microlibrary can be used to build a lookup table of stixID to related objects and relationships.
 The argument to each accessor function is a STIX2 MemoryStore to build the relationship mappings from.
 
 ```python
+from pprint import pprint
 from stix2 import MemoryStore, Filter
-from itertools import chain
+
+
+# See section below on "Removing revoked and deprecated objects"
+def remove_revoked_deprecated(stix_objects):
+    """Remove any revoked or deprecated objects from queries made to the data source"""
+    # Note we use .get() because the property may not be present in the JSON data. The default is False
+    # if the property is not set.
+    return list(
+        filter(
+            lambda x: x.get("x_mitre_deprecated", False) is False and x.get("revoked", False) is False,
+            stix_objects
+        )
+    )
+
 
 def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
     """build relationship mappings
@@ -781,56 +795,54 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
 
     relationships = thesrc.query([
         Filter('type', '=', 'relationship'),
-        Filter('relationship_type', '=', rel_type)
+        Filter('relationship_type', '=', rel_type),
+        Filter('revoked', '=', False),
     ])
 
+    # See section below on "Removing revoked and deprecated objects"
+    relationships = remove_revoked_deprecated(relationships)
+
     # stix_id => [ { relationship, related_object_id } for each related object ]
-    id_to_related = {} 
+    id_to_related = {}
 
     # build the dict
     for relationship in relationships:
-        if (src_type in relationship.source_ref and target_type in relationship.target_ref):
+        if src_type in relationship.source_ref and target_type in relationship.target_ref:
             if (relationship.source_ref in id_to_related and not reverse) or (relationship.target_ref in id_to_related and reverse):
                 # append to existing entry
-                if not reverse: 
+                if not reverse:
                     id_to_related[relationship.source_ref].append({
                         "relationship": relationship,
                         "id": relationship.target_ref
                     })
-                else: 
+                else:
                     id_to_related[relationship.target_ref].append({
-                        "relationship": relationship, 
+                        "relationship": relationship,
                         "id": relationship.source_ref
                     })
-            else: 
+            else:
                 # create a new entry
-                if not reverse: 
+                if not reverse:
                     id_to_related[relationship.source_ref] = [{
-                        "relationship": relationship, 
+                        "relationship": relationship,
                         "id": relationship.target_ref
                     }]
                 else:
                     id_to_related[relationship.target_ref] = [{
-                        "relationship": relationship, 
+                        "relationship": relationship,
                         "id": relationship.source_ref
                     }]
     # all objects of relevant type
     if not reverse:
         targets = thesrc.query([
             Filter('type', '=', target_type),
+            Filter('revoked', '=', False)
         ])
     else:
         targets = thesrc.query([
             Filter('type', '=', src_type),
+            Filter('revoked', '=', False)
         ])
-    
-    # remove revoked and deprecated objects from output
-    targets = list(
-        filter(
-            lambda x: x.get("x_mitre_deprecated", False) is False and x.get("revoked", False) is False,
-            targets
-        )
-    )
 
     # build lookup of stixID to stix object
     id_to_target = {}
@@ -843,7 +855,7 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
         value = []
         for related in id_to_related[stix_id]:
             if not related["id"] in id_to_target:
-                continue # targeting a revoked object
+                continue  # targeting a revoked object
             value.append({
                 "object": id_to_target[related["id"]],
                 "relationship": related["relationship"]
@@ -851,24 +863,18 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
         output[stix_id] = value
     return output
 
-
 # software:group
 def software_used_by_groups(thesrc):
     """returns group_id => {software, relationship} for each software used by the group."""
-    x = get_related(thesrc, "intrusion-set", "uses", "malware")
-    x_tool = get_related(thesrc, "intrusion-set", "uses", "tool")
-    for key in x_tool:
-      if key in x:
-        x[key].extend(x_tool[key])
-      else:
-        x[key] = x_tool[key]
-    return x
+    tools_used_by_group = get_related(thesrc, "intrusion-set", "uses", "tool")
+    malware_used_by_group = get_related(thesrc, "intrusion-set", "uses", "malware")
+    return {**tools_used_by_group, **malware_used_by_group}
 
 def groups_using_software(thesrc):
     """returns software_id => {group, relationship} for each group using the software."""
-    x = get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True)
-    x.update(get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True))
-    return x
+    groups_using_tool = get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True)
+    groups_using_malware = get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True)
+    return {**groups_using_tool, **groups_using_malware}
 
 # software:campaign
 def software_used_by_campaigns(thesrc):
@@ -918,65 +924,67 @@ def campaigns_using_technique(thesrc):
 # technique:software
 def techniques_used_by_software(thesrc):
     """return software_id => {technique, relationship} for each technique used by the software."""
-    x = get_related(thesrc, "malware", "uses", "attack-pattern")
-    x.update(get_related(thesrc, "tool", "uses", "attack-pattern"))
-    return x
+    techniques_by_tool = get_related(thesrc, "tool", "uses", "attack-pattern")
+    techniques_by_malware = get_related(thesrc, "malware", "uses", "attack-pattern")
+    return {**techniques_by_tool, **techniques_by_malware}
+
 
 def software_using_technique(thesrc):
     """return technique_id  => {software, relationship} for each software using the technique."""
-    x = get_related(thesrc, "malware", "uses", "attack-pattern", reverse=True)
-    x_tool = get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True)
-    for key in x_tool:
-      if key in x:
-        x[key].extend(x_tool[key])
-      else:
-        x[key] = x_tool[key]
-    return x
+    tools_by_technique_id = get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True)
+    malware_by_technique_id = get_related(thesrc, "malware", "uses", "attack-pattern", reverse=True)
+    return {**tools_by_technique_id, **malware_by_technique_id}
+
 
 # technique:mitigation
 def mitigation_mitigates_techniques(thesrc):
     """return mitigation_id => {technique, relationship} for each technique mitigated by the mitigation."""
     return get_related(thesrc, "course-of-action", "mitigates", "attack-pattern", reverse=False)
 
+
 def technique_mitigated_by_mitigations(thesrc):
     """return technique_id => {mitigation, relationship} for each mitigation of the technique."""
     return get_related(thesrc, "course-of-action", "mitigates", "attack-pattern", reverse=True)
+
 
 # technique:sub-technique
 def subtechniques_of(thesrc):
     """return technique_id => {subtechnique, relationship} for each subtechnique of the technique."""
     return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern", reverse=True)
 
+
 def parent_technique_of(thesrc):
     """return subtechnique_id => {technique, relationship} describing the parent technique of the subtechnique"""
     return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern")[0]
+
 
 # technique:data-component
 def datacomponent_detects_techniques(thesrc):
     """return datacomponent_id => {technique, relationship} describing the detections of each data component"""
     return get_related(thesrc, "x-mitre-data-component", "detects", "attack-pattern")
 
+
 def technique_detected_by_datacomponents(thesrc):
     """return technique_id => {datacomponent, relationship} describing the data components that can detect the technique"""
     return get_related(thesrc, "x-mitre-data-component", "detects", "attack-pattern", reverse=True)
-```
 
-Example usage:
 
-```python
-group_id_to_software = groups_using_software(src)
-group_id_to_software["intrusion-set--2a158b0a-7ef8-43cb-9985-bf34d1e12050"] # G0019
+# Example usage:
+src = MemoryStore()
+src.load_from_file("path/to/enterprise-attack.json")
+
+group_id_to_software = software_used_by_groups(src)
+pprint(group_id_to_software["intrusion-set--2a158b0a-7ef8-43cb-9985-bf34d1e12050"])  # G0019
 # [
 #     {
 #         "object": Malware, # S0061
 #         "relationship": Relationship # relationship between G0019 and S0061
 #     },
-#     { 
+#     {
 #         ...
 #     }
 # ]
 ```
-
 #### Getting techniques used by a group's software
 
 Because a group uses software, and software uses techniques, groups can be considered indirect users of techniques used by their software.
