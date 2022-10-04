@@ -879,20 +879,15 @@ def groups_using_software(thesrc):
 # software:campaign
 def software_used_by_campaigns(thesrc):
     """returns campaign_id => {software, relationship} for each software used by the campaign."""
-    x = get_related(thesrc, "campaign", "uses", "malware")
-    x_tool = get_related(thesrc, "campaign", "uses", "tool")
-    for key in x_tool:
-        if key in x:
-            x[key].extend(x_tool[key])
-        else:
-            x[key] = x_tool[key]
-    return x
+    tools_used_by_campaign = get_related(thesrc, "campaign", "uses", "tool")
+    malware_used_by_campaign = get_related(thesrc, "campaign", "uses", "malware")
+    return {**tools_used_by_campaign, **malware_used_by_campaign}
 
 def campaigns_using_software(thesrc):
     """returns software_id => {campaign, relationship} for each campaign using the software."""
-    x = get_related(thesrc, "campaign", "uses", "tool", reverse=True)
-    x.update(get_related(thesrc, "campaign", "uses", "malware", reverse=True))
-    return x
+    campaigns_using_tool = get_related(thesrc, "campaign", "uses", "tool", reverse=True)
+    campaigns_using_malware = get_related(thesrc, "campaign", "uses", "malware", reverse=True)
+    return {**campaigns_using_tool, **campaigns_using_malware}
 
 # campaign:group
 def campaigns_attributed_to_groups(thesrc):
@@ -928,46 +923,38 @@ def techniques_used_by_software(thesrc):
     techniques_by_malware = get_related(thesrc, "malware", "uses", "attack-pattern")
     return {**techniques_by_tool, **techniques_by_malware}
 
-
 def software_using_technique(thesrc):
     """return technique_id  => {software, relationship} for each software using the technique."""
     tools_by_technique_id = get_related(thesrc, "tool", "uses", "attack-pattern", reverse=True)
     malware_by_technique_id = get_related(thesrc, "malware", "uses", "attack-pattern", reverse=True)
     return {**tools_by_technique_id, **malware_by_technique_id}
 
-
 # technique:mitigation
 def mitigation_mitigates_techniques(thesrc):
     """return mitigation_id => {technique, relationship} for each technique mitigated by the mitigation."""
     return get_related(thesrc, "course-of-action", "mitigates", "attack-pattern", reverse=False)
 
-
 def technique_mitigated_by_mitigations(thesrc):
     """return technique_id => {mitigation, relationship} for each mitigation of the technique."""
     return get_related(thesrc, "course-of-action", "mitigates", "attack-pattern", reverse=True)
-
 
 # technique:sub-technique
 def subtechniques_of(thesrc):
     """return technique_id => {subtechnique, relationship} for each subtechnique of the technique."""
     return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern", reverse=True)
 
-
 def parent_technique_of(thesrc):
     """return subtechnique_id => {technique, relationship} describing the parent technique of the subtechnique"""
     return get_related(thesrc, "attack-pattern", "subtechnique-of", "attack-pattern")[0]
-
 
 # technique:data-component
 def datacomponent_detects_techniques(thesrc):
     """return datacomponent_id => {technique, relationship} describing the detections of each data component"""
     return get_related(thesrc, "x-mitre-data-component", "detects", "attack-pattern")
 
-
 def technique_detected_by_datacomponents(thesrc):
     """return technique_id => {datacomponent, relationship} describing the data components that can detect the technique"""
     return get_related(thesrc, "x-mitre-data-component", "detects", "attack-pattern", reverse=True)
-
 
 # Example usage:
 src = MemoryStore()
