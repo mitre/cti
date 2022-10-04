@@ -863,18 +863,23 @@ def get_related(thesrc, src_type, rel_type, target_type, reverse=False):
 
 # software:group
 def software_used_by_groups(thesrc):
-    """returns group_id => {software, relationship} for each software used by the group."""
+    """returns group_id => {software, relationship} for each software used by the group and each software used by campaigns attributed to the group."""
     # get all software used by groups
     tools_used_by_group = get_related(thesrc, "intrusion-set", "uses", "tool")
     malware_used_by_group = get_related(thesrc, "intrusion-set", "uses", "malware")
-    software_used_by_group = {**tools_used_by_group, **malware_used_by_group} # group_id -> {software, relationship}
+    software_used_by_group = {**tools_used_by_group, **malware_used_by_group} # group_id -> [{software, relationship}]
 
     # get groups attributing to campaigns and all software used by campaigns
-    tools_used_by_campaign = get_related(thesrc, "campaign", "uses", "tool")
+    software_used_by_campaign = get_related(thesrc, "campaign", "uses", "tool")
     malware_used_by_campaign = get_related(thesrc, "campaign", "uses", "malware")
+    for id in malware_used_by_campaign:
+        if id in software_used_by_campaign:
+            software_used_by_campaign[id].extend(malware_used_by_campaign[id])
+        else:
+            software_used_by_campaign[id] = malware_used_by_campaign[id]
     campaigns_attributed_to_group = {
-        "campaigns": get_related(thesrc, "campaign", "attributed-to", "intrusion-set"), # group_id => {campaign, relationship}
-        "software": {**campaigns_using_malware, **campaigns_using_tool} # campaign_id => {software, relationship}
+        "campaigns": get_related(thesrc, "campaign", "attributed-to", "intrusion-set", reverse=True), # group_id => {campaign, relationship}
+        "software": software_used_by_campaign # campaign_id => {software, relationship}
     }
 
     for group_id in campaigns_attributed_to_group["campaigns"]:
@@ -883,7 +888,7 @@ def software_used_by_groups(thesrc):
         for campaign in campaigns_attributed_to_group["campaigns"][group_id]:
             campaign_id = campaign["object"]["id"]
             if campaign_id in campaigns_attributed_to_group["software"]:
-                software_used_by_campaigns.append(campaigns_attributed_to_group["software"][campaign_id])
+                software_used_by_campaigns.extend(campaigns_attributed_to_group["software"][campaign_id])
         
         # update software used by group to include software used by a groups attributed campaign
         if group_id in software_used_by_group:
@@ -893,18 +898,23 @@ def software_used_by_groups(thesrc):
     return software_used_by_group
 
 def groups_using_software(thesrc):
-    """returns software_id => {group, relationship} for each group using the software."""
+    """returns software_id => {group, relationship} for each group using the software and each software used by attributed campaigns."""
     # get all groups using software
     groups_using_tool = get_related(thesrc, "intrusion-set", "uses", "tool", reverse=True)
     groups_using_malware = get_related(thesrc, "intrusion-set", "uses", "malware", reverse=True)
     groups_using_software = {**groups_using_tool, **groups_using_malware} # software_id => {group, relationship}
 
     # get campaigns attributed to groups and all campaigns using software
-    campaigns_using_tools = get_related(thesrc, "campaign", "uses", "tool", reverse=True)
+    campaigns_using_software = get_related(thesrc, "campaign", "uses", "tool", reverse=True)
     campaigns_using_malware = get_related(thesrc, "campaign", "uses", "malware", reverse=True)
+    for id in campaigns_using_malware:
+        if id in campaigns_using_software:
+            campaigns_using_software[id].extend(campaigns_using_malware[id])
+        else:
+            campaigns_using_software[id] = campaigns_using_malware[id]
     groups_attributing_to_campaigns = {
-        "campaigns": {**campaigns_using_tools, **campaigns_using_malware},# software_id => {campaign, relationship}
-        "groups": get_related(thesrc, "campaign", "attributed-to", "intrusion-set", reverse=True) # campaign_id => {group, relationship}
+        "campaigns": campaigns_using_software,# software_id => {campaign, relationship}
+        "groups": get_related(thesrc, "campaign", "attributed-to", "intrusion-set") # campaign_id => {group, relationship}
     }
 
     for software_id in groups_attributing_to_campaigns["campaigns"]:
@@ -913,7 +923,7 @@ def groups_using_software(thesrc):
         for campaign in groups_attributing_to_campaigns["campaigns"][software_id]:
             campaign_id = campaign["object"]["id"]
             if campaign_id in groups_attributing_to_campaigns["groups"]:
-                groups_attributed_to_campaigns.append(groups_attributing_to_campaigns["groups"][campaign_id])
+                groups_attributed_to_campaigns.extend(groups_attributing_to_campaigns["groups"][campaign_id])
         
         # update groups using software to include software used by a groups attributed campaign
         if software_id in groups_using_software:
@@ -936,12 +946,12 @@ def campaigns_using_software(thesrc):
     return {**campaigns_using_tool, **campaigns_using_malware}
 
 # campaign:group
-def campaigns_attributed_to_groups(thesrc):
-    """returns group_id => {campaign, relationship} for each campaign attributed to the group."""
-    return get_related(thesrc, "campaign", "attributed-to", "intrusion-set")
-
 def groups_attributing_to_campaign(thesrc):
     """returns campaign_id => {group, relationship} for each group attributing to the campaign."""
+    return get_related(thesrc, "campaign", "attributed-to", "intrusion-set")
+
+def campaigns_attributed_to_group(thesrc):
+    """returns group_id => {campaign, relationship} for each campaign attributed to the group."""
     return get_related(thesrc, "campaign", "attributed-to", "intrusion-set", reverse=True)
 
 # technique:group
@@ -953,7 +963,7 @@ def techniques_used_by_groups(thesrc):
 
     # get groups attributing to campaigns and all techniques used by campaigns
     campaigns_attributed_to_group = {
-        "campaigns": get_related(thesrc, "campaign", "attributed-to", "intrusion-set"), # group_id => {campaign, relationship}
+        "campaigns": get_related(thesrc, "campaign", "attributed-to", "intrusion-set", reverse=True), # group_id => {campaign, relationship}
         "techniques": get_related(thesrc, "campaign", "uses", "attack-pattern") # campaign_id => {technique, relationship}
     }
 
@@ -963,7 +973,7 @@ def techniques_used_by_groups(thesrc):
         for campaign in campaigns_attributed_to_group["campaigns"][group_id]:
             campaign_id = campaign["object"]["id"]
             if campaign_id in campaigns_attributed_to_group["techniques"]:
-                techniques_used_by_campaigns.append(campaigns_attributed_to_group["techniques"][campaign_id])
+                techniques_used_by_campaigns.extend(campaigns_attributed_to_group["techniques"][campaign_id])
 
         # update techniques used by groups to include techniques used by a groups attributed campaign
         if group_id in techniques_used_by_groups:
@@ -973,23 +983,23 @@ def techniques_used_by_groups(thesrc):
     return techniques_used_by_groups
 
 def groups_using_technique(thesrc):
-    """returns technique_id => {group, relationship} for each group using the technique."""
+    """returns technique_id => {group, relationship} for each group using the technique and each campaign attributed to groups using the technique."""
     # get all groups using techniques
     groups_using_techniques = get_related(thesrc, "intrusion-set", "uses", "attack-pattern", reverse=True) # technique_id => {group, relationship}
 
     # get campaigns attributed to groups and all campaigns using techniques
     groups_attributing_to_campaigns = {
         "campaigns": get_related(thesrc, "campaign", "uses", "attack-pattern", reverse=True), # technique_id => {campaign, relationship}
-        "groups": get_related(thesrc, "campaign", "attributed-to", "intrusion-set", reverse=True) # campaign_id => {group, relationship}
+        "groups": get_related(thesrc, "campaign", "attributed-to", "intrusion-set") # campaign_id => {group, relationship}
     }
 
     for technique_id in groups_attributing_to_campaigns["campaigns"]:
         campaigns_attributed_to_group = []
         # check if campaign is attributed to group
-        for campaign in groups_attributing_to_campaigns["techniques"][technique_id]:
+        for campaign in groups_attributing_to_campaigns["campaigns"][technique_id]:
             campaign_id = campaign["object"]["id"]
             if campaign_id in groups_attributing_to_campaigns["groups"]:
-                campaigns_attributed_to_group.append(groups_attributing_to_campaigns["groups"][campaign_id])
+                campaigns_attributed_to_group.extend(groups_attributing_to_campaigns["groups"][campaign_id])
         
         # update groups using techniques to include techniques used by a groups attributed campaign
         if technique_id in groups_using_techniques:
