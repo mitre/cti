@@ -34,6 +34,7 @@ If you are looking for ATT&CK data represented in STIX 2.1, please see our [atta
       - [Data Sources and Data Components](#data-sources-and-data-components)
         - [Data Sources](#data-sources)
         - [Data Components](#data-components)
+      - [Campaigns](#campaigns)
       - [Relationships](#relationships)
   - [Accessing ATT&CK data in python](#accessing-attck-data-in-python)
     - [Requirements and imports](#requirements-and-imports)
@@ -86,6 +87,7 @@ ATT&CK uses a mix of predefined and custom STIX objects to implement ATT&CK conc
 | [Group](#groups)                 | [intrusion-set](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230941)  | no |
 | [Software](#software)            | [malware](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230945) or [tool](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230961) | no |
 | [Data Source](#data-source)      | `x-mitre-data-source` | yes |
+| [Campaign](#campaigns) | [campaign](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230925) | no |
 
 Two additional object types are found in the ATT&CK catalog:
 
@@ -132,6 +134,7 @@ The most commonly used ID format is what is referred to as the ATT&CK ID or simp
 | [Group](#groups)                 | `Gxxxx`  |
 | [Software](#software)            | `Sxxxx` |
 | [Data Source](#data-source)      | `DSxxxx` |
+| [Campaign](#campaigns)           | `Cxxxx` |
 
 ATT&CK IDs are typically, but not always, unique. See [Collisions with Technique ATT&CK IDs](#collisions-with-technique-attck-ids) for an edge case involving ID collisions between mitigations and techniques.
 
@@ -290,6 +293,17 @@ Data Components extend the generic SDO format with the following field:
 |:------|:-----|-------------|
 | `x_mitre_data_source_ref` | embedded relationship (string) | STIX ID of the data source this component is a part of. |
 
+#### Campaigns
+
+A Campaign in ATT&CK is defined as a [campaign](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230925) object.
+
+Campaigns extend the generic SDO format with the following fields:
+
+| Field | Type | Description |
+|:------|:-----|-------------|
+| `x_mitre_first_seen_citation` | string | One to many citations for when the Campaign was first reported in the form “(Citation: \<citation name>)” where \<citation name> can be found as one of the source_name of one of the external_references. |
+| `x_mitre_last_seen_citation` | string | One to many citations for when the Campaign was last reported in the form “(Citation: \<citation name>)” where \<citation name> can be found as one of the source_name of one of the external_references.
+
 #### Relationships
 
 Objects in ATT&CK are related to each other via STIX [relationship](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230970) objects. These relationships convey concepts like groups using techniques (also called "procedure examples" on the technique pages), the hierarchy of techniques and sub-techniques, and so on.
@@ -305,6 +319,9 @@ Relationships oftentimes have descriptions which contextualize the relationship 
 | `intrusion-set` | `uses`        | `malware` or `tool` | No | Group using a software. |
 | `intrusion-set` | `uses`        | `attack-pattern`    | No | Group using a technique, which is also considered a procedure example. |
 | `malware` or `tool` | `uses`    | `attack-pattern`    | No | Software using a technique, which is also considered a procedure example. |
+| `campaign` | `uses` | `malware` or `tool` | No | Campaign using a software. |
+| `campaign` | `uses` | `attack-pattern` | No | Campaign using a technique, which is also considered a procedure example. |
+| `campaign` | `attributed-to` | `intrusion-set` | No | Campaign attributed to a group. |
 | `course-of-action`  | `mitigates` | `attack-pattern`  | No | Mitigation mitigating a technique. |
 | `attack-pattern`    | `subtechnique-of` | `attack-pattern` | Yes | Sub-technique of a technique, where the `source_ref` is the sub-technique and the `target_ref` is the parent technique. |
 | `x-mitre-data-component` | `detects` | `attack-pattern` | Yes | Data component detecting a technique. |
