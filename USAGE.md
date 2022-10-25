@@ -779,12 +779,10 @@ some common uses of relationships.
 
 #### Relationships microlibrary
 
-NOTE (Oct 4, 2022): We are currently updating the microlibrary for the upcoming v12 release which includes slightly modified STIX Campaign Objects.
-The modifications to the Campaign STIX object will be mentioned at the top of this document in the The ATT&CK data model section.
-The examples will be backwards-compatible.
-You can follow the progress of this at [issue #23](https://github.com/mitre/cti/issues/203) and the [accompanying branch](https://github.com/mitre/cti/blob/203-update-relationships-microlibrary/USAGE.md#relationships-microlibrary).
+NOTE: The following code is intended to be used with the ATT&CK v12 release which includes Campaign Objects.
+The examples are backwards-compatible for previous versions af ATT&CK that omit those objects.
 
-The following microlibrary can be used to build a lookup table of stixID to related objects and relationships.
+This microlibrary can be used to build a lookup table of stixID to related objects and relationships.
 The argument to each accessor function is a STIX2 MemoryStore to build the relationship mappings from.
 
 ```python

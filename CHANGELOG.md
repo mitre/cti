@@ -1,5 +1,22 @@
 
-# Changes to ATT&CK in STIX 2.0
+# Changes to the ATT&CK/STIX Data Model
+
+## 25 October 2022 - ATT&CK Spec v3.0.0
+
+Changes to ATT&CK in STIX for October 2022 ATT&CK Content Release (ATT&CK-v12.0)
+
+* Added Campaign objects. For detailed information about the representation of Campaigns in ATT&CK/STIX, please see the campaign section of the [USAGE document](https://github.com/mitre/cti/blob/master/USAGE.md).
+
+## 25 April 2022 (ATT&CK v11) release
+
+NOTE: Changes to ATT&CK for the April 2022 (ATT&CK v11) release were initially omitted from this change log.
+
+As of the v11 content release, the following fields that previously were only available in the STIX 2.1 bundles are also available in STIX 2.0.
+
+* `x_mitre_modified_by_ref`: has been added to all object types. Defined in spec 2.0.0 below.
+* `x_mitre_domains`: has been added to all non-relationship objects. Defined in spec 2.0.0 below.
+* `x_mitre_attack_spec_version`: has been added to all object types. Defined in spec 2.1.0 below.
+
 ## 21 October 2021 - ATT&CK Spec v2.1.0
 Changes to ATT&CK in STIX for October 2021 ATT&CK Content Release (ATT&CK-v10.0)
 
