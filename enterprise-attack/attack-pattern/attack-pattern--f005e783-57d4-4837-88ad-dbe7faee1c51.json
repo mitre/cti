@@ -1,96 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--f1ad45d8-1bd5-4dc4-aed5-13fd4da0e8d8",
+    "id": "bundle--b195303b-9d86-492e-b199-802f7a31cbd9",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Office 365",
-                "SaaS",
-                "Google Workspace",
-                "Containers"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Shailesh Tiwary (Indian Army)",
-                "Saisha Agrawal, Microsoft Threat Intelligent Center (MSTIC)",
-                "Jeff Sakowicz, Microsoft Identity Developer Platform Services (IDPM Services)",
-                "Mark Wee",
-                "Jen Burns, HubSpot"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--f005e783-57d4-4837-88ad-dbe7faee1c51",
-            "created": "2020-01-30T17:37:22.261Z",
-            "x_mitre_version": "1.3",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1550.001",
-                    "url": "https://attack.mitre.org/techniques/T1550/001"
-                },
-                {
-                    "source_name": "Auth0 - Why You Should Always Use Access Tokens to Secure APIs Sept 2019",
-                    "url": "https://auth0.com/blog/why-should-use-accesstokens-to-secure-an-api/",
-                    "description": "Auth0. (n.d.). Why You Should Always Use Access Tokens to Secure APIs. Retrieved September 12, 2019."
-                },
-                {
-                    "source_name": "AWS Logging IAM Calls",
-                    "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/cloudtrail-integration.html",
-                    "description": "AWS. (n.d.). Logging IAM and AWS STS API calls with AWS CloudTrail. Retrieved April 1, 2022."
-                },
-                {
-                    "source_name": "AWS Temporary Security Credentials",
-                    "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html",
-                    "description": "AWS. (n.d.). Requesting temporary security credentials. Retrieved April 1, 2022."
-                },
-                {
-                    "source_name": "Microsoft Identity Platform Access 2019",
-                    "url": "https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens",
-                    "description": "Cai, S., Flores, J., de Guzman, C., et. al.. (2019, August 27). Microsoft identity platform access tokens. Retrieved October 4, 2019."
-                },
-                {
-                    "source_name": "Google Cloud Service Account Credentials",
-                    "url": "https://cloud.google.com/iam/docs/creating-short-lived-service-account-credentials",
-                    "description": "Google Cloud. (2022, March 31). Creating short-lived service account credentials. Retrieved April 1, 2022."
-                },
-                {
-                    "source_name": "GCP Monitoring Service Account Usage",
-                    "url": "https://cloud.google.com/iam/docs/service-account-monitoring",
-                    "description": "Google Cloud. (2022, March 31). Monitor usage patterns for service accounts and keys . Retrieved April 1, 2022."
-                },
-                {
-                    "source_name": "okta",
-                    "url": "https://developer.okta.com/blog/2018/06/20/what-happens-if-your-jwt-is-stolen",
-                    "description": "okta. (n.d.). What Happens If Your JWT Is Stolen?. Retrieved September 12, 2019."
-                },
-                {
-                    "source_name": "Rhino Security Labs Enumerating AWS Roles",
-                    "url": "https://rhinosecuritylabs.com/aws/assume-worst-aws-assume-role-enumeration",
-                    "description": "Spencer Gietzen. (2018, August 8). Assume the Worst: Enumerating AWS Roles through \u2018AssumeRole\u2019. Retrieved April 1, 2022."
-                },
-                {
-                    "source_name": "Staaldraad Phishing with OAuth 2017",
-                    "url": "https://staaldraad.github.io/2017/08/02/o356-phishing-with-oauth/",
-                    "description": "Stalmans, E.. (2017, August 2). Phishing with OAuth and o365/Azure. Retrieved October 4, 2019."
-                },
-                {
-                    "url": "https://capec.mitre.org/data/definitions/593.html",
-                    "source_name": "capec",
-                    "external_id": "CAPEC-593"
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may use stolen application access tokens to bypass the typical authentication process and access restricted accounts, information, or services on remote systems. These tokens are typically stolen from users or services and used in lieu of login credentials.\n\nApplication access tokens are used to make authorized API requests on behalf of a user or service and are commonly used as a way to access resources in cloud and container-based applications and software-as-a-service (SaaS).(Citation: Auth0 - Why You Should Always Use Access Tokens to Secure APIs Sept 2019) \n\nIn AWS and GCP environments, adversaries can trigger a request for a short-lived access token with the privileges of another user account.(Citation: Google Cloud Service Account Credentials)(Citation: AWS Temporary Security Credentials) The adversary can then use this token to request data or perform actions the original account could not. If permissions for this feature are misconfigured \u2013 for example, by allowing all users to request a token for a particular account - an adversary may be able to gain initial access to a Cloud Account or escalate their privileges.(Citation: Rhino Security Labs Enumerating AWS Roles)\n\nOAuth is one commonly implemented framework that issues tokens to users for access to systems. These frameworks are used collaboratively to verify the user and determine what actions the user is allowed to perform. Once identity is established, the token allows actions to be authorized, without passing the actual credentials of the user. Therefore, compromise of the token can grant the adversary access to resources of other sites through a malicious application.(Citation: okta)\n\nFor example, with a cloud-based email service once an OAuth access token is granted to a malicious application, it can potentially gain long-term access to features of the user account if a \"refresh\" token enabling background access is awarded.(Citation: Microsoft Identity Platform Access 2019) With an OAuth access token an adversary can use the user-granted REST API to perform functions such as email searching and contact enumeration.(Citation: Staaldraad Phishing with OAuth 2017)\n\nCompromised access tokens may be used as an initial step in compromising other services. For example, if a token grants access to a victim\u2019s primary email, the adversary may be able to extend access to all other services which the target subscribes by triggering forgotten password routines. Direct API access through a token negates the effectiveness of a second authentication factor and may be immune to intuitive countermeasures like changing passwords. Access abuse over an API channel can be difficult to detect even from the service provider end, as the access can still align well with a legitimate workflow.",
-            "modified": "2022-05-20T17:40:20.069Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2022-10-21T17:01:05.286Z",
             "name": "Application Access Token",
-            "x_mitre_detection": "Monitor access token activity for abnormal use and permissions granted to unusual or suspicious applications and APIs. Additionally, administrators should review logs for calls to the AWS Security Token Service (STS) and usage of GCP service accounts in order to identify anomalous actions.(Citation: AWS Logging IAM Calls)(Citation: GCP Monitoring Service Account Usage)",
+            "description": "Adversaries may use stolen application access tokens to bypass the typical authentication process and access restricted accounts, information, or services on remote systems. These tokens are typically stolen from users or services and used in lieu of login credentials.\n\nApplication access tokens are used to make authorized API requests on behalf of a user or service and are commonly used as a way to access resources in cloud and container-based applications and software-as-a-service (SaaS).(Citation: Auth0 - Why You Should Always Use Access Tokens to Secure APIs Sept 2019) \n\nIn AWS and GCP environments, adversaries can trigger a request for a short-lived access token with the privileges of another user account.(Citation: Google Cloud Service Account Credentials)(Citation: AWS Temporary Security Credentials) The adversary can then use this token to request data or perform actions the original account could not. If permissions for this feature are misconfigured \u2013 for example, by allowing all users to request a token for a particular account - an adversary may be able to gain initial access to a Cloud Account or escalate their privileges.(Citation: Rhino Security Labs Enumerating AWS Roles)\n\nOAuth is one commonly implemented framework that issues tokens to users for access to systems. These frameworks are used collaboratively to verify the user and determine what actions the user is allowed to perform. Once identity is established, the token allows actions to be authorized, without passing the actual credentials of the user. Therefore, compromise of the token can grant the adversary access to resources of other sites through a malicious application.(Citation: okta)\n\nFor example, with a cloud-based email service once an OAuth access token is granted to a malicious application, it can potentially gain long-term access to features of the user account if a \"refresh\" token enabling background access is awarded.(Citation: Microsoft Identity Platform Access 2019) With an OAuth access token an adversary can use the user-granted REST API to perform functions such as email searching and contact enumeration.(Citation: Staaldraad Phishing with OAuth 2017)\n\nCompromised access tokens may be used as an initial step in compromising other services. For example, if a token grants access to a victim\u2019s primary email, the adversary may be able to extend access to all other services which the target subscribes by triggering forgotten password routines. Direct API access through a token negates the effectiveness of a second authentication factor and may be immune to intuitive countermeasures like changing passwords. Access abuse over an API channel can be difficult to detect even from the service provider end, as the access can still align well with a legitimate workflow.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -101,13 +17,100 @@
                     "phase_name": "lateral-movement"
                 }
             ],
+            "x_mitre_detection": "Monitor access token activity for abnormal use and permissions granted to unusual or suspicious applications and APIs. Additionally, administrators should review logs for calls to the AWS Security Token Service (STS) and usage of GCP service accounts in order to identify anomalous actions.(Citation: AWS Logging IAM Calls)(Citation: GCP Monitoring Service Account Usage)",
+            "x_mitre_platforms": [
+                "Office 365",
+                "SaaS",
+                "Google Workspace",
+                "Containers",
+                "IaaS",
+                "Azure AD"
+            ],
             "x_mitre_is_subtechnique": true,
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.4",
+            "x_mitre_contributors": [
+                "Shailesh Tiwary (Indian Army)",
+                "Saisha Agrawal, Microsoft Threat Intelligent Center (MSTIC)",
+                "Jeff Sakowicz, Microsoft Identity Developer Platform Services (IDPM Services)",
+                "Mark Wee",
+                "Jen Burns, HubSpot",
+                "Ian Davila, Tidal Cyber"
+            ],
             "x_mitre_data_sources": [
-                "Application Log: Application Log Content",
-                "Web Credential: Web Credential Usage"
+                "Web Credential: Web Credential Usage",
+                "Application Log: Application Log Content"
             ],
             "x_mitre_defense_bypassed": [
                 "System Access Controls"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--f005e783-57d4-4837-88ad-dbe7faee1c51",
+            "created": "2020-01-30T17:37:22.261Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1550/001",
+                    "external_id": "T1550.001"
+                },
+                {
+                    "source_name": "Auth0 - Why You Should Always Use Access Tokens to Secure APIs Sept 2019",
+                    "description": "Auth0. (n.d.). Why You Should Always Use Access Tokens to Secure APIs. Retrieved September 12, 2019.",
+                    "url": "https://auth0.com/blog/why-should-use-accesstokens-to-secure-an-api/"
+                },
+                {
+                    "source_name": "AWS Logging IAM Calls",
+                    "description": "AWS. (n.d.). Logging IAM and AWS STS API calls with AWS CloudTrail. Retrieved April 1, 2022.",
+                    "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/cloudtrail-integration.html"
+                },
+                {
+                    "source_name": "AWS Temporary Security Credentials",
+                    "description": "AWS. (n.d.). Requesting temporary security credentials. Retrieved April 1, 2022.",
+                    "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html"
+                },
+                {
+                    "source_name": "Microsoft Identity Platform Access 2019",
+                    "description": "Cai, S., Flores, J., de Guzman, C., et. al.. (2019, August 27). Microsoft identity platform access tokens. Retrieved October 4, 2019.",
+                    "url": "https://docs.microsoft.com/en-us/azure/active-directory/develop/access-tokens"
+                },
+                {
+                    "source_name": "Google Cloud Service Account Credentials",
+                    "description": "Google Cloud. (2022, March 31). Creating short-lived service account credentials. Retrieved April 1, 2022.",
+                    "url": "https://cloud.google.com/iam/docs/creating-short-lived-service-account-credentials"
+                },
+                {
+                    "source_name": "GCP Monitoring Service Account Usage",
+                    "description": "Google Cloud. (2022, March 31). Monitor usage patterns for service accounts and keys . Retrieved April 1, 2022.",
+                    "url": "https://cloud.google.com/iam/docs/service-account-monitoring"
+                },
+                {
+                    "source_name": "okta",
+                    "description": "okta. (n.d.). What Happens If Your JWT Is Stolen?. Retrieved September 12, 2019.",
+                    "url": "https://developer.okta.com/blog/2018/06/20/what-happens-if-your-jwt-is-stolen"
+                },
+                {
+                    "source_name": "Rhino Security Labs Enumerating AWS Roles",
+                    "description": "Spencer Gietzen. (2018, August 8). Assume the Worst: Enumerating AWS Roles through \u2018AssumeRole\u2019. Retrieved April 1, 2022.",
+                    "url": "https://rhinosecuritylabs.com/aws/assume-worst-aws-assume-role-enumeration"
+                },
+                {
+                    "source_name": "Staaldraad Phishing with OAuth 2017",
+                    "description": "Stalmans, E.. (2017, August 2). Phishing with OAuth and o365/Azure. Retrieved October 4, 2019.",
+                    "url": "https://staaldraad.github.io/2017/08/02/o356-phishing-with-oauth/"
+                },
+                {
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/593.html",
+                    "external_id": "CAPEC-593"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "x_mitre_attack_spec_version": "2.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"

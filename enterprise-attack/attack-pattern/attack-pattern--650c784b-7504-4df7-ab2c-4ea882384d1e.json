@@ -1,81 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--3a050741-ce9e-48be-8365-7788f5816c61",
+    "id": "bundle--f3136c58-35ea-4b58-be10-bf0394d3dac0",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Eric Kuehn, Secure Ideas",
-                "Matthew Demaske, Adaptforward"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--650c784b-7504-4df7-ab2c-4ea882384d1e",
-            "type": "attack-pattern",
-            "created": "2020-02-11T19:08:51.677Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1557.001",
-                    "url": "https://attack.mitre.org/techniques/T1557/001"
-                },
-                {
-                    "url": "https://en.wikipedia.org/wiki/Link-Local_Multicast_Name_Resolution",
-                    "description": "Wikipedia. (2016, July 7). Link-Local Multicast Name Resolution. Retrieved November 17, 2017.",
-                    "source_name": "Wikipedia LLMNR"
-                },
-                {
-                    "url": "https://technet.microsoft.com/library/cc958811.aspx",
-                    "description": "Microsoft. (n.d.). NetBIOS Name Resolution. Retrieved November 17, 2017.",
-                    "source_name": "TechNet NetBIOS"
-                },
-                {
-                    "source_name": "byt3bl33d3r NTLM Relaying",
-                    "url": "https://byt3bl33d3r.github.io/practical-guide-to-ntlm-relaying-in-2017-aka-getting-a-foothold-in-under-5-minutes.html",
-                    "description": "Salvati, M. (2017, June 2). Practical guide to NTLM Relaying in 2017 (A.K.A getting a foothold in under 5 minutes). Retrieved February 7, 2019."
-                },
-                {
-                    "source_name": "Secure Ideas SMB Relay",
-                    "url": "https://blog.secureideas.com/2018/04/ever-run-a-relay-why-smb-relays-should-be-on-your-mind.html",
-                    "description": "Kuehn, E. (2018, April 11). Ever Run a Relay? Why SMB Relays Should Be On Your Mind. Retrieved February 7, 2019."
-                },
-                {
-                    "url": "https://github.com/nomex/nbnspoof",
-                    "description": "Nomex. (2014, February 7). NBNSpoof. Retrieved November 17, 2017.",
-                    "source_name": "GitHub NBNSpoof"
-                },
-                {
-                    "url": "https://www.rapid7.com/db/modules/auxiliary/spoof/llmnr/llmnr_response",
-                    "description": "Francois, R. (n.d.). LLMNR Spoofer. Retrieved November 17, 2017.",
-                    "source_name": "Rapid7 LLMNR Spoofer"
-                },
-                {
-                    "url": "https://github.com/SpiderLabs/Responder",
-                    "description": "Gaffie, L. (2016, August 25). Responder. Retrieved November 17, 2017.",
-                    "source_name": "GitHub Responder"
-                },
-                {
-                    "url": "https://www.sternsecurity.com/blog/local-network-attacks-llmnr-and-nbt-ns-poisoning",
-                    "description": "Sternstein, J. (2013, November). Local Network Attacks: LLMNR and NBT-NS Poisoning. Retrieved November 17, 2017.",
-                    "source_name": "Sternsecurity LLMNR-NBTNS"
-                },
-                {
-                    "url": "https://github.com/Kevin-Robertson/Conveigh",
-                    "description": "Robertson, K. (2016, August 28). Conveigh. Retrieved November 17, 2017.",
-                    "source_name": "GitHub Conveigh"
-                }
-            ],
-            "modified": "2021-09-28T13:09:50.809Z",
+            "modified": "2022-10-18T20:13:48.423Z",
             "name": "LLMNR/NBT-NS Poisoning and SMB Relay",
-            "description": "By responding to LLMNR/NBT-NS network traffic, adversaries may spoof an authoritative source for name resolution to force communication with an adversary controlled system. This activity may be used to collect or relay authentication materials. \n\nLink-Local Multicast Name Resolution (LLMNR) and NetBIOS Name Service (NBT-NS) are Microsoft Windows components that serve as alternate methods of host identification. LLMNR is based upon the Domain Name System (DNS) format and allows hosts on the same local link to perform name resolution for other hosts. NBT-NS identifies systems on a local network by their NetBIOS name. (Citation: Wikipedia LLMNR) (Citation: TechNet NetBIOS)\n\nAdversaries can spoof an authoritative source for name resolution on a victim network by responding to LLMNR (UDP 5355)/NBT-NS (UDP 137) traffic as if they know the identity of the requested host, effectively poisoning the service so that the victims will communicate with the adversary controlled system. If the requested host belongs to a resource that requires identification/authentication, the username and NTLMv2 hash will then be sent to the adversary controlled system. The adversary can then collect the hash information sent over the wire through tools that monitor the ports for traffic or through [Network Sniffing](https://attack.mitre.org/techniques/T1040) and crack the hashes offline through [Brute Force](https://attack.mitre.org/techniques/T1110) to obtain the plaintext passwords. In some cases where an adversary has access to a system that is in the authentication path between systems or when automated scans that use credentials attempt to authenticate to an adversary controlled system, the NTLMv2 hashes can be intercepted and relayed to access and execute code against a target system. The relay step can happen in conjunction with poisoning but may also be independent of it. (Citation: byt3bl33d3r NTLM Relaying)(Citation: Secure Ideas SMB Relay)\n\nSeveral tools exist that can be used to poison name services within local networks such as NBNSpoof, Metasploit, and [Responder](https://attack.mitre.org/software/S0174). (Citation: GitHub NBNSpoof) (Citation: Rapid7 LLMNR Spoofer) (Citation: GitHub Responder)",
+            "description": "By responding to LLMNR/NBT-NS network traffic, adversaries may spoof an authoritative source for name resolution to force communication with an adversary controlled system. This activity may be used to collect or relay authentication materials. \n\nLink-Local Multicast Name Resolution (LLMNR) and NetBIOS Name Service (NBT-NS) are Microsoft Windows components that serve as alternate methods of host identification. LLMNR is based upon the Domain Name System (DNS) format and allows hosts on the same local link to perform name resolution for other hosts. NBT-NS identifies systems on a local network by their NetBIOS name. (Citation: Wikipedia LLMNR)(Citation: TechNet NetBIOS)\n\nAdversaries can spoof an authoritative source for name resolution on a victim network by responding to LLMNR (UDP 5355)/NBT-NS (UDP 137) traffic as if they know the identity of the requested host, effectively poisoning the service so that the victims will communicate with the adversary controlled system. If the requested host belongs to a resource that requires identification/authentication, the username and NTLMv2 hash will then be sent to the adversary controlled system. The adversary can then collect the hash information sent over the wire through tools that monitor the ports for traffic or through [Network Sniffing](https://attack.mitre.org/techniques/T1040) and crack the hashes offline through [Brute Force](https://attack.mitre.org/techniques/T1110) to obtain the plaintext passwords.\n\nIn some cases where an adversary has access to a system that is in the authentication path between systems or when automated scans that use credentials attempt to authenticate to an adversary controlled system, the NTLMv2 hashes can be intercepted and relayed to access and execute code against a target system. The relay step can happen in conjunction with poisoning but may also be independent of it.(Citation: byt3bl33d3r NTLM Relaying)(Citation: Secure Ideas SMB Relay) Additionally, adversaries may encapsulate the NTLMv1/v2 hashes into various protocols, such as LDAP, SMB, MSSQL and HTTP, to expand and use multiple services with the valid NTLM response.\u00a0\n\nSeveral tools may be used to poison name services within local networks such as NBNSpoof, Metasploit, and [Responder](https://attack.mitre.org/software/S0174).(Citation: GitHub NBNSpoof)(Citation: Rapid7 LLMNR Spoofer)(Citation: GitHub Responder)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -87,18 +18,88 @@
                 }
             ],
             "x_mitre_detection": "Monitor <code>HKLM\\Software\\Policies\\Microsoft\\Windows NT\\DNSClient</code> for changes to the \"EnableMulticast\" DWORD value. A value of \u201c0\u201d indicates LLMNR is disabled. (Citation: Sternsecurity LLMNR-NBTNS)\n\nMonitor for traffic on ports UDP 5355 and UDP 137 if LLMNR/NetBIOS is disabled by security policy.\n\nDeploy an LLMNR/NBT-NS spoofing detection tool.(Citation: GitHub Conveigh) Monitoring of Windows event logs for event IDs 4697 and 7045 may help in detecting successful relay techniques.(Citation: Secure Ideas SMB Relay)",
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.2",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_data_sources": [
-                "Network Traffic: Network Traffic Flow",
-                "Windows Registry: Windows Registry Key Modification",
-                "Network Traffic: Network Traffic Content",
-                "Service: Service Creation"
+            "x_mitre_platforms": [
+                "Windows"
             ],
-            "x_mitre_permissions_required": [
-                "User"
-            ]
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.3",
+            "x_mitre_contributors": [
+                "Eric Kuehn, Secure Ideas",
+                "Matthew Demaske, Adaptforward",
+                "Andrew Allen, @whitehat_zero"
+            ],
+            "x_mitre_data_sources": [
+                "Service: Service Creation",
+                "Windows Registry: Windows Registry Key Modification",
+                "Network Traffic: Network Traffic Flow",
+                "Network Traffic: Network Traffic Content"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--650c784b-7504-4df7-ab2c-4ea882384d1e",
+            "created": "2020-02-11T19:08:51.677Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1557/001",
+                    "external_id": "T1557.001"
+                },
+                {
+                    "source_name": "Rapid7 LLMNR Spoofer",
+                    "description": "Francois, R. (n.d.). LLMNR Spoofer. Retrieved November 17, 2017.",
+                    "url": "https://www.rapid7.com/db/modules/auxiliary/spoof/llmnr/llmnr_response"
+                },
+                {
+                    "source_name": "GitHub Responder",
+                    "description": "Gaffie, L. (2016, August 25). Responder. Retrieved November 17, 2017.",
+                    "url": "https://github.com/SpiderLabs/Responder"
+                },
+                {
+                    "source_name": "Secure Ideas SMB Relay",
+                    "description": "Kuehn, E. (2018, April 11). Ever Run a Relay? Why SMB Relays Should Be On Your Mind. Retrieved February 7, 2019.",
+                    "url": "https://blog.secureideas.com/2018/04/ever-run-a-relay-why-smb-relays-should-be-on-your-mind.html"
+                },
+                {
+                    "source_name": "TechNet NetBIOS",
+                    "description": "Microsoft. (n.d.). NetBIOS Name Resolution. Retrieved November 17, 2017.",
+                    "url": "https://technet.microsoft.com/library/cc958811.aspx"
+                },
+                {
+                    "source_name": "GitHub NBNSpoof",
+                    "description": "Nomex. (2014, February 7). NBNSpoof. Retrieved November 17, 2017.",
+                    "url": "https://github.com/nomex/nbnspoof"
+                },
+                {
+                    "source_name": "GitHub Conveigh",
+                    "description": "Robertson, K. (2016, August 28). Conveigh. Retrieved November 17, 2017.",
+                    "url": "https://github.com/Kevin-Robertson/Conveigh"
+                },
+                {
+                    "source_name": "byt3bl33d3r NTLM Relaying",
+                    "description": "Salvati, M. (2017, June 2). Practical guide to NTLM Relaying in 2017 (A.K.A getting a foothold in under 5 minutes). Retrieved February 7, 2019.",
+                    "url": "https://byt3bl33d3r.github.io/practical-guide-to-ntlm-relaying-in-2017-aka-getting-a-foothold-in-under-5-minutes.html"
+                },
+                {
+                    "source_name": "Sternsecurity LLMNR-NBTNS",
+                    "description": "Sternstein, J. (2013, November). Local Network Attacks: LLMNR and NBT-NS Poisoning. Retrieved November 17, 2017.",
+                    "url": "https://www.sternsecurity.com/blog/local-network-attacks-llmnr-and-nbt-ns-poisoning"
+                },
+                {
+                    "source_name": "Wikipedia LLMNR",
+                    "description": "Wikipedia. (2016, July 7). Link-Local Multicast Name Resolution. Retrieved November 17, 2017.",
+                    "url": "https://en.wikipedia.org/wiki/Link-Local_Multicast_Name_Resolution"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

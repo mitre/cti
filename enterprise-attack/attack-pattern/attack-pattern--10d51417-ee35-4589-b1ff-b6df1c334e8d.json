@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a542499f-1abe-4c78-a1af-4fe7ad1b5332",
+    "id": "bundle--3c100c36-c932-4a32-abed-2df941f7f5d4",
     "spec_version": "2.0",
     "objects": [
         {
@@ -27,15 +27,16 @@
                 "Yossi Weizman, Azure Defender Research Team",
                 "Vishwas Manral, McAfee",
                 "Daniel Oakley",
-                "Travis Smith, Tripwire"
+                "Travis Smith, Tripwire",
+                "David Tayouri"
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "attack-pattern--10d51417-ee35-4589-b1ff-b6df1c334e8d",
             "type": "attack-pattern",
+            "id": "attack-pattern--10d51417-ee35-4589-b1ff-b6df1c334e8d",
             "created": "2017-05-31T21:31:44.421Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "2.4",
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -43,9 +44,9 @@
                     "url": "https://attack.mitre.org/techniques/T1133"
                 },
                 {
-                    "external_id": "CAPEC-555",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/555.html"
+                    "source_name": "Volexity Virtual Private Keylogging",
+                    "url": "https://www.volexity.com/blog/2015/10/07/virtual-private-keylogging-cisco-web-vpns-leveraged-for-access-and-persistence/",
+                    "description": "Adair, S. (2015, October 7). Virtual Private Keylogging: Cisco Web VPNs Leveraged for Access and Persistence. Retrieved March 20, 2017."
                 },
                 {
                     "source_name": "MacOS VNC software for Remote Desktop",
@@ -53,9 +54,9 @@
                     "description": "Apple Support. (n.d.). Set up a computer running VNC software for Remote Desktop. Retrieved August 18, 2021."
                 },
                 {
-                    "url": "https://www.volexity.com/blog/2015/10/07/virtual-private-keylogging-cisco-web-vpns-leveraged-for-access-and-persistence/",
-                    "description": "Adair, S. (2015, October 7). Virtual Private Keylogging: Cisco Web VPNs Leveraged for Access and Persistence. Retrieved March 20, 2017.",
-                    "source_name": "Volexity Virtual Private Keylogging"
+                    "source_name": "Unit 42 Hildegard Malware",
+                    "url": "https://unit42.paloaltonetworks.com/hildegard-malware-teamtnt/",
+                    "description": "Chen, J. et al. (2021, February 3). Hildegard: New TeamTNT Cryptojacking Malware Targeting Kubernetes. Retrieved April 5, 2021."
                 },
                 {
                     "source_name": "Trend Micro Exposed Docker Server",
@@ -63,14 +64,18 @@
                     "description": "Remillano II, A., et al. (2020, June 20). XORDDoS, Kaiji Variants Target Exposed Docker Servers. Retrieved April 5, 2021."
                 },
                 {
-                    "source_name": "Unit 42 Hildegard Malware",
-                    "url": "https://unit42.paloaltonetworks.com/hildegard-malware-teamtnt/",
-                    "description": "Chen, J. et al. (2021, February 3). Hildegard: New TeamTNT Cryptojacking Malware Targeting Kubernetes. Retrieved April 5, 2021."
+                    "url": "https://capec.mitre.org/data/definitions/555.html",
+                    "source_name": "capec",
+                    "external_id": "CAPEC-555"
                 }
             ],
-            "modified": "2021-08-19T16:57:27.209Z",
-            "name": "External Remote Services",
+            "x_mitre_deprecated": false,
+            "revoked": false,
             "description": "Adversaries may leverage external-facing remote services to initially access and/or persist within a network. Remote services such as VPNs, Citrix, and other access mechanisms allow users to connect to internal enterprise network resources from external locations. There are often remote service gateways that manage connections and credential authentication for these services. Services such as [Windows Remote Management](https://attack.mitre.org/techniques/T1021/006) and [VNC](https://attack.mitre.org/techniques/T1021/005) can also be used externally.(Citation: MacOS VNC software for Remote Desktop)\n\nAccess to [Valid Accounts](https://attack.mitre.org/techniques/T1078) to use the service is often a requirement, which could be obtained through credential pharming or by obtaining the credentials from users after compromising the enterprise network.(Citation: Volexity Virtual Private Keylogging) Access to remote services may be used as a redundant or persistent access mechanism during an operation.\n\nAccess may also be gained through an exposed service that doesn\u2019t require authentication. In containerized environments, this may include an exposed Docker API, Kubernetes API server, kubelet, or web application such as the Kubernetes dashboard.(Citation: Trend Micro Exposed Docker Server)(Citation: Unit 42 Hildegard Malware)",
+            "modified": "2022-06-16T19:15:22.221Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "name": "External Remote Services",
+            "x_mitre_detection": "Follow best practices for detecting adversary use of [Valid Accounts](https://attack.mitre.org/techniques/T1078) for authenticating to remote services. Collect authentication logs and analyze for unusual access patterns, windows of activity, and access outside of normal business hours.\n\nWhen authentication is not required to access an exposed remote service, monitor for follow-on activities such as anomalous external use of the exposed API or application.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -81,17 +86,16 @@
                     "phase_name": "initial-access"
                 }
             ],
-            "x_mitre_detection": "Follow best practices for detecting adversary use of [Valid Accounts](https://attack.mitre.org/techniques/T1078) for authenticating to remote services. Collect authentication logs and analyze for unusual access patterns, windows of activity, and access outside of normal business hours.\n\nWhen authentication is not required to access an exposed remote service, monitor for follow-on activities such as anomalous external use of the exposed API or application.",
-            "x_mitre_version": "2.3",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_is_subtechnique": false,
             "x_mitre_data_sources": [
                 "Application Log: Application Log Content",
+                "Network Traffic: Network Traffic Content",
+                "Network Traffic: Network Connection Creation",
                 "Logon Session: Logon Session Metadata",
                 "Network Traffic: Network Traffic Flow"
             ],
-            "x_mitre_permissions_required": [
-                "User"
-            ]
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

@@ -1,9 +1,19 @@
 {
     "type": "bundle",
-    "id": "bundle--bdc75095-79c0-465f-b65a-66f571c1d4e7",
+    "id": "bundle--a28fd140-bd11-44bf-a680-58c6e2ec5534",
     "spec_version": "2.0",
     "objects": [
         {
+            "modified": "2022-09-06T22:11:56.413Z",
+            "name": "System Information Discovery",
+            "description": "An adversary may attempt to get detailed information about the operating system and hardware, including version, patches, hotfixes, service packs, and architecture. Adversaries may use the information from [System Information Discovery](https://attack.mitre.org/techniques/T1082) during automated discovery to shape follow-on behaviors, including whether or not the adversary fully infects the target and/or attempts specific actions.\n\nTools such as [Systeminfo](https://attack.mitre.org/software/S0096) can be used to gather detailed system information. If running with privileged access, a breakdown of system data can be gathered through the <code>systemsetup</code> configuration tool on macOS. As an example, adversaries with user-level access can execute the <code>df -aH</code> command to obtain currently mounted disks and associated freely available space. Adversaries may also leverage a [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) on network devices to gather detailed system information (e.g. <code>show version</code>).(Citation: US-CERT-TA18-106A) [System Information Discovery](https://attack.mitre.org/techniques/T1082) combined with information gathered from other forms of discovery and reconnaissance can drive payload development and concealment.(Citation: OSX.FairyTale)(Citation: 20 macOS Common Tools and Techniques)\n\nInfrastructure as a Service (IaaS) cloud providers such as AWS, GCP, and Azure allow access to instance and virtual machine information via APIs. Successful authenticated API calls can return data such as the operating system platform and status of a particular instance or the model view of a virtual machine.(Citation: Amazon Describe Instance)(Citation: Google Instances Resource)(Citation: Microsoft Virutal Machine API)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "discovery"
+                }
+            ],
+            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Further, [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) commands may also be used to gather  detailed system information with built-in features native to the network device platform.  Monitor CLI activity for unexpected or unauthorized use  commands being run by non-standard users from non-standard locations. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).\n\nIn cloud-based systems, native logging can be used to identify access to certain APIs and dashboards that may contain system information. Depending on how the environment is used, that data alone may not be useful due to benign use during normal operations.",
             "x_mitre_platforms": [
                 "Windows",
                 "IaaS",
@@ -11,82 +21,72 @@
                 "macOS",
                 "Network"
             ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
+            "x_mitre_version": "2.5",
             "x_mitre_contributors": [
                 "Maril Vernon @shewhohacks",
                 "Praetorian",
                 "Austin Clark, @c2defense"
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            "x_mitre_data_sources": [
+                "Instance: Instance Metadata",
+                "Command: Command Execution",
+                "Process: OS API Execution",
+                "Process: Process Creation"
             ],
             "type": "attack-pattern",
             "id": "attack-pattern--354a7f88-63fb-41b5-a801-ce3b377b36f1",
             "created": "2017-05-31T21:31:04.307Z",
-            "x_mitre_version": "2.4",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "external_id": "T1082",
-                    "url": "https://attack.mitre.org/techniques/T1082"
+                    "url": "https://attack.mitre.org/techniques/T1082",
+                    "external_id": "T1082"
                 },
                 {
                     "source_name": "Amazon Describe Instance",
-                    "url": "https://docs.aws.amazon.com/cli/latest/reference/ssm/describe-instance-information.html",
-                    "description": "Amazon. (n.d.). describe-instance-information. Retrieved March 3, 2020."
+                    "description": "Amazon. (n.d.). describe-instance-information. Retrieved March 3, 2020.",
+                    "url": "https://docs.aws.amazon.com/cli/latest/reference/ssm/describe-instance-information.html"
                 },
                 {
                     "source_name": "Google Instances Resource",
-                    "url": "https://cloud.google.com/compute/docs/reference/rest/v1/instances",
-                    "description": "Google. (n.d.). Rest Resource: instance. Retrieved March 3, 2020."
+                    "description": "Google. (n.d.). Rest Resource: instance. Retrieved March 3, 2020.",
+                    "url": "https://cloud.google.com/compute/docs/reference/rest/v1/instances"
                 },
                 {
                     "source_name": "Microsoft Virutal Machine API",
-                    "url": "https://docs.microsoft.com/en-us/rest/api/compute/virtualmachines/get",
-                    "description": "Microsoft. (2019, March 1). Virtual Machines - Get. Retrieved October 8, 2019."
+                    "description": "Microsoft. (2019, March 1). Virtual Machines - Get. Retrieved October 8, 2019.",
+                    "url": "https://docs.microsoft.com/en-us/rest/api/compute/virtualmachines/get"
                 },
                 {
                     "source_name": "20 macOS Common Tools and Techniques",
-                    "url": "https://labs.sentinelone.com/20-common-tools-techniques-used-by-macos-threat-actors-malware/",
-                    "description": "Phil Stokes. (2021, February 16). 20 Common Tools & Techniques Used by macOS Threat Actors & Malware. Retrieved August 23, 2021."
+                    "description": "Phil Stokes. (2021, February 16). 20 Common Tools & Techniques Used by macOS Threat Actors & Malware. Retrieved August 23, 2021.",
+                    "url": "https://labs.sentinelone.com/20-common-tools-techniques-used-by-macos-threat-actors-malware/"
                 },
                 {
                     "source_name": "OSX.FairyTale",
-                    "url": "https://www.sentinelone.com/blog/trail-osx-fairytale-adware-playing-malware/",
-                    "description": "Phile Stokes. (2018, September 20). On the Trail of OSX.FairyTale | Adware Playing at Malware. Retrieved August 24, 2021."
+                    "description": "Phile Stokes. (2018, September 20). On the Trail of OSX.FairyTale | Adware Playing at Malware. Retrieved August 24, 2021.",
+                    "url": "https://www.sentinelone.com/blog/trail-osx-fairytale-adware-playing-malware/"
                 },
                 {
                     "source_name": "US-CERT-TA18-106A",
-                    "url": "https://www.us-cert.gov/ncas/alerts/TA18-106A",
-                    "description": "US-CERT. (2018, April 20). Alert (TA18-106A) Russian State-Sponsored Cyber Actors Targeting Network Infrastructure Devices. Retrieved October 19, 2020."
+                    "description": "US-CERT. (2018, April 20). Alert (TA18-106A) Russian State-Sponsored Cyber Actors Targeting Network Infrastructure Devices. Retrieved October 19, 2020.",
+                    "url": "https://www.us-cert.gov/ncas/alerts/TA18-106A"
                 },
                 {
-                    "url": "https://capec.mitre.org/data/definitions/312.html",
                     "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/312.html",
                     "external_id": "CAPEC-312"
                 }
             ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "An adversary may attempt to get detailed information about the operating system and hardware, including version, patches, hotfixes, service packs, and architecture. Adversaries may use the information from [System Information Discovery](https://attack.mitre.org/techniques/T1082) during automated discovery to shape follow-on behaviors, including whether or not the adversary fully infects the target and/or attempts specific actions.\n\nTools such as [Systeminfo](https://attack.mitre.org/software/S0096) can be used to gather detailed system information. If running with privileged access, a breakdown of system data can be gathered through the <code>systemsetup</code> configuration tool on macOS. As an example, adversaries with user-level access can execute the <code>df -aH</code> command to obtain currently mounted disks and associated freely available space. Adversaries may also leverage a [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) on network devices to gather detailed system information.(Citation: US-CERT-TA18-106A) [System Information Discovery](https://attack.mitre.org/techniques/T1082) combined with information gathered from other forms of discovery and reconnaissance can drive payload development and concealment.(Citation: OSX.FairyTale)(Citation: 20 macOS Common Tools and Techniques)\n\nInfrastructure as a Service (IaaS) cloud providers such as AWS, GCP, and Azure allow access to instance and virtual machine information via APIs. Successful authenticated API calls can return data such as the operating system platform and status of a particular instance or the model view of a virtual machine.(Citation: Amazon Describe Instance)(Citation: Google Instances Resource)(Citation: Microsoft Virutal Machine API)",
-            "modified": "2022-04-20T18:13:33.490Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "System Information Discovery",
-            "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Further, [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) commands may also be used to gather  detailed system information with built-in features native to the network device platform.  Monitor CLI activity for unexpected or unauthorized use  commands being run by non-standard users from non-standard locations. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).\n\nIn cloud-based systems, native logging can be used to identify access to certain APIs and dashboards that may contain system information. Depending on how the environment is used, that data alone may not be useful due to benign use during normal operations.",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "discovery"
-                }
-            ],
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_data_sources": [
-                "Process: OS API Execution",
-                "Command: Command Execution",
-                "Instance: Instance Metadata",
-                "Process: Process Creation"
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "x_mitre_attack_spec_version": "2.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"

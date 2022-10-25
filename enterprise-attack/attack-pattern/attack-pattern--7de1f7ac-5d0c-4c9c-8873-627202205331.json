@@ -1,0 +1,92 @@
+{
+    "type": "bundle",
+    "id": "bundle--517c0890-82f4-4fda-85c2-2995d443aca9",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "modified": "2022-10-21T21:02:00.546Z",
+            "name": "Steal or Forge Authentication Certificates",
+            "description": "Adversaries may steal or forge certificates used for authentication to access remote systems or resources. Digital certificates are often used to sign and encrypt messages and/or files. Certificates are also used as authentication material. For example, Azure AD device certificates and Active Directory Certificate Services (AD CS) certificates bind to an identity and can be used as credentials for domain accounts.(Citation: O365 Blog Azure AD Device IDs)(Citation: Microsoft AD CS Overview)\n\nAuthentication certificates can be both stolen and forged. For example, AD CS certificates can be stolen from encrypted storage (in the Registry or files), misplaced certificate files (i.e. [Unsecured Credentials](https://attack.mitre.org/techniques/T1552)), or directly from the Windows certificate store via various crypto APIs.(Citation: SpecterOps Certified Pre Owned)(Citation: GitHub CertStealer)(Citation: GitHub GhostPack Certificates) With appropriate enrollment rights, users and/or machines within a domain can also request and/or manually renew certificates from enterprise certificate authorities (CA). This enrollment process defines various settings and permissions associated with the certificate. Of note, the certificate\u2019s extended key usage (EKU) values define signing, encryption, and authentication use cases, while the certificate\u2019s subject alternative name (SAN) values define the certificate owner\u2019s alternate names.(Citation: Medium Certified Pre Owned)\n\nAbusing certificates for authentication credentials may enable other behaviors such as [Lateral Movement](https://attack.mitre.org/tactics/TA0008). Certificate-related misconfigurations may also enable opportunities for [Privilege Escalation](https://attack.mitre.org/tactics/TA0004), by way of allowing users to impersonate or assume privileged accounts or permissions via the identities (SANs) associated with a certificate. These abuses may also enable [Persistence](https://attack.mitre.org/tactics/TA0003) via stealing or forging certificates that can be used as [Valid Accounts](https://attack.mitre.org/techniques/T1078) for the duration of the certificate's validity, despite user password resets. Authentication certificates can also be stolen and forged for machine accounts.\n\nAdversaries who have access to root (or subordinate) CA certificate private keys (or mechanisms protecting/managing these keys) may also establish [Persistence](https://attack.mitre.org/tactics/TA0003) by forging arbitrary authentication certificates for the victim domain (known as \u201cgolden\u201d certificates).(Citation: Medium Certified Pre Owned) Adversaries may also target certificates and related services in order to access other forms of credentials, such as [Golden Ticket](https://attack.mitre.org/techniques/T1558/001) ticket-granting tickets (TGT) or NTLM plaintext.(Citation: Medium Certified Pre Owned)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "credential-access"
+                }
+            ],
+            "x_mitre_detection": "",
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "macOS",
+                "Azure AD"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_contributors": [
+                "Tristan Bennett, Seamless Intelligence",
+                "Lee Christensen, SpecterOps",
+                "Thirumalai Natarajan, Mandiant"
+            ],
+            "x_mitre_data_sources": [
+                "File: File Access",
+                "Active Directory: Active Directory Credential Request",
+                "Application Log: Application Log Content",
+                "Command: Command Execution",
+                "Windows Registry: Windows Registry Key Access",
+                "Logon Session: Logon Session Creation",
+                "Active Directory: Active Directory Object Modification"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--7de1f7ac-5d0c-4c9c-8873-627202205331",
+            "created": "2022-08-03T03:20:58.955Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1649",
+                    "external_id": "T1649"
+                },
+                {
+                    "source_name": "GitHub GhostPack Certificates",
+                    "description": "HarmJ0y & subat0mik. (2018, August 22). SharpDPAPI - Certificates. Retrieved August 2, 2022.",
+                    "url": "https://github.com/GhostPack/SharpDPAPI#certificates"
+                },
+                {
+                    "source_name": "Microsoft AD CS Overview",
+                    "description": "Microsoft. (2016, August 31). Active Directory Certificate Services Overview. Retrieved August 2, 2022.",
+                    "url": "https://docs.microsoft.com/previous-versions/windows/it-pro/windows-server-2012-r2-and-2012/hh831740(v=ws.11)"
+                },
+                {
+                    "source_name": "Medium Certified Pre Owned",
+                    "description": "Schroeder, W. (2021, June 17). Certified Pre-Owned. Retrieved August 2, 2022.",
+                    "url": "https://posts.specterops.io/certified-pre-owned-d95910965cd2"
+                },
+                {
+                    "source_name": "SpecterOps Certified Pre Owned",
+                    "description": "Schroeder, W. & Christensen, L. (2021, June 22). Certified Pre-Owned - Abusing Active Directory Certificate Services. Retrieved August 2, 2022.",
+                    "url": "https://web.archive.org/web/20220818094600/https://specterops.io/assets/resources/Certified_Pre-Owned.pdf"
+                },
+                {
+                    "source_name": "O365 Blog Azure AD Device IDs",
+                    "description": "Syynimaa, N. (2022, February 15). Stealing and faking Azure AD device identities. Retrieved August 3, 2022.",
+                    "url": "https://o365blog.com/post/deviceidentity/"
+                },
+                {
+                    "source_name": "GitHub CertStealer",
+                    "description": "TheWover. (2021, April 21). CertStealer. Retrieved August 2, 2022.",
+                    "url": "https://github.com/TheWover/CertStealer"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+        }
+    ]
+}

@@ -1,0 +1,92 @@
+{
+    "type": "bundle",
+    "id": "bundle--d3ad0ff9-78f3-4c4c-aa2c-2b07518fdc92",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "modified": "2022-10-21T16:09:38.202Z",
+            "name": "Hybrid Identity",
+            "description": "Adversaries may patch, modify, or otherwise backdoor cloud authentication processes that are tied to on-premises user identities in order to bypass typical authentication mechanisms, access credentials, and enable persistent access to accounts.  \n\nMany organizations maintain hybrid user and device identities that are shared between on-premises and cloud-based environments. These can be maintained in a number of ways. For example, Azure AD includes three options for synchronizing identities between Active Directory and Azure AD(Citation: Azure AD Hybrid Identity):\n\n* Password Hash Synchronization (PHS), in which a privileged on-premises account synchronizes user password hashes between Active Directory and Azure AD, allowing authentication to Azure AD to take place entirely in the cloud \n* Pass Through Authentication (PTA), in which Azure AD authentication attempts are forwarded to an on-premises PTA agent, which validates the credentials against Active Directory \n* Active Directory Federation Services (AD FS), in which a trust relationship is established between Active Directory and Azure AD \n\nAD FS can also be used with other SaaS and cloud platforms such as AWS and GCP, which will hand off the authentication process to AD FS and receive a token containing the hybrid users\u2019 identity and privileges. \n\nBy modifying authentication processes tied to hybrid identities, an adversary may be able to establish persistent privileged access to cloud resources. For example, adversaries who compromise an on-premises server running a PTA agent may inject a malicious DLL into the `AzureADConnectAuthenticationAgentService` process that authorizes all attempts to authenticate to Azure AD, as well as records user credentials.(Citation: Azure AD Connect for Read Teamers)(Citation: AADInternals Azure AD On-Prem to Cloud) In environments using AD FS, an adversary may edit the `Microsoft.IdentityServer.Servicehost` configuration file to load a malicious DLL that generates authentication tokens for any user with any set of claims, thereby bypassing multi-factor authentication and defined AD FS policies.(Citation: MagicWeb)\n\nIn some cases, adversaries may be able to modify the hybrid identity authentication process from the cloud. For example, adversaries who compromise a Global Administrator account in an Azure AD tenant may be able to register a new PTA agent via the web console, similarly allowing them to harvest credentials and log into the Azure AD environment as any user.(Citation: Mandiant Azure AD Backdoors)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "credential-access"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                }
+            ],
+            "x_mitre_detection": "",
+            "x_mitre_platforms": [
+                "Windows",
+                "Azure AD",
+                "SaaS",
+                "Google Workspace",
+                "Office 365",
+                "IaaS"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_contributors": [
+                "Praetorian"
+            ],
+            "x_mitre_data_sources": [
+                "Logon Session: Logon Session Creation",
+                "Application Log: Application Log Content",
+                "File: File Modification",
+                "Module: Module Load"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--54ca26f3-c172-4231-93e5-ccebcac2161f",
+            "created": "2022-09-28T13:29:53.354Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1556/007",
+                    "external_id": "T1556.007"
+                },
+                {
+                    "source_name": "Azure AD Connect for Read Teamers",
+                    "description": "Adam Chester. (2019, February 18). Azure AD Connect for Red Teamers. Retrieved September 28, 2022.",
+                    "url": "https://blog.xpnsec.com/azuread-connect-for-redteam/"
+                },
+                {
+                    "source_name": "AADInternals Azure AD On-Prem to Cloud",
+                    "description": "Dr. Nestori Syynimaa. (2020, July 13). Unnoticed sidekick: Getting access to cloud as an on-prem admin. Retrieved September 28, 2022.",
+                    "url": "https://o365blog.com/post/on-prem_admin/"
+                },
+                {
+                    "source_name": "MagicWeb",
+                    "description": "Microsoft Threat Intelligence Center, Microsoft Detection and Response Team, Microsoft 365 Defender Research Team . (2022, August 24). MagicWeb: NOBELIUM\u2019s post-compromise trick to authenticate as anyone. Retrieved September 28, 2022.",
+                    "url": "https://www.microsoft.com/security/blog/2022/08/24/magicweb-nobeliums-post-compromise-trick-to-authenticate-as-anyone/"
+                },
+                {
+                    "source_name": "Azure AD Hybrid Identity",
+                    "description": "Microsoft. (2022, August 26). Choose the right authentication method for your Azure Active Directory hybrid identity solution. Retrieved September 28, 2022.",
+                    "url": "https://learn.microsoft.com/en-us/azure/active-directory/hybrid/choose-ad-authn"
+                },
+                {
+                    "source_name": "Mandiant Azure AD Backdoors",
+                    "description": "Mike Burns. (2020, September 30). Detecting Microsoft 365 and Azure Active Directory Backdoors. Retrieved September 28, 2022.",
+                    "url": "https://www.mandiant.com/resources/detecting-microsoft-365-azure-active-directory-backdoors"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--c461d6b9-2da1-4af0-a13f-877e42f63768",
+    "id": "bundle--7db3bf83-6214-4a11-a597-46c9ceb4f317",
     "spec_version": "2.0",
     "objects": [
         {
@@ -14,7 +14,8 @@
                 "Dave Westgard",
                 "Elia Florio, Microsoft",
                 "Mnemonic",
-                "RedHuntLabs, @redhuntlabs"
+                "RedHuntLabs, @redhuntlabs",
+                "ExtraHop"
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
@@ -22,7 +23,7 @@
             "type": "attack-pattern",
             "id": "attack-pattern--767dbf9e-df3f-45cb-8998-4903ab5f80c0",
             "created": "2019-02-14T16:15:05.974Z",
-            "x_mitre_version": "1.1",
+            "x_mitre_version": "1.2",
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -58,7 +59,7 @@
             "x_mitre_deprecated": false,
             "revoked": false,
             "description": "Adversaries may attempt to gather information on domain trust relationships that may be used to identify lateral movement opportunities in Windows multi-domain/forest environments. Domain trusts provide a mechanism for a domain to allow access to resources based on the authentication procedures of another domain.(Citation: Microsoft Trusts) Domain trusts allow the users of the trusted domain to access resources in the trusting domain. The information discovered may help the adversary conduct [SID-History Injection](https://attack.mitre.org/techniques/T1134/005), [Pass the Ticket](https://attack.mitre.org/techniques/T1550/003), and [Kerberoasting](https://attack.mitre.org/techniques/T1558/003).(Citation: AdSecurity Forging Trust Tickets)(Citation: Harmj0y Domain Trusts) Domain trusts can be enumerated using the `DSEnumerateDomainTrusts()` Win32 API call, .NET methods, and LDAP.(Citation: Harmj0y Domain Trusts) The Windows utility [Nltest](https://attack.mitre.org/software/S0359) is known to be used by adversaries to enumerate domain trusts.(Citation: Microsoft Operation Wilysupply)",
-            "modified": "2022-04-05T19:58:03.031Z",
+            "modified": "2022-06-16T19:18:22.305Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Domain Trust Discovery",
             "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation but as part of a chain of behavior that could lead to other activities based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information, such as `nltest /domain_trusts`. Remote access tools with built-in features may interact directly with the Windows API to gather information. Look for the `DSEnumerateDomainTrusts()` Win32 API call to spot activity associated with [Domain Trust Discovery](https://attack.mitre.org/techniques/T1482).(Citation: Harmj0y Domain Trusts) Information may also be acquired through Windows system management tools such as [PowerShell](https://attack.mitre.org/techniques/T1059/001). The .NET method `GetAllTrustRelationships()` can be an indicator of [Domain Trust Discovery](https://attack.mitre.org/techniques/T1482).(Citation: Microsoft GetAllTrustRelationships)\n",
@@ -70,10 +71,11 @@
             ],
             "x_mitre_is_subtechnique": false,
             "x_mitre_data_sources": [
-                "Process: Process Creation",
+                "Network Traffic: Network Traffic Content",
+                "Process: OS API Execution",
                 "Script: Script Execution",
-                "Command: Command Execution",
-                "Process: OS API Execution"
+                "Process: Process Creation",
+                "Command: Command Execution"
             ],
             "x_mitre_attack_spec_version": "2.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"

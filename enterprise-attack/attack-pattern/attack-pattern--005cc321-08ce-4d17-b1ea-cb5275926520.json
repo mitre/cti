@@ -1,0 +1,83 @@
+{
+    "type": "bundle",
+    "id": "bundle--be0a5f40-d1d3-4aaf-9239-1bd4be448f77",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "modified": "2022-10-20T19:56:18.579Z",
+            "name": "Socket Filters",
+            "description": "Adversaries may attach filters to a network socket to monitor then activate backdoors used for persistence or command and control. With elevated permissions, adversaries can use features such as the `libpcap` library to open sockets and install filters to allow or disallow certain types of data to come through the socket. The filter may apply to all traffic passing through the specified network interface (or every interface if not specified). When the network interface receives a packet matching the filter criteria, additional actions can be triggered on the host, such as activation of a reverse shell.\n\nTo establish a connection, an adversary sends a crafted packet to the targeted host that matches the installed filter criteria.(Citation: haking9 libpcap network sniffing) Adversaries have used these socket filters to trigger the installation of implants, conduct ping backs, and to invoke command shells. Communication with these socket filters may also be used in conjunction with [Protocol Tunneling](https://attack.mitre.org/techniques/T1572).(Citation: exatrack bpf filters passive backdoors)(Citation: Leonardo Turla Penquin May 2020)\n\nFilters can be installed on any Unix-like platform with `libpcap` installed or on Windows hosts using `Winpcap`.  Adversaries may use either `libpcap` with `pcap_setfilter` or the standard library function `setsockopt` with `SO_ATTACH_FILTER` options. Since the socket connection is not active until the packet is received, this behavior may be difficult to detect due to the lack of activity on a host, low CPU overhead, and limited visibility into raw socket usage.",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "command-and-control"
+                }
+            ],
+            "x_mitre_detection": "Identify running processes with raw sockets. Ensure processes listed have a need for an open raw socket and are in accordance with enterprise policy.(Citation: crowdstrike bpf socket filters)",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_contributors": [
+                "Tim (Wadhwa-)Brown",
+                "CrowdStrike"
+            ],
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Network Traffic: Network Connection Creation"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--005cc321-08ce-4d17-b1ea-cb5275926520",
+            "created": "2022-09-30T21:18:41.930Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1205/002",
+                    "external_id": "T1205.002"
+                },
+                {
+                    "source_name": "exatrack bpf filters passive backdoors",
+                    "description": "ExaTrack. (2022, May 11). Tricephalic Hellkeeper: a tale of a passive backdoor. Retrieved October 18, 2022.",
+                    "url": "https://exatrack.com/public/Tricephalic_Hellkeeper.pdf"
+                },
+                {
+                    "source_name": "crowdstrike bpf socket filters",
+                    "description": "Jamie Harries. (2022, May 25). Hunting a Global Telecommunications Threat: DecisiveArchitect and Its Custom Implant JustForFun. Retrieved October 18, 2022.",
+                    "url": "https://www.crowdstrike.com/blog/how-to-hunt-for-decisivearchitect-and-justforfun-implant/"
+                },
+                {
+                    "source_name": "Leonardo Turla Penquin May 2020",
+                    "description": "Leonardo. (2020, May 29). MALWARE TECHNICAL INSIGHT TURLA \u201cPenquin_x64\u201d. Retrieved March 11, 2021.",
+                    "url": "https://www.leonardo.com/documents/20142/10868623/Malware+Technical+Insight+_Turla+%E2%80%9CPenquin_x64%E2%80%9D.pdf"
+                },
+                {
+                    "source_name": "haking9 libpcap network sniffing",
+                    "description": "Luis Martin Garcia. (2008, February 1). Hakin9 Issue 2/2008 Vol 3 No.2 VoIP Abuse: Storming SIP Security. Retrieved October 18, 2022.",
+                    "url": "http://recursos.aldabaknocking.com/libpcapHakin9LuisMartinGarcia.pdf"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+        }
+    ]
+}

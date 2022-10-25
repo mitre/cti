@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--3ff83eb7-eea8-4056-bf9e-e44ff7b7bfb1",
+    "id": "bundle--98c57878-a2e6-4019-94fd-4e15822b2a8b",
     "spec_version": "2.0",
     "objects": [
         {
@@ -18,10 +18,10 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "attack-pattern--74d2a63f-3c7b-4852-92da-02d8fbab16da",
             "type": "attack-pattern",
+            "id": "attack-pattern--74d2a63f-3c7b-4852-92da-02d8fbab16da",
             "created": "2020-03-19T19:09:30.329Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.1",
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -29,14 +29,14 @@
                     "url": "https://attack.mitre.org/techniques/T1562/006"
                 },
                 {
-                    "external_id": "CAPEC-571",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/571.html"
+                    "source_name": "LemonDuck",
+                    "url": "https://www.crowdstrike.com/blog/lemonduck-botnet-targets-docker-for-cryptomining-operations/",
+                    "description": "Manoj Ahuje. (2022, April 21). LemonDuck Targets Docker for Cryptomining Operations. Retrieved June 30, 2022."
                 },
                 {
+                    "source_name": "Microsoft Lamin Sept 2017",
                     "url": "https://www.microsoft.com/en-us/wdsi/threats/malware-encyclopedia-description?name=Backdoor:Win32/Lamin.A",
-                    "description": "Microsoft. (2009, May 17). Backdoor:Win32/Lamin.A. Retrieved September 6, 2018.",
-                    "source_name": "Microsoft Lamin Sept 2017"
+                    "description": "Microsoft. (2009, May 17). Backdoor:Win32/Lamin.A. Retrieved September 6, 2018."
                 },
                 {
                     "source_name": "Microsoft About Event Tracing 2018",
@@ -47,30 +47,38 @@
                     "source_name": "Medium Event Tracing Tampering 2018",
                     "url": "https://medium.com/palantir/tampering-with-windows-event-tracing-background-offense-and-defense-4be7ac62ac63",
                     "description": "Palantir. (2018, December 24). Tampering with Windows Event Tracing: Background, Offense, and Defense. Retrieved June 7, 2019."
+                },
+                {
+                    "url": "https://capec.mitre.org/data/definitions/571.html",
+                    "source_name": "capec",
+                    "external_id": "CAPEC-571"
                 }
             ],
-            "modified": "2021-01-13T15:56:04.897Z",
+            "x_mitre_deprecated": false,
+            "revoked": false,
+            "description": "An adversary may attempt to block indicators or events typically captured by sensors from being gathered and analyzed. This could include maliciously redirecting (Citation: Microsoft Lamin Sept 2017) or even disabling host-based sensors, such as Event Tracing for Windows (ETW),(Citation: Microsoft About Event Tracing 2018) by tampering settings that control the collection and flow of event telemetry. (Citation: Medium Event Tracing Tampering 2018) These settings may be stored on the system in configuration files and/or in the Registry as well as being accessible via administrative utilities such as [PowerShell](https://attack.mitre.org/techniques/T1059/001) or [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047).\n\nETW interruption can be achieved multiple ways, however most directly by defining conditions using the [PowerShell](https://attack.mitre.org/techniques/T1059/001) <code>Set-EtwTraceProvider</code> cmdlet or by interfacing directly with the Registry to make alterations.\n\nIn the case of network-based reporting of indicators, an adversary may block traffic associated with reporting to prevent central analysis. This may be accomplished by many means, such as stopping a local process responsible for forwarding telemetry and/or creating a host-based firewall rule to block traffic to specific hosts responsible for aggregating events, such as security information and event management (SIEM) products.\n\nIn Linux environments, adversaries may disable or reconfigure log processing tools such as syslog or nxlog to inhibit detection and monitoring capabilities to facilitate follow on behaviors (Citation: LemonDuck).",
+            "modified": "2022-06-30T16:44:16.962Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Indicator Blocking",
-            "description": "An adversary may attempt to block indicators or events typically captured by sensors from being gathered and analyzed. This could include maliciously redirecting (Citation: Microsoft Lamin Sept 2017) or even disabling host-based sensors, such as Event Tracing for Windows (ETW),(Citation: Microsoft About Event Tracing 2018) by tampering settings that control the collection and flow of event telemetry. (Citation: Medium Event Tracing Tampering 2018) These settings may be stored on the system in configuration files and/or in the Registry as well as being accessible via administrative utilities such as [PowerShell](https://attack.mitre.org/techniques/T1059/001) or [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047).\n\nETW interruption can be achieved multiple ways, however most directly by defining conditions using the [PowerShell](https://attack.mitre.org/techniques/T1059/001) <code>Set-EtwTraceProvider</code> cmdlet or by interfacing directly with the Registry to make alterations.\n\nIn the case of network-based reporting of indicators, an adversary may block traffic associated with reporting to prevent central analysis. This may be accomplished by many means, such as stopping a local process responsible for forwarding telemetry and/or creating a host-based firewall rule to block traffic to specific hosts responsible for aggregating events, such as security information and event management (SIEM) products. ",
+            "x_mitre_detection": "Detect lack of reported activity from a host sensor. Different methods of blocking may cause different disruptions in reporting. Systems may suddenly stop reporting all data or only certain kinds of data.\n\nDepending on the types of host information collected, an analyst may be able to detect the event that triggered a process to stop or connection to be blocked. For example, Sysmon will log when its configuration state has changed (Event ID 16) and Windows Management Instrumentation (WMI) may be used to subscribe ETW providers that log any provider removal from a specific trace session. (Citation: Medium Event Tracing Tampering 2018) To detect changes in ETW you can also monitor the registry key which contains configurations for all ETW event providers: <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\AUTOLOGGER_NAME\\{PROVIDER_GUID}</code>",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
                 }
             ],
-            "x_mitre_detection": "Detect lack of reported activity from a host sensor. Different methods of blocking may cause different disruptions in reporting. Systems may suddenly stop reporting all data or only certain kinds of data.\n\nDepending on the types of host information collected, an analyst may be able to detect the event that triggered a process to stop or connection to be blocked. For example, Sysmon will log when its configuration state has changed (Event ID 16) and Windows Management Instrumentation (WMI) may be used to subscribe ETW providers that log any provider removal from a specific trace session. (Citation: Medium Event Tracing Tampering 2018) To detect changes in ETW you can also monitor the registry key which contains configurations for all ETW event providers: <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\AUTOLOGGER_NAME\\{PROVIDER_GUID}</code>",
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_data_sources": [
-                "Windows Registry: Windows Registry Key Modification",
+                "Command: Command Execution",
                 "Sensor Health: Host Status",
-                "Command: Command Execution"
+                "Windows Registry: Windows Registry Key Modification"
             ],
             "x_mitre_defense_bypassed": [
                 "Anti-virus",
                 "Host intrusion prevention systems"
-            ]
+            ],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--6c714b76-0bd5-4ab9-bb63-c320479cf201",
+    "id": "bundle--d9a07449-fa2f-4e24-8943-fe4652ba3e5d",
     "spec_version": "2.0",
     "objects": [
         {
@@ -17,7 +17,8 @@
                 "Oleg Kolesnikov, Securonix",
                 "Mayuresh Dani, Qualys",
                 "Harshal Tupsamudre, Qualys",
-                "Travis Smith, Qualys"
+                "Travis Smith, Qualys",
+                "ExtraHop"
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
@@ -25,7 +26,7 @@
             "type": "attack-pattern",
             "id": "attack-pattern--b80d107d-fa0d-4b60-9684-b0433e8bdba0",
             "created": "2019-03-15T13:59:30.390Z",
-            "x_mitre_version": "1.3",
+            "x_mitre_version": "1.4",
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -71,7 +72,7 @@
             "x_mitre_deprecated": false,
             "revoked": false,
             "description": "Adversaries may encrypt data on target systems or on large numbers of systems in a network to interrupt availability to system and network resources. They can attempt to render stored data inaccessible by encrypting files or data on local and remote drives and withholding access to a decryption key. This may be done in order to extract monetary compensation from a victim in exchange for decryption or a decryption key (ransomware) or to render data permanently inaccessible in cases where the key is not saved or transmitted.(Citation: US-CERT Ransomware 2016)(Citation: FireEye WannaCry 2017)(Citation: US-CERT NotPetya 2017)(Citation: US-CERT SamSam 2018)\n\nIn the case of ransomware, it is typical that common user files like Office documents, PDFs, images, videos, audio, text, and source code files will be encrypted (and often renamed and/or tagged with specific file markers). Adversaries may need to first employ other behaviors, such as [File and Directory Permissions Modification](https://attack.mitre.org/techniques/T1222) or [System Shutdown/Reboot](https://attack.mitre.org/techniques/T1529), in order to unlock and/or gain access to manipulate these files.(Citation: CarbonBlack Conti July 2020) In some cases, adversaries may encrypt critical system files, disk partitions, and the MBR.(Citation: US-CERT NotPetya 2017) \n\nTo maximize impact on the target organization, malware designed for encrypting data may have worm-like features to propagate across a network by leveraging other attack techniques like [Valid Accounts](https://attack.mitre.org/techniques/T1078), [OS Credential Dumping](https://attack.mitre.org/techniques/T1003), and [SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002).(Citation: FireEye WannaCry 2017)(Citation: US-CERT NotPetya 2017) Encryption malware may also leverage [Internal Defacement](https://attack.mitre.org/techniques/T1491/001), such as changing victim wallpapers, or otherwise intimidate victims by sending ransom notes or other messages to connected printers (known as \"print bombing\").(Citation: NHS Digital Egregor Nov 2020)\n\nIn cloud environments, storage objects within compromised accounts may also be encrypted.(Citation: Rhino S3 Ransomware Part 1)",
-            "modified": "2022-04-19T17:59:45.105Z",
+            "modified": "2022-06-16T13:07:10.318Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "name": "Data Encrypted for Impact",
             "x_mitre_detection": "Use process monitoring to monitor the execution and command line parameters of binaries involved in data destruction activity, such as vssadmin, wbadmin, and bcdedit. Monitor for the creation of suspicious files as well as unusual file modification activity. In particular, look for large quantities of file modifications in user directories.\n\nIn some cases, monitoring for unusual kernel driver installation activity can aid in detection.\n\nIn cloud environments, monitor for events that indicate storage objects have been anomalously replaced by copies.",
@@ -83,11 +84,13 @@
             ],
             "x_mitre_is_subtechnique": false,
             "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Command: Command Execution",
-                "Cloud Storage: Cloud Storage Metadata",
                 "Cloud Storage: Cloud Storage Modification",
+                "Process: Process Creation",
+                "Network Share: Network Share Access",
                 "File: File Creation",
+                "Command: Command Execution",
+                "Network Share: Network Share Access",
+                "Cloud Storage: Cloud Storage Metadata",
                 "File: File Modification"
             ],
             "x_mitre_impact_type": [

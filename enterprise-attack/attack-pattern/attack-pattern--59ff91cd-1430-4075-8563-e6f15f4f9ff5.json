@@ -1,66 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--2d2d80af-f04d-43f5-a205-ed1ffeaf4378",
+    "id": "bundle--98d091d0-aa85-47d6-9c67-85878b53ffe3",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Linux",
-                "Windows",
-                "macOS"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Alex Spivakovsky, Pentera"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--59ff91cd-1430-4075-8563-e6f15f4f9ff5",
-            "created": "2022-03-24T19:30:56.727Z",
-            "x_mitre_version": "1.0",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1557.003",
-                    "url": "https://attack.mitre.org/techniques/T1557/003"
-                },
-                {
-                    "source_name": "rfc2131",
-                    "url": "https://datatracker.ietf.org/doc/html/rfc2131",
-                    "description": "Droms, R. (1997, March). Dynamic Host Configuration Protocol. Retrieved March 9, 2022."
-                },
-                {
-                    "source_name": "new_rogue_DHCP_serv_malware",
-                    "url": "https://isc.sans.edu/forums/diary/new+rogueDHCP+server+malware/6025/",
-                    "description": "Irwin, Ullrich, J. (2009, March 16). new rogue-DHCP server malware. Retrieved January 14, 2022."
-                },
-                {
-                    "source_name": "dhcp_serv_op_events",
-                    "url": "https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn800668(v=ws.11)",
-                    "description": "Microsoft. (2006, August 31).  DHCP Server Operational Events. Retrieved March 7, 2022."
-                },
-                {
-                    "source_name": "solution_monitor_dhcp_scopes",
-                    "url": "https://lockstepgroup.com/blog/monitor-dhcp-scopes-and-detect-man-in-the-middle-attacks/",
-                    "description": "Shoemaker, E. (2015, December 31). Solution: Monitor DHCP Scopes and Detect Man-in-the-Middle Attacks with PRTG and PowerShell. Retrieved March 7, 2022."
-                },
-                {
-                    "source_name": "w32.tidserv.g",
-                    "url": "https://web.archive.org/web/20150923175837/http://www.symantec.com/security_response/writeup.jsp?docid=2009-032211-2952-99&tabid=2",
-                    "description": "Symantec. (2009, March 22). W32.Tidserv.G. Retrieved January 14, 2022."
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may redirect network traffic to adversary-owned systems by spoofing Dynamic Host Configuration Protocol (DHCP) traffic and acting as a malicious DHCP server on the victim network. By achieving the adversary-in-the-middle (AiTM) position, adversaries may collect network communications, including passed credentials, especially those sent over insecure, unencrypted protocols. This may also enable follow-on behaviors such as [Network Sniffing](https://attack.mitre.org/techniques/T1040) or [Transmitted Data Manipulation](https://attack.mitre.org/techniques/T1565/002).\n\nDHCP is based on a client-server model and has two functionalities: a protocol for providing network configuration settings from a DHCP server to a client and a mechanism for allocating network addresses to clients.(Citation: rfc2131) The typical server-client interaction is as follows: \n\n1. The client broadcasts a `DISCOVER` message.\n\n2. The server responds with an `OFFER` message, which includes an available network address. \n\n3. The client broadcasts a `REQUEST` message, which includes the network address offered. \n\n4. The server acknowledges with an `ACK` message and the client receives the network configuration parameters.\n\nAdversaries may spoof as a rogue DHCP server on the victim network, from which legitimate hosts may receive malicious network configurations. For example, malware can act as a DHCP server and provide adversary-owned DNS servers to the victimized computers.(Citation: new_rogue_DHCP_serv_malware)(Citation: w32.tidserv.g) Through the malicious network configurations, an adversary may achieve the AiTM position, route client traffic through adversary-controlled systems, and collect information from the client network.\n\nRather than establishing an AiTM position, adversaries may also abuse DHCP spoofing to perform a DHCP exhaustion attack (i.e. [Service Exhaustion Flood](https://attack.mitre.org/techniques/T1499/002)) by generating many broadcast DISCOVER messages to exhaust a network\u2019s DHCP allocation pool. ",
-            "modified": "2022-04-18T19:59:22.916Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2022-10-21T15:18:16.023Z",
             "name": "DHCP Spoofing",
-            "x_mitre_detection": "Monitor network traffic for suspicious/malicious behavior involving DHCP, such as changes in DNS and/or gateway parameters. Additionally, monitor Windows logs for Event IDs (EIDs) 1341, 1342, 1020 and 1063, which specify that the IP allocations are low or have run out; these EIDs may indicate a denial of service attack.(Citation: dhcp_serv_op_events)(Citation: solution_monitor_dhcp_scopes)",
+            "description": "Adversaries may redirect network traffic to adversary-owned systems by spoofing Dynamic Host Configuration Protocol (DHCP) traffic and acting as a malicious DHCP server on the victim network. By achieving the adversary-in-the-middle (AiTM) position, adversaries may collect network communications, including passed credentials, especially those sent over insecure, unencrypted protocols. This may also enable follow-on behaviors such as [Network Sniffing](https://attack.mitre.org/techniques/T1040) or [Transmitted Data Manipulation](https://attack.mitre.org/techniques/T1565/002).\n\nDHCP is based on a client-server model and has two functionalities: a protocol for providing network configuration settings from a DHCP server to a client and a mechanism for allocating network addresses to clients.(Citation: rfc2131) The typical server-client interaction is as follows: \n\n1. The client broadcasts a `DISCOVER` message.\n\n2. The server responds with an `OFFER` message, which includes an available network address. \n\n3. The client broadcasts a `REQUEST` message, which includes the network address offered. \n\n4. The server acknowledges with an `ACK` message and the client receives the network configuration parameters.\n\nAdversaries may spoof as a rogue DHCP server on the victim network, from which legitimate hosts may receive malicious network configurations. For example, malware can act as a DHCP server and provide adversary-owned DNS servers to the victimized computers.(Citation: new_rogue_DHCP_serv_malware)(Citation: w32.tidserv.g) Through the malicious network configurations, an adversary may achieve the AiTM position, route client traffic through adversary-controlled systems, and collect information from the client network.\n\nDHCPv6 clients can receive network configuration information without being assigned an IP address by sending a <code>INFORMATION-REQUEST (code 11)</code> message to the <code>All_DHCP_Relay_Agents_and_Servers</code> multicast address.(Citation: rfc3315) Adversaries may use their rogue DHCP server to respond to this request message with malicious network configurations.\n\nRather than establishing an AiTM position, adversaries may also abuse DHCP spoofing to perform a DHCP exhaustion attack (i.e, [Service Exhaustion Flood](https://attack.mitre.org/techniques/T1499/002)) by generating many broadcast DISCOVER messages to exhaust a network\u2019s DHCP allocation pool. ",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -71,11 +17,71 @@
                     "phase_name": "collection"
                 }
             ],
+            "x_mitre_detection": "Monitor network traffic for suspicious/malicious behavior involving DHCP, such as changes in DNS and/or gateway parameters. Additionally, monitor Windows logs for Event IDs (EIDs) 1341, 1342, 1020 and 1063, which specify that the IP allocations are low or have run out; these EIDs may indicate a denial of service attack.(Citation: dhcp_serv_op_events)(Citation: solution_monitor_dhcp_scopes)",
+            "x_mitre_platforms": [
+                "Linux",
+                "Windows",
+                "macOS"
+            ],
             "x_mitre_is_subtechnique": true,
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.1",
+            "x_mitre_contributors": [
+                "Alex Spivakovsky, Pentera",
+                "Andrew Allen, @whitehat_zero"
+            ],
             "x_mitre_data_sources": [
                 "Application Log: Application Log Content",
-                "Network Traffic: Network Traffic Flow",
-                "Network Traffic: Network Traffic Content"
+                "Network Traffic: Network Traffic Content",
+                "Network Traffic: Network Traffic Flow"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--59ff91cd-1430-4075-8563-e6f15f4f9ff5",
+            "created": "2022-03-24T19:30:56.727Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1557/003",
+                    "external_id": "T1557.003"
+                },
+                {
+                    "source_name": "rfc2131",
+                    "description": "Droms, R. (1997, March). Dynamic Host Configuration Protocol. Retrieved March 9, 2022.",
+                    "url": "https://datatracker.ietf.org/doc/html/rfc2131"
+                },
+                {
+                    "source_name": "new_rogue_DHCP_serv_malware",
+                    "description": "Irwin, Ullrich, J. (2009, March 16). new rogue-DHCP server malware. Retrieved January 14, 2022.",
+                    "url": "https://isc.sans.edu/forums/diary/new+rogueDHCP+server+malware/6025/"
+                },
+                {
+                    "source_name": "rfc3315",
+                    "description": "J. Bound, et al. (2003, July). Dynamic Host Configuration Protocol for IPv6 (DHCPv6). Retrieved June 27, 2022.",
+                    "url": "https://datatracker.ietf.org/doc/html/rfc3315"
+                },
+                {
+                    "source_name": "dhcp_serv_op_events",
+                    "description": "Microsoft. (2006, August 31).  DHCP Server Operational Events. Retrieved March 7, 2022.",
+                    "url": "https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/dn800668(v=ws.11)"
+                },
+                {
+                    "source_name": "solution_monitor_dhcp_scopes",
+                    "description": "Shoemaker, E. (2015, December 31). Solution: Monitor DHCP Scopes and Detect Man-in-the-Middle Attacks with PRTG and PowerShell. Retrieved March 7, 2022.",
+                    "url": "https://lockstepgroup.com/blog/monitor-dhcp-scopes-and-detect-man-in-the-middle-attacks/"
+                },
+                {
+                    "source_name": "w32.tidserv.g",
+                    "description": "Symantec. (2009, March 22). W32.Tidserv.G. Retrieved January 14, 2022.",
+                    "url": "https://web.archive.org/web/20150923175837/http://www.symantec.com/security_response/writeup.jsp?docid=2009-032211-2952-99&tabid=2"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
             "x_mitre_attack_spec_version": "2.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
