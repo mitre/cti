@@ -1,0 +1,70 @@
+{
+    "id": "bundle--bd5412ec-6107-472b-9d31-5b41d7564033",
+    "objects": [
+        {
+            "created": "2023-01-24T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An Adversary can eavesdrop on the content of an external monitor through the air without modifying any cable or installing software, just capturing this signal emitted by the cable or video port, with this the attacker will be able to impact the confidentiality of the data without being detected by traditional security tools",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-699",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/699.html"
+                },
+                {
+                    "external_id": "CWE-1300",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1300.html"
+                },
+                {
+                    "description": "TempestSDR: An SDR Tool For Eavesdropping on Computer Screens Via Unintentionally Radiated RF",
+                    "external_id": "REF-744",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.rtl-sdr.com/tempestsdr-a-sdr-tool-for-eavesdropping-on-computer-screens-via-unintentionally-radiated-rf/"
+                },
+                {
+                    "description": "Dan Maloney, Exposing Computer Monitor Side-Channel Vulnerabilities with TempestSDR",
+                    "external_id": "REF-745",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://hackaday.com/2020/07/15/exposing-computer-monitor-side-channel-vulnerabilities-with-tempestsdr/"
+                }
+            ],
+            "id": "attack-pattern--28cce7ad-5437-4fae-86b0-a21ab3a0e135",
+            "modified": "2023-01-24T00:00:00.000Z",
+            "name": "Eavesdropping on a Monitor",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Meta",
+            "x_capec_child_of_refs": [
+                "attack-pattern--94e596d2-6844-4031-80c3-8522642aaff8"
+            ],
+            "x_capec_consequences": {
+                "Confidentiality": [
+                    "Read Data"
+                ]
+            },
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey Target: </b>The adversary surveys the target location, looking for exposed display cables and locations to hide an SDR. This also includes looking for display cables or monitors placed close to a wall, where the SDR can be in range while behind the wall. The adversary also attempts to discover the resolution and refresh rate of the targeted display.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Find target using SDR: </b>The adversary sets up an SDR near the target display cable or monitor. They use the SDR software to locate the corresponding frequency of the display cable. This is done by looking for interference peaks that change depending on what the screen is showing. The adversary notes down the possible frequencies of unintentional emission.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>An adversary can make use of many different commercially available SDR devices which are easy to setup such as a HackRF, Ubertooth, RTL-SDR, and many others.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Visualize Monitor Image: </b>Once the SDR software has been used to identify the target, the adversary will record the transmissions and visualize the monitor image using these transmissions, which allows them to eavesdrop on the information visible on the monitor.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The TempestSDR software can be used in conjunction an SDR device to visualize the monitor image. The adversary will specify the known monitor resolution and refresh rate, or if those are not known they can use the provided auto-correlation graphs to help predict these values. The adversary will then try the different frequencies recorded from the experiment phase, looking for a viewing monitor display. Low pass filters and gain can be manipulated to make the display image clearer.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>This attack gives the adversary the ability to view an external monitor with an insignificant delay. There is also no indicator of compromise from the victim visible on the monitor.</xhtml:p>\n            <xhtml:p>The eavesdrop is possible due to a signal leakage, that is produced at different points of the connection, including the source port, the connection between the cable and PC, the cable itself, and the connection between the cable and the monitor. That signal leakage can be captured near any of the leak points, but also in a near location, like the next room or a few meters away, using an SDR (Software-defined Radio) device and the correspondent software, that process and interpret the signal to show attackers what the monitor is displaying.</xhtml:p>\n            <xhtml:p>From the victim’s point of view, this specified attack might cause a high risk, and from the other hand, from the attacker’s point of view, the attack is excellent, since the specified attack method can be used without investing too much effort or require too many skills, as long as the right attack tool is in right place, this allows attackers to completely compromise the confidentiality of the data; also giving the attacker the advantage of being undetectable by not only traditional security products but also from bug sweep because the SDR device is acting in passive mode.</xhtml:p>\n         ",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "Victim should use an external monitor device",
+                "Physical access to the target location and devices"
+            ],
+            "x_capec_resources_required": [
+                "SDR device set with the correspondent antenna",
+                "Computer with SDR Software"
+            ],
+            "x_capec_skills_required": {
+                "Low": "Understanding of computing hardware, to identify the video cable and video ports",
+                "Medium": "Knowledge of how to use the SDR and related software: With this knowledge, the adversary will find the correct frequency where the signal is being leaked"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.9"
+        }
+    ],
+    "type": "bundle"
+}

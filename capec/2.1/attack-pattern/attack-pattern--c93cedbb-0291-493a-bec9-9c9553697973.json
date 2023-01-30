@@ -1,0 +1,83 @@
+{
+    "id": "bundle--db8ca57b-66ba-4b6d-9172-4c001dfa83db",
+    "objects": [
+        {
+            "created": "2023-01-24T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An adversary which has gained elevated access to network boundary devices may use these devices to create a channel to bridge trusted and untrusted networks. Boundary devices do not necessarily have to be on the network’s edge, but rather must serve to segment portions of the target network the adversary wishes to cross into.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-700",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/700.html"
+                },
+                {
+                    "description": "Network Boundary Bridging",
+                    "external_id": "T1599",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1599"
+                },
+                {
+                    "description": "CISA, Russian State-Sponsored Cyber Actors Targeting Network Infrastructure Devices, 2018--04---16",
+                    "external_id": "REF-746",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.cisa.gov/uscert/ncas/alerts/TA18-106A"
+                }
+            ],
+            "id": "attack-pattern--c93cedbb-0291-493a-bec9-9c9553697973",
+            "modified": "2023-01-24T00:00:00.000Z",
+            "name": "Network Boundary Bridging",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Standard",
+            "x_capec_child_of_refs": [
+                "attack-pattern--2a6131f7-30af-4529-be4e-bc3b7bf22009"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Read Data",
+                    "Bypass Protection Mechanism"
+                ],
+                "Authorization": [
+                    "Alter Execution Logic",
+                    "Hide Activities"
+                ],
+                "Confidentiality": [
+                    "Read Data",
+                    "Bypass Protection Mechanism"
+                ],
+                "Integrity": [
+                    "Alter Execution Logic",
+                    "Hide Activities"
+                ]
+            },
+            "x_capec_domains": [
+                "Communications",
+                "Software",
+                "Hardware"
+            ],
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>In November 2016, a Smart Install Exploitation Tool was released online which takes advantage of Cisco’s unauthenticated SMI management protocol to download a target’s current configuration files. Adversaries can use this tool to overwrite files to modify the device configurations, or upload maliciously modified OS or firmware to enable persistence. Once the adversary has access to the device’s configurations, they could modify it to redirect network traffic through other network infrastructure.</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify potential targets: </b>An adversary identifies network boundary devices that can be compromised.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The adversary traces network traffic to identify which devices the traffic flows through. Additionally, the adversary can identify devices using fingerprinting methods or locating the management page to determine identifying information about the device.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Compromise targets: </b>The adversary must compromise the identified targets in the previous step.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Once the device is identified, the adversary can attempt to input known default credentials for the device to gain access to the management console.</td></tr><tr><td>Adversaries with sufficient identifying knowledge about the target device can exploit known vulnerabilities in network devices to obtain administrative access.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Bridge Networks: </b>The adversary changes the configuration of the compromised network device to connect the networks the device was segmenting. Depending on the type of network boundary device and its capabilities, bridging can be implemented using various methods.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The adversary can abuse Network Address Translation (NAT) in firewalls and routers to manipulate traffic flow to their own design. With control of the network device, the adversary can manipulate NAT by either using existing configurations or creating their own to allow two previously unconnected networks to communicate.</td></tr><tr><td>Some network devices can be configured to become a proxy server. Adversaries can set up or exploit an existing proxy server on compromised network devices to create a bridge between separate networks.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>Network boundary devices are network devices such as routers and firewalls which segment networks by restricting certain types of traffic from flowing through the device. Network boundary devices are often directly accessible through a portal page for management purposes. An adversary’s goal when conducting network boundary bridging is to connect networks which are being segmented by the device. To do so, the adversary must first compromise the network boundary device.</xhtml:p>\n         ",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "The adversary must have control of a network boundary device."
+            ],
+            "x_capec_resources_required": [
+                "The adversary requires either high privileges or full control of a boundary device on a target network."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "The adversary must understand how to manage the target network device to create or edit policies which will bridge networks."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.9"
+        }
+    ],
+    "type": "bundle"
+}

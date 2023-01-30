@@ -1,0 +1,91 @@
+{
+    "id": "bundle--0ddd678b-65ff-4a81-8162-41713242d63b",
+    "objects": [
+        {
+            "created": "2023-01-24T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>An adversary exploits incorrect chaining or granularity of hardware debug components in order to gain unauthorized access to debug functionality on a chip. This happens when authorization is not checked on a per function basis and is assumed for a chain or group of debug functionality.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-702",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/702.html"
+                },
+                {
+                    "external_id": "CWE-1296",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1296.html"
+                },
+                {
+                    "description": "Hewlett-Packard Journal, Overview of the Test Access Port, 1994--12",
+                    "external_id": "REF-748",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.hpl.hp.com/hpjournal/94dec/dec94a7a.pdf"
+                },
+                {
+                    "description": "Finding Faults with the Test Access Port (TAP), 2017--06---12",
+                    "external_id": "REF-749",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://flynn.com/2017/06/12/finding-faults-with-the-test-access-port-tap/"
+                },
+                {
+                    "description": "Technical Guide to JTAG",
+                    "external_id": "REF-750",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.xjtag.com/about-jtag/jtag-a-technical-overview/"
+                }
+            ],
+            "id": "attack-pattern--39c07233-f090-4a18-8e62-ef31faf1632f",
+            "modified": "2023-01-24T00:00:00.000Z",
+            "name": "Exploiting Incorrect Chaining or Granularity of Hardware Debug Components",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--aac17300-6cdd-4f50-82c3-da5a01d225ac"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Gain Privileges"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_domains": [
+                "Software",
+                "Hardware"
+            ],
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>A System-on-Chip (SoC) might give regular users access to the SoC-level TAP, but does not want to give access to all of the internal TAPs (e.g., Core). If any of the internal TAPs were incorrectly chained to the SoC-level TAP, this would grant regular users access to the internal TAPs and allow them to execute commands there.</xhtml:p>\n            ",
+                "\n               <xhtml:p>Suppose there is a hierarchy of TAPs (TAP_A is connected to TAP_B and TAP_C, then TAP_B is connected to TAP_D and TAP_E, then TAP_C is connected to TAP_F and TAP_G, etc.). Architecture mandates that the user have one set of credentials for just accessing TAP_A, another set of credentials for accessing TAP_B and TAP_C, etc. However, if, during implementation, the designer mistakenly implements a daisy-chained TAP where all the TAPs are connected in a single TAP chain without the hierarchical structure, the correct granularity of debug components is not implemented, and the attacker can gain unauthorized access.</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Find and scan debug interface: </b>The adversary must first find and scan a debug interface to determine what they are authorized to use and what devices are chained to that interface.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Use a JTAGulator on a JTAG interface to determine the correct pin configuration, baud rate, and number of devices in the chain</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Connect to debug interface: </b>The adversary next connects a device to the JTAG interface using the properties found in the explore phase so that they can send commands. The adversary sends some test commands to make sure the connection is working.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Connect a device such as a BusPirate or UM232H to the JTAG interface and connect using pin layout found from the JTAGulator</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Move along debug chain: </b>Once the adversary has connected to the main TAP, or JTAG interface, they will move along the TAP chain to see what debug interfaces might be available on that chain.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Run a command such as “scan_chain” to see what TAPs are available in the chain.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>Chip designers often include design elements in a chip for debugging and troubleshooting such as:</xhtml:p>\n            <xhtml:ul>\n               <xhtml:li>Various Test Access Ports (TAPs) which allow boundary scan commands to be executed.</xhtml:li>\n               <xhtml:li>Scan cells that allow the chip to be used as a \"stimulus and response\" mechanism for scanning the internal components of a chip.</xhtml:li>\n               <xhtml:li>Custom methods to observe the internal components of their chips by placing various tracing hubs within their chip and creating hierarchical or interconnected structures among those hubs.</xhtml:li>\n            </xhtml:ul>\n            <xhtml:p>Because devices commonly have multiple chips and debug components, designers will connect debug components and expose them through a single external interface, which is referred to as “chaining”. Logic errors during design or synthesis could misconfigure the chaining of the debug components, which could allow unintended access. TAPs are also commonly referred to as JTAG interfaces.</xhtml:p>\n         ",
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_prerequisites": [
+                "Hardware device has an exposed debug interface"
+            ],
+            "x_capec_resources_required": [
+                "A device to scan a TAP or JTAG interface, such as a JTAGulator",
+                "A device to communicate on a TAP or JTAG interface, such as a BusPirate"
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Ability to operate devices to scan and connect to an exposed debug interface"
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Medium",
+            "x_capec_version": "3.9"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

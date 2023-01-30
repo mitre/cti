@@ -1,0 +1,79 @@
+{
+    "id": "bundle--953e701a-0442-477d-be02-d81ca629f9b5",
+    "objects": [
+        {
+            "created": "2022-09-29T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>An adversary spoofs software popularity metadata to deceive users into believing that a maliciously provided package is widely used and originates from a trusted source.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-693",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/693.html"
+                },
+                {
+                    "external_id": "CWE-494",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/494.html"
+                },
+                {
+                    "description": "Tzachi Zornstein, StarJacking – Making Your New Open Source Package Popular in a Snap, 2022--04---19, Checkmarx",
+                    "external_id": "REF-721",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://checkmarx.com/blog/starjacking-making-your-new-open-source-package-popular-in-a-snap/"
+                }
+            ],
+            "id": "attack-pattern--1c976e18-0d56-40b0-9168-90402604c16d",
+            "modified": "2022-09-29T00:00:00.000Z",
+            "name": "StarJacking",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--6ed35753-d365-4be2-a044-2fcc6e191b5a"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Execute Unauthorized Commands",
+                    "Alter Execution Logic",
+                    "Gain Privileges"
+                ],
+                "Accountability": [
+                    "Hide Activities"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands",
+                    "Alter Execution Logic",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_domains": [
+                "Social Engineering",
+                "Supply Chain",
+                "Software"
+            ],
+            "x_capec_example_instances": [
+                "In April 2022, Checkmarx reported that packages hosted on NPM, PyPi, and Yarn do not properly validate that the provided GitHub repository URL actually pertains to the package being provided. Combined with additional attacks such as TypoSquatting, this allows adversaries to spoof popularity metadata by associating popular GitHub repository URLs with the malicious package. This can further lead to developers unintentionally including the malicious package within their development environments [REF-721]."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target: </b>The adversary must first identify a target package whose popularity statistics will be leveraged. This will be a popular and widely used package, as to increase the perceived pedigree of the malicious package.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Spoof package popularity: </b>The adversary provides their malicious package to a package manager and uses the source code repository URL identified in Step 1 to spoof the popularity of the package. This malicious package may also closely resemble the legitimate package whose statistics are being utilized.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Exploit victims: </b>The adversary infiltrates development environments with the goal of conducting additional attacks.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Active: The adversary attempts to trick victims into downloading the malicious package by means such as phishing and social engineering.</td></tr><tr><td>Passive: The adversary waits for victims to download and leverage the malicious package.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>Many open-source software packages are hosted via third-party package managers (e.g., Node Package Manager, PyPi, Yarn, etc.) that allow for easy integration of software components into existing development environments. A package manager will typically include various metadata about the software and often include a link to the package's source code repository, to assist developers in determining the trustworthiness of the software. One common statistic used in this decision-making process is the popularity of the package. This entails checking the amount of \"Stars\" the package has received, which the package manager displays based on the provided source code repository URL. However, many package managers do not validate the connection between the package and source code repository being provided. Adversaries can thus spoof the popularity statistic of a malicious package by associating a popular source code repository URL with the package. This can ultimately trick developers into unintentionally incorporating the malicious package into their development environment.</xhtml:p>\n         ",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "Identification of a popular open-source package whose popularity metadata is to be used for the malicious package."
+            ],
+            "x_capec_skills_required": {
+                "Low": "Ability to provide a package to a package manager and associate a popular package's source code repository URL."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.9"
+        }
+    ],
+    "type": "bundle"
+}

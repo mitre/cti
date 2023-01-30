@@ -1,0 +1,110 @@
+{
+    "id": "bundle--7875ccd8-79ba-4667-ab3f-5997abb222d3",
+    "objects": [
+        {
+            "created": "2022-09-29T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>An adversary takes advantage of the redirect property of directly linked Version Control System (VCS) repositories to trick users into incorporating malicious code into their applications.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-695",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/695.html"
+                },
+                {
+                    "external_id": "CWE-494",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/494.html"
+                },
+                {
+                    "external_id": "CWE-829",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/829.html"
+                },
+                {
+                    "description": "Supply Chain Compromise: Compromise Software Dependencies and Development Tools",
+                    "external_id": "T1195.001",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1195/001"
+                },
+                {
+                    "description": "Indiana Moreau, Repo Jacking: Exploiting the Dependency Supply Chain, 2020--10---22, Security Innovation",
+                    "external_id": "REF-722",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.concretecms.org/about/project-news/security/supply-chain-hack-phpass-repo-jacking"
+                },
+                {
+                    "description": "Theo Burton, CyRC Vulnerability Analysis: Repo jacking in the software supply chain, 2022--08---02, Synopsys",
+                    "external_id": "REF-732",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.synopsys.com/blogs/software-security/cyrc-vulnerability-analysis-repo-jacking/"
+                },
+                {
+                    "description": "Jossef Harush, Attacker Caught Hijacking Packages Using Multiple Techniques to Steal AWS Credentials, 2022--05---25, Checkmarx",
+                    "external_id": "REF-733",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://checkmarx.com/blog/attacker-caught-hijacking-packages-using-multiple-techniques-to-steal-aws-credentials/"
+                },
+                {
+                    "description": "Jossef Harush, GitHub RepoJacking Weakness Exploited in the Wild by Attackers, 2022--05---27, Checkmarx",
+                    "external_id": "REF-734",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://checkmarx.com/blog/github-repojacking-weakness-exploited-in-the-wild-by-attackers/"
+                }
+            ],
+            "id": "attack-pattern--a0315bde-71b9-4e1b-9087-c82c3f4c7f36",
+            "modified": "2023-01-24T00:00:00.000Z",
+            "name": "Repo Jacking",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--e9d5d2e4-588f-43c1-bc98-73417abbb727"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Execute Unauthorized Commands",
+                    "Alter Execution Logic",
+                    "Gain Privileges"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands",
+                    "Alter Execution Logic",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Read Data",
+                    "Modify Data"
+                ]
+            },
+            "x_capec_domains": [
+                "Social Engineering",
+                "Supply Chain",
+                "Communications",
+                "Software",
+                "Hardware"
+            ],
+            "x_capec_example_instances": [
+                "\n               <xhtml:p>In May 2022, the CTX Python package and PhPass PHP package were both exploited by the same adversary via Repo Jacking attacks. For the CTX package, the adversary performed an account takeover via a password reset, due to an expired domain-hosting email. The attack on PhPass entailed bypassing GitHub's authentication for retired repositories. In both cases, sensitive data in the form of API keys and passwords, each stored in the form of environment variables, were exfiltrated. [REF-732] [REF-733]</xhtml:p>\n            ",
+                "\n               <xhtml:p>In October 2021, the popular JavaScript library UAParser.js was exploited via the takeover of the author's Node Package Manager (NPM) account. The adversary-provided malware downloaded and executed binaries from a remote server to conduct crypto-mining and to exfiltrate sensitive data on Windows systems. This was a wide-scale attack as the package receives 8 to 9 million downloads per week. [REF-732]</xhtml:p>\n            "
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target: </b>The adversary must first identify a target repository that is commonly used and whose owner/maintainer has either changed/deleted their username or transferred ownership of the repository and then deleted their account. The target should typically be a popular and widely used package, as to increase the scope of the attack.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Recreate initial repository path: </b>The adversary re-registers the account that was renamed/deleted by the target repository's owner/maintainer and recreates the target repository with malicious code intended to exploit an application. These steps may need to happen in reverse (i.e., recreate repository and then rename an existing account to the target account) if protections are in place to prevent repository reuse.</p></li></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Exploit victims: </b>The adversary's malicious code is incorporated into applications that directly reference the initial repository, which further allows the adversary to conduct additional attacks.</p></li></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>Software developers may directly reference a VCS repository (i.e., via a hardcoded URL) within source code to integrate the repository as a dependency for the underlying application. If the repository owner/maintainer modifies the repository name, changes their VCS username, or transfers ownership of the repository, the VCS implements a redirect to the new repository location so that existing software referencing the repository will not break. However, if the original location of the repository is reestablished, the VCS will revert to resolving the hardcoded path. Adversaries may, therefore, re-register deleted or previously used usernames and recreate repositories with malicious code to infect applications referencing the repository. When an application then fetches the desired dependency, it will now reference the adversary's malicious repository since the hardcoded repository path is once again active. This ultimately allows the adversary to infect numerous applications, while achieving a variety of negative technical impacts.</xhtml:p>\n         ",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "Identification of a popular repository that may be directly referenced in numerous software applications",
+                "A repository owner/maintainer who has recently changed their username or deleted their account"
+            ],
+            "x_capec_skills_required": {
+                "Low": "Ability to create malware that can exploit various software applications."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.9"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}

@@ -1,0 +1,78 @@
+{
+    "id": "bundle--cf1687c2-fc9b-4f88-92a7-fee827bfca70",
+    "objects": [
+        {
+            "created": "2022-09-29T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "An adversary exploits a hardware design flaw in a CPU implementation of transient instruction execution in which a faulting or assisted load instruction transiently forwards adversary-controlled data from microarchitectural buffers. By inducing a page fault or microcode assist during victim execution, an adversary can force legitimate victim execution to operate on the adversary-controlled data which is stored in the microarchitectural buffers. The adversary can then use existing code gadgets and side channel analysis to discover victim secrets that have not yet been flushed from microarchitectural state or hijack the system control flow.",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-696",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/696.html"
+                },
+                {
+                    "external_id": "CWE-1342",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/1342.html"
+                },
+                {
+                    "description": "Jo Van Bulck, Daniel Moghimi, Michael Schwarz, Moritz Lipp, Marina Minkin, Daniel Genkin, Yuval Yarom, Berk Sunar, Daniel Gruss, Frank Piessens, LVI - Hijacking Transient Execution with Load Value Injection",
+                    "external_id": "REF-735",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://lviattack.eu/"
+                },
+                {
+                    "description": "Load Value Injection, 2020--01---27, Intel",
+                    "external_id": "REF-736",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.intel.com/content/www/us/en/developer/articles/technical/software-security-guidance/technical-documentation/load-value-injection.html"
+                }
+            ],
+            "id": "attack-pattern--faa02de4-0f9b-4881-a088-b2a4d64475fd",
+            "modified": "2022-09-29T00:00:00.000Z",
+            "name": "Load Value Injection",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--efbf3dcf-9f19-45de-9f49-caa87fd34681"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Bypass Protection Mechanism"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands"
+                ],
+                "Confidentiality": [
+                    "Read Data"
+                ]
+            },
+            "x_capec_domains": [
+                "Software",
+                "Hardware",
+                "Software"
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Survey target application and relevant OS shared code libraries: </b>Adversary identifies vulnerable transient instruction sets and the code/function calls to trigger them as well as instruction sets or code fragments (gadgets) to perform attack. The adversary looks for code gadgets which will allow them to load an adversary-controlled value into trusted memory. They also look for code gadgets which might operate on this controlled value.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Utilize Disassembler and Debugger tools to examine and trace instruction set execution of source code and shared code libraries on a system.</td></tr></tbody></table></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Fill microarchitectural buffer with controlled value: </b>The adversary will utilize the found code gadget from the previous step to load a value into a microarchitectural buffer.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>The adversary may choose the controlled value to be memory address of sensitive information that they want the system to access</td></tr><tr><td>The adversary may choose the controlled value to be the memory address of other code gadgets that they wish to execute by hijacking the control flow of the system</td></tr></tbody></table><li> <p> <b>Set up instruction to page fault or microcode assist: </b>The adversary must manipulate the system such that a page fault or microcode assist occurs when a valid instruction is run. If the instruction that fails is near where the adversary-controlled value was loaded, the system may forward this value from the microarchitectural buffer incorrectly.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>When targeting Intel SGX enclaves, adversaries that have privileges can manipulate PTEs to provoke page-fault exceptions or microcode assists.</td></tr><tr><td>When targeting Intel SGX enclaves, adversaries can indirectly revoke permissions for enclave code through the “mprotect” system call</td></tr><tr><td>An adversary can evict selected virtual memory pages using legacy interfaces or by increasing physical memory utilization</td></tr><tr><td>When attacking a Windows machine, wait until the OS clears the PTE accessed bit. When the page is next accessed, the CPU will always issue a microcode assist for re-setting this bit</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Operate on adversary-controlled data: </b>Once the attack has been set up and the page fault or microcode assist occurs, the system operates on the adversary-controlled data.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Influence the system to load sensitive information into microarchitectural state which can be read by the adversary using a code gadget.</td></tr><tr><td>Hijack execution by jumping to second stage gadgets found in the address space. By utilizing return-oriented programming, this can chain gadgets together and allow the adversary to execute a sequence of gadgets.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "This attack is a mix of techniques used in traditional Meltdown and Spectre attacks. It uses microarchitectural data leakage combined with code gadget abuse. Intel has identified that this attack is not applicable in scenarios where the OS and the VMM (Virtual Memory Manager) are both trusted. Because of this, Intel SGX is a prime target for this attack because it assumes that the OS or VMM may be malicious.",
+            "x_capec_likelihood_of_attack": "Low",
+            "x_capec_prerequisites": [
+                "The adversary needs at least user execution access to a system and a maliciously crafted program/application/process with unprivileged code to misuse transient instruction set execution of the CPU.",
+                "The CPU incorrectly transiently forwards values from microarchitectural buffers after faulting or assisted loads",
+                "The adversary needs the ability to induce page faults or microcode assists on the target system.",
+                "Code gadgets exist that allow the adversary to hijack transient execution and encode secrets into the microarchitectural state."
+            ],
+            "x_capec_skills_required": {
+                "High": "The ability to provoke faulting or assisted loads in legitimate execution."
+            },
+            "x_capec_status": "Draft",
+            "x_capec_typical_severity": "Very High",
+            "x_capec_version": "3.9"
+        }
+    ],
+    "type": "bundle"
+}

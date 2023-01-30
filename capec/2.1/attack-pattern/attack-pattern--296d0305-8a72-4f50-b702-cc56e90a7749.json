@@ -1,0 +1,94 @@
+{
+    "id": "bundle--a3029610-628c-4159-9a26-e9d37d3bc5be",
+    "objects": [
+        {
+            "created": "2022-09-29T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>An adversary collects information about the target system in an attempt to identify the system's geographical location.</xhtml:p>\n            <xhtml:p>Information gathered could include keyboard layout, system language, and timezone. This information may benefit an adversary in confirming the desired target and/or tailoring further attacks.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-694",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/694.html"
+                },
+                {
+                    "external_id": "CWE-497",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/497.html"
+                },
+                {
+                    "description": "System Language Discovery",
+                    "external_id": "T1614",
+                    "source_name": "ATTACK",
+                    "url": "https://attack.mitre.org/wiki/Technique/T1614"
+                },
+                {
+                    "description": "Language-Specific Registry Entries",
+                    "external_id": "REF-727",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://learn.microsoft.com/en-us/previous-versions/windows/desktop/indexsrv/language-specific-registry-entries"
+                },
+                {
+                    "description": "winnls.h header",
+                    "external_id": "REF-728",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://learn.microsoft.com/en-us/windows/win32/api/winnls/"
+                },
+                {
+                    "description": "local (1p) - Linux Man Pages",
+                    "external_id": "REF-729",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.systutorials.com/docs/linux/man/1p-locale/"
+                },
+                {
+                    "description": "vconsole.conf",
+                    "external_id": "REF-730",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.freedesktop.org/software/systemd/man/vconsole.conf.html"
+                },
+                {
+                    "description": "timedatectl",
+                    "external_id": "REF-731",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.freedesktop.org/software/systemd/man/timedatectl.html"
+                }
+            ],
+            "id": "attack-pattern--296d0305-8a72-4f50-b702-cc56e90a7749",
+            "modified": "2022-09-29T00:00:00.000Z",
+            "name": "System Location Discovery",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "spec_version": "2.1",
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Standard",
+            "x_capec_child_of_refs": [
+                "attack-pattern--87b0d2df-b246-4bf9-aee8-4912e2fa1a30"
+            ],
+            "x_capec_consequences": {
+                "Confidentiality": [
+                    "Read Data"
+                ]
+            },
+            "x_capec_domains": [
+                "Communications",
+                "Software"
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>System Locale Information Discovery: </b>The adversary examines system information from various sources such as registry and native API functions and correlates the gathered information to infer the geographical location of the target system</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Registry Query: Query the registry key HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\ContentIndex\\Language\\Language_Dialect on Windows to obtain system language, Computer\\HKEY_CURRENT_USER\\Keyboard Layout\\Preload to obtain the hexadecimal language IDs of the current user's preloaded keyboard layouts, and Computer\\HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\TimeZoneInformation to obtain the system timezone configuration</td></tr><tr><td>Native API Requests: Parse the outputs of Windows API functions GetTimeZoneInformation, GetUserDefaultUILanguage, GetSystemDefaultUILanguage, GetKeyboardLayoutList and GetUserDefaultLangID to obtain information about languages, keyboard layouts, and timezones installed on the system or on macOS or Linux systems, query locale to obtain the $LANG environment variable and view keyboard layout information or use timeanddatectl status to show the system clock settings.</td></tr><tr><td>Read Configuration Files: For macOS and Linux-based systems, view the /etc/vconsole.conf file to get information about the keyboard mapping and console font.</td></tr></tbody></table></ol></div>",
+            "x_capec_likelihood_of_attack": "High",
+            "x_capec_prerequisites": [
+                "The adversary must have some level of access to the system and have a basic understanding of the operating system in order to query the appropriate sources for relevant information."
+            ],
+            "x_capec_resources_required": [
+                "The adversary requires access to the target's operating system tools to query relevant system information. On windows, registry queries can be conducted with powershell, wmi, or regedit. On Linux or macOS, queries can be performed with through a shell."
+            ],
+            "x_capec_skills_required": {
+                "Low": "The adversary must know how to query various system sources of information respective of the system's operating system to obtain the relevant information."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "Very Low",
+            "x_capec_version": "3.9"
+        }
+    ],
+    "type": "bundle"
+}

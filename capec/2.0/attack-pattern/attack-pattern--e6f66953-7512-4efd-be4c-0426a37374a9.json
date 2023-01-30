@@ -1,0 +1,85 @@
+{
+    "id": "bundle--4483278e-b7e7-4329-8d79-8d560aa84186",
+    "objects": [
+        {
+            "created": "2022-09-29T00:00:00.000Z",
+            "created_by_ref": "identity--e50ab59c-5c4f-4d40-bf6a-d58418d89bcd",
+            "description": "\n            <xhtml:p>An adversary spoofs metadata pertaining to a Version Control System (VCS) (e.g., Git) repository's commits to deceive users into believing that the maliciously provided software is frequently maintained and originates from a trusted source.</xhtml:p>\n         ",
+            "external_references": [
+                {
+                    "external_id": "CAPEC-692",
+                    "source_name": "capec",
+                    "url": "https://capec.mitre.org/data/definitions/692.html"
+                },
+                {
+                    "external_id": "CWE-494",
+                    "source_name": "cwe",
+                    "url": "http://cwe.mitre.org/data/definitions/494.html"
+                },
+                {
+                    "description": "Aviad Gershon, Unverified Commits: Are You Unknowingly Trusting Attackers’ Code?, 2022--07---15, Checkmarx",
+                    "external_id": "REF-719",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://checkmarx.com/blog/unverified-commits-are-you-unknowingly-trusting-attackers-code/"
+                },
+                {
+                    "description": "Deeba Ahmed, Hackers can spoof commit metadata to create false GitHub repositories, 2022--07---17, HackRead",
+                    "external_id": "REF-720",
+                    "source_name": "reference_from_CAPEC",
+                    "url": "https://www.hackread.com/hackers-spoof-commit-metadata-false-github-repositories/"
+                }
+            ],
+            "id": "attack-pattern--e6f66953-7512-4efd-be4c-0426a37374a9",
+            "modified": "2022-09-29T00:00:00.000Z",
+            "name": "Spoof Version Control System Commit Metadata",
+            "object_marking_refs": [
+                "marking-definition--17d82bb2-eeeb-4898-bda5-3ddbcd2b799d"
+            ],
+            "type": "attack-pattern",
+            "x_capec_abstraction": "Detailed",
+            "x_capec_child_of_refs": [
+                "attack-pattern--1ff15c87-da1d-4bd6-803f-4052b7b5cec7"
+            ],
+            "x_capec_consequences": {
+                "Access_Control": [
+                    "Execute Unauthorized Commands",
+                    "Alter Execution Logic",
+                    "Gain Privileges"
+                ],
+                "Accountability": [
+                    "Hide Activities"
+                ],
+                "Authorization": [
+                    "Execute Unauthorized Commands",
+                    "Alter Execution Logic",
+                    "Gain Privileges"
+                ],
+                "Integrity": [
+                    "Modify Data"
+                ]
+            },
+            "x_capec_domains": [
+                "Social Engineering",
+                "Supply Chain",
+                "Software"
+            ],
+            "x_capec_example_instances": [
+                "In July 2022, Checkmarx reported that GitHub commit metadata could be spoofed if unsigned commits were leveraged by the repository. Adversaries were able to spoof commit contributors, as well as the date/time of the commit. This resulted in commits appearing to originate from trusted developers and a GitHub activity graph that duped users into believing that the repository had been maintained for a significant period of time. The lack of commit metadata validation ultimately allowed adversaries to propagate malware to unsuspecting victims [REF-719] [REF-720]."
+            ],
+            "x_capec_execution_flow": "<h2> Execution Flow </h2><div><h3>Explore</h3><ol><li> <p> <b>Identify target: </b>The adversary must first identify a target repository for them to spoof. Typically, this will be a popular and widely used repository, as to increase the amount of victims a successful attack will exploit.</p></li></ol></div><div><h3>Experiment</h3><ol><li> <p> <b>Create malicious repository: </b>The adversary must create a malicious repository that imitates the legitimate repository being spoofed. This may include creating a username that closely matches the legitimate repository owner; creating a repository name that closely matches the legitimate repository name; uploading the legitimate source code; and more.</p></li><li> <p> <b>Spoof commit metadata: </b>Once the malicious repository has been created, the adversary must then spoof the commit metadata to make the repository appear to be frequently maintained and originating from trusted sources.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Git Commit Timestamps: The adversary generates numerous fake commits while setting the \"GIT_AUTHOR_DATE\" and \"GIT_COMMITTER_DATE\" environment variables to a date which is to be spoofed.</td></tr><tr><td>Git Commit Contributors: The adversary obtains a legitimate and trusted user's email address and then sets this information via the \"git config\" command. The adversary can then commit changes leveraging this username.</td></tr></tbody></table></ol></div><div><h3>Exploit</h3><ol><li> <p> <b>Exploit victims: </b>The adversary infiltrates software and/or system environments with the goal of conducting additional attacks.</p></li><table><tbody><tr><th>Techniques</th></tr><tr><td>Active: The adversary attempts to trick victims into downloading the malicious software by means such as phishing and social engineering.</td></tr><tr><td>Passive: The adversary waits for victims to download and leverage malicious software.</td></tr></tbody></table></ol></div>",
+            "x_capec_extended_description": "\n            <xhtml:p>Version Control Systems are widely used by developers to host, track, and manage source code files in an easy and synchronous manner. These systems are often leveraged to host open-source software that other developers can incorporate into their own applications or use as standalone applications. To prevent downloading vulnerable and/or malicious code, developers will often check the metadata of VCS repository commits to determine the repository's overall pedigree. This may include a variety of information, such as the following:</xhtml:p>\n            <xhtml:ul>\n               <xhtml:li>Owner of the repository</xhtml:li>\n               <xhtml:li>Author(s) of commits</xhtml:li>\n               <xhtml:li>Frequency of commits</xhtml:li>\n               <xhtml:li>Date/Time of commits</xhtml:li>\n               <xhtml:li>Repository activity graphs</xhtml:li>\n            </xhtml:ul>\n            <xhtml:p>These precursory checks can assist developers in determining whether a trusted individual/organization is providing the source code, how often the code is updated, and the relative popularity of the software. However, an adversary can spoof this metadata to make a repository containing malicious code appear as originating from a trusted source, being frequently maintained, and being commonly used by other developers. Without performing additional security activities, unassuming developers may be duped by this spoofed metadata and include the malicious code within their systems/applications. The adversary is then ultimately able to achieve numerous negative technical impacts, while the victim remains unaware of any malicious activity.</xhtml:p>\n         ",
+            "x_capec_likelihood_of_attack": "Medium",
+            "x_capec_prerequisites": [
+                "Identification of a popular open-source repository whose metadata is to be spoofed."
+            ],
+            "x_capec_skills_required": {
+                "Medium": "Ability to spoof a variety of repository metadata to convince victims the source is trusted."
+            },
+            "x_capec_status": "Stable",
+            "x_capec_typical_severity": "High",
+            "x_capec_version": "3.9"
+        }
+    ],
+    "spec_version": "2.0",
+    "type": "bundle"
+}
