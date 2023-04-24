@@ -1,78 +1,78 @@
 {
     "type": "bundle",
-    "id": "bundle--43c16539-c1d2-4f78-9988-431d40894e24",
+    "id": "bundle--3512f129-a754-4160-86c8-911f95888a55",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Android",
-                "iOS"
-            ],
-            "x_mitre_domains": [
-                "mobile-attack"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--6683aa0c-d98a-4f5b-ac57-ca7e9934a760",
-            "created": "2017-10-25T14:48:12.913Z",
-            "x_mitre_version": "3.0",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1429",
-                    "url": "https://attack.mitre.org/techniques/T1429"
-                },
-                {
-                    "source_name": "Manifest.permission",
-                    "url": "https://developer.android.com/reference/android/media/MediaRecorder.AudioSource#VOICE_CALL",
-                    "description": "Android Developers. (2022, March 17). Voice Call. Retrieved April 1, 2022."
-                },
-                {
-                    "source_name": "Requesting Auth-Media Capture",
-                    "url": "https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/requesting_authorization_for_media_capture_on_ios",
-                    "description": "Apple Developers. (n.d.). Requesting Authorization for Media Capture on iOS. Retrieved April 1, 2022."
-                },
-                {
-                    "source_name": "Android Permissions",
-                    "url": "https://developer.android.com/reference/android/Manifest.permission",
-                    "description": "Google. (2021, August 11). Manifest.permission. Retrieved September 22, 2021."
-                },
-                {
-                    "source_name": "Android Privacy Indicators",
-                    "url": "https://source.android.com/devices/tech/config/privacy-indicators",
-                    "description": "Google. (n.d.). Privacy Indicators. Retrieved April 20, 2022."
-                },
-                {
-                    "source_name": "iOS Mic Spyware",
-                    "url": "https://blog.zecops.com/research/how-ios-malware-can-spy-on-users-silently/",
-                    "description": "ZecOps Research Team. (2021, November 4). How iOS Malware Can Spy on Users Silently. Retrieved April 1, 2022."
-                },
-                {
-                    "url": "https://pages.nist.gov/mobile-threat-catalogue/application-threats/APP-19.html",
-                    "source_name": "NIST Mobile Threat Catalogue",
-                    "external_id": "APP-19"
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may capture audio to collect information by leveraging standard operating system APIs of a mobile device. Examples of audio information adversaries may target include user conversations, surroundings, phone calls, or other sensitive information. \n\n \n\nAndroid and iOS, by default, require that applications request device microphone access from the user.  \n\n \n\nOn Android devices, applications must hold the `RECORD_AUDIO` permission to access the microphone or the `CAPTURE_AUDIO_OUTPUT` permission to access audio output. Because Android does not allow third-party applications to hold the `CAPTURE_AUDIO_OUTPUT` permission by default, only privileged applications, such as those distributed by Google or the device vendor, can access audio output.(Citation: Android Permissions) However, adversaries may be able to gain this access after successfully elevating their privileges. With the `CAPTURE_AUDIO_OUTPUT` permission, adversaries may pass the `MediaRecorder.AudioSource.VOICE_CALL` constant to `MediaRecorder.setAudioOutput`, allowing capture of both voice call uplink and downlink.(Citation: Manifest.permission) \n\n \n\nOn iOS devices, applications must include the `NSMicrophoneUsageDescription` key in their `Info.plist` file to access the microphone.(Citation: Requesting Auth-Media Capture)",
-            "modified": "2022-04-29T17:29:49.023Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2023-03-16T13:31:29.924Z",
             "name": "Audio Capture",
-            "x_mitre_detection": "In iOS 14 and up, an orange dot (or orange square if the Differentiate Without Color setting is enabled) appears in the status bar when the microphone is being used by an application. However, there have been demonstrations indicating it may still be possible to access the microphone in the background without triggering this visual indicator by abusing features that natively access the microphone or camera but do not trigger the visual indicators.(Citation: iOS Mic Spyware)\n\n\nIn Android 12 and up, a green dot appears in the status bar when the microphone is being used by an application.(Citation: Android Privacy Indicators)\n \n\nAndroid applications using the `RECORD_AUDIO` permission and iOS applications using `RequestRecordPermission` should be carefully reviewed and monitored. If the `CAPTURE_AUDIO_OUTPUT` permission is found in a third-party Android application, the application should be heavily scrutinized. \n\n \n\nIn both Android (6.0 and up) and iOS, users can review which applications have the permission to access the microphone through the device settings screen and revoke permissions as necessary. ",
+            "description": "Adversaries may capture audio to collect information by leveraging standard operating system APIs of a mobile device. Examples of audio information adversaries may target include user conversations, surroundings, phone calls, or other sensitive information. \n\n \n\nAndroid and iOS, by default, require that applications request device microphone access from the user.  \n\n \n\nOn Android devices, applications must hold the `RECORD_AUDIO` permission to access the microphone or the `CAPTURE_AUDIO_OUTPUT` permission to access audio output. Because Android does not allow third-party applications to hold the `CAPTURE_AUDIO_OUTPUT` permission by default, only privileged applications, such as those distributed by Google or the device vendor, can access audio output.(Citation: Android Permissions) However, adversaries may be able to gain this access after successfully elevating their privileges. With the `CAPTURE_AUDIO_OUTPUT` permission, adversaries may pass the `MediaRecorder.AudioSource.VOICE_CALL` constant to `MediaRecorder.setAudioOutput`, allowing capture of both voice call uplink and downlink.(Citation: Manifest.permission) \n\n \n\nOn iOS devices, applications must include the `NSMicrophoneUsageDescription` key in their `Info.plist` file to access the microphone.(Citation: Requesting Auth-Media Capture)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-mobile-attack",
                     "phase_name": "collection"
                 }
             ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "In iOS 14 and up, an orange dot (or orange square if the Differentiate Without Color setting is enabled) appears in the status bar when the microphone is being used by an application. However, there have been demonstrations indicating it may still be possible to access the microphone in the background without triggering this visual indicator by abusing features that natively access the microphone or camera but do not trigger the visual indicators.(Citation: iOS Mic Spyware)\n\n\nIn Android 12 and up, a green dot appears in the status bar when the microphone is being used by an application.(Citation: Android Privacy Indicators)\n \n\nAndroid applications using the `RECORD_AUDIO` permission and iOS applications using `RequestRecordPermission` should be carefully reviewed and monitored. If the `CAPTURE_AUDIO_OUTPUT` permission is found in a third-party Android application, the application should be heavily scrutinized. \n\n \n\nIn both Android (6.0 and up) and iOS, users can review which applications have the permission to access the microphone through the device settings screen and revoke permissions as necessary. ",
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
             "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "Android",
+                "iOS"
+            ],
+            "x_mitre_version": "3.1",
             "x_mitre_tactic_type": [
                 "Post-Adversary Device Access"
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
+            "type": "attack-pattern",
+            "id": "attack-pattern--6683aa0c-d98a-4f5b-ac57-ca7e9934a760",
+            "created": "2017-10-25T14:48:12.913Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1429",
+                    "external_id": "T1429"
+                },
+                {
+                    "source_name": "Manifest.permission",
+                    "description": "Android Developers. (2022, March 17). Voice Call. Retrieved April 1, 2022.",
+                    "url": "https://developer.android.com/reference/android/media/MediaRecorder.AudioSource#VOICE_CALL"
+                },
+                {
+                    "source_name": "Requesting Auth-Media Capture",
+                    "description": "Apple Developers. (n.d.). Requesting Authorization for Media Capture on iOS. Retrieved April 1, 2022.",
+                    "url": "https://developer.apple.com/documentation/avfoundation/cameras_and_media_capture/requesting_authorization_for_media_capture_on_ios"
+                },
+                {
+                    "source_name": "Android Permissions",
+                    "description": "Google. (2021, August 11). Manifest.permission. Retrieved September 22, 2021.",
+                    "url": "https://developer.android.com/reference/android/Manifest.permission"
+                },
+                {
+                    "source_name": "Android Privacy Indicators",
+                    "description": "Google. (n.d.). Privacy Indicators. Retrieved April 20, 2022.",
+                    "url": "https://source.android.com/devices/tech/config/privacy-indicators"
+                },
+                {
+                    "source_name": "iOS Mic Spyware",
+                    "description": "ZecOps Research Team. (2021, November 4). How iOS Malware Can Spy on Users Silently. Retrieved April 1, 2022.",
+                    "url": "https://blog.zecops.com/research/how-ios-malware-can-spy-on-users-silently/"
+                },
+                {
+                    "source_name": "NIST Mobile Threat Catalogue",
+                    "url": "https://pages.nist.gov/mobile-threat-catalogue/application-threats/APP-19.html",
+                    "external_id": "APP-19"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
