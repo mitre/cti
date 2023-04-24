@@ -1,32 +1,32 @@
 {
     "type": "bundle",
-    "id": "bundle--d214260b-4dc4-4584-825c-5aaa04c02b48",
+    "id": "bundle--a3018342-965c-485a-b089-1388fa359228",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "type": "relationship",
             "id": "relationship--15f594bd-b2c1-41c1-82fa-b3c72f82993d",
             "created": "2022-03-30T14:26:51.854Z",
-            "x_mitre_version": "0.1",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "external_references": [
                 {
                     "source_name": "Medium Detecting Attempts to Steal Passwords from Memory",
-                    "url": "https://medium.com/threatpunter/detecting-attempts-to-steal-passwords-from-memory-558f16dce4ea",
-                    "description": "French, D. (2018, October 2). Detecting Attempts to Steal Passwords from Memory. Retrieved October 11, 2019."
+                    "description": "French, D. (2018, October 2). Detecting Attempts to Steal Passwords from Memory. Retrieved October 11, 2019.",
+                    "url": "https://medium.com/threatpunter/detecting-attempts-to-steal-passwords-from-memory-558f16dce4ea"
                 }
             ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Monitor for unexpected processes interacting with LSASS.exe.(Citation: Medium Detecting Attempts to Steal Passwords from Memory) Common credential dumpers such as Mimikatz access LSASS.exe by opening the process, locating the LSA secrets key, and decrypting the sections in memory where credential details are stored. Credential dumpers may also use methods for reflective [Process Injection](https://attack.mitre.org/techniques/T1055) to reduce potential indicators of malicious activity.",
-            "modified": "2022-04-19T23:46:50.086Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2023-04-13T17:55:47.985Z",
+            "description": "Monitor for unexpected processes interacting with LSASS.exe.(Citation: Medium Detecting Attempts to Steal Passwords from Memory) Common credential dumpers such as Mimikatz access LSASS.exe by opening the process, locating the LSA secrets key, and decrypting the sections in memory where credential details are stored. Credential dumpers may also use methods for reflective [Process Injection](https://attack.mitre.org/techniques/T1055) to reduce potential indicators of malicious activity.\n\n<h4> Implementation 1 : [Mimikatz](https://attack.mitre.org/software/S0002)</h4>\n\n<h5>Detection Pseudocode</h5>\n<code> processes = filter processes where (event_id == \"10\" AND target_process == \"*lsass.exe\" AND granted_access == \"0x1410\") </code>\n\n<h4> Implementation 2 : Procdump </h4>\n\n<h5>Detection Pseudocode</h5>\n<code> processes = filter processes where (event_id == \"10\" AND target_process == \"*lsass.exe\" AND source_process == \"*procdump.exe\") </code>\n\n<h4>Implementation 3 : Windows Task Manager</h4>\n\n<h5>Detection Pseudocode</h5>\n<code> processes = filter processes where (event_id == \"10\" AND target_process == \"*lsass.exe\" AND source_process == \"c:\\windows\\*\\taskmgr.exe\") </code>\n\n<h4>Detection Notes</h4>\n\n- Pseudocode Event IDs are for Sysmon (Event ID 10 - process access). \n\n- The GrantedAccess value in the above pseudocode for Mimikatz is meant to be used solely as an illustrative example of detecting Mimikatz LSASS access. However, actual GrantedAccess values change over time with different versions of Mimikatz and therefore detection engineers need to verify the accuracy of any GrantedAccess values that their analytics are using. \n\n- Sysmon process access events (Event ID 10) can be extremely noisy, which necessitates tweaking the Sysmon configuration file. We recommend taking an approach analogous to that of the Sysmon Modular Configuration project (https://github.com/olafhartong/sysmon-modular) and filtering out any benign processes in your environment that produce large volumes of process access events. \n\n- Usage of Procdump and Windows Task Manager for LSASS dumping can also be detected via process creation events, since they both have a predictable set of command-line arguments (i.e., for specifying the process to be dumped). ",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
             "target_ref": "attack-pattern--65f2d882-3f41-4d48-8a06-29af77ec9f90",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

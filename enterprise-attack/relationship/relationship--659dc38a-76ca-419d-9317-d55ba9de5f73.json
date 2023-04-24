@@ -1,25 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--efb44d43-da56-40a3-9a27-36ae5cef214e",
+    "id": "bundle--91b925ad-66cd-493f-a279-515d35613a93",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "type": "relationship",
             "id": "relationship--659dc38a-76ca-419d-9317-d55ba9de5f73",
             "created": "2022-03-30T14:26:51.867Z",
-            "x_mitre_version": "0.1",
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Monitor network data for uncommon SMB data flows. Processes utilizing the network that do not normally have network communication or have never been seen before are suspicious.",
-            "modified": "2022-04-13T18:47:21.440Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2023-04-13T17:37:30.800Z",
+            "description": "Monitor network data for uncommon SMB data flows. Processes utilizing the network that do not normally have network communication or have never been seen before are suspicious.\n\n<h4>Implementation 1: SMB Write</h4>\n\n<h5>Detection Pseudocode</h5>\n<code>smb_write = filter flow where (dest_port == \"445\" AND protocol == \"smb.write\")</code>\n\n<h4>Implementation 2: SMB Copy and Execution</h4>\n\n<h5>Detection Pseudocode</h5>\n<code>remote_start = join (smb:write, process:create) where (\n smb_write.hostname == process.hostname AND\n smb_write.file_path == process.image_path AND\n (smb_write.time < process.time)) </code>\n\n<h4>Detection Notes</h4>\n\n- The logic for Implementation 1 is based around detecting on SMB write requests, which are often used by adversaries to move laterally to another host. Unlike SMB Reads, SMB Write requests typically require an additional level of access, resulting in less activity. Focusing on SMB Write activity narrows the field to looking at techniques associated with actively changing remote hosts, instead of passively reading files.\n- The logic for Implementation 2 is based around detection of new processes that were created from a file written to an SMB share.  First, a file is remotely written to a host via an SMB share; then, a variety of\u00a0Execution techniques can be used to remotely establish execution of the file or script. To detect this behavior, look for files that are written to a host over SMB and then later run directly as a process or in the command line arguments. SMB File Writes and Remote Execution may happen normally in an environment, but the combination of the two behaviors is less frequent and more likely to indicate adversarial activity.\n- Network Analysis frameworks such as Zeek can be used to capture, decode, and alert on SMB network flows.",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
             "target_ref": "attack-pattern--4f9ca633-15c5-463c-9724-bdcd54fde541",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

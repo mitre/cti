@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--3b8401fc-f545-47d9-a06a-3e0a8ed20474",
+    "id": "bundle--f3d550d5-eda6-4c9b-b906-a4068856cee9",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--d51223ba-aebe-448e-8a61-7460d96c8dd8",
+            "created": "2022-03-30T14:26:51.834Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--d51223ba-aebe-448e-8a61-7460d96c8dd8",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.834Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.834Z",
-            "description": "Monitor the AppInit_DLLs Registry values for modifications that do not correlate with known software, patch cycles, etc.",
+            "modified": "2023-03-29T22:11:37.717Z",
+            "description": "Monitor the AppInit_DLLs Registry values for modifications that do not correlate with known software, patch cycles, etc.\n\n<h4> Implementation 1 : AppInit DLLs </h4>\n\n<h5> Detection Pseudocode </h5>\n<code> appinit_keys = filter registry_keys where ((event_id == \"12\" OR event_id == \"13\" event_id == \"14\") AND\n  key = \"*\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\Appinit_Dlls\\*\" OR\n  key = \"*\\SOFTWARE\\\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows\\Appinit_Dlls\\*\"\")</code>\n\n<h4> Detection Notes </h4>\n\n- Adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by AppInit DLLs loaded into processes. Dynamic-link libraries (DLLs) that are specified in the AppInit_DLLs value in the Registry keys HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows or HKEY_LOCAL_MACHINE\\Software\\Wow6432Node\\Microsoft\\Windows NT\\CurrentVersion\\Windows are loaded by user32.dll into every process that loads user32.dll. These values can be abused to obtain elevated privileges by causing a malicious DLL to be loaded and run in the context of separate processes. Accordingly, this analytic looks for modifications to these registry keys that may be indicative of this type of abuse.",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
             "target_ref": "attack-pattern--cc89ecbd-3d33-4a41-bcca-001e702d18fd",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--9341e885-fd58-4eec-ac45-bcc13dffd00c",
+    "id": "bundle--f1b266b2-b90b-4f2d-9d9d-693736187f26",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--59e0f91a-278b-49f9-8f8d-93b2b9914fad",
+            "created": "2022-03-30T14:26:51.867Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--59e0f91a-278b-49f9-8f8d-93b2b9914fad",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.867Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.867Z",
-            "description": "Monitor executed commands and arguments for actions that could be taken to gather tasks may also be created through Windows system management tools such as Windows Management Instrumentation and PowerShell, so additional logging may need to be configured to gather the appropriate data.",
+            "modified": "2023-03-24T15:16:05.683Z",
+            "description": "Monitor executed commands and arguments for actions that could be taken to gather tasks may also be created through Windows system management tools such as Windows Management Instrumentation and PowerShell, so additional logging may need to be configured to gather the appropriate data.\n\n<h4> Implementation 1 : New processes whose command line includes commands that create or modify scheduled tasks with a suspicious script, extension or user writable path </h4>\n\n<h5> Detection Pseudocode </h5>\n<code> suspicious_processes = filter ProcessId, ProcessFilePath, command_line, ProcessParentFilePath,ProcessParentCommandLine where\n  (EventId == \"1\" OR EventId == \"4688\") AND\n  command_line LIKE '%SCHTASKS%' AND\n  (command_line LIKE '%/CREATE%' OR command_line LIKE '%/CHANGE%') AND\n  (command_line LIKE '%.cmd%' OR command_line LIKE '%.ps1%' OR\n   command_line LIKE '%.vbs%' OR command_line LIKE '%.py%' OR\n   command_line LIKE '%.js%' OR command_line LIKE '%.exe%' OR\n   command_line LIKE '%.bat%' OR command_line LIKE '%javascript%' OR\n   command_line LIKE '%powershell%' OR command_line LIKE '%rundll32%' OR\n   command_line LIKE '%wmic%' OR command_line LIKE '%cmd%' OR\n   command_line LIKE '%cscript%' OR command_line LIKE '%wscript%' OR\n   command_line LIKE '%regsvr32%' OR command_line LIKE '%mshta%' OR\n   command_line LIKE '%bitsadmin%' OR command_line LIKE '%certutil%' OR\n   command_line LIKE '%msiexec%' OR command_line LIKE '%javaw%' OR\n   command_line LIKE '%[%]APPDATA[%]%' OR command_line LIKE '%\\\\AppData\\\\Roaming%' OR\n   command_line LIKE '%[%]PUBLIC[%]%' OR command_line LIKE '%C:\\\\Users\\\\Public%' OR\n   command_line LIKE '%[%]ProgramData[%]%' OR command_line LIKE '%C:\\\\ProgramData%' OR\n   command_line LIKE '%[%]TEMP[%]%' OR command_line LIKE '%\\\\AppData\\\\Local\\\\Temp%' OR\n   command_line LIKE '%\\\\Windows\\\\PLA\\\\System%' OR command_line LIKE '%\\\\tasks%' OR\n   command_line LIKE '%\\\\Registration\\\\CRMLog%' OR command_line LIKE '%\\\\FxsTmp%' OR\n   command_line LIKE '%\\\\spool\\\\drivers\\\\color%' OR command_line LIKE '%\\\\tracing%' OR)</code>\n",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
             "target_ref": "attack-pattern--005a06c6-14bf-4118-afa0-ebcd8aebb0c9",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

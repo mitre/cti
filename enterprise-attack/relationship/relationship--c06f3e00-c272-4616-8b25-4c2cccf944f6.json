@@ -1,25 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--b9a9e628-3aa8-41c4-873e-333f45c77c19",
+    "id": "bundle--4a28a5f2-c141-475a-bec4-21de6f5ed74f",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "type": "relationship",
             "id": "relationship--c06f3e00-c272-4616-8b25-4c2cccf944f6",
             "created": "2022-03-30T14:26:51.864Z",
-            "x_mitre_version": "0.1",
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Monitor executed commands and arguments for actions that may interact with the Windows Registry to gather information about the system, configuration, and installed software.",
-            "modified": "2022-04-10T17:25:53.011Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2023-04-13T17:39:11.516Z",
+            "description": "Monitor executed commands and arguments for actions that may interact with the Windows Registry to gather information about the system, configuration, and installed software.\n\n<h4> Implementation 1 : Suspicious Commands </h4>\n\n<h5> Detection Pseudocode</h5>\n<code> suspicious_commands = filter command_line where\n  EventId == \"4103\" AND\n  (CommandName LIKE '%New-PSDrive%' AND \n       (CommandParameterValue LIKE \u2018%Registry%\u2019 OR\n        CommandParameterValue LIKE '%HKEY_CLASSES_ROOT%' OR\n        CommandParameterValue LIKE '%HKCR%')) </code>\n\n<h4>Detection Notes</h4>\n\n- CommandName and CommandParameterValue can also be obtained from Payload event field for PowerShell event id 4103.\n- The New-PSDrive PowerShell cmdlet creates temporary and persistent drives that are mapped to or associated with a location in a data store, such a registry key (PSProvider \u201cRegistry\u201d). The the Get-ChildItem gets the items in one or more specified locations. By using both, you can enumerate COM objects in one or more specified locations.\n- For PowerShell Module logging event id 4103, enable logging for module Microsoft.PowerShell.Management.",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
             "target_ref": "attack-pattern--c32f7008-9fea-41f7-8366-5eb9b74bd896",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

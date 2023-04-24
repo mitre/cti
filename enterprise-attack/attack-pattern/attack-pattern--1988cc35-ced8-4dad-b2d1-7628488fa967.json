@@ -1,66 +1,75 @@
 {
     "type": "bundle",
-    "id": "bundle--42633e66-5598-47e7-abb6-3b1044a123ad",
+    "id": "bundle--e13ea9ea-bae5-4b73-a98f-74a4e472f4c2",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--1988cc35-ced8-4dad-b2d1-7628488fa967",
-            "created": "2020-02-20T22:02:20.372Z",
-            "x_mitre_version": "1.0",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1561",
-                    "url": "https://attack.mitre.org/techniques/T1561"
-                },
-                {
-                    "source_name": "Novetta Blockbuster Destructive Malware",
-                    "url": "https://web.archive.org/web/20160303200515/https://operationblockbuster.com/wp-content/uploads/2016/02/Operation-Blockbuster-Destructive-Malware-Report.pdf",
-                    "description": "Novetta Threat Research Group. (2016, February 24). Operation Blockbuster: Destructive Malware Report. Retrieved March 2, 2016."
-                },
-                {
-                    "source_name": "Microsoft Sysmon v6 May 2017",
-                    "url": "https://docs.microsoft.com/sysinternals/downloads/sysmon",
-                    "description": "Russinovich, M. & Garnier, T. (2017, May 22). Sysmon v6.20. Retrieved December 13, 2017."
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may wipe or corrupt raw disk data on specific systems or in large numbers in a network to interrupt availability to system and network resources. With direct write access to a disk, adversaries may attempt to overwrite portions of disk data. Adversaries may opt to wipe arbitrary portions of disk data and/or wipe disk structures like the master boot record (MBR). A complete wipe of all disk sectors may be attempted.\n\nTo maximize impact on the target organization in operations where network-wide availability interruption is the goal, malware used for wiping disks may have worm-like features to propagate across a network by leveraging additional techniques like [Valid Accounts](https://attack.mitre.org/techniques/T1078), [OS Credential Dumping](https://attack.mitre.org/techniques/T1003), and [SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002).(Citation: Novetta Blockbuster Destructive Malware)",
-            "modified": "2022-07-28T18:55:35.987Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2023-04-20T18:16:41.942Z",
             "name": "Disk Wipe",
-            "x_mitre_detection": "Look for attempts to read/write to sensitive locations like the partition boot sector, master boot record, disk partition table, or BIOS parameter block/superblock. Monitor for direct access read/write attempts using the <code>\\\\\\\\.\\\\</code> notation.(Citation: Microsoft Sysmon v6 May 2017) Monitor for unusual kernel driver installation activity.",
+            "description": "Adversaries may wipe or corrupt raw disk data on specific systems or in large numbers in a network to interrupt availability to system and network resources. With direct write access to a disk, adversaries may attempt to overwrite portions of disk data. Adversaries may opt to wipe arbitrary portions of disk data and/or wipe disk structures like the master boot record (MBR). A complete wipe of all disk sectors may be attempted.\n\nTo maximize impact on the target organization in operations where network-wide availability interruption is the goal, malware used for wiping disks may have worm-like features to propagate across a network by leveraging additional techniques like [Valid Accounts](https://attack.mitre.org/techniques/T1078), [OS Credential Dumping](https://attack.mitre.org/techniques/T1003), and [SMB/Windows Admin Shares](https://attack.mitre.org/techniques/T1021/002).(Citation: Novetta Blockbuster Destructive Malware)\n\nOn network devices, adversaries may wipe configuration files and other data from the device using [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) commands such as `erase`.(Citation: erase_cmd_cisco)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "impact"
                 }
             ],
+            "x_mitre_contributors": [
+                "Austin Clark, @c2defense"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Look for attempts to read/write to sensitive locations like the partition boot sector, master boot record, disk partition table, or BIOS parameter block/superblock. Monitor for direct access read/write attempts using the <code>\\\\\\\\.\\\\</code> notation.(Citation: Microsoft Sysmon v6 May 2017) Monitor for unusual kernel driver installation activity.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS",
+                "Windows",
+                "Network"
+            ],
+            "x_mitre_version": "1.1",
             "x_mitre_data_sources": [
-                "Drive: Drive Access",
-                "Command: Command Execution",
+                "Drive: Drive Modification",
                 "Process: Process Creation",
+                "Command: Command Execution",
                 "Driver: Driver Load",
-                "Drive: Drive Modification"
+                "Drive: Drive Access"
             ],
             "x_mitre_impact_type": [
                 "Availability"
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
+            "type": "attack-pattern",
+            "id": "attack-pattern--1988cc35-ced8-4dad-b2d1-7628488fa967",
+            "created": "2020-02-20T22:02:20.372Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1561",
+                    "external_id": "T1561"
+                },
+                {
+                    "source_name": "erase_cmd_cisco",
+                    "description": "Cisco. (2022, August 16). erase - Cisco IOS Configuration Fundamentals Command Reference . Retrieved July 13, 2022.",
+                    "url": "https://www.cisco.com/c/en/us/td/docs/ios-xml/ios/fundamentals/command/cf_command_ref/D_through_E.html#wp3557227463"
+                },
+                {
+                    "source_name": "Novetta Blockbuster Destructive Malware",
+                    "description": "Novetta Threat Research Group. (2016, February 24). Operation Blockbuster: Destructive Malware Report. Retrieved March 2, 2016.",
+                    "url": "https://web.archive.org/web/20160303200515/https://operationblockbuster.com/wp-content/uploads/2016/02/Operation-Blockbuster-Destructive-Malware-Report.pdf"
+                },
+                {
+                    "source_name": "Microsoft Sysmon v6 May 2017",
+                    "description": "Russinovich, M. & Garnier, T. (2017, May 22). Sysmon v6.20. Retrieved December 13, 2017.",
+                    "url": "https://docs.microsoft.com/sysinternals/downloads/sysmon"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

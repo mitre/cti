@@ -1,30 +1,33 @@
 {
     "type": "bundle",
-    "id": "bundle--5147702a-fea2-492e-93be-54e7ae536216",
+    "id": "bundle--ca3c7680-308e-437b-b782-39db6de63cf5",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "relationship--4d8cabd5-3985-42a1-9457-047858ff340f",
             "type": "relationship",
+            "id": "relationship--4d8cabd5-3985-42a1-9457-047858ff340f",
             "created": "2022-03-30T14:26:51.867Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.867Z",
-            "description": "Monitor for newly constructed processes and/or command-lines that execute from the svchost.exe in Windows 10 and the Windows Task Scheduler taskeng.exe for older versions of Windows. (Citation: Twitter Leoloobeek Scheduled Task) If scheduled tasks are not used for persistence, then the adversary is likely to remove the task when the action is complete.",
-            "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
-            "target_ref": "attack-pattern--005a06c6-14bf-4118-afa0-ebcd8aebb0c9",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "external_references": [
                 {
                     "source_name": "Twitter Leoloobeek Scheduled Task",
                     "description": "Loobeek, L. (2017, December 8). leoloobeek Status. Retrieved December 12, 2017.",
                     "url": "https://twitter.com/leoloobeek/status/939248813465853953"
                 }
-            ]
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2023-03-21T15:59:02.143Z",
+            "description": "Monitor for newly constructed processes and/or command-lines that execute from the svchost.exe in Windows 10 and the Windows Task Scheduler taskeng.exe for older versions of Windows. (Citation: Twitter Leoloobeek Scheduled Task) If scheduled tasks are not used for persistence, then the adversary is likely to remove the task when the action is complete.\n\n<h4> Implementation 1 : New processes whose parent processes are svchost.exe or taskeng.exe</h4>\n\n<h5> Detection Pseudocode</h5>\n<code> suspicious_processes = filter ProcessId, ProcessFilePath, ProcessParentFilePath where\n  (EventId == \"1\" OR EventId == \"4688\") AND\n  (ProcessParentFilePath LIKE '%svchost.exe%' OR ProcessParentFilePath LIKE '%taskeng.exe%')</code>\n\n<h4>Detection Notes</h4>\n\n- Look for instances of <code> schtasks.exe </code> running as processes. The <code> command_line </code> field is necessary to disambiguate between types of schtasks commands. These include the flags <code>/create </code>,<code> /run</code>,<code> /query</code>,<code> /delete</code>,<code> /change</code>, and <code> /end</code>.",
+            "relationship_type": "detects",
+            "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+            "target_ref": "attack-pattern--005a06c6-14bf-4118-afa0-ebcd8aebb0c9",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

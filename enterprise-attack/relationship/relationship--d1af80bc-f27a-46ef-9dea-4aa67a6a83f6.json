@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--7bd6a100-a360-43cc-b367-a9d4346876cc",
+    "id": "bundle--562403a1-5449-4fae-a180-eef00eb5af64",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--d1af80bc-f27a-46ef-9dea-4aa67a6a83f6",
+            "created": "2022-03-30T14:26:51.837Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--d1af80bc-f27a-46ef-9dea-4aa67a6a83f6",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.837Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.837Z",
-            "description": "Monitor for unexpected deletion of a command history file, such as ConsoleHost_history.txt, ~/.zsh_history, or ~/.bash_history.",
+            "modified": "2023-03-27T13:55:28.259Z",
+            "description": "Monitor for unexpected deletion of a command history file, such as ConsoleHost_history.txt, ~/.zsh_history, or ~/.bash_history.\n\n<h4> Implementation 1 : Deletion of command history files</h4>\n\n<h5>Detection Pseudocode</h5>\n<code> suspicious_files = filter ProcessGuid, ProcessFilePath, UserName, FilePath where\n  (event_id == \"23\" AND\n   FilePath LIKE '%ConsoleHost_history.txt%') OR\n  (event_id == \"4663\" AND\n   FilePath LIKE '%ConsoleHost_history.txt%' AND\n   ObjectType == \"File\" AND\n   (UserAccessList LIKE '%1537%' OR \n    UserAccessList LIKE '%DELETE%'))</code>\n\n<h4> Detection Notes</h4>\n\n- For Security Auditing event id 4663, enable success events for category Object Access and subcategory File System.\n- For Security Auditing event id 4663, a System Access Control List (SACL) that controls the use of specific access rights such as DELETE is required for event generation.\n- For Security Auditing event id 4663, depending on the File Path you are monitoring, the implementation of a new System Access Control List (SACL) might be required.\n- For Windows Sysmon event id 23, installation of application with configuration file is required.\n- For Windows Sysmon event id 23, addition of FileDelete events in config file is required.",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--e905dad2-00d6-477c-97e8-800427abd0e8",
             "target_ref": "attack-pattern--3aef9463-9a7a-43ba-8957-a867e07c1e6a",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

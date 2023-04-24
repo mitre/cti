@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--4331c383-71ec-4e33-8a2d-970ed441ab21",
+    "id": "bundle--f1421b39-c347-4fb3-b3b0-86c62b81e0cf",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--9deaa56a-7d34-4814-acc4-cf78c10bd84c",
+            "created": "2022-03-30T14:26:51.855Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--9deaa56a-7d34-4814-acc4-cf78c10bd84c",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.855Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.855Z",
-            "description": "Monitor newly executed processes that may attempt to find local system groups and permission settings.",
+            "modified": "2023-03-21T00:25:51.794Z",
+            "description": "Monitor newly executed processes that may attempt to find local system groups and permission settings.\n\n<h4> Implementation 1 : Suspicious Processes </h4>\n\n<h5>Detection Pseudocode</h5>\n<code>processes = filter processes where (\n (event_id == \"1\" OR event_id == \"4688\") AND\n  exe = \"net.exe\" AND (\n  command_line=\"*net* user*\" OR\n  command_line=\"*net* group*\" OR\n  command_line=\"*net* localgroup*\" OR\n  command_line=\"*get-localgroup*\" OR\n  command_line=\"*get-ADPrincipalGroupMembership*\" )</code>\n\n<h4>Detection Notes</h4>\n\n- Pseudocode Event IDs are for Sysmon (Event ID 1 - process creation) and Windows Security Log (Event ID 4688 - a new process has been created). \n- The logic in the Detection Pseudocode looks for any instances of net.exe used for local user/group discovery; although this utility is not normally used for benign purposes, such usage by system administrator actions may trigger false positives.",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--a01bf75f-00b2-4568-a58f-565ff9bf202b",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

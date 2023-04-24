@@ -1,44 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--bff9b955-53aa-42b1-b76d-105857a8e038",
+    "id": "bundle--1aeca7c9-033a-4aa4-8fbd-c8d7cce23fde",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Blake Strom, Microsoft 365 Defender",
-                "Travis Smith, Tripwire"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--e624264c-033a-424d-9fd7-fc9c3bbdb03e",
-            "type": "attack-pattern",
-            "created": "2020-01-30T16:36:51.184Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1550.002",
-                    "url": "https://attack.mitre.org/techniques/T1550/002"
-                },
-                {
-                    "external_id": "CAPEC-644",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/644.html"
-                },
-                {
-                    "source_name": "Stealthbits Overpass-the-Hash",
-                    "url": "https://stealthbits.com/blog/how-to-detect-overpass-the-hash-attacks/",
-                    "description": "Warren, J. (2019, February 26). How to Detect Overpass-the-Hash Attacks. Retrieved February 4, 2021."
-                }
-            ],
-            "modified": "2021-08-31T19:55:02.702Z",
+            "modified": "2023-03-30T21:01:45.141Z",
             "name": "Pass the Hash",
             "description": "Adversaries may \u201cpass the hash\u201d using stolen password hashes to move laterally within an environment, bypassing normal system access controls. Pass the hash (PtH) is a method of authenticating as a user without having access to the user's cleartext password. This method bypasses standard authentication steps that require a cleartext password, moving directly into the portion of the authentication that uses the password hash.\n\nWhen performing PtH, valid password hashes for the account being used are captured using a [Credential Access](https://attack.mitre.org/tactics/TA0006) technique. Captured hashes are used with PtH to authenticate as that user. Once authenticated, PtH may be used to perform actions on local or remote systems.\n\nAdversaries may also use stolen password hashes to \"overpass the hash.\" Similar to PtH, this involves using a password hash to authenticate as a user but also uses the password hash to create a valid Kerberos ticket. This ticket can then be used to perform [Pass the Ticket](https://attack.mitre.org/techniques/T1550/003) attacks.(Citation: Stealthbits Overpass-the-Hash)",
             "kill_chain_phases": [
@@ -51,18 +17,48 @@
                     "phase_name": "lateral-movement"
                 }
             ],
+            "x_mitre_contributors": [
+                "Blake Strom, Microsoft 365 Defender",
+                "Travis Smith, Tripwire"
+            ],
             "x_mitre_detection": "Audit all logon and credential use events and review for discrepancies. Unusual remote logins that correlate with other suspicious activity (such as writing and executing binaries) may indicate malicious activity. NTLM LogonType 3 authentications that are not associated to a domain login and are not anonymous logins are suspicious.\n\nEvent ID 4768 and 4769 will also be generated on the Domain Controller when a user requests a new ticket granting ticket or service ticket. These events combined with the above activity may be indicative of an overpass the hash attempt.(Citation: Stealthbits Overpass-the-Hash)",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.1",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "1.1",
             "x_mitre_data_sources": [
+                "User Account: User Account Authentication",
                 "Active Directory: Active Directory Credential Request",
-                "Logon Session: Logon Session Creation",
-                "User Account: User Account Authentication"
+                "Logon Session: Logon Session Creation"
             ],
             "x_mitre_defense_bypassed": [
                 "System Access Controls"
-            ]
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--e624264c-033a-424d-9fd7-fc9c3bbdb03e",
+            "created": "2020-01-30T16:36:51.184Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1550/002",
+                    "external_id": "T1550.002"
+                },
+                {
+                    "source_name": "Stealthbits Overpass-the-Hash",
+                    "description": "Warren, J. (2019, February 26). How to Detect Overpass-the-Hash Attacks. Retrieved February 4, 2021.",
+                    "url": "https://stealthbits.com/blog/how-to-detect-overpass-the-hash-attacks/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.1.0"
         }
     ]
 }

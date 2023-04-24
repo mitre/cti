@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--a93ba581-5789-4df1-b867-531b74e2a04b",
+    "id": "bundle--46e3bf73-6d0b-4766-b4ae-95d368afc51d",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--e46dcc94-3608-4e31-9802-1c46368344f9",
+            "created": "2022-03-30T14:26:51.835Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--e46dcc94-3608-4e31-9802-1c46368344f9",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.835Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.835Z",
-            "description": "Monitor for newly constructed BITS tasks to enumerate using the BITSAdmin tool (bitsadmin /list /allusers /verbose). ",
+            "modified": "2023-03-28T13:08:21.472Z",
+            "description": "Monitor for newly constructed BITS tasks to enumerate using the BITSAdmin tool (bitsadmin /list /allusers /verbose). \n\n<h4> Implementation 1 : BITS Job Persistence </h4>\n\n<h5>Detection Pseudocode</h5>\n<code> processes = filter processes where (\n  (event_id == \"1\" OR event_id == \"4688\") AND\n  exe =\"C:\\Windows\\System32\\bitsadmin.exe\" AND \n  (command_line == \"*create*\" OR\n   command_line == \"*addfile*\" OR \n   command_line == \"*setnotifyflags*\" OR\n   command_line == \"*setnotifycmdline*\" OR\n   command_line == \"*setminretrydelay*\" OR \n   command_line == \"*setcustomheaders*\" OR\n   command_line == \"*resume*\")\n)</code>\n\n<h4> Detection Notes </h4>\n\n- Pseudocode Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). \n- The Detection Pseudocode is oriented around looking for the creation of Microsoft Background Intelligent Transfer Service utility\u00a0(bitsadmin.exe) processes that schedule a BITS job to persist on an endpoint. The analytic identifies the command-line parameters used to create, resume or add a file to a BITS job; these are typically seen combined in a single command-line or executed in sequence.\n\n<h4> Implementation 2 : BITSAdmin Download File </h4>\n\n<h5> Detection Pseudocode </h5>\n<code> bitsadmin_commands = filter processes where (\n  exe =\"C:\\Windows\\System32\\bitsadmin.exe\" AND command_line = *transfer*)\noutput bitsadmin_commands </code>\n\n<h4> Detection Notes </h4>\nThe following query identifies Microsoft Background Intelligent Transfer Service utility <code> bitsadmin.exe </code> using the <code> transfer</code> parameter to download a remote object. In addition, look for <code> download </code> or <code> upload </code> on the command-line, the switches are not required to perform a transfer. Capture any files downloaded. Review the reputation of the IP or domain used. Typically once executed, a follow on command will be used to execute the dropped file. \n\nNote that the network connection or file modification events related will not spawn or create from <code> bitsadmin.exe </code>, but the artifacts will appear in a parallel process of <code> svchost.exe </code> with a command-line similar to <code> svchost.exe -k netsvcs -s BITS </code>. It\u2019s important to review all parallel and child processes to capture any behaviors and artifacts. In some suspicious and malicious instances, BITS jobs will be created. You can use <code> bitsadmin /list /verbose </code> to list out the jobs during investigation.",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--c8e87b83-edbb-48d4-9295-4974897525b7",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

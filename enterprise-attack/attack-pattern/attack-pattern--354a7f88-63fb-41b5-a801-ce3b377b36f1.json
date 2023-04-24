@@ -1,10 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--3a5b32a8-198f-4f0d-80c9-e4690a0e3ab2",
+    "id": "bundle--a24eaaac-8d9f-41eb-a6ee-8f61bdf5f70b",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2022-09-06T22:11:56.413Z",
+            "modified": "2023-03-30T21:01:40.871Z",
             "name": "System Information Discovery",
             "description": "An adversary may attempt to get detailed information about the operating system and hardware, including version, patches, hotfixes, service packs, and architecture. Adversaries may use the information from [System Information Discovery](https://attack.mitre.org/techniques/T1082) during automated discovery to shape follow-on behaviors, including whether or not the adversary fully infects the target and/or attempts specific actions.\n\nTools such as [Systeminfo](https://attack.mitre.org/software/S0096) can be used to gather detailed system information. If running with privileged access, a breakdown of system data can be gathered through the <code>systemsetup</code> configuration tool on macOS. As an example, adversaries with user-level access can execute the <code>df -aH</code> command to obtain currently mounted disks and associated freely available space. Adversaries may also leverage a [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) on network devices to gather detailed system information (e.g. <code>show version</code>).(Citation: US-CERT-TA18-106A) [System Information Discovery](https://attack.mitre.org/techniques/T1082) combined with information gathered from other forms of discovery and reconnaissance can drive payload development and concealment.(Citation: OSX.FairyTale)(Citation: 20 macOS Common Tools and Techniques)\n\nInfrastructure as a Service (IaaS) cloud providers such as AWS, GCP, and Azure allow access to instance and virtual machine information via APIs. Successful authenticated API calls can return data such as the operating system platform and status of a particular instance or the model view of a virtual machine.(Citation: Amazon Describe Instance)(Citation: Google Instances Resource)(Citation: Microsoft Virutal Machine API)",
             "kill_chain_phases": [
@@ -13,7 +13,19 @@
                     "phase_name": "discovery"
                 }
             ],
+            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_contributors": [
+                "Maril Vernon @shewhohacks",
+                "Praetorian",
+                "Austin Clark, @c2defense"
+            ],
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "System and network discovery techniques normally occur throughout an operation as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities based on the information obtained.\n\nMonitor processes and command-line arguments for actions that could be taken to gather system and network information. Remote access tools with built-in features may interact directly with the Windows API to gather information. Further, [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) commands may also be used to gather  detailed system information with built-in features native to the network device platform.  Monitor CLI activity for unexpected or unauthorized use  commands being run by non-standard users from non-standard locations. Information may also be acquired through Windows system management tools such as [Windows Management Instrumentation](https://attack.mitre.org/techniques/T1047) and [PowerShell](https://attack.mitre.org/techniques/T1059/001).\n\nIn cloud-based systems, native logging can be used to identify access to certain APIs and dashboards that may contain system information. Depending on how the environment is used, that data alone may not be useful due to benign use during normal operations.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
                 "Windows",
                 "IaaS",
@@ -21,21 +33,11 @@
                 "macOS",
                 "Network"
             ],
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_deprecated": false,
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
             "x_mitre_version": "2.5",
-            "x_mitre_contributors": [
-                "Maril Vernon @shewhohacks",
-                "Praetorian",
-                "Austin Clark, @c2defense"
-            ],
             "x_mitre_data_sources": [
-                "Process: OS API Execution",
+                "Command: Command Execution",
                 "Process: Process Creation",
-                "Command: Command Execution"
+                "Process: OS API Execution"
             ],
             "type": "attack-pattern",
             "id": "attack-pattern--354a7f88-63fb-41b5-a801-ce3b377b36f1",
@@ -77,18 +79,11 @@
                     "source_name": "US-CERT-TA18-106A",
                     "description": "US-CERT. (2018, April 20). Alert (TA18-106A) Russian State-Sponsored Cyber Actors Targeting Network Infrastructure Devices. Retrieved October 19, 2020.",
                     "url": "https://www.us-cert.gov/ncas/alerts/TA18-106A"
-                },
-                {
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/312.html",
-                    "external_id": "CAPEC-312"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            ]
         }
     ]
 }

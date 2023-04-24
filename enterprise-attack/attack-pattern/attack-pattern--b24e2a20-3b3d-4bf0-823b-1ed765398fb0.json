@@ -1,9 +1,27 @@
 {
     "type": "bundle",
-    "id": "bundle--a1d11c29-dd59-4c25-9479-0564792ffc0e",
+    "id": "bundle--94410bf1-09bd-456a-ae6e-5e4928275d87",
     "spec_version": "2.0",
     "objects": [
         {
+            "modified": "2023-03-22T20:39:15.680Z",
+            "name": "Account Access Removal",
+            "description": "Adversaries may interrupt availability of system and network resources by inhibiting access to accounts utilized by legitimate users. Accounts may be deleted, locked, or manipulated (ex: changed credentials) to remove access to accounts. Adversaries may also subsequently log off and/or perform a [System Shutdown/Reboot](https://attack.mitre.org/techniques/T1529) to set malicious changes into place.(Citation: CarbonBlack LockerGoga 2019)(Citation: Unit42 LockerGoga 2019)\n\nIn Windows, [Net](https://attack.mitre.org/software/S0039) utility, <code>Set-LocalUser</code> and <code>Set-ADAccountPassword</code> [PowerShell](https://attack.mitre.org/techniques/T1059/001) cmdlets may be used by adversaries to modify user accounts. In Linux, the <code>passwd</code> utility may be used to change passwords. Accounts could also be disabled by Group Policy. \n\nAdversaries who use ransomware or similar attacks may first perform this and other Impact behaviors, such as [Data Destruction](https://attack.mitre.org/techniques/T1485) and [Defacement](https://attack.mitre.org/techniques/T1491), in order to impede incident response/recovery before completing the [Data Encrypted for Impact](https://attack.mitre.org/techniques/T1486) objective. ",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "impact"
+                }
+            ],
+            "x_mitre_contributors": [
+                "Hubert Mank"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Use process monitoring to monitor the execution and command line parameters of binaries involved in deleting accounts or changing passwords, such as use of [Net](https://attack.mitre.org/software/S0039). Windows event logs may also designate activity associated with an adversary's attempt to remove access to an account:\n\n* Event ID 4723 - An attempt was made to change an account's password\n* Event ID 4724 - An attempt was made to reset an account's password\n* Event ID 4726 - A user account was deleted\n* Event ID 4740 - A user account was locked out\n\nAlerting on [Net](https://attack.mitre.org/software/S0039) and these Event IDs may generate a high degree of false positives, so compare against baseline knowledge for how systems are typically used and correlate modification events with other indications of malicious activity where possible.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": false,
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
@@ -11,56 +29,41 @@
                 "Office 365",
                 "SaaS"
             ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--b24e2a20-3b3d-4bf0-823b-1ed765398fb0",
-            "created": "2019-10-09T18:48:31.906Z",
-            "x_mitre_version": "1.1",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1531",
-                    "url": "https://attack.mitre.org/techniques/T1531"
-                },
-                {
-                    "source_name": "CarbonBlack LockerGoga 2019",
-                    "url": "https://www.carbonblack.com/2019/03/22/tau-threat-intelligence-notification-lockergoga-ransomware/",
-                    "description": "CarbonBlack Threat Analysis Unit. (2019, March 22). TAU Threat Intelligence Notification \u2013 LockerGoga Ransomware. Retrieved April 16, 2019."
-                },
-                {
-                    "source_name": "Unit42 LockerGoga 2019",
-                    "url": "https://unit42.paloaltonetworks.com/born-this-way-origins-of-lockergoga/",
-                    "description": "Harbison, M. (2019, March 26). Born This Way? Origins of LockerGoga. Retrieved April 16, 2019."
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may interrupt availability of system and network resources by inhibiting access to accounts utilized by legitimate users. Accounts may be deleted, locked, or manipulated (ex: changed credentials) to remove access to accounts. Adversaries may also subsequently log off and/or perform a [System Shutdown/Reboot](https://attack.mitre.org/techniques/T1529) to set malicious changes into place.(Citation: CarbonBlack LockerGoga 2019)(Citation: Unit42 LockerGoga 2019)\n\nIn Windows, [Net](https://attack.mitre.org/software/S0039) utility, <code>Set-LocalUser</code> and <code>Set-ADAccountPassword</code> [PowerShell](https://attack.mitre.org/techniques/T1059/001) cmdlets may be used by adversaries to modify user accounts. In Linux, the <code>passwd</code> utility may be used to change passwords. Accounts could also be disabled by Group Policy. \n\nAdversaries who use ransomware may first perform this and other Impact behaviors, such as [Data Destruction](https://attack.mitre.org/techniques/T1485) and [Defacement](https://attack.mitre.org/techniques/T1491), before completing the [Data Encrypted for Impact](https://attack.mitre.org/techniques/T1486) objective. ",
-            "modified": "2022-04-19T22:57:27.449Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "Account Access Removal",
-            "x_mitre_detection": "Use process monitoring to monitor the execution and command line parameters of binaries involved in deleting accounts or changing passwords, such as use of [Net](https://attack.mitre.org/software/S0039). Windows event logs may also designate activity associated with an adversary's attempt to remove access to an account:\n\n* Event ID 4723 - An attempt was made to change an account's password\n* Event ID 4724 - An attempt was made to reset an account's password\n* Event ID 4726 - A user account was deleted\n* Event ID 4740 - A user account was locked out\n\nAlerting on [Net](https://attack.mitre.org/software/S0039) and these Event IDs may generate a high degree of false positives, so compare against baseline knowledge for how systems are typically used and correlate modification events with other indications of malicious activity where possible.",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "impact"
-                }
-            ],
-            "x_mitre_is_subtechnique": false,
+            "x_mitre_version": "1.2",
             "x_mitre_data_sources": [
-                "User Account: User Account Modification",
                 "Active Directory: Active Directory Object Modification",
-                "User Account: User Account Deletion"
+                "User Account: User Account Deletion",
+                "User Account: User Account Modification"
             ],
             "x_mitre_impact_type": [
                 "Availability"
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
+            "type": "attack-pattern",
+            "id": "attack-pattern--b24e2a20-3b3d-4bf0-823b-1ed765398fb0",
+            "created": "2019-10-09T18:48:31.906Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1531",
+                    "external_id": "T1531"
+                },
+                {
+                    "source_name": "CarbonBlack LockerGoga 2019",
+                    "description": "CarbonBlack Threat Analysis Unit. (2019, March 22). TAU Threat Intelligence Notification \u2013 LockerGoga Ransomware. Retrieved April 16, 2019.",
+                    "url": "https://www.carbonblack.com/2019/03/22/tau-threat-intelligence-notification-lockergoga-ransomware/"
+                },
+                {
+                    "source_name": "Unit42 LockerGoga 2019",
+                    "description": "Harbison, M. (2019, March 26). Born This Way? Origins of LockerGoga. Retrieved April 16, 2019.",
+                    "url": "https://unit42.paloaltonetworks.com/born-this-way-origins-of-lockergoga/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

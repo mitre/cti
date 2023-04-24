@@ -1,88 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--817a13a9-5aa0-45aa-a32f-94a957b9f4bb",
+    "id": "bundle--d31d58d8-3200-476a-a297-8c8a4e9812cf",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Andrew Northern, @ex_raritas",
-                "Bryan Campbell, @bry_campbell",
-                "Zachary Abzug, @ZackDoesML",
-                "Selena Larson, @selenalarson",
-                "Sittikorn Sangrattanapitak"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--005a06c6-14bf-4118-afa0-ebcd8aebb0c9",
-            "created": "2019-11-27T14:58:00.429Z",
-            "x_mitre_version": "1.2",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1053.005",
-                    "url": "https://attack.mitre.org/techniques/T1053/005"
-                },
-                {
-                    "source_name": "SigmaHQ",
-                    "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/registry/registry_delete/registry_delete_removal_sd_value_scheduled_task_hide.yml",
-                    "description": "BlackB0lt. (2022, April 15). https://github.com/SigmaHQ/sigma/blob/master/rules/windows/registry/registry_delete/registry_delete_removal_sd_value_scheduled_task_hide.yml. Retrieved June 1, 2022."
-                },
-                {
-                    "source_name": "ProofPoint Serpent",
-                    "url": "https://www.proofpoint.com/us/blog/threat-insight/serpent-no-swiping-new-backdoor-targets-french-entities-unique-attack-chain",
-                    "description": "Campbell, B. et al. (2022, March 21). Serpent, No Swiping! New Backdoor Targets French Entities with Unique Attack Chain. Retrieved April 11, 2022."
-                },
-                {
-                    "source_name": "Defending Against Scheduled Task Attacks in Windows Environments",
-                    "url": "https://blog.qualys.com/vulnerabilities-threat-research/2022/06/20/defending-against-scheduled-task-attacks-in-windows-environments",
-                    "description": "Harshal Tupsamudre. (2022, June 20). Defending Against Scheduled Tasks. Retrieved July 5, 2022."
-                },
-                {
-                    "source_name": "Twitter Leoloobeek Scheduled Task",
-                    "url": "https://twitter.com/leoloobeek/status/939248813465853953",
-                    "description": "Loobeek, L. (2017, December 8). leoloobeek Status. Retrieved December 12, 2017."
-                },
-                {
-                    "source_name": "Tarrask scheduled task",
-                    "url": "https://www.microsoft.com/security/blog/2022/04/12/tarrask-malware-uses-scheduled-tasks-for-defense-evasion/",
-                    "description": "Microsoft Threat Intelligence Team & Detection and Response Team . (2022, April 12). Tarrask malware uses scheduled tasks for defense evasion. Retrieved June 1, 2022."
-                },
-                {
-                    "source_name": "Microsoft Scheduled Task Events Win10",
-                    "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-other-object-access-events",
-                    "description": "Microsoft. (2017, May 28). Audit Other Object Access Events. Retrieved June 27, 2019."
-                },
-                {
-                    "source_name": "TechNet Scheduled Task Events",
-                    "url": "https://technet.microsoft.com/library/dd315590.aspx",
-                    "description": "Microsoft. (n.d.). General Task Registration. Retrieved December 12, 2017."
-                },
-                {
-                    "source_name": "TechNet Autoruns",
-                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902",
-                    "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016."
-                },
-                {
-                    "source_name": "TechNet Forum Scheduled Task Operational Setting",
-                    "url": "https://social.technet.microsoft.com/Forums/en-US/e5bca729-52e7-4fcb-ba12-3225c564674c/scheduled-tasks-history-retention-settings?forum=winserver8gen",
-                    "description": "Satyajit321. (2015, November 3). Scheduled Tasks History Retention settings. Retrieved December 12, 2017."
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may abuse the Windows Task Scheduler to perform task scheduling for initial or recurring execution of malicious code. There are multiple ways to access the Task Scheduler in Windows. The [schtasks](https://attack.mitre.org/software/S0111) utility can be run directly on the command line, or the Task Scheduler can be opened through the GUI within the Administrator Tools section of the Control Panel. In some cases, adversaries have used a .NET wrapper for the Windows Task Scheduler, and alternatively, adversaries have used the Windows netapi32 library to create a scheduled task.\n\nThe deprecated [at](https://attack.mitre.org/software/S0110) utility could also be abused by adversaries (ex: [At](https://attack.mitre.org/techniques/T1053/002)), though <code>at.exe</code> can not access tasks created with <code>schtasks</code> or the Control Panel.\n\nAn adversary may use Windows Task Scheduler to execute programs at system startup or on a scheduled basis for persistence. The Windows Task Scheduler can also be abused to conduct remote Execution as part of Lateral Movement and/or to run a process under the context of a specified account (such as SYSTEM). Similar to [System Binary Proxy Execution](https://attack.mitre.org/techniques/T1218), adversaries have also abused the Windows Task Scheduler to potentially mask one-time execution under signed/trusted system processes.(Citation: ProofPoint Serpent)\n\nAdversaries may also create \"hidden\" scheduled tasks (i.e. [Hide Artifacts](https://attack.mitre.org/techniques/T1564)) that may not be visible to defender tools and manual queries used to enumerate tasks. Specifically, an adversary may hide a task from `schtasks /query` and the Task Scheduler by deleting the associated Security Descriptor (SD) registry value (where deletion of this value must be completed using SYSTEM permissions).(Citation: SigmaHQ)(Citation: Tarrask scheduled task) Adversaries may also employ alternate methods to hide tasks, such as altering the metadata (e.g., `Index` value) within associated registry keys.(Citation: Defending Against Scheduled Task Attacks in Windows Environments) ",
-            "modified": "2022-07-06T20:20:13.871Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2023-04-07T17:11:17.807Z",
             "name": "Scheduled Task",
-            "x_mitre_detection": "Monitor process execution from the <code>svchost.exe</code> in Windows 10 and the Windows Task Scheduler <code>taskeng.exe</code> for older versions of Windows. (Citation: Twitter Leoloobeek Scheduled Task) If scheduled tasks are not used for persistence, then the adversary is likely to remove the task when the action is complete. Monitor Windows Task Scheduler stores in %systemroot%\\System32\\Tasks for change entries related to scheduled tasks that do not correlate with known software, patch cycles, etc.\n\nConfigure event logging for scheduled task creation and changes by enabling the \"Microsoft-Windows-TaskScheduler/Operational\" setting within the event logging service. (Citation: TechNet Forum Scheduled Task Operational Setting) Several events will then be logged on scheduled task activity, including: (Citation: TechNet Scheduled Task Events)(Citation: Microsoft Scheduled Task Events Win10)\n\n* Event ID 106 on Windows 7, Server 2008 R2 - Scheduled task registered\n* Event ID 140 on Windows 7, Server 2008 R2 / 4702 on Windows 10, Server 2016 - Scheduled task updated\n* Event ID 141 on Windows 7, Server 2008 R2 / 4699 on Windows 10, Server 2016 - Scheduled task deleted\n* Event ID 4698 on Windows 10, Server 2016 - Scheduled task created\n* Event ID 4700 on Windows 10, Server 2016 - Scheduled task enabled\n* Event ID 4701 on Windows 10, Server 2016 - Scheduled task disabled\n\nTools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current scheduled tasks. (Citation: TechNet Autoruns)\n\nRemote access tools with built-in features may interact directly with the Windows API to perform these functions outside of typical system utilities. Tasks may also be created through Windows system management tools such as Windows Management Instrumentation and PowerShell, so additional logging may need to be configured to gather the appropriate data.",
+            "description": "Adversaries may abuse the Windows Task Scheduler to perform task scheduling for initial or recurring execution of malicious code. There are multiple ways to access the Task Scheduler in Windows. The [schtasks](https://attack.mitre.org/software/S0111) utility can be run directly on the command line, or the Task Scheduler can be opened through the GUI within the Administrator Tools section of the Control Panel. In some cases, adversaries have used a .NET wrapper for the Windows Task Scheduler, and alternatively, adversaries have used the Windows netapi32 library to create a scheduled task.\n\nThe deprecated [at](https://attack.mitre.org/software/S0110) utility could also be abused by adversaries (ex: [At](https://attack.mitre.org/techniques/T1053/002)), though <code>at.exe</code> can not access tasks created with <code>schtasks</code> or the Control Panel.\n\nAn adversary may use Windows Task Scheduler to execute programs at system startup or on a scheduled basis for persistence. The Windows Task Scheduler can also be abused to conduct remote Execution as part of Lateral Movement and/or to run a process under the context of a specified account (such as SYSTEM). Similar to [System Binary Proxy Execution](https://attack.mitre.org/techniques/T1218), adversaries have also abused the Windows Task Scheduler to potentially mask one-time execution under signed/trusted system processes.(Citation: ProofPoint Serpent)\n\nAdversaries may also create \"hidden\" scheduled tasks (i.e. [Hide Artifacts](https://attack.mitre.org/techniques/T1564)) that may not be visible to defender tools and manual queries used to enumerate tasks. Specifically, an adversary may hide a task from `schtasks /query` and the Task Scheduler by deleting the associated Security Descriptor (SD) registry value (where deletion of this value must be completed using SYSTEM permissions).(Citation: SigmaHQ)(Citation: Tarrask scheduled task) Adversaries may also employ alternate methods to hide tasks, such as altering the metadata (e.g., `Index` value) within associated registry keys.(Citation: Defending Against Scheduled Task Attacks in Windows Environments) ",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -97,19 +21,95 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
+            "x_mitre_contributors": [
+                "Andrew Northern, @ex_raritas",
+                "Bryan Campbell, @bry_campbell",
+                "Zachary Abzug, @ZackDoesML",
+                "Selena Larson, @selenalarson",
+                "Sittikorn Sangrattanapitak"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor process execution from the <code>svchost.exe</code> in Windows 10 and the Windows Task Scheduler <code>taskeng.exe</code> for older versions of Windows. (Citation: Twitter Leoloobeek Scheduled Task) If scheduled tasks are not used for persistence, then the adversary is likely to remove the task when the action is complete. Monitor Windows Task Scheduler stores in %systemroot%\\System32\\Tasks for change entries related to scheduled tasks that do not correlate with known software, patch cycles, etc.\n\nConfigure event logging for scheduled task creation and changes by enabling the \"Microsoft-Windows-TaskScheduler/Operational\" setting within the event logging service. (Citation: TechNet Forum Scheduled Task Operational Setting) Several events will then be logged on scheduled task activity, including: (Citation: TechNet Scheduled Task Events)(Citation: Microsoft Scheduled Task Events Win10)\n\n* Event ID 106 on Windows 7, Server 2008 R2 - Scheduled task registered\n* Event ID 140 on Windows 7, Server 2008 R2 / 4702 on Windows 10, Server 2016 - Scheduled task updated\n* Event ID 141 on Windows 7, Server 2008 R2 / 4699 on Windows 10, Server 2016 - Scheduled task deleted\n* Event ID 4698 on Windows 10, Server 2016 - Scheduled task created\n* Event ID 4700 on Windows 10, Server 2016 - Scheduled task enabled\n* Event ID 4701 on Windows 10, Server 2016 - Scheduled task disabled\n\nTools such as Sysinternals Autoruns may also be used to detect system changes that could be attempts at persistence, including listing current scheduled tasks. (Citation: TechNet Autoruns)\n\nRemote access tools with built-in features may interact directly with the Windows API to perform these functions outside of typical system utilities. Tasks may also be created through Windows system management tools such as Windows Management Instrumentation and PowerShell, so additional logging may need to be configured to gather the appropriate data.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": true,
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "1.3",
             "x_mitre_data_sources": [
+                "File: File Modification",
                 "Scheduled Job: Scheduled Job Creation",
-                "Windows Registry: Windows Registry Key Creation",
-                "Command: Command Execution",
                 "Process: Process Creation",
-                "File: File Modification"
+                "Command: Command Execution",
+                "Windows Registry: Windows Registry Key Creation"
             ],
             "x_mitre_permissions_required": [
                 "Administrator"
             ],
             "x_mitre_remote_support": true,
-            "x_mitre_attack_spec_version": "2.1.0",
+            "type": "attack-pattern",
+            "id": "attack-pattern--005a06c6-14bf-4118-afa0-ebcd8aebb0c9",
+            "created": "2019-11-27T14:58:00.429Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1053/005",
+                    "external_id": "T1053.005"
+                },
+                {
+                    "source_name": "SigmaHQ",
+                    "description": "BlackB0lt. (2022, April 15). https://github.com/SigmaHQ/sigma/blob/master/rules/windows/registry/registry_delete/registry_delete_removal_sd_value_scheduled_task_hide.yml. Retrieved June 1, 2022.",
+                    "url": "https://github.com/SigmaHQ/sigma/blob/master/rules/windows/registry/registry_delete/registry_delete_removal_sd_value_scheduled_task_hide.yml"
+                },
+                {
+                    "source_name": "ProofPoint Serpent",
+                    "description": "Campbell, B. et al. (2022, March 21). Serpent, No Swiping! New Backdoor Targets French Entities with Unique Attack Chain. Retrieved April 11, 2022.",
+                    "url": "https://www.proofpoint.com/us/blog/threat-insight/serpent-no-swiping-new-backdoor-targets-french-entities-unique-attack-chain"
+                },
+                {
+                    "source_name": "Defending Against Scheduled Task Attacks in Windows Environments",
+                    "description": "Harshal Tupsamudre. (2022, June 20). Defending Against Scheduled Tasks. Retrieved July 5, 2022.",
+                    "url": "https://blog.qualys.com/vulnerabilities-threat-research/2022/06/20/defending-against-scheduled-task-attacks-in-windows-environments"
+                },
+                {
+                    "source_name": "Twitter Leoloobeek Scheduled Task",
+                    "description": "Loobeek, L. (2017, December 8). leoloobeek Status. Retrieved December 12, 2017.",
+                    "url": "https://twitter.com/leoloobeek/status/939248813465853953"
+                },
+                {
+                    "source_name": "Tarrask scheduled task",
+                    "description": "Microsoft Threat Intelligence Team & Detection and Response Team . (2022, April 12). Tarrask malware uses scheduled tasks for defense evasion. Retrieved June 1, 2022.",
+                    "url": "https://www.microsoft.com/security/blog/2022/04/12/tarrask-malware-uses-scheduled-tasks-for-defense-evasion/"
+                },
+                {
+                    "source_name": "Microsoft Scheduled Task Events Win10",
+                    "description": "Microsoft. (2017, May 28). Audit Other Object Access Events. Retrieved June 27, 2019.",
+                    "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/auditing/audit-other-object-access-events"
+                },
+                {
+                    "source_name": "TechNet Scheduled Task Events",
+                    "description": "Microsoft. (n.d.). General Task Registration. Retrieved December 12, 2017.",
+                    "url": "https://technet.microsoft.com/library/dd315590.aspx"
+                },
+                {
+                    "source_name": "TechNet Autoruns",
+                    "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
+                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902"
+                },
+                {
+                    "source_name": "TechNet Forum Scheduled Task Operational Setting",
+                    "description": "Satyajit321. (2015, November 3). Scheduled Tasks History Retention settings. Retrieved December 12, 2017.",
+                    "url": "https://social.technet.microsoft.com/Forums/en-US/e5bca729-52e7-4fcb-ba12-3225c564674c/scheduled-tasks-history-retention-settings?forum=winserver8gen"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

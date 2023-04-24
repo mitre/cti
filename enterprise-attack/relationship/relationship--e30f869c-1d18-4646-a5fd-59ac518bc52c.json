@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--2e69d757-86b9-444d-9582-59bc8f420b02",
+    "id": "bundle--6aa1188e-8980-4d61-af1b-ae030dfdc041",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--e30f869c-1d18-4646-a5fd-59ac518bc52c",
+            "created": "2022-03-30T14:26:51.876Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--e30f869c-1d18-4646-a5fd-59ac518bc52c",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.876Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.876Z",
-            "description": "Monitor for changes made to Windows services to repeatedly execute malicious payloads as part of persistence.",
+            "modified": "2023-03-29T18:01:33.830Z",
+            "description": "Monitor for changes made to Windows services to repeatedly execute malicious payloads as part of persistence.\n\n<h4> Implementation 1 : System services via registry modifications </h4>\n\n<h5> Detection Pseudocode </h5>\n<code> suspicious_processes = filter ProcessGuid, ProcessFilePath, RegistryKeyPath, UserName \nwhere\n  event_id == \"13\" AND\n  EventType == \"SetValue\" AND\n  RegistryKeyPath LIKE '%HKLM\\System\\CurrentControlSet\\Services\\%' AND\n  (RegistryKeyPath LIKE '%ImagePath%' OR \n   RegistryKeyPath LIKE '%Type%' OR\n   RegistryKeyPath LIKE '%DisplayName%' OR\n   RegistryKeyPath LIKE '%Objectname%')</code>\n\n<h4> Detection Notes </h4>\n\n- For Windows Sysmon event id 13, installation of application with configuration file is required.\n- For Windows Sysmon event id 13, addition of SetValue events in config file is required.",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--66531bc6-a509-4868-8314-4d599e91d222",
             "target_ref": "attack-pattern--2959d63f-73fd-46a1-abd2-109d7dcede32",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

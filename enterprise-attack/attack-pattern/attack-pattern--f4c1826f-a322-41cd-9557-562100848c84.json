@@ -1,10 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--3bf502ff-2704-4de1-9594-8aa5f08b37a8",
+    "id": "bundle--4fdc8c45-4466-45eb-a3db-8f0bd3d12838",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2022-10-18T16:28:56.126Z",
+            "modified": "2023-04-11T03:17:32.211Z",
             "name": "Modify Authentication Process",
             "description": "Adversaries may modify authentication mechanisms and processes to access user credentials or enable otherwise unwarranted access to accounts. The authentication process is handled by mechanisms, such as the Local Security Authentication Server (LSASS) process and the Security Accounts Manager (SAM) on Windows, pluggable authentication modules (PAM) on Unix-based systems, and authorization plugins on MacOS systems, responsible for gathering, storing, and validating credentials. By modifying an authentication process, an adversary may be able to authenticate to a service or system without using [Valid Accounts](https://attack.mitre.org/techniques/T1078).\n\nAdversaries may maliciously modify a part of this process to either reveal credentials or bypass authentication mechanisms. Compromised credentials or access may be used to bypass access controls placed on various resources on systems within the network and may even be used for persistent access to remote systems and externally available services, such as VPNs, Outlook Web Access and remote desktop.",
             "kill_chain_phases": [
@@ -21,7 +21,15 @@
                     "phase_name": "persistence"
                 }
             ],
+            "x_mitre_contributors": [
+                "Chris Ross @xorrior"
+            ],
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor for new, unfamiliar DLL files written to a domain controller and/or local computer. Monitor for changes to Registry entries for password filters (ex: <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\Notification Packages</code>) and correlate then investigate the DLL files these files reference. \n\nPassword filters will also show up as an autorun and loaded DLL in lsass.exe.(Citation: Clymb3r Function Hook Passwords Sept 2013)\n\nMonitor for calls to <code>OpenProcess</code> that can be used to manipulate lsass.exe running on a domain controller as well as for malicious modifications to functions exported from authentication-related system DLLs (such as cryptdll.dll and samsrv.dll).(Citation: Dell Skeleton) \n\nMonitor PAM configuration and module paths (ex: <code>/etc/pam.d/</code>) for changes. Use system-integrity tools such as AIDE and monitoring tools such as auditd to monitor PAM files.\n\nMonitor for suspicious additions to the /Library/Security/SecurityAgentPlugins directory.(Citation: Xorrior Authorization Plugins)\n\nConfigure robust, consistent account activity audit policies across the enterprise and with externally accessible services. (Citation: TechNet Audit Policy) Look for suspicious account behavior across systems that share accounts, either user, admin, or service accounts. Examples: one account logged into multiple systems simultaneously; multiple accounts logged into the same machine simultaneously; accounts logged in at odd times or outside of business hours. Activity may be from interactive login sessions or process ownership from accounts being used to execute binaries on a remote system as a particular account. Correlate other security systems with login information (e.g., a user has an active login session but has not entered the building or does not have VPN access).\n\nMonitor property changes in Group Policy that manage authentication mechanisms (i.e. [Group Policy Modification](https://attack.mitre.org/techniques/T1484/001)). The <code>Store passwords using reversible encryption</code> configuration should be set to Disabled. Additionally, monitor and/or block suspicious command/script execution of <code>-AllowReversiblePasswordEncryption $true</code>, <code>Set-ADUser</code> and <code>Set-ADAccountControl</code>. Finally, monitor Fine-Grained Password Policies and regularly audit user accounts and group settings.(Citation: dump_pwd_dcsync)\n",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": false,
             "x_mitre_platforms": [
                 "Windows",
                 "Linux",
@@ -33,27 +41,20 @@
                 "Office 365",
                 "SaaS"
             ],
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_deprecated": false,
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_version": "2.2",
-            "x_mitre_contributors": [
-                "Chris Ross @xorrior"
-            ],
+            "x_mitre_version": "2.3",
             "x_mitre_data_sources": [
-                "Windows Registry: Windows Registry Key Modification",
-                "User Account: User Account Modification",
-                "User Account: User Account Authentication",
-                "Module: Module Load",
-                "File: File Creation",
-                "Logon Session: Logon Session Creation",
-                "File: File Modification",
-                "Application Log: Application Log Content",
-                "Process: OS API Execution",
                 "Active Directory: Active Directory Object Modification",
-                "Process: Process Access"
+                "User Account: User Account Modification",
+                "File: File Modification",
+                "Module: Module Load",
+                "Application Log: Application Log Content",
+                "Windows Registry: Windows Registry Key Modification",
+                "Process: OS API Execution",
+                "Process: Process Access",
+                "Logon Session: Logon Session Creation",
+                "Windows Registry: Windows Registry Key Creation",
+                "User Account: User Account Authentication",
+                "File: File Creation"
             ],
             "type": "attack-pattern",
             "id": "attack-pattern--f4c1826f-a322-41cd-9557-562100848c84",
@@ -95,7 +96,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

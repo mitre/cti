@@ -1,64 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--316b3c1a-ba31-4bdc-9901-43ebe8dd23f5",
+    "id": "bundle--91144b45-a8ed-4a57-933d-4b19087b4569",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Vincent Le Toux",
-                "Ryan Becwar"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--7b211ac6-c815-4189-93a9-ab415deca926",
-            "type": "attack-pattern",
-            "created": "2020-01-30T17:03:43.072Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1550.003",
-                    "url": "https://attack.mitre.org/techniques/T1550/003"
-                },
-                {
-                    "external_id": "CAPEC-645",
-                    "source_name": "capec",
-                    "url": "https://capec.mitre.org/data/definitions/645.html"
-                },
-                {
-                    "url": "https://adsecurity.org/?p=556",
-                    "description": "Metcalf, S. (2014, November 22). Mimikatz and Active Directory Kerberos Attacks. Retrieved June 2, 2016.",
-                    "source_name": "ADSecurity AD Kerberos Attacks"
-                },
-                {
-                    "url": "http://blog.gentilkiwi.com/securite/mimikatz/pass-the-ticket-kerberos",
-                    "description": "Deply, B. (2014, January 13). Pass the ticket. Retrieved June 2, 2016.",
-                    "source_name": "GentilKiwi Pass the Ticket"
-                },
-                {
-                    "url": "http://defcon.org/images/defcon-22/dc-22-presentations/Campbell/DEFCON-22-Christopher-Campbell-The-Secret-Life-of-Krbtgt.pdf",
-                    "description": "Campbell, C. (2014). The Secret Life of Krbtgt. Retrieved December 4, 2014.",
-                    "source_name": "Campbell 2014"
-                },
-                {
-                    "source_name": "Stealthbits Overpass-the-Hash",
-                    "url": "https://stealthbits.com/blog/how-to-detect-overpass-the-hash-attacks/",
-                    "description": "Warren, J. (2019, February 26). How to Detect Overpass-the-Hash Attacks. Retrieved February 4, 2021."
-                },
-                {
-                    "url": "https://cert.europa.eu/static/WhitePapers/UPDATED%20-%20CERT-EU_Security_Whitepaper_2014-007_Kerberos_Golden_Ticket_Protection_v1_4.pdf",
-                    "description": "Abolins, D., Boldea, C., Socha, K., Soria-Machado, M. (2016, April 26). Kerberos Golden Ticket Protection. Retrieved July 13, 2017.",
-                    "source_name": "CERT-EU Golden Ticket Protection"
-                }
-            ],
-            "modified": "2021-08-31T19:56:31.341Z",
+            "modified": "2023-03-30T21:01:38.108Z",
             "name": "Pass the Ticket",
             "description": "Adversaries may \u201cpass the ticket\u201d using stolen Kerberos tickets to move laterally within an environment, bypassing normal system access controls. Pass the ticket (PtT) is a method of authenticating to a system using Kerberos tickets without having access to an account's password. Kerberos authentication can be used as the first step to lateral movement to a remote system.\n\nWhen preforming PtT, valid Kerberos tickets for [Valid Accounts](https://attack.mitre.org/techniques/T1078) are captured by [OS Credential Dumping](https://attack.mitre.org/techniques/T1003). A user's service tickets or ticket granting ticket (TGT) may be obtained, depending on the level of access. A service ticket allows for access to a particular resource, whereas a TGT can be used to request service tickets from the Ticket Granting Service (TGS) to access any resource the user has privileges to access.(Citation: ADSecurity AD Kerberos Attacks)(Citation: GentilKiwi Pass the Ticket)\n\nA [Silver Ticket](https://attack.mitre.org/techniques/T1558/002) can be obtained for services that use Kerberos as an authentication mechanism and are used to generate tickets to access that particular resource and the system that hosts the resource (e.g., SharePoint).(Citation: ADSecurity AD Kerberos Attacks)\n\nA [Golden Ticket](https://attack.mitre.org/techniques/T1558/001) can be obtained for the domain using the Key Distribution Service account KRBTGT account NTLM hash, which enables generation of TGTs for any account in Active Directory.(Citation: Campbell 2014)\n\nAdversaries may also create a valid Kerberos ticket using other user information, such as stolen password hashes or AES keys. For example, \"overpassing the hash\" involves using a NTLM password hash to authenticate as a user (i.e. [Pass the Hash](https://attack.mitre.org/techniques/T1550/002)) while also using the password hash to create a valid Kerberos ticket.(Citation: Stealthbits Overpass-the-Hash)",
             "kill_chain_phases": [
@@ -71,21 +17,71 @@
                     "phase_name": "lateral-movement"
                 }
             ],
+            "x_mitre_contributors": [
+                "Vincent Le Toux",
+                "Ryan Becwar"
+            ],
             "x_mitre_detection": "Audit all Kerberos authentication and credential use events and review for discrepancies. Unusual remote authentication events that correlate with other suspicious activity (such as writing and executing binaries) may indicate malicious activity.\n\nEvent ID 4769 is generated on the Domain Controller when using a golden ticket after the KRBTGT password has been reset twice, as mentioned in the mitigation section. The status code 0x1F indicates the action has failed due to \"Integrity check on decrypted field failed\" and indicates misuse by a previously invalidated golden ticket.(Citation: CERT-EU Golden Ticket Protection)",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.1",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "1.1",
             "x_mitre_data_sources": [
+                "Logon Session: Logon Session Creation",
                 "User Account: User Account Authentication",
-                "Active Directory: Active Directory Credential Request",
-                "Logon Session: Logon Session Creation"
+                "Active Directory: Active Directory Credential Request"
             ],
             "x_mitre_defense_bypassed": [
                 "System Access Controls"
             ],
             "x_mitre_system_requirements": [
                 "Kerberos authentication enabled"
-            ]
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--7b211ac6-c815-4189-93a9-ab415deca926",
+            "created": "2020-01-30T17:03:43.072Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1550/003",
+                    "external_id": "T1550.003"
+                },
+                {
+                    "source_name": "ADSecurity AD Kerberos Attacks",
+                    "description": "Metcalf, S. (2014, November 22). Mimikatz and Active Directory Kerberos Attacks. Retrieved June 2, 2016.",
+                    "url": "https://adsecurity.org/?p=556"
+                },
+                {
+                    "source_name": "GentilKiwi Pass the Ticket",
+                    "description": "Deply, B. (2014, January 13). Pass the ticket. Retrieved June 2, 2016.",
+                    "url": "http://blog.gentilkiwi.com/securite/mimikatz/pass-the-ticket-kerberos"
+                },
+                {
+                    "source_name": "Campbell 2014",
+                    "description": "Campbell, C. (2014). The Secret Life of Krbtgt. Retrieved December 4, 2014.",
+                    "url": "http://defcon.org/images/defcon-22/dc-22-presentations/Campbell/DEFCON-22-Christopher-Campbell-The-Secret-Life-of-Krbtgt.pdf"
+                },
+                {
+                    "source_name": "Stealthbits Overpass-the-Hash",
+                    "description": "Warren, J. (2019, February 26). How to Detect Overpass-the-Hash Attacks. Retrieved February 4, 2021.",
+                    "url": "https://stealthbits.com/blog/how-to-detect-overpass-the-hash-attacks/"
+                },
+                {
+                    "source_name": "CERT-EU Golden Ticket Protection",
+                    "description": "Abolins, D., Boldea, C., Socha, K., Soria-Machado, M. (2016, April 26). Kerberos Golden Ticket Protection. Retrieved July 13, 2017.",
+                    "url": "https://cert.europa.eu/static/WhitePapers/UPDATED%20-%20CERT-EU_Security_Whitepaper_2014-007_Kerberos_Golden_Ticket_Protection_v1_4.pdf"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.1.0"
         }
     ]
 }

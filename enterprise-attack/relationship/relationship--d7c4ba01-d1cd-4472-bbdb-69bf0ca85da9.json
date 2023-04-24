@@ -1,37 +1,37 @@
 {
     "type": "bundle",
-    "id": "bundle--57fd0b4a-da38-463e-801f-7bad088f9a7e",
+    "id": "bundle--38f73941-a214-4e21-9295-f386cf9d034c",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "type": "relationship",
             "id": "relationship--d7c4ba01-d1cd-4472-bbdb-69bf0ca85da9",
             "created": "2022-03-30T14:26:51.865Z",
-            "x_mitre_version": "0.1",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "external_references": [
                 {
                     "source_name": "Lockboxx ARD 2019",
-                    "url": "http://lockboxx.blogspot.com/2019/07/macos-red-teaming-206-ard-apple-remote.html",
-                    "description": "Dan Borges. (2019, July 21). MacOS Red Teaming 206: ARD (Apple Remote Desktop Protocol). Retrieved September 10, 2021."
+                    "description": "Dan Borges. (2019, July 21). MacOS Red Teaming 206: ARD (Apple Remote Desktop Protocol). Retrieved September 10, 2021.",
+                    "url": "http://lockboxx.blogspot.com/2019/07/macos-red-teaming-206-ard-apple-remote.html"
                 },
                 {
                     "source_name": "Apple Unified Log Analysis Remote Login and Screen Sharing",
-                    "url": "https://sarah-edwards-xzkc.squarespace.com/blog/2020/4/30/analysis-of-apple-unified-logs-quarantine-edition-entry-6-working-from-home-remote-logins",
-                    "description": "Sarah Edwards. (2020, April 30). Analysis of Apple Unified Logs: Quarantine Edition [Entry 6] \u2013 Working From Home? Remote Logins. Retrieved August 19, 2021."
+                    "description": "Sarah Edwards. (2020, April 30). Analysis of Apple Unified Logs: Quarantine Edition [Entry 6] \u2013 Working From Home? Remote Logins. Retrieved August 19, 2021.",
+                    "url": "https://sarah-edwards-xzkc.squarespace.com/blog/2020/4/30/analysis-of-apple-unified-logs-quarantine-edition-entry-6-working-from-home-remote-logins"
                 }
             ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Monitor for user accounts logged into systems they would not normally access or abnormal access patterns, such as multiple systems over a relatively short period of time. Correlate use of login activity related to remote services with unusual behavior or other malicious or suspicious activity. Adversaries will likely need to learn about an environment and the relationships between systems through Discovery techniques prior to attempting Lateral Movement. For example, in macOS you can review logs for \"screensharingd\" and \"Authentication\" event messages. (Citation: Lockboxx ARD 2019)(Citation: Apple Unified Log Analysis Remote Login and Screen Sharing)",
-            "modified": "2022-04-12T13:18:39.174Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2023-04-13T17:38:31.078Z",
+            "description": "Monitor for user accounts logged into systems they would not normally access or abnormal access patterns, such as multiple systems over a relatively short period of time. Correlate use of login activity related to remote services with unusual behavior or other malicious or suspicious activity. Adversaries will likely need to learn about an environment and the relationships between systems through Discovery techniques prior to attempting Lateral Movement. For example, in macOS you can review logs for \"screensharingd\" and \"Authentication\" event messages. (Citation: Lockboxx ARD 2019)(Citation: Apple Unified Log Analysis Remote Login and Screen Sharing)\n\n<h4> Implementation 1 : New services being created under network logon sessions by non-system users </h4>\n\n<h5>Detection Pseudocode</h5>\n<code>remote_logon_sessions = filter Hostname, UserName, UserLogonId, SourceIp where\n  event_id == \"4624\" AND\n  LogonType == \"3\" AND\n  UserName NOT LIKE '%$' \n\nnew_services = filter UserName, UserLogonId, ServiceName where event_id = \"4697\"\n\nsuspicious_services = filter l.UserName, l.UserLogonId, l.SourceIp, s.Servicename\nFROM remote_logon_sessions l\nINNER JOIN new_services s\nON l.UserLogonId = s.UserLogonId </code>\n\n<h4>Detection Notes</h4>\n\n- When using Security event id 4624, %$ means user names that do not end with $ character. Usually, computer accounts or local system accounts names end with the $ character.\n- When using Security event 4624, UserName and UserLogonId correspond to TargetUserName and TargetLogonId respectively.\n- When using Security event 4624, LogonType 3 corresponds to a Network Logon",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
             "target_ref": "attack-pattern--54a649ff-439a-41a4-9856-8d144a2551ba",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

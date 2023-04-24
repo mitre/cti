@@ -1,25 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--8f38d349-cb84-4336-8922-84ee4eb24b6e",
+    "id": "bundle--0f9caccb-9d95-4572-a21e-467f0f299f31",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "type": "relationship",
             "id": "relationship--87d83969-9f72-40a7-bcf9-edd7561bb49b",
             "created": "2022-03-30T14:26:51.864Z",
-            "x_mitre_version": "0.1",
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Monitor for unexpected process interactions with the Windows Registry (i.e. reads) that may be related to gathering information.",
-            "modified": "2022-04-11T17:06:33.675Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2023-04-21T12:46:30.672Z",
+            "description": "Monitor for unexpected process interactions with the Windows Registry (i.e. reads) that may be related to gathering information.\n\n<h4> Implementation 1 : Suspicious Registry</h4>\n\n<h5>Detection Pseudocode</h5>\n<code>suspicious_registry = filter registry where\n  (event_id == \"4663\" OR event_id == \"4656\") AND\n  ObjectType == \"Key\" AND\n  RegistryKeyPath LIKE '%SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall%' AND \n  (UserAccessList LIKE '%4435%' OR UserAccessList LIKE '%Enumerate sub-keys%' OR\n  UserAccessList LIKE '%4432%' OR UserAccessList LIKE '%Query key value%') AND\n  ProcessFilePath NOT IN ('FilePathToExpectedProcess01.exe','FilePathToExpectedProcess02.exe')</code>\n\n<h4>Detection Notes</h4>\n\n- For Security Auditing event ids 4656 and 4663, enable success events for category Object Access and subcategory Registry.\n- For Security Auditing event ids 4656 and 4663, a System Access Control List (SACL) that controls the use of specific access rights such as Enumerate sub-keys and Query key value is required for event generation.\n- For Security Auditing event ids 4656 and 4663, depending on the Registry key you are monitoring, the implementation of a new System Access Control List (SACL) might be required.\n- Depending of Registry key used for the creation of a System Access Control List (SACL), the generation of event ids 4656 and 4663 might be noisy.",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--ed0dd8aa-1677-4551-bb7d-8da767617e1b",
             "target_ref": "attack-pattern--c32f7008-9fea-41f7-8366-5eb9b74bd896",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

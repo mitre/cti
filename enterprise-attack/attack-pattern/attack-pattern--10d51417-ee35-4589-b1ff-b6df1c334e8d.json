@@ -1,18 +1,23 @@
 {
     "type": "bundle",
-    "id": "bundle--ec7b156a-2ab3-4269-b467-d8ab079b199d",
+    "id": "bundle--b2539c13-2337-48f9-8851-22777cc4e40e",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows",
-                "Linux",
-                "Containers",
-                "macOS"
+            "modified": "2023-03-30T21:01:36.318Z",
+            "name": "External Remote Services",
+            "description": "Adversaries may leverage external-facing remote services to initially access and/or persist within a network. Remote services such as VPNs, Citrix, and other access mechanisms allow users to connect to internal enterprise network resources from external locations. There are often remote service gateways that manage connections and credential authentication for these services. Services such as [Windows Remote Management](https://attack.mitre.org/techniques/T1021/006) and [VNC](https://attack.mitre.org/techniques/T1021/005) can also be used externally.(Citation: MacOS VNC software for Remote Desktop)\n\nAccess to [Valid Accounts](https://attack.mitre.org/techniques/T1078) to use the service is often a requirement, which could be obtained through credential pharming or by obtaining the credentials from users after compromising the enterprise network.(Citation: Volexity Virtual Private Keylogging) Access to remote services may be used as a redundant or persistent access mechanism during an operation.\n\nAccess may also be gained through an exposed service that doesn\u2019t require authentication. In containerized environments, this may include an exposed Docker API, Kubernetes API server, kubelet, or web application such as the Kubernetes dashboard.(Citation: Trend Micro Exposed Docker Server)(Citation: Unit 42 Hildegard Malware)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "initial-access"
+                }
             ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
+            "x_mitre_attack_spec_version": "2.1.0",
             "x_mitre_contributors": [
                 "ExtraHop",
                 "David Fiser, @anu4is, Trend Micro",
@@ -30,72 +35,62 @@
                 "Travis Smith, Tripwire",
                 "David Tayouri"
             ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Follow best practices for detecting adversary use of [Valid Accounts](https://attack.mitre.org/techniques/T1078) for authenticating to remote services. Collect authentication logs and analyze for unusual access patterns, windows of activity, and access outside of normal business hours.\n\nWhen authentication is not required to access an exposed remote service, monitor for follow-on activities such as anomalous external use of the exposed API or application.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "Containers",
+                "macOS"
+            ],
+            "x_mitre_version": "2.4",
+            "x_mitre_data_sources": [
+                "Network Traffic: Network Traffic Content",
+                "Network Traffic: Network Connection Creation",
+                "Network Traffic: Network Traffic Flow",
+                "Logon Session: Logon Session Metadata",
+                "Application Log: Application Log Content"
             ],
             "type": "attack-pattern",
             "id": "attack-pattern--10d51417-ee35-4589-b1ff-b6df1c334e8d",
             "created": "2017-05-31T21:31:44.421Z",
-            "x_mitre_version": "2.4",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "external_id": "T1133",
-                    "url": "https://attack.mitre.org/techniques/T1133"
+                    "url": "https://attack.mitre.org/techniques/T1133",
+                    "external_id": "T1133"
                 },
                 {
                     "source_name": "Volexity Virtual Private Keylogging",
-                    "url": "https://www.volexity.com/blog/2015/10/07/virtual-private-keylogging-cisco-web-vpns-leveraged-for-access-and-persistence/",
-                    "description": "Adair, S. (2015, October 7). Virtual Private Keylogging: Cisco Web VPNs Leveraged for Access and Persistence. Retrieved March 20, 2017."
+                    "description": "Adair, S. (2015, October 7). Virtual Private Keylogging: Cisco Web VPNs Leveraged for Access and Persistence. Retrieved March 20, 2017.",
+                    "url": "https://www.volexity.com/blog/2015/10/07/virtual-private-keylogging-cisco-web-vpns-leveraged-for-access-and-persistence/"
                 },
                 {
                     "source_name": "MacOS VNC software for Remote Desktop",
-                    "url": "https://support.apple.com/guide/remote-desktop/set-up-a-computer-running-vnc-software-apdbed09830/mac",
-                    "description": "Apple Support. (n.d.). Set up a computer running VNC software for Remote Desktop. Retrieved August 18, 2021."
+                    "description": "Apple Support. (n.d.). Set up a computer running VNC software for Remote Desktop. Retrieved August 18, 2021.",
+                    "url": "https://support.apple.com/guide/remote-desktop/set-up-a-computer-running-vnc-software-apdbed09830/mac"
                 },
                 {
                     "source_name": "Unit 42 Hildegard Malware",
-                    "url": "https://unit42.paloaltonetworks.com/hildegard-malware-teamtnt/",
-                    "description": "Chen, J. et al. (2021, February 3). Hildegard: New TeamTNT Cryptojacking Malware Targeting Kubernetes. Retrieved April 5, 2021."
+                    "description": "Chen, J. et al. (2021, February 3). Hildegard: New TeamTNT Cryptojacking Malware Targeting Kubernetes. Retrieved April 5, 2021.",
+                    "url": "https://unit42.paloaltonetworks.com/hildegard-malware-teamtnt/"
                 },
                 {
                     "source_name": "Trend Micro Exposed Docker Server",
-                    "url": "https://www.trendmicro.com/en_us/research/20/f/xorddos-kaiji-botnet-malware-variants-target-exposed-docker-servers.html",
-                    "description": "Remillano II, A., et al. (2020, June 20). XORDDoS, Kaiji Variants Target Exposed Docker Servers. Retrieved April 5, 2021."
-                },
-                {
-                    "url": "https://capec.mitre.org/data/definitions/555.html",
-                    "source_name": "capec",
-                    "external_id": "CAPEC-555"
+                    "description": "Remillano II, A., et al. (2020, June 20). XORDDoS, Kaiji Variants Target Exposed Docker Servers. Retrieved April 5, 2021.",
+                    "url": "https://www.trendmicro.com/en_us/research/20/f/xorddos-kaiji-botnet-malware-variants-target-exposed-docker-servers.html"
                 }
             ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may leverage external-facing remote services to initially access and/or persist within a network. Remote services such as VPNs, Citrix, and other access mechanisms allow users to connect to internal enterprise network resources from external locations. There are often remote service gateways that manage connections and credential authentication for these services. Services such as [Windows Remote Management](https://attack.mitre.org/techniques/T1021/006) and [VNC](https://attack.mitre.org/techniques/T1021/005) can also be used externally.(Citation: MacOS VNC software for Remote Desktop)\n\nAccess to [Valid Accounts](https://attack.mitre.org/techniques/T1078) to use the service is often a requirement, which could be obtained through credential pharming or by obtaining the credentials from users after compromising the enterprise network.(Citation: Volexity Virtual Private Keylogging) Access to remote services may be used as a redundant or persistent access mechanism during an operation.\n\nAccess may also be gained through an exposed service that doesn\u2019t require authentication. In containerized environments, this may include an exposed Docker API, Kubernetes API server, kubelet, or web application such as the Kubernetes dashboard.(Citation: Trend Micro Exposed Docker Server)(Citation: Unit 42 Hildegard Malware)",
-            "modified": "2022-06-16T19:15:22.221Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "name": "External Remote Services",
-            "x_mitre_detection": "Follow best practices for detecting adversary use of [Valid Accounts](https://attack.mitre.org/techniques/T1078) for authenticating to remote services. Collect authentication logs and analyze for unusual access patterns, windows of activity, and access outside of normal business hours.\n\nWhen authentication is not required to access an exposed remote service, monitor for follow-on activities such as anomalous external use of the exposed API or application.",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "initial-access"
-                }
-            ],
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_data_sources": [
-                "Network Traffic: Network Traffic Flow",
-                "Logon Session: Logon Session Metadata",
-                "Application Log: Application Log Content",
-                "Network Traffic: Network Connection Creation",
-                "Network Traffic: Network Traffic Content"
-            ],
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ]
         }
     ]
 }
