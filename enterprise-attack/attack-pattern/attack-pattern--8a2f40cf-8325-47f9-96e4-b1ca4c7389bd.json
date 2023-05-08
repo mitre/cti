@@ -1,10 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--28268daa-4285-4433-9f26-47bfcc0ebca8",
+    "id": "bundle--f40cc0f9-39b3-4bda-99c7-75c7f4e37415",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-04-12T21:30:31.151Z",
+            "modified": "2023-05-04T18:03:36.622Z",
             "name": "Additional Cloud Credentials",
             "description": "Adversaries may add adversary-controlled credentials to a cloud account to maintain persistent access to victim accounts and instances within the environment.\n\nFor example, adversaries may add credentials for Service Principals and Applications in addition to existing legitimate credentials in Azure AD.(Citation: Microsoft SolarWinds Customer Guidance)(Citation: Blue Cloud of Death)(Citation: Blue Cloud of Death Video) These credentials include both x509 keys and passwords.(Citation: Microsoft SolarWinds Customer Guidance) With sufficient permissions, there are a variety of ways to add credentials including the Azure Portal, Azure command line interface, and Azure or Az PowerShell modules.(Citation: Demystifying Azure AD Service Principals)\n\nIn infrastructure-as-a-service (IaaS) environments, after gaining access through [Cloud Accounts](https://attack.mitre.org/techniques/T1078/004), adversaries may generate or import their own SSH keys using either the <code>CreateKeyPair</code> or <code>ImportKeyPair</code> API in AWS or the <code>gcloud compute os-login ssh-keys add</code> command in GCP.(Citation: GCP SSH Key Add) This allows persistent access to instances within the cloud environment without further usage of the compromised cloud accounts.(Citation: Expel IO Evil in AWS)(Citation: Expel Behind the Scenes)\n\nAdversaries may also use the <code>CreateAccessKey</code> API in AWS or the <code>gcloud iam service-accounts keys create</code> command in GCP to add access keys to an account. If the target account has different permissions from the requesting account, the adversary may also be able to escalate their privileges in the environment (i.e. [Cloud Accounts](https://attack.mitre.org/techniques/T1078/004)).(Citation: Rhino Security Labs AWS Privilege Escalation)\n\nIn AWS environments, adversaries with the appropriate permissions may also use the `sts:GetFederationToken` API call to create a temporary set of credentials tied to the permissions of the original user account. These credentials may remain valid for the duration of their lifetime even if the original account\u2019s API credentials are deactivated.\n(Citation: Crowdstrike AWS User Federation Persistence)",
             "kill_chain_phases": [
@@ -19,7 +19,7 @@
                 "Jannie Li, Microsoft Threat Intelligence\u202fCenter\u202f(MSTIC)",
                 "Zur Ulianitzky, XM Cyber",
                 "Alex Soler, AttackIQ",
-                "Dylan"
+                "Dylan Silva, AWS Security"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor Azure Activity Logs for Service Principal and Application modifications. Monitor for the usage of APIs that create or import SSH keys, particularly by unexpected users or accounts such as the root account.\n\nMonitor for use of credentials at unusual times or to unusual systems or services. This may also correlate with other suspicious activity.",
