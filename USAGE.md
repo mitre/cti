@@ -35,6 +35,7 @@ If you are looking for ATT&CK data represented in STIX 2.1, please see our [atta
         - [Data Sources](#data-sources)
         - [Data Components](#data-components)
       - [Campaigns](#campaigns)
+      - [Assets](#assets)
       - [Relationships](#relationships)
   - [Accessing ATT&CK data in python](#accessing-attck-data-in-python)
     - [Requirements and imports](#requirements-and-imports)
@@ -86,8 +87,9 @@ ATT&CK uses a mix of predefined and custom STIX objects to implement ATT&CK conc
 | [Mitigation](#mitigations)       | [course-of-action](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230929) | no |
 | [Group](#groups)                 | [intrusion-set](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230941)  | no |
 | [Software](#software)            | [malware](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230945) or [tool](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230961) | no |
-| [Data Source](#data-source)      | `x-mitre-data-source` | yes |
+| [Data Source](#data-sources)      | `x-mitre-data-source` | yes |
 | [Campaign](#campaigns) | [campaign](http://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230925) | no |
+| [Asset](#assets) | `x-mitre-asset` | yes |
 
 Two additional object types are found in the ATT&CK catalog:
 
@@ -133,8 +135,9 @@ The most commonly used ID format is what is referred to as the ATT&CK ID or simp
 | [Mitigation](#mitigations)       | `Mxxxx` |
 | [Group](#groups)                 | `Gxxxx`  |
 | [Software](#software)            | `Sxxxx` |
-| [Data Source](#data-source)      | `DSxxxx` |
+| [Data Source](#data-sources)      | `DSxxxx` |
 | [Campaign](#campaigns)           | `Cxxxx` |
+| [Asset](#assets)                 | `Axxxx` |
 
 ATT&CK IDs are typically, but not always, unique. See [Collisions with Technique ATT&CK IDs](#collisions-with-technique-attck-ids) for an edge case involving ID collisions between mitigations and techniques.
 
@@ -304,6 +307,26 @@ Campaigns extend the generic SDO format with the following fields:
 | `x_mitre_first_seen_citation` | string | One to many citations for when the Campaign was first reported in the form “(Citation: \<citation name>)” where \<citation name> can be found as one of the source_name of one of the external_references. |
 | `x_mitre_last_seen_citation` | string | One to many citations for when the Campaign was last reported in the form “(Citation: \<citation name>)” where \<citation name> can be found as one of the source_name of one of the external_references.
 
+#### Assets
+
+An Asset in ATT&CK is defined by an `x-mitre-asset` object. As a custom STIX type they follow only the generic [STIX Domain Object pattern](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230920).
+
+Assets extend the generic SDO format with the following fields:
+
+| Field | Type | Description |
+|:------|:-----|-------------|
+| `x_mitre_sectors` | string[] | List of industry sector(s) an asset may be commonly observed in. |
+| `x_mitre_related_assets` | related_asset[] | Related assets describe sector specific device names or aliases that may be commonly associated with the primary asset page name or functional description. Related assets include a description of how the related asset is associated with the page definition. |
+
+##### Extended Subtypes
+The `related_asset` subtype is an object with the properties:
+
+| Field        | Type    |
+|-------------|---------|
+| `name`        | string  |
+| `related_asset_sectors` | string[] |
+| `description` | string  |
+
 #### Relationships
 
 Objects in ATT&CK are related to each other via STIX [relationship](https://docs.oasis-open.org/cti/stix/v2.0/csprd01/part2-stix-objects/stix-v2.0-csprd01-part2-stix-objects.html#_Toc476230970) objects. These relationships convey concepts like groups using techniques (also called "procedure examples" on the technique pages), the hierarchy of techniques and sub-techniques, and so on.
@@ -325,6 +348,7 @@ Relationships oftentimes have descriptions which contextualize the relationship 
 | `course-of-action`  | `mitigates` | `attack-pattern`  | No | Mitigation mitigating a technique. |
 | `attack-pattern`    | `subtechnique-of` | `attack-pattern` | Yes | Sub-technique of a technique, where the `source_ref` is the sub-technique and the `target_ref` is the parent technique. |
 | `x-mitre-data-component` | `detects` | `attack-pattern` | Yes | Data component detecting a technique. |
+| `attack-pattern` | `targets` | `x-mitre-asset` | Yes | Technique targets an asset. |
 | any type    | `revoked-by`      | any type | Yes | The target object is a replacement for the source object. Only occurs where the objects are of the same type, and the source object will have the property `revoked = true`. See [Working with deprecated and revoked objects](#Working-with-deprecated-and-revoked-objects) for more information on revoked objects. |
 
 Note that because groups use software and software uses techniques, groups can be considered indirect users of techniques used by their software. See [Getting techniques used by a group's software](#Getting-techniques-used-by-a-groups-software).
