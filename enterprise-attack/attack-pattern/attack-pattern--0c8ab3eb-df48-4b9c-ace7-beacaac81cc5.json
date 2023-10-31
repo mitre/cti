@@ -1,63 +1,72 @@
 {
     "type": "bundle",
-    "id": "bundle--689a2bab-e2bd-4b20-ab17-9e615a2c31c1",
+    "id": "bundle--9b108568-eb59-4b16-a0de-a080ad368f10",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--0c8ab3eb-df48-4b9c-ace7-beacaac81cc5",
-            "type": "attack-pattern",
-            "created": "2017-05-31T21:30:20.934Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1006",
-                    "url": "https://attack.mitre.org/techniques/T1006"
-                },
-                {
-                    "url": "http://www.codeproject.com/Articles/32169/FDump-Dumping-File-Sectors-Directly-from-Disk-usin",
-                    "description": "Hakobyan, A. (2009, January 8). FDump - Dumping File Sectors Directly from Disk using Logical Offsets. Retrieved November 12, 2014.",
-                    "source_name": "Hakobyan 2009"
-                },
-                {
-                    "url": "https://github.com/PowerShellMafia/PowerSploit/blob/master/Exfiltration/Invoke-NinjaCopy.ps1",
-                    "description": "Bialek, J. (2015, December 16). Invoke-NinjaCopy.ps1. Retrieved June 2, 2016.",
-                    "source_name": "Github PowerSploit Ninjacopy"
-                }
-            ],
-            "modified": "2021-02-09T14:09:00.753Z",
+            "modified": "2023-10-01T14:19:18.804Z",
             "name": "Direct Volume Access",
-            "description": "Adversaries may directly access a volume to bypass file access controls and file system monitoring. Windows allows programs to have direct access to logical volumes. Programs with direct access may read and write files directly from the drive by analyzing file system data structures. This technique bypasses Windows file access controls as well as file system monitoring tools. (Citation: Hakobyan 2009)\n\nUtilities, such as NinjaCopy, exist to perform these actions in PowerShell. (Citation: Github PowerSploit Ninjacopy)",
+            "description": "Adversaries may directly access a volume to bypass file access controls and file system monitoring. Windows allows programs to have direct access to logical volumes. Programs with direct access may read and write files directly from the drive by analyzing file system data structures. This technique may bypass Windows file access controls as well as file system monitoring tools. (Citation: Hakobyan 2009)\n\nUtilities, such as `NinjaCopy`, exist to perform these actions in PowerShell.(Citation: Github PowerSploit Ninjacopy) Adversaries may also use built-in or third-party utilities (such as `vssadmin`, `wbadmin`, and [esentutl](https://attack.mitre.org/software/S0404)) to create shadow copies or backups of data from system volumes.(Citation: LOLBAS Esentutl)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
                 }
             ],
+            "x_mitre_contributors": [
+                "Tom Simpson, CrowdStrike Falcon OverWatch"
+            ],
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor handle opens on drive volumes that are made by processes to determine when they may directly access logical drives. (Citation: Github PowerSploit Ninjacopy)\n\nMonitor processes and command-line arguments for actions that could be taken to copy files from the logical drive and evade common file system protections. Since this technique may also be used through [PowerShell](https://attack.mitre.org/techniques/T1059/001), additional logging of PowerShell scripts is recommended.",
-            "x_mitre_version": "2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "2.1",
             "x_mitre_data_sources": [
-                "Command: Command Execution",
-                "Drive: Drive Access"
+                "File: File Creation",
+                "Drive: Drive Access",
+                "Command: Command Execution"
             ],
             "x_mitre_defense_bypassed": [
                 "File monitoring",
                 "File system access controls"
             ],
-            "x_mitre_permissions_required": [
-                "Administrator"
+            "type": "attack-pattern",
+            "id": "attack-pattern--0c8ab3eb-df48-4b9c-ace7-beacaac81cc5",
+            "created": "2017-05-31T21:30:20.934Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1006",
+                    "external_id": "T1006"
+                },
+                {
+                    "source_name": "Github PowerSploit Ninjacopy",
+                    "description": "Bialek, J. (2015, December 16). Invoke-NinjaCopy.ps1. Retrieved June 2, 2016.",
+                    "url": "https://github.com/PowerShellMafia/PowerSploit/blob/master/Exfiltration/Invoke-NinjaCopy.ps1"
+                },
+                {
+                    "source_name": "Hakobyan 2009",
+                    "description": "Hakobyan, A. (2009, January 8). FDump - Dumping File Sectors Directly from Disk using Logical Offsets. Retrieved November 12, 2014.",
+                    "url": "http://www.codeproject.com/Articles/32169/FDump-Dumping-File-Sectors-Directly-from-Disk-usin"
+                },
+                {
+                    "source_name": "LOLBAS Esentutl",
+                    "description": "LOLBAS. (n.d.). Esentutl.exe. Retrieved September 3, 2019.",
+                    "url": "https://lolbas-project.github.io/lolbas/Binaries/Esentutl/"
+                }
             ],
-            "x_mitre_is_subtechnique": false
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

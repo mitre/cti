@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--fd78aa78-3b92-43c5-9537-bb30d64c189a",
+    "id": "bundle--0a0f8c0b-7583-4617-a883-9d933d608f1f",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-03-30T21:01:39.426Z",
+            "modified": "2023-10-03T03:29:57.078Z",
             "name": "Path Interception by PATH Environment Variable",
-            "description": "Adversaries may execute their own malicious payloads by hijacking environment variables used to load libraries. Adversaries may place a program in an earlier entry in the list of directories stored in the PATH environment variable, which Windows will then execute when it searches sequentially through that PATH listing in search of the binary that was called from a script or the command line.\n\nThe PATH environment variable contains a list of directories. Certain methods of executing a program (namely using cmd.exe or the command-line) rely solely on the PATH environment variable to determine the locations that are searched for a program when the path for the program is not given. If any directories are listed in the PATH environment variable before the Windows directory, <code>%SystemRoot%\\system32</code> (e.g., <code>C:\\Windows\\system32</code>), a program may be placed in the preceding directory that is named the same as a Windows program (such as cmd, PowerShell, or Python), which will be executed when that command is executed from a script or command-line.\n\nFor example, if <code>C:\\example path</code> precedes </code>C:\\Windows\\system32</code> is in the PATH environment variable, a program that is named net.exe and placed in <code>C:\\example path</code> will be called instead of the Windows system \"net\" when \"net\" is executed from the command-line.",
+            "description": "Adversaries may execute their own malicious payloads by hijacking environment variables used to load libraries. The PATH environment variable contains a list of directories (User and System) that the OS searches sequentially through in search of the binary that was called from a script or the command line. \n\nAdversaries can place a malicious program in an earlier entry in the list of directories stored in the PATH environment variable, resulting in the operating system executing the malicious binary rather than the legitimate binary when it searches sequentially through that PATH listing.\n\nFor example, on Windows if an adversary places a malicious program named \"net.exe\" in `C:\\example path`, which by default precedes `C:\\Windows\\system32\\net.exe` in the PATH environment variable, when \"net\" is executed from the command-line the `C:\\example path` will be called instead of the system's legitimate executable at `C:\\Windows\\system32\\net.exe`. Some methods of executing a program rely on the PATH environment variable to determine the locations that are searched when the path for the program is not given, such as executing programs from a [Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059).(Citation: ExpressVPN PATH env Windows 2021)\n\nAdversaries may also directly modify the $PATH variable specifying the directories to be searched.  An adversary can modify the `$PATH` variable to point to a directory they have write access. When a program using the $PATH variable is called, the OS searches the specified directory and executes the malicious binary. On macOS, this can also be performed through modifying the $HOME variable. These variables can be modified using the command-line, launchctl, [Unix Shell Configuration Modification](https://attack.mitre.org/techniques/T1546/004), or modifying the `/etc/paths.d` folder contents.(Citation: uptycs Fake POC linux malware 2023)(Citation: nixCraft macOS PATH variables)(Citation: Elastic Rules macOS launchctl 2022)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -21,7 +21,6 @@
                     "phase_name": "defense-evasion"
                 }
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
             "x_mitre_contributors": [
                 "Stefan Kanthak"
             ],
@@ -31,15 +30,16 @@
                 "enterprise-attack"
             ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
-                "Windows"
+                "Windows",
+                "macOS",
+                "Linux"
             ],
-            "x_mitre_version": "1.0",
+            "x_mitre_version": "1.1",
             "x_mitre_data_sources": [
-                "Process: Process Creation",
+                "File: File Creation",
                 "Windows Registry: Windows Registry Key Modification",
-                "File: File Creation"
+                "Process: Process Creation"
             ],
             "x_mitre_defense_bypassed": [
                 "Application Control"
@@ -54,11 +54,33 @@
                     "source_name": "mitre-attack",
                     "url": "https://attack.mitre.org/techniques/T1574/007",
                     "external_id": "T1574.007"
+                },
+                {
+                    "source_name": "Elastic Rules macOS launchctl 2022",
+                    "description": "Elastic Security 7.17. (2022, February 1). Modification of Environment Variable via Launchctl. Retrieved September 28, 2023.",
+                    "url": "https://www.elastic.co/guide/en/security/7.17/prebuilt-rule-7-16-4-modification-of-environment-variable-via-launchctl.html"
+                },
+                {
+                    "source_name": "ExpressVPN PATH env Windows 2021",
+                    "description": "ExpressVPN Security Team. (2021, November 16). Cybersecurity lessons: A PATH vulnerability in Windows. Retrieved September 28, 2023.",
+                    "url": "https://www.expressvpn.com/blog/cybersecurity-lessons-a-path-vulnerability-in-windows/"
+                },
+                {
+                    "source_name": "uptycs Fake POC linux malware 2023",
+                    "description": "Nischay Hegde and Siddartha Malladi. (2023, July 12). PoC Exploit: Fake Proof of Concept with Backdoor Malware. Retrieved September 28, 2023.",
+                    "url": "https://www.uptycs.com/blog/new-poc-exploit-backdoor-malware"
+                },
+                {
+                    "source_name": "nixCraft macOS PATH variables",
+                    "description": "Vivek Gite. (2023, August 22). MacOS \u2013 Set / Change $PATH Variable Command. Retrieved September 28, 2023.",
+                    "url": "https://www.cyberciti.biz/faq/appleosx-bash-unix-change-set-path-environment-variable/"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ]
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

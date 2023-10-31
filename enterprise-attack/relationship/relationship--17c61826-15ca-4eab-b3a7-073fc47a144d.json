@@ -1,25 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--46fea0df-cb24-48cc-92c6-44cf596a9a63",
+    "id": "bundle--292bed7c-8272-4fea-be73-c665fe9beed7",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "type": "relationship",
             "id": "relationship--17c61826-15ca-4eab-b3a7-073fc47a144d",
             "created": "2022-03-30T14:26:51.857Z",
-            "x_mitre_version": "0.1",
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Monitor executed commands and arguments that may attempt to access or create a copy of the Active Directory domain database in order to steal credential information, as well as obtain other information about domain members such as devices, users, and access rights. Look for command-lines that invoke attempts to access or copy the NTDS.dit.",
-            "modified": "2022-04-19T17:19:51.600Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2023-08-25T18:34:27.802Z",
+            "description": "Monitor executed commands and arguments that may attempt to access or create a copy of the Active Directory domain database in order to steal credential information, as well as obtain other information about domain members such as devices, users, and access rights. Look for command-lines that invoke attempts to access or copy the NTDS.dit.\n\nNote: Events 4688 (Microsoft Windows Security Auditing) and 1 (Microsoft Windows Sysmon) provide context of commands and parameters being executed via creation of a new process. Event 800 (PowerShell) provides context of commands and parameters being executed via PowerShell. This detection is based on known Windows utilities commands and parameters that can be used to copy the ntds.dit file. It is recommended to keep the list of commands and parameters up to date.\n\n<h4> Analytic 1 - Command line attempt to access or create a copy of ntds.dit file</h4>\n<code>suspicious_command = filter command_execution where (\n(event_id = \"4688\" OR event_id = \"1\" OR event_id = \"800\") AND \n((command_line = \"*ntds*\" AND command_line = \"*ntdsutil*\" AND command_line = \"*create*\") OR\n (command_line = \"**vssadmin\" AND command_line = \"*create*\" AMD command_line = \"*shadow*\") OR (command_line = \"*copy*\" AND command_line = \"*ntds.dit*\")) </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
             "target_ref": "attack-pattern--edf91964-b26e-4b4a-9600-ccacd7d7df24",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

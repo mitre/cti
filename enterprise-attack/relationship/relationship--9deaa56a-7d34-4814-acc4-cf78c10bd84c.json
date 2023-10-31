@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--4380cca4-deb0-44ff-80e1-b3402aebac89",
+    "id": "bundle--59196de0-684b-4420-a49d-b665f0611af9",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-03-21T00:25:51.794Z",
-            "description": "Monitor newly executed processes that may attempt to find local system groups and permission settings.\n\n<h4> Implementation 1 : Suspicious Processes </h4>\n\n<h5>Detection Pseudocode</h5>\n<code>processes = filter processes where (\n (event_id == \"1\" OR event_id == \"4688\") AND\n  exe = \"net.exe\" AND (\n  command_line=\"*net* user*\" OR\n  command_line=\"*net* group*\" OR\n  command_line=\"*net* localgroup*\" OR\n  command_line=\"*get-localgroup*\" OR\n  command_line=\"*get-ADPrincipalGroupMembership*\" )</code>\n\n<h4>Detection Notes</h4>\n\n- Pseudocode Event IDs are for Sysmon (Event ID 1 - process creation) and Windows Security Log (Event ID 4688 - a new process has been created). \n- The logic in the Detection Pseudocode looks for any instances of net.exe used for local user/group discovery; although this utility is not normally used for benign purposes, such usage by system administrator actions may trigger false positives.",
+            "modified": "2023-08-23T21:15:22.513Z",
+            "description": "Monitor newly executed processes that may attempt to find local system groups and permission settings.\n\nNote: Event IDs are for Sysmon (Event ID 1 - process creation) and Windows Security Log (Event ID 4688 - a new process has been created). The logic in the Analytic looks for any instances of net.exe used for local user/group discovery; although this utility is not normally used for benign purposes, such usage by system administrator actions may trigger false positives.\n\n<h4> Analytic 1 - Suspicious Processes </h4>\n<code>processes = filter processes where (\n (event_id == \"1\" OR event_id == \"4688\") AND\n  exe = \"net.exe\" AND (\n  command_line=\"*net* user*\" OR\n  command_line=\"*net* group*\" OR\n  command_line=\"*net* localgroup*\" OR\n  command_line=\"*get-localgroup*\" OR\n  command_line=\"*get-ADPrincipalGroupMembership*\" )</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--a01bf75f-00b2-4568-a58f-565ff9bf202b",

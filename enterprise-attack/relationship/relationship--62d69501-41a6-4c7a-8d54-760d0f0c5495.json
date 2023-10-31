@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--c1273246-a418-402f-92cf-38bc243c7ac4",
+    "id": "bundle--4e5d4c6c-9262-4b63-819b-2cd79c9c7a72",
     "spec_version": "2.0",
     "objects": [
         {
@@ -13,20 +13,20 @@
                 {
                     "source_name": "MsitPros CHM Aug 2017",
                     "description": "Moe, O. (2017, August 13). Bypassing Device guard UMCI using CHM \u2013 CVE-2017-8625. Retrieved October 3, 2018.",
-                    "url": "https://msitpros.com/?p=3909"
+                    "url": "https://oddvar.moe/2017/08/13/bypassing-device-guard-umci-using-chm-cve-2017-8625/"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-03-28T15:37:39.712Z",
-            "description": "Monitor and analyze the execution and arguments of hh.exe. (Citation: MsitPros CHM Aug 2017) Compare recent invocations of hh.exe with prior history of known good arguments to determine anomalous and potentially adversarial activity (ex: obfuscated and/or malicious commands). Non-standard process execution trees may also indicate suspicious or malicious behavior, such as if hh.exe is the parent process for suspicious processes and activity relating to other adversarial techniques.\n\n<h4> Implementation 1 : Compiled HTML Access </h4>\n\n<h5> Detection Pseudocode </h5>\n\n<code> processes = filter processes where (\n(event_id == \"1\" OR event_id == \"4688\") AND \nexe=\"C:\\Windows\\syswow64\\hh.exe\" OR \nexe=\"C:\\Windows\\system32\\hh.exe\") </code>\n\n<h4> Detection Notes </h4>\n\n- Pseudocode Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). \n- The Detection Pseudocode looks for the creation of any HTML Help Executable (<code> hh.exe </code>) processes. Adversaries may hide malicious code in <code> .chm </code> compiled help files; whenever a user tries to open one of these files, Windows executes the HTML Help Executable. Therefore, if there are legitimate uses of compiled help files in your environment, this analytic may lead to false positives and will require additional tuning. ",
+            "modified": "2023-10-18T16:31:56.937Z",
+            "description": "Monitor and analyze the execution and arguments of hh.exe. (Citation: MsitPros CHM Aug 2017) Compare recent invocations of hh.exe with prior history of known good arguments to determine anomalous and potentially adversarial activity (ex: obfuscated and/or malicious commands). Non-standard process execution trees may also indicate suspicious or malicious behavior, such as if hh.exe is the parent process for suspicious processes and activity relating to other adversarial techniques.\n\nNote: Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). The Analytic looks for the creation of any HTML Help Executable (<code> hh.exe </code>) processes. Adversaries may hide malicious code in <code> .chm </code> compiled help files; whenever a user tries to open one of these files, Windows executes the HTML Help Executable. Therefore, if there are legitimate uses of compiled help files in your environment, this analytic may lead to false positives and will require additional tuning. \n\n<h4>Analytic 1 - Compiled HTML Access </h4>\n<code> processes = filter processes where (\n(event_id == \"1\" OR event_id == \"4688\") AND \nexe=\"C:\\Windows\\syswow64\\hh.exe\" OR \nexe=\"C:\\Windows\\system32\\hh.exe\") </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--a6937325-9321-4e2e-bb2b-3ed2d40b2a9d",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

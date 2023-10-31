@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--50bdb5e6-eba1-4383-8024-96b29b3522e6",
+    "id": "bundle--bea2e473-4e5e-44ed-addb-5225d79bbb9e",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-03-29T19:57:10.528Z",
-            "description": "Monitor for newly constructed processes and/or command line execution that can be used to remove network share connections via the net.exe process. \n\n<h4> Implementation 1: Network Share Connection Removal </h4>\n\n<h5> Detection Pseudocode </h5>\n<code> target_processes = filter processes where (\n  (event_id == \"1\" OR event_id == \"4688\") AND \n  (exe == \"C:\\Windows\\System32\\net.exe\" AND command_line == \"*delete*\") OR\n  command_line=\"*Remove-SmbShare*\" OR\n  command_line=\"*Remove-FileShare*\" )</code>\n\n<h4> Detection Notes</h4>\n\n- Pseudocode Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). \n- The Detection Pseudocode is oriented around looking for various methods of removing network shares via the command line, which is otherwise a rare event. ",
+            "modified": "2023-08-23T21:22:22.144Z",
+            "description": "Monitor for newly constructed processes and/or command line execution that can be used to remove network share connections via the net.exe process. \n\nNote: Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). The Analytic is oriented around looking for various methods of removing network shares via the command line, which is otherwise a rare event. \n\n<h4> Analytic 1: Network Share Connection Removal </h4>\n<code> target_processes = filter processes where (\n  (event_id == \"1\" OR event_id == \"4688\") AND \n  (exe == \"C:\\Windows\\System32\\net.exe\" AND command_line == \"*delete*\") OR\n  command_line=\"*Remove-SmbShare*\" OR\n  command_line=\"*Remove-FileShare*\" )</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--a750a9f6-0bde-4bb3-9aae-1e2786e9780c",

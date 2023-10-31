@@ -1,25 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--6542fd85-af5e-40dc-af9e-83f899c0a37a",
+    "id": "bundle--f5cc7d7e-fb87-465e-9b09-2cc2952821a5",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "type": "relationship",
             "id": "relationship--a72eb24f-256b-4d88-a839-55d1d35833bb",
             "created": "2022-06-16T13:06:00.574Z",
-            "x_mitre_version": "0.1",
-            "x_mitre_deprecated": false,
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
-            "description": "Monitor for newly executed processes executed from the Run/RunOnce registry keys through Windows EID 9707 or \u201cSoftware\\Microsoft\\Windows\\CurrentVersion\\Run\u201d and \u201cSoftware\\Microsoft\\Windows\\CurrentVersion\\RunOnce\u201d registry keys with the full command line.",
-            "modified": "2022-06-16T13:06:00.574Z",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2023-09-15T17:19:15.945Z",
+            "description": "Monitor for newly executed processes executed from the Run/RunOnce registry keys through Windows EID 9707 or \u201cSoftware\\Microsoft\\Windows\\CurrentVersion\\Run\u201d and \u201cSoftware\\Microsoft\\Windows\\CurrentVersion\\RunOnce\u201d registry keys with the full command line.\n\nRegistry modifications are often essential in establishing persistence via known Windows mechanisms. Many legitimate modifications are done graphically via\u00a0regedit.exe\u00a0or by using the corresponding channels, or even calling the Registry APIs directly. The built-in utility\u00a0reg.exe\u00a0provides a\u00a0command-line interface\u00a0to the registry, so that queries and modifications can be performed from a shell, such as\u00a0cmd.exe. When a user is responsible for these actions, the parent of\u00a0cmd.exe\u00a0will likely be\u00a0explorer.exe. Occasionally, power users and administrators write scripts that do this behavior as well, but likely from a different process tree. These background scripts must be learned so they can be tuned out accordingly.\n\nOutput Description\nThe sequence of processes that resulted in\u00a0reg.exe\u00a0being started from a shell. That is, a hierarchy that looks like\n\u2022 great-grand_parent.exe\n\u2022 grand_parent.exe\n\u2022 parent.exe\n\u2022 reg.exe\n\n<h4>Analytic 1 - Reg.exe called from Command Shell </h4>\n<code>reg = filter processes where (exe == \"reg.exe\" and parent_exe == \"cmd.exe\")\ncmd = filter processes where (exe == \"cmd.exe\" and parent_exe != \"explorer.exe\"\")\nreg_and_cmd = join (reg, cmd) where (reg.ppid == cmd.pid and reg.hostname == cmd.hostname)</code>\n\n<h4>Analytic 2 - Rare LolBAS Command Lines</h4>\n<code>lolbas_processes = filter processes where (exe = \"At.exe\" OR exe = \"Atbroker.exe\" OR exe = \"Bash.exe\" OR exe = \"Bitsadmin.exe\" OR exe = \"Certutil.exe\" OR exe = \"Cmd.exe\" OR exe = \"Cmdkey.exe\" OR exe = \"Cmstp.exe\" OR exe = \"Control.exe\" OR exe = \"Csc.exe\" OR exe = \"Cscript.exe\" OR exe = \"Dfsvc.exe\" OR exe = \"Diskshadow.exe\" OR exe = \"Dnscmd.exe\" OR exe = \"Esentutl.exe\" OR exe = \"Eventvwr.exe\" OR exe = \"Expand.exe\" OR exe = \"Extexport.exe\" OR exe = \"Extrac32.exe\" OR exe = \"Findstr.exe\" OR exe = \"Forfiles.exe\" OR exe = \"Ftp.exe\" OR exe = \"Gpscript.exe\" OR exe = \"Hh.exe\" OR exe = \"Ie4uinit.exe\" OR exe = \"Ieexec.exe\" OR exe = \"Infdefaultinstall.exe\" OR exe = \"Installutil.exe\" OR exe = \"Jsc.exe\" OR exe = \"Makecab.exe\" OR exe = \"Mavinject.exe\" OR exe = \"Microsoft.Workflow.r.exe\" OR exe = \"Mmc.exe\" OR exe = \"Msbuild.exe\" OR exe = \"Msconfig.exe\" OR exe = \"Msdt.exe\" OR exe = \"Mshta.exe\" OR exe = \"Msiexec.exe\" OR exe = \"Odbcconf.exe\" OR exe = \"Pcalua.exe\" OR exe = \"Pcwrun.exe\" OR exe = \"Presentationhost.exe\" OR exe = \"Print.exe\" OR exe = \"Reg.exe\" OR exe = \"Regasm.exe\" OR exe = \"Regedit.exe\" OR exe = \"Register-cimprovider.exe\" OR exe = \"Regsvcs.exe\" OR exe = \"Regsvr32.exe\" OR exe = \"Replace.exe\" OR exe = \"Rpcping.exe\" OR exe = \"Rundll32.exe\" OR exe = \"Runonce.exe\" OR exe = \"Runscripthelper.exe\" OR exe = \"Sc.exe\" OR exe = \"Schtasks.exe\" OR exe = \"Scriptrunner.exe\" OR exe = \"SyncAppvPublishingServer.exe\" OR exe = \"Tttracer.exe\" OR exe = \"Verclsid.exe\" OR exe = \"Wab.exe\" OR exe = \"Wmic.exe\" OR exe = \"Wscript.exe\" OR exe = \"Wsreset.exe\" OR exe = \"Xwizard.exe\" OR exe = \"Advpack.dll OR exe = \"Comsvcs.dll OR exe = \"Ieadvpack.dll OR exe = \"Ieaframe.dll OR exe = \"Mshtml.dll OR exe = \"Pcwutl.dll OR exe = \"Setupapi.dll OR exe = \"Shdocvw.dll OR exe = \"Shell32.dll OR exe = \"Syssetup.dll OR exe = \"Url.dll OR exe = \"Zipfldr.dll OR exe = \"Appvlp.exe\" OR exe = \"Bginfo.exe\" OR exe = \"Cdb.exe\" OR exe = \"csi.exe\" OR exe = \"Devtoolslauncher.exe\" OR exe = \"dnx.exe\" OR exe = \"Dxcap.exe\" OR exe = \"Excel.exe\" OR exe = \"Mftrace.exe\" OR exe = \"Msdeploy.exe\" OR exe = \"msxsl.exe\" OR exe = \"Powerpnt.exe\" OR exe = \"rcsi.exe\" OR exe = \"Sqler.exe\" OR exe = \"Sqlps.exe\" OR exe = \"SQLToolsPS.exe\" OR exe = \"Squirrel.exe\" OR exe = \"te.exe\" OR exe = \"Tracker.exe\" OR exe = \"Update.exe\" OR exe = \"vsjitdebugger.exe\" OR exe = \"Winword.exe\" OR exe = \"Wsl.exe\" OR exe = \"CL_Mutexverifiers.ps1 OR exe = \"CL_Invocation.ps1 OR exe = \"Manage-bde.wsf OR exe = \"Pubprn.vbs OR exe = \"Slmgr.vbs OR exe = \"Syncappvpublishingserver.vbs OR exe = \"winrm.vbs OR exe = \"Pester.bat)\nprocess_count = count(lolbas_processes) by process\nprocess_count_avg = average(process_count)\nprocess_count_stdev = standard_deviation(process_count)\nlower_bound = process_count_avg - stdev * 1.5\noutliers = filter lolbas_processes where (process_count < lower_bound)</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--9efb1ea7-c37b-4595-9640-b7680cd84279",
-            "x_mitre_attack_spec_version": "2.1.0",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

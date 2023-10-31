@@ -1,23 +1,28 @@
 {
     "type": "bundle",
-    "id": "bundle--b369979e-4d0d-4f5c-918e-f1a506018092",
+    "id": "bundle--dd84181f-0343-4c1f-831f-11e37583a537",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-04-12T23:28:34.599Z",
+            "modified": "2023-10-03T17:38:21.121Z",
             "name": "SSH Authorized Keys",
-            "description": "Adversaries may modify the SSH <code>authorized_keys</code> file to maintain persistence on a victim host. Linux distributions and macOS commonly use key-based authentication to secure the authentication process of SSH sessions for remote management. The <code>authorized_keys</code> file in SSH specifies the SSH keys that can be used for logging into the user account for which the file is configured. This file is usually found in the user's home directory under <code>&lt;user-home&gt;/.ssh/authorized_keys</code>.(Citation: SSH Authorized Keys) Users may edit the system\u2019s SSH config file to modify the directives PubkeyAuthentication and RSAAuthentication to the value \u201cyes\u201d to ensure public key and RSA authentication are enabled. The SSH config file is usually located under <code>/etc/ssh/sshd_config</code>.\n\nAdversaries may modify SSH <code>authorized_keys</code> files directly with scripts or shell commands to add their own adversary-supplied public keys. In cloud environments, adversaries may be able to modify the SSH authorized_keys file of a particular virtual machine via the command line interface or rest API. For example, by using the Google Cloud CLI\u2019s \u201cadd-metadata\u201d command an adversary may add SSH keys to a user account.(Citation: Google Cloud Add Metadata)(Citation: Google Cloud Privilege Escalation) Similarly, in Azure, an adversary may update the authorized_keys file of a virtual machine via a PATCH request to the API.(Citation: Azure Update Virtual Machines) This ensures that an adversary possessing the corresponding private key may log in as an existing user via SSH.(Citation: Venafi SSH Key Abuse)(Citation: Cybereason Linux Exim Worm) \n\nWhere authorized_keys files are modified via cloud APIs or command line interfaces, an adversary may achieve privilege escalation on the target virtual machine if they add a key to a higher-privileged user. \n\nSSH keys can also be added to accounts on network devices, such as with the `ip ssh pubkey-chain` [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) command.(Citation: cisco_ip_ssh_pubkey_ch_cmd)",
+            "description": "Adversaries may modify the SSH <code>authorized_keys</code> file to maintain persistence on a victim host. Linux distributions and macOS commonly use key-based authentication to secure the authentication process of SSH sessions for remote management. The <code>authorized_keys</code> file in SSH specifies the SSH keys that can be used for logging into the user account for which the file is configured. This file is usually found in the user's home directory under <code>&lt;user-home&gt;/.ssh/authorized_keys</code>.(Citation: SSH Authorized Keys) Users may edit the system\u2019s SSH config file to modify the directives PubkeyAuthentication and RSAAuthentication to the value \u201cyes\u201d to ensure public key and RSA authentication are enabled. The SSH config file is usually located under <code>/etc/ssh/sshd_config</code>.\n\nAdversaries may modify SSH <code>authorized_keys</code> files directly with scripts or shell commands to add their own adversary-supplied public keys. In cloud environments, adversaries may be able to modify the SSH authorized_keys file of a particular virtual machine via the command line interface or rest API. For example, by using the Google Cloud CLI\u2019s \u201cadd-metadata\u201d command an adversary may add SSH keys to a user account.(Citation: Google Cloud Add Metadata)(Citation: Google Cloud Privilege Escalation) Similarly, in Azure, an adversary may update the authorized_keys file of a virtual machine via a PATCH request to the API.(Citation: Azure Update Virtual Machines) This ensures that an adversary possessing the corresponding private key may log in as an existing user via SSH.(Citation: Venafi SSH Key Abuse)(Citation: Cybereason Linux Exim Worm) It may also lead to privilege escalation where the virtual machine or instance has distinct permissions from the requesting user.\n\nWhere authorized_keys files are modified via cloud APIs or command line interfaces, an adversary may achieve privilege escalation on the target virtual machine if they add a key to a higher-privileged user. \n\nSSH keys can also be added to accounts on network devices, such as with the `ip ssh pubkey-chain` [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) command.(Citation: cisco_ip_ssh_pubkey_ch_cmd)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
                 }
             ],
             "x_mitre_contributors": [
                 "Tony Lambert, Red Canary",
                 "Dror Alon, Palo Alto Networks",
                 "Or Kliger, Palo Alto Networks",
-                "Austin Clark, @c2defense"
+                "Austin Clark, @c2defense",
+                "Arad Inbar, Fidelis Security"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "Use file integrity monitoring to detect changes made to the <code>authorized_keys</code> file for each user on a system. Monitor for suspicious processes modifying the <code>authorized_keys</code> file. In cloud environments, monitor instances for modification of metadata and configurations.\n\nMonitor for changes to and suspicious processes modifiying <code>/etc/ssh/sshd_config</code>.\n\nFor network infrastructure devices, collect AAA logging to monitor for rogue SSH keys being added to accounts.",
@@ -31,11 +36,11 @@
                 "IaaS",
                 "Network"
             ],
-            "x_mitre_version": "1.2",
+            "x_mitre_version": "1.3",
             "x_mitre_data_sources": [
+                "Command: Command Execution",
                 "Process: Process Creation",
-                "File: File Modification",
-                "Command: Command Execution"
+                "File: File Modification"
             ],
             "type": "attack-pattern",
             "id": "attack-pattern--6b57dc31-b814-4a03-8706-28bc20d739c4",
@@ -87,7 +92,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

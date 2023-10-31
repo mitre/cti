@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--bd20320e-a7ab-4a23-8818-fb23374ef14d",
+    "id": "bundle--9d4103f1-4b91-40b0-b137-c075d15ee542",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-03-27T14:08:53.922Z",
-            "description": "Monitor for changes made to command history files, such as ConsoleHost_history.txt, ~/.zsh_history, or ~/.bash_history, for unexpected modifications to contents, access permissions, and attributes.\n\n<h4> Implementation 1 : Modification of access rights to command history files </h4>\n\n<h5>Detection Pseudocode</h5>\n<code> suspicious_files = filter ProcessGuid, ProcessFilePath, UserName, FilePath where\n  (event_id == \"4663\" AND\n   FilePath LIKE '%ConsoleHost_history.txt%' AND\n   ObjectType == \"File\" AND\n   (UserAccessList LIKE '%1539%' or UserAccessList LIKE '%WRITE_DAC%')) OR\n  (event_id == \"4670\" AND\n   FilePath LIKE '%ConsoleHost_history.txt%' AND\n   ObjectType == \"File\" AND\n   (ObjectNewSd LIKE '%;FA%' OR\n    ObjectNewSd LIKE '%;FW%' OR\n    ObjectNewSd LIKE '%;BU%'))</code>\n\n<h4>Detection Notes</h4>\n    \n- For Security Auditing event id 4663 and 4670, enable success events for category Object Access and subcategory File System.\n- For Security Auditing event id 4663, a System Access Control List (SACL) that controls the use of specific access rights such as WRITE_DAC is required for event generation.\n- For Security Auditing event id 4663 and 4670, depending on the File Path you are monitoring, the implementation of a new System Access Control List (SACL) might be required.\n- For Security Auditing event id 4670, FA right means File all access right, FW right means File generic write, BU trustee means Built-in users.",
+            "modified": "2023-08-23T21:20:28.566Z",
+            "description": "Monitor for changes made to command history files, such as ConsoleHost_history.txt, ~/.zsh_history, or ~/.bash_history, for unexpected modifications to contents, access permissions, and attributes.\n\n<h4> Analytic 1 : Modification of access rights to command history files </h4>\n<code> suspicious_files = filter ProcessGuid, ProcessFilePath, UserName, FilePath where\n  (event_id == \"4663\" AND\n   FilePath LIKE '%ConsoleHost_history.txt%' AND\n   ObjectType == \"File\" AND\n   (UserAccessList LIKE '%1539%' or UserAccessList LIKE '%WRITE_DAC%')) OR\n  (event_id == \"4670\" AND\n   FilePath LIKE '%ConsoleHost_history.txt%' AND\n   ObjectType == \"File\" AND\n   (ObjectNewSd LIKE '%;FA%' OR\n    ObjectNewSd LIKE '%;FW%' OR\n    ObjectNewSd LIKE '%;BU%'))</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
             "target_ref": "attack-pattern--3aef9463-9a7a-43ba-8957-a867e07c1e6a",

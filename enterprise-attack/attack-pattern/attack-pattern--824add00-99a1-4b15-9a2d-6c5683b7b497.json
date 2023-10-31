@@ -1,80 +1,91 @@
 {
     "type": "bundle",
-    "id": "bundle--24b5041b-bab7-4f09-ab76-5720f3b24aac",
+    "id": "bundle--d56520de-3a3f-433f-a20e-f27312678c64",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows",
-                "Linux",
-                "macOS"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Mayuresh Dani, Qualys",
-                "Daniel Feichter, @VirtualAllocEx, Infosec Tirol"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--824add00-99a1-4b15-9a2d-6c5683b7b497",
-            "created": "2021-10-08T14:06:28.212Z",
-            "x_mitre_version": "1.1",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1562.010",
-                    "url": "https://attack.mitre.org/techniques/T1562/010"
-                },
-                {
-                    "source_name": "CrowdStrike BGH Ransomware 2021",
-                    "url": "https://www.crowdstrike.com/blog/how-falcon-complete-stopped-a-big-game-hunting-ransomware-attack/",
-                    "description": "Falcon Complete Team. (2021, May 11). Response When Minutes Matter: Rising Up Against Ransomware. Retrieved October 8, 2021."
-                },
-                {
-                    "source_name": "att_def_ps_logging",
-                    "url": "https://nsfocusglobal.com/attack-and-defense-around-powershell-event-logging/",
-                    "description": "Hao, M. (2019, February 27). Attack and Defense Around PowerShell Event Logging. Retrieved November 24, 2021."
-                },
-                {
-                    "source_name": "inv_ps_attacks",
-                    "url": "https://powershellmagazine.com/2014/07/16/investigating-powershell-attacks/",
-                    "description": "Hastings, M. (2014, July 16). Investigating PowerShell Attacks. Retrieved December 1, 2021."
-                },
-                {
-                    "source_name": "Mandiant BYOL 2018",
-                    "url": "https://www.mandiant.com/resources/bring-your-own-land-novel-red-teaming-technique",
-                    "description": "Kirk, N. (2018, June 18). Bring Your Own Land (BYOL) \u2013 A Novel Red Teaming Technique. Retrieved October 8, 2021."
-                },
-                {
-                    "source_name": "Praetorian TLS Downgrade Attack 2014",
-                    "url": "https://www.praetorian.com/blog/man-in-the-middle-tls-ssl-protocol-downgrade-attack/",
-                    "description": "Praetorian. (2014, August 19). Man-in-the-Middle TLS Protocol Downgrade Attack. Retrieved October 8, 2021."
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may downgrade or use a version of system features that may be outdated, vulnerable, and/or does not support updated security controls such as logging. For example, [PowerShell](https://attack.mitre.org/techniques/T1059/001) versions 5+ includes Script Block Logging (SBL) which can record executed script content. However, adversaries may attempt to execute a previous version of PowerShell that does not support SBL with the intent to [Impair Defenses](https://attack.mitre.org/techniques/T1562) while running malicious scripts that may have otherwise been detected.(Citation: CrowdStrike BGH Ransomware 2021)(Citation: Mandiant BYOL 2018)(Citation: att_def_ps_logging)\n\nAdversaries may downgrade and use less-secure versions of various features of a system, such as [Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)s or even network protocols that can be abused to enable [Adversary-in-the-Middle](https://attack.mitre.org/techniques/T1557).(Citation: Praetorian TLS Downgrade Attack 2014)",
-            "modified": "2022-05-19T16:28:31.041Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2023-10-03T16:40:15.445Z",
             "name": "Downgrade Attack",
-            "x_mitre_detection": "Monitor for commands or other activity that may be indicative of attempts to abuse older or deprecated technologies (ex: <code>powershell \u2013v 2</code>). Also monitor for other abnormal events, such as execution of and/or processes spawning from a version of a tool that is not expected in the environment.\n\nMonitor for Windows event ID (EID) 400, specifically the <code>EngineVersion</code> field which shows the version of PowerShell running and may highlight a malicious downgrade attack.(Citation: inv_ps_attacks)",
+            "description": "Adversaries may downgrade or use a version of system features that may be outdated, vulnerable, and/or does not support updated security controls. Downgrade attacks typically take advantage of a system\u2019s backward compatibility to force it into less secure modes of operation. \n\nAdversaries may downgrade and use various less-secure versions of features of a system, such as [Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059)s or even network protocols that can be abused to enable [Adversary-in-the-Middle](https://attack.mitre.org/techniques/T1557) or [Network Sniffing](https://attack.mitre.org/techniques/T1040).(Citation: Praetorian TLS Downgrade Attack 2014) For example, [PowerShell](https://attack.mitre.org/techniques/T1059/001) versions 5+ includes Script Block Logging (SBL) which can record executed script content. However, adversaries may attempt to execute a previous version of PowerShell that does not support SBL with the intent to [Impair Defenses](https://attack.mitre.org/techniques/T1562) while running malicious scripts that may have otherwise been detected.(Citation: CrowdStrike BGH Ransomware 2021)(Citation: Mandiant BYOL 2018)(Citation: att_def_ps_logging)\n\nAdversaries may similarly target network traffic to downgrade from an encrypted HTTPS connection to an unsecured HTTP connection that exposes network data in clear text.(Citation: Targeted SSL Stripping Attacks Are Real)(Citation: Crowdstrike Downgrade)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
                 }
             ],
+            "x_mitre_contributors": [
+                "Mayuresh Dani, Qualys",
+                "Daniel Feichter, @VirtualAllocEx, Infosec Tirol",
+                "Arad Inbar, Fidelis Security"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor for commands or other activity that may be indicative of attempts to abuse older or deprecated technologies (ex: <code>powershell \u2013v 2</code>). Also monitor for other abnormal events, such as execution of and/or processes spawning from a version of a tool that is not expected in the environment.\n\nMonitor for Windows event ID (EID) 400, specifically the <code>EngineVersion</code> field which shows the version of PowerShell running and may highlight a malicious downgrade attack.(Citation: inv_ps_attacks)\n\nMonitor network data to detect cases where HTTP is used instead of HTTPS.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": true,
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "macOS"
+            ],
+            "x_mitre_version": "1.2",
             "x_mitre_data_sources": [
                 "Command: Command Execution",
-                "Process: Process Metadata",
-                "Process: Process Creation"
+                "Process: Process Creation",
+                "Process: Process Metadata"
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
+            "type": "attack-pattern",
+            "id": "attack-pattern--824add00-99a1-4b15-9a2d-6c5683b7b497",
+            "created": "2021-10-08T14:06:28.212Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1562/010",
+                    "external_id": "T1562.010"
+                },
+                {
+                    "source_name": "Crowdstrike Downgrade",
+                    "description": "Bart Lenaerts-Bergman. (2023, March 14). WHAT ARE DOWNGRADE ATTACKS?. Retrieved May 24, 2023.",
+                    "url": "https://www.crowdstrike.com/cybersecurity-101/attack-types/downgrade-attacks/"
+                },
+                {
+                    "source_name": "Targeted SSL Stripping Attacks Are Real",
+                    "description": "Check Point. (n.d.). Targeted SSL Stripping Attacks Are Real. Retrieved May 24, 2023.",
+                    "url": "https://blog.checkpoint.com/research/targeted-ssl-stripping-attacks-are-real/amp/"
+                },
+                {
+                    "source_name": "CrowdStrike BGH Ransomware 2021",
+                    "description": "Falcon Complete Team. (2021, May 11). Response When Minutes Matter: Rising Up Against Ransomware. Retrieved October 8, 2021.",
+                    "url": "https://www.crowdstrike.com/blog/how-falcon-complete-stopped-a-big-game-hunting-ransomware-attack/"
+                },
+                {
+                    "source_name": "att_def_ps_logging",
+                    "description": "Hao, M. (2019, February 27). Attack and Defense Around PowerShell Event Logging. Retrieved November 24, 2021.",
+                    "url": "https://nsfocusglobal.com/attack-and-defense-around-powershell-event-logging/"
+                },
+                {
+                    "source_name": "inv_ps_attacks",
+                    "description": "Hastings, M. (2014, July 16). Investigating PowerShell Attacks. Retrieved December 1, 2021.",
+                    "url": "https://powershellmagazine.com/2014/07/16/investigating-powershell-attacks/"
+                },
+                {
+                    "source_name": "Mandiant BYOL 2018",
+                    "description": "Kirk, N. (2018, June 18). Bring Your Own Land (BYOL) \u2013 A Novel Red Teaming Technique. Retrieved October 8, 2021.",
+                    "url": "https://www.mandiant.com/resources/bring-your-own-land-novel-red-teaming-technique"
+                },
+                {
+                    "source_name": "Praetorian TLS Downgrade Attack 2014",
+                    "description": "Praetorian. (2014, August 19). Man-in-the-Middle TLS Protocol Downgrade Attack. Retrieved October 8, 2021.",
+                    "url": "https://www.praetorian.com/blog/man-in-the-middle-tls-ssl-protocol-downgrade-attack/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

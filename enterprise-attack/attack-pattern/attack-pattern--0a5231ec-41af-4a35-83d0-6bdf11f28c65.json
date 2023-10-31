@@ -1,57 +1,79 @@
 {
     "type": "bundle",
-    "id": "bundle--65883957-ede6-411c-b76e-4b47d84ecdcd",
+    "id": "bundle--2bd898b1-a396-4859-b011-254b67f5920c",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Stefan Kanthak"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--0a5231ec-41af-4a35-83d0-6bdf11f28c65",
-            "created": "2017-05-31T21:31:40.542Z",
-            "x_mitre_version": "2.1",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1129",
-                    "url": "https://attack.mitre.org/techniques/T1129"
-                },
-                {
-                    "source_name": "Wikipedia Windows Library Files",
-                    "url": "https://en.wikipedia.org/wiki/Microsoft_Windows_library_files",
-                    "description": "Wikipedia. (2017, January 31). Microsoft Windows library files. Retrieved February 13, 2017."
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may execute malicious payloads via loading shared modules. The Windows module loader can be instructed to load DLLs from arbitrary local paths and arbitrary Universal Naming Convention (UNC) network paths. This functionality resides in NTDLL.dll and is part of the Windows [Native API](https://attack.mitre.org/techniques/T1106) which is called from functions like <code>CreateProcess</code>, <code>LoadLibrary</code>, etc. of the Win32 API.(Citation: Wikipedia Windows Library Files)\n\nThe module loader can load DLLs:\n\n* via specification of the (fully-qualified or relative) DLL pathname in the IMPORT directory;\n    \n* via EXPORT forwarded to another DLL, specified with (fully-qualified or relative) pathname (but without extension);\n    \n* via an NTFS junction or symlink program.exe.local with the fully-qualified or relative pathname of a directory containing the DLLs specified in the IMPORT directory or forwarded EXPORTs;\n    \n* via <code>&#x3c;file name=\"filename.extension\" loadFrom=\"fully-qualified or relative pathname\"&#x3e;</code> in an embedded or external \"application manifest\". The file name refers to an entry in the IMPORT directory or a forwarded EXPORT.\n\nAdversaries may use this functionality as a way to execute arbitrary payloads on a victim system. For example, malware may execute share modules to load additional components or features.",
-            "modified": "2022-04-19T20:31:10.657Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2023-10-12T21:17:14.868Z",
             "name": "Shared Modules",
-            "x_mitre_detection": "Monitoring DLL module loads may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances, since benign use of Windows modules load functions are common and may be difficult to distinguish from malicious behavior. Legitimate software will likely only need to load routine, bundled DLL modules or Windows system DLLs such that deviation from known module loads may be suspicious. Limiting DLL module loads to <code>%SystemRoot%</code> and <code>%ProgramFiles%</code> directories will protect against module loads from unsafe paths. \n\nCorrelation of other events with behavior surrounding module loads using API monitoring and suspicious DLLs written to disk will provide additional context to an event that may assist in determining if it is due to malicious behavior.",
+            "description": "Adversaries may execute malicious payloads via loading shared modules. Shared modules are executable files that are loaded into processes to provide access to reusable code, such as specific custom functions or invoking OS API functions (i.e., [Native API](https://attack.mitre.org/techniques/T1106)).\n\nAdversaries may use this functionality as a way to execute arbitrary payloads on a victim system. For example, adversaries can modularize functionality of their malware into shared objects that perform various functions such as managing C2 network communications or execution of specific actions on objective.\n\nThe Linux & macOS module loader can load and execute shared objects from arbitrary local paths. This functionality resides in `dlfcn.h` in functions such as `dlopen` and `dlsym`. Although macOS can execute `.so` files, common practice uses `.dylib` files.(Citation: Apple Dev Dynamic Libraries)(Citation: Linux Shared Libraries)(Citation: RotaJakiro 2021 netlab360 analysis)(Citation: Unit42 OceanLotus 2017)\n\nThe Windows module loader can be instructed to load DLLs from arbitrary local paths and arbitrary Universal Naming Convention (UNC) network paths. This functionality resides in `NTDLL.dll` and is part of the Windows [Native API](https://attack.mitre.org/techniques/T1106) which is called from functions like `LoadLibrary` at run time.(Citation: Microsoft DLL)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "execution"
                 }
             ],
+            "x_mitre_contributors": [
+                "Stefan Kanthak"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitoring DLL module loads may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances, since benign use of Windows modules load functions are common and may be difficult to distinguish from malicious behavior. Legitimate software will likely only need to load routine, bundled DLL modules or Windows system DLLs such that deviation from known module loads may be suspicious. Limiting DLL module loads to `%SystemRoot%` and `%ProgramFiles%` directories will protect against module loads from unsafe paths. \n\nCorrelation of other events with behavior surrounding module loads using API monitoring and suspicious DLLs written to disk will provide additional context to an event that may assist in determining if it is due to malicious behavior.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "Windows",
+                "macOS",
+                "Linux"
+            ],
+            "x_mitre_version": "2.2",
             "x_mitre_data_sources": [
-                "Module: Module Load",
-                "Process: OS API Execution"
+                "Process: OS API Execution",
+                "Module: Module Load"
             ],
             "x_mitre_remote_support": false,
-            "x_mitre_attack_spec_version": "2.1.0",
+            "type": "attack-pattern",
+            "id": "attack-pattern--0a5231ec-41af-4a35-83d0-6bdf11f28c65",
+            "created": "2017-05-31T21:31:40.542Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1129",
+                    "external_id": "T1129"
+                },
+                {
+                    "source_name": "RotaJakiro 2021 netlab360 analysis",
+                    "description": " Alex Turing, Hui Wang. (2021, April 28). RotaJakiro: A long live secret backdoor with 0 VT detection. Retrieved June 14, 2023.",
+                    "url": "https://blog.netlab.360.com/stealth_rotajakiro_backdoor_en/"
+                },
+                {
+                    "source_name": "Apple Dev Dynamic Libraries",
+                    "description": "Apple. (2012, July 23). Overview of Dynamic Libraries. Retrieved September 7, 2023.",
+                    "url": "https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/OverviewOfDynamicLibraries.html"
+                },
+                {
+                    "source_name": "Unit42 OceanLotus 2017",
+                    "description": "Erye Hernandez and Danny Tsechansky. (2017, June 22). The New and Improved macOS Backdoor from OceanLotus. Retrieved September 8, 2023.",
+                    "url": "https://unit42.paloaltonetworks.com/unit42-new-improved-macos-backdoor-oceanlotus/"
+                },
+                {
+                    "source_name": "Microsoft DLL",
+                    "description": "Microsoft. (2023, April 28). What is a DLL. Retrieved September 7, 2023.",
+                    "url": "https://learn.microsoft.com/troubleshoot/windows-client/deployment/dynamic-link-library"
+                },
+                {
+                    "source_name": "Linux Shared Libraries",
+                    "description": "Wheeler, D. (2003, April 11). Shared Libraries. Retrieved September 7, 2023.",
+                    "url": "https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

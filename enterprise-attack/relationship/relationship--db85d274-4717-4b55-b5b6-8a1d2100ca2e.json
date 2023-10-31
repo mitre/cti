@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--ce76fa22-2d39-4bc8-8b9e-6f8661bcb0d2",
+    "id": "bundle--5760dfd7-d2fb-4de5-8a3a-4024fe28d477",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-03-29T20:21:39.071Z",
-            "description": "Monitor newly executed processes that may establish persistence by executing malicious content triggered by user inactivity.\n\n<h4> Implementation 1 : New processes whose image files are being used as Screensaver files and make an outbound network connection to unknown IP address </h4>\n\n<h5>Detection Pseudocode</h5>\n\n<code>new_processes = filter ProcessGuid, ProcessFilePath, ProcessCommandLine, UserName\nFROM ProcessCreationData\nWHERE\n  event_id == \"1\"\n\nnew_network_connections = filter ProcessFilePath, DestinationIp\nFROM NetworkConnectionData\nWHERE\n  event_id == \"3\"\n\nscreensaver_key_modification = filter ProcessGuid, ProcessFilePath, UserName, RegistryKeyPath, RegistryKeyValueData \nFROM KeyModificationData\nWHERE\n  event_id == \"13\" AND\n  RegistryKeyPath LIKE '%Software\\Policies\\Microsoft\\Windows\\Control Panel\\Desktop\\SCRNSAVE.EXE%'\n\nscreensaver_processes = filter p.ProcessGuid, p.ProcessFilePath, p.UserName\nFROM new_processes p\nINNER JOIN screensaver_key_modification k\nON p.ProcessFilePath = k.RegistryKeyValueData\n\nsuspicious_processes = filter p.ProcessGuid, p.ProcessFilePath, p.UserName, n.DestinationIp\nFROM new_network_connections n\nINNER JOIN screensaver_processes p\nON p.ProcessFilePath = n.ProcessFilePath\nWHERE\n  n.DestinationIP NOT IN ('KnownIp01','KnownIp02')</code>\n",
+            "modified": "2023-08-23T22:01:23.707Z",
+            "description": "Monitor newly executed processes that may establish persistence by executing malicious content triggered by user inactivity.\n\n<h4> Analytic 1 : New processes whose image files are being used as Screensaver files and make an outbound network connection to unknown IP address </h4>\n<code>new_processes = filter ProcessGuid, ProcessFilePath, ProcessCommandLine, UserName\nFROM ProcessCreationData\nWHERE\n  event_id == \"1\"\n\nnew_network_connections = filter ProcessFilePath, DestinationIp\nFROM NetworkConnectionData\nWHERE\n  event_id == \"3\"\n\nscreensaver_key_modification = filter ProcessGuid, ProcessFilePath, UserName, RegistryKeyPath, RegistryKeyValueData \nFROM KeyModificationData\nWHERE\n  event_id == \"13\" AND\n  RegistryKeyPath LIKE '%Software\\Policies\\Microsoft\\Windows\\Control Panel\\Desktop\\SCRNSAVE.EXE%'\n\nscreensaver_processes = filter p.ProcessGuid, p.ProcessFilePath, p.UserName\nFROM new_processes p\nINNER JOIN screensaver_key_modification k\nON p.ProcessFilePath = k.RegistryKeyValueData\n\nsuspicious_processes = filter p.ProcessGuid, p.ProcessFilePath, p.UserName, n.DestinationIp\nFROM new_network_connections n\nINNER JOIN screensaver_processes p\nON p.ProcessFilePath = n.ProcessFilePath\nWHERE\n  n.DestinationIP NOT IN ('KnownIp01','KnownIp02')</code>\n",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--ce4b7013-640e-48a9-b501-d0025a95f4bf",

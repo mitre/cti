@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--5f194ae8-f141-4a3d-bb4e-20619bdf772c",
+    "id": "bundle--12599e1e-d8e3-403b-85d2-d60bb40d2ccb",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-04-10T18:50:48.413Z",
-            "description": "Monitor for newly constructed processes and/or command-lines of \"wmic\u201d. If the command line utility\u00a0<code>wmic.exe</code>\u00a0is used on the source host, then it can additionally be detected on an analytic. The command line on the source host is constructed into something like\u00a0<code>wmic.exe /node:\"\\<hostname\\>\" process call create \"\\<command line\\>\"</code>. It is possible to also connect via IP address, in which case the string\u00a0<code>\"\\<hostname\\>\"</code> would instead look like\u00a0IP Address. Processes can be created remotely via WMI in a few other ways, such as more direct API access or the built-in utility\u00a0PowerShell.\n\n<h4> Implementation 1 : Create Remote Process via WMIC</h4>\n\n<h5>Detection Pseudocode</h5>\n<code> processes = filter processes where ((event_id=\"10\" OR event_id=\"4688\") AND exe == \"wmic.exe\" AND command_line == \"* process call create *\")</code>\n\n<h4>Detection Notes</h4>\n\n- Pseudocode Event IDs are for Sysmon (Event ID 10 - process access) and Windows Security Log (Event ID 4688 - a new process has been created). \n- Besides executing arbitrary processes, wmic.exe can also be used to executed data stored in NTFS alternate data streams [NTFS File Attributes](https://attack.mitre.org/techniques/T1564/004).\nLooks for instances of wmic.exe as well as the substrings in the command line:\n         - process call create\n         - /node:",
+            "modified": "2023-08-23T21:05:24.276Z",
+            "description": "Monitor for newly constructed processes and/or command-lines of \"wmic\u201d. If the command line utility\u00a0<code>wmic.exe</code>\u00a0is used on the source host, then it can additionally be detected on an analytic. The command line on the source host is constructed into something like\u00a0<code>wmic.exe /node:\"\\<hostname\\>\" process call create \"\\<command line\\>\"</code>. It is possible to also connect via IP address, in which case the string\u00a0<code>\"\\<hostname\\>\"</code> would instead look like\u00a0IP Address. Processes can be created remotely via WMI in a few other ways, such as more direct API access or the built-in utility\u00a0PowerShell.\n\nNote: Event IDs are for Sysmon (Event ID 10 - process access) and Windows Security Log (Event ID 4688 - a new process has been created). \n\nBesides executing arbitrary processes, wmic.exe can also be used to executed data stored in NTFS alternate data streams [NTFS File Attributes](https://attack.mitre.org/techniques/T1564/004).\nLooks for instances of wmic.exe as well as the substrings in the command line:\n- process call create\n- /node:\n\n<h4> Analytic 1 : Create Remote Process via WMIC</h4>\n<code> processes = filter processes where ((event_id=\"10\" OR event_id=\"4688\") AND exe == \"wmic.exe\" AND command_line == \"* process call create *\")</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--01a5a209-b94c-450b-b7f9-946497d91055",

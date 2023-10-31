@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--856bbdcd-3c1c-4234-a494-e9487433b5aa",
+    "id": "bundle--a9613ad6-ebad-49aa-b3e3-3607ce675ffe",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--ff4cd6a5-1261-4f64-9f27-3507147be7ec",
+            "created": "2022-03-30T14:26:51.876Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--ff4cd6a5-1261-4f64-9f27-3507147be7ec",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.876Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.876Z",
-            "description": "Monitor for newly executed processes that may abuse the Windows command shell for execution.",
+            "modified": "2023-08-25T19:41:32.084Z",
+            "description": "Monitor for newly executed processes that may abuse the Windows command shell for execution.\n\nNote: This Analytic works by creating a baseline of parent processes of [cmd](https://attack.mitre.org/software/S0106) seen over the last 30 days and a list of parent processes of [cmd](https://attack.mitre.org/software/S0106) seen today. Parent processes in the baseline are removed from the set of parent processes seen today, leaving a list of new parent processes. This analytic attempts to identify suspicious programs spawning [cmd](https://attack.mitre.org/software/S0106) by looking for programs that do not normally create [cmd](https://attack.mitre.org/software/S0106).\u00a0 It is very common for some programs to spawn [cmd](https://attack.mitre.org/software/S0106) as a subprocess, for example to run batch files or Windows commands. However, many processes don\u2019t routinely launch a command prompt - e.g., Microsoft Outlook. A command prompt being launched from a process that normally doesn\u2019t launch command prompts could be the result of malicious code being injected into that process, or of an attacker replacing a legitimate program with a malicious one.\n\n<h4>Analytic 1</h4>\n<code>cmd == filter processes where ((event_id == \"1\" OR event_id == \"4688\") AND exe == \"cmd.exe\")\ncmd == from cmd select parent_exe\nhistoric_cmd == filter cmd (where timestamp < now - 1 day AND timestamp > now - 1 day)\ncurrent_cmd == filter cmd (where timestamp >= now - 1 day)\nnew_cmd == historic_cmd - current_cmd </code>",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--d1fcf083-a721-4223-aedf-bf8960798d62",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

@@ -1,45 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--e4693d89-76c9-4028-92d1-091f337624f6",
+    "id": "bundle--f81d5d34-59b0-4ec1-b68c-af07659ff07b",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Mathieu Tartare, ESET"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--2de47683-f398-448f-b947-9abcc3e32fad",
-            "type": "attack-pattern",
-            "created": "2020-10-05T13:24:49.780Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1547.012",
-                    "url": "https://attack.mitre.org/techniques/T1547/012"
-                },
-                {
-                    "source_name": "Microsoft AddPrintProcessor May 2018",
-                    "url": "https://docs.microsoft.com/en-us/windows/win32/printdocs/addprintprocessor",
-                    "description": "Microsoft. (2018, May 31). AddPrintProcessor function. Retrieved October 5, 2020."
-                },
-                {
-                    "source_name": "ESET PipeMon May 2020",
-                    "url": "https://www.welivesecurity.com/2020/05/21/no-game-over-winnti-group/",
-                    "description": "Tartare, M. et al. (2020, May 21). No \u201cGame over\u201d for the Winnti Group. Retrieved August 24, 2020."
-                }
-            ],
-            "modified": "2020-10-09T16:05:36.344Z",
+            "modified": "2023-10-04T14:16:17.655Z",
             "name": "Print Processors",
-            "description": "Adversaries may abuse print processors to run malicious DLLs during system boot for persistence and/or privilege escalation. Print processors are DLLs that are loaded by the print spooler service, spoolsv.exe, during boot. \n\nAdversaries may abuse the print spooler service by adding print processors that load malicious DLLs at startup. A print processor can be installed through the <code>AddPrintProcessor</code> API call with an account that has <code>SeLoadDriverPrivilege</code> enabled. Alternatively, a print processor can be registered to the print spooler service by adding the <code>HKLM\\SYSTEM\\\\[CurrentControlSet or ControlSet001]\\Control\\Print\\Environments\\\\[Windows architecture: e.g., Windows x64]\\Print Processors\\\\[user defined]\\Driver</code> Registry key that points to the DLL. For the print processor to be correctly installed, it must be located in the system print-processor directory that can be found with the <code>GetPrintProcessorDirectory</code> API call.(Citation: Microsoft AddPrintProcessor May 2018) After the print processors are installed, the print spooler service, which starts during boot, must be restarted in order for them to run.(Citation: ESET PipeMon May 2020) The print spooler service runs under SYSTEM level permissions, therefore print processors installed by an adversary may run under elevated privileges.",
+            "description": "Adversaries may abuse print processors to run malicious DLLs during system boot for persistence and/or privilege escalation. Print processors are DLLs that are loaded by the print spooler service, `spoolsv.exe`, during boot.(Citation: Microsoft Intro Print Processors)\n\nAdversaries may abuse the print spooler service by adding print processors that load malicious DLLs at startup. A print processor can be installed through the <code>AddPrintProcessor</code> API call with an account that has <code>SeLoadDriverPrivilege</code> enabled. Alternatively, a print processor can be registered to the print spooler service by adding the <code>HKLM\\SYSTEM\\\\[CurrentControlSet or ControlSet001]\\Control\\Print\\Environments\\\\[Windows architecture: e.g., Windows x64]\\Print Processors\\\\[user defined]\\Driver</code> Registry key that points to the DLL.\n\nFor the malicious print processor to be correctly installed, the payload must be located in the dedicated system print-processor directory, that can be found with the <code>GetPrintProcessorDirectory</code> API call, or referenced via a relative path from this directory.(Citation: Microsoft AddPrintProcessor May 2018) After the print processors are installed, the print spooler service, which starts during boot, must be restarted in order for them to run.(Citation: ESET PipeMon May 2020)\n\nThe print spooler service runs under SYSTEM level permissions, therefore print processors installed by an adversary may run under elevated privileges.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -50,21 +17,63 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
+            "x_mitre_contributors": [
+                "Mathieu Tartare, ESET",
+                "Tahseen Bin Taj"
+            ],
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor process API calls to <code>AddPrintProcessor</code> and <code>GetPrintProcessorDirectory</code>. New print processor DLLs are written to the print processor directory. Also monitor Registry writes to <code>HKLM\\SYSTEM\\ControlSet001\\Control\\Print\\Environments\\\\[Windows architecture]\\Print Processors\\\\[user defined]\\\\Driver</code> or <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Print\\Environments\\\\[Windows architecture]\\Print Processors\\\\[user defined]\\Driver</code> as they pertain to print processor installations.\n\nMonitor for abnormal DLLs that are loaded by spoolsv.exe. Print processors that do not correlate with known good software or patching may be suspicious.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "1.1",
             "x_mitre_data_sources": [
-                "Module: Module Load",
-                "Driver: Driver Load",
+                "Windows Registry: Windows Registry Key Modification",
                 "File: File Creation",
-                "Process: OS API Execution",
-                "Windows Registry: Windows Registry Key Modification"
+                "Driver: Driver Load",
+                "Module: Module Load",
+                "Process: OS API Execution"
             ],
             "x_mitre_permissions_required": [
                 "Administrator",
                 "SYSTEM"
-            ]
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--2de47683-f398-448f-b947-9abcc3e32fad",
+            "created": "2020-10-05T13:24:49.780Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1547/012",
+                    "external_id": "T1547.012"
+                },
+                {
+                    "source_name": "Microsoft AddPrintProcessor May 2018",
+                    "description": "Microsoft. (2018, May 31). AddPrintProcessor function. Retrieved October 5, 2020.",
+                    "url": "https://docs.microsoft.com/en-us/windows/win32/printdocs/addprintprocessor"
+                },
+                {
+                    "source_name": "Microsoft Intro Print Processors",
+                    "description": "Microsoft. (2023, June 26). Introduction to print processors. Retrieved September 27, 2023.",
+                    "url": "https://learn.microsoft.com/windows-hardware/drivers/print/introduction-to-print-processors"
+                },
+                {
+                    "source_name": "ESET PipeMon May 2020",
+                    "description": "Tartare, M. et al. (2020, May 21). No \u201cGame over\u201d for the Winnti Group. Retrieved August 24, 2020.",
+                    "url": "https://www.welivesecurity.com/2020/05/21/no-game-over-winnti-group/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

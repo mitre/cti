@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--56dec2e2-346b-41b9-a93b-a41efcf882c3",
+    "id": "bundle--80d38905-64e7-4806-82a2-39efbf0ea962",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-03-31T16:34:24.906Z",
-            "description": "Monitor for newly executed processes that may circumvent mechanisms designed to control elevate privileges to gain higher-level permissions.\n\n<h4> Implementation 1 : Get System Elevation </h4>\n\n<h5> Detection Pseudocode </h5>\n\n<code> suspicious_processes = filter processes where (\n  (parent_image_path == C:\\Windows\\System32\\services.exe\" AND\n   image_path == \"C:\\Windows\\System32\\cmd.exe\" AND\n   command_line == \"*echo*\" AND\n   command_line == \"*\\pipe\\*\") OR\n  (image_path == \"C:\\Windows\\System32\\rundll32.exe\" AND\n   command_line == \"*,a /p:*\")) </code>\n\n<h4> Detection Notes </h4>\n\n- Cyber actors frequently escalate to the SYSTEM account after gaining entry to a Windows host, to enable them to carry out various attacks more effectively. Tools such as Meterpreter, Cobalt Strike, and Empire carry out automated steps to \u201cGet System\u201d, which is the same as switching over to the System user account. Most of these tools utilize multiple techniques to try and attain SYSTEM: in the first technique, they create a named pipe and connects an instance of cmd.exe to it, which allows them to impersonate the security context of cmd.exe, which is SYSTEM. In the second technique, a malicious DLL is injected into a process that is running as SYSTEM; the injected DLL steals the SYSTEM token and applies it where necessary to escalate privileges. This analytic looks for both of these techniques.",
+            "modified": "2023-08-23T22:09:20.383Z",
+            "description": "Monitor for newly executed processes that may circumvent mechanisms designed to control elevate privileges to gain higher-level permissions. Cyber actors frequently escalate to the SYSTEM account after gaining entry to a Windows host, to enable them to carry out various attacks more effectively. Tools such as Meterpreter, Cobalt Strike, and Empire carry out automated steps to \u201cGet System\u201d, which is the same as switching over to the System user account. Most of these tools utilize multiple techniques to try and attain SYSTEM: in the first technique, they create a named pipe and connects an instance of cmd.exe to it, which allows them to impersonate the security context of cmd.exe, which is SYSTEM. In the second technique, a malicious DLL is injected into a process that is running as SYSTEM; the injected DLL steals the SYSTEM token and applies it where necessary to escalate privileges. This analytic looks for both of these techniques.\n\n<h4> Analytic 1 : Get System Elevation </h4>\n<code> suspicious_processes = filter processes where (\n  (parent_image_path == C:\\Windows\\System32\\services.exe\" AND\n   image_path == \"C:\\Windows\\System32\\cmd.exe\" AND\n   command_line == \"*echo*\" AND\n   command_line == \"*\\pipe\\*\") OR\n  (image_path == \"C:\\Windows\\System32\\rundll32.exe\" AND\n   command_line == \"*,a /p:*\")) </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--67720091-eee3-4d2d-ae16-8264567f6f5b",

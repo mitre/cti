@@ -1,42 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--5f26a0ce-cd6b-4f47-8cf9-72b7214d48b2",
+    "id": "bundle--90151aff-154a-4500-aabd-6520ca96fdff",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Robert Wilson",
-                "Katie & Tony Lambert",
-                "Joe Gervais"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--01df3350-ce05-4bdf-bdf8-0a919a66d4a8",
-            "type": "attack-pattern",
-            "created": "2017-12-14T16:46:06.044Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "revoked": true,
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1156",
-                    "url": "https://attack.mitre.org/techniques/T1156"
-                },
-                {
-                    "source_name": "intezer-kaiji-malware",
-                    "url": "https://www.intezer.com/blog/research/kaiji-new-chinese-linux-malware-turning-to-golang/",
-                    "description": "Paul Litvak. (2020, May 4). Kaiji: New Chinese Linux malware turning to Golang. Retrieved December 17, 2020."
-                }
-            ],
-            "modified": "2020-12-22T15:49:33.947Z",
+            "modified": "2023-10-15T20:24:13.473Z",
             "name": "Malicious Shell Modification",
             "description": "Adversaries may establish persistence through executing malicious commands triggered by a user\u2019s shell. User shells execute several configuration scripts at different points throughout the session based on events. For example, when a user opens a command line interface or remotely logs in (such as SSH) a login shell is initiated. The login shell executes scripts from the system (/etc) and the user\u2019s home directory (~/) to configure the environment. All login shells on a system use <code>/etc/profile</code> when initiated. These configuration scripts run at the permission level of their directory and are often used to set environment variables, create aliases, and customize the user\u2019s environment. When the shell exits or terminates, additional shell scripts are executed to ensure the shell exits appropriately. \n\nAdversaries may attempt to establish persistence by inserting commands into scripts automatically executed by shells. Using bash as an example, the default shell for most GNU/Linux systems, adversaries may add commands that launch malicious binaries into the <code>/etc/profile</code> and <code>/etc/profile.d</code> files (Citation: intezer-kaiji-malware). These files require root permissions and are executed each time any shell on a system launches. For user level permissions, adversaries can insert malicious commands into <code>~/.bash_profile</code>, <code>~/.bash_login</code>, or <code>~/.profile</code> (Rocke) which are sourced when a user opens a command line interface or connects remotely. Adversaries often use ~/.bash_profile since the system only executes the first file that exists in the listed order. Adversaries have also leveraged the <code>~/.bashrc</code> file (Tsunami, Rocke, Linux Rabbit, Magento) which is additionally executed if the connection is established remotely or an additional interactive shell is opened, such as a new tab in the command line interface. Some malware targets the termination of a program to trigger execution (Cannon), adversaries can use the <code>~/.bash_logout</code> file to execute malicious commands at the end of a session(Pearl_shellbot). \n\nFor macOS, the functionality of this technique is similar but leverages zsh, the default shell for macOS 10.15+. When the Terminal.app is opened, the application launches a zsh login shell and a zsh interactive shell. The login shell configures the system environment using <code>/etc/profile</code>, <code>/etc/zshenv</code>, <code>/etc/zprofile</code>, and <code>/etc/zlogin</code>. The login shell then configures the user environment with <code>~/.zprofile</code> and <code>~/.zlogin</code>. The interactive shell uses the <code>~/.zshrc<code> to configure the user environment. Upon exiting, <code>/etc/zlogout</code> and <code>~/.zlogout</code> are executed. For legacy programs, macOS executes <code>/etc/bashrc</code> on startup.",
             "kill_chain_phases": [
@@ -45,14 +13,44 @@
                     "phase_name": "persistence"
                 }
             ],
-            "x_mitre_detection": "While users may customize their shell profile files, there are only certain types of commands that typically appear in these files. Monitor for abnormal commands such as execution of unknown programs, opening network sockets, or reaching out across the network when user profiles are loaded during the login process.\n\nMonitor for changes to /ect/profile and /etc/profile.d, these files should only be modified by system administrators. MacOS users can leverage Apple\u2019s Security Endpoint Framework using the ES_EVENT_TYPE_NOTIFY_WRITE(Citation: ESF_filemonitoring) function for monitoring these specific files. \n",
-            "x_mitre_version": "1.1",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
+            "x_mitre_contributors": [
+                "Robert Wilson",
+                "Joe Gervais",
+                "Tony Lambert, Red Canary"
             ],
-            "x_mitre_is_subtechnique": false
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "While users may customize their shell profile files, there are only certain types of commands that typically appear in these files. Monitor for abnormal commands such as execution of unknown programs, opening network sockets, or reaching out across the network when user profiles are loaded during the login process.\n\nMonitor for changes to /ect/profile and /etc/profile.d, these files should only be modified by system administrators. MacOS users can leverage Apple\u2019s Security Endpoint Framework using the ES_EVENT_TYPE_NOTIFY_WRITE function for monitoring these specific files. \n",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS"
+            ],
+            "x_mitre_version": "1.1",
+            "type": "attack-pattern",
+            "id": "attack-pattern--01df3350-ce05-4bdf-bdf8-0a919a66d4a8",
+            "created": "2017-12-14T16:46:06.044Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": true,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1156",
+                    "external_id": "T1156"
+                },
+                {
+                    "source_name": "intezer-kaiji-malware",
+                    "description": "Paul Litvak. (2020, May 4). Kaiji: New Chinese Linux malware turning to Golang. Retrieved December 17, 2020.",
+                    "url": "https://www.intezer.com/blog/research/kaiji-new-chinese-linux-malware-turning-to-golang/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

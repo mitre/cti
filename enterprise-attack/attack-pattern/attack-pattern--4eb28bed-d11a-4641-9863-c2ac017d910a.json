@@ -1,10 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--ae920593-225d-4243-b2a2-80e855ebc12d",
+    "id": "bundle--d4f01c75-9e81-436d-867b-18bf5bf85c38",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-03-17T23:24:19.730Z",
+            "modified": "2023-09-18T22:33:57.556Z",
             "name": "Disable Windows Event Logging",
             "description": "Adversaries may disable Windows event logging to limit data that can be leveraged for detections and audits. Windows event logs record user and system activity such as login attempts, process creation, and much more.(Citation: Windows Log Events) This data is used by security tools and analysts to generate detections.\n\nThe EventLog service maintains event logs from various system components and applications.(Citation: EventLog_Core_Technologies) By default, the service automatically starts when a system powers on. An audit policy, maintained by the Local Security Policy (secpol.msc), defines which system events the EventLog service logs. Security audit policy settings can be changed by running secpol.msc, then navigating to <code>Security Settings\\Local Policies\\Audit Policy</code> for basic audit policy settings or <code>Security Settings\\Advanced Audit Policy Configuration</code> for advanced audit policy settings.(Citation: Audit_Policy_Microsoft)(Citation: Advanced_sec_audit_policy_settings) <code>auditpol.exe</code> may also be used to set audit policies.(Citation: auditpol)\n\nAdversaries may target system-wide logging or just that of a particular application. For example, the Windows EventLog service may be disabled using the <code>Set-Service -Name EventLog -Status Stopped</code> or <code>sc config eventlog start=disabled</code> commands (followed by manually stopping the service using <code>Stop-Service  -Name EventLog</code>).(Citation: Disable_Win_Event_Logging)(Citation: disable_win_evt_logging) Additionally, the service may be disabled by modifying the \u201cStart\u201d value in <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\EventLog</code> then restarting the system for the change to take effect.(Citation: disable_win_evt_logging)\n\nThere are several ways to disable the EventLog service via registry key modification. First, without Administrator privileges, adversaries may modify the \"Start\" value in the key <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\EventLog-Security</code>, then reboot the system to disable the Security EventLog.(Citation: winser19_file_overwrite_bug_twitter) Second, with Administrator privilege, adversaries may modify the same values in <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\EventLog-System</code> and <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\EventLog-Application</code> to disable the entire EventLog.(Citation: disable_win_evt_logging)\n\nAdditionally, adversaries may use <code>auditpol</code> and its sub-commands in a command prompt to disable auditing or clear the audit policy. To enable or disable a specified setting or audit category, adversaries may use the <code>/success</code> or <code>/failure</code> parameters. For example, <code>auditpol /set /category:\u201dAccount Logon\u201d /success:disable /failure:disable</code> turns off auditing for the Account Logon category.(Citation: auditpol.exe_STRONTIC)(Citation: T1562.002_redcanaryco) To clear the audit policy, adversaries may run the following lines: <code>auditpol /clear /y</code> or <code>auditpol /remove /allusers</code>.(Citation: T1562.002_redcanaryco)\n\nBy disabling Windows event logging, adversaries can operate while leaving less evidence of a compromise behind.",
             "kill_chain_phases": [
@@ -26,14 +26,15 @@
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_version": "1.2",
+            "x_mitre_version": "1.3",
             "x_mitre_data_sources": [
-                "Windows Registry: Windows Registry Key Creation",
-                "Process: Process Creation",
                 "Sensor Health: Host Status",
+                "Command: Command Execution",
+                "Windows Registry: Windows Registry Key Modification",
                 "Script: Script Execution",
-                "Application Log: Application Log Content",
-                "Command: Command Execution"
+                "Process: Process Creation",
+                "Windows Registry: Windows Registry Key Creation",
+                "Application Log: Application Log Content"
             ],
             "x_mitre_defense_bypassed": [
                 "Log analysis"

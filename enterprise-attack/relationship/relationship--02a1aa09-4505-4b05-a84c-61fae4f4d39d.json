@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--9fb34068-ca1b-4baf-8717-47a874ed780f",
+    "id": "bundle--257c68ee-1faf-4757-84b2-b233190bf7f2",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-03-24T14:57:16.898Z",
-            "description": "Monitor for newly constructed registry keys upon creation of new task. Deletion of values/keys in the registry may further indicate malicious activity.\n\n<h4>Implementation 1 : Suspicious Creations under Schedule Registry Key </h4>\n\n<h5>Detection Pseudocode</h5>\n<code> suspicious_processes = filter ProcessGuid, ProcessFilePath, RegistryKeyPath, UserName where event_id == \"12\" AND\n  (RegistryKeyPath LIKE '%HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tasks%' OR \n   RegistryKeyPath LIKE '%HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tree%')</code>\n\n<h4>Detection Notes</h4>\n\n- For Windows Sysmon event id 12, installation of application with configuration file is required.\n- For Windows Sysmon event id 12, addition of CreateKey events in config file is required.\n",
+            "modified": "2023-08-23T21:07:10.315Z",
+            "description": "Monitor for newly constructed registry keys upon creation of new task. Deletion of values/keys in the registry may further indicate malicious activity.\n\nNote: Sysmon event id 12 is used in the analytic\n\n<h4>Analytic 1 : Suspicious Creations under Schedule Registry Key </h4>\n<code> suspicious_processes = filter ProcessGuid, ProcessFilePath, RegistryKeyPath, UserName where event_id == \"12\" AND\n  (RegistryKeyPath LIKE '%HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tasks%' OR \n   RegistryKeyPath LIKE '%HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tree%')</code>\n\n",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--7f70fae7-a68d-4730-a83a-f260b9606129",
             "target_ref": "attack-pattern--005a06c6-14bf-4118-afa0-ebcd8aebb0c9",

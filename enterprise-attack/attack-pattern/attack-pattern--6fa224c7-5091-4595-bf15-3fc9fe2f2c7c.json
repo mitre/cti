@@ -1,0 +1,97 @@
+{
+    "type": "bundle",
+    "id": "bundle--1c746c73-0ab0-41b1-b54e-c67a4d90ab4b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "modified": "2023-10-03T17:38:56.602Z",
+            "name": "Temporary Elevated Cloud Access",
+            "description": "Adversaries may abuse permission configurations that allow them to gain temporarily elevated access to cloud resources. Many cloud environments allow administrators to grant user or service accounts permission to request just-in-time access to roles, impersonate other accounts, pass roles onto resources and services, or otherwise gain short-term access to a set of privileges that may be distinct from their own. \n\nJust-in-time access is a mechanism for granting additional roles to cloud accounts in a granular, temporary manner. This allows accounts to operate with only the permissions they need on a daily basis, and to request additional permissions as necessary. Sometimes just-in-time access requests are configured to require manual approval, while other times the desired permissions are automatically granted.(Citation: Google Cloud Just in Time Access 2023)(Citation: Azure Just in Time Access 2023)\n\nAccount impersonation allows user or service accounts to temporarily act with the permissions of another account. For example, in GCP users with the `iam.serviceAccountTokenCreator` role can create temporary access tokens or sign arbitrary payloads with the permissions of a service account.(Citation: Google Cloud Service Account Authentication Roles) In Exchange Online, the `ApplicationImpersonation` role allows a service account to use the permissions associated with specified user accounts.(Citation: Microsoft Impersonation and EWS in Exchange) \n\nMany cloud environments also include mechanisms for users to pass roles to resources that allow them to perform tasks and authenticate to other services. While the user that creates the resource does not directly assume the role they pass to it, they may still be able to take advantage of the role's access -- for example, by configuring the resource to perform certain actions with the permissions it has been granted. In AWS, users with the `PassRole` permission can allow a service they create to assume a given role, while in GCP, users with the `iam.serviceAccountUser` role can attach a service account to a resource.(Citation: AWS PassRole)(Citation: Google Cloud Service Account Authentication Roles)\n\nWhile users require specific role assignments in order to use any of these features, cloud administrators may misconfigure permissions. This could result in escalation paths that allow adversaries to gain access to resources beyond what was originally intended.(Citation: Rhino Google Cloud Privilege Escalation)(Citation: Rhino Security Labs AWS Privilege Escalation)\n\n**Note:** this technique is distinct from [Additional Cloud Roles](https://attack.mitre.org/techniques/T1098/003), which involves assigning permanent roles to accounts rather than abusing existing permissions structures to gain temporarily elevated access to resources. However, adversaries that compromise a sufficiently privileged account may grant another account they control [Additional Cloud Roles](https://attack.mitre.org/techniques/T1098/003) that would allow them to also abuse these features. This may also allow for greater stealth than would be had by directly using the highly privileged account, especially when logs do not clarify when role impersonation is taking place.(Citation: CrowdStrike StellarParticle January 2022)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_contributors": [
+                "Arad Inbar, Fidelis Security"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_platforms": [
+                "IaaS",
+                "Azure AD",
+                "Office 365"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_data_sources": [
+                "User Account: User Account Modification"
+            ],
+            "type": "attack-pattern",
+            "id": "attack-pattern--6fa224c7-5091-4595-bf15-3fc9fe2f2c7c",
+            "created": "2023-07-10T16:37:15.672Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1548/005",
+                    "external_id": "T1548.005"
+                },
+                {
+                    "source_name": "AWS PassRole",
+                    "description": "AWS. (n.d.). Granting a user permissions to pass a role to an AWS service. Retrieved July 10, 2023.",
+                    "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_passrole.html"
+                },
+                {
+                    "source_name": "CrowdStrike StellarParticle January 2022",
+                    "description": "CrowdStrike. (2022, January 27). Early Bird Catches the Wormhole: Observations from the StellarParticle Campaign. Retrieved February 7, 2022.",
+                    "url": "https://www.crowdstrike.com/blog/observations-from-the-stellarparticle-campaign/"
+                },
+                {
+                    "source_name": "Google Cloud Just in Time Access 2023",
+                    "description": "Google Cloud. (n.d.). Manage just-in-time privileged access to projects. Retrieved September 21, 2023.",
+                    "url": "https://cloud.google.com/architecture/manage-just-in-time-privileged-access-to-project"
+                },
+                {
+                    "source_name": "Google Cloud Service Account Authentication Roles",
+                    "description": "Google Cloud. (n.d.). Roles for service account authentication. Retrieved July 10, 2023.",
+                    "url": "https://cloud.google.com/iam/docs/service-account-permissions"
+                },
+                {
+                    "source_name": "Microsoft Impersonation and EWS in Exchange",
+                    "description": "Microsoft. (2022, September 13). Impersonation and EWS in Exchange. Retrieved July 10, 2023.",
+                    "url": "https://learn.microsoft.com/en-us/exchange/client-developer/exchange-web-services/impersonation-and-ews-in-exchange"
+                },
+                {
+                    "source_name": "Azure Just in Time Access 2023",
+                    "description": "Microsoft. (2023, August 29). Configure and approve just-in-time access for Azure Managed Applications. Retrieved September 21, 2023.",
+                    "url": "https://learn.microsoft.com/en-us/azure/azure-resource-manager/managed-applications/approve-just-in-time-access"
+                },
+                {
+                    "source_name": "Rhino Security Labs AWS Privilege Escalation",
+                    "description": "Spencer Gietzen. (n.d.). AWS IAM Privilege Escalation \u2013 Methods and Mitigation. Retrieved May 27, 2022.",
+                    "url": "https://rhinosecuritylabs.com/aws/aws-privilege-escalation-methods-mitigation/"
+                },
+                {
+                    "source_name": "Rhino Google Cloud Privilege Escalation",
+                    "description": "Spencer Gietzen. (n.d.). Privilege Escalation in Google Cloud Platform \u2013 Part 1 (IAM). Retrieved September 21, 2023.",
+                    "url": "https://rhinosecuritylabs.com/gcp/privilege-escalation-google-cloud-platform-part-1/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+        }
+    ]
+}

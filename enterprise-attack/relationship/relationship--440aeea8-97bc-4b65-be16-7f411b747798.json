@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--3d1a368b-28c8-492b-80ea-f6c7ddd6e431",
+    "id": "bundle--724a8a26-c8bf-45a1-8914-875d1ad75d72",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-03-21T00:17:37.813Z",
-            "description": "Monitor for newly executed processes that may abuse PowerShell commands and scripts for execution.\n\n<h4>Implementation 1: Non-interactive Powershell Sessions</h4>\n\n<h5>Detection Pseudocode</h5>\n<code>processes = filter process where ((event_id=\"10\" OR event_id=\"4688\") AND exe == \"powershell.exe\" AND parent_exe != \"explorer.exe\")</code>\n\n<h4>Implementation 2: Remote Powershell Sessions</h4>\n\n<h5>Detection Pseudocode</h5>\n<code>processes = filter process where ((event_id=\"10\" OR event_id=\"4688\") AND exe == \"wsmprovhost.exe\" and parent_exe == \"svchost.exe\")</code>\n\n<h4>Detection Notes</h4>\n\n- Pseudocode Event IDs are for Sysmon (Event ID 10 - process access) and Windows Security Log (Event ID 4688 - a new process has been created). \n- The logic for Implementation 1 is based around detecting on non-interactive Powershell sessions (i.e., those not launched by a user through explorer.exe). This may lead to false positives when used in a production environment, so we recommend tuning any such analytics by including additional logic (e.g., looking for suspicious parent processes) that helps filter such events.\n- The logic for Implementation 2 is based around detecting on remote Powershell sessions. PowerShell can be used over WinRM to remotely run commands on a host. When a remote PowerShell session starts, svchost.exe executes wsmprovhost.exe.",
+            "modified": "2023-08-23T21:11:45.871Z",
+            "description": "Monitor for newly executed processes that may abuse PowerShell commands and scripts for execution.\n\nNote: Event IDs are for Sysmon (Event ID 10 - process access) and Windows Security Log (Event ID 4688 - a new process has been created). \n- The logic for Analytic 1 is based around detecting on non-interactive Powershell sessions (i.e., those not launched by a user through explorer.exe). This may lead to false positives when used in a production environment, so we recommend tuning any such analytics by including additional logic (e.g., looking for suspicious parent processes) that helps filter such events.\n- The logic for Analytic 2 is based around detecting on remote Powershell sessions. PowerShell can be used over WinRM to remotely run commands on a host. When a remote PowerShell session starts, svchost.exe executes wsmprovhost.exe.\n\n<h4>Analytic 1- Non-interactive Powershell Sessions</h4>\n<code>processes = filter process where ((event_id=\"10\" OR event_id=\"4688\") AND exe == \"powershell.exe\" AND parent_exe != \"explorer.exe\")</code>\n\n<h4>Analytic 2- Remote Powershell Sessions</h4>\n<code>processes = filter process where ((event_id=\"10\" OR event_id=\"4688\") AND exe == \"wsmprovhost.exe\" and parent_exe == \"svchost.exe\")</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--970a3432-3237-47ad-bcca-7d8cbb217736",

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--e3431b13-738f-4727-acac-160fdb91885b",
+    "id": "bundle--0c63e2b6-94c0-4898-9293-afa5ec0ca694",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-04-21T12:48:26.808Z",
-            "description": "Monitor for API calls (such as <code>RegOpenKeyExA</code>) that may interact with the Windows Registry to gather information about the system, configuration, and installed software.\n\n<h4> Implementation 1 : Suspicious API Calls</h4>\n\n<h5>Detection Pseudocode</h5>\n<code>suspicious_apis = filter api_calls where\n  ApiName LIKE '%RegOpenKeyEx%' OR\n  ApiName LIKE '%RegOpenUserClassesRoot%'</code>\n\n<h4>Detection Notes</h4>\n\n- Most EDR tools do not support direct monitoring of API calls due to the sheer volume of calls produced by an endpoint but may have alerts or events that are based on abstractions of OS API calls.\n- OS API calls associated with querying the Windows Registry are RegOpenKeyEx , RegOpenUserClassesRoot, RegQueryValueExA, and RegQueryValueExW. Execution of these functions might trigger security log ids such as 4663 (Microsoft Security Auditing).\n- RegOpenKeyEx api opens the specified registry key.\n- RegOpenUserClassesRoot api retrieves a handle to the\u00a0HKEY_CLASSES_ROOT key for a specified user. The returned key has a view of the registry that merges the contents of the\u00a0HKEY_LOCAL_MACHINE\\Software\\Classes key with the contents of the Software\\Classes keys in the user's registry hive.",
+            "modified": "2023-08-23T18:14:39.414Z",
+            "description": "Monitor for API calls (such as <code>RegOpenKeyExA</code>) that may interact with the Windows Registry to gather information about the system, configuration, and installed software. OS API calls associated with querying the Windows Registry are RegOpenKeyEx , RegOpenUserClassesRoot, RegQueryValueExA, and RegQueryValueExW. Execution of these functions might trigger security log ids such as 4663 (Microsoft Security Auditing). Also monitor for RegOpenUserClassesRoot api to retrieve a handle to the\u00a0HKEY_CLASSES_ROOT key for a specified user. The returned key has a view of the registry that merges the contents of the\u00a0HKEY_LOCAL_MACHINE\\Software\\Classes key with the contents of the Software\\Classes keys in the user's registry hive.\n\nNote: Most EDR tools do not support direct monitoring of API calls due to the sheer volume of calls produced by an endpoint but may have alerts or events that are based on abstractions of OS API calls.\n\n<h4> Analytic 1 - Suspicious API Calls</h4>\n<code>suspicious_apis = filter api_calls where\n  ApiName LIKE '%RegOpenKeyEx%' OR\n  ApiName LIKE '%RegOpenUserClassesRoot%'</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
             "target_ref": "attack-pattern--c32f7008-9fea-41f7-8366-5eb9b74bd896",

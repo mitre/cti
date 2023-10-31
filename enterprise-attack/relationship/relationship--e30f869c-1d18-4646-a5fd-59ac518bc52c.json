@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--81ddf9ab-4f05-4774-874d-a577ecfab9e8",
+    "id": "bundle--385826c5-7dff-4351-b81c-6b8dffa08578",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-03-29T18:01:33.830Z",
-            "description": "Monitor for changes made to Windows services to repeatedly execute malicious payloads as part of persistence.\n\n<h4> Implementation 1 : System services via registry modifications </h4>\n\n<h5> Detection Pseudocode </h5>\n<code> suspicious_processes = filter ProcessGuid, ProcessFilePath, RegistryKeyPath, UserName \nwhere\n  event_id == \"13\" AND\n  EventType == \"SetValue\" AND\n  RegistryKeyPath LIKE '%HKLM\\System\\CurrentControlSet\\Services\\%' AND\n  (RegistryKeyPath LIKE '%ImagePath%' OR \n   RegistryKeyPath LIKE '%Type%' OR\n   RegistryKeyPath LIKE '%DisplayName%' OR\n   RegistryKeyPath LIKE '%Objectname%')</code>\n\n<h4> Detection Notes </h4>\n\n- For Windows Sysmon event id 13, installation of application with configuration file is required.\n- For Windows Sysmon event id 13, addition of SetValue events in config file is required.",
+            "modified": "2023-08-23T21:59:00.006Z",
+            "description": "Monitor for changes made to Windows services to repeatedly execute malicious payloads as part of persistence.\n\n<h4>Analytic 1 : System services via registry modifications </h4>\n<code> suspicious_processes = filter ProcessGuid, ProcessFilePath, RegistryKeyPath, UserName \nwhere\n  event_id == \"13\" AND\n  EventType == \"SetValue\" AND\n  RegistryKeyPath LIKE '%HKLM\\System\\CurrentControlSet\\Services\\%' AND\n  (RegistryKeyPath LIKE '%ImagePath%' OR \n   RegistryKeyPath LIKE '%Type%' OR\n   RegistryKeyPath LIKE '%DisplayName%' OR\n   RegistryKeyPath LIKE '%Objectname%')</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--66531bc6-a509-4868-8314-4d599e91d222",
             "target_ref": "attack-pattern--2959d63f-73fd-46a1-abd2-109d7dcede32",

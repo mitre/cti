@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--7484936b-d1c5-4d1d-bdcd-1d6e316e291e",
+    "id": "bundle--d04b88d6-f931-4c9e-8a5c-5506c4479cbc",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-03-29T20:07:04.844Z",
-            "description": "Monitor newly constructed files that may establish persistence by executing malicious content triggered by user inactivity.\n\n<h4> Implementation 1 : Created on disk that are being used as Screensaver files </h4>\n\n<h5>Detection Pseudocode</h5>\n<code>screensaver_key_modification = filter ProcessGuid, ProcessFilePath, UserName, RegistryKeyPath, RegistryKeyValueData where\n  event_id == \"13\" AND\n  RegistryKeyPath LIKE '%Software\\Policies\\Microsoft\\Windows\\Control Panel\\Desktop\\SCRNSAVE.EXE%'\n\nnew_files = filter ProcessFilePath, UserName, FileName where event_id == \"11\"\n\nsuspicious_files = filter k.ProcessGuid, k.ProcessFilePath, k.UserName, k.RegistryKeypath, k.RegistryKeyValueData FROM screensaver_key_modification k\nINNER JOIN new_files f\nON k.RegistryKeyValueData = f.FileName </code>",
+            "modified": "2023-08-23T22:01:43.422Z",
+            "description": "Monitor newly constructed files that may establish persistence by executing malicious content triggered by user inactivity.\n\n<h4> Analytic 1 - Created on disk that are being used as Screensaver files </h4>\n<code>screensaver_key_modification = filter ProcessGuid, ProcessFilePath, UserName, RegistryKeyPath, RegistryKeyValueData where\n  event_id == \"13\" AND\n  RegistryKeyPath LIKE '%Software\\Policies\\Microsoft\\Windows\\Control Panel\\Desktop\\SCRNSAVE.EXE%'\n\nnew_files = filter ProcessFilePath, UserName, FileName where event_id == \"11\"\n\nsuspicious_files = filter k.ProcessGuid, k.ProcessFilePath, k.UserName, k.RegistryKeypath, k.RegistryKeyValueData FROM screensaver_key_modification k\nINNER JOIN new_files f\nON k.RegistryKeyValueData = f.FileName </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
             "target_ref": "attack-pattern--ce4b7013-640e-48a9-b501-d0025a95f4bf",

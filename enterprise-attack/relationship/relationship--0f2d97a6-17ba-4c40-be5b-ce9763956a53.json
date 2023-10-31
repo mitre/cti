@@ -1,29 +1,15 @@
 {
     "type": "bundle",
-    "id": "bundle--9e966131-d720-4e9c-ad18-d57d996093aa",
+    "id": "bundle--b8418c90-6ca3-489b-8219-cf58ff77799d",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "relationship--0f2d97a6-17ba-4c40-be5b-ce9763956a53",
             "type": "relationship",
+            "id": "relationship--0f2d97a6-17ba-4c40-be5b-ce9763956a53",
             "created": "2022-03-30T14:26:51.857Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.857Z",
-            "description": "The Streams tool of Sysinternals can be used to uncover files with ADSs. The <code>dir /r</code> command can also be used to display ADSs. (Citation: Symantec ADS May 2009) Many PowerShell commands (such as Get-Item, Set-Item, Remove-Item, and Get-ChildItem) can also accept a <code>-stream</code> parameter to interact with ADSs. (Citation: MalwareBytes ADS July 2015) (Citation: Microsoft ADS Mar 2014)",
-            "source_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
-            "target_ref": "attack-pattern--f2857333-11d4-45bf-b064-2c28d8525be5",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "external_references": [
-                {
-                    "source_name": "Symantec ADS May 2009",
-                    "description": "Pravs. (2009, May 25). What you need to know about alternate data streams in windows? Is your Data secure? Can you restore that?. Retrieved March 21, 2018.",
-                    "url": "https://www.symantec.com/connect/articles/what-you-need-know-about-alternate-data-streams-windows-your-data-secure-can-you-restore"
-                },
                 {
                     "source_name": "MalwareBytes ADS July 2015",
                     "description": "Arntz, P. (2015, July 22). Introduction to Alternate Data Streams. Retrieved March 21, 2018.",
@@ -33,8 +19,25 @@
                     "source_name": "Microsoft ADS Mar 2014",
                     "description": "Marlin, J. (2013, March 24). Alternate Data Streams in NTFS. Retrieved March 21, 2018.",
                     "url": "https://blogs.technet.microsoft.com/askcore/2013/03/24/alternate-data-streams-in-ntfs/"
+                },
+                {
+                    "source_name": "Symantec ADS May 2009",
+                    "description": "Pravs. (2009, May 25). What you need to know about alternate data streams in windows? Is your Data secure? Can you restore that?. Retrieved March 21, 2018.",
+                    "url": "https://www.symantec.com/connect/articles/what-you-need-know-about-alternate-data-streams-windows-your-data-secure-can-you-restore"
                 }
-            ]
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2023-09-19T12:44:17.477Z",
+            "description": "The Streams tool of Sysinternals can be used to uncover files with ADSs. The <code>dir /r</code> command can also be used to display ADSs. (Citation: Symantec ADS May 2009) Many PowerShell commands (such as Get-Item, Set-Item, Remove-Item, and Get-ChildItem) can also accept a <code>-stream</code> parameter to interact with ADSs. (Citation: MalwareBytes ADS July 2015) (Citation: Microsoft ADS Mar 2014)\n\n<h4>Analytic 1 - NTFS Alternate Data Stream Execution : System Utilities (Powershell)</h4>\n<code>ads_processes = filter processes where (event_id = 1 exe = \"C:\\\\Windows\\\\*\\\\powershell.exe\" AND command_line = \"Invoke-CimMethod\\s+-ClassName\\s+Win32_Process\\s+-MethodName\\s+Create.*\\b(\\w+(\\.\\w+)?):(\\w+(\\.\\w+)?)|-ep bypass\\s+-\\s+<.*\\b(\\w+(\\.\\w+)?):(\\w+(\\.\\w+)?)|-command.*Get-Content.*-Stream.*Set-Content.*start-process .*(\\w+(\\.\\w+)?)\"</code>\n\n<h4>Analytic 2 - NTFS Alternate Data Stream Execution : System Utilities (WMIC)</h4>\n<code>ads_processes = filter processes where (event_id = 1 exe = \"C:\\\\Windows\\\\*\\\\wmic.exe\" AND command_line = \"process call create.*\\\"(\\w+(\\.\\w+)?):(\\w+(\\.\\w+)?)\"<code>\n\n<h4>Analytic 3 - NTFS Alternate Data Stream Execution : System Utilities (rundll32)</h4>\n<code>ads_processes = filter processes where (event_id = 1 exe = \"C:\\\\Windows\\\\*\\\\rundll32.exe\" AND command_line = \"\\\"?(\\w+(\\.\\w+)?):(\\w+(\\.\\w+)?)?\\\"?,\\w+\\|(advpack\\.dll\\|ieadvpack\\.dll),RegisterOCX\\s+(\\w+\\.\\w+):(\\w+(\\.\\w+)?)\\|(shdocvw\\.dll\\|ieframe\\.dll),OpenURL.*(\\w+\\.\\w+):(\\w+(\\.\\w+)?)\"</code>\n\n<h4>Analytic 4 - NTFS Alternate Data Stream Execution : System Utilities (wscript/cscript)</h4>\n<code>ads_processes = filter processes where (event_id = 1 exe = \"C:\\\\Windows\\\\*\\\\wscript.exe\" OR exe = \"C:\\\\Windows\\\\*\\\\cscript.exe)\" AND command_line = \"(?<!\\/)\\b\\w+(\\.\\w+)?:\\w+(\\.\\w+)?$\"</code>",
+            "relationship_type": "detects",
+            "source_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+            "target_ref": "attack-pattern--f2857333-11d4-45bf-b064-2c28d8525be5",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

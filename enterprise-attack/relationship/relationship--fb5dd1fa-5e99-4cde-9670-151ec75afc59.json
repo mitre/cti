@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--6d47963e-9812-4aff-9bd0-a5de31f6e7ce",
+    "id": "bundle--38fd0c56-0fa5-4a00-aa98-bd98a29b496d",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--fb5dd1fa-5e99-4cde-9670-151ec75afc59",
+            "created": "2022-03-30T14:26:51.854Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--fb5dd1fa-5e99-4cde-9670-151ec75afc59",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.854Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.854Z",
-            "description": "Monitor for unusual processes with internal network connections creating files on-system may be suspicious",
+            "modified": "2023-08-25T20:14:12.687Z",
+            "description": "Monitor for unusual processes with internal network connections creating files on-system may be suspicious \n\nNote: Analytic Event Type is for Zeek but can also be implemented in other Network Analysis Frameworks by parsing & decoding captured SMB2 network traffic. From a network traffic capture standpoint, it\u2019s important to capture the right traffic for this type of detection to function (e.g., all endpoint to endpoint if possible or workstation to server and workstation to workstation). As such, it is helpful to have a centralized server area where it is possible to monitor communications between servers and endpoints.\n\n- Analytic 1 and 2 are very similar, with the key difference being that Implementation 2 is intended to capture multiple attempts at lateral movement originating from the same host within a short time period (5 minutes).\n\n<h4> Analytic 1 - Basic </h4>\n<code> suspicious_smb_traffic = filter log_events where (\n(event_id == \"smb2_write_response\" OR event_id == \"smb1_write_response\" OR event_id == \"smb1_write_andx_response\") AND (connection.smb_state.path == \"ADMIN$\" OR connection.smb_state.path == \"C$\") )</code>\n\n\n<h4>Analytic 2 - Multiple Attempts (Time Window)</h4>\n<code>suspicious_smb_traffic = filter log_events where (\n(event_id == \"smb2_write_response\" OR event_id == \"smb1_write_response\" OR event_id == \"smb1_write_andx_response\") AND (connection.smb_state.path == \"ADMIN$\" OR connection.smb_state.path == \"C$\") REPEATS 5 TIMES WITHIN 5 MINUTES FROM SAME src_ip)</code>",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
             "target_ref": "attack-pattern--bf90d72c-c00b-45e3-b3aa-68560560d4c5",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
