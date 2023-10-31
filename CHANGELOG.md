@@ -1,6 +1,12 @@
 
 # Changes to the ATT&CK/STIX Data Model
 
+## 31 October 2023 - ATT&CK Spec v3.2.0
+
+Changes to ATT&CK in STIX for October 2023 ATT&CK Content Release (ATT&CK v14.0)
+
+* Added Asset objects. For detailed information about the representation of Assets in ATT&CK/STIX, please see the assets section of the [USAGE document](https://github.com/mitre/cti/blob/master/USAGE.md#assets).
+
 ## 25 April 2023 - ATT&CK Spec v3.1.0
 
 Changes to ATT&CK in STIX for April 2023 ATT&CK Content Release (ATT&CK v13.0)
