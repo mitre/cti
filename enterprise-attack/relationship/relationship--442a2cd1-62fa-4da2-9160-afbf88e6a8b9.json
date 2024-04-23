@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--8b9f79fa-af2c-4a2f-a9eb-9a7bd0b0ace9",
+    "id": "bundle--93b78d1c-eed2-4f9c-9e05-2fe0324c199a",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-23T22:22:34.214Z",
-            "description": "Monitor newly executed processes for applications that can be used to query the Registry, such as [Reg](https://attack.mitre.org/software/S0075), and collect command parameters that may indicate credentials are being searched. Correlate activity with related suspicious behavior that may indicate an active intrusion to reduce false positives.\n\nNote: Pseudocode Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). The Analytic looks for command-line instances of searching the Windows Registry for insecurely stored credentials. This can be accomplished using the query functionality of the [Reg](https://attack.mitre.org/software/S0075) system utility, by looking for keys and values that contain strings such as \u201cpassword\u201d. In addition, adversaries may use toolkits such as\u00a0[PowerSploit](https://attack.mitre.org/software/S0194)  in order to dump credentials from various applications such as IIS. Accordingly, this analytic looks for invocations of reg.exe in this capacity as well as that of several PowerSploit modules with similar functionality.\n\n<h4>Analytic 1 - Credentials in Files & Registry</h4>\n<code>processes = filter processes where (\n  (event_id == \"1\" OR event_id == \"4688\") AND\n  command_line == \"*reg* query HKLM /f password /t REG_SZ /s*\" OR\n  command_line == \"reg* query HKCU /f password /t REG_SZ /s\" OR\n  command_line == \"*Get-UnattendedInstallFile*\" OR\n  command_line == \"*Get-Webconfig*\" OR\n  command_line == \"*Get-ApplicationHost*\" OR\n  command_line == \"*Get-SiteListPassword*\" OR\n  command_line == \"*Get-CachedGPPPassword*\" OR\n  command_line == \"*Get-RegistryAutoLogon*\") </code>",
+            "modified": "2024-03-28T14:40:57.870Z",
+            "description": "Monitor newly executed processes for applications that can be used to query the Registry, such as [Reg](https://attack.mitre.org/software/S0075), and collect command parameters that may indicate credentials are being searched. Correlate activity with related suspicious behavior that may indicate an active intrusion to reduce false positives.\n\nNote: Pseudocode Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). The Analytic looks for command-line instances of searching the Windows Registry for insecurely stored credentials. This can be accomplished using the query functionality of the [Reg](https://attack.mitre.org/software/S0075) system utility, by looking for keys and values that contain strings such as \u201cpassword\u201d. In addition, adversaries may use toolkits such as\u00a0[PowerSploit](https://attack.mitre.org/software/S0194)  in order to dump credentials from various applications such as IIS. Accordingly, this analytic looks for invocations of reg.exe in this capacity as well as that of several PowerSploit modules with similar functionality.\n\nAnalytic 1 - Credentials in Files & Registry\n\n<code>(source=\"WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"WinEventLog:Security\" EventCode=\"4688\")  \nCommandLine=\"*reg* query HKLM /f password /t REG_SZ /s*\" OR\nCommandLine=\"reg* query HKCU /f password /t REG_SZ /s\" OR\nCommandLine=\"*Get-UnattendedInstallFile*\" OR\nCommandLine=\"*Get-Webconfig\" OR\nCommandLine=\"*Get-ApplicationHost*\" OR\nCommandLine=\"*Get-SiteListPassword*\" OR\nCommandLine=\"*Get-CachedGPPPassword*\" OR\nCommandLine=\"*Get-RegistryAutoLogon*\" </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--341e222a-a6e3-4f6f-b69c-831d792b1580",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

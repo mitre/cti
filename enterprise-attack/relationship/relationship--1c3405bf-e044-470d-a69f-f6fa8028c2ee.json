@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--1bc40c63-169d-44b3-896d-dd351f090d3b",
+    "id": "bundle--8ebf16a6-0959-47f3-b658-0016a92af5f4",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,14 +19,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-23T21:55:49.089Z",
-            "description": "Look for changes to service Registry entries that do not correlate with known software, patch cycles, etc. Service information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. Changes to the binary path and the service startup type changed from manual or disabled to automatic, if it does not typically do so, may be suspicious. Tools such as Sysinternals Autoruns may also be used to detect system service changes that could be attempts at persistence.(Citation: TechNet Autoruns)\n\n<h4> Analytic 1 : Modification of the HKLM\\System\\CurrentControlSet\\Services Registry key</h4>\n<code> suspicious_registry = filter ProcessGuid, ProcessFilePath, RegistryKeyPath, UserName \nwhere\n  (event_id == \"13\" event_id == \"14\") AND\n  RegistryKeyPath LIKE '%HKLM\\System\\CurrentControlSet\\Services\\%'</code>",
+            "modified": "2024-03-28T13:44:47.156Z",
+            "description": "Look for changes to service Registry entries that do not correlate with known software, patch cycles, etc. Service information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. Changes to the binary path and the service startup type changed from manual or disabled to automatic, if it does not typically do so, may be suspicious. Tools such as Sysinternals Autoruns may also be used to detect system service changes that could be attempts at persistence.(Citation: TechNet Autoruns)\n\nAnalytic 1 - Modification of the HKLM\\System\\CurrentControlSet\\Services Registry key\n\n<code> (source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode IN (13, 14) EventType= \"SetValue\" TargetObject=\"HKLM\\System\\CurrentControlSet\\Services\\*\" | where RegistryKeyPath LIKE \"%ImagePath%\" OR \n   RegistryKeyPath LIKE \"%Type%\" OR\n   RegistryKeyPath LIKE \"%DisplayName%\" OR\n   RegistryKeyPath LIKE \"%Objectname%\"</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
             "target_ref": "attack-pattern--2959d63f-73fd-46a1-abd2-109d7dcede32",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

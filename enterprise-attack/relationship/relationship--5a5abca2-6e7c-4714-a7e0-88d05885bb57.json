@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--d15e37cf-638e-4065-81fb-7f2caa37b0ed",
+    "id": "bundle--7b1dc764-b12d-45b9-88e0-62413f046e5d",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-07T14:21:22.307Z",
-            "description": "Monitor for user accounts logged into systems associated with RDP (ex: Windows EID 4624 Logon Type 10). Other factors, such as access patterns (ex: multiple systems over a relatively short period of time) and activity that occurs after a remote login, may indicate suspicious or malicious behavior with RDP.\n\nMonitoring logon and logoff events for hosts on the network is very important for situational awareness. This information can be used as an indicator of unusual activity as well as to corroborate activity seen elsewhere.\n\nCould be applied to a number of different types of monitoring depending on what information is desired. Some use cases include monitoring for all remote connections and building login timelines for users. Logon events are Windows Event Code 4624 for Windows Vista and above, 518 for pre-Vista. Logoff events are 4634 for Windows Vista and above, 538 for pre-Vista.\n\n<h4>Analytic </h4> \n<code>filtered_logons = filter logon_events where ( (event_id = \"4624\") AND user NOT IN TOP30(user))</code>",
+            "modified": "2024-03-27T17:52:08.163Z",
+            "description": "Monitor for user accounts logged into systems associated with RDP (ex: Windows EID 4624 Logon Type 10). Other factors, such as access patterns (ex: multiple systems over a relatively short period of time) and activity that occurs after a remote login, may indicate suspicious or malicious behavior with RDP.\n\nMonitoring logon and logoff events for hosts on the network is very important for situational awareness. This information can be used as an indicator of unusual activity as well as to corroborate activity seen elsewhere.\n\nCould be applied to a number of different types of monitoring depending on what information is desired. Some use cases include monitoring for all remote connections and building login timelines for users. Logon events are Windows Event Code 4624 for Windows Vista and above, 518 for pre-Vista. Logoff events are 4634 for Windows Vista and above, 538 for pre-Vista.\n\nNote: This analytic looks for user logon events and filters out the top 30 account names to reduce the occurrence of noisy service accounts and the like. It is meant as a starting point for situational awareness around such events. This is liable to be quite noisy and will need tweaking, especially in terms of the number of top users filtered out.\n\nAnalytic 1\n\n<code>source=\"*WinEventLog:Security\" EventCode IN (4624, 4634, 4647, 4778)\n|search user NOT IN top limit=30</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
             "target_ref": "attack-pattern--eb062747-2193-45de-8fa2-e62549c37ddf",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

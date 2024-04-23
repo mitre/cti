@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--730c94f8-9109-4245-9bbf-142a89bf4e77",
+    "id": "bundle--5d9a2c31-eb40-40fc-94ea-082bfe6650e2",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-23T21:22:22.144Z",
-            "description": "Monitor for newly constructed processes and/or command line execution that can be used to remove network share connections via the net.exe process. \n\nNote: Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). The Analytic is oriented around looking for various methods of removing network shares via the command line, which is otherwise a rare event. \n\n<h4> Analytic 1: Network Share Connection Removal </h4>\n<code> target_processes = filter processes where (\n  (event_id == \"1\" OR event_id == \"4688\") AND \n  (exe == \"C:\\Windows\\System32\\net.exe\" AND command_line == \"*delete*\") OR\n  command_line=\"*Remove-SmbShare*\" OR\n  command_line=\"*Remove-FileShare*\" )</code>",
+            "modified": "2024-03-27T20:34:10.859Z",
+            "description": "Monitor for newly constructed processes and/or command line execution that can be used to remove network share connections via the net.exe process. \n\nNote: Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). The Analytic is oriented around looking for various methods of removing network shares via the command line, which is otherwise a rare event. \n\nAnalytic 1- Network Share Connection Removal\n\n<code> (source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") (Image= \"C:\\Windows\\System32\\net.exe\" AND CommandLine= \"*delete*\") OR CommandLine=\"*Remove-SmbShare*\" OR CommandLine=\"*Remove-FileShare*\" )</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--a750a9f6-0bde-4bb3-9aae-1e2786e9780c",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

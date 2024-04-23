@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--36927773-ac8e-43c4-83f4-59f790b86159",
+    "id": "bundle--8383bd23-b006-4ee6-ab4a-ee3291c4e230",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-14T19:27:35.862Z",
-            "description": "Monitor for newly executed processes that attempt to hide artifacts of an intrusion, such as common archive file applications and extensions (ex: Zip and RAR archive tools), and correlate with other suspicious behavior to reduce false positives from normal user and administrator behavior.\n\nCertUtil.exe may be used to\u00a0encode\u00a0and\u00a0decode\u00a0a file, including PE and script code. Encoding will convert a file to base64 with\u00a0-----BEGIN CERTIFICATE-----\u00a0and\u00a0-----END CERTIFICATE-----\u00a0tags. Malicious usage will include decoding an encoded file that was downloaded. Once decoded, it will be loaded by a parallel process. Note that there are two additional command switches that may be used -\u00a0encodehex\u00a0and\u00a0decodehex. Similarly, the file will be encoded in HEX and later decoded for further execution. During triage, identify the source of the file being decoded. Review its contents or execution behavior for further analysis.\n\nAnalytic Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). The analytic is oriented around the creation of CertUtil.exe processes, which may be used to encode and\u00a0decode files, including PE and script code. Malicious usage will include decoding a encoded file that was downloaded. Once decoded, it will be loaded by a parallel process.\n\n<h4> Analytic 1 - CertUtil with Decode Argument </h4>\n<code> processes = filter processes where (\n  (event_id == \"1\" OR event_id == \"4688\") AND\n  exe =\u201dC:\\Windows\\System32\\certutil.exe\u201d AND\n  command_line = *decode* )</code>",
+            "modified": "2024-03-27T20:49:07.554Z",
+            "description": "Monitor for newly executed processes that attempt to hide artifacts of an intrusion, such as common archive file applications and extensions (ex: Zip and RAR archive tools), and correlate with other suspicious behavior to reduce false positives from normal user and administrator behavior.\n\nCertUtil.exe may be used to\u00a0encode\u00a0and\u00a0decode\u00a0a file, including PE and script code. Encoding will convert a file to base64 with\u00a0-----BEGIN CERTIFICATE-----\u00a0and\u00a0-----END CERTIFICATE-----\u00a0tags. Malicious usage will include decoding an encoded file that was downloaded. Once decoded, it will be loaded by a parallel process. Note that there are two additional command switches that may be used -\u00a0encodehex\u00a0and\u00a0decodehex. Similarly, the file will be encoded in HEX and later decoded for further execution. During triage, identify the source of the file being decoded. Review its contents or execution behavior for further analysis.\n\nAnalytic Event IDs are for Sysmon (Event ID 1 - process create) and Windows Security Log (Event ID 4688 - a new process has been created). The analytic is oriented around the creation of CertUtil.exe processes, which may be used to encode and\u00a0decode files, including PE and script code. Malicious usage will include decoding a encoded file that was downloaded. Once decoded, it will be loaded by a parallel process.\n\nAnalytic 1 - CertUtil with Decode Argument\n\n<code>  (source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") Image=\u201dC:\\Windows\\System32\\certutil.exe\u201d AND\n  CommandLine= *decode* )</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--3ccef7ae-cb5e-48f6-8302-897105fbf55c",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

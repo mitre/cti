@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--7ef918a9-a19b-4baf-b328-b3ded4c39881",
+    "id": "bundle--f07da5a8-9a95-49e0-902e-3ce1af04634c",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-23T21:15:22.513Z",
-            "description": "Monitor newly executed processes that may attempt to find local system groups and permission settings.\n\nNote: Event IDs are for Sysmon (Event ID 1 - process creation) and Windows Security Log (Event ID 4688 - a new process has been created). The logic in the Analytic looks for any instances of net.exe used for local user/group discovery; although this utility is not normally used for benign purposes, such usage by system administrator actions may trigger false positives.\n\n<h4> Analytic 1 - Suspicious Processes </h4>\n<code>processes = filter processes where (\n (event_id == \"1\" OR event_id == \"4688\") AND\n  exe = \"net.exe\" AND (\n  command_line=\"*net* user*\" OR\n  command_line=\"*net* group*\" OR\n  command_line=\"*net* localgroup*\" OR\n  command_line=\"*get-localgroup*\" OR\n  command_line=\"*get-ADPrincipalGroupMembership*\" )</code>",
+            "modified": "2024-03-27T20:22:00.655Z",
+            "description": "Monitor newly executed processes that may attempt to find local system groups and permission settings.\n\nNote: Event IDs are for Sysmon (Event ID 1 - process creation) and Windows Security Log (Event ID 4688 - a new process has been created). The logic in the Analytic looks for any instances of net.exe used for local user/group discovery; although this utility is not normally used for benign purposes, such usage by system administrator actions may trigger false positives.\n\nAnalytic 1 - Local Permission Group Discovery\n\n<code>(source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") Image=\"net.exe\" AND (\n  CommandLine=\"*net* user*\" OR\n  CommandLine=\"*net* group*\" OR\n  CommandLine=\"*net* localgroup*\" OR\n  CommandLine=\"*get-localgroup*\" OR\n  CommandLine=\"*get-ADPrincipalGroupMembership*\" )</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--a01bf75f-00b2-4568-a58f-565ff9bf202b",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

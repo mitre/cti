@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--3c1bd7c1-e43d-40f5-9518-334df33f7267",
+    "id": "bundle--6432eebf-ab02-4fa9-a778-0222afc4e69f",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-09-29T21:09:49.267Z",
+            "modified": "2024-02-09T18:49:08.428Z",
             "name": "Reflective Code Loading",
-            "description": "Adversaries may reflectively load code into a process in order to conceal the execution of malicious payloads. Reflective loading involves allocating then executing payloads directly within the memory of the process, vice creating a thread or process backed by a file path on disk. Reflectively loaded payloads may be compiled binaries, anonymous files (only present in RAM), or just snubs of fileless executable code (ex: position-independent shellcode).(Citation: Introducing Donut)(Citation: S1 Custom Shellcode Tool)(Citation: Stuart ELF Memory)(Citation: 00sec Droppers)(Citation: Mandiant BYOL)\n\nReflective code injection is very similar to [Process Injection](https://attack.mitre.org/techniques/T1055) except that the \u201cinjection\u201d loads code into the processes\u2019 own memory instead of that of a separate process. Reflective loading may evade process-based detections since the execution of the arbitrary code may be masked within a legitimate or otherwise benign process. Reflectively loading payloads directly into memory may also avoid creating files or other artifacts on disk, while also enabling malware to keep these payloads encrypted (or otherwise obfuscated) until execution.(Citation: Stuart ELF Memory)(Citation: 00sec Droppers)(Citation: Intezer ACBackdoor)(Citation: S1 Old Rat New Tricks)",
+            "description": "Adversaries may reflectively load code into a process in order to conceal the execution of malicious payloads. Reflective loading involves allocating then executing payloads directly within the memory of the process, vice creating a thread or process backed by a file path on disk (e.g., [Shared Modules](https://attack.mitre.org/techniques/T1129)).\n\nReflectively loaded payloads may be compiled binaries, anonymous files (only present in RAM), or just snubs of fileless executable code (ex: position-independent shellcode).(Citation: Introducing Donut)(Citation: S1 Custom Shellcode Tool)(Citation: Stuart ELF Memory)(Citation: 00sec Droppers)(Citation: Mandiant BYOL) For example, the `Assembly.Load()` method executed by [PowerShell](https://attack.mitre.org/techniques/T1059/001) may be abused to load raw code into the running process.(Citation: Microsoft AssemblyLoad)\n\nReflective code injection is very similar to [Process Injection](https://attack.mitre.org/techniques/T1055) except that the \u201cinjection\u201d loads code into the processes\u2019 own memory instead of that of a separate process. Reflective loading may evade process-based detections since the execution of the arbitrary code may be masked within a legitimate or otherwise benign process. Reflectively loading payloads directly into memory may also avoid creating files or other artifacts on disk, while also enabling malware to keep these payloads encrypted (or otherwise obfuscated) until execution.(Citation: Stuart ELF Memory)(Citation: 00sec Droppers)(Citation: Intezer ACBackdoor)(Citation: S1 Old Rat New Tricks)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -18,7 +18,8 @@
                 "Shlomi Salem, SentinelOne",
                 "Lior Ribak, SentinelOne",
                 "Rex Guo, @Xiaofei_REX, Confluera",
-                "Joas Antonio dos Santos, @C0d3Cr4zy, Inmetrics"
+                "Joas Antonio dos Santos, @C0d3Cr4zy, Inmetrics",
+                "Jiraput Thamsongkrah"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor for code artifacts associated with reflectively loading code, such as the abuse of .NET functions such as <code>Assembly.Load()</code> and [Native API](https://attack.mitre.org/techniques/T1106) functions such as <code>CreateThread()</code>, <code>memfd_create()</code>, <code>execve()</code>, and/or <code>execveat()</code>.(Citation: 00sec Droppers)(Citation: S1 Old Rat New Tricks)\n\nMonitor for artifacts of abnormal process execution. For example, a common signature related to reflective code loading on Windows is mechanisms related to the .NET Common Language Runtime (CLR) -- such as mscor.dll, mscoree.dll, and clr.dll -- loading into abnormal processes (such as notepad.exe). Similarly, AMSI / ETW traces can be used to identify signs of arbitrary code execution from within the memory of potentially compromised processes.(Citation: MDSec Detecting DOTNET)(Citation: Introducing Donut)\n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior. ",
@@ -31,7 +32,7 @@
                 "Linux",
                 "Windows"
             ],
-            "x_mitre_version": "1.1",
+            "x_mitre_version": "1.2",
             "x_mitre_data_sources": [
                 "Module: Module Load",
                 "Script: Script Execution",
@@ -76,6 +77,11 @@
                     "source_name": "MDSec Detecting DOTNET",
                     "description": "MDSec Research. (n.d.). Detecting and Advancing In-Memory .NET Tradecraft. Retrieved October 4, 2021.",
                     "url": "https://www.mdsec.co.uk/2020/06/detecting-and-advancing-in-memory-net-tradecraft/"
+                },
+                {
+                    "source_name": "Microsoft AssemblyLoad",
+                    "description": "Microsoft. (n.d.). Assembly.Load Method. Retrieved February 9, 2024.",
+                    "url": "https://learn.microsoft.com/dotnet/api/system.reflection.assembly.load"
                 },
                 {
                     "source_name": "Intezer ACBackdoor",

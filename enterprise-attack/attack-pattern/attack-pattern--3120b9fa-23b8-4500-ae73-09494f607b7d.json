@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--6f1417a8-f0bd-4800-992b-72344352508e",
+    "id": "bundle--f522d480-3d3a-4272-86b1-1858a6f730c3",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-04-15T01:16:25.566Z",
+            "modified": "2024-04-10T16:41:01.496Z",
             "name": "Proc Filesystem",
-            "description": "Adversaries may gather credentials from the proc filesystem or `/proc`. The proc filesystem is a pseudo-filesystem used as an interface to kernel data structures for Linux based systems managing virtual memory. For each process, the `/proc/<PID>/maps` file shows how memory is mapped within the process\u2019s virtual address space. And `/proc/<PID>/mem`, exposed for debugging purposes, provides access to the process\u2019s virtual address space.(Citation: Picus Labs Proc cump 2022)(Citation: baeldung Linux proc map 2022)\n\nWhen executing with root privileges, adversaries can search these memory locations for all processes on a system that contain patterns that are indicative of credentials, such as looking for fixed strings in memory structures or cached hashes. When running without privileged access, processes can still view their own virtual memory locations. Some services or programs may save credentials in clear text inside the process\u2019s memory.(Citation: MimiPenguin GitHub May 2017)(Citation: Polop Linux PrivEsc Gitbook)\n\nIf running as or with the permissions of a web browser, a process can search the `/maps` & `/mem` locations for common website credential patterns (that can also be used to find adjacent memory within the same structure) in which hashes or cleartext credentials may be located.",
+            "description": "Adversaries may gather credentials from the proc filesystem or `/proc`. The proc filesystem is a pseudo-filesystem used as an interface to kernel data structures for Linux based systems managing virtual memory. For each process, the `/proc/<PID>/maps` file shows how memory is mapped within the process\u2019s virtual address space. And `/proc/<PID>/mem`, exposed for debugging purposes, provides access to the process\u2019s virtual address space.(Citation: Picus Labs Proc cump 2022)(Citation: baeldung Linux proc map 2022)\n\nWhen executing with root privileges, adversaries can search these memory locations for all processes on a system that contain patterns indicative of credentials. Adversaries may use regex patterns, such as <code>grep -E \"^[0-9a-f-]* r\" /proc/\"$pid\"/maps | cut -d' ' -f 1</code>, to look for fixed strings in memory structures or cached hashes.(Citation: atomic-red proc file system) When running without privileged access, processes can still view their own virtual memory locations. Some services or programs may save credentials in clear text inside the process\u2019s memory.(Citation: MimiPenguin GitHub May 2017)(Citation: Polop Linux PrivEsc Gitbook)\n\nIf running as or with the permissions of a web browser, a process can search the `/maps` & `/mem` locations for common website credential patterns (that can also be used to find adjacent memory within the same structure) in which hashes or cleartext credentials may be located.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -17,7 +17,7 @@
                 "Tim (Wadhwa-)Brown"
             ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "To obtain the passwords and hashes stored in memory, processes must open a maps file in the /proc filesystem for the process being analyzed. This file is stored under the path <code>/proc/\\*/maps</code>, where the <code>\\*</code> directory is the unique pid of the program being interrogated for such authentication data. The AuditD monitoring tool, which ships stock in many Linux distributions, can be used to watch for hostile processes opening this file in the proc file system, alerting on the pid, process name, and arguments of such programs.",
+            "x_mitre_detection": "To obtain the passwords and hashes stored in memory, processes must open a maps file in the `/proc` filesystem for the process being analyzed. This file is stored under the path `/proc/PID/maps`, where the `PID` directory is the unique pid of the program being interrogated for such authentication data. The AuditD monitoring tool, which ships stock in many Linux distributions, can be used to watch for hostile processes opening this file in the proc file system, alerting on the pid, process name, and arguments of such programs.",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -25,7 +25,7 @@
             "x_mitre_platforms": [
                 "Linux"
             ],
-            "x_mitre_version": "1.1",
+            "x_mitre_version": "1.2",
             "x_mitre_data_sources": [
                 "Command: Command Execution",
                 "File: File Access"
@@ -40,6 +40,11 @@
                     "source_name": "mitre-attack",
                     "url": "https://attack.mitre.org/techniques/T1003/007",
                     "external_id": "T1003.007"
+                },
+                {
+                    "source_name": "atomic-red proc file system",
+                    "description": "Atomic Red Team. (2023, November). T1003.007 - OS Credential Dumping: Proc Filesystem. Retrieved March 28, 2024.",
+                    "url": "https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1003.007/T1003.007.md"
                 },
                 {
                     "source_name": "baeldung Linux proc map 2022",
@@ -65,7 +70,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

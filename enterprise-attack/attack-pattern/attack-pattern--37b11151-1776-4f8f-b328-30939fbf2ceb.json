@@ -1,10 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--36fa1540-f46a-4e57-9c31-c42e2eb1c655",
+    "id": "bundle--3a4a2087-18d1-4f4d-8c13-0f32102e0de0",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2022-10-19T15:37:28.071Z",
+            "modified": "2024-03-01T19:06:05.126Z",
             "name": "AppleScript",
             "description": "Adversaries may abuse AppleScript for execution. AppleScript is a macOS scripting language designed to control applications and parts of the OS via inter-application messages called AppleEvents.(Citation: Apple AppleScript) These AppleEvent messages can be sent independently or easily scripted with AppleScript. These events can locate open windows, send keystrokes, and interact with almost any open application locally or remotely.\n\nScripts can be run from the command-line via <code>osascript /path/to/script</code> or <code>osascript -e \"script here\"</code>. Aside from the command line, scripts can be executed in numerous ways including Mail rules, Calendar.app alarms, and Automator workflows. AppleScripts can also be executed as plain text shell scripts by adding <code>#!/usr/bin/osascript</code> to the start of the script file.(Citation: SentinelOne AppleScript)\n\nAppleScripts do not need to call <code>osascript</code> to execute. However, they may be executed from within mach-O binaries by using the macOS [Native API](https://attack.mitre.org/techniques/T1106)s\u00a0<code>NSAppleScript</code>\u00a0or\u00a0<code>OSAScript</code>, both of which execute code independent of the <code>/usr/bin/osascript</code> command line utility.\n\nAdversaries may abuse AppleScript to execute various behaviors, such as interacting with an open SSH connection, moving to remote machines, and even presenting users with fake dialog boxes. These events cannot start applications remotely (they can start them locally), but they can interact with applications if they're already running remotely. On macOS 10.10 Yosemite and higher, AppleScript has the ability to execute [Native API](https://attack.mitre.org/techniques/T1106)s, which otherwise would require compilation and execution in a mach-O binary file format.(Citation: SentinelOne macOS Red Team) Since this is a scripting language, it can be used to launch more common techniques as well such as a reverse shell via [Python](https://attack.mitre.org/techniques/T1059/006).(Citation: Macro Malware Targets Macs)",
             "kill_chain_phases": [
@@ -13,19 +13,19 @@
                     "phase_name": "execution"
                 }
             ],
-            "x_mitre_detection": "Monitor for execution of AppleScript through <code>osascript</code> and usage of the <code>NSAppleScript</code> and <code>OSAScript</code> APIs that may be related to other suspicious behavior occurring on the system. Scripts are likely to perform actions with various effects on a system that may generate events, depending on the types of monitoring used. Monitor processes and command-line arguments for script execution and subsequent behavior. Actions may be related to network and system information [Discovery](https://attack.mitre.org/tactics/TA0007), [Collection](https://attack.mitre.org/tactics/TA0009), or other scriptable post-compromise behaviors and could be used as indicators of detection leading back to the source script.\n\nUnderstanding standard usage patterns is important to avoid a high number of false positives. If scripting is restricted for normal users, then any attempts to enable scripts running on a system would be considered suspicious. If scripts are not commonly used on a system, but enabled, scripts running out of cycle from patching or other administrator functions are suspicious. Scripts should be captured from the file system when possible to determine their actions and intent.",
-            "x_mitre_platforms": [
-                "macOS"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_deprecated": false,
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_version": "1.1",
             "x_mitre_contributors": [
                 "Phil Stokes, SentinelOne"
             ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor for execution of AppleScript through <code>osascript</code> and usage of the <code>NSAppleScript</code> and <code>OSAScript</code> APIs that may be related to other suspicious behavior occurring on the system. Scripts are likely to perform actions with various effects on a system that may generate events, depending on the types of monitoring used. Monitor processes and command-line arguments for script execution and subsequent behavior. Actions may be related to network and system information [Discovery](https://attack.mitre.org/tactics/TA0007), [Collection](https://attack.mitre.org/tactics/TA0009), or other scriptable post-compromise behaviors and could be used as indicators of detection leading back to the source script.\n\nUnderstanding standard usage patterns is important to avoid a high number of false positives. If scripting is restricted for normal users, then any attempts to enable scripts running on a system would be considered suspicious. If scripts are not commonly used on a system, but enabled, scripts running out of cycle from patching or other administrator functions are suspicious. Scripts should be captured from the file system when possible to determine their actions and intent.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_version": "1.2",
             "x_mitre_data_sources": [
                 "Command: Command Execution",
                 "Process: Process Creation",
@@ -67,7 +67,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

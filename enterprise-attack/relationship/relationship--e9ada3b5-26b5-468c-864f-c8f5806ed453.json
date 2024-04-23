@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--5d63600f-e80c-4484-8e12-4611e9aa5cf9",
+    "id": "bundle--299ff170-d490-4adf-a32b-66db724e1db3",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-23T21:21:05.401Z",
-            "description": "Monitor executed commands and arguments for actions that could be taken to clear command history, such as <code>Clear-History</code> on Windows or `clear logging` / `clear history` via a Network Device CLI in AAA logs, or to disable writing command history, such as <code>history -c</code> in bash/zsh .\n\n<h4>Analytic 1 : Clear Powershell Console Command History </h4>\n<code> suspicious_commands = filter ProcessId, ProcessFilePath, command_line where\n  (event_id == \"1\" OR event_id == \"4688\") \n  AND\n  (command_line LIKE '%rm (Get-PSReadlineOption).HistorySavePath%' OR\n   command_line LIKE '%del (Get-PSReadlineOption).HistorySavePath%' OR \n   command_line LIKE '%Set-PSReadlineOption \u2013HistorySaveStyle SaveNothing%\u2019 OR\n   command_line LIKE '%Remove-Item (Get-PSReadlineOption).HistorySavePath%' OR\n   (command_line LIKE '%del%' AND \n    command_line LIKE '%Microsoft\\Windows\\Powershell\\PSReadline\\ConsoleHost_history.txt%'))</code>\n\n<h4> Analytic 2 : Powershell Commands </h4>\n<code> suspicious_commands = filter CommandName, CommandType where \n  event_id == \"4103\" AND\n  (CommandName LIKE '%Clear-History%' OR\n   (CommandName LIKE '%Remove-Item%' AND CommandParameterValue LIKE '%ConsoleHost_history.text%')) </code>\n",
+            "modified": "2024-03-27T20:29:31.402Z",
+            "description": "Monitor executed commands and arguments for actions that could be taken to clear command history, such as <code>Clear-History</code> on Windows or `clear logging` / `clear history` via a Network Device CLI in AAA logs, or to disable writing command history, such as <code>history -c</code> in bash/zsh .\n\nAnalytic 1 - Powershell Commands \n\n<code> (source=\"*WinEventLog:Microsoft-Windows-Powershell/Operational\" EventCode=\"4103\") (CommandLine=\"*Clear-History*\" OR\n   (CommandLine=\"*Remove-Item*\" AND CommandLine=\"*ConsoleHost_history.text*\")) </code>\n",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
             "target_ref": "attack-pattern--3aef9463-9a7a-43ba-8957-a867e07c1e6a",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

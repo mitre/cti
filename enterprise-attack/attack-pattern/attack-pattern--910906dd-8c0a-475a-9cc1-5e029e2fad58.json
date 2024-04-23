@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--e0f949a9-b7f1-45e3-b2d9-ebe62664a321",
+    "id": "bundle--c739fa8d-dd70-4521-860d-a82334fca758",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-04-21T12:32:38.796Z",
+            "modified": "2024-04-13T14:08:20.882Z",
             "name": "Windows Management Instrumentation Event Subscription",
-            "description": "Adversaries may establish persistence and elevate privileges by executing malicious content triggered by a Windows Management Instrumentation (WMI) event subscription. WMI can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs. Examples of events that may be subscribed to are the wall clock time, user loging, or the computer's uptime.(Citation: Mandiant M-Trends 2015)\n\nAdversaries may use the capabilities of WMI to subscribe to an event and execute arbitrary code when that event occurs, providing persistence on a system.(Citation: FireEye WMI SANS 2015)(Citation: FireEye WMI 2015) Adversaries may also compile WMI scripts into Windows Management Object (MOF) files (.mof extension) that can be used to create a malicious subscription.(Citation: Dell WMI Persistence)(Citation: Microsoft MOF May 2018)\n\nWMI subscription execution is proxied by the WMI Provider Host process (WmiPrvSe.exe) and thus may result in elevated SYSTEM privileges.",
+            "description": "Adversaries may establish persistence and elevate privileges by executing malicious content triggered by a Windows Management Instrumentation (WMI) event subscription. WMI can be used to install event filters, providers, consumers, and bindings that execute code when a defined event occurs. Examples of events that may be subscribed to are the wall clock time, user login, or the computer's uptime.(Citation: Mandiant M-Trends 2015)\n\nAdversaries may use the capabilities of WMI to subscribe to an event and execute arbitrary code when that event occurs, providing persistence on a system.(Citation: FireEye WMI SANS 2015)(Citation: FireEye WMI 2015) Adversaries may also compile WMI scripts \u2013 using `mofcomp.exe`  \u2013into Windows Management Object (MOF) files (.mof extension) that can be used to create a malicious subscription.(Citation: Dell WMI Persistence)(Citation: Microsoft MOF May 2018)\n\nWMI subscription execution is proxied by the WMI Provider Host process (WmiPrvSe.exe) and thus may result in elevated SYSTEM privileges.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -19,7 +19,8 @@
             ],
             "x_mitre_contributors": [
                 "Brent Murphy, Elastic",
-                "David French, Elastic"
+                "David French, Elastic",
+                "Viren Chaudhari, Qualys"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor WMI event subscription entries, comparing current WMI event subscriptions to known good subscriptions for each host. Tools such as Sysinternals Autoruns may also be used to detect WMI changes that could be attempts at persistence.(Citation: TechNet Autoruns)(Citation: Medium Detecting WMI Persistence) Monitor for the creation of new WMI <code>EventFilter</code>, <code>EventConsumer</code>, and <code>FilterToConsumerBinding</code> events. Event ID 5861 is logged on Windows 10 systems when new <code>EventFilterToConsumerBinding</code> events are created.(Citation: Elastic - Hunting for Persistence Part 1)\n\nMonitor processes and command-line arguments that can be used to register WMI persistence, such as the <code> Register-WmiEvent</code> [PowerShell](https://attack.mitre.org/techniques/T1059/001) cmdlet, as well as those that result from the execution of subscriptions (i.e. spawning from the WmiPrvSe.exe WMI Provider Host process).(Citation: Microsoft Register-WmiEvent)",
@@ -30,8 +31,9 @@
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_version": "1.3",
+            "x_mitre_version": "1.4",
             "x_mitre_data_sources": [
+                "File: File Creation",
                 "Process: Process Creation",
                 "Command: Command Execution",
                 "WMI: WMI Creation"
@@ -100,7 +102,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

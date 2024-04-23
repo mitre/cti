@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--71bc5ace-a5c1-4fc5-a5f7-4e526173576f",
+    "id": "bundle--9a3a528c-05e7-4bb6-8927-53997b2400c3",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-04-15T16:13:40.232Z",
+            "modified": "2024-04-11T21:24:42.680Z",
             "name": "Deploy Container",
-            "description": "Adversaries may deploy a container into an environment to facilitate execution or evade defenses. In some cases, adversaries may deploy a new container to execute processes associated with a particular image or deployment, such as processes that execute or download malware. In others, an adversary may deploy a new container configured without network rules, user limitations, etc. to bypass existing defenses within the environment.\n\nContainers can be deployed by various means, such as via Docker's <code>create</code> and <code>start</code> APIs or via a web application such as the Kubernetes dashboard or Kubeflow.(Citation: Docker Containers API)(Citation: Kubernetes Dashboard)(Citation: Kubeflow Pipelines) Adversaries may deploy containers based on retrieved or built malicious images or from benign images that download and execute malicious payloads at runtime.(Citation: Aqua Build Images on Hosts)",
+            "description": "Adversaries may deploy a container into an environment to facilitate execution or evade defenses. In some cases, adversaries may deploy a new container to execute processes associated with a particular image or deployment, such as processes that execute or download malware. In others, an adversary may deploy a new container configured without network rules, user limitations, etc. to bypass existing defenses within the environment. In Kubernetes environments, an adversary may attempt to deploy a privileged or vulnerable container into a specific node in order to [Escape to Host](https://attack.mitre.org/techniques/T1611) and access other containers running on the node. (Citation: AppSecco Kubernetes Namespace Breakout 2020)\n\nContainers can be deployed by various means, such as via Docker's <code>create</code> and <code>start</code> APIs or via a web application such as the Kubernetes dashboard or Kubeflow. (Citation: Docker Containers API)(Citation: Kubernetes Dashboard)(Citation: Kubeflow Pipelines) In Kubernetes environments, containers may be deployed through workloads such as ReplicaSets or DaemonSets, which can allow containers to be deployed across multiple nodes.(Citation: Kubernetes Workload Management) Adversaries may deploy containers based on retrieved or built malicious images or from benign images that download and execute malicious payloads at runtime.(Citation: Aqua Build Images on Hosts)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -25,7 +25,8 @@
                 "Magno Logan, @magnologan, Trend Micro",
                 "Ariel Shuper, Cisco",
                 "Vishwas Manral, McAfee",
-                "Yossi Weizman, Azure Defender Research Team"
+                "Yossi Weizman, Azure Defender Research Team",
+                "Joas Antonio dos Santos, @C0d3Cr4zy"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor for suspicious or unknown container images and pods in your environment. Deploy logging agents on Kubernetes nodes and retrieve logs from sidecar proxies for application pods to detect malicious activity at the cluster level. In Docker, the daemon log provides insight into remote API calls, including those that deploy containers. Logs for management services or applications used to deploy containers other than the native technologies themselves should also be monitored.",
@@ -36,7 +37,7 @@
             "x_mitre_platforms": [
                 "Containers"
             ],
-            "x_mitre_version": "1.2",
+            "x_mitre_version": "1.3",
             "x_mitre_data_sources": [
                 "Container: Container Start",
                 "Application Log: Application Log Content",
@@ -57,6 +58,11 @@
                     "external_id": "T1610"
                 },
                 {
+                    "source_name": "AppSecco Kubernetes Namespace Breakout 2020",
+                    "description": "Abhisek Datta. (2020, March 18). Kubernetes Namespace Breakout using Insecure Host Path Volume \u2014 Part 1. Retrieved January 16, 2024.",
+                    "url": "https://blog.appsecco.com/kubernetes-namespace-breakout-using-insecure-host-path-volume-part-1-b382f2a6e216"
+                },
+                {
                     "source_name": "Aqua Build Images on Hosts",
                     "description": "Assaf Morag. (2020, July 15). Threat Alert: Attackers Building Malicious Images on Your Hosts. Retrieved March 29, 2021.",
                     "url": "https://blog.aquasec.com/malicious-container-image-docker-container-host"
@@ -65,6 +71,11 @@
                     "source_name": "Docker Containers API",
                     "description": "Docker. (n.d.). Docker Engine API v1.41 Reference - Container. Retrieved March 29, 2021.",
                     "url": "https://docs.docker.com/engine/api/v1.41/#tag/Container"
+                },
+                {
+                    "source_name": "Kubernetes Workload Management",
+                    "description": "Kubernetes. (n.d.). Workload Management. Retrieved March 28, 2024.",
+                    "url": "https://kubernetes.io/docs/concepts/workloads/controllers/"
                 },
                 {
                     "source_name": "Kubeflow Pipelines",
@@ -80,7 +91,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

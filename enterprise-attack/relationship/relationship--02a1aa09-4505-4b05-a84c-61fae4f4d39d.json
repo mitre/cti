@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--4d9e69ba-a570-48b7-81bc-31fc4d56cd4b",
+    "id": "bundle--280c7040-1bca-4822-a4ce-beddef93af74",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-23T21:07:10.315Z",
-            "description": "Monitor for newly constructed registry keys upon creation of new task. Deletion of values/keys in the registry may further indicate malicious activity.\n\nNote: Sysmon event id 12 is used in the analytic\n\n<h4>Analytic 1 : Suspicious Creations under Schedule Registry Key </h4>\n<code> suspicious_processes = filter ProcessGuid, ProcessFilePath, RegistryKeyPath, UserName where event_id == \"12\" AND\n  (RegistryKeyPath LIKE '%HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tasks%' OR \n   RegistryKeyPath LIKE '%HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tree%')</code>\n\n",
+            "modified": "2024-03-27T19:27:19.164Z",
+            "description": "Monitor for newly constructed registry keys upon creation of new task. Deletion of values/keys in the registry may further indicate malicious activity.\n\nAnalytic 1 - Suspicious Creations under Schedule Registry Key\n\n<code>(source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"12\") | WHERE (RegistryKeyPath LIKE \"%HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tasks%\" OR \n   RegistryKeyPath LIKE \"%HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Schedule\\TaskCache\\Tree%\")</code>\n\n",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--7f70fae7-a68d-4730-a83a-f260b9606129",
             "target_ref": "attack-pattern--005a06c6-14bf-4118-afa0-ebcd8aebb0c9",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--289cbc25-0580-4795-b75d-753b6b1da993",
+    "id": "bundle--6ff8e869-2fbf-4593-8b32-998964cf83b0",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-07-24T20:38:58.283Z",
+            "modified": "2024-04-11T18:13:25.130Z",
             "name": "Windows Management Instrumentation",
-            "description": "Adversaries may abuse Windows Management Instrumentation (WMI) to execute malicious commands and payloads. WMI is an administration feature that provides a uniform environment to access Windows system components. The WMI service enables both local and remote access, though the latter is facilitated by [Remote Services](https://attack.mitre.org/techniques/T1021) such as [Distributed Component Object Model](https://attack.mitre.org/techniques/T1021/003) (DCOM) and [Windows Remote Management](https://attack.mitre.org/techniques/T1021/006) (WinRM).(Citation: MSDN WMI) Remote WMI over DCOM operates using port 135, whereas WMI over WinRM operates over port 5985 when using HTTP and 5986 for HTTPS.(Citation: MSDN WMI)(Citation: FireEye WMI 2015)\n\nAn adversary can use WMI to interact with local and remote systems and use it as a means to execute various behaviors, such as gathering information for Discovery as well as remote Execution of files as part of Lateral Movement. (Citation: FireEye WMI SANS 2015) (Citation: FireEye WMI 2015)",
+            "description": "Adversaries may abuse Windows Management Instrumentation (WMI) to execute malicious commands and payloads. WMI is designed for programmers and is the infrastructure for management data and operations on Windows systems.(Citation: WMI 1-3) WMI is an administration feature that provides a uniform environment to access Windows system components.\n\nThe WMI service enables both local and remote access, though the latter is facilitated by [Remote Services](https://attack.mitre.org/techniques/T1021) such as [Distributed Component Object Model](https://attack.mitre.org/techniques/T1021/003) and [Windows Remote Management](https://attack.mitre.org/techniques/T1021/006).(Citation: WMI 1-3) Remote WMI over DCOM operates using port 135, whereas WMI over WinRM operates over port 5985 when using HTTP and 5986 for HTTPS.(Citation: WMI 1-3) (Citation: Mandiant WMI)\n\nAn adversary can use WMI to interact with local and remote systems and use it as a means to execute various behaviors, such as gathering information for [Discovery](https://attack.mitre.org/tactics/TA0007) as well as [Execution](https://attack.mitre.org/tactics/TA0002) of commands and payloads.(Citation: Mandiant WMI) For example, `wmic.exe` can be abused by an adversary to delete shadow copies with the command `wmic.exe Shadowcopy Delete` (i.e., [Inhibit System Recovery](https://attack.mitre.org/techniques/T1490)).(Citation: WMI 6)\n\n**Note:** `wmic.exe` is deprecated as of January of 2024, with the WMIC feature being \u201cdisabled by default\u201d on Windows 11+. WMIC will be removed from subsequent Windows releases and replaced by [PowerShell](https://attack.mitre.org/techniques/T1059/001) as the primary WMI interface.(Citation: WMI 7,8) In addition to PowerShell and tools like `wbemtool.exe`, COM APIs can also be used to programmatically interact with WMI via C++, .NET, VBScript, etc.(Citation: WMI 7,8)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -15,7 +15,8 @@
             ],
             "x_mitre_contributors": [
                 "@ionstorm",
-                "Olaf Hartong, Falcon Force"
+                "Olaf Hartong, Falcon Force",
+                "Tristan Madani"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor network traffic for WMI connections; the use of WMI in environments that do not typically use WMI may be suspect. Perform process monitoring to capture command-line arguments of \"wmic\" and detect commands that are used to perform remote behavior. (Citation: FireEye WMI 2015)",
@@ -26,7 +27,7 @@
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_version": "1.4",
+            "x_mitre_version": "1.5",
             "x_mitre_data_sources": [
                 "Network Traffic: Network Connection Creation",
                 "Process: Process Creation",
@@ -51,20 +52,30 @@
                     "url": "https://www.fireeye.com/content/dam/fireeye-www/global/en/current-threats/pdfs/wp-windows-management-instrumentation.pdf"
                 },
                 {
-                    "source_name": "FireEye WMI SANS 2015",
-                    "description": "Devon Kerr. (2015). There's Something About WMI. Retrieved May 4, 2020.",
-                    "url": "https://www.fireeye.com/content/dam/fireeye-www/services/pdfs/sans-dfir-2015.pdf"
+                    "source_name": "Mandiant WMI",
+                    "description": "Mandiant. (n.d.). Retrieved February 13, 2024.",
+                    "url": "https://www.mandiant.com/resources/reports"
                 },
                 {
-                    "source_name": "MSDN WMI",
-                    "description": "Microsoft. (n.d.). Windows Management Instrumentation. Retrieved April 27, 2016.",
-                    "url": "https://msdn.microsoft.com/en-us/library/aa394582.aspx"
+                    "source_name": "WMI 6",
+                    "description": "Microsoft. (2022, June 13). BlackCat. Retrieved February 13, 2024.",
+                    "url": "https://www.microsoft.com/en-us/security/blog/2022/06/13/the-many-lives-of-blackcat-ransomware/"
+                },
+                {
+                    "source_name": "WMI 1-3",
+                    "description": "Microsoft. (2023, March 7). Retrieved February 13, 2024.",
+                    "url": "https://learn.microsoft.com/en-us/windows/win32/wmisdk/wmi-start-page?redirectedfrom=MSDN"
+                },
+                {
+                    "source_name": "WMI 7,8",
+                    "description": "Microsoft. (2024, January 26). WMIC Deprecation. Retrieved February 13, 2024.",
+                    "url": "https://techcommunity.microsoft.com/t5/windows-it-pro-blog/wmi-command-line-wmic-utility-deprecation-next-steps/ba-p/4039242"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

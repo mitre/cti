@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--b97b40f9-fb60-40b5-916f-2ce21fe21543",
+    "id": "bundle--3d7204bb-9c82-4713-929e-e84d50b0fb31",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-23T20:53:40.938Z",
-            "description": "Monitor for newly constructed network connections that may use [Valid Accounts](https://attack.mitre.org/techniques/T1078) to interact with remote machines using Distributed Component Object Model (DCOM). The adversary may then perform actions as the logged-on user. Monitor for any influxes or abnormal increases in DCOM related Distributed Computing Environment/Remote Procedure Call (DCE/RPC) traffic (typically over port 135).\n\nNote: Network Analysis frameworks such as Zeek can be used to capture, decode, and alert on RPC network flows. Traffic to the RPC Endpoint Mapper will always have the destination port of 135. Assuming success, RPC traffic will continue to the endpoint. The endpoint and the client both bind to dynamically assigned ports (on Windows, this is typically greater than 49152). The traffic between the client and endpoint can be detected by looking at traffic to 135 followed by traffic where the source and destination ports are at least 49152.\n\n<h4> Analytic 1 -  RPC Mapper </h4>\n<code>rpc_mapper = filter flows where (dest_port == 135)\nrpc_endpoint = filter flows where (dest_port >= 49152 and src_port >= 49152)\nrpc = join rpc_mapper, rpc_endpoint where (\n (rpc_mapper.time < rpc_endpoint.time < rpc_mapper.time + 2 seconds) AND\n (rpc_mapper.src_ip == rpc_endpoint.src_ip AND rpc_mapper.dest_ip == rpc_endpoint.dest_ip))</code>",
+            "modified": "2024-03-28T15:03:04.728Z",
+            "description": "Monitor for newly constructed network connections that may use [Valid Accounts](https://attack.mitre.org/techniques/T1078) to interact with remote machines using Distributed Component Object Model (DCOM). The adversary may then perform actions as the logged-on user. Monitor for any influxes or abnormal increases in DCOM related Distributed Computing Environment/Remote Procedure Call (DCE/RPC) traffic (typically over port 135).\n\nNote: Network Analysis frameworks such as Zeek can be used to capture, decode, and alert on RPC network flows. Traffic to the RPC Endpoint Mapper will always have the destination port of 135. Assuming success, RPC traffic will continue to the endpoint. The endpoint and the client both bind to dynamically assigned ports (on Windows, this is typically greater than 49152). The traffic between the client and endpoint can be detected by looking at traffic to 135 followed by traffic where the source and destination ports are at least 49152.",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
             "target_ref": "attack-pattern--68a0c5ed-bee2-4513-830d-5b0d650139bd",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

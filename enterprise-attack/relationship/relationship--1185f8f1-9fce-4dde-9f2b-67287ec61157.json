@@ -1,25 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--a8e6d85f-68e7-4311-a936-ec17570d8fcb",
+    "id": "bundle--f679d5ba-defe-425d-98a6-dac30e551a37",
     "spec_version": "2.0",
     "objects": [
         {
             "type": "relationship",
             "id": "relationship--1185f8f1-9fce-4dde-9f2b-67287ec61157",
             "created": "2023-08-14T19:19:54.085Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-14T19:19:54.085Z",
-            "description": "Remote access to the registry can be achieved via\n\n- Windows API function\u00a0RegConnectRegistry\n- command line via\u00a0reg.exe\n- graphically via\u00a0regedit.exe\n\nAll of these behaviors call into the Windows API, which uses the NamedPipe\u00a0WINREG\u00a0over SMB to handle the protocol information. This network can be decoded with wireshark or a similar sensor, and can also be detected by hooking the API function.\n\n<h4>Analytic 1 - Remote Registry</h4>\n<code>flows = search Flow:Message\nwinreg = filter flows where (dest_port == 445 and proto_info.pipe == \"WINREG\")\nwinreg_modify = filter flows where (proto_info.function == \"Create*\" or proto_info.function == \"SetValue*\")</code>",
+            "modified": "2024-03-27T20:39:11.826Z",
+            "description": "Remote access to the registry can be achieved via\n\n- Windows API function\u00a0RegConnectRegistry\n- command line via\u00a0reg.exe\n- graphically via\u00a0regedit.exe\n\nAll of these behaviors call into the Windows API, which uses the NamedPipe\u00a0WINREG\u00a0over SMB to handle the protocol information. This network can be decoded with wireshark or a similar sensor, and can also be detected by hooking the API function.\n\nAnalytic 1 - Remote Registry\n\n<code>source=\"*Zeek:*\" (dest_port=\"445\" AND proto_info.pipe=\"WINREG\") OR (proto_info.function=\"Create*\" OR proto_info.function=\"SetValue*\")</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
             "target_ref": "attack-pattern--57340c81-c025-4189-8fa0-fc7ede51bae4",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

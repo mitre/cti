@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--6e2768f5-d82b-4184-98aa-8815faa7c3aa",
+    "id": "bundle--921002dd-436c-4d2b-a6d0-7ce080401daa",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-23T22:01:43.422Z",
-            "description": "Monitor newly constructed files that may establish persistence by executing malicious content triggered by user inactivity.\n\n<h4> Analytic 1 - Created on disk that are being used as Screensaver files </h4>\n<code>screensaver_key_modification = filter ProcessGuid, ProcessFilePath, UserName, RegistryKeyPath, RegistryKeyValueData where\n  event_id == \"13\" AND\n  RegistryKeyPath LIKE '%Software\\Policies\\Microsoft\\Windows\\Control Panel\\Desktop\\SCRNSAVE.EXE%'\n\nnew_files = filter ProcessFilePath, UserName, FileName where event_id == \"11\"\n\nsuspicious_files = filter k.ProcessGuid, k.ProcessFilePath, k.UserName, k.RegistryKeypath, k.RegistryKeyValueData FROM screensaver_key_modification k\nINNER JOIN new_files f\nON k.RegistryKeyValueData = f.FileName </code>",
+            "modified": "2024-03-28T14:11:32.918Z",
+            "description": "Monitor newly constructed files that may establish persistence by executing malicious content triggered by user inactivity.\n\nAnalytic 1 - Created on disk that are being used as Screensaver files\n\n<code>(source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"11\") TargetObject=\"*\\\\Software\\\\Policies\\\\Microsoft\\\\Windows\\\\Control Panel\\\\Desktop\\\\SCRNSAVE.EXE\" </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
             "target_ref": "attack-pattern--ce4b7013-640e-48a9-b501-d0025a95f4bf",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

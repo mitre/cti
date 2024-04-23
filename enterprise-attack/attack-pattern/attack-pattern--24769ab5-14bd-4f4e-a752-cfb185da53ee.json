@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--35793cd9-acd7-45e5-99b7-6a3018bb3a21",
+    "id": "bundle--8629b6eb-e504-4ccf-b812-8fd39bf2d34c",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2022-10-21T16:09:14.555Z",
-            "name": "Domain Trust Modification",
-            "description": "Adversaries may add new domain trusts or modify the properties of existing domain trusts to evade defenses and/or elevate privileges. Domain trust details, such as whether or not a domain is federated, allow authentication and authorization properties to apply between domains for the purpose of accessing shared resources.(Citation: Microsoft - Azure AD Federation) These trust objects may include accounts, credentials, and other authentication material applied to servers, tokens, and domains.\n\nManipulating the domain trusts may allow an adversary to escalate privileges and/or evade defenses by modifying settings to add objects which they control. For example, this may be used to forge [SAML Tokens](https://attack.mitre.org/techniques/T1606/002), without the need to compromise the signing certificate to forge new credentials. Instead, an adversary can manipulate domain trusts to add their own signing certificate. An adversary may also convert a domain to a federated domain, which may enable malicious trust modifications such as altering the claim issuance rules to log in any valid set of credentials as a specified user.(Citation: AADInternals zure AD Federated Domain) ",
+            "modified": "2024-04-19T04:27:51.388Z",
+            "name": "Trust Modification",
+            "description": "Adversaries may add new domain trusts, modify the properties of existing domain trusts, or otherwise change the configuration of trust relationships between domains and tenants to evade defenses and/or elevate privileges.Trust details, such as whether or not user identities are federated, allow authentication and authorization properties to apply between domains or tenants for the purpose of accessing shared resources.(Citation: Microsoft - Azure AD Federation) These trust objects may include accounts, credentials, and other authentication material applied to servers, tokens, and domains.\n\nManipulating these trusts may allow an adversary to escalate privileges and/or evade defenses by modifying settings to add objects which they control. For example, in Microsoft Active Directory (AD) environments, this may be used to forge [SAML Tokens](https://attack.mitre.org/techniques/T1606/002) without the need to compromise the signing certificate to forge new credentials. Instead, an adversary can manipulate domain trusts to add their own signing certificate. An adversary may also convert an AD domain to a federated domain using Active Directory Federation Services (AD FS), which may enable malicious trust modifications such as altering the claim issuance rules to log in any valid set of credentials as a specified user.(Citation: AADInternals zure AD Federated Domain) \n\nAn adversary may also add a new federated identity provider to an identity tenant such as Okta, which may enable the adversary to authenticate as any user of the tenant.(Citation: Okta Cross-Tenant Impersonation 2023)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -17,23 +17,26 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
-            "x_mitre_detection": "Monitor for modifications to domain trust settings, such as when a user or application modifies the federation settings on the domain or updates domain authentication from Managed to Federated via ActionTypes <code>Set federation settings on domain</code> and <code>Set domain authentication</code>.(Citation: Microsoft - Azure Sentinel ADFSDomainTrustMods) This may also include monitoring for Event ID 307 which can be correlated to relevant Event ID 510 with the same Instance ID for change details.(Citation: Sygnia Golden SAML)(Citation: CISA SolarWinds Cloud Detection)\n\nMonitor for PowerShell commands such as: <code>Update-MSOLFederatedDomain \u2013DomainName: \"Federated Domain Name\"</code>, or <code>Update-MSOLFederatedDomain \u2013DomainName: \"Federated Domain Name\" \u2013supportmultipledomain</code>.(Citation: Microsoft - Update or Repair Federated domain)",
-            "x_mitre_platforms": [
-                "Windows",
-                "Azure AD"
+            "x_mitre_contributors": [
+                "Blake Strom, Microsoft 365 Defender",
+                "Praetorian",
+                "Obsidian Security"
             ],
-            "x_mitre_is_subtechnique": true,
             "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor for modifications to domain trust settings, such as when a user or application modifies the federation settings on the domain or updates domain authentication from Managed to Federated via ActionTypes <code>Set federation settings on domain</code> and <code>Set domain authentication</code>.(Citation: Microsoft - Azure Sentinel ADFSDomainTrustMods) This may also include monitoring for Event ID 307 which can be correlated to relevant Event ID 510 with the same Instance ID for change details.(Citation: Sygnia Golden SAML)(Citation: CISA SolarWinds Cloud Detection)\n\nMonitor for PowerShell commands such as: <code>Update-MSOLFederatedDomain \u2013DomainName: \"Federated Domain Name\"</code>, or <code>Update-MSOLFederatedDomain \u2013DomainName: \"Federated Domain Name\" \u2013supportmultipledomain</code>.(Citation: Microsoft - Update or Repair Federated domain)",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_contributors": [
-                "Blake Strom, Microsoft 365 Defender",
-                "Praetorian"
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_platforms": [
+                "Windows",
+                "Azure AD",
+                "SaaS"
             ],
+            "x_mitre_version": "2.0",
             "x_mitre_data_sources": [
                 "Command: Command Execution",
+                "Application Log: Application Log Content",
                 "Active Directory: Active Directory Object Modification",
                 "Active Directory: Active Directory Object Creation"
             ],
@@ -77,6 +80,11 @@
                     "url": "https://docs.microsoft.com/en-us/office365/troubleshoot/active-directory/update-federated-domain-office-365"
                 },
                 {
+                    "source_name": "Okta Cross-Tenant Impersonation 2023",
+                    "description": "Okta Defensive Cyber Operations. (2023, August 31). Cross-Tenant Impersonation: Prevention and Detection. Retrieved February 15, 2024.",
+                    "url": "https://sec.okta.com/articles/2023/08/cross-tenant-impersonation-prevention-and-detection"
+                },
+                {
                     "source_name": "Sygnia Golden SAML",
                     "description": "Sygnia. (2020, December). Detection and Hunting of Golden SAML Attack. Retrieved January 6, 2021.",
                     "url": "https://www.sygnia.co/golden-saml-advisory"
@@ -85,7 +93,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

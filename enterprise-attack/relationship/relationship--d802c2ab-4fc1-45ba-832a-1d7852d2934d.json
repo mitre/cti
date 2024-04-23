@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--613d2f8b-56bf-4b34-ac0d-19673f75fbd3",
+    "id": "bundle--d019c8da-7423-4737-a499-d76d6073fd15",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-23T21:17:50.271Z",
-            "description": "Monitor newly executed processes that may attempt to find domain-level groups and permission settings.\n\nFor Linux, auditing frameworks that support alerting on process creation, including the audit daemon (auditd), can be used to alert on invocations of commands such as <code>ldapsearch</code>.\n\nFor MacOS, utilities that work in concert with Apple\u2019s Endpoint Security Framework such as Process Monitor can be used to track usage of commands such as <code>dscacheutil -q group</code>.\n\nNote: Event IDs are for Sysmon (Event ID 10 - process access) and Windows Security Log (Event ID 4688 - a new process has been created). \n\n<h4> Analytic 1 - Local Permission Group Discovery - Net </h4>\n<code>processes = filter processes where ((event_id=\"10\" OR event_id=\"4688\") AND\n (exe == \"net.exe\" OR exe == \"net1.exe\") AND command_line=\"*group*/domain*\")</code>",
+            "modified": "2024-03-27T20:24:22.666Z",
+            "description": "Monitor newly executed processes that may attempt to find domain-level groups and permission settings.\n\nFor Linux, auditing frameworks that support alerting on process creation, including the audit daemon (auditd), can be used to alert on invocations of commands such as <code>ldapsearch</code>.\n\nFor MacOS, utilities that work in concert with Apple\u2019s Endpoint Security Framework such as Process Monitor can be used to track usage of commands such as <code>dscacheutil -q group</code>.\n\nNote: Event IDs are for Sysmon (Event ID 10 - process access) and Windows Security Log (Event ID 4688 - a new process has been created). \n\nAnalytic 1 - Local Permission Group Discovery - Net\n\n<code>(source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") (Image= \"net.exe\" OR Image= \"net1.exe\") AND CommandLine=\"*group*/domain*\")</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--2aed01ad-3df3-4410-a8cb-11ea4ded587c",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

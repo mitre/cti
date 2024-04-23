@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--972bdb4f-2ec3-4b8d-804f-2797af6505fc",
+    "id": "bundle--15d686f6-6ac7-460e-b264-47a92f5c4520",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-23T22:01:23.707Z",
-            "description": "Monitor newly executed processes that may establish persistence by executing malicious content triggered by user inactivity.\n\n<h4> Analytic 1 : New processes whose image files are being used as Screensaver files and make an outbound network connection to unknown IP address </h4>\n<code>new_processes = filter ProcessGuid, ProcessFilePath, ProcessCommandLine, UserName\nFROM ProcessCreationData\nWHERE\n  event_id == \"1\"\n\nnew_network_connections = filter ProcessFilePath, DestinationIp\nFROM NetworkConnectionData\nWHERE\n  event_id == \"3\"\n\nscreensaver_key_modification = filter ProcessGuid, ProcessFilePath, UserName, RegistryKeyPath, RegistryKeyValueData \nFROM KeyModificationData\nWHERE\n  event_id == \"13\" AND\n  RegistryKeyPath LIKE '%Software\\Policies\\Microsoft\\Windows\\Control Panel\\Desktop\\SCRNSAVE.EXE%'\n\nscreensaver_processes = filter p.ProcessGuid, p.ProcessFilePath, p.UserName\nFROM new_processes p\nINNER JOIN screensaver_key_modification k\nON p.ProcessFilePath = k.RegistryKeyValueData\n\nsuspicious_processes = filter p.ProcessGuid, p.ProcessFilePath, p.UserName, n.DestinationIp\nFROM new_network_connections n\nINNER JOIN screensaver_processes p\nON p.ProcessFilePath = n.ProcessFilePath\nWHERE\n  n.DestinationIP NOT IN ('KnownIp01','KnownIp02')</code>\n",
+            "modified": "2024-03-28T15:12:05.962Z",
+            "description": "Monitor newly executed processes that may establish persistence by executing malicious content triggered by user inactivity.\n\nAnalytic 1 - HKCU\\Control Panel\\Desktop registry key\n\n<code> (source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") | where CommandLine LIKE \"%reg%\" AND CommandLine LIKE \"%add%\" AND CommandLine LIKE \"%HKCU\\Control Panel\\Desktop\\%\"</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--ce4b7013-640e-48a9-b501-d0025a95f4bf",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

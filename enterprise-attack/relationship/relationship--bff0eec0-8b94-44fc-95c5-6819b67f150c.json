@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--e84fb28d-d409-4260-a10b-61611ff38da7",
+    "id": "bundle--636951d1-1190-4a9c-8d53-585c28ab740d",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-25T19:22:20.923Z",
-            "description": "Monitor for newly executed processes that can aid in sniffing network traffic to capture information about an environment, including authentication material passed over the network \n\nNote: The Analytic is for Windows systems and looks for new processes that have the names of the most common network sniffing tools. While this may be noisy on networks where sysadmins are using any of these tools on a regular basis, in most networks their use is noteworthy.\n\n<h4>Analytic 1 - Windows</h4>\n<code>processes = filter processes where (\n(event_id == \"1\" OR event_id == \"4688\") AND\nexe == \"tshark.exe\" OR\nexe == \"windump.exe\" OR\n(exe == \"logman.exe\" AND parent_exe exists AND parent_exe!=\"C:\\Program Files\\Windows Event Reporting\\Core\\EventReporting.AgentService.exe\") OR\nexe == \"tcpdump.exe\" OR\nexe == \"wprui.exe\" OR\nexe == \"wpr.exe\" ) </code>",
+            "modified": "2024-03-27T18:11:11.003Z",
+            "description": "Monitor for newly executed processes that can aid in sniffing network traffic to capture information about an environment, including authentication material passed over the network \n\nNote: The Analytic is for Windows systems and looks for new processes that have the names of the most common network sniffing tools. While this may be noisy on networks where sysadmins are using any of these tools on a regular basis, in most networks their use is noteworthy.\n\nAnalytic 1 - Windows\n\n<code>(source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") AND\nImage=\"*tshark.exe\" OR\nImage=\"*windump.exe\" OR\n(Image=\"*logman.exe\" AND ParentImage!=\"C:\\\\Program Files\\\\Windows Event Reporting\\\\Core\\\\EventReporting.AgentService.exe\") OR\nImage= \"tcpdump.exe\" OR\nImage= \"wprui.exe\" OR\nImage= \"wpr.exe\" )  </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--3257eb21-f9a7-4430-8de1-d8b6e288f529",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
