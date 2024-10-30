@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--e4b50b2c-66ee-4d11-ad98-7c2b2fbf7a3f",
+    "id": "bundle--9a406da6-da54-472e-8cdd-d5626f82a715",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--2a25ebc1-6c8e-4fd6-8ce1-339f0de199f0",
+            "created": "2022-03-30T14:26:51.858Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--2a25ebc1-6c8e-4fd6-8ce1-339f0de199f0",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.858Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.858Z",
-            "description": "Monitor for newly executed processes that may be indicative of credential dumping. On Windows 8.1 and Windows Server 2012 R2, monitor Windows Logs for LSASS.exe creation to verify that LSASS started as a protected process.",
+            "modified": "2024-08-13T13:33:33.955Z",
+            "description": "Monitor for newly executed processes that may be indicative of credential dumping.\n\nAnalytic 1 - Unexpected process creation related to credential dumping.\n\n<code> (index=security sourcetype=\"WinEventLog:Security\" EventCode=4688 Image=\"*procdump.exe\" CommandLine IN (\"* -ma lsass*\"))\nOR \n(index=security sourcetype=\"linux_secure\" (key=\"cmdline\" value IN (\"*procdump* -ma /proc/$(pgrep lsass)\")) (key=\"exe\" value=\"*procdump\"))\nOR\n(index=security sourcetype=\"macOS:UnifiedLog\" process=\"*procdump\" command=\"* -ma /proc/$(pgrep lsass)\")</code>",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--0a3ead4e-6d47-4ccb-854c-a6a4f9d96b22",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

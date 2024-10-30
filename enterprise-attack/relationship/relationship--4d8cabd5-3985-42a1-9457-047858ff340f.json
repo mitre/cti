@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--c91c43cf-772b-4487-bc8b-28463add1702",
+    "id": "bundle--27e3a68b-af80-40e1-bd4f-095256cf7404",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,14 +12,14 @@
             "external_references": [
                 {
                     "source_name": "Twitter Leoloobeek Scheduled Task",
-                    "description": "Loobeek, L. (2017, December 8). leoloobeek Status. Retrieved December 12, 2017.",
-                    "url": "https://twitter.com/leoloobeek/status/939248813465853953"
+                    "description": "Loobeek, L. (2017, December 8). leoloobeek Status. Retrieved September 12, 2024.",
+                    "url": "https://x.com/leoloobeek/status/939248813465853953"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-03-27T19:23:04.363Z",
+            "modified": "2024-09-12T19:41:53.041Z",
             "description": "Monitor for newly constructed processes and/or command-lines that execute from the svchost.exe in Windows 10 and the Windows Task Scheduler taskeng.exe for older versions of Windows. (Citation: Twitter Leoloobeek Scheduled Task) If scheduled tasks are not used for persistence, then the adversary is likely to remove the task when the action is complete. Look for instances of <code> schtasks.exe </code> running as processes. The <code> command_line </code> field is necessary to disambiguate between types of schtasks commands. These include the flags <code>/create </code>,<code> /run</code>,<code> /query</code>,<code> /delete</code>,<code> /change</code>, and <code> /end</code>.\n\nDetection of the creation or modification of Scheduled Tasks with a suspicious script, extension or user writable path. Attackers may create or modify Scheduled Tasks for the persistent execution of malicious code. This detection focuses at the same time on EventIDs 4688 and 1 with process creation (SCHTASKS) and EventID 4698, 4702 for Scheduled Task creation/modification event log.\n\nAnalytic 1 - New processes whose parent processes are svchost.exe or taskeng.exe\n\n<code> (source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") AND (ParentImage=\"*svchost.exe*\" OR ParentImage=\"*taskeng.exe*\")</code>\n\nAnalytic 2 - Scheduled Task Creation or Modification Containing Suspicious Scripts, Extensions or User Writable Paths\n\n<code>(\n\t\t(source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") \n\t\tOR \n\t\t(source=\"*WinEventLog:Security\" EventCode=\"4688\") \n\t\tCommandLine=\"*SCHTASKS*\" \n\t\t(CommandLine=\"*/CREATE*\" OR CommandLine=\"*/CHANGE*\")\n\t) \n\t(\n\t\t(\n\t\t\tCommandLine=\"*.cmd*\" OR \n\t\t\tCommandLine=\"*.ps1*\" OR \n\t\t\tCommandLine=\"*.vbs*\" OR \n\t\t\tCommandLine=\"*.py*\" OR \n\t\t\tCommandLine=\"*.js*\" OR \n\t\t\tCommandLine=\"*.exe*\" OR \n\t\t\tCommandLine=\"*.bat*\"\n\t\t) OR \n\t\t(\n\t\t\tCommandLine=\"*javascript*\" OR \n\t\t\tCommandLine=\"*powershell*\" OR \n\t\t\tCommandLine=\"*wmic*\" OR \n\t\t\tCommandLine=\"*rundll32*\" OR \n\t\t\tCommandLine=\"*cmd*\" OR \n\t\t\tCommandLine=\"*cscript*\" OR \n\t\t\tCommandLine=\"*wscript*\" OR \n\t\t\tCommandLine=\"*regsvr32*\" OR \n\t\t\tCommandLine=\"*mshta*\" OR \n\t\t\tCommandLine=\"*bitsadmin*\" OR \n\t\t\tCommandLine=\"*certutil*\" OR \n\t\t\tCommandLine=\"*msiexec*\" OR \n\t\t\tCommandLine=\"*javaw*\"\n\t\t) OR \n\t\t(\n\t\t\tCommandLine=\"*%APPDATA%*\" OR \n\t\t\tCommandLine=\"*\\\\AppData\\\\Roaming*\" OR \n\t\t\tCommandLine=\"*%PUBLIC%*\" OR \n\t\t\tCommandLine=\"*C:\\\\Users\\\\Public*\" OR \n\t\t\tCommandLine=\"*%ProgramData%*\" OR \n\t\t\tCommandLine=\"*C:\\\\ProgramData*\" OR \n\t\t\tCommandLine=\"*%TEMP%*\" OR \n\t\t\tCommandLine=\"*\\\\AppData\\\\Local\\\\Temp*\" OR \n\t\t\tCommandLine=\"*\\\\Windows\\\\PLA\\\\System*\" OR \n\t\t\tCommandLine=\"*\\\\tasks*\" OR \n\t\t\tCommandLine=\"*\\\\Registration\\\\CRMLog*\" OR \n\t\t\tCommandLine=\"*\\\\FxsTmp*\" OR \n\t\t\tCommandLine=\"*\\\\spool\\\\drivers\\\\color*\" OR \n\t\t\tCommandLine=\"*\\\\tracing*\"\n\t\t)\n\t)</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",

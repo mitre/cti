@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--d7acf879-99b3-49f7-81a9-8b5ffbf893d7",
+    "id": "bundle--8ded7cd4-0480-4039-8ca4-992a673a5035",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--8662e715-6410-40cf-8faa-21b186073a7d",
+            "created": "2022-03-30T14:26:51.870Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--8662e715-6410-40cf-8faa-21b186073a7d",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.870Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.870Z",
-            "description": "Monitor for newly executed processes that does not correlate to known good software. Analyze the process execution trees, historical activities from the third-party application (such as what types of files are usually pushed), and the resulting activities or events from the file/binary/script pushed to systems. ",
+            "modified": "2024-09-10T14:07:43.171Z",
+            "description": "Monitor for newly executed processes that does not correlate to known good software. Analyze the process execution trees, historical activities from the third-party application (such as what types of files are usually pushed), and the resulting activities or events from the file/binary/script pushed to systems. \n\nNote: This query detects the creation of suspicious processes initiated by system or administrative accounts (such as SYSTEM, Admin, or SCCM) that are not typical for those users, and filters the process creation based on unusual patterns. Processes like cmd.exe, powershell.exe, or python executed in this context without an expected parent process or correlation to authorized events should be flagged for investigation.\n\nAnalytic 1 - Look for unusual software deployment processes, unexpected binaries or scripts, non-standard execution trees\n\n<code>sourcetype=WinEventLog:Security OR sourcetype=linux_audit | search (process_name IN (\"cmd.exe\", \"powershell.exe\", \"sh\", \"bash\", \"python\", \"wscript\", \"msiexec.exe\", \"installer\") AND user IN (\"SYSTEM\", \"Admin\", \"SCCM\")) </code>",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--92a78814-b191-47ca-909c-1ccfe3777414",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

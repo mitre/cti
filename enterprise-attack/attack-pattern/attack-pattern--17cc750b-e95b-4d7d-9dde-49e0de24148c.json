@@ -1,10 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--347e889a-da1c-4883-bb37-47931decec7f",
+    "id": "bundle--d3d232a6-6e7e-44c2-860c-1baf88a43eba",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-03-30T21:01:38.651Z",
+            "modified": "2024-09-12T19:42:48.016Z",
             "name": "Services Registry Permissions Weakness",
             "description": "Adversaries may execute their own malicious payloads by hijacking the Registry entries used by services. Adversaries may use flaws in the permissions for Registry keys related to services to redirect from the originally specified executable to one that they control, in order to launch their own code when a service starts. Windows stores local service configuration information in the Registry under <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. The information stored under a service's Registry keys can be manipulated to modify a service's execution parameters through tools such as the service controller, sc.exe,  [PowerShell](https://attack.mitre.org/techniques/T1059/001), or [Reg](https://attack.mitre.org/software/S0075). Access to Registry keys is controlled through access control lists and user permissions. (Citation: Registry Key Security)(Citation: malware_hides_service)\n\nIf the permissions for users and groups are not properly set and allow access to the Registry keys for a service, adversaries may change the service's binPath/ImagePath to point to a different executable under their control. When the service starts or is restarted, then the adversary-controlled program will execute, allowing the adversary to establish persistence and/or privilege escalation to the account context the service is set to execute under (local/domain account, SYSTEM, LocalService, or NetworkService).\n\nAdversaries may also alter other Registry keys in the service\u2019s Registry tree. For example, the <code>FailureCommand</code> key may be changed so that the service is executed in an elevated context anytime the service fails or is intentionally corrupted.(Citation: Kansa Service related collectors)(Citation: Tweet Registry Perms Weakness)\n\nThe <code>Performance</code> key contains the name of a driver service's performance DLL and the names of several exported functions in the DLL.(Citation: microsoft_services_registry_tree) If the <code>Performance</code> key is not already present and if an adversary-controlled user has the <code>Create Subkey</code> permission, adversaries may create the <code>Performance</code> key in the service\u2019s Registry tree to point to a malicious DLL.(Citation: insecure_reg_perms)\n\nAdversaries may also add the <code>Parameters</code> key, which stores driver-specific data, or other custom subkeys for their malicious services to establish persistence or enable other malicious activities.(Citation: microsoft_services_registry_tree)(Citation: troj_zegost) Additionally, If adversaries launch their malicious services using svchost.exe, the service\u2019s file may be identified using <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Services\\servicename\\Parameters\\ServiceDll</code>.(Citation: malware_hides_service)",
             "kill_chain_phases": [
@@ -21,7 +21,6 @@
                     "phase_name": "defense-evasion"
                 }
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
             "x_mitre_contributors": [
                 "Travis Smith, Tripwire",
                 "Matthew Demaske, Adaptforward"
@@ -32,7 +31,6 @@
                 "enterprise-attack"
             ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
                 "Windows"
             ],
@@ -66,8 +64,8 @@
                 },
                 {
                     "source_name": "Tweet Registry Perms Weakness",
-                    "description": "@r0wdy_. (2017, November 30). Service Recovery Parameters. Retrieved April 9, 2018.",
-                    "url": "https://twitter.com/r0wdy_/status/936365549553991680"
+                    "description": "@r0wdy_. (2017, November 30). Service Recovery Parameters. Retrieved September 12, 2024.",
+                    "url": "https://x.com/r0wdy_/status/936365549553991680"
                 },
                 {
                     "source_name": "insecure_reg_perms",
@@ -107,7 +105,9 @@
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ]
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

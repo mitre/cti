@@ -1,10 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--8978df0e-e61f-4227-8614-5634bd69748b",
+    "id": "bundle--0a1db01e-8f82-43d4-a50c-3857fc01a1d8",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2024-01-03T15:46:06.706Z",
+            "modified": "2024-10-15T15:37:25.303Z",
             "name": "Additional Email Delegate Permissions",
             "description": "Adversaries may grant additional permission levels to maintain persistent access to an adversary-controlled email account. \n\nFor example, the <code>Add-MailboxPermission</code> [PowerShell](https://attack.mitre.org/techniques/T1059/001) cmdlet, available in on-premises Exchange and in the cloud-based service Office 365, adds permissions to a mailbox.(Citation: Microsoft - Add-MailboxPermission)(Citation: FireEye APT35 2018)(Citation: Crowdstrike Hiding in Plain Sight 2018) In Google Workspace, delegation can be enabled via the Google Admin console and users can delegate accounts via their Gmail settings.(Citation: Gmail Delegation)(Citation: Google Ensuring Your Information is Safe) \n\nAdversaries may also assign mailbox folder permissions through individual folder permissions or roles. In Office 365 environments, adversaries may assign the Default or Anonymous user permissions or roles to the Top of Information Store (root), Inbox, or other mailbox folders. By assigning one or both user permissions to a folder, the adversary can utilize any other account in the tenant to maintain persistence to the target user\u2019s mail folders.(Citation: Mandiant Defend UNC2452 White Paper)\n\nThis may be used in persistent threat incidents as well as BEC (Business Email Compromise) incidents where an adversary can add [Additional Cloud Roles](https://attack.mitre.org/techniques/T1098/003) to the accounts they wish to compromise. This may further enable use of additional techniques for gaining access to systems. For example, compromised business accounts are often used to send messages to other accounts in the network of the target business while creating inbox rules (ex: [Internal Spearphishing](https://attack.mitre.org/techniques/T1534)), so the messages evade spam/phishing detection mechanisms.(Citation: Bienstock, D. - Defending O365 - 2019)",
             "kill_chain_phases": [
@@ -20,9 +20,10 @@
             "x_mitre_contributors": [
                 "Microsoft Detection and Response Team (DART)",
                 "Mike Burns, Mandiant",
-                "Naveen Vijayaraghavan, Nilesh Dherange (Gurucul)",
                 "Jannie Li, Microsoft Threat Intelligence\u202fCenter\u202f(MSTIC)",
-                "Arad Inbar, Fidelis Security"
+                "Arad Inbar, Fidelis Security",
+                "Nilesh Dherange (Gurucul)",
+                "Naveen Vijayaraghavan"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor for unusual Exchange and Office 365 email account permissions changes that may indicate excessively broad permissions being granted to compromised accounts.\n\nEnable the UpdateFolderPermissions action for all logon types. The mailbox audit log will forward folder permission modification events to the Unified Audit Log. Create rules to alert on ModifyFolderPermissions operations where the Anonymous or Default user is assigned permissions other than None. \n\nA larger than normal volume of emails sent from an account and similar phishing emails sent from \u202freal accounts within a network may be a sign that an account was compromised and attempts to leverage access with modified email permissions is occurring.",
@@ -32,10 +33,9 @@
             "x_mitre_is_subtechnique": true,
             "x_mitre_platforms": [
                 "Windows",
-                "Office 365",
-                "Google Workspace"
+                "Office Suite"
             ],
-            "x_mitre_version": "2.1",
+            "x_mitre_version": "2.2",
             "x_mitre_data_sources": [
                 "Group: Group Modification",
                 "Application Log: Application Log Content",

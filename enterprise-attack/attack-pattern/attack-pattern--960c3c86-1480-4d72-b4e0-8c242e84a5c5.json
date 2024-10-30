@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--b86c616a-cea0-44f8-a320-01c4096f7005",
+    "id": "bundle--f618b200-4f68-4d79-87a4-e9c824146bc1",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2024-04-16T13:03:40.824Z",
+            "modified": "2024-10-12T16:52:46.067Z",
             "name": "Compromise Host Software Binary",
-            "description": "Adversaries may modify host software binaries to establish persistent access to systems. Software binaries/executables provide a wide range of system commands or services, programs, and libraries. Common software binaries are SSH clients, FTP clients, email clients, web browsers, and many other user or server applications.\n\nAdversaries may establish persistence though modifications to host software binaries. For example, an adversary may replace or otherwise infect a legitimate application binary (or support files) with a backdoor. Since these binaries may be routinely executed by applications or the user, the adversary can leverage this for persistent access to the host.\n\nAn adversary may also modify an existing binary by patching in malicious functionality (e.g., IAT Hooking/Entry point patching)(Citation: Unit42 Banking Trojans Hooking 2022) prior to the binary\u2019s legitimate execution. For example, an adversary may modify the entry point of a binary to point to malicious code patched in by the adversary before resuming normal execution flow.(Citation: ESET FontOnLake Analysis 2021)",
+            "description": "Adversaries may modify host software binaries to establish persistent access to systems. Software binaries/executables provide a wide range of system commands or services, programs, and libraries. Common software binaries are SSH clients, FTP clients, email clients, web browsers, and many other user or server applications.\n\nAdversaries may establish persistence though modifications to host software binaries. For example, an adversary may replace or otherwise infect a legitimate application binary (or support files) with a backdoor. Since these binaries may be routinely executed by applications or the user, the adversary can leverage this for persistent access to the host. An adversary may also modify a software binary such as an SSH client in order to persistently collect credentials during logins (i.e., [Modify Authentication Process](https://attack.mitre.org/techniques/T1556)).(Citation: Google Cloud Mandiant UNC3886 2024)\n\nAn adversary may also modify an existing binary by patching in malicious functionality (e.g., IAT Hooking/Entry point patching)(Citation: Unit42 Banking Trojans Hooking 2022) prior to the binary\u2019s legitimate execution. For example, an adversary may modify the entry point of a binary to point to malicious code patched in by the adversary before resuming normal execution flow.(Citation: ESET FontOnLake Analysis 2021)\n\nAfter modifying a binary, an adversary may attempt to [Impair Defenses](https://attack.mitre.org/techniques/T1562) by preventing it from updating (e.g., via the `yum-versionlock` command or `versionlock.list` file in Linux systems that use the yum package manager).(Citation: Google Cloud Mandiant UNC3886 2024)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -14,7 +14,9 @@
                 }
             ],
             "x_mitre_contributors": [
-                "CrowdStrike Falcon OverWatch"
+                "CrowdStrike Falcon OverWatch",
+                "Liran Ravich, CardinalOps",
+                "Jamie Williams (U \u03c9 U), PANW Unit 42"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "Collect and analyze signing certificate metadata and check signature validity on software that executes within the environment. Look for changes to client software that do not correlate with known software or patch cycles. \n\nConsider monitoring for anomalous behavior from client applications, such as atypical module loads, file reads/writes, or network connections.",
@@ -27,7 +29,7 @@
                 "macOS",
                 "Windows"
             ],
-            "x_mitre_version": "2.0",
+            "x_mitre_version": "2.1",
             "x_mitre_data_sources": [
                 "File: File Deletion",
                 "File: File Modification",
@@ -44,6 +46,11 @@
                     "source_name": "mitre-attack",
                     "url": "https://attack.mitre.org/techniques/T1554",
                     "external_id": "T1554"
+                },
+                {
+                    "source_name": "Google Cloud Mandiant UNC3886 2024",
+                    "description": " Punsaen Boonyakarn, Shawn Chew, Logeswaran Nadarajan, Mathew Potaczek, Jakub Jozwiak, and Alex Marvi. (2024, June 18). Cloaked and Covert: Uncovering UNC3886 Espionage Operations. Retrieved September 24, 2024.",
+                    "url": "https://cloud.google.com/blog/topics/threat-intelligence/uncovering-unc3886-espionage-operations"
                 },
                 {
                     "source_name": "Unit42 Banking Trojans Hooking 2022",

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--9f36a2d5-8f0d-4c28-9e53-e6adf4fa2b97",
+    "id": "bundle--3731db42-c9f2-4471-9b97-a5f64a6acf25",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-03-28T15:27:54.834Z",
-            "description": "Monitor newly constructed scheduled jobs that may abuse task scheduling functionality to facilitate initial or recurring execution of malicious code.\n\nOn Windows systems, security event ID 4698 (A scheduled task was created) provides information on newly created scheduled tasks. It includes the TaskContent field, which contains an XML blob that captures key information on the scheduled task including the command to be executed.\n\nAnalytic 1 - Scheduled Task Execution\n\n<code> source=\"*WinEventLog:Security\" EventCode=\u201c4698\u201d | WHERE UserName LIKE \"*\\SYSTEM*\" AND (TaskContent LIKE suspicious_parameter OR TaskContent LIKE \"*powershell.exe*\")</code>",
+            "modified": "2024-08-26T16:27:44.633Z",
+            "description": "Monitor newly constructed scheduled jobs that may abuse task scheduling functionality to facilitate initial or recurring execution of malicious code.\n\nOn Windows systems, security event ID 4698 (A scheduled task was created) provides information on newly created scheduled tasks. It includes the TaskContent field, which contains an XML blob that captures key information on the scheduled task including the command to be executed.\n\nAnalytic 1 - Scheduled Task Execution\n\n<code> source=\"*WinEventLog:Security\" EventCode=\u201c4698\u201d | where NOT (TaskName IN (\"\\\\Microsoft\\\\Windows\\\\UpdateOrchestrator\\\\Reboot\", \"\\\\Microsoft\\\\Windows\\\\Defrag\\\\ScheduledDefrag\"))\n| search TaskContent=\"powershell.exe\" OR TaskContent=\"cmd.exe\"</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--f42df6f0-6395-4f0c-9376-525a031f00c3",
             "target_ref": "attack-pattern--35dd844a-b219-4e2b-a6bb-efa9a75995a9",

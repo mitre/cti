@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--691b0ae9-046f-4919-baea-30edb9cefd59",
+    "id": "bundle--086cd851-c038-4fc7-bc59-4e015e3b59c3",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2024-03-01T16:27:47.391Z",
+            "modified": "2024-10-28T19:10:16.960Z",
             "name": "Data from Information Repositories",
-            "description": "Adversaries may leverage information repositories to mine valuable information. Information repositories are tools that allow for storage of information, typically to facilitate collaboration or information sharing between users, and can store a wide variety of data that may aid adversaries in further objectives, or direct access to the target information. Adversaries may also abuse external sharing features to share sensitive documents with recipients outside of the organization. \n\nThe following is a brief list of example information that may hold potential value to an adversary and may also be found on an information repository:\n\n* Policies, procedures, and standards\n* Physical / logical network diagrams\n* System architecture diagrams\n* Technical system documentation\n* Testing / development credentials\n* Work / project schedules\n* Source code snippets\n* Links to network shares and other internal resources\n\nInformation stored in a repository may vary based on the specific instance or environment. Specific common information repositories include web-based platforms such as [Sharepoint](https://attack.mitre.org/techniques/T1213/002) and [Confluence](https://attack.mitre.org/techniques/T1213/001), specific services such as Code Repositories, IaaS databases, enterprise databases, and other storage infrastructure such as SQL Server.",
+            "description": "Adversaries may leverage information repositories to mine valuable information. Information repositories are tools that allow for storage of information, typically to facilitate collaboration or information sharing between users, and can store a wide variety of data that may aid adversaries in further objectives, such as Credential Access, Lateral Movement, or Defense Evasion, or direct access to the target information. Adversaries may also abuse external sharing features to share sensitive documents with recipients outside of the organization (i.e., [Transfer Data to Cloud Account](https://attack.mitre.org/techniques/T1537)). \n\nThe following is a brief list of example information that may hold potential value to an adversary and may also be found on an information repository:\n\n* Policies, procedures, and standards\n* Physical / logical network diagrams\n* System architecture diagrams\n* Technical system documentation\n* Testing / development credentials (i.e., [Unsecured Credentials](https://attack.mitre.org/techniques/T1552)) \n* Work / project schedules\n* Source code snippets\n* Links to network shares and other internal resources\n* Contact or other sensitive information about business partners and customers, including personally identifiable information (PII) \n\nInformation stored in a repository may vary based on the specific instance or environment. Specific common information repositories include the following:\n\n* Storage services such as IaaS databases, enterprise databases, and more specialized platforms such as customer relationship management (CRM) databases \n* Collaboration platforms such as SharePoint, Confluence, and code repositories\n* Messaging platforms such as Slack and Microsoft Teams \n\nIn some cases, information repositories have been improperly secured, typically by unintentionally allowing for overly-broad access by all users or even public access to unauthenticated users. This is particularly common with cloud-native or cloud-hosted services, such as AWS Relational Database Service (RDS), Redis, or ElasticSearch.(Citation: Mitiga)(Citation: TrendMicro Exposed Redis 2020)(Citation: Cybernews Reuters Leak 2022)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -14,11 +14,13 @@
                 }
             ],
             "x_mitre_contributors": [
-                "Naveen Vijayaraghavan, Nilesh Dherange (Gurucul)",
                 "Regina Elwell",
                 "Praetorian",
                 "Milos Stojadinovic",
-                "Isif Ibrahima, Mandiant"
+                "Isif Ibrahima, Mandiant",
+                "Obsidian Security",
+                "Naveen Vijayaraghavan",
+                "Nilesh Dherange (Gurucul)"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "As information repositories generally have a considerably large user base, detection of malicious use can be non-trivial. At minimum, access to information repositories performed by privileged users (for example, Active Directory Domain, Enterprise, or Schema Administrators) should be closely monitored and alerted upon, as these types of accounts should generally not be used to access information repositories. If the capability exists, it may be of value to monitor and alert on users that are retrieving and viewing a large number of documents and pages; this behavior may be indicative of programmatic means being used to retrieve all data within the repository. In environments with high-maturity, it may be possible to leverage User-Behavioral Analytics (UBA) platforms to detect and alert on user based anomalies.\n\nThe user access logging within Microsoft's SharePoint can be configured to report access to certain pages and documents. (Citation: Microsoft SharePoint Logging) Sharepoint audit logging can also be configured to report when a user shares a resource. (Citation: Sharepoint Sharing Events) The user access logging within Atlassian's Confluence can also be configured to report access to certain pages and documents through AccessLogFilter. (Citation: Atlassian Confluence Logging) Additional log storage and analysis infrastructure will likely be required for more robust detection capabilities. ",
@@ -31,11 +33,10 @@
                 "Windows",
                 "macOS",
                 "SaaS",
-                "Office 365",
-                "Google Workspace",
-                "IaaS"
+                "IaaS",
+                "Office Suite"
             ],
-            "x_mitre_version": "3.3",
+            "x_mitre_version": "3.4",
             "x_mitre_data_sources": [
                 "Logon Session: Logon Session Creation",
                 "Application Log: Application Log Content"
@@ -52,9 +53,19 @@
                     "external_id": "T1213"
                 },
                 {
+                    "source_name": "Mitiga",
+                    "description": "Ariel Szarf, Doron Karmi, and Lionel Saposnik. (n.d.). Oops, I Leaked It Again \u2014 How Mitiga Found PII in Exposed Amazon RDS Snapshots. Retrieved September 24, 2024.",
+                    "url": "https://www.mitiga.io/blog/how-mitiga-found-pii-in-exposed-amazon-rds-snapshots"
+                },
+                {
                     "source_name": "Atlassian Confluence Logging",
                     "description": "Atlassian. (2018, January 9). How to Enable User Access Logging. Retrieved April 4, 2018.",
                     "url": "https://confluence.atlassian.com/confkb/how-to-enable-user-access-logging-182943.html"
+                },
+                {
+                    "source_name": "TrendMicro Exposed Redis 2020",
+                    "description": "David Fiser and Jaromir Horejsi. (2020, April 21). Exposed Redis Instances Abused for Remote Code Execution, Cryptocurrency Mining. Retrieved September 25, 2024.",
+                    "url": "https://www.trendmicro.com/en_us/research/20/d/exposed-redis-instances-abused-for-remote-code-execution-cryptocurrency-mining.html"
                 },
                 {
                     "source_name": "Microsoft SharePoint Logging",
@@ -65,6 +76,11 @@
                     "source_name": "Sharepoint Sharing Events",
                     "description": "Microsoft. (n.d.). Sharepoint Sharing Events. Retrieved October 8, 2021.",
                     "url": "https://docs.microsoft.com/en-us/microsoft-365/compliance/use-sharing-auditing?view=o365-worldwide#sharepoint-sharing-events"
+                },
+                {
+                    "source_name": "Cybernews Reuters Leak 2022",
+                    "description": "Vilius Petkauskas . (2022, November 3). Thomson Reuters collected and leaked at least 3TB of sensitive data. Retrieved September 25, 2024.",
+                    "url": "https://cybernews.com/security/thomson-reuters-leaked-terabytes-sensitive-data/"
                 }
             ],
             "object_marking_refs": [

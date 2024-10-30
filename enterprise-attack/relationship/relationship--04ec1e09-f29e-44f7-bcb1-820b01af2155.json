@@ -1,22 +1,47 @@
 {
     "type": "bundle",
-    "id": "bundle--0cf4e52d-c2c1-40ad-817d-d6c5a5dd303d",
+    "id": "bundle--ead1d280-2baf-4144-aeca-d38e9a6f7bdc",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--04ec1e09-f29e-44f7-bcb1-820b01af2155",
+            "created": "2022-03-30T14:26:51.858Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "AdSecurity DCSync Sept 2015",
+                    "description": "Metcalf, S. (2015, September 25). Mimikatz DCSync Usage, Exploitation, and Detection. Retrieved December 4, 2017.",
+                    "url": "https://adsecurity.org/?p=1729"
+                },
+                {
+                    "source_name": "Microsoft DRSR Dec 2017",
+                    "description": "Microsoft. (2017, December 1). MS-DRSR Directory Replication Service (DRS) Remote Protocol. Retrieved December 4, 2017.",
+                    "url": "https://msdn.microsoft.com/library/cc228086.aspx"
+                },
+                {
+                    "source_name": "Microsoft NRPC Dec 2017",
+                    "description": "Microsoft. (2017, December 1). MS-NRPC - Netlogon Remote Protocol. Retrieved December 6, 2017.",
+                    "url": "https://msdn.microsoft.com/library/cc237008.aspx"
+                },
+                {
+                    "source_name": "Microsoft SAMR",
+                    "description": "Microsoft. (n.d.). MS-SAMR Security Account Manager (SAM) Remote Protocol (Client-to-Server) - Transport. Retrieved December 4, 2017.",
+                    "url": "https://msdn.microsoft.com/library/cc245496.aspx"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--04ec1e09-f29e-44f7-bcb1-820b01af2155",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.858Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.858Z",
-            "description": "Monitor and analyze traffic patterns and packet inspection associated to protocol(s) that do not follow the expected protocol standards and traffic flows (e.g extraneous packets that do not belong to established flows, gratuitous or anomalous traffic patterns, anomalous syntax, or structure). Consider correlation with process monitoring and command line to detect anomalous processes execution and command line arguments associated to traffic patterns (e.g. monitor anomalies in use of files that do not normally initiate connections for respective protocol(s)).",
+            "modified": "2024-09-24T15:52:03.623Z",
+            "description": "Monitor for network protocols  (Citation: Microsoft DRSR Dec 2017) (Citation: Microsoft NRPC Dec 2017) and other replication requests (Citation: Microsoft SAMR) from IPs not associated with known domain controllers. (Citation: AdSecurity DCSync Sept 2015)\n\nAnalytic 1 - Anomalous network traffic content related to credential managers \n\n<code>index=network sourcetype=\"stream:tcp\" dest_port=389 NOT [| inputlookup known_dc_ip_addresses | fields ip]\n| eval SourceIP = src_ip, DestinationIP = dest_ip, Protocol = proto\n| search (content=\"LDAPSearchRequest\") OR (content=\"LDAPModifyRequest\") OR (content=\"bindRequest\") OR (content=\"searchResEntry\") OR (content=\"NTDS.dit\")</code>",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
             "target_ref": "attack-pattern--0a3ead4e-6d47-4ccb-854c-a6a4f9d96b22",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

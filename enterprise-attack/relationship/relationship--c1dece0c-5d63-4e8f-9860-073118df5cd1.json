@@ -1,25 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--a6c5cfd3-7b1c-4c87-a51c-a87cec675082",
+    "id": "bundle--959352ac-8703-4a8e-b93c-50477c4a2374",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "type": "relationship",
             "id": "relationship--c1dece0c-5d63-4e8f-9860-073118df5cd1",
             "created": "2022-03-30T14:26:51.874Z",
-            "x_mitre_version": "0.1",
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Monitor the execution of and command-line arguments for applications that may be used by an adversary to gain Initial Access that require user interaction. This includes compression applications, such as those for zip files, that can be used to [Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140) in payloads.",
-            "modified": "2022-04-20T00:35:32.687Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2024-09-10T16:24:00.546Z",
+            "description": "Detect commands triggered by users, especially related to decompression tools (e.g., zip files) that may unpack malicious payloads. This includes compression applications, such as those for zip files, that can be used to [Deobfuscate/Decode Files or Information](https://attack.mitre.org/techniques/T1140) in payloads.\n\nAnalytic 1 - Command lines showing decompression or decoding actions.\n\n<code> sourcetype=WinEventLog:Powershell EventCode=4104\n| search process_name IN (\"powershell.exe\", \"cmd.exe\", \"zip.exe\", \"winrar.exe\")\n| stats count by process_name command_line user\n| where command_line LIKE \"%unzip%\" OR command_line LIKE \"%decode%\"</code> ",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
             "target_ref": "attack-pattern--8c32eb4d-805f-4fc5-bf60-c4d476c131b5",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

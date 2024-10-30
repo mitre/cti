@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a9a53bd4-cae5-43d4-884e-52d7f20cd3ff",
+    "id": "bundle--4c750c17-b7ff-4113-abdc-1d9298a16e99",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-03-27T17:52:08.163Z",
-            "description": "Monitor for user accounts logged into systems associated with RDP (ex: Windows EID 4624 Logon Type 10). Other factors, such as access patterns (ex: multiple systems over a relatively short period of time) and activity that occurs after a remote login, may indicate suspicious or malicious behavior with RDP.\n\nMonitoring logon and logoff events for hosts on the network is very important for situational awareness. This information can be used as an indicator of unusual activity as well as to corroborate activity seen elsewhere.\n\nCould be applied to a number of different types of monitoring depending on what information is desired. Some use cases include monitoring for all remote connections and building login timelines for users. Logon events are Windows Event Code 4624 for Windows Vista and above, 518 for pre-Vista. Logoff events are 4634 for Windows Vista and above, 538 for pre-Vista.\n\nNote: This analytic looks for user logon events and filters out the top 30 account names to reduce the occurrence of noisy service accounts and the like. It is meant as a starting point for situational awareness around such events. This is liable to be quite noisy and will need tweaking, especially in terms of the number of top users filtered out.\n\nAnalytic 1\n\n<code>source=\"*WinEventLog:Security\" EventCode IN (4624, 4634, 4647, 4778)\n|search user NOT IN top limit=30</code>",
+            "modified": "2024-10-04T19:03:50.763Z",
+            "description": "Monitor for user accounts logged into systems associated with RDP (ex: Windows EID 4624 Logon Type 10). Other factors, such as access patterns (ex: multiple systems over a relatively short period of time) and activity that occurs after a remote login, may indicate suspicious or malicious behavior with RDP.\n\nMonitoring logon and logoff events for hosts on the network is very important for situational awareness. This information can be used as an indicator of unusual activity as well as to corroborate activity seen elsewhere.\n\nCould be applied to a number of different types of monitoring depending on what information is desired. Some use cases include monitoring for all remote connections and building login timelines for users. Logon events are Windows Event Code 4624 for Windows Vista and above, 518 for pre-Vista. Logoff events are 4634 for Windows Vista and above, 538 for pre-Vista.\n\nNote: This analytic looks for user logon events and filters out the top 30 account names to reduce the occurrence of noisy service accounts and the like. It is meant as a starting point for situational awareness around such events. This is liable to be quite noisy and will need tweaking, especially in terms of the number of top users filtered out.\n\nAnalytic 1\n\n<code>sourcetype=\"WinEventLog:Security\" EventCode IN (4624, 4634, 4647, 4778, 4779)\n| search LogonType=10 // RDP Interactive Logon\n| eval is_suspicious=if((user!=\"expected_users\") AND (dest_ip!=\"expected_servers\"), \"True\", \"False\")\n| where is_suspicious=\"True\"</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
             "target_ref": "attack-pattern--eb062747-2193-45de-8fa2-e62549c37ddf",

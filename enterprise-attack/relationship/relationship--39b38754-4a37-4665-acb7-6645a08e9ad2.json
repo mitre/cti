@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--d1052f2e-f241-4c1c-bd6f-b983c27d78a6",
+    "id": "bundle--55147f8c-6a97-40b6-8cbe-5ff412e96c98",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--39b38754-4a37-4665-acb7-6645a08e9ad2",
+            "created": "2022-03-30T14:26:51.839Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--39b38754-4a37-4665-acb7-6645a08e9ad2",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.839Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.839Z",
-            "description": "Monitor for newly constructed containers",
+            "modified": "2024-09-10T13:20:58.336Z",
+            "description": "Monitor for container creation events within Kubernetes clusters. This helps track when new containers are being deployed, especially by jobs that could have been scheduled by adversaries.\n\nAnalytic 1 - Look for new container creation events with unusual parameters.\n\n<code>  sourcetype=kubernetes:container_creation \n| stats count by container_name namespace pod_name container_id image_name\n| where NOT [search index=container_baseline container_name=* earliest=-30d@d latest=now() | table container_name]</code> ",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--a5ae90ca-0c4b-481c-959f-0eb18a7ff953",
             "target_ref": "attack-pattern--1126cab1-c700-412f-a510-61f4937bb096",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

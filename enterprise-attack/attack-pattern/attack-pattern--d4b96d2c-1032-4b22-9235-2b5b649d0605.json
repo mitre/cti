@@ -1,40 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--29e6850c-4926-4fad-9ef0-40dcaeb7c327",
+    "id": "bundle--28d293d9-b3e8-42d7-a1a6-d2e7ae03996c",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--d4b96d2c-1032-4b22-9235-2b5b649d0605",
-            "type": "attack-pattern",
-            "created": "2020-02-11T19:05:02.399Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1556.001",
-                    "url": "https://attack.mitre.org/techniques/T1556/001"
-                },
-                {
-                    "source_name": "Dell Skeleton",
-                    "description": "Dell SecureWorks. (2015, January 12). Skeleton Key Malware Analysis. Retrieved April 8, 2019.",
-                    "url": "https://www.secureworks.com/research/skeleton-key-malware-analysis"
-                },
-                {
-                    "url": "https://technet.microsoft.com/en-us/library/dn487457.aspx",
-                    "description": "Microsoft. (2016, April 15). Audit Policy Recommendations. Retrieved June 3, 2016.",
-                    "source_name": "TechNet Audit Policy"
-                }
-            ],
-            "modified": "2021-04-20T20:10:26.613Z",
+            "modified": "2024-08-21T15:26:54.386Z",
             "name": "Domain Controller Authentication",
             "description": "Adversaries may patch the authentication process on a domain controller to bypass the typical authentication mechanisms and enable access to accounts. \n\nMalware may be used to inject false credentials into the authentication process on a domain controller with the intent of creating a backdoor used to access any user\u2019s account and/or credentials (ex: [Skeleton Key](https://attack.mitre.org/software/S0007)). Skeleton key works through a patch on an enterprise domain controller authentication process (LSASS) with credentials that adversaries may use to bypass the standard authentication system. Once patched, an adversary can use the injected password to successfully authenticate as any domain user account (until the the skeleton key is erased from memory by a reboot of the domain controller). Authenticated access may enable unfettered access to hosts and/or resources within single-factor authentication environments.(Citation: Dell Skeleton)",
             "kill_chain_phases": [
@@ -51,19 +21,49 @@
                     "phase_name": "persistence"
                 }
             ],
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor for calls to <code>OpenProcess</code> that can be used to manipulate lsass.exe running on a domain controller as well as for malicious modifications to functions exported from authentication-related system DLLs (such as cryptdll.dll and samsrv.dll).(Citation: Dell Skeleton)\n\nConfigure robust, consistent account activity audit policies across the enterprise and with externally accessible services.(Citation: TechNet Audit Policy) Look for suspicious account behavior across systems that share accounts, either user, admin, or service accounts. Examples: one account logged into multiple systems simultaneously; multiple accounts logged into the same machine simultaneously; accounts logged in at odd times or outside of business hours. Activity may be from interactive login sessions or process ownership from accounts being used to execute binaries on a remote system as a particular account. Correlate other security systems with login information (e.g. a user has an active login session but has not entered the building or does not have VPN access). ",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "2.1",
             "x_mitre_data_sources": [
                 "Logon Session: Logon Session Creation",
                 "Process: Process Access",
                 "File: File Modification",
                 "Process: OS API Execution"
             ],
-            "x_mitre_permissions_required": [
-                "Administrator"
-            ]
+            "type": "attack-pattern",
+            "id": "attack-pattern--d4b96d2c-1032-4b22-9235-2b5b649d0605",
+            "created": "2020-02-11T19:05:02.399Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1556/001",
+                    "external_id": "T1556.001"
+                },
+                {
+                    "source_name": "Dell Skeleton",
+                    "description": "Dell SecureWorks. (2015, January 12). Skeleton Key Malware Analysis. Retrieved April 8, 2019.",
+                    "url": "https://www.secureworks.com/research/skeleton-key-malware-analysis"
+                },
+                {
+                    "source_name": "TechNet Audit Policy",
+                    "description": "Microsoft. (2016, April 15). Audit Policy Recommendations. Retrieved June 3, 2016.",
+                    "url": "https://technet.microsoft.com/en-us/library/dn487457.aspx"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

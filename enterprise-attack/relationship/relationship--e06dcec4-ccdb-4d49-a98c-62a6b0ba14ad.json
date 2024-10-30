@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--5491a8ea-237a-42df-8425-38afd8221b50",
+    "id": "bundle--e6b6f1cb-c3e4-4686-ac82-061d63a59c63",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--e06dcec4-ccdb-4d49-a98c-62a6b0ba14ad",
+            "created": "2022-03-30T14:26:51.874Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--e06dcec4-ccdb-4d49-a98c-62a6b0ba14ad",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.874Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.874Z",
-            "description": "Monitor for suspicious file access activity, specifically indications that a process is reading multiple files in a short amount of time and/or using command-line arguments indicative of searching for credential material (ex: regex patterns). These may be indicators of automated/scripted credential access behavior. Monitoring when the user's <code>.bash_history</code> is read can help alert to suspicious activity. While users do typically rely on their history of commands, they often access this history through other utilities like \"history\" instead of commands like <code>cat ~/.bash_history</code>.",
+            "modified": "2024-08-14T14:29:33.694Z",
+            "description": "Monitor for suspicious file access activity, specifically indications that a process is reading multiple files in a short amount of time and/or using command-line arguments indicative of searching for credential material (ex: regex patterns). These may be indicators of automated/scripted credential access behavior. Monitoring when the user's <code>.bash_history</code> is read can help alert to suspicious activity. While users do typically rely on their history of commands, they often access this history through other utilities like \"history\" instead of commands like <code>cat ~/.bash_history</code>.\n\nAnalytic 1 - Multiple file reads in a short period or searching for credential material.\n\n<code> (index=security sourcetype=\"WinEventLog:Security\" EventCode=4663 ObjectName=\"*password*\" OR ObjectName=\"*credential*\") OR\n(index=sysmon sourcetype=\"WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=11 TargetObject=\"*password*\" OR TargetObject=\"*credential*\") OR\n(index=os sourcetype=\"linux_audit\" action=\"open\" filepath IN (\"*password*\", \"*credential*\", \"*passwd*\", \"*shadow*\", \"*.pem\", \"*.key\")) OR\n(index=os sourcetype=\"macos_secure\" event_type=\"open\" file_path IN (\"*password*\", \"*credential*\", \"*passwd*\", \"*shadow*\", \"*.pem\", \"*.key\"))</code>",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
             "target_ref": "attack-pattern--435dfb86-2697-4867-85b5-2fef496c0517",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

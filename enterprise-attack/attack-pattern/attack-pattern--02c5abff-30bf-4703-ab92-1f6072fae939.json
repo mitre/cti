@@ -1,12 +1,12 @@
 {
     "type": "bundle",
-    "id": "bundle--28d966c2-0d05-401e-bad4-557c33f71fc7",
+    "id": "bundle--a4e4ddec-cb42-4d5b-a630-831e115c484c",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-05-04T18:06:40.829Z",
+            "modified": "2024-10-04T15:05:25.388Z",
             "name": "Fileless Storage",
-            "description": "Adversaries may store data in \"fileless\" formats to conceal malicious activity from defenses. Fileless storage can be broadly defined as any format other than a file. Common examples of non-volatile fileless storage include the Windows Registry, event logs, or WMI repository.(Citation: Microsoft Fileless)(Citation: SecureList Fileless)\n\nSimilar to fileless in-memory behaviors such as [Reflective Code Loading](https://attack.mitre.org/techniques/T1620) and [Process Injection](https://attack.mitre.org/techniques/T1055), fileless data storage may remain undetected by anti-virus and other endpoint security tools that can only access specific file formats from disk storage.\n\nAdversaries may use fileless storage to conceal various types of stored data, including payloads/shellcode (potentially being used as part of [Persistence](https://attack.mitre.org/tactics/TA0003)) and collected data not yet exfiltrated from the victim (e.g., [Local Data Staging](https://attack.mitre.org/techniques/T1074/001)). Adversaries also often encrypt, encode, splice, or otherwise obfuscate this fileless data when stored.\n\nSome forms of fileless storage activity may indirectly create artifacts in the file system, but in central and otherwise difficult to inspect formats such as the WMI (e.g., `%SystemRoot%\\System32\\Wbem\\Repository`) or Registry (e.g., `%SystemRoot%\\System32\\Config`) physical files.(Citation: Microsoft Fileless) ",
+            "description": "Adversaries may store data in \"fileless\" formats to conceal malicious activity from defenses. Fileless storage can be broadly defined as any format other than a file. Common examples of non-volatile fileless storage in Windows systems include the Windows Registry, event logs, or WMI repository.(Citation: Microsoft Fileless)(Citation: SecureList Fileless) In Linux systems, shared memory directories such as `/dev/shm`, `/run/shm`, `/var/run`, and `/var/lock` may also be considered fileless storage, as files written to these directories are mapped directly to RAM and not stored on the disk.(Citation: Elastic Binary Executed from Shared Memory Directory)(Citation: Akami Frog4Shell 2024)(Citation: Aquasec Muhstik Malware 2024)\n\nSimilar to fileless in-memory behaviors such as [Reflective Code Loading](https://attack.mitre.org/techniques/T1620) and [Process Injection](https://attack.mitre.org/techniques/T1055), fileless data storage may remain undetected by anti-virus and other endpoint security tools that can only access specific file formats from disk storage. Leveraging fileless storage may also allow adversaries to bypass the protections offered by read-only file systems in Linux.(Citation: Sysdig Fileless Malware 23022)\n\nAdversaries may use fileless storage to conceal various types of stored data, including payloads/shellcode (potentially being used as part of [Persistence](https://attack.mitre.org/tactics/TA0003)) and collected data not yet exfiltrated from the victim (e.g., [Local Data Staging](https://attack.mitre.org/techniques/T1074/001)). Adversaries also often encrypt, encode, splice, or otherwise obfuscate this fileless data when stored.\n\nSome forms of fileless storage activity may indirectly create artifacts in the file system, but in central and otherwise difficult to inspect formats such as the WMI (e.g., `%SystemRoot%\\System32\\Wbem\\Repository`) or Registry (e.g., `%SystemRoot%\\System32\\Config`) physical files.(Citation: Microsoft Fileless) ",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -18,7 +18,8 @@
                 "Denise Tan",
                 "Mark Wee",
                 "Simona David",
-                "Xavier Rousseau"
+                "Xavier Rousseau",
+                "Vito Alfano, Group-IB"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "",
@@ -27,12 +28,14 @@
             ],
             "x_mitre_is_subtechnique": true,
             "x_mitre_platforms": [
-                "Windows"
+                "Windows",
+                "Linux"
             ],
-            "x_mitre_version": "1.0",
+            "x_mitre_version": "2.0",
             "x_mitre_data_sources": [
                 "Windows Registry: Windows Registry Key Creation",
-                "WMI: WMI Creation"
+                "WMI: WMI Creation",
+                "Process: Process Creation"
             ],
             "type": "attack-pattern",
             "id": "attack-pattern--02c5abff-30bf-4703-ab92-1f6072fae939",
@@ -46,6 +49,16 @@
                     "external_id": "T1027.011"
                 },
                 {
+                    "source_name": "Aquasec Muhstik Malware 2024",
+                    "description": " Nitzan Yaakov. (2024, June 4). Muhstik Malware Targets Message Queuing Services Applications. Retrieved September 24, 2024.",
+                    "url": "https://www.aquasec.com/blog/muhstik-malware-targets-message-queuing-services-applications/"
+                },
+                {
+                    "source_name": "Elastic Binary Executed from Shared Memory Directory",
+                    "description": "Elastic. (n.d.). Binary Executed from Shared Memory Directory. Retrieved September 24, 2024.",
+                    "url": "https://www.elastic.co/guide/en/security/7.17/prebuilt-rule-7-16-3-binary-executed-from-shared-memory-directory.html"
+                },
+                {
                     "source_name": "SecureList Fileless",
                     "description": "Legezo, D. (2022, May 4). A new secret stash for \u201cfileless\u201d malware. Retrieved March 23, 2023.",
                     "url": "https://securelist.com/a-new-secret-stash-for-fileless-malware/106393/"
@@ -54,12 +67,22 @@
                     "source_name": "Microsoft Fileless",
                     "description": "Microsoft. (2023, February 6). Fileless threats. Retrieved March 23, 2023.",
                     "url": "https://learn.microsoft.com/microsoft-365/security/intelligence/fileless-threats"
+                },
+                {
+                    "source_name": "Sysdig Fileless Malware 23022",
+                    "description": "Nicholas Lang. (2022, May 3). Fileless malware mitigation. Retrieved September 24, 2024.",
+                    "url": "https://sysdig.com/blog/containers-read-only-fileless-malware/"
+                },
+                {
+                    "source_name": "Akami Frog4Shell 2024",
+                    "description": "Ori David. (2024, February 1). Frog4Shell \u2014 FritzFrog Botnet Adds One-Days to Its Arsenal. Retrieved September 24, 2024.",
+                    "url": "https://www.akamai.com/blog/security-research/fritzfrog-botnet-new-capabilities-log4shell"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

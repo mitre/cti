@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a43d136a-7874-4413-86fb-1e0140f65528",
+    "id": "bundle--8be8485a-362a-4fb5-8797-c8c2c55f70cd",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-03-27T20:51:54.687Z",
-            "description": "Monitor for newly constructed files that are downloaded and executed on the user's computer. Endpoint sensing or network sensing can potentially detect malicious events once the file is opened (such as a Microsoft Word document or PDF reaching out to the internet or spawning powershell.exe).\n\nWhile batch files are not inherently malicious, it is uncommon to see them created after OS installation, especially in the Windows directory. This analytic looks for the suspicious activity of a batch file being created within the C:\\Windows\\System32 directory tree. There will be only occasional false positives due to administrator actions.\n\nFor Windows, Sysmon Event ID 11 (File create) can be used to track file creation events. This event also provides the Process ID of the process that created the file, which can be correlated with process creation events (e.g., Sysmon Event ID 1) to determine if the file was downloaded from an external network.\n\nFor MacOS, utilities that work in concert with Apple\u2019s Endpoint Security Framework such as File Monitor can be used to track file creation events.\n\nAnalytic 1 - Batch File Write to System32\n\n<code> (source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"11\") file_path=\"*system32*\" AND file_extension=\".bat\"</code>",
+            "modified": "2024-10-04T14:21:42.850Z",
+            "description": "Monitor for files created in unusual directories or files with suspicious extensions. Focus on common locations like the Downloads folder, Temp directories, or the user\u2019s Desktop, especially files that would be of interest from spearphishing attachments.\n\nWhile batch files are not inherently malicious, it is uncommon to see them created after OS installation, especially in the Windows directory. This analytic looks for the suspicious activity of a batch file being created within the C:\\Windows\\System32 directory tree. There will be only occasional false positives due to administrator actions.\n\nFor MacOS, utilities that work in concert with Apple\u2019s Endpoint Security Framework such as File Monitor can be used to track file creation events.\n\nAnalytic 1 - Batch File Write to System32\n\n<code> (sourcetype=WinEventLog:Microsoft-Windows-Sysmon/Operational EventCode=\"11\") file_path=\"*system32*\" AND file_extension=\".bat\"</code>\n\nAnalytic 2 - New file creation in unusual directories.\n\n<code>sourcetype=WinEventLog:Microsoft-Windows-Sysmon/Operational EventCode=11\n| search file_path IN (\"*/Downloads/*\", \"*/Temp/*\", \"*/Desktop/*\")\n| stats count by file_name file_extension file_path user\n| where file_extension IN (\"doc\", \"docx\", \"pdf\", \"xls\", \"rtf\", \"exe\", \"scr\", \"lnk\", \"pif\", \"cpl\", \"zip\") </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
             "target_ref": "attack-pattern--232b7f21-adf9-4b42-b936-b9d6f7df856e",

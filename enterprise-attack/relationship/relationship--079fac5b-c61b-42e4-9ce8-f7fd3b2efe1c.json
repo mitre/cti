@@ -1,25 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--1548815c-52ed-42a3-9a74-00c4ad23e5f4",
+    "id": "bundle--e2bcd2db-29c3-4395-ac9b-611c7621a4fe",
     "spec_version": "2.0",
     "objects": [
         {
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
             "type": "relationship",
             "id": "relationship--079fac5b-c61b-42e4-9ce8-f7fd3b2efe1c",
             "created": "2022-04-28T15:22:39.522Z",
-            "x_mitre_version": "0.1",
-            "x_mitre_deprecated": false,
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
-            "description": "Monitor property changes in Group Policy: <code>Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy\\Store passwords using reversible encryption</code>. By default, the property should be set to Disabled.",
-            "modified": "2022-04-28T15:22:39.522Z",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2024-08-21T16:21:09.401Z",
+            "description": "Monitor property changes in Group Policy: <code>Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy\\Store passwords using reversible encryption</code>. By default, the property should be set to Disabled.\n\nAnalytic 1 - Enabling reversible encryption outside of standard procedures.\n\n<code>index=windows source=\"WinEventLog:Security\" (EventCode=5136 OR EventCode=5137 OR EventCode=5138 OR EventCode=5139)\n| search AttributeLDAPDisplayName=\"msDS-User-Account-Control-Computed\" OR AttributeLDAPDisplayName=\"userParameters\"\n| rex field=_raw \"ObjectDN=(?P<ObjectDN>[^,]+)\"\n| eval Modification=if(match(AttributeValue, \".*;PwdProperties=1.*\"), \"Enabled\", \"Disabled\")\n| stats count by ObjectDN, Modification, EventCode, AttributeValue\n| where Modification=\"Enabled\" </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--5b8b466b-2c81-4fe7-946f-d677a74ae3db",
             "target_ref": "attack-pattern--d50955c2-272d-4ac8-95da-10c29dda1c48",
-            "x_mitre_attack_spec_version": "2.1.0",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

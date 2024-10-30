@@ -1,50 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--432110ee-fd0b-4383-892e-f4ce1bd639fb",
+    "id": "bundle--f8fd7c1f-2c73-4253-aaf8-2e38d16f0aa5",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--d50955c2-272d-4ac8-95da-10c29dda1c48",
-            "type": "attack-pattern",
-            "created": "2022-01-13T20:02:28.349Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1556.005",
-                    "url": "https://attack.mitre.org/techniques/T1556/005"
-                },
-                {
-                    "source_name": "store_pwd_rev_enc",
-                    "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/store-passwords-using-reversible-encryption",
-                    "description": "Microsoft. (2021, October 28). Store passwords using reversible encryption. Retrieved January 3, 2022."
-                },
-                {
-                    "source_name": "how_pwd_rev_enc_1",
-                    "url": "http://blog.teusink.net/2009/08/passwords-stored-using-reversible.html",
-                    "description": "Teusink, N. (2009, August 25). Passwords stored using reversible encryption: how it works (part 1). Retrieved November 17, 2021."
-                },
-                {
-                    "source_name": "how_pwd_rev_enc_2",
-                    "url": "http://blog.teusink.net/2009/08/passwords-stored-using-reversible_26.html",
-                    "description": "Teusink, N. (2009, August 26). Passwords stored using reversible encryption: how it works (part 2). Retrieved November 17, 2021."
-                },
-                {
-                    "source_name": "dump_pwd_dcsync",
-                    "url": "https://adsecurity.org/?p=2053",
-                    "description": "Metcalf, S. (2015, November 22). Dump Clear-Text Passwords for All Admins in the Domain Using Mimikatz DCSync. Retrieved November 15, 2021."
-                }
-            ],
-            "modified": "2022-02-10T21:35:25.377Z",
+            "modified": "2024-08-26T15:40:31.871Z",
             "name": "Reversible Encryption",
             "description": "An adversary may abuse Active Directory authentication encryption properties to gain access to credentials on Windows systems. The <code>AllowReversiblePasswordEncryption</code> property specifies whether reversible password encryption for an account is enabled or disabled. By default this property is disabled (instead storing user credentials as the output of one-way hashing functions) and should not be enabled unless legacy or other software require it.(Citation: store_pwd_rev_enc)\n\nIf the property is enabled and/or a user changes their password after it is enabled, an adversary may be able to obtain the plaintext of passwords created/changed after the property was enabled. To decrypt the passwords, an adversary needs four components:\n\n1. Encrypted password (<code>G$RADIUSCHAP</code>) from the Active Directory user-structure <code>userParameters</code>\n2. 16 byte randomly-generated value (<code>G$RADIUSCHAPKEY</code>) also from <code>userParameters</code>\n3. Global LSA secret (<code>G$MSRADIUSCHAPKEY</code>)\n4. Static key hardcoded in the Remote Access Subauthentication DLL (<code>RASSFM.DLL</code>)\n\nWith this information, an adversary may be able to reproduce the encryption key and subsequently decrypt the encrypted password value.(Citation: how_pwd_rev_enc_1)(Citation: how_pwd_rev_enc_2)\n\nAn adversary may set this property at various scopes through Local Group Policy Editor, user properties, Fine-Grained Password Policy (FGPP), or via the ActiveDirectory [PowerShell](https://attack.mitre.org/techniques/T1059/001) module. For example, an adversary may implement and apply a FGPP to users or groups if the Domain Functional Level is set to \"Windows Server 2008\" or higher.(Citation: dump_pwd_dcsync) In PowerShell, an adversary may make associated changes to user settings using commands similar to <code>Set-ADUser -AllowReversiblePasswordEncryption $true</code>.",
             "kill_chain_phases": [
@@ -61,20 +21,59 @@
                     "phase_name": "persistence"
                 }
             ],
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor property changes in Group Policy: <code>Computer Configuration\\Windows Settings\\Security Settings\\Account Policies\\Password Policy\\Store passwords using reversible encryption</code>. By default, the property should be set to Disabled.\n\nMonitor command-line usage for <code>-AllowReversiblePasswordEncryption $true</code> or other actions that could be related to malicious tampering of user settings (i.e. [Group Policy Modification](https://attack.mitre.org/techniques/T1484/001)). Furthermore, consider monitoring and/or blocking suspicious execution of Active Directory PowerShell modules, such as <code>Set-ADUser</code> and <code>Set-ADAccountControl</code>, that change account configurations. \n\nMonitor Fine-Grained Password Policies and regularly audit user accounts and group settings.(Citation: dump_pwd_dcsync)",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "1.1",
             "x_mitre_data_sources": [
                 "Active Directory: Active Directory Object Modification",
                 "Command: Command Execution",
                 "User Account: User Account Metadata",
                 "Script: Script Execution"
             ],
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
-            ]
+            "type": "attack-pattern",
+            "id": "attack-pattern--d50955c2-272d-4ac8-95da-10c29dda1c48",
+            "created": "2022-01-13T20:02:28.349Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1556/005",
+                    "external_id": "T1556.005"
+                },
+                {
+                    "source_name": "dump_pwd_dcsync",
+                    "description": "Metcalf, S. (2015, November 22). Dump Clear-Text Passwords for All Admins in the Domain Using Mimikatz DCSync. Retrieved November 15, 2021.",
+                    "url": "https://adsecurity.org/?p=2053"
+                },
+                {
+                    "source_name": "store_pwd_rev_enc",
+                    "description": "Microsoft. (2021, October 28). Store passwords using reversible encryption. Retrieved January 3, 2022.",
+                    "url": "https://docs.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/store-passwords-using-reversible-encryption"
+                },
+                {
+                    "source_name": "how_pwd_rev_enc_1",
+                    "description": "Teusink, N. (2009, August 25). Passwords stored using reversible encryption: how it works (part 1). Retrieved November 17, 2021.",
+                    "url": "http://blog.teusink.net/2009/08/passwords-stored-using-reversible.html"
+                },
+                {
+                    "source_name": "how_pwd_rev_enc_2",
+                    "description": "Teusink, N. (2009, August 26). Passwords stored using reversible encryption: how it works (part 2). Retrieved November 17, 2021.",
+                    "url": "http://blog.teusink.net/2009/08/passwords-stored-using-reversible_26.html"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
 }

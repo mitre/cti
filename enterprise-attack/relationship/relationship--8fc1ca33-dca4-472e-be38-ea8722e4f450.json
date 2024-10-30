@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--f4459dcb-d2fa-44d5-beaf-bcd7c0f22343",
+    "id": "bundle--dffa68f2-c85b-4d3d-8d3e-ae74b4b7fab4",
     "spec_version": "2.0",
     "objects": [
         {
@@ -24,14 +24,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-04-11T03:31:45.054Z",
-            "description": "Monitor for new, unfamiliar DLL files written to a domain controller and/or local computer. Password filters will also show up as an autorun and loaded DLL in lsass.exe.(Citation: Clymb3r Function Hook Passwords Sept 2013) If AD FS is in use, monitor the AD FS server for the creation of DLLs as well as the loading of unrecognized or unsigned DLLs into the `Microsoft.IdentityServer.Servicehost` application.(Citation: MagicWeb)",
+            "modified": "2024-08-19T15:31:18.434Z",
+            "description": "Monitor for new, unfamiliar DLL files written to a domain controller and/or local computer. Password filters will also show up as an autorun and loaded DLL in lsass.exe.(Citation: Clymb3r Function Hook Passwords Sept 2013) If AD FS is in use, monitor the AD FS server for the creation of DLLs as well as the loading of unrecognized or unsigned DLLs into the `Microsoft.IdentityServer.Servicehost` application.(Citation: MagicWeb)\n\nAnalytic 1 - Unauthorized DLL loads in critical systems.\n\n<code>index=security sourcetype IN (\"WinEventLog:Microsoft-Windows-Sysmon/Operational\", \"linux_secure\", \"macos_secure\")\n(EventCode=7 OR EventCode=10 OR sourcetype=\"linux_secure\" OR sourcetype=\"macos_secure\")\n| eval ImageLoaded=coalesce(Image, file_path, target_file)\n| eval Process=coalesce(ProcessGuid, pid, process_id)\n| eval User=coalesce(User, user, user_name)\n| eval Platform=case(\n    sourcetype==\"WinEventLog:Microsoft-Windows-Sysmon/Operational\", \"Windows\",\n    sourcetype==\"linux_secure\", \"Linux\",\n    sourcetype==\"macos_secure\", \"macOS\",\n    true(), \"Unknown\"\n)\n| search ImageLoaded IN (\n    \"*\\\\lsass.exe\",\n    \"*\\\\services.exe\",\n    \"*\\\\winlogon.exe\",\n    \"/usr/libexec/*\",\n    \"/usr/bin/*\",\n    \"/etc/pam.d/*\",\n    \"/Library/Preferences/com.apple.loginwindow.plist\"\n)\n| search ImageLoaded IN (\"*\\\\*.dll\", \"*/*.so\", \"*/*.dylib\")\n| eval isSuspicious=if(match(ImageLoaded, \".*\\\\(?!\\\")(lsass|services|winlogon)\\.exe\\\\.*\\\\.dll$|/usr/libexec/.*\\\\.so$|/usr/bin/.*\\\\.so$|/etc/pam.d/.*\\\\.so$|/Library/Preferences/com.apple.loginwindow.plist.*\\\\.dylib$\"), \"Yes\", \"No\")\n| where isSuspicious=\"Yes\"\n| bin _time span=1m\n| stats count by _time, User, ImageLoaded, Process, Platform, host\n| where count > 1\n| table _time, User, ImageLoaded, Process, Platform, host, count\n| sort -count </code ",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
             "target_ref": "attack-pattern--f4c1826f-a322-41cd-9557-562100848c84",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

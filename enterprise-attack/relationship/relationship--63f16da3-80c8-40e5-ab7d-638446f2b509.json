@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--4a207424-0d9e-409b-b71f-980a0b8a99df",
+    "id": "bundle--bc5c80c9-538b-455a-b4fa-14c01ae83062",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-09-30T20:21:47.814Z",
-            "description": "Monitor for API calls and CLI commands that attempt to enumerate and fetch credential material from the secrets manager, such as `get-secret-value` in AWS, `gcloud secrets describe` in GCP, and `az key vault secret show` in Azure. Alert on any suspicious usages of these commands, such as an account or service generating an unusually high number of secret requests.",
+            "modified": "2024-08-19T14:48:12.381Z",
+            "description": "Monitor for API calls and CLI commands that attempt to enumerate and fetch credential material from the secrets manager, such as `get-secret-value` in AWS, `gcloud secrets describe` in GCP, and `az key vault secret show` in Azure. Alert on any suspicious usages of these commands, such as an account or service generating an unusually high number of secret requests.\n\nAnalytic 1 - High volume of secret requests from unusual accounts or services.\n\n<code> index=cloud_logs sourcetype IN (\"aws:cloudtrail\", \"gcp:logging\", \"azure:activity\")\n(eventName IN (\"GetSecretValue\", \"gcloud secrets describe\", \"az key vault secret show\"))\n| eval User=coalesce(userIdentity.arn, protoPayload.authenticationInfo.principalEmail, claims.user)\n| eval Service=coalesce(eventSource, protoPayload.serviceName, claims.aud)\n| eval AccountType=case(\n    match(User, \"root|admin|superuser\"), \"High-Privilege\",\n    match(User, \"serviceaccount|svc|automation\"), \"Service-Account\",\n    true(), \"Standard-User\"\n)\n| eval Platform=case(\n    sourcetype==\"aws:cloudtrail\", \"AWS\",\n    sourcetype==\"gcp:logging\", \"GCP\",\n    sourcetype==\"azure:activity\", \"Azure\",\n    true(), \"Unknown\"\n)\n| where AccountType != \"High-Privilege\"</code> \n\nAnalytic 2 - Cloud Service Enumeration \n\n<code>  index=cloud_logs sourcetype IN (\"aws:cloudtrail\", \"gcp:logging\", \"azure:activity\") | search (sourcetype=\"aws:cloudtrail\" eventName=\"GetSecretValue\" \n          OR sourcetype=\"gcp:pubsub:message\" methodName=\"google.iam.credentials.v1.*\" \n          OR sourcetype=\"azure:eventhub\" operationName=\"Microsoft.KeyVault/vaults/secrets/read\")</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--8c826308-2760-492f-9e36-4f0f7e23bcac",
             "target_ref": "attack-pattern--cfb525cc-5494-401d-a82b-2539ca46a561",

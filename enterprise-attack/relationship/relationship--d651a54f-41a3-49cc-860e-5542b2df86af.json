@@ -1,25 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--79e3f4fe-3ac9-44d0-ad09-0f7780da887d",
+    "id": "bundle--25809095-76d7-4b25-8317-d8b1311e1285",
     "spec_version": "2.0",
     "objects": [
         {
             "type": "relationship",
             "id": "relationship--d651a54f-41a3-49cc-860e-5542b2df86af",
             "created": "2023-07-24T20:38:18.017Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-07-24T20:38:18.017Z",
-            "description": "Monitor for newly constructed WMI objects that will execute malicious commands and payloads. ",
+            "modified": "2024-08-26T16:00:01.061Z",
+            "description": "Monitor for newly constructed WMI objects that will execute malicious commands and payloads. \n\nAnalytic 1 - WMI object creation events\n\n<code> index=security sourcetype=\"WinEventLog:Microsoft-Windows-WMI-Activity/Operational\" \n(EventCode=5861 OR EventCode=5857 OR EventCode=5858) \n| eval CommandLine = coalesce(CommandLine, ParentCommandLine) \n| where (EventCode=5861 AND (CommandLine LIKE \"*create*\" OR CommandLine LIKE \"*process*\")) \nOR (EventCode=5857 AND (CommandLine LIKE \"*exec*\" OR CommandLine LIKE \"*invoke*\")) \nOR (EventCode=5858 AND (CommandLine LIKE \"*payload*\" OR CommandLine LIKE \"*wmic*\")) </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--05645013-2fed-4066-8bdc-626b2e201dd4",
             "target_ref": "attack-pattern--01a5a209-b94c-450b-b7f9-946497d91055",
             "x_mitre_deprecated": false,
             "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

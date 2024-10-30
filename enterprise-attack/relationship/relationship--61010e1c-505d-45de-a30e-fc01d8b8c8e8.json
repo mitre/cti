@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--94abf1b1-4f2e-404c-b885-1f89f8272d8a",
+    "id": "bundle--4e5d99e3-da2d-4dfb-876e-e51960fb2927",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,8 +12,8 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-03-28T19:02:37.743Z",
-            "description": "Monitor for newly constructed services/daemons to execute commands or programs.\n\nNotes: This detection is to identify a creation of \u201cuser mode service\u201d where the service file path is located in non-common service folder in windows.\n\nAnalytic 1 - Create Service In Suspicious File Path\n\n<code>(source=\"WinEventLog:Security\" EventCode=\"4697\") OR (source=\"WinEventLog:System\" EventCode=\"7045\")  Service_File_Name = \"*\\.exe\" NOT (Service_File_Name IN (\"C:\\\\Windows\\\\*\", \"%windir%\\\\*\", \"C:\\\\Program File*\", \"C:\\\\Programdata\\\\*\", \"%systemroot%\\\\*\")) Service_Type = \"user mode service\" </code>",
+            "modified": "2024-09-20T20:08:42.981Z",
+            "description": "Monitor the creation or modification of Launch Agents or Launch Daemons via the launchctl command.\n\nAnalytic 1 - Create Service In Suspicious File Path\n\n<code>sourcetype=osquery\n| search service_action=\"create\" OR service_action=\"modify\"\n| where user NOT IN (\"known_admins\") AND service_name IN (\"LaunchAgents\", \"LaunchDaemons\")\n </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--5297a638-1382-4f0c-8472-0d21830bf705",
             "target_ref": "attack-pattern--810aa4ad-61c9-49cb-993f-daa06199421d",

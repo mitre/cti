@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--b22b0645-75ba-4d2c-9ffa-944ddbdd2c0e",
+    "id": "bundle--cce8cbc3-3d94-4bb6-a6c1-cf2c8e351942",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--8eda78b8-3fd5-4c97-878d-bf2eaa0aa9b5",
+            "created": "2022-03-30T14:26:51.855Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--8eda78b8-3fd5-4c97-878d-bf2eaa0aa9b5",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.855Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.855Z",
-            "description": "Monitor for newly constructed processes and/or command-lines for applications that may be used by an adversary to gain initial access that require user interaction. This includes compression applications, such as those for zip files, that can be used to Deobfuscate/Decode Files or Information in payloads.",
+            "modified": "2024-09-10T18:37:19.054Z",
+            "description": "Monitor for processes spawned after opening a suspicious file. Common applications that might be exploited are Microsoft Word, PDF readers, or compression utilities.\n\nAnalytic 1 - Processes created from malicious files.\n\n<code> (sourcetype=WinEventLog:Security EventCode=4688) OR (sourcetype=Sysmon EventCode=1)\n| search process_name IN (\"WINWORD.EXE\", \"EXCEL.EXE\", \"PDFReader.exe\", \"7z.exe\", \"powershell.exe\", \"cmd.exe\")\n| stats count by process_name parent_process_name command_line user\n| where parent_process_name IN (\"explorer.exe\", \"outlook.exe\", \"thunderbird.exe\")</code>",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--232b7f21-adf9-4b42-b936-b9d6f7df856e",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

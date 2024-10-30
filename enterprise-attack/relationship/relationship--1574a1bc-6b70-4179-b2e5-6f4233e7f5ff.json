@@ -1,22 +1,25 @@
 {
     "type": "bundle",
-    "id": "bundle--f7727dce-7d2c-43c7-a9df-601746c5a0ed",
+    "id": "bundle--d47b04e9-b1e0-4504-85be-ac33f185ff93",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "relationship",
+            "id": "relationship--1574a1bc-6b70-4179-b2e5-6f4233e7f5ff",
+            "created": "2022-03-30T14:26:51.856Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "relationship--1574a1bc-6b70-4179-b2e5-6f4233e7f5ff",
-            "type": "relationship",
-            "created": "2022-03-30T14:26:51.856Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.856Z",
-            "description": "Monitor for unexpected processes interacting with authentication mechanisms and processes to access user credentials or enable otherwise unwarranted access to accounts.",
+            "modified": "2024-08-19T16:17:00.855Z",
+            "description": "Monitor for unexpected processes interacting with authentication mechanisms and processes to access user credentials or enable otherwise unwarranted access to accounts.\n\nAnalytic 1 - Unauthorized process interactions with authentication mechanisms.\n\n<code>( index=your_index source=\"WinEventLog:Security\" EventCode=4688 \n| where (New_Process_Name IN (\"C:\\\\Windows\\\\System32\\\\lsass.exe\", \"C:\\\\Windows\\\\System32\\\\winlogon.exe\"))\nAND (Parent_Process_Name != \"C:\\\\Windows\\\\System32\\\\services.exe\")\n| stats count by New_Process_Name, Parent_Process_Name, Account_Name, ComputerName) OR \n(index=your_index sourcetype=linux_auditd\n| where file IN (\"/etc/pam.d/\", \"/etc/passwd\", \"/etc/shadow\")\n| stats count by file, user, host )</code>",
+            "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
             "target_ref": "attack-pattern--f4c1826f-a322-41cd-9557-562100848c84",
-            "relationship_type": "detects",
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "0.1",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]

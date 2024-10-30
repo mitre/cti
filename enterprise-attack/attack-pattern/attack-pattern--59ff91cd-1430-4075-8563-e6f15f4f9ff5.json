@@ -1,10 +1,10 @@
 {
     "type": "bundle",
-    "id": "bundle--bcaba487-cde3-43b2-96d4-ad4a93b86c6c",
+    "id": "bundle--22b9d675-a5fc-4ab0-8e41-f3b5b9055da0",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2022-10-21T15:18:16.023Z",
+            "modified": "2024-09-12T19:46:04.759Z",
             "name": "DHCP Spoofing",
             "description": "Adversaries may redirect network traffic to adversary-owned systems by spoofing Dynamic Host Configuration Protocol (DHCP) traffic and acting as a malicious DHCP server on the victim network. By achieving the adversary-in-the-middle (AiTM) position, adversaries may collect network communications, including passed credentials, especially those sent over insecure, unencrypted protocols. This may also enable follow-on behaviors such as [Network Sniffing](https://attack.mitre.org/techniques/T1040) or [Transmitted Data Manipulation](https://attack.mitre.org/techniques/T1565/002).\n\nDHCP is based on a client-server model and has two functionalities: a protocol for providing network configuration settings from a DHCP server to a client and a mechanism for allocating network addresses to clients.(Citation: rfc2131) The typical server-client interaction is as follows: \n\n1. The client broadcasts a `DISCOVER` message.\n\n2. The server responds with an `OFFER` message, which includes an available network address. \n\n3. The client broadcasts a `REQUEST` message, which includes the network address offered. \n\n4. The server acknowledges with an `ACK` message and the client receives the network configuration parameters.\n\nAdversaries may spoof as a rogue DHCP server on the victim network, from which legitimate hosts may receive malicious network configurations. For example, malware can act as a DHCP server and provide adversary-owned DNS servers to the victimized computers.(Citation: new_rogue_DHCP_serv_malware)(Citation: w32.tidserv.g) Through the malicious network configurations, an adversary may achieve the AiTM position, route client traffic through adversary-controlled systems, and collect information from the client network.\n\nDHCPv6 clients can receive network configuration information without being assigned an IP address by sending a <code>INFORMATION-REQUEST (code 11)</code> message to the <code>All_DHCP_Relay_Agents_and_Servers</code> multicast address.(Citation: rfc3315) Adversaries may use their rogue DHCP server to respond to this request message with malicious network configurations.\n\nRather than establishing an AiTM position, adversaries may also abuse DHCP spoofing to perform a DHCP exhaustion attack (i.e, [Service Exhaustion Flood](https://attack.mitre.org/techniques/T1499/002)) by generating many broadcast DISCOVER messages to exhaust a network\u2019s DHCP allocation pool. ",
             "kill_chain_phases": [
@@ -17,22 +17,22 @@
                     "phase_name": "collection"
                 }
             ],
+            "x_mitre_contributors": [
+                "Alex Spivakovsky, Pentera",
+                "Andrew Allen, @whitehat_zero"
+            ],
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor network traffic for suspicious/malicious behavior involving DHCP, such as changes in DNS and/or gateway parameters. Additionally, monitor Windows logs for Event IDs (EIDs) 1341, 1342, 1020 and 1063, which specify that the IP allocations are low or have run out; these EIDs may indicate a denial of service attack.(Citation: dhcp_serv_op_events)(Citation: solution_monitor_dhcp_scopes)",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
             "x_mitre_platforms": [
                 "Linux",
                 "Windows",
                 "macOS"
             ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_deprecated": false,
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
             "x_mitre_version": "1.1",
-            "x_mitre_contributors": [
-                "Alex Spivakovsky, Pentera",
-                "Andrew Allen, @whitehat_zero"
-            ],
             "x_mitre_data_sources": [
                 "Network Traffic: Network Traffic Content",
                 "Application Log: Application Log Content",
@@ -71,8 +71,8 @@
                 },
                 {
                     "source_name": "solution_monitor_dhcp_scopes",
-                    "description": "Shoemaker, E. (2015, December 31). Solution: Monitor DHCP Scopes and Detect Man-in-the-Middle Attacks with PRTG and PowerShell. Retrieved March 7, 2022.",
-                    "url": "https://lockstepgroup.com/blog/monitor-dhcp-scopes-and-detect-man-in-the-middle-attacks/"
+                    "description": "Shoemaker, E. (2015, December 31). Solution: Monitor DHCP Scopes and Detect Man-in-the-Middle Attacks with PRTG and PowerShell. Retrieved September 12, 2024.",
+                    "url": "https://web.archive.org/web/20231202025258/https://lockstepgroup.com/blog/monitor-dhcp-scopes-and-detect-man-in-the-middle-attacks/"
                 },
                 {
                     "source_name": "w32.tidserv.g",
@@ -83,7 +83,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
         }
     ]
