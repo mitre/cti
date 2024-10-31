@@ -1,6 +1,10 @@
 
 # Changes to the ATT&CK/STIX Data Model
 
+## 31 October 2024
+
+There are no changes to the data model in the October 2024 ATT&CK Content Release (ATT&CK v16.0)
+
 ## 23 April 2024
 
 There are no changes to the data model in the April 2024 ATT&CK Content Release (ATT&CK v15.0)
