@@ -1,58 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--74505516-4165-4c2a-b7c4-13f113f81e9e",
+    "id": "bundle--ef859039-11b8-43fe-ab8b-aef483d4013b",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2024-04-19T12:42:18.632Z",
-            "name": "Escape to Host",
-            "description": "Adversaries may break out of a container to gain access to the underlying host. This can allow an adversary access to other containerized resources from the host level or to the host itself. In principle, containerized resources should provide a clear separation of application functionality and be isolated from the host environment.(Citation: Docker Overview)\n\nThere are multiple ways an adversary may escape to a host environment. Examples include creating a container configured to mount the host\u2019s filesystem using the bind parameter, which allows the adversary to drop payloads and execute control utilities such as cron on the host; utilizing a privileged container to run commands or load a malicious kernel module on the underlying host; or abusing system calls such as `unshare` and `keyctl` to escalate privileges and steal secrets.(Citation: Docker Bind Mounts)(Citation: Trend Micro Privileged Container)(Citation: Intezer Doki July 20)(Citation: Container Escape)(Citation: Crowdstrike Kubernetes Container Escape)(Citation: Keyctl-unmask)\n\nAdditionally, an adversary may be able to exploit a compromised container with a mounted container management socket, such as `docker.sock`, to break out of the container via a [Container Administration Command](https://attack.mitre.org/techniques/T1609).(Citation: Container Escape) Adversaries may also escape via [Exploitation for Privilege Escalation](https://attack.mitre.org/techniques/T1068), such as exploiting vulnerabilities in global symbolic links in order to access the root directory of a host machine.(Citation: Windows Server Containers Are Open)\n\nGaining access to the host may provide the adversary with the opportunity to achieve follow-on objectives, such as establishing persistence, moving laterally within the environment, accessing other containers running on the host, or setting up a command and control channel on the host.",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                }
-            ],
-            "x_mitre_contributors": [
-                "Yuval Avrahami, Palo Alto Networks",
-                "Daniel Prizmant, Palo Alto Networks",
-                "Alfredo Oliveira, Trend Micro",
-                "David Fiser, @anu4is, Trend Micro",
-                "Idan Frimark, Cisco",
-                "Magno Logan, @magnologan, Trend Micro",
-                "Ariel Shuper, Cisco",
-                "Yossi Weizman, Azure Defender Research Team",
-                "Vishwas Manral, McAfee",
-                "CrowdStrike",
-                "Eran Ayalon, Cybereason",
-                "Oren Ofer, Cybereason",
-                "Ilan Sokol, Cybereason",
-                "Joas Antonio dos Santos, @C0d3Cr4zy"
-            ],
-            "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor for the deployment of suspicious or unknown container images and pods in your environment, particularly containers running as root. Additionally, monitor for unexpected usage of syscalls such as <code>mount</code> (as well as resulting process activity) that may indicate an attempt to escape from a privileged container to host. In Kubernetes, monitor for cluster-level events associated with changing containers' volume configurations.",
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_is_subtechnique": false,
-            "x_mitre_platforms": [
-                "Windows",
-                "Linux",
-                "Containers"
-            ],
-            "x_mitre_version": "1.5",
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Kernel: Kernel Module Load",
-                "Container: Container Creation",
-                "Volume: Volume Modification",
-                "Process: OS API Execution"
-            ],
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "User",
-                "root"
-            ],
             "type": "attack-pattern",
             "id": "attack-pattern--4a5b7ade-8bb5-4853-84ed-23f262002665",
             "created": "2021-03-30T17:38:34.277Z",
@@ -68,6 +19,11 @@
                     "source_name": "Container Escape",
                     "description": "0xn3va. (n.d.). Escaping. Retrieved May 27, 2022.",
                     "url": "https://0xn3va.gitbook.io/cheat-sheets/container/escaping"
+                },
+                {
+                    "source_name": "Broadcom VMSA-2025-004",
+                    "description": "Broadcom. (2025, March 6). VMSA-2025-0004: Questions & Answers. Retrieved March 26, 2025.",
+                    "url": "https://github.com/vmware/vcf-security-and-compliance-guidelines/tree/main/security-advisories/vmsa-2025-0004"
                 },
                 {
                     "source_name": "Windows Server Containers Are Open",
@@ -108,8 +64,53 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "modified": "2025-04-15T19:58:28.417Z",
+            "name": "Escape to Host",
+            "description": "Adversaries may break out of a container or virtualized environment to gain access to the underlying host. This can allow an adversary access to other containerized or virtualized resources from the host level or to the host itself. In principle, containerized / virtualized resources should provide a clear separation of application functionality and be isolated from the host environment.(Citation: Docker Overview)\n\nThere are multiple ways an adversary may escape from a container to a host environment. Examples include creating a container configured to mount the host\u2019s filesystem using the bind parameter, which allows the adversary to drop payloads and execute control utilities such as cron on the host; utilizing a privileged container to run commands or load a malicious kernel module on the underlying host; or abusing system calls such as `unshare` and `keyctl` to escalate privileges and steal secrets.(Citation: Docker Bind Mounts)(Citation: Trend Micro Privileged Container)(Citation: Intezer Doki July 20)(Citation: Container Escape)(Citation: Crowdstrike Kubernetes Container Escape)(Citation: Keyctl-unmask)\n\nAdditionally, an adversary may be able to exploit a compromised container with a mounted container management socket, such as `docker.sock`, to break out of the container via a [Container Administration Command](https://attack.mitre.org/techniques/T1609).(Citation: Container Escape) Adversaries may also escape via [Exploitation for Privilege Escalation](https://attack.mitre.org/techniques/T1068), such as exploiting vulnerabilities in global symbolic links in order to access the root directory of a host machine.(Citation: Windows Server Containers Are Open)\n\nIn ESXi environments, an adversary may exploit a vulnerability in order to escape from a virtual machine into the hypervisor.(Citation: Broadcom VMSA-2025-004)\n\nGaining access to the host may provide the adversary with the opportunity to achieve follow-on objectives, such as establishing persistence, moving laterally within the environment, accessing other containers or virtual machines running on the host, or setting up a command and control channel on the host.",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
             "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_contributors": [
+                "Yuval Avrahami, Palo Alto Networks",
+                "Daniel Prizmant, Palo Alto Networks",
+                "Alfredo Oliveira, Trend Micro",
+                "David Fiser, @anu4is, Trend Micro",
+                "Idan Frimark, Cisco",
+                "Magno Logan, @magnologan, Trend Micro",
+                "Ariel Shuper, Cisco",
+                "Yossi Weizman, Azure Defender Research Team",
+                "Vishwas Manral, McAfee",
+                "CrowdStrike",
+                "Eran Ayalon, Cybereason",
+                "Oren Ofer, Cybereason",
+                "Ilan Sokol, Cybereason",
+                "Joas Antonio dos Santos, @C0d3Cr4zy"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor for the deployment of suspicious or unknown container images and pods in your environment, particularly containers running as root. Additionally, monitor for unexpected usage of syscalls such as <code>mount</code> (as well as resulting process activity) that may indicate an attempt to escape from a privileged container to host. In Kubernetes, monitor for cluster-level events associated with changing containers' volume configurations.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows",
+                "Linux",
+                "Containers",
+                "ESXi"
+            ],
+            "x_mitre_version": "1.6",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Kernel: Kernel Module Load",
+                "Container: Container Creation",
+                "Volume: Volume Modification",
+                "Process: OS API Execution"
+            ]
         }
     ]
 }

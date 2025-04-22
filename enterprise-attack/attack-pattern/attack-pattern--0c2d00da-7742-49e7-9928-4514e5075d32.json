@@ -1,49 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--6a911e11-13a2-45d4-bcda-9c191af0ee11",
+    "id": "bundle--612c116e-0745-4da5-affd-754033ac0273",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-10-03T03:29:57.078Z",
-            "name": "Path Interception by PATH Environment Variable",
-            "description": "Adversaries may execute their own malicious payloads by hijacking environment variables used to load libraries. The PATH environment variable contains a list of directories (User and System) that the OS searches sequentially through in search of the binary that was called from a script or the command line. \n\nAdversaries can place a malicious program in an earlier entry in the list of directories stored in the PATH environment variable, resulting in the operating system executing the malicious binary rather than the legitimate binary when it searches sequentially through that PATH listing.\n\nFor example, on Windows if an adversary places a malicious program named \"net.exe\" in `C:\\example path`, which by default precedes `C:\\Windows\\system32\\net.exe` in the PATH environment variable, when \"net\" is executed from the command-line the `C:\\example path` will be called instead of the system's legitimate executable at `C:\\Windows\\system32\\net.exe`. Some methods of executing a program rely on the PATH environment variable to determine the locations that are searched when the path for the program is not given, such as executing programs from a [Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059).(Citation: ExpressVPN PATH env Windows 2021)\n\nAdversaries may also directly modify the $PATH variable specifying the directories to be searched.  An adversary can modify the `$PATH` variable to point to a directory they have write access. When a program using the $PATH variable is called, the OS searches the specified directory and executes the malicious binary. On macOS, this can also be performed through modifying the $HOME variable. These variables can be modified using the command-line, launchctl, [Unix Shell Configuration Modification](https://attack.mitre.org/techniques/T1546/004), or modifying the `/etc/paths.d` folder contents.(Citation: uptycs Fake POC linux malware 2023)(Citation: nixCraft macOS PATH variables)(Citation: Elastic Rules macOS launchctl 2022)",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "x_mitre_contributors": [
-                "Stefan Kanthak"
-            ],
-            "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor file creation for files named after partial directories and in locations that may be searched for common processes through the environment variable, or otherwise should not be user writable. Monitor the executing process for process executable paths that are named for partial directories. Monitor file creation for programs that are named after Windows system programs or programs commonly executed without a path (such as \"findstr,\" \"net,\" and \"python\"). If this activity occurs outside of known administration activity, upgrades, installations, or patches, then it may be suspicious.\n\nData and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Windows",
-                "macOS",
-                "Linux"
-            ],
-            "x_mitre_version": "1.1",
-            "x_mitre_data_sources": [
-                "File: File Creation",
-                "Windows Registry: Windows Registry Key Modification",
-                "Process: Process Creation"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Application Control"
-            ],
             "type": "attack-pattern",
             "id": "attack-pattern--0c2d00da-7742-49e7-9928-4514e5075d32",
             "created": "2020-03-13T14:10:43.424Z",
@@ -79,8 +39,45 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "modified": "2025-04-15T19:58:05.096Z",
+            "name": "Path Interception by PATH Environment Variable",
+            "description": "Adversaries may execute their own malicious payloads by hijacking environment variables used to load libraries. The PATH environment variable contains a list of directories (User and System) that the OS searches sequentially through in search of the binary that was called from a script or the command line. \n\nAdversaries can place a malicious program in an earlier entry in the list of directories stored in the PATH environment variable, resulting in the operating system executing the malicious binary rather than the legitimate binary when it searches sequentially through that PATH listing.\n\nFor example, on Windows if an adversary places a malicious program named \"net.exe\" in `C:\\example path`, which by default precedes `C:\\Windows\\system32\\net.exe` in the PATH environment variable, when \"net\" is executed from the command-line the `C:\\example path` will be called instead of the system's legitimate executable at `C:\\Windows\\system32\\net.exe`. Some methods of executing a program rely on the PATH environment variable to determine the locations that are searched when the path for the program is not given, such as executing programs from a [Command and Scripting Interpreter](https://attack.mitre.org/techniques/T1059).(Citation: ExpressVPN PATH env Windows 2021)\n\nAdversaries may also directly modify the $PATH variable specifying the directories to be searched.  An adversary can modify the `$PATH` variable to point to a directory they have write access. When a program using the $PATH variable is called, the OS searches the specified directory and executes the malicious binary. On macOS, this can also be performed through modifying the $HOME variable. These variables can be modified using the command-line, launchctl, [Unix Shell Configuration Modification](https://attack.mitre.org/techniques/T1546/004), or modifying the `/etc/paths.d` folder contents.(Citation: uptycs Fake POC linux malware 2023)(Citation: nixCraft macOS PATH variables)(Citation: Elastic Rules macOS launchctl 2022)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
             "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_contributors": [
+                "Stefan Kanthak"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor file creation for files named after partial directories and in locations that may be searched for common processes through the environment variable, or otherwise should not be user writable. Monitor the executing process for process executable paths that are named for partial directories. Monitor file creation for programs that are named after Windows system programs or programs commonly executed without a path (such as \"findstr,\" \"net,\" and \"python\"). If this activity occurs outside of known administration activity, upgrades, installations, or patches, then it may be suspicious.\n\nData and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as network connections made for Command and Control, learning details about the environment through Discovery, and Lateral Movement.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows",
+                "macOS",
+                "Linux"
+            ],
+            "x_mitre_version": "1.2",
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "Windows Registry: Windows Registry Key Modification",
+                "Process: Process Creation"
+            ]
         }
     ]
 }

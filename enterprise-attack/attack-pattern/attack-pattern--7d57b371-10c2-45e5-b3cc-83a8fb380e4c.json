@@ -1,45 +1,40 @@
 {
     "type": "bundle",
-    "id": "bundle--f244d5d2-0ed6-4b02-81ae-4121398ca84e",
+    "id": "bundle--7ca41864-ec29-4c2b-8a57-eb572b1f448f",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
+            "type": "attack-pattern",
+            "id": "attack-pattern--7d57b371-10c2-45e5-b3cc-83a8fb380e4c",
+            "created": "2020-01-24T14:47:41.795Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1546/009",
+                    "external_id": "T1546.009"
+                },
+                {
+                    "source_name": "Elastic Process Injection July 2017",
+                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
+                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process"
+                },
+                {
+                    "source_name": "Sysinternals AppCertDlls Oct 2007",
+                    "description": "Microsoft. (2007, October 24). Windows Sysinternals - AppCertDlls. Retrieved November 17, 2024.",
+                    "url": "https://web.archive.org/web/20130401232752/https://forum.sysinternals.com/appcertdlls_topic12546.html"
+                },
+                {
+                    "source_name": "TechNet Autoruns",
+                    "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
+                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902"
+                }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "attack-pattern--7d57b371-10c2-45e5-b3cc-83a8fb380e4c",
-            "type": "attack-pattern",
-            "created": "2020-01-24T14:47:41.795Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1546.009",
-                    "url": "https://attack.mitre.org/techniques/T1546/009"
-                },
-                {
-                    "url": "https://www.endgame.com/blog/technical-blog/ten-process-injection-techniques-technical-survey-common-and-trending-process",
-                    "description": "Hosseini, A. (2017, July 18). Ten Process Injection Techniques: A Technical Survey Of Common And Trending Process Injection Techniques. Retrieved December 7, 2017.",
-                    "source_name": "Elastic Process Injection July 2017"
-                },
-                {
-                    "url": "https://technet.microsoft.com/en-us/sysinternals/bb963902",
-                    "description": "Russinovich, M. (2016, January 4). Autoruns for Windows v13.51. Retrieved June 6, 2016.",
-                    "source_name": "TechNet Autoruns"
-                },
-                {
-                    "url": "https://forum.sysinternals.com/appcertdlls_topic12546.html",
-                    "description": "Microsoft. (2007, October 24). Windows Sysinternals - AppCertDlls. Retrieved December 18, 2017.",
-                    "source_name": "Sysinternals AppCertDlls Oct 2007"
-                }
-            ],
-            "modified": "2020-11-10T18:29:31.052Z",
+            "modified": "2025-04-15T19:58:44.894Z",
             "name": "AppCert DLLs",
             "description": "Adversaries may establish persistence and/or elevate privileges by executing malicious content triggered by AppCert DLLs loaded into processes. Dynamic-link libraries (DLLs) that are specified in the <code>AppCertDLLs</code> Registry key under <code>HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Control\\Session Manager\\</code> are loaded into every process that calls the ubiquitously used application programming interface (API) functions <code>CreateProcess</code>, <code>CreateProcessAsUser</code>, <code>CreateProcessWithLoginW</code>, <code>CreateProcessWithTokenW</code>, or <code>WinExec</code>. (Citation: Elastic Process Injection July 2017)\n\nSimilar to [Process Injection](https://attack.mitre.org/techniques/T1055), this value can be abused to obtain elevated privileges by causing a malicious DLL to be loaded and run in the context of separate processes on the computer. Malicious AppCert DLLs may also provide persistence by continuously being triggered by API activity. ",
             "kill_chain_phases": [
@@ -52,24 +47,24 @@
                     "phase_name": "persistence"
                 }
             ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor DLL loads by processes, specifically looking for DLLs that are not recognized or not normally loaded into a process. Monitor the AppCertDLLs Registry value for modifications that do not correlate with known software, patch cycles, etc. Monitor and analyze application programming interface (API) calls that are indicative of Registry edits such as RegCreateKeyEx and RegSetValueEx. (Citation: Elastic Process Injection July 2017) \n\nTools such as Sysinternals Autoruns may overlook AppCert DLLs as an auto-starting location. (Citation: TechNet Autoruns) (Citation: Sysinternals AppCertDlls Oct 2007)\n\nLook for abnormal process behavior that may be due to a process loading a malicious DLL. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as making network connections for Command and Control, learning details about the environment through Discovery, and conducting Lateral Movement.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": true,
-            "x_mitre_version": "1.0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "1.1",
             "x_mitre_data_sources": [
                 "Module: Module Load",
                 "Command: Command Execution",
                 "Process: OS API Execution",
                 "Windows Registry: Windows Registry Key Modification",
                 "Process: Process Creation"
-            ],
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "SYSTEM"
-            ],
-            "x_mitre_effective_permissions": [
-                "Administrator",
-                "SYSTEM"
             ]
         }
     ]

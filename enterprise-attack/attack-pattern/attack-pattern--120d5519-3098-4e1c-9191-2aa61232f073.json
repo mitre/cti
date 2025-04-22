@@ -1,52 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--44597d75-b813-4c70-a69f-3216ed1fd3a7",
+    "id": "bundle--1c9a7b63-c0c1-4fba-8286-c18b19d2e036",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-04-21T12:35:39.112Z",
-            "name": "Bypass User Account Control",
-            "description": "Adversaries may bypass UAC mechanisms to elevate process privileges on system. Windows User Account Control (UAC) allows a program to elevate its privileges (tracked as integrity levels ranging from low to high) to perform a task under administrator-level permissions, possibly by prompting the user for confirmation. The impact to the user ranges from denying the operation under high enforcement to allowing the user to perform the action if they are in the local administrators group and click through the prompt or allowing them to enter an administrator password to complete the action.(Citation: TechNet How UAC Works)\n\nIf the UAC protection level of a computer is set to anything but the highest level, certain Windows programs can elevate privileges or execute some elevated [Component Object Model](https://attack.mitre.org/techniques/T1559/001) objects without prompting the user through the UAC notification box.(Citation: TechNet Inside UAC)(Citation: MSDN COM Elevation) An example of this is use of [Rundll32](https://attack.mitre.org/techniques/T1218/011) to load a specifically crafted DLL which loads an auto-elevated [Component Object Model](https://attack.mitre.org/techniques/T1559/001) object and performs a file operation in a protected directory which would typically require elevated access. Malicious software may also be injected into a trusted process to gain elevated privileges without prompting a user.(Citation: Davidson Windows)\n\nMany methods have been discovered to bypass UAC. The Github readme page for UACME contains an extensive list of methods(Citation: Github UACMe) that have been discovered and implemented, but may not be a comprehensive list of bypasses. Additional bypass methods are regularly discovered and some used in the wild, such as:\n\n* <code>eventvwr.exe</code> can auto-elevate and execute a specified binary or script.(Citation: enigma0x3 Fileless UAC Bypass)(Citation: Fortinet Fareit)\n\nAnother bypass is possible through some lateral movement techniques if credentials for an account with administrator privileges are known, since UAC is a single system security mechanism, and the privilege or integrity of a process running on one system will be unknown on remote systems and default to high integrity.(Citation: SANS UAC Bypass)",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "x_mitre_contributors": [
-                "Stefan Kanthak",
-                "Casey Smith"
-            ],
-            "x_mitre_deprecated": false,
-            "x_mitre_detection": "There are many ways to perform UAC bypasses when a user is in the local administrator group on a system, so it may be difficult to target detection on all variations. Efforts should likely be placed on mitigation and collecting enough information on process launches and actions that could be performed before and after a UAC bypass is performed. Monitor process API calls for behavior that may be indicative of [Process Injection](https://attack.mitre.org/techniques/T1055) and unusual loaded DLLs through [DLL Search Order Hijacking](https://attack.mitre.org/techniques/T1574/001), which indicate attempts to gain access to higher privileged processes.\n\nSome UAC bypass methods rely on modifying specific, user-accessible Registry settings. For example:\n\n* The <code>eventvwr.exe</code> bypass uses the <code>[HKEY_CURRENT_USER]\\Software\\Classes\\mscfile\\shell\\open\\command</code> Registry key.(Citation: enigma0x3 Fileless UAC Bypass)\n\n* The <code>sdclt.exe</code> bypass uses the <code>[HKEY_CURRENT_USER]\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\control.exe</code> and <code>[HKEY_CURRENT_USER]\\Software\\Classes\\exefile\\shell\\runas\\command\\isolatedCommand</code> Registry keys.(Citation: enigma0x3 sdclt app paths)(Citation: enigma0x3 sdclt bypass)\n\nAnalysts should monitor these Registry settings for unauthorized changes.",
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_version": "2.1",
-            "x_mitre_data_sources": [
-                "Windows Registry: Windows Registry Key Modification",
-                "Command: Command Execution",
-                "Process: Process Creation",
-                "Process: Process Metadata"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Windows User Account Control"
-            ],
-            "x_mitre_effective_permissions": [
-                "Administrator"
-            ],
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "User"
-            ],
             "type": "attack-pattern",
             "id": "attack-pattern--120d5519-3098-4e1c-9191-2aa61232f073",
             "created": "2020-01-30T14:24:34.977Z",
@@ -112,8 +69,41 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "3.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "modified": "2025-04-16T20:37:15.662Z",
+            "name": "Bypass User Account Control",
+            "description": "Adversaries may bypass UAC mechanisms to elevate process privileges on system. Windows User Account Control (UAC) allows a program to elevate its privileges (tracked as integrity levels ranging from low to high) to perform a task under administrator-level permissions, possibly by prompting the user for confirmation. The impact to the user ranges from denying the operation under high enforcement to allowing the user to perform the action if they are in the local administrators group and click through the prompt or allowing them to enter an administrator password to complete the action.(Citation: TechNet How UAC Works)\n\nIf the UAC protection level of a computer is set to anything but the highest level, certain Windows programs can elevate privileges or execute some elevated [Component Object Model](https://attack.mitre.org/techniques/T1559/001) objects without prompting the user through the UAC notification box.(Citation: TechNet Inside UAC)(Citation: MSDN COM Elevation) An example of this is use of [Rundll32](https://attack.mitre.org/techniques/T1218/011) to load a specifically crafted DLL which loads an auto-elevated [Component Object Model](https://attack.mitre.org/techniques/T1559/001) object and performs a file operation in a protected directory which would typically require elevated access. Malicious software may also be injected into a trusted process to gain elevated privileges without prompting a user.(Citation: Davidson Windows)\n\nMany methods have been discovered to bypass UAC. The Github readme page for UACME contains an extensive list of methods(Citation: Github UACMe) that have been discovered and implemented, but may not be a comprehensive list of bypasses. Additional bypass methods are regularly discovered and some used in the wild, such as:\n\n* <code>eventvwr.exe</code> can auto-elevate and execute a specified binary or script.(Citation: enigma0x3 Fileless UAC Bypass)(Citation: Fortinet Fareit)\n\nAnother bypass is possible through some lateral movement techniques if credentials for an account with administrator privileges are known, since UAC is a single system security mechanism, and the privilege or integrity of a process running on one system will be unknown on remote systems and default to high integrity.(Citation: SANS UAC Bypass)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_contributors": [
+                "Stefan Kanthak",
+                "Casey Smith"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "There are many ways to perform UAC bypasses when a user is in the local administrator group on a system, so it may be difficult to target detection on all variations. Efforts should likely be placed on mitigation and collecting enough information on process launches and actions that could be performed before and after a UAC bypass is performed. Monitor process API calls for behavior that may be indicative of [Process Injection](https://attack.mitre.org/techniques/T1055) and unusual loaded DLLs through [DLL](https://attack.mitre.org/techniques/T1574/001), which indicate attempts to gain access to higher privileged processes.\n\nSome UAC bypass methods rely on modifying specific, user-accessible Registry settings. For example:\n\n* The <code>eventvwr.exe</code> bypass uses the <code>[HKEY_CURRENT_USER]\\Software\\Classes\\mscfile\\shell\\open\\command</code> Registry key.(Citation: enigma0x3 Fileless UAC Bypass)\n\n* The <code>sdclt.exe</code> bypass uses the <code>[HKEY_CURRENT_USER]\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\control.exe</code> and <code>[HKEY_CURRENT_USER]\\Software\\Classes\\exefile\\shell\\runas\\command\\isolatedCommand</code> Registry keys.(Citation: enigma0x3 sdclt app paths)(Citation: enigma0x3 sdclt bypass)\n\nAnalysts should monitor these Registry settings for unauthorized changes.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "2.2",
+            "x_mitre_data_sources": [
+                "Windows Registry: Windows Registry Key Modification",
+                "Command: Command Execution",
+                "Process: Process Creation",
+                "Process: Process Metadata"
+            ]
         }
     ]
 }

@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--a1bcb722-56fd-41bb-a8ce-6ff4a55ac9ec",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--762e6f29-a62f-4d96-91ed-d0073181431f",
+            "created": "2025-03-27T19:40:00.716Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1564/014",
+                    "external_id": "T1564.014"
+                },
+                {
+                    "source_name": "Establishing persistence using extended attributes on Linux",
+                    "description": "kernel Community. (2024). Establishing persistence using extended attributes on Linux. Retrieved March 27, 2025.",
+                    "url": "https://kernal.eu/posts/linux-xattr-persistence/"
+                },
+                {
+                    "source_name": "Low GroupIB xattrs nov 2024",
+                    "description": "Sharmine Low. (2024, November 13). Stealthy Attributes of Lazarus APT Group: Evading Detection with Extended Attributes. Retrieved March 27, 2025.",
+                    "url": "https://www.group-ib.com/blog/stealthy-attributes-of-apt-lazarus/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-04-15T19:58:42.110Z",
+            "name": "Extended Attributes",
+            "description": "Adversaries may abuse extended attributes (xattrs) on macOS and Linux to hide their malicious data in order to evade detection. Extended attributes are key-value pairs of file and directory metadata used by both macOS and Linux. They are not visible through standard tools like `Finder`,  `ls`, or `cat` and require utilities such as `xattr` (macOS) or `getfattr` (Linux) for inspection. Operating systems and applications use xattrs for tagging, integrity checks, and access control. On Linux, xattrs are organized into namespaces such as `user.` (user permissions), `trusted.` (root permissions), `security.`, and `system.`, each with specific permissions. On macOS, xattrs are flat strings without namespace prefixes, commonly prefixed with `com.apple.*` (e.g., `com.apple.quarantine`, `com.apple.metadata:_kMDItemUserTags`) and used by system features like Gatekeeper and Spotlight.(Citation: Establishing persistence using extended attributes on Linux)\n\nAn adversary may leverage xattrs by embedding a second-stage payload into the extended attribute of a legitimate file. On macOS, a payload can be embedded into a custom attribute using the `xattr` command. A separate loader can retrieve the attribute with `xattr -p`, decode the content, and execute it using a scripting interpreter. On Linux, an adversary may use `setfattr` to write a payload into the `user.` namespace of a legitimate file. A loader script can later extract the payload with `getfattr --only-values`, decode it, and execute it using bash or another interpreter. In both cases, because the primary file content remains unchanged, security tools and integrity checks that do not inspect extended attributes will observe the original file hash, allowing the malicious payload to evade detection.(Citation: Low GroupIB xattrs nov 2024)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_contributors": [
+                "Sharmine Low, Group-IB",
+                "Rouven Bissinger (SySS GmbH)",
+                "RoseSecurity"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Linux",
+                "macOS"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_data_sources": [
+                "Command: Command Execution",
+                "File: File Metadata",
+                "Process: Process Creation"
+            ]
+        }
+    ]
+}

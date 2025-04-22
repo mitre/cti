@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--7c0b897e-8e3a-4d2f-b2a6-94c494d5a144",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--514dc7b3-0b80-4382-80a9-2e2d294f5019",
+            "created": "2025-03-27T20:37:52.269Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1036/011",
+                    "external_id": "T1036.011"
+                },
+                {
+                    "source_name": "Microsoft XorDdos Linux Stealth 2022",
+                    "description": "Ratnesh Pandey, Yevgeny Kulakov, and Jonathan Bar Or with Saurabh Swaroop. (2022, May 19). Rise in XorDdos: A deeper look at the stealthy DDoS malware targeting Linux devices. Retrieved September 27, 2023.",
+                    "url": "https://www.microsoft.com/en-us/security/blog/2022/05/19/rise-in-xorddos-a-deeper-look-at-the-stealthy-ddos-malware-targeting-linux-devices/"
+                },
+                {
+                    "source_name": "Sandfly BPFDoor 2022",
+                    "description": "The Sandfly Security Team. (2022, May 11). BPFDoor - An Evasive Linux Backdoor Technical Analysis. Retrieved September 29, 2023.",
+                    "url": "https://sandflysecurity.com/blog/bpfdoor-an-evasive-linux-backdoor-technical-analysis/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-04-15T19:58:30.391Z",
+            "name": "Overwrite Process Arguments",
+            "description": "Adversaries may modify a process's in-memory arguments to change its name in order to appear as a legitimate or benign process. On Linux, the operating system stores command-line arguments in the process\u2019s stack and passes them to the `main()` function as the `argv` array. The first element, `argv[0]`, typically contains the process name or path - by default, the command used to actually start the process (e.g., `cat /etc/passwd`). By default, the Linux `/proc` filesystem uses this value to represent the process name. The `/proc/<PID>/cmdline` file reflects the contents of this memory, and tools like `ps` use it to display process information. Since arguments are stored in user-space memory at launch, this modification can be performed without elevated privileges. \n\nDuring runtime, adversaries can erase the memory used by all command-line arguments for a process, overwriting each argument string with null bytes. This removes evidence of how the process was originally launched. They can then write a spoofed string into the memory region previously occupied by `argv[0]` to mimic a benign command, such as `cat resolv.conf`. The new command-line string is reflected in `/proc/<PID>/cmdline` and displayed by tools like `ps`.(Citation: Sandfly BPFDoor 2022)(Citation: Microsoft XorDdos Linux Stealth 2022) ",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_data_sources": [
+                "Process: Process Metadata"
+            ]
+        }
+    ]
+}

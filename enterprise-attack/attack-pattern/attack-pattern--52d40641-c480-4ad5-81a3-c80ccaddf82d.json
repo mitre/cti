@@ -1,46 +1,40 @@
 {
     "type": "bundle",
-    "id": "bundle--c6b69703-0ebd-499c-9b22-84a40b1788c1",
+    "id": "bundle--40794d42-f1f9-4a33-8514-ef50280f94f0",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--52d40641-c480-4ad5-81a3-c80ccaddf82d",
             "type": "attack-pattern",
+            "id": "attack-pattern--52d40641-c480-4ad5-81a3-c80ccaddf82d",
             "created": "2017-05-31T21:31:43.135Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": true,
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "external_id": "T1131",
-                    "url": "https://attack.mitre.org/techniques/T1131"
+                    "url": "https://attack.mitre.org/techniques/T1131",
+                    "external_id": "T1131"
                 },
                 {
-                    "url": "https://msdn.microsoft.com/library/windows/desktop/aa374733.aspx",
+                    "source_name": "MSDN Authentication Packages",
                     "description": "Microsoft. (n.d.). Authentication Packages. Retrieved March 1, 2017.",
-                    "source_name": "MSDN Authentication Packages"
+                    "url": "https://msdn.microsoft.com/library/windows/desktop/aa374733.aspx"
                 },
                 {
-                    "url": "http://docplayer.net/20839173-Analysis-of-malicious-security-support-provider-dlls.html",
+                    "source_name": "Graeber 2014",
                     "description": "Graeber, M. (2014, October). Analysis of Malicious Security Support Provider DLLs. Retrieved March 1, 2017.",
-                    "source_name": "Graeber 2014"
+                    "url": "http://docplayer.net/20839173-Analysis-of-malicious-security-support-provider-dlls.html"
                 },
                 {
-                    "url": "https://technet.microsoft.com/en-us/library/dn408187.aspx",
+                    "source_name": "Microsoft Configure LSA",
                     "description": "Microsoft. (2013, July 31). Configuring Additional LSA Protection. Retrieved June 24, 2015.",
-                    "source_name": "Microsoft Configure LSA"
+                    "url": "https://technet.microsoft.com/en-us/library/dn408187.aspx"
                 }
             ],
-            "modified": "2020-01-24T15:43:25.280Z",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-04-15T19:58:31.217Z",
             "name": "Authentication Package",
             "description": "Windows Authentication Package DLLs are loaded by the Local Security Authority (LSA) process at system start. They provide support for multiple logon processes and multiple security protocols to the operating system. (Citation: MSDN Authentication Packages)\n\nAdversaries can use the autostart mechanism provided by LSA Authentication Packages for persistence by placing a reference to a binary in the Windows Registry location <code>HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\</code> with the key value of <code>\"Authentication Packages\"=<target binary></code>. The binary will then be executed by the system when the authentication packages are loaded.",
             "kill_chain_phases": [
@@ -49,12 +43,16 @@
                     "phase_name": "persistence"
                 }
             ],
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_detection": "Monitor the Registry for changes to the LSA Registry keys. Monitor the LSA process for DLL loads. Windows 8.1 and Windows Server 2012 R2 may generate events when unsigned DLLs try to load into the LSA by setting the Registry key <code>HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Image File Execution Options\\LSASS.exe</code> with AuditLevel = 8. (Citation: Graeber 2014) (Citation: Microsoft Configure LSA)",
-            "x_mitre_version": "1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_permissions_required": [
-                "Administrator"
+            "x_mitre_domains": [
+                "enterprise-attack"
             ],
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "1.1",
             "x_mitre_is_subtechnique": false
         }
     ]

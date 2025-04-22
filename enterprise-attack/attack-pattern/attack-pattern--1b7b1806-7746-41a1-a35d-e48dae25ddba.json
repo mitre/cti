@@ -1,12 +1,47 @@
 {
     "type": "bundle",
-    "id": "bundle--89f90a54-7c30-4f4d-9298-a07abae73c7a",
+    "id": "bundle--25837277-71a1-4639-9a52-a53160d0d072",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-03-30T21:01:47.417Z",
+            "type": "attack-pattern",
+            "id": "attack-pattern--1b7b1806-7746-41a1-a35d-e48dae25ddba",
+            "created": "2019-12-19T21:05:38.123Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1542/003",
+                    "external_id": "T1542.003"
+                },
+                {
+                    "source_name": "Lau 2011",
+                    "description": "Lau, H. (2011, August 8). Are MBR Infections Back in Fashion? (Infographic). Retrieved November 13, 2014.",
+                    "url": "http://www.symantec.com/connect/blogs/are-mbr-infections-back-fashion"
+                },
+                {
+                    "source_name": "Mandiant M Trends 2016",
+                    "description": "Mandiant. (2016, February 25). Mandiant M-Trends 2016. Retrieved November 17, 2024.",
+                    "url": "https://web.archive.org/web/20211024160454/https://www.fireeye.com/content/dam/fireeye-www/current-threats/pdfs/rpt-mtrends-2016.pdf"
+                },
+                {
+                    "source_name": "welivesecurity",
+                    "description": "Martin Smol\u00e1r. (2023, March 1). BlackLotus UEFI bootkit: Myth confirmed. Retrieved February 11, 2025.",
+                    "url": "https://www.welivesecurity.com/2023/03/01/blacklotus-uefi-bootkit-myth-confirmed/"
+                },
+                {
+                    "source_name": "Microsoft Security",
+                    "description": "Microsoft Incident Response. (2023, April 11). Guidance for investigating attacks using CVE-2022-21894: The BlackLotus campaign. Retrieved February 12, 2025.",
+                    "url": "https://www.microsoft.com/en-us/security/blog/2023/04/11/guidance-for-investigating-attacks-using-cve-2022-21894-the-blacklotus-campaign/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-04-15T19:58:10.739Z",
             "name": "Bootkit",
-            "description": "Adversaries may use bootkits to persist on systems. Bootkits reside at a layer below the operating system and may make it difficult to perform full remediation unless an organization suspects one was used and can act accordingly.\n\nA bootkit is a malware variant that modifies the boot sectors of a hard drive, including the Master Boot Record (MBR) and Volume Boot Record (VBR). (Citation: Mandiant M Trends 2016) The MBR is the section of disk that is first loaded after completing hardware initialization by the BIOS. It is the location of the boot loader. An adversary who has raw access to the boot drive may overwrite this area, diverting execution during startup from the normal boot loader to adversary code. (Citation: Lau 2011)\n\nThe MBR passes control of the boot process to the VBR. Similar to the case of MBR, an adversary who has raw access to the boot drive may overwrite the VBR to divert execution during startup to adversary code.",
+            "description": "Adversaries may use bootkits to persist on systems. A bootkit is a malware variant that modifies the boot sectors of a hard drive, allowing malicious code to execute before a computer's operating system has loaded. Bootkits reside at a layer below the operating system and may make it difficult to perform full remediation unless an organization suspects one was used and can act accordingly.\n\nIn BIOS systems, a bootkit may modify the Master Boot Record (MBR) and/or Volume Boot Record (VBR).(Citation: Mandiant M Trends 2016) The MBR is the section of disk that is first loaded after completing hardware initialization by the BIOS. It is the location of the boot loader. An adversary who has raw access to the boot drive may overwrite this area, diverting execution during startup from the normal boot loader to adversary code.(Citation: Lau 2011)\n\nThe MBR passes control of the boot process to the VBR. Similar to the case of MBR, an adversary who has raw access to the boot drive may overwrite the VBR to divert execution during startup to adversary code.\n\nIn UEFI (Unified Extensible Firmware Interface) systems, a bootkit may instead create or modify files in the EFI system partition (ESP). The ESP is a partition on data storage used by devices containing UEFI that allows the system to boot the OS and other utilities used by the system. An adversary can use the newly created or patched files in the ESP to run malicious kernel code.(Citation: Microsoft Security)(Citation: welivesecurity)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -17,6 +52,8 @@
                     "phase_name": "defense-evasion"
                 }
             ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Perform integrity checking on MBR and VBR. Take snapshots of MBR and VBR and compare against known good samples. Report changes to MBR and VBR as they occur for indicators of suspicious activity and further analysis.",
             "x_mitre_domains": [
                 "enterprise-attack"
@@ -27,44 +64,12 @@
                 "Linux",
                 "Windows"
             ],
-            "x_mitre_version": "1.1",
+            "x_mitre_version": "1.2",
             "x_mitre_data_sources": [
-                "Drive: Drive Modification"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Host intrusion prevention systems",
-                "Anti-virus",
-                "File monitoring"
-            ],
-            "x_mitre_permissions_required": [
-                "Administrator",
-                "SYSTEM"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--1b7b1806-7746-41a1-a35d-e48dae25ddba",
-            "created": "2019-12-19T21:05:38.123Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1542/003",
-                    "external_id": "T1542.003"
-                },
-                {
-                    "source_name": "Mandiant M Trends 2016",
-                    "description": "Mandiant. (2016, February 25). Mandiant M-Trends 2016. Retrieved March 5, 2019.",
-                    "url": "https://www.fireeye.com/content/dam/fireeye-www/current-threats/pdfs/rpt-mtrends-2016.pdf"
-                },
-                {
-                    "source_name": "Lau 2011",
-                    "description": "Lau, H. (2011, August 8). Are MBR Infections Back in Fashion? (Infographic). Retrieved November 13, 2014.",
-                    "url": "http://www.symantec.com/connect/blogs/are-mbr-infections-back-fashion"
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_attack_spec_version": "3.1.0"
+                "File: File Creation",
+                "Drive: Drive Modification",
+                "File: File Modification"
+            ]
         }
     ]
 }

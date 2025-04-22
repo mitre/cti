@@ -1,23 +1,28 @@
 {
     "type": "bundle",
-    "id": "bundle--47af683e-a390-484e-a6a0-4ea2a289da8e",
+    "id": "bundle--70c7c4c8-b01b-4533-9c56-29dc7dca0fd6",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "x-mitre-data-component",
+            "id": "x-mitre-data-component--3551476e-14f5-4e48-a518-e82135329e03",
+            "created": "2021-10-20T15:05:19.274Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "x-mitre-data-component--3551476e-14f5-4e48-a518-e82135329e03",
-            "type": "x-mitre-data-component",
-            "created": "2021-10-20T15:05:19.274Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2021-10-20T15:05:19.274Z",
+            "modified": "2025-04-18T15:14:49.173Z",
             "name": "Driver Load",
-            "description": "Attaching a driver to either user or kernel-mode of a system (ex: Sysmon EID 6)",
+            "description": "The process of attaching a driver, which is a software component that allows the operating system and applications to interact with hardware devices, to either user-mode or kernel-mode of a system. This can include benign actions (e.g., hardware drivers) or malicious behavior (e.g., rootkits or unsigned drivers). Examples: \n\n- Legitimate Driver Loading: A new graphics driver from a vendor like NVIDIA or AMD is loaded into the system.\n- Unsigned Driver Loading: A driver without a valid digital signature is loaded into the kernel.\n- Rootkit Installation: A malicious rootkit driver is loaded to manipulate kernel-mode processes.\n- Anti-Virus or EDR Driver Loading: An Endpoint Detection and Response (EDR) solution loads its driver to monitor system activities.\n- Driver Misuse: A legitimate driver is loaded and exploited to execute malicious actions, such as using vulnerable drivers for bypassing defenses (e.g., Bring Your Own Vulnerable Driver (BYOVD) attacks).\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Sysmon Logs: \n    - Event ID 6: Captures driver loading activity, including file path, hashes, and signature information.\n    - Configuration: Ensure Sysmon is configured with a ruleset that monitors driver loading events\n- Windows Event Logs: Enable \"Audit Kernel Object\" to capture kernel-related driver loading events.\n\nLinux\n\n- Auditd: Configure audit rules to capture driver loading events: `auditctl -w /lib/modules/ -p rwxa -k driver_load`\n- Kernel Logs (dmesg): Use dmesg to monitor driver-related activities: `dmesg | grep \"module\"`\n- Syslog or journald: Review logs for module insertion or removal activities.\n\nmacOS\n\n- Unified Logs: Use the macOS unified logging system to monitor kext (kernel extension) loads:\n`log show --predicate 'eventMessage contains \"kext load\"'`\n- Endpoint Security Framework: Monitor driver loading via third-party security tools that leverage Apple\u2019s Endpoint Security Framework.\n\nSIEM Tools\n\n- Ingest driver load logs from Sysmon, Auditd, or macOS unified logs into a centralized SIEM (e.g., Splunk).\n- Create rules to detect unsigned drivers, rootkit activity, or known vulnerable drivers.\n\nEDR Solutions\n\n- Use EDR tools to detect and alert on anomalous driver loading activity.",
             "x_mitre_data_source_ref": "x-mitre-data-source--9ec8c0d7-6137-456f-b829-c5f8b96ba054",
-            "x_mitre_version": "1.0",
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.1",
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

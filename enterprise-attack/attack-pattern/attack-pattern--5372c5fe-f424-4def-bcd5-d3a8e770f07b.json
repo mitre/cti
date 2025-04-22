@@ -1,40 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--0aebd792-a062-4c90-9eee-6a85592d1c8c",
+    "id": "bundle--a5a73183-7119-4344-a8b6-60c1256c1124",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2024-09-12T19:37:57.867Z",
-            "name": "Disable or Modify System Firewall",
-            "description": "Adversaries may disable or modify system firewalls in order to bypass controls limiting network usage. Changes could be disabling the entire mechanism as well as adding, deleting, or modifying particular rules. This can be done numerous ways depending on the operating system, including via command-line, editing Windows Registry keys, and Windows Control Panel.\n\nModifying or disabling a system firewall may enable adversary C2 communications, lateral movement, and/or data exfiltration that would otherwise not be allowed. For example, adversaries may add a new firewall rule for a well-known protocol (such as RDP) using a non-traditional and potentially less securitized port (i.e. [Non-Standard Port](https://attack.mitre.org/techniques/T1571)).(Citation: change_rdp_port_conti)\n\nAdversaries may also modify host networking settings that indirectly manipulate system firewalls, such as interface bandwidth or network connection request thresholds.(Citation: Huntress BlackCat) Settings related to enabling abuse of various [Remote Services](https://attack.mitre.org/techniques/T1021) may also indirectly modify firewall rules.",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor processes and command-line arguments to see if firewalls are disabled or modified. Monitor Registry edits to keys that manage firewalls.",
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Linux",
-                "macOS",
-                "Windows",
-                "Network"
-            ],
-            "x_mitre_version": "1.2",
-            "x_mitre_data_sources": [
-                "Firewall: Firewall Rule Modification",
-                "Windows Registry: Windows Registry Key Modification",
-                "Command: Command Execution",
-                "Firewall: Firewall Disable"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Firewall"
-            ],
             "type": "attack-pattern",
             "id": "attack-pattern--5372c5fe-f424-4def-bcd5-d3a8e770f07b",
             "created": "2020-02-21T21:00:48.814Z",
@@ -47,9 +16,19 @@
                     "external_id": "T1562.004"
                 },
                 {
+                    "source_name": "Broadcom ESXi Firewall",
+                    "description": "Broadcom. (2025, March 24). Add Allowed IP Addresses for an ESXi Host by Using the VMware Host Client. Retrieved March 26, 2025.",
+                    "url": "https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/7-0/add-allowed-ip-addresses-for-an-esxi-host-by-using-the-vmware-host-client.html"
+                },
+                {
                     "source_name": "Huntress BlackCat",
                     "description": "Carvey, H. (2024, February 28). BlackCat Ransomware Affiliate TTPs. Retrieved March 27, 2024.",
                     "url": "https://www.huntress.com/blog/blackcat-ransomware-affiliate-ttps"
+                },
+                {
+                    "source_name": "Trellix Rnasomhouse 2024",
+                    "description": "Pham Duy Phuc, Max Kersten, No\u00ebl Keijzer, and Micha\u00ebl Schrijver. (2024, February 14). RansomHouse am See. Retrieved March 26, 2025.",
+                    "url": "https://www.trellix.com/en-au/blogs/research/ransomhouse-am-see/"
                 },
                 {
                     "source_name": "change_rdp_port_conti",
@@ -60,8 +39,37 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "modified": "2025-04-15T19:58:31.395Z",
+            "name": "Disable or Modify System Firewall",
+            "description": "Adversaries may disable or modify system firewalls in order to bypass controls limiting network usage. Changes could be disabling the entire mechanism as well as adding, deleting, or modifying particular rules. This can be done numerous ways depending on the operating system, including via command-line, editing Windows Registry keys, and Windows Control Panel.\n\nModifying or disabling a system firewall may enable adversary C2 communications, lateral movement, and/or data exfiltration that would otherwise not be allowed. For example, adversaries may add a new firewall rule for a well-known protocol (such as RDP) using a non-traditional and potentially less securitized port (i.e. [Non-Standard Port](https://attack.mitre.org/techniques/T1571)).(Citation: change_rdp_port_conti)\n\nAdversaries may also modify host networking settings that indirectly manipulate system firewalls, such as interface bandwidth or network connection request thresholds.(Citation: Huntress BlackCat) Settings related to enabling abuse of various [Remote Services](https://attack.mitre.org/techniques/T1021) may also indirectly modify firewall rules.\n\nIn ESXi, firewall rules may be modified directly via the esxcli command line interface (e.g., via `esxcli network firewall set`) or via the vCenter user interface.(Citation: Trellix Rnasomhouse 2024)(Citation: Broadcom ESXi Firewall)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
             "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor processes and command-line arguments to see if firewalls are disabled or modified. Monitor Registry edits to keys that manage firewalls.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Linux",
+                "Network Devices",
+                "Windows",
+                "macOS",
+                "ESXi"
+            ],
+            "x_mitre_version": "1.3",
+            "x_mitre_data_sources": [
+                "Firewall: Firewall Rule Modification",
+                "Windows Registry: Windows Registry Key Modification",
+                "Command: Command Execution",
+                "Firewall: Firewall Disable"
+            ]
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a59e2540-2ee0-47f8-9fd3-723639fab714",
+    "id": "bundle--64c27021-3f9a-4ac8-99e3-c7f658ae3f3c",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,15 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-08-13T13:49:51.721Z",
+            "modified": "2025-04-16T22:19:52.056Z",
             "description": "Monitor for newly executed processes that may be indicative of credential dumping. On Windows 8.1 and Windows Server 2012 R2, monitor Windows Logs for LSASS.exe creation to verify that LSASS started as a protected process. Try monitoring for Sysmon Event ID 1 and/or Windows Security Event ID 4688 for process activity. \n\nNote: \n- Rundll32/MiniDump has a different command-line syntax than that of Procdump, in that the process being dumped is specified via process ID instead of name (as with Procdump). Therefore, because the LSASS process ID is non-deterministic, the MiniDump detection isn\u2019t specific to LSASS dumping and may need to be tuned to help reduce false positives.\n- When monitoring for .dll  functions on the command-line be sure to also check for the ordinal associated with the function.\n\nAnalytic 1 - Unexpected process creation related to LSASS memory dumping.\n\n<code> index=security sourcetype=\"WinEventLog:Security\" EventCode=4688 Image IN (\"*procdump.exe\", \"*rundll32.exe\", \"*taskmgr.exe\", \"*powershell.exe\") CommandLine IN (\"* -ma lsass*\", \"*rundll32.exe* comsvcs.dll, MiniDump\", \"*taskmgr.exe* /dump\", \"*powershell.exe* -Command Get-Process lsass | Out-MemoryDump\")</code>\n",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--65f2d882-3f41-4d48-8a06-29af77ec9f90",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

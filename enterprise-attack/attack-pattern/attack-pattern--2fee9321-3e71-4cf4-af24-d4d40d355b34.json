@@ -1,12 +1,72 @@
 {
     "type": "bundle",
-    "id": "bundle--dc183c02-8510-47ce-a188-e1761dc9eed2",
+    "id": "bundle--f6bb91c7-e224-4f77-9d71-c51766dc82a4",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2024-09-30T17:32:59.948Z",
-            "name": "DLL Search Order Hijacking",
-            "description": "Adversaries may execute their own malicious payloads by hijacking the search order used to load DLLs. Windows systems use a common method to look for required DLLs to load into a program. (Citation: Microsoft Dynamic Link Library Search Order)(Citation: FireEye Hijacking July 2010) Hijacking DLL loads may be for the purpose of establishing persistence as well as elevating privileges and/or evading restrictions on file execution.\n\nThere are many ways an adversary can hijack DLL loads. Adversaries may plant trojan dynamic-link library files (DLLs) in a directory that will be searched before the location of a legitimate library that will be requested by a program, causing Windows to load their malicious library when it is called for by the victim program. Adversaries may also perform DLL preloading, also called binary planting attacks, (Citation: OWASP Binary Planting) by placing a malicious DLL with the same name as an ambiguously specified DLL in a location that Windows searches before the legitimate DLL. Often this location is the current working directory of the program.(Citation: FireEye fxsst June 2011) Remote DLL preloading attacks occur when a program sets its current directory to a remote location such as a Web share before loading a DLL. (Citation: Microsoft Security Advisory 2269637)\n\nPhantom DLL hijacking is a specific type of DLL search order hijacking where adversaries target references to non-existent DLL files.(Citation: Hexacorn DLL Hijacking)(Citation: Adversaries Hijack DLLs) They may be able to load their own malicious DLL by planting it with the correct name in the location of the missing module.\n\nAdversaries may also directly modify the search order via DLL redirection, which after being enabled (in the Registry and creation of a redirection file) may cause a program to load a different DLL.(Citation: Microsoft Dynamic-Link Library Redirection)(Citation: Microsoft Manifests)(Citation: FireEye DLL Search Order Hijacking)\n\nIf a search order-vulnerable program is configured to run at a higher privilege level, then the adversary-controlled DLL that is loaded will also be executed at the higher level. In this case, the technique could be used for privilege escalation from user to administrator or SYSTEM or from administrator to SYSTEM, depending on the program. Programs that fall victim to path hijacking may appear to behave normally because malicious DLLs may be configured to also load the legitimate DLLs they were meant to replace.",
+            "type": "attack-pattern",
+            "id": "attack-pattern--2fee9321-3e71-4cf4-af24-d4d40d355b34",
+            "created": "2020-03-13T18:11:08.357Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1574/001",
+                    "external_id": "T1574.001"
+                },
+                {
+                    "source_name": "Hijack DLLs CrowdStrike",
+                    "description": " falcon.overwatch.team. (2022, December 30). 4 Ways Adversaries Hijack DLLs \u2014 and How CrowdStrike Falcon OverWatch Fights Back. Retrieved January 30, 2025.",
+                    "url": "https://www.crowdstrike.com/en-us/blog/4-ways-adversaries-hijack-dlls/"
+                },
+                {
+                    "source_name": "kroll bpl",
+                    "description": "Dave Truman. (2024, June 24). Novel Technique Combination Used In IDATLOADER Distribution. Retrieved January 30, 2025.",
+                    "url": "https://www.kroll.com/en/insights/publications/cyber/idatloader-distribution"
+                },
+                {
+                    "source_name": "Hexacorn DLL Hijacking",
+                    "description": "Hexacorn. (2013, December 8). Beyond good ol\u2019 Run key, Part 5. Retrieved August 14, 2024.",
+                    "url": "https://www.hexacorn.com/blog/2013/12/08/beyond-good-ol-run-key-part-5/"
+                },
+                {
+                    "source_name": "microsoft remote preloading",
+                    "description": "Microsoft. (2014, May 13). Microsoft Security Advisory 2269637: Insecure Library Loading Could Allow Remote Code Execution. Retrieved January 30, 2025.",
+                    "url": "https://learn.microsoft.com/en-us/security-updates/securityadvisories/2010/2269637"
+                },
+                {
+                    "source_name": "Microsoft - manifests/assembly",
+                    "description": "Microsoft. (2021, January 7). Manifests. Retrieved January 30, 2025.",
+                    "url": "https://learn.microsoft.com/en-us/windows/win32/sbscs/manifests?redirectedfrom=MSDN"
+                },
+                {
+                    "source_name": "Microsoft redirection",
+                    "description": "Microsoft. (2023, October 12). Dynamic-link library redirection. Retrieved January 30, 2025.",
+                    "url": "https://learn.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-redirection?redirectedfrom=MSDN"
+                },
+                {
+                    "source_name": "dll pre load owasp",
+                    "description": "OWASP. (n.d.). Binary Planting. Retrieved January 30, 2025.",
+                    "url": "https://owasp.org/www-community/attacks/Binary_planting"
+                },
+                {
+                    "source_name": "unit 42",
+                    "description": "Tom Fakterman, Chen Erlich, & Assaf Dahan. (2024, February 22). Intruders in the Library: Exploring DLL Hijacking. Retrieved January 30, 2025.",
+                    "url": "https://unit42.paloaltonetworks.com/dll-hijacking-techniques/"
+                },
+                {
+                    "source_name": "Wietze Beukema DLL Hijacking",
+                    "description": "Wietze Beukema. (2020, June 22). Hijacking DLLs in Windows. Retrieved April 8, 2025.",
+                    "url": "https://www.wietzebeukema.nl/blog/hijacking-dlls-in-windows"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-04-16T18:24:47.533Z",
+            "name": "DLL",
+            "description": "Adversaries may abuse dynamic-link library files (DLLs) in order to achieve persistence, escalate privileges, and evade defenses. DLLs are libraries that contain code and data that can be simultaneously utilized by multiple programs. While DLLs are not malicious by nature, they can be abused through mechanisms such as side-loading, hijacking search order, and phantom DLL hijacking.(Citation: unit 42)\n\nSpecific ways DLLs are abused by adversaries include:\n\n### DLL Sideloading\nAdversaries may execute their own malicious payloads by side-loading DLLs. Side-loading involves hijacking which DLL a program loads by planting and then invoking a legitimate application that executes their payload(s).\n\nSide-loading positions both the victim application and malicious payload(s) alongside each other. Adversaries likely use side-loading as a means of masking actions they perform under a legitimate, trusted, and potentially elevated system or software process. Benign executables used to side-load payloads may not be flagged during delivery and/or execution. Adversary payloads may also be encrypted/packed or otherwise obfuscated until loaded into the memory of the trusted process.\n\nAdversaries may also side-load other packages, such as BPLs (Borland Package Library).(Citation: kroll bpl)\n\n### DLL Search Order Hijacking\nAdversaries may execute their own malicious payloads by hijacking the search order that Windows uses to load DLLs. This search order is a sequence of special and standard search locations that a program checks when loading a DLL. An adversary can plant a trojan DLL in a directory that will be prioritized by the DLL search order over the location of a legitimate library. This will cause Windows to load the malicious DLL when it is called for by the victim program.(Citation: unit 42)\n\n### DLL Redirection\nAdversaries may directly modify the search order via DLL redirection, which after being enabled (in the Registry or via the creation of a redirection file) may cause a program to load a DLL from a different location.(Citation: Microsoft redirection)(Citation: Microsoft - manifests/assembly)\n\n### Phantom DLL Hijacking\nAdversaries may leverage phantom DLL hijacking by targeting references to non-existent DLL files. They may be able to load their own malicious DLL by planting it with the correct name in the location of the missing module.(Citation: Hexacorn DLL Hijacking)(Citation: Hijack DLLs CrowdStrike)\n\n### DLL Substitution\nAdversaries may target existing, valid DLL files and substitute them with their own malicious DLLs, planting them with the same name and in the same location as the valid DLL file.(Citation: Wietze Beukema DLL Hijacking)\n\nPrograms that fall victim to DLL hijacking may appear to behave normally because malicious DLLs may be configured to also load the legitimate DLLs they were meant to replace, evading defenses.\n\nRemote DLL hijacking can occur when a program sets its current directory to a remote location, such as a Web share, before loading a DLL.(Citation: dll pre load owasp)(Citation: microsoft remote preloading)\n\nIf a valid DLL is configured to run at a higher privilege level, then the adversary-controlled DLL that is loaded will also be executed at the higher level. In this case, the technique could be used for privilege escalation.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -21,12 +81,14 @@
                     "phase_name": "defense-evasion"
                 }
             ],
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_contributors": [
                 "Travis Smith, Tripwire",
                 "Stefan Kanthak",
                 "Marina Liang",
                 "Ami Holeston, CrowdStrike",
-                "Will Alexander, CrowdStrike"
+                "Will Alexander, CrowdStrike",
+                "Wietze Beukema @Wietze"
             ],
             "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor file systems for moving, renaming, replacing, or modifying DLLs. Changes in the set of DLLs that are loaded by a process (compared with past behavior) that do not correlate with known software, patches, etc., are suspicious. Monitor DLLs loaded into a process and detect DLLs that have the same file name but abnormal paths. Modifications to or creation of `.manifest` and `.local` redirection files that do not correlate with software updates are suspicious.",
@@ -34,82 +96,17 @@
                 "enterprise-attack"
             ],
             "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_version": "1.3",
+            "x_mitre_version": "2.0",
             "x_mitre_data_sources": [
                 "File: File Modification",
+                "Process: Process Creation",
                 "Module: Module Load",
                 "File: File Creation"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--2fee9321-3e71-4cf4-af24-d4d40d355b34",
-            "created": "2020-03-13T18:11:08.357Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "revoked": false,
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1574/001",
-                    "external_id": "T1574.001"
-                },
-                {
-                    "source_name": "Adversaries Hijack DLLs",
-                    "description": "CrowdStrike, Falcon OverWatch Team. (2022, December 30). Retrieved October 19, 2023.",
-                    "url": "https://www.crowdstrike.com/blog/4-ways-adversaries-hijack-dlls/"
-                },
-                {
-                    "source_name": "FireEye Hijacking July 2010",
-                    "description": "Harbour, N. (2010, July 15). Malware Persistence without the Windows Registry. Retrieved November 17, 2020.",
-                    "url": "https://www.fireeye.com/blog/threat-research/2010/07/malware-persistence-windows-registry.html"
-                },
-                {
-                    "source_name": "FireEye fxsst June 2011",
-                    "description": "Harbour, N. (2011, June 3). What the fxsst?. Retrieved November 17, 2020.",
-                    "url": "https://www.fireeye.com/blog/threat-research/2011/06/fxsst.html"
-                },
-                {
-                    "source_name": "Hexacorn DLL Hijacking",
-                    "description": "Hexacorn. (2013, December 8). Beyond good ol\u2019 Run key, Part 5. Retrieved August 14, 2024.",
-                    "url": "https://www.hexacorn.com/blog/2013/12/08/beyond-good-ol-run-key-part-5/"
-                },
-                {
-                    "source_name": "Microsoft Security Advisory 2269637",
-                    "description": "Microsoft. (, May 23). Microsoft Security Advisory 2269637. Retrieved March 13, 2020.",
-                    "url": "https://docs.microsoft.com/en-us/security-updates/securityadvisories/2010/2269637"
-                },
-                {
-                    "source_name": "Microsoft Dynamic-Link Library Redirection",
-                    "description": "Microsoft. (2018, May 31). Dynamic-Link Library Redirection. Retrieved March 13, 2020.",
-                    "url": "https://docs.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-redirection?redirectedfrom=MSDN"
-                },
-                {
-                    "source_name": "Microsoft Dynamic Link Library Search Order",
-                    "description": "Microsoft. (2018, May 31). Dynamic-Link Library Search Order. Retrieved November 30, 2014.",
-                    "url": "https://docs.microsoft.com/en-us/windows/win32/dlls/dynamic-link-library-search-order?redirectedfrom=MSDN"
-                },
-                {
-                    "source_name": "Microsoft Manifests",
-                    "description": "Microsoft. (n.d.). Manifests. Retrieved December 5, 2014.",
-                    "url": "https://msdn.microsoft.com/en-US/library/aa375365"
-                },
-                {
-                    "source_name": "FireEye DLL Search Order Hijacking",
-                    "description": "Nick Harbour. (2010, September 1). DLL Search Order Hijacking Revisited. Retrieved March 13, 2020.",
-                    "url": "https://www.fireeye.com/blog/threat-research/2010/08/dll-search-order-hijacking-revisited.html"
-                },
-                {
-                    "source_name": "OWASP Binary Planting",
-                    "description": "OWASP. (2013, January 30). Binary planting. Retrieved June 7, 2016.",
-                    "url": "https://www.owasp.org/index.php/Binary_planting"
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            ]
         }
     ]
 }

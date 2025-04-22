@@ -1,46 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--d93d2f9c-0454-4eea-93ce-c7821f1ed8d5",
+    "id": "bundle--07974f9e-110f-4509-bd0f-5b77921a7982",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2024-04-12T02:34:58.003Z",
-            "name": "Time Providers",
-            "description": "Adversaries may abuse time providers to execute DLLs when the system boots. The Windows Time service (W32Time) enables time synchronization across and within domains.(Citation: Microsoft W32Time Feb 2018) W32Time time providers are responsible for retrieving time stamps from hardware/network resources and outputting these values to other network clients.(Citation: Microsoft TimeProvider)\n\nTime providers are implemented as dynamic-link libraries (DLLs) that are registered in the subkeys of `HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\W32Time\\TimeProviders\\`.(Citation: Microsoft TimeProvider) The time provider manager, directed by the service control manager, loads and starts time providers listed and enabled under this key at system startup and/or whenever parameters are changed.(Citation: Microsoft TimeProvider)\n\nAdversaries may abuse this architecture to establish persistence, specifically by creating a new arbitrarily named subkey  pointing to a malicious DLL in the `DllName` value. Administrator privileges are required for time provider registration, though execution will run in context of the Local Service account.(Citation: Github W32Time Oct 2017)",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                }
-            ],
-            "x_mitre_contributors": [
-                "Scott Lundgren, @5twenty9, Carbon Black",
-                "Harun K\u00fc\u00dfner"
-            ],
-            "x_mitre_deprecated": false,
-            "x_mitre_detection": "Baseline values and monitor/analyze activity related to modifying W32Time information in the Registry, including application programming interface (API) calls such as <code>RegCreateKeyEx</code> and <code>RegSetValueEx</code> as well as execution of the W32tm.exe utility.(Citation: Microsoft W32Time May 2017) There is no restriction on the number of custom time providers registrations, though each may require a DLL payload written to disk.(Citation: Github W32Time Oct 2017)\n\nThe Sysinternals Autoruns tool may also be used to analyze auto-starting locations, including DLLs listed as time providers.(Citation: TechNet Autoruns)",
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_version": "1.1",
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Command: Command Execution",
-                "Windows Registry: Windows Registry Key Modification",
-                "Module: Module Load"
-            ],
-            "x_mitre_permissions_required": [
-                "SYSTEM",
-                "Administrator"
-            ],
             "type": "attack-pattern",
             "id": "attack-pattern--61afc315-860c-4364-825d-0d62b2e91edc",
             "created": "2020-01-24T15:51:52.317Z",
@@ -81,8 +44,41 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "modified": "2025-04-15T19:58:35.700Z",
+            "name": "Time Providers",
+            "description": "Adversaries may abuse time providers to execute DLLs when the system boots. The Windows Time service (W32Time) enables time synchronization across and within domains.(Citation: Microsoft W32Time Feb 2018) W32Time time providers are responsible for retrieving time stamps from hardware/network resources and outputting these values to other network clients.(Citation: Microsoft TimeProvider)\n\nTime providers are implemented as dynamic-link libraries (DLLs) that are registered in the subkeys of `HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\W32Time\\TimeProviders\\`.(Citation: Microsoft TimeProvider) The time provider manager, directed by the service control manager, loads and starts time providers listed and enabled under this key at system startup and/or whenever parameters are changed.(Citation: Microsoft TimeProvider)\n\nAdversaries may abuse this architecture to establish persistence, specifically by creating a new arbitrarily named subkey  pointing to a malicious DLL in the `DllName` value. Administrator privileges are required for time provider registration, though execution will run in context of the Local Service account.(Citation: Github W32Time Oct 2017)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
             "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_contributors": [
+                "Scott Lundgren, @5twenty9, Carbon Black",
+                "Harun K\u00fc\u00dfner"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Baseline values and monitor/analyze activity related to modifying W32Time information in the Registry, including application programming interface (API) calls such as <code>RegCreateKeyEx</code> and <code>RegSetValueEx</code> as well as execution of the W32tm.exe utility.(Citation: Microsoft W32Time May 2017) There is no restriction on the number of custom time providers registrations, though each may require a DLL payload written to disk.(Citation: Github W32Time Oct 2017)\n\nThe Sysinternals Autoruns tool may also be used to analyze auto-starting locations, including DLLs listed as time providers.(Citation: TechNet Autoruns)",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "1.2",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Command: Command Execution",
+                "Windows Registry: Windows Registry Key Modification",
+                "Module: Module Load"
+            ]
         }
     ]
 }

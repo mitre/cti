@@ -1,46 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--29cbe1bb-b63b-4cc7-8bf7-e618382d27dd",
+    "id": "bundle--1b2c712f-64c2-4bd7-80f3-c1aba8b16aba",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-03-30T21:01:39.601Z",
-            "name": "Dylib Hijacking",
-            "description": "Adversaries may execute their own payloads by placing a malicious dynamic library (dylib) with an expected name in a path a victim application searches at runtime. The dynamic loader will try to find the dylibs based on the sequential order of the search paths. Paths to dylibs may be prefixed with <code>@rpath</code>, which allows developers to use relative paths to specify an array of search paths used at runtime based on the location of the executable.  Additionally, if weak linking is used, such as the <code>LC_LOAD_WEAK_DYLIB</code> function, an application will still execute even if an expected dylib is not present. Weak linking enables developers to run an application on multiple macOS versions as new APIs are added.\n\nAdversaries may gain execution by inserting malicious dylibs with the name of the missing dylib in the identified path.(Citation: Wardle Dylib Hijack Vulnerable Apps)(Citation: Wardle Dylib Hijacking OSX 2015)(Citation: Github EmpireProject HijackScanner)(Citation: Github EmpireProject CreateHijacker Dylib) Dylibs are loaded into an application's address space allowing the malicious dylib to inherit the application's privilege level and resources. Based on the application, this could result in privilege escalation and uninhibited network access. This method may also evade detection from security products since the execution is masked under a legitimate process.(Citation: Writing Bad Malware for OSX)(Citation: wardle artofmalware volume1)(Citation: MalwareUnicorn macOS Dylib Injection MachO)",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor file systems for moving, renaming, replacing, or modifying dylibs. Changes in the set of dylibs that are loaded by a process (compared to past behavior) that do not correlate with known software, patches, etc., are suspicious. Check the system for multiple dylibs with the same name and monitor which versions have historically been loaded into a process. \n\nRun path dependent libraries can include <code>LC_LOAD_DYLIB</code>, <code>LC_LOAD_WEAK_DYLIB</code>, and <code>LC_RPATH</code>. Other special keywords are recognized by the macOS loader are <code>@rpath</code>, <code>@loader_path</code>, and <code>@executable_path</code>.(Citation: Apple Developer Doco Archive Run-Path) These loader instructions can be examined for individual binaries or frameworks using the <code>otool -l</code> command. Objective-See's Dylib Hijacking Scanner can be used to identify applications vulnerable to dylib hijacking.(Citation: Wardle Dylib Hijack Vulnerable Apps)(Citation: Github EmpireProject HijackScanner)",
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "macOS"
-            ],
-            "x_mitre_version": "2.0",
-            "x_mitre_data_sources": [
-                "Module: Module Load",
-                "File: File Creation",
-                "File: File Modification"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Application Control"
-            ],
             "type": "attack-pattern",
             "id": "attack-pattern--fc742192-19e3-466c-9eb5-964a97b29490",
             "created": "2020-03-16T15:23:30.896Z",
@@ -79,8 +42,8 @@
                 },
                 {
                     "source_name": "wardle artofmalware volume1",
-                    "description": "Patrick Wardle. (2020, August 5). The Art of Mac Malware Volume 0x1: Analysis. Retrieved March 19, 2021.",
-                    "url": "https://taomm.org/vol1/pdfs.html"
+                    "description": "Patrick Wardle. (2020, August 5). The Art of Mac Malware Volume 0x1: Analysis. Retrieved November 17, 2024.",
+                    "url": "https://taomm.org/vol1/read.html"
                 },
                 {
                     "source_name": "Github EmpireProject HijackScanner",
@@ -95,6 +58,40 @@
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-04-15T19:59:24.300Z",
+            "name": "Dylib Hijacking",
+            "description": "Adversaries may execute their own payloads by placing a malicious dynamic library (dylib) with an expected name in a path a victim application searches at runtime. The dynamic loader will try to find the dylibs based on the sequential order of the search paths. Paths to dylibs may be prefixed with <code>@rpath</code>, which allows developers to use relative paths to specify an array of search paths used at runtime based on the location of the executable.  Additionally, if weak linking is used, such as the <code>LC_LOAD_WEAK_DYLIB</code> function, an application will still execute even if an expected dylib is not present. Weak linking enables developers to run an application on multiple macOS versions as new APIs are added.\n\nAdversaries may gain execution by inserting malicious dylibs with the name of the missing dylib in the identified path.(Citation: Wardle Dylib Hijack Vulnerable Apps)(Citation: Wardle Dylib Hijacking OSX 2015)(Citation: Github EmpireProject HijackScanner)(Citation: Github EmpireProject CreateHijacker Dylib) Dylibs are loaded into an application's address space allowing the malicious dylib to inherit the application's privilege level and resources. Based on the application, this could result in privilege escalation and uninhibited network access. This method may also evade detection from security products since the execution is masked under a legitimate process.(Citation: Writing Bad Malware for OSX)(Citation: wardle artofmalware volume1)(Citation: MalwareUnicorn macOS Dylib Injection MachO)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor file systems for moving, renaming, replacing, or modifying dylibs. Changes in the set of dylibs that are loaded by a process (compared to past behavior) that do not correlate with known software, patches, etc., are suspicious. Check the system for multiple dylibs with the same name and monitor which versions have historically been loaded into a process. \n\nRun path dependent libraries can include <code>LC_LOAD_DYLIB</code>, <code>LC_LOAD_WEAK_DYLIB</code>, and <code>LC_RPATH</code>. Other special keywords are recognized by the macOS loader are <code>@rpath</code>, <code>@loader_path</code>, and <code>@executable_path</code>.(Citation: Apple Developer Doco Archive Run-Path) These loader instructions can be examined for individual binaries or frameworks using the <code>otool -l</code> command. Objective-See's Dylib Hijacking Scanner can be used to identify applications vulnerable to dylib hijacking.(Citation: Wardle Dylib Hijack Vulnerable Apps)(Citation: Github EmpireProject HijackScanner)",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_version": "2.1",
+            "x_mitre_data_sources": [
+                "Module: Module Load",
+                "File: File Creation",
+                "File: File Modification"
             ]
         }
     ]

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--e0e45345-4107-45a0-9be2-63375b427f23",
+    "id": "bundle--b6a3f879-d284-4c53-a9d1-646fb3d81c86",
     "spec_version": "2.0",
     "objects": [
         {
@@ -24,15 +24,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-08-11T20:21:40.949Z",
-            "description": "Monitor for newly executed processes associated with DCOM activity, especially those invoked by a user different than the one currently logged on. Enumeration of COM objects, via [Query Registry](https://attack.mitre.org/techniques/T1012) or [PowerShell](https://attack.mitre.org/techniques/T1059/001), may also precede malicious use.(Citation: Fireeye Hunting COM June 2019)(Citation: Enigma MMC20 COM Jan 2017)\n\nThe Microsoft Management Console (mmc.exe) can be by used by threat actors used to spawn arbitrary processes through DCOM. The typical process tree for this method looks like: svchost.exe \u2014> mmc.exe \u2014> <some_process>.exe. \n\nAccordingly, look for process creation events of mmc.exe in conjunction with the -Embedding command-line argument, along with suspicious child processes that can be used for malicious purposes, such as cmd.exe, reg.exe, etc.\n\nSimilar to the Microsoft Management Console, Excel can also be used to execute processes through DCOM. In this case, the typical process tree looks like: svchost.exe \u2014> excel.exe \u2014> <some_process>.exe. \n\nLook for process creation events of excel.exe in conjunction with the /automation -Embedding command-line argument, along with suspicious child processes that can be used for malicious purposes, such as cmd.exe, reg.exe, etc.",
+            "modified": "2025-04-16T22:55:38.968Z",
+            "description": "Monitor for newly executed processes associated with DCOM activity, especially those invoked by a user different than the one currently logged on. Enumeration of COM objects, via [Query Registry](https://attack.mitre.org/techniques/T1012) or [PowerShell](https://attack.mitre.org/techniques/T1059/001), may also precede malicious use.(Citation: Fireeye Hunting COM June 2019)(Citation: Enigma MMC20 COM Jan 2017)\n\nThe Microsoft Management Console (mmc.exe) can be by used by threat actors used to spawn arbitrary processes through DCOM. The typical process tree for this method looks like: svchost.exe \u2014> mmc.exe \u2014> <some_process>.exe. \n\nAccordingly, look for process creation events of mmc.exe in conjunction with the -Embedding command-line argument, along with suspicious child processes that can be used for malicious purposes, such as cmd.exe, reg.exe, etc.\n\nSimilar to the Microsoft Management Console, Excel can also be used to execute processes through DCOM. In this case, the typical process tree looks like: svchost.exe \u2014> excel.exe \u2014> <some_process>.exe. \n\nLook for process creation events of excel.exe in conjunction with the /automation -Embedding command-line argument, along with suspicious child processes that can be used for malicious purposes, such as cmd.exe, reg.exe, etc.\n\n<code>sourcetype=\"WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=1\n| search ParentImage=\"*dcomlaunch.exe*\" OR CommandLine=\"*dcom*\"\n| stats count by ParentImage, CommandLine, User, Computer, _time\n| eval suspicious_process=if(count > threshold, \"suspicious\", \"normal\")\n| where suspicious_process=\"suspicious\"\n| table _time, ParentImage, CommandLine, User, Computer, suspicious_process </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--68a0c5ed-bee2-4513-830d-5b0d650139bd",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

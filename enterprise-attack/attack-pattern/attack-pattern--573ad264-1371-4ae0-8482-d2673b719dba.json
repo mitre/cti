@@ -1,51 +1,14 @@
 {
     "type": "bundle",
-    "id": "bundle--b3143503-e98e-4fec-9c71-cbd3a20aa694",
+    "id": "bundle--2a7ea4ee-5dd2-4439-be26-1f70a2c8f671",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-03-30T21:01:48.453Z",
-            "name": "Launch Daemon",
-            "description": "Adversaries may create or modify Launch Daemons to execute malicious payloads as part of persistence. Launch Daemons are plist files used to interact with Launchd, the service management framework used by macOS. Launch Daemons require elevated privileges to install, are executed for every user on a system prior to login, and run in the background without the need for user interaction. During the macOS initialization startup, the launchd process loads the parameters for launch-on-demand system-level daemons from plist files found in <code>/System/Library/LaunchDaemons/</code> and <code>/Library/LaunchDaemons/</code>. Required Launch Daemons parameters include a <code>Label</code> to identify the task, <code>Program</code> to provide a path to the executable, and <code>RunAtLoad</code> to specify when the task is run. Launch Daemons are often used to provide access to shared resources, updates to software, or conduct automation tasks.(Citation: AppleDocs Launch Agent Daemons)(Citation: Methods of Mac Malware Persistence)(Citation: launchd Keywords for plists)\n\nAdversaries may install a Launch Daemon configured to execute at startup by using the <code>RunAtLoad</code> parameter set to <code>true</code> and the <code>Program</code> parameter set to the malicious executable path. The daemon name may be disguised by using a name from a related operating system or benign software (i.e. [Masquerading](https://attack.mitre.org/techniques/T1036)). When the Launch Daemon is executed, the program inherits administrative permissions.(Citation: WireLurker)(Citation: OSX Malware Detection)\n\nAdditionally, system configuration changes (such as the installation of third party package managing software) may cause folders such as <code>usr/local/bin</code> to become globally writeable. So, it is possible for poor configurations to allow an adversary to modify executables referenced by current Launch Daemon's plist files.(Citation: LaunchDaemon Hijacking)(Citation: sentinelone macos persist Jun 2019)",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                }
-            ],
-            "x_mitre_detection": "Monitor for new files added to the <code>/Library/LaunchDaemons/</code> folder. The System LaunchDaemons are protected by SIP.\n\nSome legitimate LaunchDaemons point to unsigned code that could be exploited. For Launch Daemons with the <code>RunAtLoad</code> parameter set to true, ensure the <code>Program</code> parameter points to signed code or executables are in alignment with enterprise policy. Some parameters are interchangeable with others, such as <code>Program</code> and <code>ProgramArguments</code> parameters but one must be present.(Citation: launchd Keywords for plists)\n\n",
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_platforms": [
-                "macOS"
-            ],
-            "x_mitre_version": "1.2",
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "File: File Creation",
-                "File: File Modification",
-                "Service: Service Modification",
-                "Command: Command Execution",
-                "Service: Service Creation"
-            ],
-            "x_mitre_effective_permissions": [
-                "root",
-                "Administrator"
-            ],
-            "x_mitre_permissions_required": [
-                "Administrator"
-            ],
             "type": "attack-pattern",
             "id": "attack-pattern--573ad264-1371-4ae0-8482-d2673b719dba",
             "created": "2020-01-17T19:23:15.227Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -58,14 +21,9 @@
                     "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html"
                 },
                 {
-                    "source_name": "Methods of Mac Malware Persistence",
-                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
-                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf"
-                },
-                {
-                    "source_name": "launchd Keywords for plists",
-                    "description": "Dennis German. (2020, November 20). launchd Keywords for plists. Retrieved October 7, 2021.",
-                    "url": "https://www.real-world-systems.com/docs/launchdPlist.1.html"
+                    "source_name": "LaunchDaemon Hijacking",
+                    "description": "Bradley Kemp. (2021, May 10). LaunchDaemon Hijacking: privilege escalation and persistence via insecure folder permissions. Retrieved July 26, 2021.",
+                    "url": "https://bradleyjkemp.dev/post/launchdaemon-hijacking/"
                 },
                 {
                     "source_name": "WireLurker",
@@ -73,14 +31,19 @@
                     "url": "https://www.paloaltonetworks.com/content/dam/pan/en_US/assets/pdf/reports/Unit_42/unit42-wirelurker.pdf"
                 },
                 {
-                    "source_name": "OSX Malware Detection",
-                    "description": "Patrick Wardle. (2016, February 29). Let's Play Doctor: Practical OS X Malware Detection & Analysis. Retrieved July 10, 2017.",
-                    "url": "https://www.synack.com/wp-content/uploads/2016/03/RSA_OSX_Malware.pdf"
+                    "source_name": "launchd Keywords for plists",
+                    "description": "Dennis German. (2020, November 20). launchd Keywords for plists. Retrieved October 7, 2021.",
+                    "url": "https://www.real-world-systems.com/docs/launchdPlist.1.html"
                 },
                 {
-                    "source_name": "LaunchDaemon Hijacking",
-                    "description": "Bradley Kemp. (2021, May 10). LaunchDaemon Hijacking: privilege escalation and persistence via insecure folder permissions. Retrieved July 26, 2021.",
-                    "url": "https://bradleyjkemp.dev/post/launchdaemon-hijacking/"
+                    "source_name": "Methods of Mac Malware Persistence",
+                    "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
+                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf"
+                },
+                {
+                    "source_name": "OSX Malware Detection",
+                    "description": "Patrick Wardle. (2016, February 29). Let's Play Doctor: Practical OS X Malware Detection & Analysis. Retrieved November 17, 2024.",
+                    "url": "https://papers.put.as/papers/macosx/2016/RSA_OSX_Malware.pdf"
                 },
                 {
                     "source_name": "sentinelone macos persist Jun 2019",
@@ -91,7 +54,39 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "3.1.0"
+            "modified": "2025-04-15T19:58:33.604Z",
+            "name": "Launch Daemon",
+            "description": "Adversaries may create or modify Launch Daemons to execute malicious payloads as part of persistence. Launch Daemons are plist files used to interact with Launchd, the service management framework used by macOS. Launch Daemons require elevated privileges to install, are executed for every user on a system prior to login, and run in the background without the need for user interaction. During the macOS initialization startup, the launchd process loads the parameters for launch-on-demand system-level daemons from plist files found in <code>/System/Library/LaunchDaemons/</code> and <code>/Library/LaunchDaemons/</code>. Required Launch Daemons parameters include a <code>Label</code> to identify the task, <code>Program</code> to provide a path to the executable, and <code>RunAtLoad</code> to specify when the task is run. Launch Daemons are often used to provide access to shared resources, updates to software, or conduct automation tasks.(Citation: AppleDocs Launch Agent Daemons)(Citation: Methods of Mac Malware Persistence)(Citation: launchd Keywords for plists)\n\nAdversaries may install a Launch Daemon configured to execute at startup by using the <code>RunAtLoad</code> parameter set to <code>true</code> and the <code>Program</code> parameter set to the malicious executable path. The daemon name may be disguised by using a name from a related operating system or benign software (i.e. [Masquerading](https://attack.mitre.org/techniques/T1036)). When the Launch Daemon is executed, the program inherits administrative permissions.(Citation: WireLurker)(Citation: OSX Malware Detection)\n\nAdditionally, system configuration changes (such as the installation of third party package managing software) may cause folders such as <code>usr/local/bin</code> to become globally writeable. So, it is possible for poor configurations to allow an adversary to modify executables referenced by current Launch Daemon's plist files.(Citation: LaunchDaemon Hijacking)(Citation: sentinelone macos persist Jun 2019)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor for new files added to the <code>/Library/LaunchDaemons/</code> folder. The System LaunchDaemons are protected by SIP.\n\nSome legitimate LaunchDaemons point to unsigned code that could be exploited. For Launch Daemons with the <code>RunAtLoad</code> parameter set to true, ensure the <code>Program</code> parameter points to signed code or executables are in alignment with enterprise policy. Some parameters are interchangeable with others, such as <code>Program</code> and <code>ProgramArguments</code> parameters but one must be present.(Citation: launchd Keywords for plists)\n\n",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_version": "1.3",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "File: File Creation",
+                "File: File Modification",
+                "Service: Service Modification",
+                "Command: Command Execution",
+                "Service: Service Creation"
+            ]
         }
     ]
 }

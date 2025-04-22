@@ -1,12 +1,13 @@
 {
     "type": "bundle",
-    "id": "bundle--38496d31-f706-4ec7-a32b-a1d7859765ee",
+    "id": "bundle--75e01b15-f440-4868-84a4-c4152f05a706",
     "spec_version": "2.0",
     "objects": [
         {
             "type": "relationship",
             "id": "relationship--98f0cde7-f11f-4860-8a75-eff81d58b12a",
             "created": "2023-02-21T19:41:39.902Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
             "external_references": [
                 {
@@ -18,16 +19,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-02-21T19:41:39.902Z",
-            "description": "Monitor for newly constructed logon behavior to cloud services. For example, in Azure AD, consider using Identity Protection to monitor for suspicious login behaviors to cloud resources. (Citation: Protecting Microsoft 365 From On-Premises Attacks)",
+            "modified": "2025-04-16T22:34:05.454Z",
+            "description": "Monitor for newly constructed logon behavior to cloud services. For example, in Azure AD, consider using Identity Protection to monitor for suspicious login behaviors to cloud resources. (Citation: Protecting Microsoft 365 From On-Premises Attacks)\n\n<code>sourcetype=\"azure:signinlogs\" OR sourcetype=\"google:admin_audit\" OR sourcetype=\"o365:audit\"\n| stats count by UserPrincipalName, ClientIP, _time, LoginStatus\n| eval suspicious=if(LoginStatus=\"failure\" OR match(ClientIP, \"untrusted_ip_pattern\"), \"suspicious\", \"normal\")\n| where suspicious=\"suspicious\"\n| table _time, UserPrincipalName, ClientIP, LoginStatus, suspicious </code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
             "target_ref": "attack-pattern--8861073d-d1b8-4941-82ce-dce621d398f0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.1.0",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

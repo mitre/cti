@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--d863c9ce-d489-4c5b-ac9d-b291ac9a5ce0",
+    "id": "bundle--2e8004fb-4c62-4e18-a224-c874f8ac9725",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,15 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-08-26T15:53:39.129Z",
+            "modified": "2025-04-16T22:56:06.614Z",
             "description": "Monitor executed commands and arguments for actions that are used to perform remote behavior.\n\nAnalytic 1 - Look for wmic.exeexecution with arguments indicative of remote process creation.\n\n<code> index=windows_logs sourcetype=WinEventLog:Security OR sourcetype=WinEventLog:Microsoft-Windows-Sysmon/Operational\n| eval CommandLine=coalesce(CommandLine, ParentCommandLine)\n| eval ProcessName=lower(ProcessName), CommandLine=lower(CommandLine)\n| search ProcessName IN (\"wmic.exe\", \"powershell.exe\", \"wbemtool.exe\", \"wmiprvse.exe\", \"wmiadap.exe\", \"scrcons.exe\")\n| search CommandLine IN (\"*process call create*\", \"*shadowcopy delete*\", \"*process start*\", \"*createobject*\")\n| stats count by _time, ComputerName, User, ProcessName, CommandLine, ParentProcessName, ParentCommandLine, dest, src_ip, dest_ip\n| eval alert_message=\"Suspicious WMI activity detected: \" + ProcessName + \" executed by \" + User + \" on \" + ComputerName + \" with command: \" + CommandLine\n| where NOT (User=\"SYSTEM\" OR ProcessName=\"wmiprvse.exe\" OR CommandLine=\"*wmic shadowcopy delete*\" AND src_ip=\"trusted_ip_range\")\n| table _time, ComputerName, User, ProcessName, CommandLine, ParentProcessName, ParentCommandLine, src_ip, dest_ip, alert_message</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
             "target_ref": "attack-pattern--01a5a209-b94c-450b-b7f9-946497d91055",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--690c186a-42c6-4474-82ed-b184914f62be",
+    "id": "bundle--70fc5689-75c9-4986-990c-5fc147d20a4b",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,15 +19,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-10-04T14:52:41.751Z",
+            "modified": "2025-04-16T21:58:37.236Z",
             "description": "Monitor for unexpected processes interacting with LSASS.exe.(Citation: Medium Detecting Attempts to Steal Passwords from Memory) Common credential dumpers such as Mimikatz access LSASS.exe by opening the process, locating the LSA secrets key, and decrypting the sections in memory where credential details are stored. Credential dumpers may also use methods for reflective [Process Injection](https://attack.mitre.org/techniques/T1055) to reduce potential indicators of malicious activity.\n\nUsage of Procdump and Windows Task Manager for LSASS dumping can also be detected via process creation events, since they both have a predictable set of command-line arguments (i.e., for specifying the process to be dumped). \n\nNote: Sysmon process access events (Event ID 10) can be extremely noisy, which necessitates tweaking the Sysmon configuration file. We recommend taking an approach analogous to that of the Sysmon Modular Configuration project (https://github.com/olafhartong/sysmon-modular) and filtering out any benign processes in your environment that produce large volumes of process access events. \n\nThe GrantedAccess value in the below analytic for Mimikatz is meant to be used solely as an illustrative example of detecting Mimikatz LSASS access. However, actual GrantedAccess values change over time with different versions of Mimikatz and therefore detection engineers need to verify the accuracy of any GrantedAccess values that their analytics are using. \n\nAnalytic 1 - Mimikatz\n\n<code>(sourcetype=WinEventLog:Microsoft-Windows-Sysmon/Operational EventCode=\"10\" AND TargetImage= \"*lsass.exe\" AND (GrantedAccess=0x1410 OR GrantedAccess=0x1010 OR GrantedAccess=0x1438 OR GrantedAccess=0x143a OR GrantedAccess=0x1418)\nCallTrace=\"C:\\\\windows\\\\SYSTEM32\\\\ntdll.dll+*|C:\\\\windows\\\\System32\\\\KERNELBASE.dll+20edd|UNKNOWN(*)\")</code>\n\nAnalytic 2 - Suspicious process access to LSASS memory.\n\n```((sourceType=WinEventLog:Microsoft-Windows-Sysmon/Operational EventCode=\"10\") AND TargetImage= \"*lsass.exe\" AND SourceImage IN (\"*mimikatz.exe\", \"*procdump.exe\", \"*rundll32.exe\", \"*taskmgr.exe\", \"*powershell.exe\")```",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
             "target_ref": "attack-pattern--65f2d882-3f41-4d48-8a06-29af77ec9f90",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

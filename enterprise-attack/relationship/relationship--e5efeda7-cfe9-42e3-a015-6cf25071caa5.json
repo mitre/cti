@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--cd2369b0-916c-40fc-a36c-3e3cfe626cd4",
+    "id": "bundle--69552234-fb91-4974-b6a4-11e88dac75f2",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,15 +19,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-08-26T16:53:10.861Z",
+            "modified": "2025-04-16T22:53:58.505Z",
             "description": "On Windows, monitor Windows Task Scheduler stores in `%systemroot%\\System32\\Tasks` for change entries related to scheduled tasks, especially those that do not correlate with known software, patch cycles, etc. On Linux and macOS, all [at](https://attack.mitre.org/software/S0110) jobs are stored in <code>/var/spool/cron/atjobs/</code>.(Citation: rowland linux at 2019)\n\nAnalytic 1 - Look for task file modifications with unusual parameters. (Linux)\n\n<code>  index=linux_logs sourcetype=syslog \"at\" \"/var/spool/cron/atjobs/\"\n| rex \"user=(?<user>\\w+)\"</code>\n\nAnalytic 2 - Look for task file modifications with unusual parameters. (Windows) \n\n<code> index=windows_logs sourcetype=WinEventLog:System EventCode=4663 Object_Type=\"File\"\n| rex field=_raw \"Object_Name=(?<file_path>[^\\r\\n]+)\"\n| search file_path=\"*at*\"\n| where NOT (user=\"SYSTEM\" AND file_path=\"C:\\\\Windows\\\\Tasks\\\\allowed_task.job\")</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
             "target_ref": "attack-pattern--f3d95a1f-bba2-44ce-9af7-37866cd63fd0",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

@@ -1,42 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--51d1f2ce-22ae-4201-9ad2-cfa14a42e0fe",
+    "id": "bundle--c031cd56-dec3-4b0f-8b94-aa3550a204fb",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2022-10-21T19:30:58.414Z",
-            "name": "Gatekeeper Bypass",
-            "description": "Adversaries may modify file attributes and subvert Gatekeeper functionality to evade user prompts and execute untrusted programs. Gatekeeper is a set of technologies that act as layer of Apple\u2019s security model to ensure only trusted applications are executed on a host. Gatekeeper was built on top of File Quarantine in Snow Leopard (10.6, 2009) and has grown to include Code Signing, security policy compliance, Notarization, and more. Gatekeeper also treats applications running for the first time differently than reopened applications.(Citation: TheEclecticLightCompany Quarantine and the flag)(Citation: TheEclecticLightCompany apple notarization )\n\nBased on an opt-in system, when files are downloaded an extended attribute (xattr) called `com.apple.quarantine` (also known as a quarantine flag) can be set on the file by the application performing the download. Launch Services opens the application in a suspended state. For first run applications with the quarantine flag set, Gatekeeper executes the following functions:\n\n1. Checks extended attribute \u2013 Gatekeeper checks for the quarantine flag, then provides an alert prompt to the user to allow or deny execution.(Citation: OceanLotus for OS X)(Citation: 20 macOS Common Tools and Techniques)\n\n2. Checks System Policies - Gatekeeper checks the system security policy, allowing execution of apps downloaded from either just the App Store or the App Store and identified developers.\n\n3. Code Signing \u2013 Gatekeeper checks for a valid code signature from an Apple Developer ID.\n\n4. Notarization - Using the `api.apple-cloudkit.com` API, Gatekeeper reaches out to Apple servers to verify or pull down the notarization ticket and ensure the ticket is not revoked. Users can override notarization, which will result in a prompt of executing an \u201cunauthorized app\u201d and the security policy will be modified.\n\nAdversaries can subvert one or multiple security controls within Gatekeeper checks through logic errors (e.g. [Exploitation for Defense Evasion](https://attack.mitre.org/techniques/T1211)), unchecked file types, and external libraries. For example, prior to macOS 13 Ventura, code signing and notarization checks were only conducted on first launch, allowing adversaries to write malicious executables to previously opened applications in order to bypass Gatekeeper security checks.(Citation: theevilbit gatekeeper bypass 2021)(Citation: Application Bundle Manipulation Brandon Dalton)\n\nApplications and files loaded onto the system from a USB flash drive, optical disk, external hard drive, from a drive shared over the local network, or using the curl command may not set the quarantine flag. Additionally, it is possible to avoid setting the quarantine flag using [Drive-by Compromise](https://attack.mitre.org/techniques/T1189).",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "x_mitre_detection": "The removal of the <code>com.apple.quarantine</code> flag by a user instead of the operating system is a suspicious action and should be examined further. Monitor and investigate attempts to modify extended file attributes with utilities such as <code>xattr</code>. Built-in system utilities may generate high false positive alerts, so compare against baseline knowledge for how systems are typically used and correlate modification events with other indications of malicious activity where possible. Monitor software update frameworks that strip the <code>com.apple.quarantine</code> flag when performing updates. \n\nReview <code>false</code> values under the <code>LSFileQuarantineEnabled</code> entry in an application's <code>Info.plist</code> file (required by every application). <code>false</code> under <code>LSFileQuarantineEnabled</code> indicates that an application does not use the quarantine flag. Unsandboxed applications with an unspecified <code>LSFileQuarantineEnabled</code> entry will default to not setting the quarantine flag. \n\nQuarantineEvents is a SQLite database containing a list of all files assigned the <code>com.apple.quarantine</code> attribute, located at <code>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2</code>. Each event contains the corresponding UUID, timestamp, application, Gatekeeper score, and decision if it was allowed.(Citation: TheEclecticLightCompany Quarantine and the flag)",
-            "x_mitre_platforms": [
-                "macOS"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_deprecated": false,
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_version": "1.2",
-            "x_mitre_contributors": [
-                "Brandon Dalton @PartyD0lphin",
-                "Swasti Bhushan Deb, IBM India Pvt. Ltd."
-            ],
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Command: Command Execution",
-                "File: File Metadata",
-                "File: File Modification"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Anti-virus",
-                "Application Control"
-            ],
             "type": "attack-pattern",
             "id": "attack-pattern--31a0a2ac-c67c-4a7e-b9ed-6a96477d4e8e",
             "created": "2020-02-05T16:16:08.471Z",
@@ -82,8 +49,37 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "modified": "2025-04-16T20:37:16.087Z",
+            "name": "Gatekeeper Bypass",
+            "description": "Adversaries may modify file attributes and subvert Gatekeeper functionality to evade user prompts and execute untrusted programs. Gatekeeper is a set of technologies that act as layer of Apple\u2019s security model to ensure only trusted applications are executed on a host. Gatekeeper was built on top of File Quarantine in Snow Leopard (10.6, 2009) and has grown to include Code Signing, security policy compliance, Notarization, and more. Gatekeeper also treats applications running for the first time differently than reopened applications.(Citation: TheEclecticLightCompany Quarantine and the flag)(Citation: TheEclecticLightCompany apple notarization )\n\nBased on an opt-in system, when files are downloaded an extended attribute (xattr) called `com.apple.quarantine` (also known as a quarantine flag) can be set on the file by the application performing the download. Launch Services opens the application in a suspended state. For first run applications with the quarantine flag set, Gatekeeper executes the following functions:\n\n1. Checks extended attribute \u2013 Gatekeeper checks for the quarantine flag, then provides an alert prompt to the user to allow or deny execution.(Citation: OceanLotus for OS X)(Citation: 20 macOS Common Tools and Techniques)\n\n2. Checks System Policies - Gatekeeper checks the system security policy, allowing execution of apps downloaded from either just the App Store or the App Store and identified developers.\n\n3. Code Signing \u2013 Gatekeeper checks for a valid code signature from an Apple Developer ID.\n\n4. Notarization - Using the `api.apple-cloudkit.com` API, Gatekeeper reaches out to Apple servers to verify or pull down the notarization ticket and ensure the ticket is not revoked. Users can override notarization, which will result in a prompt of executing an \u201cunauthorized app\u201d and the security policy will be modified.\n\nAdversaries can subvert one or multiple security controls within Gatekeeper checks through logic errors (e.g. [Exploitation for Defense Evasion](https://attack.mitre.org/techniques/T1211)), unchecked file types, and external libraries. For example, prior to macOS 13 Ventura, code signing and notarization checks were only conducted on first launch, allowing adversaries to write malicious executables to previously opened applications in order to bypass Gatekeeper security checks.(Citation: theevilbit gatekeeper bypass 2021)(Citation: Application Bundle Manipulation Brandon Dalton)\n\nApplications and files loaded onto the system from a USB flash drive, optical disk, external hard drive, from a drive shared over the local network, or using the curl command may not set the quarantine flag. Additionally, it is possible to avoid setting the quarantine flag using [Drive-by Compromise](https://attack.mitre.org/techniques/T1189).",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_contributors": [
+                "Brandon Dalton @PartyD0lphin",
+                "Swasti Bhushan Deb, IBM India Pvt. Ltd."
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "The removal of the <code>com.apple.quarantine</code> flag by a user instead of the operating system is a suspicious action and should be examined further. Monitor and investigate attempts to modify extended file attributes with utilities such as <code>xattr</code>. Built-in system utilities may generate high false positive alerts, so compare against baseline knowledge for how systems are typically used and correlate modification events with other indications of malicious activity where possible. Monitor software update frameworks that strip the <code>com.apple.quarantine</code> flag when performing updates. \n\nReview <code>false</code> values under the <code>LSFileQuarantineEnabled</code> entry in an application's <code>Info.plist</code> file (required by every application). <code>false</code> under <code>LSFileQuarantineEnabled</code> indicates that an application does not use the quarantine flag. Unsandboxed applications with an unspecified <code>LSFileQuarantineEnabled</code> entry will default to not setting the quarantine flag. \n\nQuarantineEvents is a SQLite database containing a list of all files assigned the <code>com.apple.quarantine</code> attribute, located at <code>~/Library/Preferences/com.apple.LaunchServices.QuarantineEventsV2</code>. Each event contains the corresponding UUID, timestamp, application, Gatekeeper score, and decision if it was allowed.(Citation: TheEclecticLightCompany Quarantine and the flag)",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_version": "1.3",
+            "x_mitre_data_sources": [
+                "Process: Process Creation",
+                "Command: Command Execution",
+                "File: File Metadata",
+                "File: File Modification"
+            ]
         }
     ]
 }

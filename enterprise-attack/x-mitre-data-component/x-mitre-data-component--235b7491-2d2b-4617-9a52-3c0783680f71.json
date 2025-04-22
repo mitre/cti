@@ -1,23 +1,29 @@
 {
     "type": "bundle",
-    "id": "bundle--470f9121-59f3-4cbd-9666-a3496f9efab2",
+    "id": "bundle--946b2df9-823c-4955-bbfb-06f8bbaad920",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "x-mitre-data-component",
+            "id": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+            "created": "2021-10-20T15:05:19.273Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
-            "type": "x-mitre-data-component",
-            "created": "2021-10-20T15:05:19.273Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2021-10-20T15:05:19.273Z",
+            "modified": "2025-04-18T15:10:07.996Z",
             "name": "File Access",
-            "description": "Opening a file, which makes the file contents available to the requestor (ex: Windows EID 4663)",
+            "description": "To events where a file is opened or accessed, making its contents available to the requester. This includes reading, executing, or interacting with files by authorized or unauthorized entities. Examples include logging file access events (e.g., Windows Event ID 4663), monitoring file reads, and detecting unusual file access patterns. Examples: \n\n- File Read Operations: A user opens a sensitive document (e.g., financial_report.xlsx) on a shared drive.\n- File Execution: A script or executable file is accessed and executed (e.g., malware.exe is run from a temporary directory).\n- Unauthorized File Access: An unauthorized user attempts to access a protected configuration file (e.g., `/etc/passwd` on Linux or `System32` files on Windows).\n- File Access Patterns: Bulk access to multiple files in a short time (e.g., mass access to documents on a file server).\n- File Access via Network: Files on a network share are accessed remotely (e.g., logs of SMB file access).\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Windows Event Logs: Event ID 4663: Captures file system auditing details, including who accessed the file, access type, and file name.\n- Sysmon:\n    - Event ID 11: Logs file creation time changes.\n    - Event ID 1 (process creation): Can provide insight into files executed.\n- PowerShell: Commands to monitor file access in real-time: `Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4663}`\n\nLinux\n\n- Auditd: Monitor file access events using audit rules: `auditctl -w /path/to/file -p rwxa -k file_access`\n- View logs: `ausearch -k file_access`\n- Inotify: Use inotify to track file access on Linux: `inotifywait -m /path/to/watch -e access`\n\nmacOS\n\n- Unified Logs: Monitor file access using the macOS Unified Logging System.\n- FSEvents: File System Events can track file accesses: `fs_usage | grep open`\n\nNetwork Devices\n\n- SMB/CIFS Logs: Monitor file access over network shares using logs from SMB or CIFS protocol.\n- NAS Logs: Collect logs from network-attached storage systems for file access events.\n\nSIEM Integration\n\n- Collect file access logs from all platforms (Windows, Linux, macOS) and centralize in a SIEM for correlation and analysis.",
             "x_mitre_data_source_ref": "x-mitre-data-source--509ed41e-ca42-461e-9058-24602256daf9",
-            "x_mitre_version": "1.0",
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "ics-attack",
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.1",
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

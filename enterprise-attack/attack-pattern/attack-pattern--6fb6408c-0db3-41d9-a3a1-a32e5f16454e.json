@@ -1,51 +1,45 @@
 {
     "type": "bundle",
-    "id": "bundle--2fe4c9db-a495-48a1-b6a1-2a92fc450dfd",
+    "id": "bundle--1519ca53-624d-476f-bc40-6fd06ea26043",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "macOS"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--6fb6408c-0db3-41d9-a3a1-a32e5f16454e",
             "type": "attack-pattern",
+            "id": "attack-pattern--6fb6408c-0db3-41d9-a3a1-a32e5f16454e",
             "created": "2017-12-14T16:46:06.044Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": true,
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "external_id": "T1144",
-                    "url": "https://attack.mitre.org/techniques/T1144"
+                    "url": "https://attack.mitre.org/techniques/T1144",
+                    "external_id": "T1144"
                 },
                 {
-                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
+                    "source_name": "Methods of Mac Malware Persistence",
                     "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
-                    "source_name": "Methods of Mac Malware Persistence"
+                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf"
                 },
                 {
-                    "url": "https://derflounder.wordpress.com/2012/11/20/clearing-the-quarantine-extended-attribute-from-downloaded-applications/",
+                    "source_name": "Clearing quarantine attribute",
                     "description": "Rich Trouton. (2012, November 20). Clearing the quarantine extended attribute from downloaded applications. Retrieved July 5, 2017.",
-                    "source_name": "Clearing quarantine attribute"
+                    "url": "https://derflounder.wordpress.com/2012/11/20/clearing-the-quarantine-extended-attribute-from-downloaded-applications/"
                 },
                 {
-                    "url": "https://www.alienvault.com/blogs/labs-research/oceanlotus-for-os-x-an-application-bundle-pretending-to-be-an-adobe-flash-update",
+                    "source_name": "OceanLotus for OS X",
                     "description": "Eddie Lee. (2016, February 17). OceanLotus for OS X - an Application Bundle Pretending to be an Adobe Flash Update. Retrieved July 5, 2017.",
-                    "source_name": "OceanLotus for OS X"
+                    "url": "https://www.alienvault.com/blogs/labs-research/oceanlotus-for-os-x-an-application-bundle-pretending-to-be-an-adobe-flash-update"
                 },
                 {
-                    "url": "https://blog.malwarebytes.com/cybercrime/2015/10/bypassing-apples-gatekeeper/",
+                    "source_name": "Bypassing Gatekeeper",
                     "description": "Thomas Reed. (2016, March 31). Bypassing Apple's Gatekeeper. Retrieved July 5, 2017.",
-                    "source_name": "Bypassing Gatekeeper"
+                    "url": "https://blog.malwarebytes.com/cybercrime/2015/10/bypassing-apples-gatekeeper/"
                 }
             ],
-            "modified": "2020-02-05T16:23:01.683Z",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-04-15T19:58:40.439Z",
             "name": "Gatekeeper Bypass",
             "description": "In macOS and OS X, when applications or programs are downloaded from the internet, there is a special attribute set on the file called <code>com.apple.quarantine</code>. This attribute is read by Apple's Gatekeeper defense program at execution time and provides a prompt to the user to allow or deny execution. \n\nApps loaded onto the system from USB flash drive, optical disk, external hard drive, or even from a drive shared over the local network won\u2019t set this flag. Additionally, other utilities or events like drive-by downloads don\u2019t necessarily set it either. This completely bypasses the built-in Gatekeeper check. (Citation: Methods of Mac Malware Persistence) The presence of the quarantine flag can be checked by the xattr command <code>xattr /path/to/MyApp.app</code> for <code>com.apple.quarantine</code>. Similarly, given sudo access or elevated permission, this attribute can be removed with xattr as well, <code>sudo xattr -r -d com.apple.quarantine /path/to/MyApp.app</code>. (Citation: Clearing quarantine attribute) (Citation: OceanLotus for OS X)\n \nIn typical operation, a file will be downloaded from the internet and given a quarantine flag before being saved to disk. When the user tries to open the file or application, macOS\u2019s gatekeeper will step in and check for the presence of this flag. If it exists, then macOS will then prompt the user to confirmation that they want to run the program and will even provide the URL where the application came from. However, this is all based on the file being downloaded from a quarantine-savvy application. (Citation: Bypassing Gatekeeper)",
             "kill_chain_phases": [
@@ -54,17 +48,16 @@
                     "phase_name": "defense-evasion"
                 }
             ],
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_detection": "Monitoring for the removal of the <code>com.apple.quarantine</code> flag by a user instead of the operating system is a suspicious action and should be examined further. Monitor and investigate attempts to modify extended file attributes with utilities such as <code>xattr</code>. Built-in system utilities may generate high false positive alerts, so compare against baseline knowledge for how systems are typically used and correlate modification events with other indications of malicious activity where possible.",
-            "x_mitre_version": "1.1",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_defense_bypassed": [
-                "Application whitelisting",
-                "Anti-virus"
+            "x_mitre_platforms": [
+                "macOS"
             ],
-            "x_mitre_permissions_required": [
-                "User",
-                "Administrator"
-            ],
+            "x_mitre_version": "1.2",
             "x_mitre_is_subtechnique": false
         }
     ]

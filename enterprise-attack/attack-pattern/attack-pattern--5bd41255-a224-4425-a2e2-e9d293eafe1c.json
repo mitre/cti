@@ -1,0 +1,63 @@
+{
+    "type": "bundle",
+    "id": "bundle--94760566-d28d-41b9-b59b-814250e1af20",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--5bd41255-a224-4425-a2e2-e9d293eafe1c",
+            "created": "2025-01-30T21:01:16.340Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1564/013",
+                    "external_id": "T1564.013"
+                },
+                {
+                    "source_name": "Ahn Lab CoinMiner 2023",
+                    "description": "Ahn Lab. (2023, April 24). CoinMiner (KONO DIO DA) Distributed to Linux SSH Servers. Retrieved April 4, 2025.",
+                    "url": "https://asec.ahnlab.com/en/51908/"
+                },
+                {
+                    "source_name": "Cado Security Commando Cat 2024",
+                    "description": "Nate Bill & Matt Muir. (2024, February 1). The Nine Lives of Commando Cat: Analysing a Novel Malware Campaign Targeting Docker. Retrieved April 4, 2025.",
+                    "url": "https://www.cadosecurity.com/blog/the-nine-lives-of-commando-cat-analysing-a-novel-malware-campaign-targeting-docker"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-04-15T19:58:34.469Z",
+            "name": "Bind Mounts",
+            "description": "Adversaries may abuse bind mounts on file structures to hide their activity and artifacts from native utilities. A bind mount maps a directory or file from one location on the filesystem to another, similar to a shortcut on Windows. It\u2019s commonly used to provide access to specific files or directories across different environments, such as inside containers or chroot environments, and requires sudo access. \n\nAdversaries may use bind mounts to map either an empty directory or a benign `/proc` directory to a malicious process\u2019s `/proc` directory. Using the commands `mount \u2013o bind /proc/benign-process /proc/malicious-process` (or `mount \u2013B`), the malicious process's `/proc` directory is overlayed with the contents of a benign process's `/proc` directory. When system utilities query process activity, such as `ps` and `top`, the kernel follows the bind mount and presents the benign directory\u2019s contents instead of the malicious process's actual `/proc` directory. As a result, these utilities display information that appears to come from the benign process, effectively hiding the malicious process's metadata, executable, or other artifacts from detection.(Citation: Cado Security Commando Cat 2024)(Citation: Ahn Lab CoinMiner 2023)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_contributors": [
+                "L\u00ea Ph\u01b0\u01a1ng Nam, Group-IB"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "Command: Command Execution",
+                "Process: OS API Execution"
+            ]
+        }
+    ]
+}

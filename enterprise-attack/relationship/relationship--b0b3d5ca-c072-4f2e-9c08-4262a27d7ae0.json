@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--b002832c-1149-4df4-a66d-fa185bbf9111",
+    "id": "bundle--da9672a6-1ec6-4ab4-b0c3-1c9dbc4e351c",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,7 +12,7 @@
             "external_references": [
                 {
                     "source_name": "ACSC Email Spoofing",
-                    "description": "Australian Cyber Security Centre. (2012, December). Mitigating Spoofed Emails Using Sender Policy Framework. Retrieved October 19, 2020.",
+                    "description": "Australian Cyber Security Centre. (2012, December). Mitigating Spoofed Emails Using Sender Policy Framework. Retrieved November 17, 2024.",
                     "url": "https://web.archive.org/web/20210708014107/https://www.cyber.gov.au/sites/default/files/2019-03/spoof_email_sender_policy_framework.pdf"
                 },
                 {
@@ -24,15 +24,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-05-31T04:18:44.577Z",
-            "description": "Monitor for third-party application logging, messaging, and/or other artifacts that may send phishing messages to gain access to victim systems. Filtering based on DKIM+SPF or header analysis can help detect when the email sender is spoofed.(Citation: Microsoft Anti Spoofing)(Citation: ACSC Email Spoofing) URL inspection within email (including expanding shortened links) can help detect links leading to known malicious sites. Detonation chambers can be used to detect these links and either automatically go to these sites to determine if they're potentially malicious, or wait and capture the content if a user visits the link.\n\nMonitor call logs from corporate devices to identify patterns of potential voice phishing, such as calls to/from known malicious phone numbers. Correlate these records with system events.",
+            "modified": "2025-04-16T22:40:19.386Z",
+            "description": "Monitor for third-party application logging, messaging, and/or other artifacts that may send phishing messages to gain access to victim systems. Filtering based on DKIM+SPF or header analysis can help detect when the email sender is spoofed.(Citation: Microsoft Anti Spoofing)(Citation: ACSC Email Spoofing) URL inspection within email (including expanding shortened links) can help detect links leading to known malicious sites. Detonation chambers can be used to detect these links and either automatically go to these sites to determine if they're potentially malicious, or wait and capture the content if a user visits the link.\n\nMonitor call logs from corporate devices to identify patterns of potential voice phishing, such as calls to/from known malicious phone numbers. Correlate these records with system events.\n\nAnalytic 1 - Detecting Malicious Phishing Emails \n\n<code>(source=\"o365_message_trace\" OR source=\"gmail_security_logs\" OR source=\"/var/log/maillog\")\n| search (\"dkim=fail\" OR \"spf=fail\" OR \"dmarc=fail\" OR \"suspicious attachment\")\n| eval risk_score=case(\n    like(subject, \"%password reset%\"), 8,\n    like(subject, \"%urgent action required%\"), 7,\n    like(subject, \"%invoice%\"), 6\n)\n| where risk_score >= 6\n| stats count by _time, src_email, dest_email, subject, attachment_name, risk_score </code> ",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
             "target_ref": "attack-pattern--a62a8db3-f23a-4d8f-afd6-9dbc77e7813b",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

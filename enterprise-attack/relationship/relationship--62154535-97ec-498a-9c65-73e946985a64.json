@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--42209b5c-3ae6-4add-b7a7-e60a87609204",
+    "id": "bundle--17a6baf7-4db4-490b-8a35-06be4090b2e3",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,15 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-03-28T14:54:57.985Z",
+            "modified": "2025-04-16T22:19:15.563Z",
             "description": "Monitor for process execution that may use NTFS file attributes to hide their malicious data in order to evade detection. \n\nAnalytic 1 - NTFS Alternate Data Stream Execution : System Utilities (Powershell)\n\n<code>(source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") Image= \"C:\\\\Windows\\\\*\\\\powershell.exe\" | regex CommandLine= \"Invoke-CimMethod\\s+-ClassName\\s+Win32_Process\\s+-MethodName\\s+Create.*\\b(\\w+(\\.\\w+)?):(\\w+(\\.\\w+)?)|-ep bypass\\s+-\\s+<.*\\b(\\w+(\\.\\w+)?):(\\w+(\\.\\w+)?)|-command.*Get-Content.*-Stream.*Set-Content.*start-process .*(\\w+(\\.\\w+)?)\"</code>\n\nAnalytic 2 - NTFS Alternate Data Stream Execution : System Utilities (WMIC)\n\n<code>(source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") Image= \"C:\\\\Windows\\\\*\\\\wmic.exe\" | regex CommandLine= \"process call create.*\\\"(\\w+(\\.\\w+)?):(\\w+(\\.\\w+)?)\"</code>\n\nAnalytic 3 - NTFS Alternate Data Stream Execution : System Utilities (rundll32)\n\n<code>(source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") Image= \"C:\\\\Windows\\\\*\\\\rundll32.exe\" | regex CommandLine= \"\\\"?(\\w+(\\.\\w+)?):(\\w+(\\.\\w+)?)?\\\"?,\\w+\\|(advpack\\.dll\\|ieadvpack\\.dll),RegisterOCX\\s+(\\w+\\.\\w+):(\\w+(\\.\\w+)?)\\|(shdocvw\\.dll\\|ieframe\\.dll),OpenURL.*(\\w+\\.\\w+):(\\w+(\\.\\w+)?)\"</code>\n\nAnalytic 4 - NTFS Alternate Data Stream Execution : System Utilities (wscript/cscript)\n\n<code>(source=\"*WinEventLog:Microsoft-Windows-Sysmon/Operational\" EventCode=\"1\") OR (source=\"*WinEventLog:Security\" EventCode=\"4688\") Image= \"C:\\\\Windows\\\\*\\\\wscript.exe\" OR Image= \"C:\\\\Windows\\\\*\\\\cscript.exe)\" | regex CommandLine= \"(?<!\\/)\\b\\w+(\\.\\w+)?:\\w+(\\.\\w+)?$\"</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
             "target_ref": "attack-pattern--f2857333-11d4-45bf-b064-2c28d8525be5",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

@@ -1,12 +1,77 @@
 {
     "type": "bundle",
-    "id": "bundle--e2d1a9d4-7706-4d32-9dba-b7e3d060faec",
+    "id": "bundle--1d3fcec1-4636-4bcf-8947-a82f14d14b4d",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2023-03-30T21:01:40.146Z",
+            "type": "attack-pattern",
+            "id": "attack-pattern--633a100c-b2c9-41bf-9be5-905c1b16c825",
+            "created": "2020-03-13T20:09:59.569Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1574/006",
+                    "external_id": "T1574.006"
+                },
+                {
+                    "source_name": "Apple Doco Archive Dynamic Libraries",
+                    "description": "Apple Inc.. (2012, July 23). Overview of Dynamic Libraries. Retrieved March 24, 2021.",
+                    "url": "https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/OverviewOfDynamicLibraries.html"
+                },
+                {
+                    "source_name": "Baeldung LD_PRELOAD",
+                    "description": "baeldung. (2020, August 9). What Is the LD_PRELOAD Trick?. Retrieved March 24, 2021.",
+                    "url": "https://www.baeldung.com/linux/ld_preload-trick-what-is"
+                },
+                {
+                    "source_name": "TheEvilBit DYLD_INSERT_LIBRARIES",
+                    "description": "Fitzl, C. (2019, July 9). DYLD_INSERT_LIBRARIES DYLIB injection in macOS / OSX. Retrieved March 26, 2020.",
+                    "url": "https://theevilbit.github.io/posts/dyld_insert_libraries_dylib_injection_in_macos_osx_deep_dive/"
+                },
+                {
+                    "source_name": "Intezer Symbiote 2022",
+                    "description": "Joakim Kennedy and The BlackBerry Threat Research & Intelligence Team. (2022, June 9). Symbiote Deep-Dive: Analysis of a New, Nearly-Impossible-to-Detect Linux Threat. Retrieved March 24, 2025.",
+                    "url": "https://intezer.com/blog/research/new-linux-threat-symbiote/"
+                },
+                {
+                    "source_name": "Gabilondo DYLD_INSERT_LIBRARIES Catalina Bypass",
+                    "description": "Jon Gabilondo. (2019, September 22). How to Inject Code into Mach-O Apps. Part II.. Retrieved March 24, 2021.",
+                    "url": "https://jon-gabilondo-angulo-7635.medium.com/how-to-inject-code-into-mach-o-apps-part-ii-ddb13ebc8191"
+                },
+                {
+                    "source_name": "Man LD.SO",
+                    "description": "Kerrisk, M. (2020, June 13). Linux Programmer's Manual. Retrieved June 15, 2020.",
+                    "url": "https://www.man7.org/linux/man-pages/man8/ld.so.8.html"
+                },
+                {
+                    "source_name": "Elastic Security Labs Pumakit 2024",
+                    "description": "Remco Sprooten and Ruben Groenewoud. (2024, December 11). Declawing PUMAKIT. Retrieved March 24, 2025.",
+                    "url": "https://www.elastic.co/security-labs/declawing-pumakit"
+                },
+                {
+                    "source_name": "TLDP Shared Libraries",
+                    "description": "The Linux Documentation Project. (n.d.). Shared Libraries. Retrieved January 31, 2020.",
+                    "url": "https://www.tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html"
+                },
+                {
+                    "source_name": "Timac DYLD_INSERT_LIBRARIES",
+                    "description": "Timac. (2012, December 18). Simple code injection using DYLD_INSERT_LIBRARIES. Retrieved March 26, 2020.",
+                    "url": "https://blog.timac.org/2012/1218-simple-code-injection-using-dyld_insert_libraries/"
+                },
+                {
+                    "source_name": "ESET Ebury Oct 2017",
+                    "description": "Vachon, F. (2017, October 30). Windigo Still not Windigone: An Ebury Update . Retrieved February 10, 2021.",
+                    "url": "https://www.welivesecurity.com/2017/10/30/windigo-ebury-update-2/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-04-15T19:58:36.147Z",
             "name": "Dynamic Linker Hijacking",
-            "description": "Adversaries may execute their own malicious payloads by hijacking environment variables the dynamic linker uses to load shared libraries. During the execution preparation phase of a program, the dynamic linker loads specified absolute paths of shared libraries from environment variables and files, such as <code>LD_PRELOAD</code> on Linux or <code>DYLD_INSERT_LIBRARIES</code> on macOS. Libraries specified in environment variables are loaded first, taking precedence over system libraries with the same function name.(Citation: Man LD.SO)(Citation: TLDP Shared Libraries)(Citation: Apple Doco Archive Dynamic Libraries) These variables are often used by developers to debug binaries without needing to recompile, deconflict mapped symbols, and implement custom functions without changing the original library.(Citation: Baeldung LD_PRELOAD)\n\nOn Linux and macOS, hijacking dynamic linker variables may grant access to the victim process's memory, system/network resources, and possibly elevated privileges. This method may also evade detection from security products since the execution is masked under a legitimate process. Adversaries can set environment variables via the command line using the <code>export</code> command, <code>setenv</code> function, or <code>putenv</code> function. Adversaries can also leverage [Dynamic Linker Hijacking](https://attack.mitre.org/techniques/T1574/006) to export variables in a shell or set variables programmatically using higher level syntax such Python\u2019s <code>os.environ</code>.\n\nOn Linux, adversaries may set <code>LD_PRELOAD</code> to point to malicious libraries that match the name of legitimate libraries which are requested by a victim program, causing the operating system to load the adversary's malicious code upon execution of the victim program. <code>LD_PRELOAD</code> can be set via the environment variable or <code>/etc/ld.so.preload</code> file.(Citation: Man LD.SO)(Citation: TLDP Shared Libraries) Libraries specified by <code>LD_PRELOAD</code> are loaded and mapped into memory by <code>dlopen()</code> and <code>mmap()</code> respectively.(Citation: Code Injection on Linux and macOS)(Citation: Uninformed Needle) (Citation: Phrack halfdead 1997)(Citation: Brown Exploiting Linkers) \n\nOn macOS this behavior is conceptually the same as on Linux, differing only in how the macOS dynamic libraries (dyld) is implemented at a lower level. Adversaries can set the <code>DYLD_INSERT_LIBRARIES</code> environment variable to point to malicious libraries containing names of legitimate libraries or functions requested by a victim program.(Citation: TheEvilBit DYLD_INSERT_LIBRARIES)(Citation: Timac DYLD_INSERT_LIBRARIES)(Citation: Gabilondo DYLD_INSERT_LIBRARIES Catalina Bypass) ",
+            "description": "Adversaries may execute their own malicious payloads by hijacking environment variables the dynamic linker uses to load shared libraries. During the execution preparation phase of a program, the dynamic linker loads specified absolute paths of shared libraries from various environment variables and files, such as <code>LD_PRELOAD</code> on Linux or <code>DYLD_INSERT_LIBRARIES</code> on macOS.(Citation: TheEvilBit DYLD_INSERT_LIBRARIES)(Citation: Timac DYLD_INSERT_LIBRARIES)(Citation: Gabilondo DYLD_INSERT_LIBRARIES Catalina Bypass) Libraries specified in environment variables are loaded first, taking precedence over system libraries with the same function name.(Citation: Man LD.SO)(Citation: TLDP Shared Libraries)(Citation: Apple Doco Archive Dynamic Libraries) Each platform's linker uses an extensive list of environment variables at different points in execution. These variables are often used by developers to debug binaries without needing to recompile, deconflict mapped symbols, and implement custom functions in the original library.(Citation: Baeldung LD_PRELOAD)\n\nHijacking dynamic linker variables may grant access to the victim process's memory, system/network resources, and possibly elevated privileges. On Linux, adversaries may set <code>LD_PRELOAD</code> to point to malicious libraries that match the name of legitimate libraries which are requested by a victim program, causing the operating system to load the adversary's malicious code upon execution of the victim program. For example, adversaries have used `LD_PRELOAD` to inject a malicious library into every descendant process of the `sshd` daemon, resulting in execution under a legitimate process. When the executing sub-process calls the `execve` function, for example, the malicious library\u2019s `execve` function is executed rather than the system function `execve` contained in the system library on disk. This allows adversaries to [Hide Artifacts](https://attack.mitre.org/techniques/T1564) from detection, as hooking system functions such as `execve` and `readdir` enables malware to scrub its own artifacts from the results of commands such as `ls`, `ldd`, `iptables`, and `dmesg`.(Citation: ESET Ebury Oct 2017)(Citation: Intezer Symbiote 2022)(Citation: Elastic Security Labs Pumakit 2024)\n\nHijacking dynamic linker variables may grant access to the victim process's memory, system/network resources, and possibly elevated privileges.",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
@@ -21,6 +86,8 @@
                     "phase_name": "defense-evasion"
                 }
             ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor for changes to environment variables and files associated with loading shared libraries such as <code>LD_PRELOAD</code> and <code>DYLD_INSERT_LIBRARIES</code>, as well as the commands to implement these changes.\n\nMonitor processes for unusual activity (e.g., a process that does not use the network begins to do so). Track library metadata, such as a hash, and compare libraries that are loaded at process execution time against previous executions to detect differences that do not correlate with patching or updates.",
             "x_mitre_domains": [
                 "enterprise-attack"
@@ -31,87 +98,14 @@
                 "Linux",
                 "macOS"
             ],
-            "x_mitre_version": "2.0",
+            "x_mitre_version": "2.1",
             "x_mitre_data_sources": [
                 "File: File Creation",
                 "Command: Command Execution",
                 "Module: Module Load",
                 "Process: Process Creation",
                 "File: File Modification"
-            ],
-            "x_mitre_permissions_required": [
-                "User"
-            ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--633a100c-b2c9-41bf-9be5-905c1b16c825",
-            "created": "2020-03-13T20:09:59.569Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/techniques/T1574/006",
-                    "external_id": "T1574.006"
-                },
-                {
-                    "source_name": "Man LD.SO",
-                    "description": "Kerrisk, M. (2020, June 13). Linux Programmer's Manual. Retrieved June 15, 2020.",
-                    "url": "https://www.man7.org/linux/man-pages/man8/ld.so.8.html"
-                },
-                {
-                    "source_name": "TLDP Shared Libraries",
-                    "description": "The Linux Documentation Project. (n.d.). Shared Libraries. Retrieved January 31, 2020.",
-                    "url": "https://www.tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html"
-                },
-                {
-                    "source_name": "Apple Doco Archive Dynamic Libraries",
-                    "description": "Apple Inc.. (2012, July 23). Overview of Dynamic Libraries. Retrieved March 24, 2021.",
-                    "url": "https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/DynamicLibraries/100-Articles/OverviewOfDynamicLibraries.html"
-                },
-                {
-                    "source_name": "Baeldung LD_PRELOAD",
-                    "description": "baeldung. (2020, August 9). What Is the LD_PRELOAD Trick?. Retrieved March 24, 2021.",
-                    "url": "https://www.baeldung.com/linux/ld_preload-trick-what-is"
-                },
-                {
-                    "source_name": "Code Injection on Linux and macOS",
-                    "description": "Itamar Turner-Trauring. (2017, April 18). \u201cThis will only hurt for a moment\u201d: code injection on Linux and macOS with LD_PRELOAD. Retrieved December 20, 2017.",
-                    "url": "https://www.datawire.io/code-injection-on-linux-and-macos/"
-                },
-                {
-                    "source_name": "Uninformed Needle",
-                    "description": "skape. (2003, January 19). Linux x86 run-time process manipulation. Retrieved December 20, 2017.",
-                    "url": "http://hick.org/code/skape/papers/needle.txt"
-                },
-                {
-                    "source_name": "Phrack halfdead 1997",
-                    "description": "halflife. (1997, September 1). Shared Library Redirection Techniques. Retrieved December 20, 2017.",
-                    "url": "http://phrack.org/issues/51/8.html"
-                },
-                {
-                    "source_name": "Brown Exploiting Linkers",
-                    "description": "Tim Brown. (2011, June 29). Breaking the links: Exploiting the linker. Retrieved March 29, 2021.",
-                    "url": "http://www.nth-dimension.org.uk/pub/BTL.pdf"
-                },
-                {
-                    "source_name": "TheEvilBit DYLD_INSERT_LIBRARIES",
-                    "description": "Fitzl, C. (2019, July 9). DYLD_INSERT_LIBRARIES DYLIB injection in macOS / OSX. Retrieved March 26, 2020.",
-                    "url": "https://theevilbit.github.io/posts/dyld_insert_libraries_dylib_injection_in_macos_osx_deep_dive/"
-                },
-                {
-                    "source_name": "Timac DYLD_INSERT_LIBRARIES",
-                    "description": "Timac. (2012, December 18). Simple code injection using DYLD_INSERT_LIBRARIES. Retrieved March 26, 2020.",
-                    "url": "https://blog.timac.org/2012/1218-simple-code-injection-using-dyld_insert_libraries/"
-                },
-                {
-                    "source_name": "Gabilondo DYLD_INSERT_LIBRARIES Catalina Bypass",
-                    "description": "Jon Gabilondo. (2019, September 22). How to Inject Code into Mach-O Apps. Part II.. Retrieved March 24, 2021.",
-                    "url": "https://jon-gabilondo-angulo-7635.medium.com/how-to-inject-code-into-mach-o-apps-part-ii-ddb13ebc8191"
-                }
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "x_mitre_attack_spec_version": "3.1.0"
+            ]
         }
     ]
 }

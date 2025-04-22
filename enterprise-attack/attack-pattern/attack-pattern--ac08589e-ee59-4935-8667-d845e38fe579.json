@@ -1,61 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--242ae659-c380-4a70-9f5e-d46bf80a4f31",
+    "id": "bundle--ab91a3fc-49a9-4f68-baae-8f33b6c47881",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2024-04-12T21:13:46.640Z",
-            "name": "Disable or Modify Tools",
-            "description": "Adversaries may modify and/or disable security tools to avoid possible detection of their malware/tools and activities. This may take many forms, such as killing security software processes or services, modifying / deleting Registry keys or configuration files so that tools do not operate properly, or other methods to interfere with security tools scanning or reporting information. Adversaries may also disable updates to prevent the latest security patches from reaching tools on victim systems.(Citation: SCADAfence_ransomware)\n\nAdversaries may also tamper with artifacts deployed and utilized by security tools. Security tools may make dynamic changes to system components in order to maintain visibility into specific events. For example, security products may load their own modules and/or modify those loaded by processes to facilitate data collection. Similar to [Indicator Blocking](https://attack.mitre.org/techniques/T1562/006), adversaries may unhook or otherwise modify these features added by tools (especially those that exist in userland or are otherwise potentially accessible to adversaries) to avoid detection.(Citation: OutFlank System Calls)(Citation: MDSec System Calls) \n\nAdversaries may also focus on specific applications such as Sysmon. For example, the \u201cStart\u201d and \u201cEnable\u201d values in <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\EventLog-Microsoft-Windows-Sysmon-Operational</code> may be modified to tamper with and potentially disable Sysmon logging.(Citation: disable_win_evt_logging) \n\nOn network devices, adversaries may attempt to skip digital signature verification checks by altering startup configuration files and effectively disabling firmware verification that typically occurs at boot.(Citation: Fortinet Zero-Day and Custom Malware Used by Suspected Chinese Actor in Espionage Operation)(Citation: Analysis of FG-IR-22-369)\n\nIn cloud environments, tools disabled by adversaries may include cloud monitoring agents that report back to services such as AWS CloudWatch or Google Cloud Monitor.\n\nFurthermore, although defensive tools may have anti-tampering mechanisms, adversaries may abuse tools such as legitimate rootkit removal kits to impair and/or disable these tools.(Citation: chasing_avaddon_ransomware)(Citation: dharma_ransomware)(Citation: demystifying_ryuk)(Citation: doppelpaymer_crowdstrike) For example, adversaries have used tools such as GMER to find and shut down hidden processes and antivirus software on infected systems.(Citation: demystifying_ryuk)\n\nAdditionally, adversaries may exploit legitimate drivers from anti-virus software to gain access to kernel space (i.e. [Exploitation for Privilege Escalation](https://attack.mitre.org/techniques/T1068)), which may lead to bypassing anti-tampering features.(Citation: avoslocker_ransomware)",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "defense-evasion"
-                }
-            ],
-            "x_mitre_contributors": [
-                "Gordon Long, Box, Inc., @ethicalhax",
-                "Ziv Karliner, @ziv_kr, Team Nautilus Aqua Security",
-                "Nathaniel Quist, Palo Alto Networks",
-                "Gal Singer, @galsinger29, Team Nautilus Aqua Security",
-                "Daniel Feichter, @VirtualAllocEx, Infosec Tirol",
-                "Cian Heasley",
-                "Alex Soler, AttackIQ",
-                "Sarathkumar Rajendran, Microsoft Defender365",
-                "Lucas Heiligenstein"
-            ],
-            "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor processes and command-line arguments to see if security tools/services are killed or stop running. Monitor Registry edits for modifications to services and startup programs that correspond to security tools. Monitoring for changes to other known features used by deployed security tools may also expose malicious activity.\n\nLack of expected log events may be suspicious.",
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "Windows",
-                "macOS",
-                "Linux",
-                "Containers",
-                "IaaS",
-                "Network"
-            ],
-            "x_mitre_version": "1.5",
-            "x_mitre_data_sources": [
-                "Sensor Health: Host Status",
-                "Process: Process Termination",
-                "Process: Process Creation",
-                "Service: Service Metadata",
-                "Windows Registry: Windows Registry Key Modification",
-                "Command: Command Execution",
-                "Windows Registry: Windows Registry Key Deletion",
-                "Driver: Driver Load"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Anti-virus",
-                "Log analysis",
-                "Signature-based detection",
-                "Host intrusion prevention systems",
-                "File monitoring"
-            ],
             "type": "attack-pattern",
             "id": "attack-pattern--ac08589e-ee59-4935-8667-d845e38fe579",
             "created": "2020-02-21T20:32:20.810Z",
@@ -76,6 +24,11 @@
                     "source_name": "Fortinet Zero-Day and Custom Malware Used by Suspected Chinese Actor in Espionage Operation",
                     "description": "ALEXANDER MARVI, BRAD SLAYBAUGH, DAN EBREO, TUFAIL AHMED, MUHAMMAD UMAIR, TINA JOHNSON. (2023, March 16). Fortinet Zero-Day and Custom Malware Used by Suspected Chinese Actor in Espionage Operation. Retrieved May 15, 2023.",
                     "url": "https://www.mandiant.com/resources/blog/fortinet-malware-ecosystem"
+                },
+                {
+                    "source_name": "BlackBerry WhisperGate 2022",
+                    "description": "BlackBerry Research and Intelligence Team. (2022, February 3). Threat Spotlight: WhisperGate Wiper Wreaks Havoc in Ukraine. Retrieved March 18, 2025.",
+                    "url": "https://blogs.blackberry.com/en/2022/02/threat-spotlight-whispergate-wiper-wreaks-havoc-in-ukraine"
                 },
                 {
                     "source_name": "OutFlank System Calls",
@@ -121,13 +74,64 @@
                     "source_name": "demystifying_ryuk",
                     "description": "Tran, T. (2020, November 24). Demystifying Ransomware Attacks Against Microsoft Defender Solution. Retrieved January 26, 2022.",
                     "url": "https://techcommunity.microsoft.com/t5/core-infrastructure-and-security/demystifying-ransomware-attacks-against-microsoft-defender/ba-p/1928947"
+                },
+                {
+                    "source_name": "Google Cloud Threat Intelligence FIN13 2021",
+                    "description": "Van Ta, Jake Nicastro, Rufus Brown, and Nick Richard. (2021, December 7). FIN13: A Cybercriminal Threat Actor Focused on Mexico. Retrieved March 18, 2025.",
+                    "url": "https://cloud.google.com/blog/topics/threat-intelligence/fin13-cybercriminal-mexico/"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "modified": "2025-04-15T19:58:57.147Z",
+            "name": "Disable or Modify Tools",
+            "description": "Adversaries may modify and/or disable security tools to avoid possible detection of their malware/tools and activities. This may take many forms, such as killing security software processes or services, modifying / deleting Registry keys or configuration files so that tools do not operate properly, or other methods to interfere with security tools scanning or reporting information. Adversaries may also disable updates to prevent the latest security patches from reaching tools on victim systems.(Citation: SCADAfence_ransomware)\n\nAdversaries may also tamper with artifacts deployed and utilized by security tools. Security tools may make dynamic changes to system components in order to maintain visibility into specific events. For example, security products may load their own modules and/or modify those loaded by processes to facilitate data collection. Similar to [Indicator Blocking](https://attack.mitre.org/techniques/T1562/006), adversaries may unhook or otherwise modify these features added by tools (especially those that exist in userland or are otherwise potentially accessible to adversaries) to avoid detection.(Citation: OutFlank System Calls)(Citation: MDSec System Calls) Alternatively, they may add new directories to an endpoint detection and response (EDR) tool\u2019s exclusion list, enabling them to hide malicious files via [File/Path Exclusions](https://attack.mitre.org/techniques/T1564/012).(Citation: BlackBerry WhisperGate 2022)(Citation: Google Cloud Threat Intelligence FIN13 2021)\n\nAdversaries may also focus on specific applications such as Sysmon. For example, the \u201cStart\u201d and \u201cEnable\u201d values in <code>HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\WMI\\Autologger\\EventLog-Microsoft-Windows-Sysmon-Operational</code> may be modified to tamper with and potentially disable Sysmon logging.(Citation: disable_win_evt_logging) \n\nOn network devices, adversaries may attempt to skip digital signature verification checks by altering startup configuration files and effectively disabling firmware verification that typically occurs at boot.(Citation: Fortinet Zero-Day and Custom Malware Used by Suspected Chinese Actor in Espionage Operation)(Citation: Analysis of FG-IR-22-369)\n\nIn cloud environments, tools disabled by adversaries may include cloud monitoring agents that report back to services such as AWS CloudWatch or Google Cloud Monitor.\n\nFurthermore, although defensive tools may have anti-tampering mechanisms, adversaries may abuse tools such as legitimate rootkit removal kits to impair and/or disable these tools.(Citation: chasing_avaddon_ransomware)(Citation: dharma_ransomware)(Citation: demystifying_ryuk)(Citation: doppelpaymer_crowdstrike) For example, adversaries have used tools such as GMER to find and shut down hidden processes and antivirus software on infected systems.(Citation: demystifying_ryuk)\n\nAdditionally, adversaries may exploit legitimate drivers from anti-virus software to gain access to kernel space (i.e. [Exploitation for Privilege Escalation](https://attack.mitre.org/techniques/T1068)), which may lead to bypassing anti-tampering features.(Citation: avoslocker_ransomware)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
+                }
+            ],
             "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_contributors": [
+                "Gordon Long, Box, Inc., @ethicalhax",
+                "Ziv Karliner, @ziv_kr, Team Nautilus Aqua Security",
+                "Nathaniel Quist, Palo Alto Networks",
+                "Gal Singer, @galsinger29, Team Nautilus Aqua Security",
+                "Daniel Feichter, @VirtualAllocEx, Infosec Tirol",
+                "Cian Heasley",
+                "Alex Soler, AttackIQ",
+                "Sarathkumar Rajendran, Microsoft Defender365",
+                "Lucas Heiligenstein",
+                "Menachem Goldstein"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor processes and command-line arguments to see if security tools/services are killed or stop running. Monitor Registry edits for modifications to services and startup programs that correspond to security tools. Monitoring for changes to other known features used by deployed security tools may also expose malicious activity.\n\nLack of expected log events may be suspicious.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows",
+                "macOS",
+                "Linux",
+                "Containers",
+                "IaaS",
+                "Network Devices"
+            ],
+            "x_mitre_version": "1.6",
+            "x_mitre_data_sources": [
+                "Sensor Health: Host Status",
+                "Process: Process Termination",
+                "Process: Process Creation",
+                "Service: Service Metadata",
+                "Windows Registry: Windows Registry Key Modification",
+                "Command: Command Execution",
+                "Windows Registry: Windows Registry Key Deletion",
+                "Driver: Driver Load"
+            ]
         }
     ]
 }

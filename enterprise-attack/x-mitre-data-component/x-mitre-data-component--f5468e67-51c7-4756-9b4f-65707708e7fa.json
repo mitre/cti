@@ -1,23 +1,29 @@
 {
     "type": "bundle",
-    "id": "bundle--1895463f-0282-49cb-aa04-f042ecbcac99",
+    "id": "bundle--7d0a8e59-5a06-4321-a414-f0c3f7b0bc60",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "x-mitre-data-component",
+            "id": "x-mitre-data-component--f5468e67-51c7-4756-9b4f-65707708e7fa",
+            "created": "2021-10-20T15:05:19.275Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "x-mitre-data-component--f5468e67-51c7-4756-9b4f-65707708e7fa",
-            "type": "x-mitre-data-component",
-            "created": "2021-10-20T15:05:19.275Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2021-10-20T15:05:19.275Z",
+            "modified": "2025-04-18T15:10:01.621Z",
             "name": "Network Share Access",
-            "description": "Opening a network share, which makes the contents available to the requestor (ex: Windows EID 5140 or 5145)",
+            "description": "Opening a network share, which makes the contents available to the requestor (ex: Windows EID 5140 or 5145)\n\n*Data Collection Measures:*\n\n- Windows:\n    - Event ID 5140 \u2013 Network Share Object Access Logs every access attempt to a network share.\n    - Event ID 5145 \u2013 Detailed Network Share Object Access Captures granular access control information, including the requesting user, source IP, and access permissions.\n    - Sysmon Event ID 3 \u2013 Network Connection Initiated Helps track SMB connections to suspicious or unauthorized network shares.\n    - Enable Audit Policy for Network Share Access: `auditpol /set /subcategory:\"File Share\" /success:enable /failure:enable`\n    - Enable PowerShell Logging to Detect Unauthorized SMB Access: `Set-ExecutionPolicy RemoteSigned`\n    - Restrict Network Share Access with Group Policy (GPO): `Computer Configuration \u2192 Windows Settings \u2192 Security Settings \u2192 Local Policies \u2192 User Rights Assignment` Set \"Access this computer from the network\" to restrict unauthorized accounts.\n- Linux/macOS:\n    - AuditD (`open`, `read`, `write`, `connect` syscalls) Detects access to NFS, CIFS, and SMB network shares.\n    - Lsof (`lsof | grep nfs` or `lsof | grep smb`) Identifies active network share connections.\n    - Mount (`mount | grep nfs` or `mount | grep cifs`) Lists currently mounted network shares.\n    - Enable AuditD for SMB/NFS Access: `auditctl -a always,exit -F arch=b64 -S open -F path=/mnt/share -k network_share_access`\n    - Monitor Active Network Shares Using Netstat: `netstat -an | grep :445`\n- Endpoint Detection & Response (EDR):\n    - Detects abnormal network share access behavior, such as unusual account usage, large file transfers, or encrypted file activity.",
             "x_mitre_data_source_ref": "x-mitre-data-source--ba27545a-9c32-47ea-ba6a-cce50f1b326e",
-            "x_mitre_version": "1.0",
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "ics-attack",
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.1",
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

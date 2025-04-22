@@ -1,41 +1,35 @@
 {
     "type": "bundle",
-    "id": "bundle--6910fe02-b19f-42f1-bdab-c2a100822a63",
+    "id": "bundle--d969acd2-605b-4f16-ba0e-ece4172c493f",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "macOS"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "object_marking_refs": [
-                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
-            ],
-            "id": "attack-pattern--2ba5aa71-9d15-4b22-b726-56af06d9ad2f",
             "type": "attack-pattern",
+            "id": "attack-pattern--2ba5aa71-9d15-4b22-b726-56af06d9ad2f",
             "created": "2017-12-14T16:46:06.044Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": true,
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "external_id": "T1165",
-                    "url": "https://attack.mitre.org/techniques/T1165"
+                    "url": "https://attack.mitre.org/techniques/T1165",
+                    "external_id": "T1165"
                 },
                 {
-                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/StartupItems.html",
+                    "source_name": "Startup Items",
                     "description": "Apple. (2016, September 13). Startup Items. Retrieved July 11, 2017.",
-                    "source_name": "Startup Items"
+                    "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/StartupItems.html"
                 },
                 {
-                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf",
+                    "source_name": "Methods of Mac Malware Persistence",
                     "description": "Patrick Wardle. (2014, September). Methods of Malware Persistence on Mac OS X. Retrieved July 5, 2017.",
-                    "source_name": "Methods of Mac Malware Persistence"
+                    "url": "https://www.virusbulletin.com/uploads/pdf/conference/vb2014/VB2014-Wardle.pdf"
                 }
             ],
-            "modified": "2020-01-15T18:02:49.891Z",
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-04-15T19:58:16.808Z",
             "name": "Startup Items",
             "description": "Per Apple\u2019s documentation, startup items execute during the final phase of the boot process and contain shell scripts or other executable files along with configuration information used by the system to determine the execution order for all startup items (Citation: Startup Items). This is technically a deprecated version (superseded by Launch Daemons), and thus the appropriate folder, <code>/Library/StartupItems</code> isn\u2019t guaranteed to exist on the system by default, but does appear to exist by default on macOS Sierra. A startup item is a directory whose executable and configuration property list (plist), <code>StartupParameters.plist</code>, reside in the top-level directory. \n\nAn adversary can create the appropriate folders/files in the StartupItems directory to register their own persistence mechanism (Citation: Methods of Mac Malware Persistence). Additionally, since StartupItems run during the bootup phase of macOS, they will run as root. If an adversary is able to modify an existing Startup Item, then they will be able to Privilege Escalate as well.",
             "kill_chain_phases": [
@@ -48,15 +42,16 @@
                     "phase_name": "privilege-escalation"
                 }
             ],
+            "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_detection": "The <code>/Library/StartupItems</code> folder can be monitored for changes. Similarly, the programs that are actually executed from this mechanism should be checked against a whitelist. Monitor processes that are executed during the bootup process to check for unusual or unknown applications and behavior.",
-            "x_mitre_version": "1.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "x_mitre_permissions_required": [
-                "Administrator"
+            "x_mitre_platforms": [
+                "macOS"
             ],
-            "x_mitre_effective_permissions": [
-                "root"
-            ],
+            "x_mitre_version": "1.1",
             "x_mitre_is_subtechnique": false
         }
     ]

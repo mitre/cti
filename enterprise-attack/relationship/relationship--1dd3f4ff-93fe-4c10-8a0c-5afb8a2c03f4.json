@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--e520f49a-6d10-4b5c-a6fa-62f3fead39f1",
+    "id": "bundle--d90684b4-0f0e-4042-9ec7-cac66177f792",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,15 +12,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-08-21T16:16:03.536Z",
+            "modified": "2025-04-16T22:00:51.090Z",
             "description": "Monitor for changes to Registry entries for password filters (ex: HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\Notification Packages) and correlate then investigate the DLL files these files reference.\n\nAnalytic 1 - Unauthorized modifications to Registry entries for password filters.\n\n<code> index=windows_logs sourcetype=\"WinEventLog:Security\" (EventCode=4657 OR EventCode=4688)\n| search (\n    (TargetObject=\"*\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\\" AND ValueName=\"Notification Packages\")\n    OR (TargetObject=\"*\\\\SYSTEM\\\\CurrentControlSet\\\\Control\\\\Lsa\\\\\" AND ValueName=\"Authentication Packages\")\n    OR (CommandLine=\"*reg.exe*\" AND CommandLine=\"*add*\" AND CommandLine=\"*Lsa*\")\n  )\n| eval Modification_Type=case(\n    like(CommandLine, \"%reg.exe% add%\"), \"Command Line Registry Edit\",\n    EventCode=4657, \"Direct Registry Modification\"\n  )</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
             "target_ref": "attack-pattern--3731fbcd-0e43-47ae-ae6c-d15e510f0d42",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

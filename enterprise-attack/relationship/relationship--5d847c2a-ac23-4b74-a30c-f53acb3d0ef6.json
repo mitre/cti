@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--33a4e5cf-739c-400d-be8e-a98b2ea341d6",
+    "id": "bundle--018c9c8f-7a40-47f2-a810-75c0dc3941ba",
     "spec_version": "2.0",
     "objects": [
         {
@@ -24,15 +24,14 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2023-10-02T21:37:12.123Z",
-            "description": "Monitor executed commands and arguments that may exfiltrate data to a webhook as a malicious command and control channel. Additionally, monitor commands that may create new webhook configurations in SaaS services - for example, `gh webhook forward` in Github or `mgc subscriptions create` in Office 365.(Citation: Github CLI Create Webhook)(Citation: Microsoft CLI Create Subscription)",
+            "modified": "2025-04-16T22:18:09.621Z",
+            "description": "Monitor executed commands and arguments that may exfiltrate data to a webhook as a malicious command and control channel. Additionally, monitor commands that may create new webhook configurations in SaaS services - for example, `gh webhook forward` in Github or `mgc subscriptions create` in Office 365.(Citation: Github CLI Create Webhook)(Citation: Microsoft CLI Create Subscription)\n\nAnalytic 1 - Detecting Webhook Data Exfiltration via CLI Tools \n\n<code> (EventCode=1 OR source=\"/var/log/audit/audit.log\" type=\"execve\")\n| where (command IN (\"curl -X POST\", \"Invoke-WebRequest\", \"wget --post-data\", \"python -c 'import requests'\"))\n| eval risk_score=case(\n    command IN (\"curl -X POST\", \"Invoke-WebRequest\"), 9,\n    command IN (\"wget --post-data\", \"python -c 'import requests'\"), 8\n)\n| where risk_score >= 8\n| stats count by _time, host, user, command, risk_score</code>",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
             "target_ref": "attack-pattern--43f2776f-b4bd-4118-94b8-fee47e69676d",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

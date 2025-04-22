@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--d78a01ef-2b9f-4215-babf-903bb01d3ced",
+    "id": "bundle--6a9d59e4-fa4b-43c8-a53b-95020fcd0c35",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,7 +12,7 @@
             "external_references": [
                 {
                     "source_name": "ACSC Email Spoofing",
-                    "description": "Australian Cyber Security Centre. (2012, December). Mitigating Spoofed Emails Using Sender Policy Framework. Retrieved October 19, 2020.",
+                    "description": "Australian Cyber Security Centre. (2012, December). Mitigating Spoofed Emails Using Sender Policy Framework. Retrieved November 17, 2024.",
                     "url": "https://web.archive.org/web/20210708014107/https://www.cyber.gov.au/sites/default/files/2019-03/spoof_email_sender_policy_framework.pdf"
                 },
                 {
@@ -22,22 +22,21 @@
                 },
                 {
                     "source_name": "Elastic - Koadiac Detection with EQL",
-                    "description": "Stepanic, D.. (2020, January 13). Embracing offensive tooling: Building detections against Koadic using EQL. Retrieved November 30, 2020.",
-                    "url": "https://www.elastic.co/blog/embracing-offensive-tooling-building-detections-against-koadic-using-eql"
+                    "description": "Stepanic, D.. (2020, January 13). Embracing offensive tooling: Building detections against Koadic using EQL. Retrieved November 17, 2024.",
+                    "url": "https://www.elastic.co/security-labs/embracing-offensive-tooling-building-detections-against-koadic-using-eql"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2024-05-31T04:18:44.574Z",
-            "description": "Monitor for third-party application logging, messaging, and/or other artifacts that may send spearphishing emails with a malicious attachment in an attempt to gain access to victim systems. Filtering based on DKIM+SPF or header analysis can help detect when the email sender is spoofed.(Citation: Microsoft Anti Spoofing)(Citation: ACSC Email Spoofing) Anti-virus can potentially detect malicious documents and attachments as they're scanned to be stored on the email server or on the user's computer. Monitor for suspicious descendant process spawning from Microsoft Office and other productivity software.(Citation: Elastic - Koadiac Detection with EQL)",
+            "modified": "2025-04-16T22:15:37.980Z",
+            "description": "Monitor for third-party application logging, messaging, and/or other artifacts that may send spearphishing emails with a malicious attachment in an attempt to gain access to victim systems. Filtering based on DKIM+SPF or header analysis can help detect when the email sender is spoofed.(Citation: Microsoft Anti Spoofing)(Citation: ACSC Email Spoofing) Anti-virus can potentially detect malicious documents and attachments as they're scanned to be stored on the email server or on the user's computer. Monitor for suspicious descendant process spawning from Microsoft Office and other productivity software.(Citation: Elastic - Koadiac Detection with EQL)\n\nAnalytic 1 - Detecting Phishing Emails with Malicious Attachments\n\n<code> (source=\"o365_audit\" OR source=\"gmail_logs\" OR source=\"email_gateway\")\n| where (spf=\"fail\" OR dkim=\"fail\" OR dmarc=\"fail\")\n| where (attachment IN (\"docm\", \"exe\", \"vbs\", \"js\", \"zip\"))\n| where (subject=\"invoice\" OR subject=\"urgent action required\" OR subject=\"account security update\")\n| eval risk_score=case(\n    spf=\"fail\" AND dkim=\"fail\", 9,\n    attachment IN (\"exe\", \"js\", \"vbs\"), 8,\n    subject IN (\"invoice\", \"security update\"), 7\n)\n| where risk_score >= 7\n| stats count by _time, sender, recipient, subject, risk_score</code> ",
             "relationship_type": "detects",
             "source_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
             "target_ref": "attack-pattern--2e34237d-8574-43f6-aace-ae2915de8597",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
-            "x_mitre_version": "0.1",
-            "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

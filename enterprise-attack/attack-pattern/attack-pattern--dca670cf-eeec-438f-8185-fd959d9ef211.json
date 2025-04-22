@@ -1,43 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--2d5a2fcc-3877-4948-8fa0-acfc3fd2dc6a",
+    "id": "bundle--c09b034e-ead7-4053-a9ad-08ea3720562d",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2024-04-16T12:22:29.150Z",
-            "name": "RC Scripts",
-            "description": "Adversaries may establish persistence by modifying RC scripts which are executed during a Unix-like system\u2019s startup. These files allow system administrators to map and start custom services at startup for different run levels. RC scripts require root privileges to modify.\n\nAdversaries can establish persistence by adding a malicious binary path or shell commands to <code>rc.local</code>, <code>rc.common</code>, and other RC scripts specific to the Unix-like distribution.(Citation: IranThreats Kittens Dec 2017)(Citation: Intezer HiddenWasp Map 2019) Upon reboot, the system executes the script's contents as root, resulting in persistence.\n\nAdversary abuse of RC scripts is especially effective for lightweight Unix-like distributions using the root user as default, such as IoT or embedded systems.(Citation: intezer-kaiji-malware)\n\nSeveral Unix-like systems have moved to Systemd and deprecated the use of RC scripts. This is now a deprecated mechanism in macOS in favor of [Launchd](https://attack.mitre.org/techniques/T1053/004). (Citation: Apple Developer Doco Archive Launchd)(Citation: Startup Items) This technique can be used on Mac OS X Panther v10.3 and earlier versions which still execute the RC scripts.(Citation: Methods of Mac Malware Persistence) To maintain backwards compatibility some systems, such as Ubuntu, will execute the RC scripts if they exist with the correct file permissions.(Citation: Ubuntu Manpage systemd rc)",
-            "kill_chain_phases": [
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "persistence"
-                },
-                {
-                    "kill_chain_name": "mitre-attack",
-                    "phase_name": "privilege-escalation"
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor for unexpected changes to RC scripts in the <code>/etc/</code> directory. Monitor process execution resulting from RC scripts for unusual or unknown applications or behavior.\n\nMonitor for <code>/etc/rc.local</code> file creation. Although types of RC scripts vary for each Unix-like distribution, several execute <code>/etc/rc.local</code> if present. ",
-            "x_mitre_domains": [
-                "enterprise-attack"
-            ],
-            "x_mitre_is_subtechnique": true,
-            "x_mitre_platforms": [
-                "macOS",
-                "Linux",
-                "Network"
-            ],
-            "x_mitre_version": "2.1",
-            "x_mitre_data_sources": [
-                "File: File Creation",
-                "Process: Process Creation",
-                "File: File Modification",
-                "Command: Command Execution"
-            ],
-            "x_mitre_permissions_required": [
-                "root"
-            ],
             "type": "attack-pattern",
             "id": "attack-pattern--dca670cf-eeec-438f-8185-fd959d9ef211",
             "created": "2020-01-15T16:25:22.260Z",
@@ -58,6 +24,11 @@
                     "source_name": "Startup Items",
                     "description": "Apple. (2016, September 13). Startup Items. Retrieved July 11, 2017.",
                     "url": "https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/StartupItems.html"
+                },
+                {
+                    "source_name": "Juniper Networks ESXi Backdoor 2022",
+                    "description": "Asher Langton. (2022, December 9). A Custom Python Backdoor for VMWare ESXi Servers. Retrieved March 26, 2025.",
+                    "url": "https://blogs.juniper.net/en-us/threat-research/a-custom-python-backdoor-for-vmware-esxi-servers"
                 },
                 {
                     "source_name": "Ubuntu Manpage systemd rc",
@@ -88,8 +59,40 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
+            "modified": "2025-04-15T19:59:13.566Z",
+            "name": "RC Scripts",
+            "description": "Adversaries may establish persistence by modifying RC scripts, which are executed during a Unix-like system\u2019s startup. These files allow system administrators to map and start custom services at startup for different run levels. RC scripts require root privileges to modify.\n\nAdversaries may establish persistence by adding a malicious binary path or shell commands to <code>rc.local</code>, <code>rc.common</code>, and other RC scripts specific to the Unix-like distribution.(Citation: IranThreats Kittens Dec 2017)(Citation: Intezer HiddenWasp Map 2019) Upon reboot, the system executes the script's contents as root, resulting in persistence.\n\nAdversary abuse of RC scripts is especially effective for lightweight Unix-like distributions using the root user as default, such as ESXi hypervisors, IoT, or embedded systems.(Citation: intezer-kaiji-malware) As ESXi servers store most system files in memory and therefore discard changes on shutdown, leveraging `/etc/rc.local.d/local.sh` is one of the few mechanisms for enabling persistence across reboots.(Citation: Juniper Networks ESXi Backdoor 2022)\n\nSeveral Unix-like systems have moved to Systemd and deprecated the use of RC scripts. This is now a deprecated mechanism in macOS in favor of [Launchd](https://attack.mitre.org/techniques/T1053/004).(Citation: Apple Developer Doco Archive Launchd)(Citation: Startup Items) This technique can be used on Mac OS X Panther v10.3 and earlier versions which still execute the RC scripts.(Citation: Methods of Mac Malware Persistence) To maintain backwards compatibility some systems, such as Ubuntu, will execute the RC scripts if they exist with the correct file permissions.(Citation: Ubuntu Manpage systemd rc)",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "persistence"
+                },
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "privilege-escalation"
+                }
+            ],
             "x_mitre_attack_spec_version": "3.2.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor for unexpected changes to RC scripts in the <code>/etc/</code> directory. Monitor process execution resulting from RC scripts for unusual or unknown applications or behavior.\n\nMonitor for <code>/etc/rc.local</code> file creation. Although types of RC scripts vary for each Unix-like distribution, several execute <code>/etc/rc.local</code> if present. ",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "macOS",
+                "Linux",
+                "Network Devices",
+                "ESXi"
+            ],
+            "x_mitre_version": "2.2",
+            "x_mitre_data_sources": [
+                "File: File Creation",
+                "Process: Process Creation",
+                "File: File Modification",
+                "Command: Command Execution"
+            ]
         }
     ]
 }

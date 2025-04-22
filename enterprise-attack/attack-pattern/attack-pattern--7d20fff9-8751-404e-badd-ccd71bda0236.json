@@ -1,65 +1,65 @@
 {
     "type": "bundle",
-    "id": "bundle--18b7a3c0-4cc9-4823-8d97-8ded271176f5",
+    "id": "bundle--b658757d-030f-48a3-9688-728a9fe1d670",
     "spec_version": "2.0",
     "objects": [
         {
-            "x_mitre_platforms": [
-                "macOS"
-            ],
-            "x_mitre_domains": [
-                "enterprise-attack"
+            "type": "attack-pattern",
+            "id": "attack-pattern--7d20fff9-8751-404e-badd-ccd71bda0236",
+            "created": "2022-04-09T15:06:32.458Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1647",
+                    "external_id": "T1647"
+                },
+                {
+                    "source_name": "eset_osx_flashback",
+                    "description": "ESET. (2012, January 1). OSX/Flashback. Retrieved April 19, 2022.",
+                    "url": "https://www.welivesecurity.com/wp-content/uploads/200x/white-papers/osx_flashback.pdf"
+                },
+                {
+                    "source_name": "fileinfo plist file description",
+                    "description": "FileInfo.com team. (2019, November 26). .PLIST File Extension. Retrieved October 12, 2021.",
+                    "url": "https://fileinfo.com/extension/plist"
+                },
+                {
+                    "source_name": "wardle chp2 persistence",
+                    "description": "Patrick Wardle. (2022, January 1). The Art of Mac Malware Volume 0x1:Analysis. Retrieved April 19, 2022.",
+                    "url": "https://taomm.org/PDFs/vol1/CH%200x02%20Persistence.pdf"
+                }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "type": "attack-pattern",
-            "id": "attack-pattern--7d20fff9-8751-404e-badd-ccd71bda0236",
-            "created": "2022-04-09T15:06:32.458Z",
-            "x_mitre_version": "1.0",
-            "external_references": [
-                {
-                    "source_name": "mitre-attack",
-                    "external_id": "T1647",
-                    "url": "https://attack.mitre.org/techniques/T1647"
-                },
-                {
-                    "source_name": "eset_osx_flashback",
-                    "url": "https://www.welivesecurity.com/wp-content/uploads/200x/white-papers/osx_flashback.pdf",
-                    "description": "ESET. (2012, January 1). OSX/Flashback. Retrieved April 19, 2022."
-                },
-                {
-                    "source_name": "fileinfo plist file description",
-                    "url": "https://fileinfo.com/extension/plist",
-                    "description": "FileInfo.com team. (2019, November 26). .PLIST File Extension. Retrieved October 12, 2021."
-                },
-                {
-                    "source_name": "wardle chp2 persistence",
-                    "url": "https://taomm.org/PDFs/vol1/CH%200x02%20Persistence.pdf",
-                    "description": "Patrick Wardle. (2022, January 1). The Art of Mac Malware Volume 0x1:Analysis. Retrieved April 19, 2022."
-                }
-            ],
-            "x_mitre_deprecated": false,
-            "revoked": false,
-            "description": "Adversaries may modify property list files (plist files) to enable other malicious activity, while also potentially evading and bypassing system defenses. macOS applications use plist files, such as the <code>info.plist</code> file, to store properties and configuration settings that inform the operating system how to handle the application at runtime. Plist files are structured metadata in key-value pairs formatted in XML based on Apple's Core Foundation DTD. Plist files can be saved in text or binary format.(Citation: fileinfo plist file description) \n\nAdversaries can modify key-value pairs in plist files to influence system behaviors, such as hiding the execution of an application (i.e. [Hidden Window](https://attack.mitre.org/techniques/T1564/003)) or running additional commands for persistence (ex: [Launch Agent](https://attack.mitre.org/techniques/T1543/001)/[Launch Daemon](https://attack.mitre.org/techniques/T1543/004) or [Re-opened Applications](https://attack.mitre.org/techniques/T1547/007)).\n\nFor example, adversaries can add a malicious application path to the `~/Library/Preferences/com.apple.dock.plist` file, which controls apps that appear in the Dock. Adversaries can also modify the <code>LSUIElement</code> key in an application\u2019s <code>info.plist</code> file  to run the app in the background. Adversaries can also insert key-value pairs to insert environment variables, such as <code>LSEnvironment</code>, to enable persistence via [Dynamic Linker Hijacking](https://attack.mitre.org/techniques/T1574/006).(Citation: wardle chp2 persistence)(Citation: eset_osx_flashback)",
-            "modified": "2022-04-20T22:00:33.375Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "modified": "2025-04-15T22:57:13.867Z",
             "name": "Plist File Modification",
-            "x_mitre_detection": "Monitor for common command-line editors used to modify plist files located in auto-run locations, such as <code>\\~/LaunchAgents</code>, <code>~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm</code>, and an application's <code>Info.plist</code>. \n\nMonitor for plist file modification immediately followed by code execution from <code>\\~/Library/Scripts</code> and <code>~/Library/Preferences</code>. Also, monitor for significant changes to any path pointers in a modified plist.\n\nIdentify new services executed from plist modified in the previous user's session. ",
+            "description": "Adversaries may modify property list files (plist files) to enable other malicious activity, while also potentially evading and bypassing system defenses. macOS applications use plist files, such as the <code>info.plist</code> file, to store properties and configuration settings that inform the operating system how to handle the application at runtime. Plist files are structured metadata in key-value pairs formatted in XML based on Apple's Core Foundation DTD. Plist files can be saved in text or binary format.(Citation: fileinfo plist file description) \n\nAdversaries can modify key-value pairs in plist files to influence system behaviors, such as hiding the execution of an application (i.e. [Hidden Window](https://attack.mitre.org/techniques/T1564/003)) or running additional commands for persistence (ex: [Launch Agent](https://attack.mitre.org/techniques/T1543/001)/[Launch Daemon](https://attack.mitre.org/techniques/T1543/004) or [Re-opened Applications](https://attack.mitre.org/techniques/T1547/007)).\n\nFor example, adversaries can add a malicious application path to the `~/Library/Preferences/com.apple.dock.plist` file, which controls apps that appear in the Dock. Adversaries can also modify the <code>LSUIElement</code> key in an application\u2019s <code>info.plist</code> file  to run the app in the background. Adversaries can also insert key-value pairs to insert environment variables, such as <code>LSEnvironment</code>, to enable persistence via [Dynamic Linker Hijacking](https://attack.mitre.org/techniques/T1574/006).(Citation: wardle chp2 persistence)(Citation: eset_osx_flashback)",
             "kill_chain_phases": [
                 {
-                    "phase_name": "defense-evasion",
-                    "kill_chain_name": "mitre-attack"
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "defense-evasion"
                 }
             ],
+            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "Monitor for common command-line editors used to modify plist files located in auto-run locations, such as <code>\\~/LaunchAgents</code>, <code>~/Library/Application Support/com.apple.backgroundtaskmanagementagent/backgrounditems.btm</code>, and an application's <code>Info.plist</code>. \n\nMonitor for plist file modification immediately followed by code execution from <code>\\~/Library/Scripts</code> and <code>~/Library/Preferences</code>. Also, monitor for significant changes to any path pointers in a modified plist.\n\nIdentify new services executed from plist modified in the previous user's session. ",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
             "x_mitre_is_subtechnique": false,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_version": "1.0",
             "x_mitre_data_sources": [
                 "Command: Command Execution",
                 "Process: Process Creation",
                 "File: File Modification"
-            ],
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            ]
         }
     ]
 }
