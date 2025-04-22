@@ -1,23 +1,29 @@
 {
     "type": "bundle",
-    "id": "bundle--3aa7e28b-f534-48d9-a464-610ab1bb76cc",
+    "id": "bundle--7da58436-b8d1-4157-9024-51302d9b9116",
     "spec_version": "2.0",
     "objects": [
         {
+            "type": "x-mitre-data-component",
+            "id": "x-mitre-data-component--e905dad2-00d6-477c-97e8-800427abd0e8",
+            "created": "2021-10-20T15:05:19.273Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "id": "x-mitre-data-component--e905dad2-00d6-477c-97e8-800427abd0e8",
-            "type": "x-mitre-data-component",
-            "created": "2021-10-20T15:05:19.273Z",
-            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
-            "modified": "2022-03-30T14:26:51.805Z",
+            "modified": "2025-04-18T15:10:21.434Z",
             "name": "File Deletion",
-            "description": "Removal of a file (ex: Sysmon EID 23, macOS ESF EID ES_EVENT_TYPE_AUTH_UNLINK, or Linux commands auditd unlink, rename, rmdir, unlinked, or renameat rules)",
+            "description": "Refers to events where files are removed from a system or storage device. These events can indicate legitimate housekeeping activities or malicious actions such as attackers attempting to cover their tracks. Monitoring file deletions helps organizations identify unauthorized or suspicious activities.\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Sysmon: Event ID 23: Logs file deletion events, including details such as file paths and responsible processes.\n- Windows Event Log: Enable \"Object Access\" auditing to monitor file deletions.\n- PowerShell: `Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4663} | Where-Object {$_.Message -like '*DELETE*'}`\n\nLinux\n\n- Auditd: Use audit rules to capture file deletion events: `auditctl -a always,exit -F arch=b64 -S unlink -S rename -S rmdir -k file_deletion`\n- Query logs: `ausearch -k file_deletion`\n- Inotify: Use inotifywait to monitor file deletions: `inotifywait -m /path/to/watch -e delete`\n\nmacOS\n\n- Endpoint Security Framework (ESF): Monitor events like ES_EVENT_TYPE_AUTH_UNLINK to capture file deletion activities.\n- FSEvents: Track file deletion activities in real-time: `fs_usage | grep unlink`\n\nSIEM Integration\n\n- Forward file deletion logs to a SIEM for centralized monitoring and correlation with other events.\n",
             "x_mitre_data_source_ref": "x-mitre-data-source--509ed41e-ca42-461e-9058-24602256daf9",
-            "x_mitre_version": "1.0",
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "ics-attack",
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.1",
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }

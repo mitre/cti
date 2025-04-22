@@ -1,15 +1,9 @@
 {
     "type": "bundle",
-    "id": "bundle--992df4b5-8cdd-48f7-a5f3-a6b54014cceb",
+    "id": "bundle--b74c46c6-458e-49ce-9187-f28ea4b704aa",
     "spec_version": "2.0",
     "objects": [
         {
-            "modified": "2022-10-07T16:14:39.124Z",
-            "name": "Command Execution",
-            "description": "The execution of a line of text, potentially with arguments, created from program code (e.g. a cmdlet executed via powershell.exe, interactive commands like >dir, shell executions, etc. )",
-            "x_mitre_data_source_ref": "x-mitre-data-source--73691708-ffb5-4e29-906d-f485f6fa7089",
-            "x_mitre_deprecated": false,
-            "x_mitre_version": "1.1",
             "type": "x-mitre-data-component",
             "id": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
             "created": "2021-10-20T15:05:19.273Z",
@@ -18,8 +12,19 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "x_mitre_attack_spec_version": "2.1.0",
-            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5"
+            "modified": "2025-04-18T15:11:30.145Z",
+            "name": "Command Execution",
+            "description": "Command Execution involves monitoring and capturing the execution of textual commands (including shell commands, cmdlets, and scripts) within an operating system or application. These commands may include arguments or parameters and are typically executed through interpreters such as `cmd.exe`, `bash`, `zsh`, `PowerShell`, or programmatic execution. Examples: \n\n- Windows Command Prompt\n    - dir \u2013 Lists directory contents.\n    - net user \u2013 Queries or manipulates user accounts.\n    - tasklist \u2013 Lists running processes.\n- PowerShell\n    - Get-Process \u2013 Retrieves processes running on a system.\n    - Set-ExecutionPolicy \u2013 Changes PowerShell script execution policies.\n    - Invoke-WebRequest \u2013 Downloads remote resources.\n- Linux Shell\n    - ls \u2013 Lists files in a directory.\n    - cat /etc/passwd \u2013 Reads the user accounts file.\n    - curl http://malicious-site.com \u2013 Retrieves content from a malicious URL.\n- Container Environments\n    - docker exec \u2013 Executes a command inside a running container.\n    - kubectl exec \u2013 Runs commands in Kubernetes pods.\n- macOS Terminal\n    - open \u2013 Opens files or URLs.\n    - dscl . -list /Users \u2013 Lists all users on the system.\n    - osascript -e \u2013 Executes AppleScript commands.\n\nThis data component can be collected through the following measures:\n\nEnable Command Logging\n\n- Windows:\n    - Enable PowerShell logging: `Set-ExecutionPolicy Bypass`, `Set-ItemProperty -Path \"HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging\" -Name EnableScriptBlockLogging -Value 1`\n    - Enable Windows Event Logging:\n        - Event ID 4688: Tracks process creation, including command-line arguments.\n        - Event ID 4104: Logs PowerShell script block execution.\n- Linux/macOS:\n    - Enable shell history logging in `.bashrc` or `.zshrc`: `export HISTTIMEFORMAT=\"%d/%m/%y %T \"`, `export PROMPT_COMMAND='history -a; history -w'`\n    - Use audit frameworks (e.g., `auditd`) to log command executions. Example rule to log all `execve` syscalls: `-a always,exit -F arch=b64 -S execve -k cmd_exec`\n- Containers:\n    - Use runtime-specific tools like Docker\u2019s --log-driver or Kubernetes Audit Logs to capture exec commands.\n\nIntegrate with Centralized Logging\n\n- Collect logs using a SIEM (e.g., Splunk) or cloud-based log aggregation tools like AWS CloudWatch or Azure Monitor. Example Splunk Search for Windows Event 4688:\n`index=windows EventID=4688 CommandLine=*`\n\nUse Endpoint Detection and Response (EDR) Tools\n\n- Monitor command executions via EDR solutions \n\nDeploy Sysmon for Advanced Logging (Windows)\n\n- Use Sysmon's Event ID 1 to log process creation with command-line arguments",
+            "x_mitre_data_source_ref": "x-mitre-data-source--73691708-ffb5-4e29-906d-f485f6fa7089",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "ics-attack",
+                "mobile-attack",
+                "enterprise-attack"
+            ],
+            "x_mitre_version": "1.2",
+            "x_mitre_attack_spec_version": "3.2.0"
         }
     ]
 }
