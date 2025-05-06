@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--8cd8c585-697d-488e-839a-974f2e509210",
+    "id": "bundle--cc8a5672-0760-4ea6-926e-0163ed4472e9",
     "spec_version": "2.0",
     "objects": [
         {
@@ -44,7 +44,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:27.247Z",
+            "modified": "2025-04-25T15:15:28.073Z",
             "name": "Credentials from Web Browsers",
             "description": "Adversaries may acquire credentials from web browsers by reading files specific to the target browser.  (Citation: Talos Olympic Destroyer 2018) \n\nWeb browsers commonly save credentials such as website usernames and passwords so that they do not need to be entered manually in the future. Web browsers typically store the credentials in an encrypted format within a credential store; however, methods exist to extract plaintext credentials from web browsers.\n\nFor example, on Windows systems, encrypted credentials may be obtained from Google Chrome by reading a database file, <code>AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data</code> and executing a SQL query: <code>SELECT action_url, username_value, password_value FROM logins;</code>. The plaintext password can then be obtained by passing the encrypted credentials to the Windows API function <code>CryptUnprotectData</code>, which uses the victim\u2019s cached logon credentials as the decryption key. (Citation: Microsoft CryptUnprotectData April 2018)\n \nAdversaries have executed similar procedures for common web browsers such as FireFox, Safari, Edge, etc. (Citation: Proofpoint Vega Credential Stealer May 2018)(Citation: FireEye HawkEye Malware July 2017)\n\nAdversaries may also acquire credentials by searching web browser process memory for patterns that commonly match credentials.(Citation: GitHub Mimikittenz July 2016)\n\nAfter acquiring credentials from web browsers, adversaries may attempt to recycle the credentials across different systems and/or accounts in order to expand access. This can result in significantly furthering an adversary's objective in cases where credentials gained from web browsers overlap with privileged accounts (e.g. domain administrator).",
             "kill_chain_phases": [
@@ -60,18 +60,19 @@
                 "Sylvain Gil, Exabeam",
                 "RedHuntLabs, @redhuntlabs"
             ],
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Identify web browser files that contain credentials such as Google Chrome\u2019s Login Data database file: <code>AppData\\Local\\Google\\Chrome\\User Data\\Default\\Login Data</code>. Monitor file read events of web browser files that contain credentials, especially when the reading process is unrelated to the subject web browser. Monitor process execution logs to include PowerShell Transcription focusing on those that perform a combination of behaviors including reading web browser process memory, utilizing regular expressions, and those that contain numerous keywords for common web applications (Gmail, Twitter, Office365, etc.).",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
+            "x_mitre_is_subtechnique": false,
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
                 "Linux",
                 "macOS",
                 "Windows"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_is_subtechnique": false
+            "x_mitre_version": "1.1"
         }
     ]
 }

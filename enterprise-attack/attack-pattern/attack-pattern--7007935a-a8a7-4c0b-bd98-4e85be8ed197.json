@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--6507e768-e4db-4f17-b914-018e9ef36c3f",
+    "id": "bundle--7f29c350-1614-4d2f-9cfe-eb05d6a17e3c",
     "spec_version": "2.0",
     "objects": [
         {
@@ -48,7 +48,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:40.683Z",
+            "modified": "2025-04-25T14:47:03.621Z",
             "name": "Process Doppelg\u00e4nging",
             "description": "Adversaries may inject malicious code into process via process doppelg\u00e4nging in order to evade process-based defenses as well as possibly elevate privileges. Process doppelg\u00e4nging is a method of executing arbitrary code in the address space of a separate live process. \n\nWindows Transactional NTFS (TxF) was introduced in Vista as a method to perform safe file operations. (Citation: Microsoft TxF) To ensure data integrity, TxF enables only one transacted handle to write to a file at a given time. Until the write handle transaction is terminated, all other handles are isolated from the writer and may only read the committed version of the file that existed at the time the handle was opened. (Citation: Microsoft Basic TxF Concepts) To avoid corruption, TxF performs an automatic rollback if the system or application fails during a write transaction. (Citation: Microsoft Where to use TxF)\n\nAlthough deprecated, the TxF application programming interface (API) is still enabled as of Windows 10. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017)\n\nAdversaries may abuse TxF to a perform a file-less variation of [Process Injection](https://attack.mitre.org/techniques/T1055). Similar to [Process Hollowing](https://attack.mitre.org/techniques/T1055/012), process doppelg\u00e4nging involves replacing the memory of a legitimate process, enabling the veiled execution of malicious code that may evade defenses and detection. Process doppelg\u00e4nging's use of TxF also avoids the use of highly-monitored API functions such as <code>NtUnmapViewOfSection</code>, <code>VirtualProtectEx</code>, and <code>SetThreadContext</code>. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017)\n\nProcess Doppelg\u00e4nging is implemented in 4 steps (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017):\n\n* Transact \u2013 Create a TxF transaction using a legitimate executable then overwrite the file with malicious code. These changes will be isolated and only visible within the context of the transaction.\n* Load \u2013 Create a shared section of memory and load the malicious executable.\n* Rollback \u2013 Undo changes to original executable, effectively removing malicious code from the file system.\n* Animate \u2013 Create a process from the tainted section of memory and initiate execution.\n\nThis behavior will likely not result in elevated privileges since the injected process was spawned from (and thus inherits the security context) of the injecting process. However, execution via process doppelg\u00e4nging may evade detection from security products since the execution is masked under a legitimate process. ",
             "kill_chain_phases": [
@@ -62,6 +62,7 @@
                 }
             ],
             "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor and analyze calls to <code>CreateTransaction</code>, <code>CreateFileTransacted</code>, <code>RollbackTransaction</code>, and other rarely used functions indicative of TxF activity. Process Doppelg\u00e4nging also invokes an outdated and undocumented implementation of the Windows process loader via calls to <code>NtCreateProcessEx</code> and <code>NtCreateThreadEx</code> as well as API calls used to modify memory within another process, such as <code>WriteProcessMemory</code>. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017) (Citation: hasherezade Process Doppelg\u00e4nging Dec 2017)\n\nScan file objects reported during the PsSetCreateProcessNotifyRoutine, (Citation: Microsoft PsSetCreateProcessNotifyRoutine routine) which triggers a callback whenever a process is created or deleted, specifically looking for file objects with enabled write access. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017) Also consider comparing file objects loaded in memory to the corresponding file on disk. (Citation: hasherezade Process Doppelg\u00e4nging Dec 2017)\n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior.",
             "x_mitre_domains": [
                 "enterprise-attack"

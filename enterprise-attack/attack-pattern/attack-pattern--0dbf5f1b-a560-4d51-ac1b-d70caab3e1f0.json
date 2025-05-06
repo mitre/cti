@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--0a50af1f-3858-4d61-be49-586b75f1e70a",
+    "id": "bundle--9da1fc66-e966-471f-8b37-413195d27cba",
     "spec_version": "2.0",
     "objects": [
         {
@@ -64,7 +64,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:05.933Z",
+            "modified": "2025-04-25T15:15:08.606Z",
             "name": "LLMNR/NBT-NS Poisoning and Relay",
             "description": "Link-Local Multicast Name Resolution (LLMNR) and NetBIOS Name Service (NBT-NS) are Microsoft Windows components that serve as alternate methods of host identification. LLMNR is based upon the Domain Name System (DNS) format and allows hosts on the same local link to perform name resolution for other hosts. NBT-NS identifies systems on a local network by their NetBIOS name. (Citation: Wikipedia LLMNR) (Citation: TechNet NetBIOS)\n\nAdversaries can spoof an authoritative source for name resolution on a victim network by responding to LLMNR (UDP 5355)/NBT-NS (UDP 137) traffic as if they know the identity of the requested host, effectively poisoning the service so that the victims will communicate with the adversary controlled system. If the requested host belongs to a resource that requires identification/authentication, the username and NTLMv2 hash will then be sent to the adversary controlled system. The adversary can then collect the hash information sent over the wire through tools that monitor the ports for traffic or through [Network Sniffing](https://attack.mitre.org/techniques/T1040) and crack the hashes offline through [Brute Force](https://attack.mitre.org/techniques/T1110) to obtain the plaintext passwords. In some cases where an adversary has access to a system that is in the authentication path between systems or when automated scans that use credentials attempt to authenticate to an adversary controlled system, the NTLMv2 hashes can be intercepted and relayed to access and execute code against a target system. The relay step can happen in conjunction with poisoning but may also be independent of it. (Citation: byt3bl33d3r NTLM Relaying)(Citation: Secure Ideas SMB Relay)\n\nSeveral tools exist that can be used to poison name services within local networks such as NBNSpoof, Metasploit, and [Responder](https://attack.mitre.org/software/S0174). (Citation: GitHub NBNSpoof) (Citation: Rapid7 LLMNR Spoofer) (Citation: GitHub Responder)",
             "kill_chain_phases": [
@@ -78,16 +78,17 @@
                 "Eric Kuehn, Secure Ideas",
                 "Matthew Demaske, Adaptforward"
             ],
+            "x_mitre_deprecated": false,
             "x_mitre_detection": "Monitor <code>HKLM\\Software\\Policies\\Microsoft\\Windows NT\\DNSClient</code> for changes to the \"EnableMulticast\" DWORD value. A value of \u201c0\u201d indicates LLMNR is disabled. (Citation: Sternsecurity LLMNR-NBTNS)\n\nMonitor for traffic on ports UDP 5355 and UDP 137 if LLMNR/NetBIOS is disabled by security policy.\n\nDeploy an LLMNR/NBT-NS spoofing detection tool.(Citation: GitHub Conveigh) Monitoring of Windows event logs for event IDs 4697 and 7045 may help in detecting successful relay techniques.(Citation: Secure Ideas SMB Relay)",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
+            "x_mitre_is_subtechnique": false,
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_version": "2.1",
-            "x_mitre_is_subtechnique": false
+            "x_mitre_version": "2.1"
         }
     ]
 }
