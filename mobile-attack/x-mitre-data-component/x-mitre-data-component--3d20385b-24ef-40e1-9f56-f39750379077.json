@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--0ba9be01-c300-440d-ad65-854e77a0499d",
+    "id": "bundle--705c9d84-33d9-4141-b5f2-1fac921b62fc",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,13 +9,20 @@
             "created": "2021-10-20T15:05:19.272Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/data-components/DC0032",
+                    "external_id": "DC0032"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:10:27.797Z",
+            "modified": "2025-10-21T19:28:39.339Z",
             "name": "Process Creation",
             "description": "Refers to the event in which a new process (executable) is initialized by an operating system. This can involve parent-child process relationships, process arguments, and environmental variables. Monitoring process creation is crucial for detecting malicious behaviors, such as execution of unauthorized binaries, scripting abuse, or privilege escalation attempts.\n\n*Data Collection Measures:*\n\n- Endpoint Detection and Response (EDR) Tools:\n    - EDRs provide process telemetry, tracking execution flows and arguments.\n- Windows Event Logs:\n    - Event ID 4688 (Audit Process Creation): Captures process creation with associated parent process.\n- Sysmon (Windows):\n    - Event ID 1 (Process Creation): Provides detailed logging\n- Linux/macOS Monitoring:\n    - AuditD (execve syscall): Logs process creation.\n    - eBPF/XDP: Used for low-level monitoring of system calls related to process execution.\n    - OSQuery: Allows SQL-like queries to track process events (process_events table).\n    - Apple Endpoint Security Framework (ESF): Monitors process creation on macOS.\n- Network-Based Monitoring:\n    - Zeek (Bro) Logs: Captures network-based process execution related to remote shells.\n    - Syslog/OSSEC: Tracks execution of processes on distributed systems.\n- Behavioral SIEM Rules:\n    - Monitor process creation for uncommon binaries in user directories.\n    - Detect processes with suspicious command-line arguments. ",
-            "x_mitre_data_source_ref": "x-mitre-data-source--e8b8ede7-337b-4c0c-8c32-5c7872c1ee22",
+            "x_mitre_data_source_ref": "",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -23,8 +30,1302 @@
                 "mobile-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.2",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "Process",
+                    "channel": "None"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream 'eventMessage contains pubsub or broker'"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "Execution of binary resolved from $PATH not located in /usr/bin or /bin"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process execution path inconsistent with baseline PATH directories"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "ES_EVENT_TYPE_NOTIFY_EXEC"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "process_events"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "exec"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "processes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of launchctl with suspicious arguments"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve network tools"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "process_events"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve calls to soffice.bin with suspicious macro execution flags"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process execution of Microsoft Word, Excel, PowerPoint with macro execution attempts"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "process reading browser configuration paths"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec logs"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "execve: Processes launched with LD_PRELOAD/LD_LIBRARY_PATH pointing to non-system dirs"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "exec: Process execution context for loaders calling dlopen/dlsym"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "EXECVE"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "execution of unexpected binaries during user shell startup"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launch of Terminal.app or shell with non-standard environment setup"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "ES_EVENT_TYPE_NOTIFY_EXEC with unusual parent-child process relationships from zsh"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of systemctl or service stop"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of launchctl or pkill"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process::exec"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of klist, kinit, or tools interacting with ccache outside normal user context"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "Execution of non-standard binaries accessing Kerberos APIs"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Electron-based binary spawning shell or script interpreter"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Electron app spawning unexpected child process"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "/root/.ash_history or /etc/init.d/*"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve calls with high-frequency or known bandwidth-intensive tools"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec or spawn calls to proxy tools or torrent clients"
+                },
+                {
+                    "name": "containers:osquery",
+                    "channel": "bandwidth-intensive command execution from within a container namespace"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process launch"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream --info --predicate 'subsystem == \"com.apple.cfprefsd\"'"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of security, sqlite3, or unauthorized binaries"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unexpected applications generating outbound DNS queries"
+                },
+                {
+                    "name": "linux:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "execve"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unexpected child process of Safari or Chrome"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve or syscall invoking vm artifact check commands (e.g., dmidecode, lspci, dmesg)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of system_profiler, ioreg, kextstat with argument patterns related to VM/sandbox checks"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process writes or modifies files in excluded paths"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "com.apple.mail.* exec.*"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of memory inspection tools (lldb, gdb, osqueryi)"
+                },
+                {
+                    "name": "esxi:vobd",
+                    "channel": "/var/log/vobd.log"
+                },
+                {
+                    "name": "kubernetes:apiserver",
+                    "channel": "kubectl exec or kubelet API calls targeting running pods"
+                },
+                {
+                    "name": "docker:audit",
+                    "channel": "Process execution events within container namespace context"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "process persists beyond parent shell termination"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "background process persists beyond user logout"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of scripts or binaries sourced from mail directories (/var/mail, ~/Maildir)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Preview.app, Safari.app, or Mail.app spawning new processes outside normal patterns"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "process execution across cloud VM"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "systemctl spawning managed processes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "None"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "/var/log/shell.log"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of processes linked to hijacked sessions (e.g., anomalous parent-child process lineage)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec events where web process starts a shell/tooling"
+                },
+                {
+                    "name": "docker:events",
+                    "channel": "Docker/Kubernetes audit of exec/attach (kubectl exec) or unexpected child processes inside container"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec of osascript, bash, curl with suspicious parameters"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of container management CLIs (docker, crictl, kubectl) or interpreted shells (sh, bash, python) within container context"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "es_event_exec"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of discovery commands targeting backup binaries, processes, or config paths"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process execution logs showing discovery commands like mdfind, system_profiler, or launchctl list"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "process_events OR launchd"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "execve"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "launchd or process_events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process and file events via log stream"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of scripts or binaries spawned from browser processes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Browser processes launching unexpected interpreters (osascript, bash)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec: Execution of defaults, plutil, or common editors (vim/nano) targeting plist files"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "EXECVE"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process:exec"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of bash, python, or perl processes spawned by browser/email client"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of osascript, bash, or Terminal initiated from Mail.app or Safari"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of /bin/sh,/bin/bash,/usr/bin/curl,/usr/bin/python by service accounts (e.g., apache, mysql, nobody) immediately after inbound network activity."
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "parent_name in ('sshd','httpd','screensharingd') spawning shells or scripting runtimes."
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process activity stream"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "SYSCALL record where exe contains passwd/userdel/chage and auid != root"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Post-login execution of unrecognized child process from launchd or loginwindow"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of base64|openssl|xxd|python|perl with arguments matching Base64 flags"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process command line contains base64, -enc, openssl enc -base64"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "exec: arguments contain Base64-like strings"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "commands containing base64, openssl enc -base64, xxd -p"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of process launched via loginwindow session restore"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process: exec + filewrite: ~/.ssh/authorized_keys"
+                },
+                {
+                    "name": "containerd:runtime",
+                    "channel": "/var/log/containers/*.log"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of Java apps or other processes with hidden window attributes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process Execution"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve on code or jetbrains-gateway with remote flags"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process: code or jetbrains-gateway launching with --tunnel or --remote"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream --predicate 'processImagePath CONTAINS \"curl\" OR \"osascript\"'"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of dd, shred, wipe targeting block devices"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of sleep or ping command within script interpreted by bash/python"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve or socket/connect system calls from processes using crypto libraries"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process using AES/RC4 routines unexpectedly"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "execution of known firewall binaries"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "type=EXECVE or SYSCALL for /bin/date, /usr/bin/timedatectl, /sbin/hwclock, /bin/cat /etc/timezone, /bin/cat /proc/uptime"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "execve: command like 'date', 'timedatectl', 'hwclock', 'cat /etc/timezone'"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process exec events of systemsetup, date, ioreg with command_line parameters indicating time discovery"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "exec: binary == \"/usr/sbin/systemsetup\" and args contains \"-gettimezone\""
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "execve: command LIKE '%systemsetup -gettimezone%' OR '%date%'"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of osascript, curl, or unexpected automation"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec /usr/bin/pwpolicy"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "socket(AF_PACKET|AF_INET, SOCK_RAW, *), setsockopt(\u2026 SO_ATTACH_FILTER|SO_ATTACH_BPF \u2026), bpf(cmd=BPF_PROG_LOAD), open/openat path=\"/dev/bpf*\" (BSD/macOS-like) or setcap cap_net_raw."
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "KERN messages about eBPF program load/verify or LSM denials related to bpf."
+                },
+                {
+                    "name": "OpenBSM:AuditTrail",
+                    "channel": "open/openat of /dev/bpf*; ioctl BIOCSETF-like operations."
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Exec of tcpdump, rvictl, custom tools linked to libpcap.A.dylib; sysextd/systemextensionsctl events for NetworkExtension content filters."
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "/usr/sbin/postfix, /usr/sbin/exim, /usr/sbin/sendmail"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execution of known flash tools (e.g., flashrom, fwupd)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "com.apple.firmwareupdater activity or update-firmware binary invoked"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of system tools like dmidecode, lspci, lscpu, dmesg, systemd-detect-virt"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec or spawn of 'system_profiler', 'ioreg', 'kextstat', 'sysctl', or calls to sysctl API"
+                },
+                {
+                    "name": "macos:endpointSecurity",
+                    "channel": "ES_EVENT_TYPE_NOTIFY_EXEC"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Suspicious binaries or scripts interacting with authentication binaries (sshd, gdm, login)"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "execve: Processes unexpectedly invoking Keychain or authentication APIs"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: execve calls where a browser/webview process is parent and child is interpreter (python, sh, ruby) or downloader (curl, wget)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process_create: Process creation where parent is Safari/Google Chrome and child is script interpreter or signed-but-unusual helper binary"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "None"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process:launch"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Shell commands invoked by SQL process such as postgres, mysqld, or mariadbd"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of smbclient, smbmap, rpcclient, nmblookup, crackmapexec smb"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "ES_EVENT_TYPE_NOTIFY_EXEC: Process execution of \"sharing -l\", \"smbutil view\", \"mount_smbfs\""
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of scp, rsync, curl with remote destination"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "logMessage contains pbpaste or osascript"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve call with argv matching known disk enumeration commands (lsblk, parted, fdisk)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process launch of diskutil or system_profiler with SPStorageDataType"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "execution of esxcli with args matching 'storage', 'filesystem', 'core device list'"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Mail.app executing with parameters updating rules state"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "/var/log/vmkernel.log, /var/log/vmkwarning.log"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "exec: Exec of ffmpeg, avfoundation-based binaries, or custom signed apps accessing camera"
+                },
+                {
+                    "name": "kubernetes:apiserver",
+                    "channel": "exec into pod followed by secret retrieval via API"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process_name IN (\"VBoxManage\", \"prlctl\") AND command CONTAINS (\"list\", \"show\")"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec srm|exec openssl|exec gpg"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "Process execution with LD_PRELOAD or modified library path"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of process with DYLD_INSERT_LIBRARIES set"
+                },
+                {
+                    "name": "linux:Sysmon",
+                    "channel": "process creation events linked to container namespaces executing host-level binaries"
+                },
+                {
+                    "name": "WinEventlog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process and signing chain events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchservices events for misleading extensions"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "Execution of disguised binaries"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "process listening or connecting on non-standard ports"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchd services binding to non-standard ports"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve, connect"
+                },
+                {
+                    "name": "esxi:cron",
+                    "channel": "process or cron activity"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of binaries with unsigned or anomalously signed certificates"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve logging for /usr/bin/systemctl and systemd-run"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "Invocation of osascript or dylib injection"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of files saved in mail or download directories"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of Terminal, osascript, or other interpreters originating from Mail or Preview"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process events"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Unauthorized sudo or shell access, especially leading to file changes in /var/www or /srv/http"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of unexpected terminal or web scripts modifying /Library/WebServer/Documents"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of CLI tools like psql, mysql, mongo, sqlite3"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process start of Java or native DB client tools"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "loginwindow or tccd-related entries"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "query: process_events, launchd, and tcc.db access"
+                },
+                {
+                    "name": "ebpf:syscalls",
+                    "channel": "process execution or network connect from just-created container PID namespace"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of pip, npm, gem, or similar package managers"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Command line invocation of pip3, brew install, npm install from interactive Terminal"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "fork/exec of service via PID 1 (systemd)"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of ssh/scp/sftp without corresponding authentication log"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of ssh or sftp without corresponding login event"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: execve where exe=/usr/bin/python3 or similar interpreter"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launch of remote desktop app or helper binary"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unexpected processes making network calls based on DNS-derived ports"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchctl spawning new processes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchctl activity and process creation"
+                },
+                {
+                    "name": "containerd:events",
+                    "channel": "New container with suspicious image name or high resource usage"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of Python, Swift, or other binaries invoking archiving libraries"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "Processes linked with libssl or crypto libraries making outbound connections"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process invoking SSL routines from Security framework"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Execution of binaries located in /etc/init.d/ or systemd service paths"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of binary listed in newly modified LaunchAgent plist"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of bless or nvram modifying boot parameters"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unexpected processes registered with launchd"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process launch"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of curl, osascript, or unexpected Office processes"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "exec"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Trust validation failures or bypass attempts during notarization and code signing checks"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "spawned shell or execution environment activity"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process_exec: image in {/bin/bash,/bin/zsh,/usr/bin/osascript,/usr/bin/python*,/usr/bin/curl,/usr/bin/ssh,/usr/bin/open} AND parent in {Preview, TextEdit, Microsoft Word, Microsoft Excel, AdobeReader, Archive Utility, Finder}"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: exe in {/bin/bash,/bin/sh,/usr/bin/python*,/usr/bin/perl,/usr/bin/php,/usr/bin/node,/usr/bin/curl,/usr/bin/wget,/usr/bin/xdg-open,/usr/bin/ssh,/usr/bin/rundll32 (wine)} AND ppid process is a document viewer/browser"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of dd/sgdisk with arguments writing to sector 0 or partition table"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of zip, ditto, hdiutil, or openssl by processes not normally associated with archiving"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process execution events for chmod, chown, chflags with unusual parameters or targets"
+                },
+                {
+                    "name": "m365:defender",
+                    "channel": "AdvancedHunting(DeviceEvents, ProcessCreate, ImageLoad, AMSI/ETW derived signals)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execve or dylib load from memory without backing file"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Commands that alter firewall or start listeners: iptables|nft|ufw|firewall-cmd|pfctl|systemctl start sshd/telnet/dropbear; raw-socket/libpcap tools (tcpdump, tshark, nmap --raw)."
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec: Execution of pfctl, socketfilterfw, launchctl start ssh/telnet, libpcap consumers."
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "Shell Execution"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unusual child process tree indicating attempted recovery after crash"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of binaries/scripts presenting false health messages for security daemons"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of processes mimicking Apple Security & Privacy GUIs"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-Security-Auditing",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve, setifflags"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "process_events where path like '%tcpdump%'"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of dd, shred, or wipe with arguments targeting block devices"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "systemctl stop auditd, kill -9 <pid>, or modifications to /etc/selinux/config"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of curl, git, or Office processes with network connections"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream - process subsystem"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve calls for qemu-system*, kvm, or VBoxHeadless"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process execution for VBoxHeadless, prl_vm_app, vmware-vmx"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process logs"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "None"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of interpreters (python, perl), custom binaries, or shell utilities with long arguments containing non-standard tokens"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "ES_EVENT_TYPE_NOTIFY_EXEC: arguments contain long, non-standard tokens / custom alphabets"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "command line or log output shows non-standard encoding routines"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "commands containing long non-standard tokens or custom lookup tables"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of /usr/sbin/installer spawning child process from within /private/tmp or package contents"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Execution of dpkg or rpm followed by fork/execve from within postinst, prerm, etc."
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execve: Helper tools invoked through XPC executing unexpected binaries"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of modified binary without valid signature"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: exe in (/usr/bin/bash,/usr/bin/sh,/usr/bin/zsh,/usr/bin/python*) AND cmdline matches '(curl|wget).*(\\||\\|\\s*sh|bash)|base64\\s*-d|python\\s*-c'"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec: ParentImage in (Terminal, iTerm2) AND Image in (/bin/zsh,/bin/bash,/usr/bin/python*) AND CommandLine matches '(curl|wget).*(\\||\\|\\s*sh|bash)|base64 -D|python -c'"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process created with repeated ICMP or UDP flood behavior"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "binary execution of security_authtrampoline"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process: exec"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Exec"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Child processes of Safari, Chrome, or Firefox executing scripting interpreters"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of older or non-standard interpreters"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "process execution events for permission modification utilities with command-line analysis"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process execution events for chmod, chown, chflags with parameter analysis and target path examination"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "process execution monitoring for permission modification utilities with command-line argument analysis"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Invocation of packet generation tools (e.g., hping3, nping) or fork bombs"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "Execution of flooding tools or compiled packet generators"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "process"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve for proxy tools"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process, socket, and DNS logs"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "process_events table"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Command line containing `trap` or `echo 'trap` written to login shell files"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log collect --predicate"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve or nanosleep with no stdout/stderr I/O"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchd or osascript spawns process with delay command"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "systemd-udevd spawning user-defined action from RUN+="
+                },
+                {
+                    "name": "ebpf:syscalls",
+                    "channel": "execve"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process:spawn"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream --predicate 'eventMessage contains \"exec\"'"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "cat|less|grep accessing .bash_history from a non-shell process"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Process execution via .desktop Exec path from /etc/xdg/autostart or ~/.config/autostart"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Execution of dpkg, rpm, or other package manager with list flag"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of system_profiler or osascript invoking enumeration"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "apache2 or nginx spawning sh, bash, or python interpreter"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "httpd spawning bash, zsh, python, or osascript"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of /usr/libexec/security_authtrampoline or child processes originating from non-trusted binaries triggering credential prompts"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of security or osascript"
+                },
+                {
+                    "name": "WinEventLog:security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchd spawning processes tied to new or modified LaunchDaemon .plist entries"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of ping, nping, or crafted network packets via bash or python to reflection services"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of commands modifying iptables/nftables to block selective IPs"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "System process modifications altering DNS/proxy settings"
+                },
+                {
+                    "name": "containerd:Events",
+                    "channel": "unusual process spawned from container image context"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "curl, python scripts, rsync with internal share URLs"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process: spawn, exec"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "Rapid spawning of resource-heavy applications (e.g., Preview, Safari, Office)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process creation events where command line = pmset with arguments affecting sleep, hibernatemode, displaysleep"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unexpected apps performing repeated DNS lookups"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchservices or loginwindow events"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve with LD_PRELOAD or linker-related environment variables set"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of process with DYLD_INSERT_LIBRARIES set"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Suspicious Swift/Objective-C or scripting processes writing archive-like outputs"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of re-parented process"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "Anomalous parent PID change"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process creation with parent PID of 1 (launchd)"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "child process invoking dynamic linker post-ptrace"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "Processes executing kextload, spctl, or modifying kernel extension directories"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "Unsigned or ad-hoc signed process executions in user contexts"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of diskutil or hdiutil attaching hidden partitions"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process execution events for discovery utilities (system_profiler, sw_vers, dscl, networksetup) with command-line parameter analysis"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "process event monitoring with focus on discovery utilities and cryptographic framework usage correlation"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unexpected apps generating frequent DNS queries"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process exec"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "socket: Suspicious creation of AF_UNIX sockets outside expected daemons"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Non-standard processes invoking financial applications or payment APIs"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Agent/headless flags (listen/connect/reverse/tunnel) or remote-control binaries spawning shells"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "systemctl enable/start: Creation/enablement of custom .service units in /etc/systemd/system"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process exec of remote-control apps or binaries with headless/connect flags"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: systemctl stop, service stop, or kill -9 on security daemons (e.g., falcon-sensor, auditd)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of launchctl unload, kill, or removal of security agent daemons"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process activity, exec events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream process subsystem"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process:exec and kext load events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream --info --predicate 'eventMessage CONTAINS \"exec\"'"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-DotNETRuntime",
+                    "channel": "Unexpected AppDomain creation events or anomalous AppDomainManager assembly load behavior"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Execution of network stress tools or anomalies in socket/syscall behavior"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unsigned binary execution following SIP change"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Commands altering firewall or enabling listeners (iptables, nft, ufw, firewall-cmd, systemctl start *ssh*/*telnet*, ip route add, tcpdump, tshark)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec: Execution of /sbin/pfctl, /usr/libexec/ApplicationFirewall/socketfilterfw, ifconfig, tcpdump, npcap/libpcap consumers"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of zip, ditto, hdiutil, or openssl by non-terminal parent processes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of binaries with TCC protected access under unexpected parent processes such as Finder.app, SystemUIServer, or nsurlsessiond"
+                },
+                {
+                    "name": "WinEventLog:AppLocker",
+                    "channel": "EventCode=8003,8004"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve, unlink"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "launchd, processes"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "socat, ssh, or nc processes opening unexpected ports"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process execution of ssh with -L/-R forwarding flags"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchd or cron spawning mining binaries"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve or socket/connect system calls for processes using RSA handshake"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process invoking SecKeyCreateRandomKey or asymmetric crypto APIs"
+                },
+                {
+                    "name": "azure:vmguest",
+                    "channel": "Unexpected execution of cloud agent processes (e.g., WindowsAzureGuestAgent.exe, ssm-agent) followed by arbitrary script or binary execution"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Script interpreter invoked by nginx/apache worker process"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of Office binaries with network activity"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launch of bash/zsh/python/osascript targeting key file locations"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of /sbin/emond with child processes launched"
+                },
+                {
+                    "name": "etw:Microsoft-Windows-Kernel-Process",
+                    "channel": "provider: ETW CreateProcess events linking msbuild.exe to suspicious children where standard logs are incomplete"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "shutdown -h now or reboot"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of Code.app, idea, JetBrainsToolbox, eclipse with install/extension flags"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process execution events for system discovery utilities (system_profiler, sysctl, networksetup, ioreg) with parameter analysis"
+                },
+                {
+                    "name": "OpenBSM:AuditTrail",
+                    "channel": "BSM audit events for process execution and system call monitoring during reconnaissance"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "host daemon events related to VM operations and configuration queries during reconnaissance"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "VMware kernel events for hardware and system configuration access during environmental validation"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "processes modifying environment variables related to history logging"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: parent process is usb/hid device handler, child process bash/python invoked"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of curl, rclone, or Office apps invoking network sessions"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec: Execution of kextstat, kextfind, or ioreg targeting driver information"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "exec events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process creation involving binaries interacting with resource fork data"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process event"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of suspicious exploit binaries targeting security daemons"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "execve: Unsigned or unnotarized processes launched with high privileges"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "security OR injection attempts into 1Password OR LastPass"
+                }
+            ]
         }
     ]
 }
