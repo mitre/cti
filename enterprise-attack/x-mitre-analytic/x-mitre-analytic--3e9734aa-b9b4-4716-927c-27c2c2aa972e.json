@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--c1666693-4f43-4288-8195-52ef82cdf297",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--3e9734aa-b9b4-4716-927c-27c2c2aa972e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0062#AN0171",
+                    "external_id": "AN0171"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0171",
+            "description": "Disabling or modifying the Linux Audit system through process termination (auditd killed), service management (systemctl stop auditd), or tampering with rule/configuration files (/etc/audit/audit.rules, audit.conf). Defender view: suspicious execution of auditctl/systemctl commands, file modifications to audit rules, or sudden absence of audit logs correlated with privileged execution.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of auditctl, systemctl stop auditd, or kill -9 auditd"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d5fca4e4-e47a-487b-873f-3d22f8865e96",
+                    "name": "auditd:SYSCALL",
+                    "channel": "kill syscalls targeting auditd process"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:FILE",
+                    "channel": "Modification or deletion of /etc/audit/audit.rules or /etc/audit/audit.conf"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--74fa567d-bc90-425c-8a41-3c703abb221c",
+                    "name": "linux:syslog",
+                    "channel": "auditd service stopped or disabled"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ServiceWhitelist",
+                    "description": "Exclude legitimate administrative service stops during system maintenance."
+                },
+                {
+                    "field": "FilePathScope",
+                    "description": "Specify monitored paths (/etc/audit/audit.rules, audit.conf) to avoid false positives from unrelated file writes."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate suspicious commands, file modifications, and audit log gaps in short succession."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

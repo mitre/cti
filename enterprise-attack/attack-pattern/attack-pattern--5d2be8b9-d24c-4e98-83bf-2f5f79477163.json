@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--240e72f9-84e3-43e6-ac8a-04c17aad4e67",
+    "id": "bundle--62b46a2d-8c7d-40ba-83c1-a137f8e37fcf",
     "spec_version": "2.0",
     "objects": [
         {
@@ -54,7 +54,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:34.774Z",
+            "modified": "2025-10-24T17:48:50.475Z",
             "name": "Group Policy Modification",
             "description": "Adversaries may modify Group Policy Objects (GPOs) to subvert the intended discretionary access controls for a domain, usually with the intention of escalating privileges on the domain. Group policy allows for centralized management of user and computer settings in Active Directory (AD). GPOs are containers for group policy settings made up of files stored within a predictable network path `\\<DOMAIN>\\SYSVOL\\<DOMAIN>\\Policies\\`.(Citation: TechNet Group Policy Basics)(Citation: ADSecurity GPO Persistence 2016) \n\nLike other objects in AD, GPOs have access controls associated with them. By default all user accounts in the domain have permission to read GPOs. It is possible to delegate GPO access control permissions, e.g. write access, to specific users or groups in the domain.\n\nMalicious GPO modifications can be used to implement many other malicious behaviors such as [Scheduled Task/Job](https://attack.mitre.org/techniques/T1053), [Disable or Modify Tools](https://attack.mitre.org/techniques/T1562/001), [Ingress Tool Transfer](https://attack.mitre.org/techniques/T1105), [Create Account](https://attack.mitre.org/techniques/T1136), [Service Execution](https://attack.mitre.org/techniques/T1569/002),  and more.(Citation: ADSecurity GPO Persistence 2016)(Citation: Wald0 Guide to GPOs)(Citation: Harmj0y Abusing GPO Permissions)(Citation: Mandiant M Trends 2016)(Citation: Microsoft Hacking Team Breach) Since GPOs can control so many user and machine settings in the AD environment, there are a great number of potential attacks that can stem from this GPO abuse.(Citation: Wald0 Guide to GPOs)\n\nFor example, publicly available scripts such as <code>New-GPOImmediateTask</code> can be leveraged to automate the creation of a malicious [Scheduled Task/Job](https://attack.mitre.org/techniques/T1053) by modifying GPO settings, in this case modifying <code>&lt;GPO_PATH&gt;\\Machine\\Preferences\\ScheduledTasks\\ScheduledTasks.xml</code>.(Citation: Wald0 Guide to GPOs)(Citation: Harmj0y Abusing GPO Permissions) In some cases an adversary might modify specific user rights like SeEnableDelegationPrivilege, set in <code>&lt;GPO_PATH&gt;\\MACHINE\\Microsoft\\Windows NT\\SecEdit\\GptTmpl.inf</code>, to achieve a subtle AD backdoor with complete control of the domain because the user account under the adversary's control would then be able to modify GPOs.(Citation: Harmj0y SeEnableDelegationPrivilege Right)",
             "kill_chain_phases": [
@@ -73,7 +73,7 @@
                 "Tristan Bennett, Seamless Intelligence"
             ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "It is possible to detect GPO modifications by monitoring directory service changes using Windows event logs. Several events may be logged for such GPO modifications, including:\n\n* Event ID 5136 - A directory service object was modified\n* Event ID 5137 - A directory service object was created\n* Event ID 5138 - A directory service object was undeleted\n* Event ID 5139 - A directory service object was moved\n* Event ID 5141 - A directory service object was deleted\n\n\nGPO abuse will often be accompanied by some other behavior such as [Scheduled Task/Job](https://attack.mitre.org/techniques/T1053), which will have events associated with it to detect. Subsequent permission value modifications, like those to SeEnableDelegationPrivilege, can also be searched for in events associated with privileges assigned to new logons (Event ID 4672) and assignment of user rights (Event ID 4704).",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -82,13 +82,7 @@
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_data_sources": [
-                "Command: Command Execution",
-                "Active Directory: Active Directory Object Creation",
-                "Active Directory: Active Directory Object Modification",
-                "Active Directory: Active Directory Object Deletion"
-            ]
+            "x_mitre_version": "1.1"
         }
     ]
 }

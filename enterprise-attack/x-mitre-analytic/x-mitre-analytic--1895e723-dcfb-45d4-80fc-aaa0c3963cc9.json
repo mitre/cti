@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--8fe2433d-89c2-45a3-9a43-4c498af34fdb",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--1895e723-dcfb-45d4-80fc-aaa0c3963cc9",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0340#AN0963",
+                    "external_id": "AN0963"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0963",
+            "description": "User pastes a multi-line or one-liner into a terminal (bash/zsh) that downloads/decodes and executes content. Chain: terminal exec of curl/wget/bash/sh with pipe to interpreter or base64-decode \u2192 transient file under /tmp|~/.cache \u2192 immediate outbound egress.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: exe in (/usr/bin/bash,/usr/bin/sh,/usr/bin/zsh,/usr/bin/python*) AND cmdline matches '(curl|wget).*(\\||\\|\\s*sh|bash)|base64\\s*-d|python\\s*-c'"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open: File creation under /tmp, /var/tmp, ~/.cache with executable bit or shell shebang"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "NSM:Flow",
+                    "channel": "New egress to Internet by the same UID/host shortly after terminal exec"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TerminalProcessNames",
+                    "description": "Gui/tty terminals to monitor (gnome-terminal, konsole, iTerm2, tmux)."
+                },
+                {
+                    "field": "RiskyFilePaths",
+                    "description": "Temp/cache paths to watch for first-stage drops."
+                },
+                {
+                    "field": "AnomalousUserSet",
+                    "description": "Users who should never run curl/wget or compilers."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Exec\u2192file\u2192egress correlation window (e.g., 10 minutes)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

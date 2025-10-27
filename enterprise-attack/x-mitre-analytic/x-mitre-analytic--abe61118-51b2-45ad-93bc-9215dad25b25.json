@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--a55c241f-96d8-4d4e-bcfe-24e4e333b60d",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--abe61118-51b2-45ad-93bc-9215dad25b25",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0362#AN1029",
+                    "external_id": "AN1029"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1029",
+            "description": "Detection of AppCert DLL abuse involves correlating registry modifications to the AppCertDLLs key with subsequent unexpected DLL load behavior during process creation events. Specifically, defenders can observe abnormal DLLs being loaded into standard Windows processes after changes to the 'AppCertDLLs' registry value. Monitoring CreateProcess-family API executions with injected DLLs and linking those DLLs back to recent registry edits is key to identifying misuse. This is often accompanied by elevated privileges and potential lateral movement or discovery behavior.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4657"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TargetObject",
+                    "description": "Registry path for AppCertDLLs may vary by control set or group policy context"
+                },
+                {
+                    "field": "ImageLoaded",
+                    "description": "Loaded DLLs may differ by malware family or environment"
+                },
+                {
+                    "field": "ParentImage",
+                    "description": "Parent processes to monitor for DLL injection can be tuned to exclude known-good cases"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Time correlation between registry modification and DLL load events may vary"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

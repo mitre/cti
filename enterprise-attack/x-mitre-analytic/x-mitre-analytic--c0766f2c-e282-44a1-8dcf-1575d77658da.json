@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--baed85e0-b662-4c69-827f-30b3c9e8602c",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c0766f2c-e282-44a1-8dcf-1575d77658da",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0534#AN1474",
+                    "external_id": "AN1474"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1474",
+            "description": "Unauthorized modification of TCC.db followed by elevated process execution under a trusted parent (e.g., Finder, SystemUIServer) or via launchctl environment override. Also includes identification of SIP being disabled, which is highly uncommon and a prerequisite for this abuse path.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of binaries with TCC protected access under unexpected parent processes such as Finder.app, SystemUIServer, or nsurlsessiond"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "macos:unifiedlog",
+                    "channel": "Modification or replacement of /Library/Application Support/com.apple.TCC/TCC.db or ~/Library/Application Support/com.apple.TCC/TCC.db"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of launchctl with setenv or bootout targeting TCC.db or AppleScript under Finder context"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--85a533a4-5fa4-4dba-b45d-f0717bedd6e6",
+                    "name": "macos:unifiedlog",
+                    "channel": "System Integrity Protection (SIP) state reported as disabled"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ParentProcessName",
+                    "description": "May vary across macOS versions and user contexts; defenders can tune for known benign cases."
+                },
+                {
+                    "field": "TCCModificationPath",
+                    "description": "Custom user paths or redirected SQLite DBs may require alternate matching logic."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Temporal proximity between launchctl setenv and subsequent privileged access can be tuned."
+                },
+                {
+                    "field": "SIPStateCheckInterval",
+                    "description": "Frequency of SIP integrity checks may vary based on system hardening policies."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--ffa67a9d-eedf-49a3-8f3b-6c0da4f965b9",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--128315ea-6407-4c28-8528-209e799ad8e1",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0359#AN1020",
+                    "external_id": "AN1020"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1020",
+            "description": "Suspicious processes (e.g., Tor clients, relays, unknown binaries) launch with sustained encrypted outbound traffic to known anonymity infrastructure (e.g., Tor, I2P), and may relay to additional internal systems via reverse proxying, ICMP tunneling, or socket forwarding.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "dns:query",
+                    "channel": "Outbound resolution to hidden service domains (e.g., `.onion`)"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "DomainCategory",
+                    "description": "Can be tuned to `.onion`, I2P, or suspicious CDN domains."
+                },
+                {
+                    "field": "ProcessParent",
+                    "description": "Detect known-good vs. abnormal launching binaries (e.g., mshta spawning Tor)."
+                },
+                {
+                    "field": "ConnectionDuration",
+                    "description": "Threshold for persistent connections over known relay ports (e.g., 9050)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

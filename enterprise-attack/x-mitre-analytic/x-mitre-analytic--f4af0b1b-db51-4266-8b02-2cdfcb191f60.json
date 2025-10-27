@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--2c4ec2ff-8305-4bc0-914f-a4485637f6fa",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--f4af0b1b-db51-4266-8b02-2cdfcb191f60",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0001#AN0001",
+                    "external_id": "AN0001"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0001",
+            "description": "Detects access attempts to cloud instance metadata endpoints (e.g., 169.254.169.254) from virtual machines or containerized workloads. This includes both direct access and SSRF exploitation patterns.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "AWS:VPCFlowLogs",
+                    "channel": "Outbound connection to 169.254.169.254 from EC2 workload"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b33d36e3-d7ea-4895-8eed-19a08a8f7c4f",
+                    "name": "CloudTrail:GetInstanceIdentityDocument",
+                    "channel": "GetInstanceIdentityDocument"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "ebpf:syscalls",
+                    "channel": "Process within container accesses link-local address 169.254.169.254"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Adjust temporal window for correlation of access attempts and SSRF triggers"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Tune based on expected roles that access metadata APIs (e.g., root, service accounts)"
+                },
+                {
+                    "field": "RequestHeaderMatch",
+                    "description": "Customize detection for HTTP Host headers indicating SSRF"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

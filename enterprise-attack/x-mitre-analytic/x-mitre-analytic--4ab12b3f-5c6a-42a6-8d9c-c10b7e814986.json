@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--3eb969c0-266b-49d0-b43e-ab4062e9171e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--4ab12b3f-5c6a-42a6-8d9c-c10b7e814986",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0132#AN0374",
+                    "external_id": "AN0374"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0374",
+            "description": "User-mode application uses flock() or NSDistributedLock to gain exclusive access to a resource file (e.g., /tmp/guard.lock), conditional logic alters execution if already locked.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "macos:unifiedlog",
+                    "channel": "flock|NSDistributedLock|FileHandle.*lockForWriting"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--61f1d40e-f3d0-4cc6-aa2d-937b6204194f",
+                    "name": "macos:unifiedlog",
+                    "channel": "process.*exit.*code"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "lockfile_path",
+                    "description": "Path to mutex file (e.g., /tmp/*, /private/tmp/*), tune per environment."
+                },
+                {
+                    "field": "user_context",
+                    "description": "Flag non-user processes using these APIs."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Detection correlation across short time intervals between lock attempt and process exit."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

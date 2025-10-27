@@ -1,0 +1,86 @@
+{
+    "type": "bundle",
+    "id": "bundle--336b76e0-bb61-48da-961e-142b5ae394fe",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--a6e7697d-f0b8-4fcc-b32a-fec5b28cd8f7",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0478#AN1315",
+                    "external_id": "AN1315"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1315",
+            "description": "Cause\u2192effect chain: (1) User app/browser/archiver logs an open/click or abnormal exit, (2) new executable/script/archive extracted into $HOME/Downloads, /tmp, or ~/.cache, (3) parent app spawns shell/interpreter (bash/sh/python/node/curl/wget) or desktop file, and (4) new outbound connection(s) from the child lineage.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "linux:syslog",
+                    "channel": "opened document|clicked link|segfault|abnormal termination|sandbox"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "auditd:SYSCALL",
+                    "channel": "creat"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:SYSCALL",
+                    "channel": "rename,chmod"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "NSM:Flow",
+                    "channel": "new outbound connection from browser/office lineage"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "5\u201320 minute correlation window."
+                },
+                {
+                    "field": "UserPaths",
+                    "description": "$HOME/Downloads, /tmp, ~/.cache, ~/.config/autostart, ~/.local/share."
+                },
+                {
+                    "field": "HighRiskChildren",
+                    "description": "bash, sh, zsh, python*, perl, node, curl, wget, xdg-open, kde-open, gio open, unzip/tar extraction leading to exec."
+                },
+                {
+                    "field": "PkgUpdaters",
+                    "description": "Allow-list snap/flatpak/packagekit/apt workers to reduce false positives."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

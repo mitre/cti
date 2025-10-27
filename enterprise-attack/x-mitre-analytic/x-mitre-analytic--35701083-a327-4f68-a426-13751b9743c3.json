@@ -1,0 +1,91 @@
+{
+    "type": "bundle",
+    "id": "bundle--8e9b061f-1bb1-452a-b471-628222577e57",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--35701083-a327-4f68-a426-13751b9743c3",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0176#AN0498",
+                    "external_id": "AN0498"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0498",
+            "description": "Correlated evidence of anomalous browser/network behavior (suspicious external resource fetches and script injection patterns) followed by atypical child processes, ephemeral execution contexts, memory modification or process injection, and unexpected file drops. Defender sees network requests to previously unseen/suspicious domains or resources + browser process spawning unusual children or loading unsigned modules + file writes or registry changes shortly after those requests.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4624"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "WinEventLog:Application",
+                    "channel": "Browser or plugin/application logs showing script errors, plugin enumerations, or unusual extension load events"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d5fca4e4-e47a-487b-873f-3d22f8865e96",
+                    "name": "etw:Microsoft-Windows-Kernel-Process",
+                    "channel": "Memory Modification / Unmapped module load or suspicious RWX allocations in the process space of a browser process"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "http.request: HTTP requests and responses for specific script resources, unexpected content-types (application/octet-stream for script URLs), suspicious referrers, or obfuscated javascript resources"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation time window between suspicious network fetch and subsequent process/file events. Tweak for environment latency and caching; default 2 minutes."
+                },
+                {
+                    "field": "KnownGoodDomainsList",
+                    "description": "Allowlist of high-volume, benign domains used by corporate sites or CDNs to reduce false positives."
+                },
+                {
+                    "field": "PayloadEntropyThreshold",
+                    "description": "Entropy threshold for downloaded script/binary content to surface likely obfuscated/packed payloads."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Exclude or treat differently known administrative service accounts or build machines versus end-user contexts."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

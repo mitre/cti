@@ -1,0 +1,63 @@
+{
+    "type": "bundle",
+    "id": "bundle--71de6878-2f95-4ea4-95ac-afef4de37848",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--5dc85538-115c-4c56-878a-39caaba91e74",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0137#AN0384",
+                    "external_id": "AN0384"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0384",
+            "description": "Unusual direct disk access attempts (e.g., use of \\\\.\\PhysicalDrive notation), abnormal writes to MBR/boot sectors, and installation of kernel drivers that grant raw disk access. Correlate anomalous process creation with disk modification attempts and driver loads.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5d0492b-cda4-421c-8e51-ed2b8d85c5d0",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4673"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--4dcd8ba3-2075-4f8b-941e-39884ffaac08",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "Raw disk write access via \\\\.\\PhysicalDrive* or \\\\.\\C:"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3551476e-14f5-4e48-a518-e82135329e03",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=6"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ProcessWhitelist",
+                    "description": "Legitimate disk imaging or backup tools may trigger raw disk access \u2014 must be excluded per environment."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate disk access, driver load, and process execution within a short timeframe to minimize false positives."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--ad10ec50-3597-489c-bf6e-48c2e97a6aee",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--552ff82d-467b-4aeb-a4c3-084ca24dbd3e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0529#AN1466",
+                    "external_id": "AN1466"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1466",
+            "description": "Userland processes invoking syscall-heavy libraries (libc, glibc) followed by fork, mmap, or ptrace behavior commonly associated with code injection or memory manipulation.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve, fork, mmap, ptrace"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "auditd:SYSCALL",
+                    "channel": "module load or memory map path"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "SyscallType",
+                    "description": "Filter for fork, mmap, ptrace based on context"
+                },
+                {
+                    "field": "ProcessName",
+                    "description": "Whitelist known daemon and scheduled task patterns"
+                },
+                {
+                    "field": "MAPS Path",
+                    "description": "Tune suspicious memory map regions (e.g., /tmp/.evilshmem)"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

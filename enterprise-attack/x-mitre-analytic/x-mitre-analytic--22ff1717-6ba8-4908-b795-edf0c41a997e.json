@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--be0ab44e-2d1b-490b-b547-3e5cda0dbb04",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--22ff1717-6ba8-4908-b795-edf0c41a997e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0302#AN0842",
+                    "external_id": "AN0842"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0842",
+            "description": "A remote source rapidly touches a short sequence of closed ports (SYN\u2192RST/S0) on a Windows host. Within a short window the host changes firewall state (WFP rule added/modified or service starts listening) and then the same source completes the first successful handshake to the newly opened port.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "WinEventLog:Microsoft-Windows-Windows Firewall With Advanced Security/Firewall",
+                    "channel": "EventCode=2004,2005,2006"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Seconds to correlate knock sequence \u2192 rule change \u2192 successful connect (60\u2013300s typical)."
+                },
+                {
+                    "field": "MinSequenceLen",
+                    "description": "Minimum number of distinct destination ports in the sequence (\u22653 by default)."
+                },
+                {
+                    "field": "RuleChangeAllowList",
+                    "description": "Accounts/processes allowed to adjust Windows Firewall (e.g., update agents)."
+                },
+                {
+                    "field": "WatchedPorts",
+                    "description": "Ports of interest to flag when opened (e.g., 22,23,2323,8022,3389,8080)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

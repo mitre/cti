@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--74993ec9-2b3e-49e8-965b-1dd899397eb3",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--6eab700a-548f-48aa-8821-163682fe8bbe",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0498#AN1375",
+                    "external_id": "AN1375"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1375",
+            "description": "A process creates a brand\u2011new logon session/token (LogonUser*/LsaLogonUser) and then assigns/impersonates it (SetThreadToken/ImpersonateLoggedOnUser) to run actions under that freshly created security context. Chain: (1) suspicious command or script block (e.g., runas /netonly, PowerShell P/Invoke of LogonUser) \u2192 (2) ETW/API evidence of LogonUser*/SetThreadToken \u2192 (3) Security 4624 New Logon (often LogonType=9 NewCredentials or 2/3 from a non\u2011interactive parent) with no interactive desktop \u2192 (4) sysmon 1 process(es) executing with the new LogonId/SID different from the parent process \u2192 (5) optional privileged ops/lateral movement.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--39b9db72-8b48-4595-a18d-db5bbba3091b",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4624,4672"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "etw:Microsoft-Windows-Security-Auditing",
+                    "channel": "api_call: LogonUser(A|W), LsaLogonUser, SetThreadToken, ImpersonateLoggedOnUser"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window between LogonUser*/SetThreadToken and the first spawned process (default 5\u201310 minutes)."
+                },
+                {
+                    "field": "SuspiciousLogonTypes",
+                    "description": "Which 4624 LogonTypes to treat as high risk (e.g., 9 NewCredentials, 3 Network when sourced locally)."
+                },
+                {
+                    "field": "AllowedImpersonators",
+                    "description": "Processes/accounts legitimately creating tokens (e.g., winlogon.exe, lsass.exe, IIS worker, trusted service accounts)."
+                },
+                {
+                    "field": "ParentChildUserMismatch",
+                    "description": "Whether to alert on any SID/LogonId mismatch between parent/child not in allow-list."
+                },
+                {
+                    "field": "IntegrityEscalationDelta",
+                    "description": "Minimum integrity level jump (e.g., Medium\u2192High/System) to raise severity."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

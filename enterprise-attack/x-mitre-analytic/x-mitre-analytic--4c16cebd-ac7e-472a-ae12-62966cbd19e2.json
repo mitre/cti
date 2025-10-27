@@ -1,0 +1,85 @@
+{
+    "type": "bundle",
+    "id": "bundle--2a05474e-d1f0-4545-85d4-807bb2750f99",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--4c16cebd-ac7e-472a-ae12-62966cbd19e2",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0248#AN0691",
+                    "external_id": "AN0691"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0691",
+            "description": "CONTAINERS (Docker/K8s/containerd): A user pulls an untrusted image from a public/unknown registry and then creates/starts a container from that image. Shortly after start, the container spawns unexpected utilities (e.g., curl/wget/bash/python), or makes outbound network connections atypical for the namespace/workload. The analytic correlates Image Creation/Download \u2192 Container Creation \u2192 Container Start \u2192 Command Execution/Network activity within a short window and with a consistent image digest.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b008766d-f34f-4ded-b712-659f59aaed6e",
+                    "name": "containerd:events",
+                    "channel": "Image pull from untrusted registry (name NOT IN allowlist) or new digest never seen before"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a5ae90ca-0c4b-481c-959f-0eb18a7ff953",
+                    "name": "kubernetes:audit",
+                    "channel": "create: Pod/Container created with image tag 'latest' or mutable tag; imagePullPolicy=Always; noDigest=true"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5fe82895-28e5-4aac-845e-dc886b63be2e",
+                    "name": "kubernetes:events",
+                    "channel": "start: ContainerStarted or Pulling image \u2192 Started container"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Process in container namespace executes curl|wget|bash|sh|python|nc with outbound args"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "New egress from container IP/namespace to Internet or non-approved CIDRs/ASNs"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ImageRegistryAllowList",
+                    "description": "Approved registries/namespaces (e.g., ECR/GCR/ACR org repos)."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window from image pull to container activity (e.g., \u226415m)."
+                },
+                {
+                    "field": "SuspiciousBinaries",
+                    "description": "Executables treated as high-risk when run in app containers (bash, sh, curl, wget, nc, powershell for Windows containers)."
+                },
+                {
+                    "field": "NamespaceScope",
+                    "description": "K8s namespaces that should never pull from Internet or run mutable tags."
+                },
+                {
+                    "field": "OutboundCIDRBlockList",
+                    "description": "Destination networks/domains that should not be contacted by containers."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

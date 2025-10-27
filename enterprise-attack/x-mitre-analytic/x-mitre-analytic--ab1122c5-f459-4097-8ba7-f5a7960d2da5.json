@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--f59deac8-bcbe-4cee-a6f1-77674dd5ec5b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--ab1122c5-f459-4097-8ba7-f5a7960d2da5",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0065#AN0177",
+                    "external_id": "AN0177"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0177",
+            "description": "Defenders may detect abuse of container administration commands by observing anomalous use of management utilities (`docker exec`, `kubectl exec`, or API calls to kubelet) correlated with unexpected process creation inside containers. Behavioral chains include unauthorized API requests followed by command execution within running pods or containers, often originating from unusual user accounts, automation scripts, or IP addresses outside the expected cluster management plane.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "docker:daemon",
+                    "channel": "docker exec or docker run with unexpected command/entrypoint"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "kubernetes:apiserver",
+                    "channel": "kubectl exec or kubelet API calls targeting running pods"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AuthorizedAdminUsers",
+                    "description": "Expected admin accounts allowed to use exec commands; anomalies outside this list indicate possible abuse."
+                },
+                {
+                    "field": "ExecFrequencyThreshold",
+                    "description": "Defines how often `docker exec` or `kubectl exec` is normally observed; sudden spikes may indicate adversary behavior."
+                },
+                {
+                    "field": "SourceIPRange",
+                    "description": "Expected IP ranges for management actions (e.g., cluster control plane). Requests from external/unexpected ranges may indicate compromise."
+                },
+                {
+                    "field": "NamespaceScope",
+                    "description": "Defines which namespaces typically allow exec operations; anomalous activity outside these may indicate lateral movement."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

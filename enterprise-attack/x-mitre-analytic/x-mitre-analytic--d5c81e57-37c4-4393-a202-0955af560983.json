@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--5a822d94-cb4b-4b0f-81a8-7ca56efee3e6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--d5c81e57-37c4-4393-a202-0955af560983",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0428#AN1196",
+                    "external_id": "AN1196"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1196",
+            "description": "Abuse of bind mounts to obscure process directories. Defender perspective: detecting anomalous mount operations where a process\u2019s /proc entry is remapped to another directory, often hiding malicious activity from native utilities (ps, top). Behavior chain includes: (1) execution of `mount` with `-o bind` or `-B` flags, (2) modification of /proc entries inconsistent with expected process lineage, and (3) subsequent anomalous activity from processes whose metadata no longer matches execution context.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "auditd:SYSCALL",
+                    "channel": "mount system call with bind or remap flags"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "auditd:PATH",
+                    "channel": "mount target path within /proc/*"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--ee575f4a-2d4f-48f6-b18b-89067760adc1",
+                    "name": "linux:osquery",
+                    "channel": "process metadata mismatch between /proc and runtime attributes"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "BindMountFlags",
+                    "description": "Flags or options used in mount commands (e.g., -o bind, -B). Can vary across distributions and kernels."
+                },
+                {
+                    "field": "WatchedProcPaths",
+                    "description": "List of /proc paths to monitor. Tunable to reduce noise from benign bind mounts used in containers or chroot environments."
+                },
+                {
+                    "field": "CorrelationWindow",
+                    "description": "Timeframe to correlate bind mount creation with anomalous process or file activity."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

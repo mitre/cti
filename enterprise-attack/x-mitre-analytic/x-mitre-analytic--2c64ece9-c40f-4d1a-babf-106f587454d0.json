@@ -1,0 +1,77 @@
+{
+    "type": "bundle",
+    "id": "bundle--c4481287-cf99-4086-8e1f-5513a3efe061",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--2c64ece9-c40f-4d1a-babf-106f587454d0",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0166#AN0473",
+                    "external_id": "AN0473"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0473",
+            "description": "Adversary installs or modifies email content filters or transport scripts (e.g., Postfix milter, Sendmail milter, Exim filters) using shell access or configuration manipulation.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:SYSCALL",
+                    "channel": "write"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "linux:syslog",
+                    "channel": "milter configuration updated, transport rule initialized, unexpected script execution"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:EXECVE",
+                    "channel": "/usr/sbin/postfix, /usr/sbin/exim, /usr/sbin/sendmail"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "auditd:SYSCALL",
+                    "channel": "write"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "linux:Sysmon",
+                    "channel": "EventCode=7"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "MailTransportScriptPath",
+                    "description": "Path to custom scripts or filters depends on mail daemon (e.g., /etc/postfix/milter/, /etc/exim4/)."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Mail agents may run under different service users (postfix, exim, etc.), which should be scoped."
+                },
+                {
+                    "field": "ExecFrequencyThreshold",
+                    "description": "Frequency of filter script re-execution per daemon restart or reload may vary."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

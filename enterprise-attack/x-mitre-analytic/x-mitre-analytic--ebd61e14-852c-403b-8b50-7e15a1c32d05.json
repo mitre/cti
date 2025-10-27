@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--55610e3e-e6c6-45b6-a6e0-d3c431a55775",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--ebd61e14-852c-403b-8b50-7e15a1c32d05",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0384#AN1082",
+                    "external_id": "AN1082"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1082",
+            "description": "Identifies use of sh/bash/zsh in suspicious context, such as user scripts launched from non-standard apps (e.g., Preview.app), embedded in LaunchDaemons, or executed outside Terminal.app. Looks for misuse in Automator, LaunchAgents, or NSAppleScript-executed shell.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream --predicate 'eventMessage contains \"exec\"'"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:osquery",
+                    "channel": "launchd + process_events"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9f387817-df83-432a-b56b-a8fb7f71eedd",
+                    "name": "macos:syslog",
+                    "channel": "system.log, asl.log"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ScriptLocation",
+                    "description": "Execution from /Users/Shared, ~/Library/LaunchAgents, /tmp."
+                },
+                {
+                    "field": "ParentProcess",
+                    "description": "Shells spawned from Preview, Safari, or AppleScript."
+                },
+                {
+                    "field": "UserRole",
+                    "description": "Detection thresholds may differ for admin vs standard users."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

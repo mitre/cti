@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a232e72f-8f08-4ab9-ae67-82b9338f113e",
+    "id": "bundle--da5410ab-9d25-4c0e-89ba-4d77db443cd0",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,23 +19,37 @@
                     "source_name": "External to DA, the OS X Way",
                     "description": "Alex Rymdeko-Harvey, Steve Borosh. (2016, May 14). External to DA, the OS X Way. Retrieved September 12, 2024.",
                     "url": "https://www.slideshare.net/slideshow/external-to-da-the-os-x-way/62021418"
+                },
+                {
+                    "source_name": "Medium",
+                    "description": "Michael Koczwara. (2021, March 14). Windows privilege escalation via PowerShell History. Retrieved June 13, 2025.",
+                    "url": "https://michaelkoczwara.medium.com/windows-privilege-escalation-dbb908cce8d4"
+                },
+                {
+                    "source_name": "Microsoft about_History",
+                    "description": "Microsoft. (2024, January 19). about_History. Retrieved June 13, 2025.",
+                    "url": "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_history?view=powershell-7.5"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T21:52:49.389Z",
-            "name": "Bash History",
-            "description": "Adversaries may search the bash command history on compromised systems for insecurely stored credentials. Bash keeps track of the commands users type on the command-line with the \"history\" utility. Once a user logs out, the history is flushed to the user\u2019s <code>.bash_history</code> file. For each user, this file resides at the same location: <code>~/.bash_history</code>. Typically, this file keeps track of the user\u2019s last 500 commands. Users often type usernames and passwords on the command-line as parameters to programs, which then get saved to this file when they log out. Adversaries can abuse this by looking through the file for potential credentials. (Citation: External to DA, the OS X Way)",
+            "modified": "2025-10-24T17:49:02.375Z",
+            "name": "Shell History",
+            "description": "Adversaries may search the command history on compromised systems for insecurely stored credentials.\n\nOn Linux and macOS systems, shells such as Bash and Zsh keep track of the commands users type on the command-line with the \"history\" utility. Once a user logs out, the history is flushed to the user's history file. For each user, this file resides at the same location: for example, `~/.bash_history` or `~/.zsh_history`. Typically, these files keeps track of the user's last 1000 commands.\n\nOn Windows, PowerShell has both a command history that is wiped after the session ends, and one that contains commands used in all sessions and is persistent. The default location for persistent history can be found in `%userprofile%\\AppData\\Roaming\\Microsoft\\Windows\\PowerShell\\PSReadline\\ConsoleHost_history.txt`, but command history can also be accessed with `Get-History`. Command Prompt (CMD) on Windows does not have persistent history.(Citation: Microsoft about_History)(Citation: Medium)\n\nUsers often type usernames and passwords on the command-line as parameters to programs, which then get saved to this file when they log out. Adversaries can abuse this by looking through the file for potential credentials.(Citation: External to DA, the OS X Way)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "credential-access"
                 }
             ],
-            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_contributors": [
+                "Raja Singh (raja-singh-r3v-sh3ll)",
+                "Avioo360"
+            ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitoring when the user's <code>.bash_history</code> is read can help alert to suspicious activity. While users do typically rely on their history of commands, they often access this history through other utilities like \"history\" instead of commands like <code>cat ~/.bash_history</code>.",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -43,13 +57,10 @@
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
                 "Linux",
-                "macOS"
+                "macOS",
+                "Windows"
             ],
-            "x_mitre_version": "1.2",
-            "x_mitre_data_sources": [
-                "File: File Access",
-                "Command: Command Execution"
-            ]
+            "x_mitre_version": "2.0"
         }
     ]
 }

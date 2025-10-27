@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--cbb50624-9b92-413d-ad0a-5ba3e0e1b31e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--108a10d2-4a9e-4c11-8a6f-42c8b60f0f52",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0036#AN0103",
+                    "external_id": "AN0103"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0103",
+            "description": "Adversary registers new devices to compromised user accounts to bypass MFA or conditional access policies via Azure Entra ID, Okta, or Duo self-enrollment portals.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Identity Provider"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d27b0089-2c39-4b6c-84ff-303e48657e77",
+                    "name": "azure:audit",
+                    "channel": "Operation IN (\"Add device\", \"Add registered users to device\", \"Add registered owner to device\")"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "ApplicationLog:EntraIDPortal",
+                    "channel": "DeviceRegistration events"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--18b236d8-7224-488f-9d2f-50076a0f653a",
+                    "name": "azure:audit",
+                    "channel": "New device object creation"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ActorUserPrincipalName",
+                    "description": "Define expected admin users to exclude known enrollment behavior"
+                },
+                {
+                    "field": "IP Address",
+                    "description": "Scope internal vs. external device enrollment sources"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Adjust for expected hours of legitimate self-enrollment"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

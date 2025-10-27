@@ -1,0 +1,63 @@
+{
+    "type": "bundle",
+    "id": "bundle--ae6541f4-b3a3-4921-8ede-e05ce016e0dd",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--02309791-384c-4ca9-b25c-6a6bc754795f",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0236#AN0656",
+                    "external_id": "AN0656"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0656",
+            "description": "Phishing attachments executed on Linux systems are detected by linking email logs to file creation in mail directories and subsequent suspicious process execution. Look for unexpected binaries or scripts spawned from user mail directories and anomalous outbound network activity.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "Application:Mail",
+                    "channel": "Inbound email attachments logged from MTAs with suspicious metadata"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of files saved in mail or download directories"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "Outbound traffic from suspicious new processes post-attachment execution"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AttachmentStoragePaths",
+                    "description": "Monitored directories for email attachments (e.g., /var/mail, ~/Maildir, ~/Downloads)."
+                },
+                {
+                    "field": "ScriptInterpreters",
+                    "description": "List of interpreters to monitor when spawned by mail clients (e.g., bash, python, perl)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

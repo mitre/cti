@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a6536935-ffd9-48ff-9c36-ba65381bf247",
+    "id": "bundle--989792d7-68ca-49c1-ab36-2a14ddaba8de",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,21 +9,390 @@
             "created": "2021-10-20T15:05:19.273Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/data-components/DC0039",
+                    "external_id": "DC0039"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:10:18.072Z",
+            "modified": "2025-10-21T19:32:14.744Z",
             "name": "File Creation",
             "description": "A new file is created on a system or network storage. This action often signifies an operation such as saving a document, writing data, or deploying a file. Logging these events helps identify legitimate or potentially malicious file creation activities. Examples include logging file creation events (e.g., Sysmon Event ID 11 or Linux auditd logs). \n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Sysmon: Event ID 11: Logs file creation events, capturing details like the file path, hash, and creation time.\n- Windows Event Log: Enable \"Object Access\" auditing in Group Policy to track file creation under Event ID 4663.\n- PowerShell: Real-time monitoring of file creation:`Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4663}`\n\nLinux\n\n- Auditd: Use audit rules to monitor file creation: `auditctl -w /path/to/directory -p w -k file_creation`\n- View logs: `ausearch -k file_creation`\n- Inotify: Monitor file creation with inotifywait: `inotifywait -m /path/to/watch -e create`\n\nmacOS\n\n- Unified Logs: Use the macOS Unified Logging System to capture file creation events.\n- FSEvents: Use File System Events to monitor file creation: `fs_usage | grep create`\n\nNetwork Devices\n\n- NAS Logs: Monitor file creation events on network-attached storage devices.\n- SMB Logs: Collect logs of file creation activities over SMB/CIFS protocols.\n\nSIEM Integration\n\n- Forward logs from all platforms (Windows, Linux, macOS) to a SIEM for central analysis and alerting.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--509ed41e-ca42-461e-9058-24602256daf9",
+            "x_mitre_data_source_ref": "",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "ics-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "File",
+                    "channel": "None"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "creat"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "file write"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "Modification of .asar in /opt or ~/.config directories"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "CREATE/MODIFY: Modification of app.asar inside .app bundle"
+                },
+                {
+                    "name": "auditd:FILE",
+                    "channel": "File creation with name starting with '.'"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation or modification of browser extension .plist files"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "open or creat syscalls targeting excluded paths"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "file creation in AV exclusion directories"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "file creation/modification"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "file write/create"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "file write"
+                },
+                {
+                    "name": "snmp:syslog",
+                    "channel": "firmware write/log event"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "open,creat,rename: Writes in $HOME/Downloads, /tmp, ~/.cache with exe/script/archive/office extensions"
+                },
+                {
+                    "name": "fs:fsevents",
+                    "channel": "Create in /Users/*/Downloads or /private/var/folders/* with quarantine attribute"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "file events"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "VMFS file creation"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "write/open, FIM audit"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "open/write/exec calls"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of .plist under /Library/Managed Preferences/"
+                },
+                {
+                    "name": "fs:fileevents",
+                    "channel": "creat"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "disk activity on /Library/LaunchAgents or LaunchDaemons"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "file_events"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "open: Write to ~/.vscode-cli/code_tunnel.json"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "creation of ~/.vscode-cli/code_tunnel.json"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "create/modify dylib files in monitored directories"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "write"
+                },
+                {
+                    "name": "linux:Sysmon",
+                    "channel": "New files in /tmp, /var/tmp, $HOME/.cache, executed within TimeWindow after browser HTTP fetch"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "New files written to /var/folders, /tmp, ~/Library/Caches, or ~/Downloads by browser context or its children"
+                },
+                {
+                    "name": "auditd:FILE",
+                    "channel": "create: New file created in system binaries or temp directories"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "File created in ~/Library/LaunchAgents or executable directories"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "open, unlink, rename: File creation or deletion involving critical stored data"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process wrote large .mov/.mp4 in user temp/hidden dirs"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "logd:file write"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "File IO"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "creat, open, write on /etc/systemd/system and /usr/lib/systemd/system"
+                },
+                {
+                    "name": "macos:unified",
+                    "channel": "File creation"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Attachment files written to ~/Downloads or temporary folders"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "file activity"
+                },
+                {
+                    "name": "CloudTrail:PutObject",
+                    "channel": "PutObject"
+                },
+                {
+                    "name": "auditd:PATH",
+                    "channel": "Creation of files with extensions .sql, .csv, .sqlite, especially in user directories"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Writes of .sql/.csv/.xlsx files to user documents/downloads"
+                },
+                {
+                    "name": "auditd:PATH",
+                    "channel": "New .py/.js/.sh files written to ~/.local/, ~/.cache/, or /tmp/ within 5 min of package install"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "write, open, or rename to /etc/systemd/system/*.service"
+                },
+                {
+                    "name": "auditd:FILE",
+                    "channel": "create: Creation of .zip, .gz, .bz2 files in /tmp, /var/tmp, or /home directories"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of .zip, .gz, .dmg archives in /Users, /tmp, or application directories"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "file open/write"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "ES_EVENT_TYPE_NOTIFY_CREATE: path under /Users/*/(Downloads|Desktop|Library/*/Containers|Library/Group Containers) AND extension in SuspiciousExtensions"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "open/create/rename: name in (/home/*/Downloads/*|/tmp/*|/run/user/*|/media/*) AND ext in SuspiciousExtensions"
+                },
+                {
+                    "name": "auditd:FILE",
+                    "channel": "create: Creation of archive files in /tmp, /var/tmp, or user home directories"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of .zip, .dmg, .tar.gz files in /Users, /tmp, or application directories"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "file_events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "File Events"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "File creations of *.qcow2, *.vdi, *.vmdk outside standard VM directories"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation or modification of postinstall scripts within .pkg or .mpkg contents"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "open: File creation under /tmp, /var/tmp, ~/.cache with executable bit or shell shebang"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "create: New files in /tmp or ~/Library/Application Support/* with executable or script extensions"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "open, write, unlink"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "File creation of suspicious scripts/binaries in temporary directories"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "File creation of unsigned binaries/scripts in user cache or download directories"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "File creation events in /var/mail or /var/spool/mail exceeding baseline thresholds"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "create: Attachment file creation in ~/Library/Mail directories"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-Shell-Core",
+                    "channel": "New startup folder shortcut or binary placed in Startup directory"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "write or create file after .bash_history access"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "new file created in /var/www/html, /srv/http, or similar web root"
+                },
+                {
+                    "name": "fs:launchdaemons",
+                    "channel": "file_create"
+                },
+                {
+                    "name": "auditd:PATH",
+                    "channel": "mount target path within /proc/*"
+                },
+                {
+                    "name": "macos:fsevents",
+                    "channel": "/Library/StartupItems/, ~/Library/LaunchAgents/"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "write or chmod to ~/Library/LaunchAgents/*.plist"
+                },
+                {
+                    "name": "auditd:PATH",
+                    "channel": "creation of .so files in non-standard directories (e.g., /tmp, /home/*)"
+                },
+                {
+                    "name": "auditd:FILE",
+                    "channel": "create: Creation of files with anomalous headers and entropy levels in /tmp or user directories"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of files with anomalous headers and entropy values"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Access or modification to /lib/modules or creation of .ko files"
+                },
+                {
+                    "name": "fs:fsevents",
+                    "channel": "Directory events (kFSEventStreamEventFlagItemCreated)"
+                },
+                {
+                    "name": "gcp:workspaceaudit",
+                    "channel": "drive.activity logs"
+                },
+                {
+                    "name": "fs:fileevents",
+                    "channel": "create/write/rename in user-writable paths"
+                },
+                {
+                    "name": "auditd:PATH",
+                    "channel": "WRITE: Drop of binaries/scripts in ~/.local, /tmp, or /opt tool dirs"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "CREATE/MODIFY: Creation of LaunchAgents/Daemons plists in user/system locations"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "open,create"
+                },
+                {
+                    "name": "auditd:FILE",
+                    "channel": "Creation of hidden files (.*) in sensitive directories (/etc, /var, /usr/bin)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of LaunchAgents/LaunchDaemons in hidden or non-standard directories"
+                },
+                {
+                    "name": "auditd:FILE",
+                    "channel": "create: Creation of files ending in .tar, .gz, .bz2, .zip in /tmp or /var/tmp"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of .zip or .dmg files in user-accessible or temporary directories"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "file write"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "es_event_open"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "file create or modify in /etc/emond.d/rules or /private/var/db/emondClients"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "open,creat,rename,write"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Writes under ~/Library/Application Support/Code*/extensions or JetBrains plugins"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "PutObject"
+                }
+            ]
         }
     ]
 }

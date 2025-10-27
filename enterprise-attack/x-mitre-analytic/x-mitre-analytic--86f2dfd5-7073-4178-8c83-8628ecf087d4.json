@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--26310fb8-dc72-4f1c-8a70-cf9047b6c712",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--86f2dfd5-7073-4178-8c83-8628ecf087d4",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0537#AN1481",
+                    "external_id": "AN1481"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1481",
+            "description": "1) Package manager or curl/wget installs/upgrades from non-approved repos or unsigned packages; 2) new ELF written into PATH directories or replacement of existing binaries/libraries; 3) first run leads to unexpected child processes or outbound connections.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve, unlink"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d5fca4e4-e47a-487b-873f-3d22f8865e96",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open, rename"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "journald:package",
+                    "channel": "dpkg/apt install, remove, upgrade events"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "First-time egress to unknown registries/mirrors immediately after install"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ApprovedRepos",
+                    "description": "Allow-listed APT/YUM repo URLs and GPG key fingerprints."
+                },
+                {
+                    "field": "PathScope",
+                    "description": "Directories to watch for new ELF writes (e.g., /usr/bin, /usr/local/bin, /lib*/, /opt/*/bin)."
+                },
+                {
+                    "field": "MinBinarySize",
+                    "description": "Ignore tiny helper files; default >16KB."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Install\u2192first-run correlation window (default 2h)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

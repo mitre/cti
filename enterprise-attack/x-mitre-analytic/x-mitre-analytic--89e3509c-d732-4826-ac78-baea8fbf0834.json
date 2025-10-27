@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--d27c2f69-d2f1-4b03-99f6-96e88981cefc",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--89e3509c-d732-4826-ac78-baea8fbf0834",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0121#AN0340",
+                    "external_id": "AN0340"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0340",
+            "description": "Creation or modification of Login Items using AppleScript or Service Management Framework. Detection focuses on file creation/modification of `backgrounditems.btm`, new executables in `Contents/Library/LoginItems/`, use of `SMLoginItemSetEnabled` API, or suspicious processes triggered post-login without user interaction. Behavioral pivot includes anomalous AppleEvents, suspicious parent-child process pairs, and login-triggered execution chains.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "Post-login execution of unrecognized child process from launchd or loginwindow"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "macos:unifiedlog",
+                    "channel": "Modification of backgrounditems.btm or creation of LoginItems subdirectory in .app bundle"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "macos:unifiedlog",
+                    "channel": "Invocation of SMLoginItemSetEnabled by non-system or recently installed application"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9f387817-df83-432a-b56b-a8fb7f71eedd",
+                    "name": "macos:unifiedlog",
+                    "channel": "AppleScript creating login item via 'System Events' dictionary"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate file and process activity within a defined interval post-login (e.g., 0\u20135 minutes)"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Distinguish between system users, interactive users, and daemon contexts"
+                },
+                {
+                    "field": "ExecutableAllowlist",
+                    "description": "Define known-good login items to suppress false positives"
+                },
+                {
+                    "field": "PathRegexExclusion",
+                    "description": "Exclude common enterprise paths (e.g., Jamf, MDM-managed apps)"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,98 @@
+{
+    "type": "bundle",
+    "id": "bundle--2bc8514e-6e54-4c2d-9fe4-b82b16bc7490",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--0fff438f-1aa9-4424-be94-a08b400adcb0",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0433#AN1207",
+                    "external_id": "AN1207"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1207",
+            "description": "Abuse of mavinject.exe to inject DLLs or import descriptors into another running process. Chain: (1) mavinject.exe starts with /INJECTRUNNING or /HMODULE \u2192 (2) mavinject obtains high-access handles to a target process (VM_WRITE/CREATE_THREAD) \u2192 (3) target process loads attacker DLL (module load) \u2192 (4) optional follow-on child activity or network egress from the target process.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4104"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation interval (e.g., 5\u201310 minutes) linking mavinject start \u2192 ProcessAccess \u2192 module load/network from the target process."
+                },
+                {
+                    "field": "DLLPathRegex",
+                    "description": "Patterns for suspicious DLL locations (e.g., %TEMP%, Downloads, UNC shares) to reduce noise from legitimate injections."
+                },
+                {
+                    "field": "TargetProcessAllowList",
+                    "description": "Common legitimate targets for App-V (if used) to suppress; flag unusual targets like browsers, LSASS, Winlogon, EDR processes."
+                },
+                {
+                    "field": "MinGrantedAccessSet",
+                    "description": "Set of access rights that imply injection (VM_WRITE, VM_OPERATION, CREATE_THREAD). Tune for your EDR/sysmon formatting."
+                },
+                {
+                    "field": "ParentProcessFilter",
+                    "description": "Legitimate parents starting mavinject (e.g., App-V services) vs. suspicious parents (Office, script hosts, browsers)."
+                },
+                {
+                    "field": "ExternalIPAllowlist",
+                    "description": "Known enterprise update/CDN ranges to exclude when correlating post-injection network activity."
+                },
+                {
+                    "field": "SignedToUnsignedTransition",
+                    "description": "Alerting when Microsoft-signed mavinject leads to loading unsigned DLLs in a target process."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

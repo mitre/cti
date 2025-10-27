@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--24333ceb-b952-4c42-a384-d9119010ef18",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--779b2e27-9318-46a3-aeec-765f5fb09de3",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0537#AN1482",
+                    "external_id": "AN1482"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1482",
+            "description": "1) pkg/notarization installs from atypical sources or with Gatekeeper/AMFI warnings; 2) new Mach-O written into /Applications or ~/Library paths or substitution of signed components; 3) first run from installer spawns unsigned children or exfil.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "macos:unifiedlog",
+                    "channel": "installer or system_installd 'PackageKit: install succeeded/failed' with non-notarized or unknown signer"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:osquery",
+                    "channel": "launchd, processes"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "macos:endpointsecurity",
+                    "channel": "write, rename"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "New egress from app just installed to unknown update endpoints"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedTeamIDs",
+                    "description": "Apple Developer Team IDs permitted in your fleet."
+                },
+                {
+                    "field": "TrustedDMGs",
+                    "description": "Known DMG/Pkg sources and hashes."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Install\u2192first-run correlation window (default 2h)."
+                },
+                {
+                    "field": "RiskScoreThreshold",
+                    "description": "Adjust alert sensitivity based on org tolerance."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,68 @@
+{
+    "type": "bundle",
+    "id": "bundle--a00f53bb-079a-47e1-adb1-3fd299a721f6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--b73489af-2e95-4f41-b82e-327a84da2a1d",
+            "created": "2025-10-22T19:00:47.079Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0898#AN2029",
+                    "external_id": "AN2029"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-24T15:00:29.811Z",
+            "name": "Analytic 2029",
+            "description": "Process execution without GUI context (e.g., powershell.exe, wscript.exe) generates HTTP traffic with a spoofed User-Agent mimicking a legitimate browser. No corresponding UI application (e.g., msedge.exe) is active or in parent lineage. The User-Agent deviates from known enterprise baselines or contains spoofed platform indicators.  User-Agent strings can be gathered with API calls such as `ShellExecuteW` to open the default browser on a socket to receive an HTTP reply, or by hard coding the User-Agent string for a specific browser.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Inbound HTTP POST with suspicious payload size or user-agent"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "etw:Microsoft-Windows-Kernel-Process",
+                    "channel": "API Calls"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "HeaderSignatureMatch",
+                    "description": "Specific HTTP header anomalies or patterns (e.g., spoofed User-Agent)."
+                },
+                {
+                    "field": "UserAgentFingerprint",
+                    "description": "Flag browser-based sessions"
+                },
+                {
+                    "field": "NonBrowserProcessList",
+                    "description": "List of non-browser binaries expected not to initiate web requests (e.g., powershell.exe, cscript.exe)"
+                }
+            ]
+        }
+    ]
+}

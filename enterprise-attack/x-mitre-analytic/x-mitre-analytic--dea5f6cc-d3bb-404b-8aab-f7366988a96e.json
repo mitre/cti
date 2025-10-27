@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--f4505eba-c3a6-4eea-8a24-dd5cf60f2ccc",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--dea5f6cc-d3bb-404b-8aab-f7366988a96e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0566#AN1564",
+                    "external_id": "AN1564"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1564",
+            "description": "Detection of Office or document viewer processes (e.g., winword.exe) initiating network connections to remote templates or executing scripts due to manipulated template references (e.g., embedded in .docx, .rtf, or .dotm files), followed by suspicious child process creation (e.g., PowerShell).",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TemplateURLPatterns",
+                    "description": "Can be tuned to flag known bad domains or external resources in template fields."
+                },
+                {
+                    "field": "ParentProcess",
+                    "description": "May be environment-specific; typically Word, Excel, PowerPoint."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window for process + network activity."
+                },
+                {
+                    "field": "ChildProcessAnomalyThreshold",
+                    "description": "Trigger when document-spawned child process deviates from expected profile."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

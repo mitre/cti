@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--bf60fb3b-3613-4e69-a0fe-6fae8799e837",
+    "id": "bundle--f4505f56-5265-4d94-828b-3c609756c9eb",
     "spec_version": "2.0",
     "objects": [
         {
@@ -49,7 +49,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-25T15:16:06.307Z",
+            "modified": "2025-10-24T17:49:19.859Z",
             "name": "Process Doppelg\u00e4nging",
             "description": "Windows Transactional NTFS (TxF) was introduced in Vista as a method to perform safe file operations. (Citation: Microsoft TxF) To ensure data integrity, TxF enables only one transacted handle to write to a file at a given time. Until the write handle transaction is terminated, all other handles are isolated from the writer and may only read the committed version of the file that existed at the time the handle was opened. (Citation: Microsoft Basic TxF Concepts) To avoid corruption, TxF performs an automatic rollback if the system or application fails during a write transaction. (Citation: Microsoft Where to use TxF)\n\nAlthough deprecated, the TxF application programming interface (API) is still enabled as of Windows 10. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017)\n\nAdversaries may leverage TxF to a perform a file-less variation of [Process Injection](https://attack.mitre.org/techniques/T1055) called Process Doppelg\u00e4nging. Similar to [Process Hollowing](https://attack.mitre.org/techniques/T1093), Process Doppelg\u00e4nging involves replacing the memory of a legitimate process, enabling the veiled execution of malicious code that may evade defenses and detection. Process Doppelg\u00e4nging's use of TxF also avoids the use of highly-monitored API functions such as NtUnmapViewOfSection, VirtualProtectEx, and SetThreadContext. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017)\n\nProcess Doppelg\u00e4nging is implemented in 4 steps (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017):\n\n* Transact \u2013 Create a TxF transaction using a legitimate executable then overwrite the file with malicious code. These changes will be isolated and only visible within the context of the transaction.\n* Load \u2013 Create a shared section of memory and load the malicious executable.\n* Rollback \u2013 Undo changes to original executable, effectively removing malicious code from the file system.\n* Animate \u2013 Create a process from the tainted section of memory and initiate execution.",
             "kill_chain_phases": [
@@ -60,7 +60,7 @@
             ],
             "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor and analyze calls to CreateTransaction, CreateFileTransacted, RollbackTransaction, and other rarely used functions indicative of TxF activity. Process Doppelg\u00e4nging also invokes an outdated and undocumented implementation of the Windows process loader via calls to NtCreateProcessEx and NtCreateThreadEx as well as API calls used to modify memory within another process, such as WriteProcessMemory. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017) (Citation: hasherezade Process Doppelg\u00e4nging Dec 2017)\n\nScan file objects reported during the PsSetCreateProcessNotifyRoutine, (Citation: Microsoft PsSetCreateProcessNotifyRoutine routine) which triggers a callback whenever a process is created or deleted, specifically looking for file objects with enabled write access. (Citation: BlackHat Process Doppelg\u00e4nging Dec 2017) Also consider comparing file objects loaded in memory to the corresponding file on disk. (Citation: hasherezade Process Doppelg\u00e4nging Dec 2017)\n\nAnalyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious actions that could relate to post-compromise behavior.",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],

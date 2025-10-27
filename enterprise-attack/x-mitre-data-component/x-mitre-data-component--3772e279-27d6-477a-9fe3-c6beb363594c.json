@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--68e1cf00-4f6f-4e7e-a817-3180c783e5a2",
+    "id": "bundle--a9b24ec7-af44-49a1-b148-27ee104abc16",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,13 +9,19 @@
             "created": "2021-10-20T15:05:19.274Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0085",
+                    "external_id": "DC0085"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:11:16.672Z",
+            "modified": "2025-10-21T15:14:34.343Z",
             "name": "Network Traffic Content",
             "description": "The full packet capture (PCAP) or session data that logs both protocol headers and payload content. This allows analysts to inspect command and control (C2) traffic, exfiltration, and other suspicious activity within network communications. Unlike metadata-based logs, full content analysis enables deeper protocol inspection, payload decoding, and forensic investigations.\n\n*Data Collection Measures:*\n\n- Network Packet Capture (Full Content Logging)\n    - Wireshark / tcpdump / tshark\n        - Full packet captures (PCAP files) for manual analysis or IDS correlation. `tcpdump -i eth0 -w capture.pcap`\n    - Zeek (formerly Bro)\n        - Extracts protocol headers and payload details into structured logs. `echo \"redef Log::default_store = Log::ASCII;\" > local.zeek | zeek -Cr capture.pcap local.zeek`\n    - Suricata / Snort (IDS/IPS with PCAP Logging)\n        - Deep packet inspection (DPI) with signature-based and behavioral analysis. `suricata -c /etc/suricata/suricata.yaml -i eth0 -l /var/log/suricata`\n- Host-Based Collection\n    - Sysmon Event ID 22 \u2013 DNS Query Logging, Captures DNS requests made by processes, useful for detecting C2 domains.\n    - Sysmon Event ID 3 \u2013 Network Connection Initiated, Logs process-to-network connection relationships.\n    - AuditD (Linux) \u2013 syscall=connect, Monitors outbound network requests from processes. `auditctl -a always,exit -F arch=b64 -S connect -k network_activity`\n- Cloud & SaaS Traffic Collection\n    - AWS VPC Flow Logs / Azure NSG Flow Logs / Google VPC Flow Logs, Captures metadata about inbound/outbound network traffic.\n    - Cloud IDS (AWS GuardDuty, Azure Sentinel, Google Chronicle), Detects malicious activity in cloud environments by analyzing network traffic patterns.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--c000cd5c-bbb3-4606-af6f-6c6d9de0bbe3",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -23,8 +29,966 @@
                 "mobile-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "Network Traffic",
+                    "channel": "None"
+                },
+                {
+                    "name": "ebpf:syscalls",
+                    "channel": "Process within container accesses link-local address 169.254.169.254"
+                },
+                {
+                    "name": "WebProxy:AccessLogs",
+                    "channel": "SSRF-like patterns accessing metadata endpoint through proxy (e.g., Host: 169.254.169.254)"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "mqtt.log / xmpp.log (custom log feeds)"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "mqtt.log or AMQP custom log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "mqtt.log, xmpp.log, amqp.log"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "ACL/Firewall rule modification or new route injection"
+                },
+                {
+                    "name": "m365:office",
+                    "channel": "External HTTP/DNS connection from Office binary shortly after macro trigger"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "TCP/UDP"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "TCP session tracking"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Captured packet payloads"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "session behavior"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Network activity"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "External C2 channel over TLS"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http/file-xfer: Inbound/outbound transfer of ELF shared objects"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http.log, files.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "unexpected network activity initiated shortly after shell session starts"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "HTTP/WebDAV requests that contain NTLMSSP or PROPFIND/MOVE/OPTIONS with Authorization: NTLM"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http.log, ssl.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http.log, conn.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "SPAN or port-mirrored HTTP/S"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http.log, ssl.log, websocket.log"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process + network metrics correlation for bandwidth saturation"
+                },
+                {
+                    "name": "docker:stats",
+                    "channel": "unusual network TX/RX byte deltas"
+                },
+                {
+                    "name": "etw:Microsoft-Windows-WinINet",
+                    "channel": "HTTPS Inspection"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ssl.log"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Query to suspicious domain with high entropy or low reputation"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "DNS query with pseudo-random subdomain patterns"
+                },
+                {
+                    "name": "azure:vpcflow",
+                    "channel": "HTTP requests to 169.254.169.254 or Azure Metadata endpoints"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Browser connections to known C2 or dynamic DNS domains"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Session History Reset"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "HTTP "
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "network flow"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "curl|wget|python .*http"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "curl|osascript.*open location"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "query: High-volume LDAP traffic with filters targeting groupPolicyContainer attributes"
+                },
+                {
+                    "name": "etw:Microsoft-Windows-NDIS-PacketCapture",
+                    "channel": "TLS Handshake/Network Flow"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "HTTP/TLS Logs"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem: com.apple.network"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Unexpected SQL or application log entries showing tampered or malformed data"
+                },
+                {
+                    "name": "EDR:hunting",
+                    "channel": "Advanced Hunting: DeviceProcessEvents + DeviceNetworkEvents"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Suspicious URL patterns, uncommon TLDs, short-lived domains, URL shorteners; HTTP method GET/POST"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Suspicious URL patterns, uncommon TLDs, URL shorteners"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "open URL|clicked link|LSQuarantineAttach"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Suspicious GET/POST; downloader patterns"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "SSH logins or scp activity"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "remote login and transfer"
+                },
+                {
+                    "name": "esxi:vob",
+                    "channel": "NFS/remote access logs"
+                },
+                {
+                    "name": "AWS:VPCFlowLogs",
+                    "channel": "Traffic between instances"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "conn.log"
+                },
+                {
+                    "name": "WinEventLog:System",
+                    "channel": "EventCode=5005 (WLAN), EventCode=302 (Bluetooth)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "None"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Suspicious long-lived or reattached remote desktop sessions from unexpected IPs"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "HTTP payloads with SQLi/LFI/JNDI/deserialization indicators"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "outbound egress from web host after suspicious request"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Requests towards cloud metadata or command & control from pod IPs"
+                },
+                {
+                    "name": "ALB:HTTPLogs",
+                    "channel": "AWS ALB/ELB/GCP/Azure Application Gateway HTTP logs with unusual methods, long URIs, serialized payloads, 4xx/5xx bursts"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Connections to TCP 427 (SLP) or vCenter web services from untrusted sources"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "NetFlow/sFlow for odd egress to Internet from mgmt plane"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "packet capture or DPI logs"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "SMB2_LOGOFF/SMB_TREE_DISCONNECT"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Connections to suspicious domains with mismatched certificate or unusual patterns"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Unusual Base64-encoded content in URI, headers, or POST body"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Base64 strings or gzip in URI, headers, or POST body"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "HTTP POST with encoded content in user-agent or cookie field"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Outbound traffic using encoded payloads post-login"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Suspicious outbound HTTPS requests to domains flagged as newly registered or untrusted after spearphishing message interaction"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Inbound connections to 445, 3389, 5985-5986 with high error/connection-reset rate, followed by new outbound sessions from the same host to internal assets within short interval."
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Inbound connections to monitored service ports from external or unusual internal sources; rapid follow-on lateral connections from the same host."
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Inbound to tcp/427 (OpenSLP), tcp/443 (vSphere APIs), tcp/902, tcp/5989 followed by new unexpected outbound sessions from the ESXi/vCenter host."
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Inbound to 22/5900/8080 and follow-on internal connections."
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http: HTTP body or headers contain long Base64 sections; gzip/deflate + Base64"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http: HTTP body contains long Base64 sections"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http: Base64/MIME looking payloads from ESXi host IP"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "LDAP Bind/Search"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "LDAP Query"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream (subsystem: com.apple.system.networking)"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "smtp.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "smtp.log, conn.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "remote CLI session detection"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Encrypted connection with anomalous payload entropy"
+                },
+                {
+                    "name": "esxcli:network",
+                    "channel": "Socket sessions with randomized payloads inconsistent with TLS"
+                },
+                {
+                    "name": "NSM:Connections",
+                    "channel": "Symmetric encryption detected without TLS handshake sequence"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http.log, ftp.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "PCAP inspection"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "large HTTPS POST requests to webhook endpoints"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "HTTPS POST connections to webhook endpoints"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Single, low-volume inbound packet (REJ/S0/OTH or uncommon dport/protocol) from src_ip followed by outbound SF connection to src_ip."
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Rare inbound packet characteristics (ICMP/UDP/TCP to uncommon port) from src_ip followed \u2264TimeWindow by outbound SF from same host to src_ip."
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Inbound one-off packet to uncommon port \u2192 outbound SF to same src_ip within TimeWindow."
+                },
+                {
+                    "name": "networkdevice:config",
+                    "channel": "NAT table modification (add/update/delete rule)"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "large upload to firmware interface port or path"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Rapid incoming TLS handshakes or HTTP requests in quick succession"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http.request: HTTP requests and responses for specific script resources, unexpected content-types (application/octet-stream for script URLs), suspicious referrers, or obfuscated javascript resources"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http::response: HTTP responses with suspicious content-type for scripts, long obfuscated javascript bodies, or redirects to exploit kit domains"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "HTTP/HTTPS requests for script resources flagged by content inspection (excessive obfuscation, eval usage, unusual redirects)"
+                },
+                {
+                    "name": "NSM:Connections",
+                    "channel": "TLS handshake + HTTP headers"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ssl.log + http.log"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "network, socket, and http logs"
+                },
+                {
+                    "name": "NSM:Firewall",
+                    "channel": "TLS/HTTP inspection"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http/file-xfer: Outbound transfer of large video-like MIME types soon after capture"
+                },
+                {
+                    "name": "container:proxy",
+                    "channel": "outbound/inbound network activity from spawned pods"
+                },
+                {
+                    "name": "esxcli:network",
+                    "channel": "listening sockets bound to non-standard ports"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Outbound SCP, TFTP, or FTP sessions carrying configuration file content"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Session Transfer Content"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Captured File Content"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "C2 exfiltration"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Transferred file observations"
+                },
+                {
+                    "name": "apache:access_log",
+                    "channel": "Unusual HTTP POST or PUT requests to paths such as '/uploads/', '/admin/', or CMS plugin folders"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http::post: Outbound HTTP POST from host shortly after DB export activity"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "HTTPS API requests to Dropbox, iCloud, Google Drive, OneDrive shortly after DB tool usage"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Observed downgrade in negotiated cipher suites or TLS/SSH versions across sessions"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "New egress from container IP/namespace to Internet or non-approved CIDRs/ASNs"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "New VM egress to crypto-mining pools or non-approved Internet ranges within minutes of boot"
+                },
+                {
+                    "name": "docker:events",
+                    "channel": "remote API calls to /containers/create or /containers/{id}/start"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http::request: Network connection to package registry or C2 from interpreter shortly after install"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Integrity mismatch warnings or malformed packets detected"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http::request: Outbound HTTP initiated by Python interpreter"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "Outbound requests with forged tokens/cookies in headers"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "DNS response IPs followed by connections to non-standard calculated ports"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "DNS responses followed by connections to ports outside standard ranges"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Persistent outbound traffic to mining domains"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Encrypted session initiation by unexpected binary"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Inspection of sockets showing encrypted sessions from non-baseline processes"
+                },
+                {
+                    "name": "NSM:Connections",
+                    "channel": "Abnormal certificate chains or non-standard ports carrying TLS"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "DrsAddEntry, DrsReplicaAdd, GetNCChanges calls between non-DC and DCs."
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "large HTTPS POST requests to text storage domains"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "HTTPS POST connections to pastebin-like domains"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Unexpected ARP replies or DNS responses inconsistent with authoritative servers"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "TLS downgrade or inconsistent DNS answers"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Unusual request pattern leading up to service crash (e.g., malformed or oversized payload)"
+                },
+                {
+                    "name": "AWS:VPCFlowLogs",
+                    "channel": "Large volume of malformed or synthetic payloads to application endpoints prior to failure"
+                },
+                {
+                    "name": "networkconfig ",
+                    "channel": "interface flag PROMISC, netstat | ip link | ethtool"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "eventMessage = 'promiscuous'"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "config change (e.g., logging buffered, pcap buffers)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "outbound HTTPS connections to code repository APIs"
+                },
+                {
+                    "name": "azure:activity",
+                    "channel": "networkInsightsLogs"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "network.query*"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-Windows Defender/Operational",
+                    "channel": "Unusual external domain access"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "conn.log or http.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http: HTTP bodies/headers contain long tokens with non-standard alphabets or constant-size periodic POSTs"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "dns: DNS labels with excessive length and restricted custom alphabets (e.g., base36 only) repeated frequently"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http: suspicious long tokens with custom alphabets in body/headers"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http: HTTP bodies from ESXi host IPs containing long, non-standard tokens"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Traffic patterns showing downgrade from strong encryption (AES-256) to weaker or plaintext protocols"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "HTTP(S) requests with User-Agents typical of PowerShell or curl from desktop; or URIs matching paste-inspired payload hosts"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Egress to non-approved networks from host after terminal exec"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Flow/PCAP analysis for outbound payloads"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "conn.log + files.log + ssl.log"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "eventMessage = 'open', 'sendto', 'connect'"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "HTTPS or custom protocol traffic with large payloads"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "network stack module logs"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Unexpected script or binary content returned in HTTP response body"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Injected content responses with unexpected script/malware signatures"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Content injection observed in HTTPS responses with mismatched certificates or altered payloads"
+                },
+                {
+                    "name": "NSM:Firewall",
+                    "channel": "High rate of inbound TCP SYN or ACK packets with missing 3-way handshake completion"
+                },
+                {
+                    "name": "NSM:Firewall",
+                    "channel": "Anomalous TCP SYN or ACK spikes from specific source or interface"
+                },
+                {
+                    "name": "saas:confluence",
+                    "channel": "REST API access from non-browser agents"
+                },
+                {
+                    "name": "Netfilter/iptables",
+                    "channel": "Forwarded packets log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Relay patterns across IP hops"
+                },
+                {
+                    "name": "NSM:Firewall",
+                    "channel": "Outbound encrypted traffic"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ldap.log"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "dns-sd, mDNSResponder, socket activity"
+                },
+                {
+                    "name": "networkdevice:IDS",
+                    "channel": "content inspection / PCAP / HTTP body"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Probe responses from unauthorized APs responding to client probe requests"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "setsockopt, ioctl modifying ARP entries"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Excessive gratuitous ARP replies on local subnet"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Inbound HTTP POST with suspicious payload size or user-agent"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "POST requests to .php, .jsp, .aspx files with high entropy body"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "dns.log"
+                },
+                {
+                    "name": "NSM:FLow",
+                    "channel": "dns.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Encrypted tunnels or proxy traffic to non-standard destinations"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Suspicious traffic filtered or redirected by VM networking stack"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "large transfer from management IPs to unauthorized host"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Sustained abnormal inbound request rate targeting application ports (e.g., 80/443/25)"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ftp.log, smb_files.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ftp.log, conn.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "mirror/SPAN port"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ftp.log, conn.log, smb_files.log"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Multiple NXDOMAIN responses and high entropy domains"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "SSL/TLS Inspection or PCAP"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "conn.log, ssl.log"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process + network activity"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "http, dns, smb, ssl logs"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "dns, ssl, conn"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "conn.log, http.log, dns.log, ssl.log"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "Authentication failures, unexpected community string usage, or unauthorized SNMPv1/v2 requests"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ICMP/UDP traffic (Wireshark, Suricata, Zeek)"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "icmp.log, weird.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ICMP/UDP monitoring (tcpdump, Wireshark, Zeek)"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "VMCI syslog entries"
+                },
+                {
+                    "name": "NSM:Firewall",
+                    "channel": "ICMP/UDP protocol anomaly"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Unusual responses to LLMNR (UDP 5355) or NBT-NS (UDP 137) queries from unauthorized hosts"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "DHCP OFFER or ACK with unauthorized DNS/gateway parameters"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Multiple DHCP OFFER responses for a single DISCOVER"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "SSL/TLS Handshake Analysis"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "HTTP Header Metadata"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Network Capture TLS/HTTP"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "SSL Certificate Metadata"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "HTTP Header Metadata"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "TLS Fingerprint and Certificate Analysis"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "container egress to unknown IPs/domains"
+                },
+                {
+                    "name": "gcp:vpcflow",
+                    "channel": "first 5m egress to unknown ASNs"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "HTTP Request Logging"
+                },
+                {
+                    "name": "WinEventLog:iis",
+                    "channel": "IIS Logs"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem=com.apple.WebKit"
+                },
+                {
+                    "name": "AWS:VPCFlowLogs",
+                    "channel": "Unusual volume of data transferred from S3 storage endpoints to non-corporate IPs"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ssh connections originating from third-party CIDRs"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ssh/smb connections to internal resources from third-party devices"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Degraded encryption throughput or switch to weaker cipher suites compared to historical baselines"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ssl.log (for TLS handshake analysis), dns.log (tunneling indicators)"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "host switch egress data"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Outbound HTTP/S"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem: com.apple.WebKit or com.apple.WebKit.Networking"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ssl.log - Certificate Analysis"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ssl.log, conn.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "ssl.log, x509.log"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Packets with unusual flags or payloads outside established flows (e.g., WoL magic FF\u00d76 + 16\u00d7MAC)"
+                },
+                {
+                    "name": "WIDS:AssociationLogs",
+                    "channel": "Unauthorized AP or anomalous MAC address connection attempts"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "encrypted outbound traffic carrying unexpected application data"
+                },
+                {
+                    "name": "esxcli:network",
+                    "channel": "listening sockets bound with non-standard encapsulated protocols"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Persistent outbound connections with consistent periodicity"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "TLS connections with abnormal handshake sequence or self-signed cert"
+                },
+                {
+                    "name": "esxcli:network",
+                    "channel": "Socket inspection showing RSA key exchange outside baseline endpoints"
+                },
+                {
+                    "name": "IDS:TLSInspection",
+                    "channel": "Malformed certs, incomplete asymmetric handshakes, or invalid CAs"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Web server process initiating outbound TCP connections not tied to normal server traffic"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "outbound TLS connections to cloud storage providers"
+                },
+                {
+                    "name": "saas:box",
+                    "channel": "API calls exceeding baseline thresholds"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "outbound HTTPS connections to cloud storage APIs"
+                },
+                {
+                    "name": "AWS:VPCFlowLogs",
+                    "channel": "High volume internal-to-internal IP transfer or cross-account cloud transfer"
+                },
+                {
+                    "name": "etw:Microsoft-Windows-WinINet",
+                    "channel": "WinINet API telemetry"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process, network"
+                },
+                {
+                    "name": "NSM:Connections",
+                    "channel": "Unusual POST requests to admin or upload endpoints"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Suspicious POSTs to upload endpoints"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "Authentication failures or unusual community string usage in SNMP queries"
+                },
+                {
+                    "name": "API:ConfigRepoAudit",
+                    "channel": "Access to configuration repository endpoints, unusual enumeration requests or mass downloads"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Traffic on RPC DRSUAPI"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process = 'ssh' OR eventMessage CONTAINS 'ssh'"
+                }
+            ]
         }
     ]
 }

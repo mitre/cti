@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--8a21419a-b8b3-47e5-aa90-57a17b527645",
+    "id": "bundle--d1ac0963-fb06-4ead-be3c-e0b8f9595dcb",
     "spec_version": "2.0",
     "objects": [
         {
@@ -16,9 +16,19 @@
                     "external_id": "T1489"
                 },
                 {
+                    "source_name": "AWS DisableAWSServiceAccess",
+                    "description": "AWS. (n.d.). DisableAWSServiceAccess. Retrieved May 22, 2025.",
+                    "url": "https://docs.aws.amazon.com/organizations/latest/APIReference/API_DisableAWSServiceAccess.html"
+                },
+                {
                     "source_name": "SecureWorks WannaCry Analysis",
                     "description": "Counter Threat Unit Research Team. (2017, May 18). WCry Ransomware Analysis. Retrieved March 26, 2019.",
                     "url": "https://www.secureworks.com/research/wcry-ransomware-analysis"
+                },
+                {
+                    "source_name": "Datadog Security Labs Cloud Persistence 2025",
+                    "description": "Martin McCloskey. (2025, May 13). Tales from the cloud trenches: The Attacker doth persist too much, methinks. Retrieved May 22, 2025.",
+                    "url": "https://securitylabs.datadoghq.com/articles/tales-from-the-cloud-trenches-the-attacker-doth-persist-too-much/"
                 },
                 {
                     "source_name": "Talos Olympic Destroyer 2018",
@@ -39,41 +49,36 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:12.942Z",
+            "modified": "2025-10-24T17:48:30.688Z",
             "name": "Service Stop",
-            "description": "Adversaries may stop or disable services on a system to render those services unavailable to legitimate users. Stopping critical services or processes can inhibit or stop response to an incident or aid in the adversary's overall objectives to cause damage to the environment.(Citation: Talos Olympic Destroyer 2018)(Citation: Novetta Blockbuster) \n\nAdversaries may accomplish this by disabling individual services of high importance to an organization, such as <code>MSExchangeIS</code>, which will make Exchange content inaccessible.(Citation: Novetta Blockbuster) In some cases, adversaries may stop or disable many or all services to render systems unusable.(Citation: Talos Olympic Destroyer 2018) Services or processes may not allow for modification of their data stores while running. Adversaries may stop services or processes in order to conduct [Data Destruction](https://attack.mitre.org/techniques/T1485) or [Data Encrypted for Impact](https://attack.mitre.org/techniques/T1486) on the data stores of services like Exchange and SQL Server, or on virtual machines hosted on ESXi infrastructure.(Citation: SecureWorks WannaCry Analysis)(Citation: Crowdstrike Hypervisor Jackpotting Pt 2 2021)",
+            "description": "Adversaries may stop or disable services on a system to render those services unavailable to legitimate users. Stopping critical services or processes can inhibit or stop response to an incident or aid in the adversary's overall objectives to cause damage to the environment.(Citation: Talos Olympic Destroyer 2018)(Citation: Novetta Blockbuster) \n\nAdversaries may accomplish this by disabling individual services of high importance to an organization, such as <code>MSExchangeIS</code>, which will make Exchange content inaccessible.(Citation: Novetta Blockbuster) In some cases, adversaries may stop or disable many or all services to render systems unusable.(Citation: Talos Olympic Destroyer 2018) Services or processes may not allow for modification of their data stores while running. Adversaries may stop services or processes in order to conduct [Data Destruction](https://attack.mitre.org/techniques/T1485) or [Data Encrypted for Impact](https://attack.mitre.org/techniques/T1486) on the data stores of services like Exchange and SQL Server, or on virtual machines hosted on ESXi infrastructure.(Citation: SecureWorks WannaCry Analysis)(Citation: Crowdstrike Hypervisor Jackpotting Pt 2 2021)\n\nThreat actors may also disable or stop service in cloud environments. For example, by leveraging the `DisableAPIServiceAccess` API in AWS, a threat actor may prevent the service from creating service-linked roles on new accounts in the AWS Organization.(Citation: Datadog Security Labs Cloud Persistence 2025)(Citation: AWS DisableAWSServiceAccess)",
             "kill_chain_phases": [
                 {
                     "kill_chain_name": "mitre-attack",
                     "phase_name": "impact"
                 }
             ],
-            "x_mitre_attack_spec_version": "3.2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_contributors": [
+                "Liran Ravich, CardinalOps"
+            ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor processes and command-line arguments to see if critical processes are terminated or stop running.\n\nMonitor for edits for modifications to services and startup programs that correspond to services of high importance. Look for changes to services that do not correlate with known software, patch cycles, etc. Windows service information is stored in the Registry at <code>HKLM\\SYSTEM\\CurrentControlSet\\Services</code>. Systemd service unit files are stored within the /etc/systemd/system, /usr/lib/systemd/system/, and /home/.config/systemd/user/ directories, as well as associated symbolic links.\n\nAlterations to the service binary path or the service startup type changed to disabled may be suspicious.\n\nRemote access tools with built-in features may interact directly with the Windows API to perform these functions outside of typical system utilities. For example, <code>ChangeServiceConfigW</code> may be used by an adversary to prevent services from starting.(Citation: Talos Olympic Destroyer 2018)",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
             "x_mitre_is_subtechnique": false,
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
-                "Windows",
+                "ESXi",
+                "IaaS",
                 "Linux",
                 "macOS",
-                "ESXi"
+                "Windows"
             ],
-            "x_mitre_version": "1.3",
+            "x_mitre_version": "1.4",
             "x_mitre_impact_type": [
                 "Availability"
-            ],
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Process: Process Termination",
-                "Windows Registry: Windows Registry Key Modification",
-                "Command: Command Execution",
-                "File: File Modification",
-                "Process: OS API Execution",
-                "Service: Service Metadata"
             ]
         }
     ]

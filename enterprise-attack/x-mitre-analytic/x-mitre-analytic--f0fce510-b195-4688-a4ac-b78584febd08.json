@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--62941dfe-7da0-4ed6-ada8-26b4904bd8e1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--f0fce510-b195-4688-a4ac-b78584febd08",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0100#AN0277",
+                    "external_id": "AN0277"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0277",
+            "description": "Detects malicious injection behavior involving memory allocation, remote thread queuing via APC (e.g., QueueUserAPC), and altered thread context within another live process to execute unauthorized code under legitimate context.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d5fca4e4-e47a-487b-873f-3d22f8865e96",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=8"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "etw:Microsoft-Windows-Kernel-Process",
+                    "channel": "APCQueueOperations"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "APCTargetProcessList",
+                    "description": "Processes that are rarely or never valid targets for legitimate APC queuing (e.g., lsass.exe, winlogon.exe)"
+                },
+                {
+                    "field": "ThreadQueueDepthThreshold",
+                    "description": "The number of APCs queued within a short time window that could signal abuse"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Expected latency between memory allocation and thread execution through APC"
+                },
+                {
+                    "field": "UserContextSensitivity",
+                    "description": "Used to filter based on expected vs unexpected user to target process pairings"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

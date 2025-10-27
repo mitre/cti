@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--eb98636d-428f-4a6f-93d4-87af63f568ca",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--4eaeffc2-bdfa-427c-a009-daadee39457d",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0337#AN0953",
+                    "external_id": "AN0953"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0953",
+            "description": "Defenders can detect suspicious reversion of cloud compute instances by monitoring for unusual snapshot restores, rollback actions, or ephemeral storage resets that occur outside expected administrative workflows. From a defender\u2019s perspective, relevant detection chains include: a snapshot restore triggered by a new or rarely used account, a sequence of snapshot creation immediately followed by a restore and instance start, or rollbacks performed from anomalous geographic or network locations. These patterns may indicate attempts to remove forensic evidence or re-establish a clean execution state for persistence.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--45d0ff14-b9c4-41f5-8603-156657c20b75",
+                    "name": "AWS:CloudTrail",
+                    "channel": "RevertSnapshot"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f8213cde-6b3a-420d-9ab7-41c9af1a919f",
+                    "name": "AWS:CloudTrail",
+                    "channel": "StartInstances"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1361e324-b594-4c0e-a517-20cee32b8d7f",
+                    "name": "AWS:CloudTrail",
+                    "channel": "StopInstances"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "Identity of the user or service account performing rollback actions; tuned to exclude automation or approved workflows."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Threshold for correlating snapshot creation followed by reversion within minutes; tuned to environment activity norms."
+                },
+                {
+                    "field": "GeoLocation",
+                    "description": "Region or source IP where the revert request originated; tuned to align with enterprise cloud geography."
+                },
+                {
+                    "field": "ChangeTags",
+                    "description": "Use of administrative tags or headers to distinguish legitimate restores from malicious activity."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

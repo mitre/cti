@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--2bc369f7-29cd-48ad-8ecc-280a9a18f1d3",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--3651d7d0-dfc7-4b36-aaf2-4eb0eb39167d",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0024#AN0069",
+                    "external_id": "AN0069"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0069",
+            "description": "Detects unauthorized access, copying, or modification of Kerberos ccache files (krb5cc_%UID% or krb5.ccache) in /tmp or custom paths defined by KRB5CCNAME. Correlates file access with suspicious processes (e.g., credential dumping tools) and subsequent anomalous Kerberos authentication requests from non-standard processes.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open: File access attempt on /tmp/krb5cc_* or /tmp/krb5.ccache"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of klist, kinit, or tools interacting with ccache outside normal user context"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "CcachePathBaseline",
+                    "description": "Expected directories or environment variable (KRB5CCNAME) paths for ccache files in the environment."
+                },
+                {
+                    "field": "AllowedProcesses",
+                    "description": "Baseline list of processes legitimately interacting with ccache (e.g., klist, kinit)."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window for linking file access, process execution, and Kerberos requests."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

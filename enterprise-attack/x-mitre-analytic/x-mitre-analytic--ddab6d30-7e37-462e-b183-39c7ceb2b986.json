@@ -1,0 +1,63 @@
+{
+    "type": "bundle",
+    "id": "bundle--f998fcf3-b111-4d57-a1d8-35ac7f107f01",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--ddab6d30-7e37-462e-b183-39c7ceb2b986",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0080#AN0221",
+                    "external_id": "AN0221"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0221",
+            "description": "Adversary targets macOS-hosted public services (e.g., nginx, node). Chain: suspicious inbound request \u2192 service crash/5xx \u2192 service spawns shell or writes file \u2192 new outbound connection.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "macos:unifiedlog",
+                    "channel": "App/web server logs ingested via unified logging or filebeat (nginx/apache/node)."
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "exec events where web process starts a shell/tooling"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "outbound egress from web host after suspicious request"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ServiceList",
+                    "description": "Names/paths of public daemons on macOS (httpd, nginx, node, java)."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window for request \u2192 exec \u2192 egress."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

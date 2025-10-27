@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--f860ef55-9b61-45cd-aa21-ca10d7484367",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--67ff7cc5-7b9b-4d15-b115-b55c3d164c64",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0220#AN0616",
+                    "external_id": "AN0616"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0616",
+            "description": "Detects USB device insertion followed by high-volume or sensitive file access and staging activity by suspicious processes or accounts.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4663"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d6e6b3b-4aa8-40e1-8c47-91db0f313d9f",
+                    "name": "WinEventLog:System",
+                    "channel": "EventCode=2003"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "SensitiveFilePathRegex",
+                    "description": "Match data staging or export paths (e.g., *.docx, *.csv, *.db) to USB volume letters."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Limit to users who do not normally use removable devices (e.g., service accounts)."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate events within a short period following USB insert (e.g., 5\u201310 minutes)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

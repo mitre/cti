@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--d1b67abe-0871-4116-9593-adbd9c18787d",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--1a93a610-7389-4ea7-a053-e99d35a5477a",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0133#AN0377",
+                    "external_id": "AN0377"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0377",
+            "description": "Detection of JetBrains or VSCode tunnel profile creation followed by unusual persistent SSH or IDE-based tunnel communications to devtunnel APIs.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "process: code or jetbrains-gateway launching with --tunnel or --remote"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "macos:unifiedlog",
+                    "channel": "creation of ~/.vscode-cli/code_tunnel.json"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "NSM:Flow",
+                    "channel": "HTTPs connection to tunnels.api.visualstudio.com"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ParentProcessName",
+                    "description": "Helps scope tunnel launch context to non-interactive or suspicious parent processes."
+                },
+                {
+                    "field": "RemoteTunnelPersistence",
+                    "description": "Allows tracking of tunnel re-establishment across reboots for persistence."
+                },
+                {
+                    "field": "RemoteFlag",
+                    "description": "May include values like --remote, -R, or embedded ssh arguments passed by IDEs"
+                },
+                {
+                    "field": "LaunchAgentPath",
+                    "description": "If the IDE uses persistence via LaunchAgents, defenders may choose where to monitor for tunnel auto-launching"
+                },
+                {
+                    "field": "TunnelReconnectInterval",
+                    "description": "Frequency of retry attempts for tunnel reconnection can affect correlation window"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--2a8431dc-3bbf-427b-b167-d592fbf1ac3e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--b6f88f17-e80f-4c75-99a5-f752880196aa",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0309#AN0863",
+                    "external_id": "AN0863"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0863",
+            "description": "A compromised package/update (deb/rpm/tarball/AppImage/vendor updater) is installed, writing/overwriting files in /usr/local/bin, /usr/bin, /opt, or ~/.local; first run executes unexpected shells/curl/wget and connects to unapproved hosts. Correlate package/updater execution \u2192 file writes/replace \u2192 first-run child processes \u2192 egress.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "journald:package",
+                    "channel": "dpkg/apt/yum/dnf transaction logs; vendor updaters in systemd journals"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "New outbound flows to non-approved vendor hosts post install"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "PathScope",
+                    "description": "Monitored install paths (/usr/local, /usr/bin, /opt/*, ~/.local/bin, /var/lib/systemd)."
+                },
+                {
+                    "field": "ApprovedRepos",
+                    "description": "Allow-listed APT/YUM repos and GPG keys for vendor updates."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Default 90 minutes."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

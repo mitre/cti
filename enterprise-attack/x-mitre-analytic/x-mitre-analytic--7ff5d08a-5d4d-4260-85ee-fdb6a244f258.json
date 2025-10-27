@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--9b100cef-db3c-4a27-a7f3-5269e4e82944",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--7ff5d08a-5d4d-4260-85ee-fdb6a244f258",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0307#AN0857",
+                    "external_id": "AN0857"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0857",
+            "description": "File reads or process executions involving insecurely stored credential files (e.g., config files with password fields) by non-root or anomalous users followed by ssh authentication attempts.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open/read of sensitive config or secret files"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:EXECVE",
+                    "channel": "grep/cat/awk on files with password fields"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "linux:syslog",
+                    "channel": "authentication success after file access"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "RegexPatterns",
+                    "description": "Patterns like password, secret, token can be expanded or customized"
+                },
+                {
+                    "field": "UserContextScope",
+                    "description": "Scope of users monitored (e.g., root vs all users)"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Time between suspicious file access and credential use"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

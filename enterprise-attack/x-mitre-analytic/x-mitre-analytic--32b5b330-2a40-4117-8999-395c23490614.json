@@ -1,0 +1,77 @@
+{
+    "type": "bundle",
+    "id": "bundle--fe9cb73e-9519-4722-9174-6d0f25ac1e3d",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--32b5b330-2a40-4117-8999-395c23490614",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0176#AN0499",
+                    "external_id": "AN0499"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0499",
+            "description": "Correlated evidence of browser or webview fetches to uncommon domains or mutated JS resources (proxy/NGFW logs + Zeek/HTTP logs) followed by unexpected interpreters or script engines executing (python, ruby, sh) spawned from browser processes or user sessions, rapid on-disk staging in /tmp, and outbound connections that deviate from baseline. Defender sees: uncommon resource fetch \u2192 short-lived child process executions from user browser context \u2192 file writes in temp directories \u2192 anomalous outbound C2-like connections.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: execve calls where a browser/webview process is parent and child is interpreter (python, sh, ruby) or downloader (curl, wget)"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "linux:syslog",
+                    "channel": "Application or browser logs (webview errors, plugin enumerations) indicating suspicious script evaluation or plugin loads"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "http::response: HTTP responses with suspicious content-type for scripts, long obfuscated javascript bodies, or redirects to exploit kit domains"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "linux:Sysmon",
+                    "channel": "New files in /tmp, /var/tmp, $HOME/.cache, executed within TimeWindow after browser HTTP fetch"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "NSM:Connections",
+                    "channel": "Outbound connections from newly spawned child processes or from the browser to uncommon endpoints or on anomalous ports"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TempPathPatterns",
+                    "description": "Paths used for staging differ by distro and package manager; tune to include company-specific temp paths or exclude known benign build machines."
+                },
+                {
+                    "field": "UserShellWhitelist",
+                    "description": "Whitelist known server/service accounts or CI/CD runners where shell executions are expected."
+                },
+                {
+                    "field": "DomainRarityThreshold",
+                    "description": "Threshold for flagging domains based on internal popularity vs global rarity."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

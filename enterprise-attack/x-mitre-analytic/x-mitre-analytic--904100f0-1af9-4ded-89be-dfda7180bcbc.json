@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--dadd3c80-c8d6-47fa-8015-b078a86fba5a",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--904100f0-1af9-4ded-89be-dfda7180bcbc",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0124#AN0346",
+                    "external_id": "AN0346"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0346",
+            "description": "Shell/utility (base64, xxd -p, od, openssl enc -base64, python/perl base64 libraries) encodes data \u2192 subsequent outbound connections (curl/wget/bash TCP, socat, python requests) with high asymmetry or Base64/MIME blobs in HTTP/DNS payloads.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of base64|openssl|xxd|python|perl with arguments matching Base64 flags"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "http: HTTP body or headers contain long Base64 sections; gzip/deflate + Base64"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "EncodingToolsAllowList",
+                    "description": "Build/backup jobs that legitimately call base64/openssl."
+                },
+                {
+                    "field": "EntropyThreshold",
+                    "description": "Shannon entropy for payloads (e.g., >4.5)."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Join window between exec and egress (default 10m)."
+                },
+                {
+                    "field": "OutInRatio",
+                    "description": "Bytes_out / bytes_in threshold (default 4)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

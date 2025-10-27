@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--ec5ef945-8619-48c0-bc69-11cabff33bc6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--3154acf3-a5df-40bd-b4bc-3a210b6e5e0e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0176#AN0501",
+                    "external_id": "AN0501"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0501",
+            "description": "Post-compromise identity & session anomalies that follow a drive-by compromise: token reuse from new/unfamiliar IPs, anomalous sign-in patterns for previously inactive users, unexpected consent/grant events, or provisioning changes. Defender sees an endpoint/browser compromise (network + endpoint signals) followed by unusual IdP events: new refresh token issuance, consent/consent-grant events, odd MFA bypass patterns, or unusual OAuth client registrations.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Identity Provider"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a953ca55-921a-44f7-9b8d-3d40141aa17e",
+                    "name": "azure:signinlogs",
+                    "channel": "SignIn: Sign-ins flagged as atypical (new geographic region, unfamiliar device id) shortly after correlated endpoint/browser compromise times"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "m365:unified",
+                    "channel": "Application Consent grants, new OAuth client registrations, or unusual admin-level activities executed by a user account shortly after suspected drive-by compromise"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5d0492b-cda4-421c-8e51-ed2b8d85c5d0",
+                    "name": "saas:auth",
+                    "channel": "Refresh token issuance or refresh token usage from new IPs or user agents"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "AWS:CloudTrail",
+                    "channel": "ConsoleLogin: If IdP backed by cloud provider, Console login from new IP/agent after correlated endpoint compromise"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "IdpAlertWindow",
+                    "description": "Time window to correlate IdP events to endpoint compromise alerts (default 30 minutes to 2 hours)."
+                },
+                {
+                    "field": "HighRiskCountryList",
+                    "description": "List of countries/IP zones considered high risk for sign-ins; used to tune geo-anomalies."
+                },
+                {
+                    "field": "DeviceTrustLevel",
+                    "description": "Device trust scoring thresholds that influence whether a sign-in is considered suspicious."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

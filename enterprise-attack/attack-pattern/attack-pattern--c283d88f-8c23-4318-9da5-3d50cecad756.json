@@ -1,0 +1,69 @@
+{
+    "type": "bundle",
+    "id": "bundle--ee83524d-00f0-46bb-8cdd-660a62cc4d6a",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--c283d88f-8c23-4318-9da5-3d50cecad756",
+            "created": "2025-06-15T21:41:27.262Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1059/013",
+                    "external_id": "T1059.013"
+                },
+                {
+                    "source_name": "Docker Desktop CLI",
+                    "description": "dockerdocs. (n.d.). Use the Docker Desktop CLI. Retrieved October 21, 2025.",
+                    "url": "https://docs.docker.com/desktop/features/desktop-cli/"
+                },
+                {
+                    "source_name": "Cisco Talos Blog",
+                    "description": "Jaeson Schultz, Darin Smith. (2022, April 21). TeamTNT Targeting AWS, Alibaba. Retrieved June 15, 2025.",
+                    "url": "https://blog.talosintelligence.com/teamtnt-targeting-aws-alibaba-2/"
+                },
+                {
+                    "source_name": "Intezer",
+                    "description": "Nicole Fishbein. (2020, July 28). Watch Your Containers: Doki Infecting Docker Servers in the Cloud. Retrieved June 15, 2025.",
+                    "url": "https://intezer.com/blog/watch-your-containers-doki-infecting-docker-servers-in-the-cloud/"
+                },
+                {
+                    "source_name": "aquasec",
+                    "description": "Ofek Itach, Assaf Morag. (2023, July 13). TeamTNT Reemerged with New Aggressive Cloud Campaign. Retrieved June 15, 2025.",
+                    "url": "https://www.aquasec.com/blog/teamtnt-reemerged-with-new-aggressive-cloud-campaign/"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T23:52:40.200Z",
+            "name": "Container CLI/API",
+            "description": "Adversaries may abuse built-in CLI tools or API calls to execute malicious commands in containerized environments.\n\nThe Docker CLI is used for managing containers via an exposed API point from the `dockerd` daemon. Some common examples of Docker CLI include Docker Desktop CLI and Docker Compose, but users are also able to use SDKs to interact with the API. For example, Docker SDK for Python can be used to run commands within a Python application.(Citation: Docker Desktop CLI)\n\nAdversaries may leverage the Docker CLI, API, or SDK to pull or build Docker images (i.e., [Ingress Tool Transfer](https://attack.mitre.org/techniques/T1105), [Build Image on Host](https://attack.mitre.org/techniques/T1612)), run containers (i.e., [Deploy Container](https://attack.mitre.org/techniques/T1610)), or execute commands inside running containers (i.e., [Container Administration Command](https://attack.mitre.org/techniques/T1609)). In some cases, threat actors may pull legitimate images that include scripts or tools that they can leverage - for example, using an image that includes the `curl` command to download payloads.(Citation: Intezer) Adversaries may also utilize `docker inspect` and `docker ps` to scan for cloud environment variables and other running containers (i.e., [Container and Resource Discovery](https://attack.mitre.org/techniques/T1613)).(Citation: Cisco Talos Blog)(Citation: aquasec)\n\nKubernetes is responsible for the management and orchestration of containers across clusters. The Kubernetes control plane, which manages the state of the cluster and is responsible for scheduling, communication, and resource monitoring, can be invoked directly via the API or indirectly via CLI tools such as `kubectl`. It may also be accessed within client libraries such as Go or Python. By utilizing the API, administrators can interact with resources within the cluster such as listing or creating pods, which is a group of one or more containers. Adversaries call the API server via `curl` or other tools, allowing them to obtain further information about the environment such as pods, deployments, daemonsets, namespaces, or sysvars.(Citation: aquasec) They may also run various commands regarding resource management.",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "execution"
+                }
+            ],
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_contributors": [
+                "Liran Ravich, CardinalOps"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": true,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_remote_support": false
+        }
+    ]
+}

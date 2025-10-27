@@ -1,0 +1,81 @@
+{
+    "type": "bundle",
+    "id": "bundle--15b53dd8-519d-43a7-bfab-041712179f1f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--a6b1e74e-6c05-4d9f-928c-63ddf558798b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0537#AN1480",
+                    "external_id": "AN1480"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1480",
+            "description": "1) New or updated software is delivered/installed from atypical sources or with signature/hash mismatches; 2) installer/updater writes binaries to unexpected paths or replaces existing signed files; 3) first run causes unsigned/abnormally signed modules to load or child processes to execute, optionally followed by network egress to new destinations.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "WinEventLog:Microsoft-Windows-CodeIntegrity/Operational",
+                    "channel": "CodeIntegrity reports 'Invalid image hash' or 'Unsigned image' for new/updated binaries"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "First-time egress from host after new install to unknown update endpoints"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window between install events and first-run activity (default 2h; adjust for staged rollouts)."
+                },
+                {
+                    "field": "TrustedPublishers",
+                    "description": "Publisher/Signer allow-list to suppress expected updates."
+                },
+                {
+                    "field": "TrustedUpdateHosts",
+                    "description": "Known update CDNs/APIs (e.g., download.microsoft.com) to reduce egress false positives."
+                },
+                {
+                    "field": "RiskScoreThreshold",
+                    "description": "Score cut-off for alerting when combining path, signer, and reputation features."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

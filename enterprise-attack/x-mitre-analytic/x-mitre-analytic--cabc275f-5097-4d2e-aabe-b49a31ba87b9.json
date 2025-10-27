@@ -1,0 +1,63 @@
+{
+    "type": "bundle",
+    "id": "bundle--bac8ec62-e6c0-458a-ac39-7947f068f677",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--cabc275f-5097-4d2e-aabe-b49a31ba87b9",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0353#AN1003",
+                    "external_id": "AN1003"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1003",
+            "description": "User creation or modification via dscl with IsHidden=1, UID<500, or plist edits to com.apple.loginwindow Hide500Users flag. Defender view: correlation of hidden account attributes with login screen exclusion.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of dscl . create with IsHidden=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "macos:unifiedlog",
+                    "channel": "Modification of /Library/Preferences/com.apple.loginwindow plist"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5d0492b-cda4-421c-8e51-ed2b8d85c5d0",
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of user account with UID <500"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UIDThreshold",
+                    "description": "Tune detection based on acceptable UID ranges for hidden/system accounts."
+                },
+                {
+                    "field": "PlistScope",
+                    "description": "Restrict plist monitoring to com.apple.loginwindow to reduce false positives."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

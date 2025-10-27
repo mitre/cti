@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--d767e671-019e-4aa7-8574-d3a087a92a9a",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--d8d5a1c0-9ba1-4735-af42-3d5b9d7a6603",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0545#AN1502",
+                    "external_id": "AN1502"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1502",
+            "description": "Monitor for suspicious use of cloud-native administrative command services (e.g., AWS Systems Manager Run Command, Azure RunCommand, GCP OS Config) to execute code inside VMs. Detect anomalies such as commands/scripts executed by unexpected users, execution outside of maintenance windows, or commands initiated by service accounts not normally tied to administration. Correlate cloud control-plane activity logs with host-level execution (process creation, script execution) to validate if commands materialized inside the guest OS.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "AWS:CloudTrail",
+                    "channel": "SendCommand, StartSession, ExecuteCommand: Unexpected AWS Systems Manager command execution targeting EC2 instances"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9f387817-df83-432a-b56b-a8fb7f71eedd",
+                    "name": "azure:activity",
+                    "channel": "Microsoft.Compute/virtualMachines/runCommand/action: Abnormal initiation of Azure RunCommand jobs or PowerShell/Bash payloads"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "azure:vmguest",
+                    "channel": "Unexpected execution of cloud agent processes (e.g., WindowsAzureGuestAgent.exe, ssm-agent) followed by arbitrary script or binary execution"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "Differentiate between known admin/service accounts and non-administrative users triggering RunCommand or SSM."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate cloud control-plane API calls with host-side execution events within a bounded timeframe (e.g., 5 minutes)."
+                },
+                {
+                    "field": "AllowedScripts",
+                    "description": "Whitelist approved scripts or automation invoked via RunCommand to reduce false positives."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

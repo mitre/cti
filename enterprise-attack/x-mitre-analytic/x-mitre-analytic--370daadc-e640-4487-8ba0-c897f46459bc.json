@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--a8034516-5596-4954-94bf-7c84f59ec568",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--370daadc-e640-4487-8ba0-c897f46459bc",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0569#AN1570",
+                    "external_id": "AN1570"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1570",
+            "description": "Defenders may observe adversary attempts to downgrade system images by monitoring for anomalous file transfers of OS image files (via TFTP, FTP, SCP), configuration changes pointing boot system variables to older image files, unexpected OS version strings after reboot, and checksum mismatches against approved baseline images. Suspicious chains include transfer of an older image, alteration of boot configuration, and reboot/reload of the device. Adversaries may also tamper with CLI output to disguise downgrade attempts, requiring independent validation of OS version and integrity.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Network Devices"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "networkdevice:cli",
+                    "channel": "Execution of commands such as 'copy tftp flash', 'boot system <image>', 'reload'"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "networkdevice:config",
+                    "channel": "Configuration changes referencing older image versions or unexpected boot parameters"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "networkdevice:syslog",
+                    "channel": "OS version query results inconsistent with expected or approved version list"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ApprovedFirmwareVersions",
+                    "description": "Whitelist of supported and validated OS versions for devices; helps reduce false positives."
+                },
+                {
+                    "field": "ChecksumBaseline",
+                    "description": "Baseline cryptographic hashes of valid OS images; deviations indicate possible downgrade or tampering."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation period to detect the chain of file transfer \u2192 boot config change \u2192 reboot event."
+                },
+                {
+                    "field": "AuthorizedAdminAccounts",
+                    "description": "Accounts authorized to perform OS upgrades/downgrades; anomalies suggest misuse or compromise."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

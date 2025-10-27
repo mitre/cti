@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--333ec72e-3e3c-4b8b-a845-f6d0fa5d2878",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--312f9f86-b987-483c-8b1d-955415eea946",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0489#AN1351",
+                    "external_id": "AN1351"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1351",
+            "description": "A process explicitly forges its parent using EXTENDED_STARTUPINFO + PROC_THREAD_ATTRIBUTE_PARENT_PROCESS (UpdateProcThreadAttribute \u2192 CreateProcess[A/W]/CreateProcessAsUserW) or other Native API paths, resulting in **mismatched/implausible lineage** across ETW EventHeader ProcessId, Security 4688 Creator Process ID/Name, and sysmon ParentProcessGuid. Often paired with privilege escalation when the chosen parent runs as SYSTEM.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "etw:Microsoft-Windows-Kernel-Process",
+                    "channel": "api_call: UpdateProcThreadAttribute (PROC_THREAD_ATTRIBUTE_PARENT_PROCESS) and CreateProcess* with EXTENDED_STARTUPINFO_PRESENT / StartupInfoEx"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--ee575f4a-2d4f-48f6-b18b-89067760adc1",
+                    "name": "etw:Microsoft-Windows-Kernel-Process",
+                    "channel": "process_start: EventHeader.ProcessId true parent vs reported PPID mismatch"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window between UpdateProcThreadAttribute/CreateProcess* and the resulting process (default 5\u201310 minutes)."
+                },
+                {
+                    "field": "AllowedSpoofers",
+                    "description": "Legitimate binaries that commonly use StartupInfoEx/PPID assignment (e.g., consent.exe, svchost.exe during UAC)."
+                },
+                {
+                    "field": "ParentPrivilegeDeltaThreshold",
+                    "description": "Minimum privilege/integrity gap between chosen parent and real caller to raise severity."
+                },
+                {
+                    "field": "LineageMismatchTolerance",
+                    "description": "Number of mismatched sources (0\u20133) before alerting to reduce noise."
+                },
+                {
+                    "field": "SensitiveParents",
+                    "description": "List of SYSTEM parents that, if spoofed, auto\u2011escalate severity (e.g., lsass.exe, services.exe, wininit.exe)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

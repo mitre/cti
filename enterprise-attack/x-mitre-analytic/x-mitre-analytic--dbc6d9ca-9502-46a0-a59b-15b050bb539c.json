@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--531fdf4d-4793-4547-91a1-419fd73c7d5c",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--dbc6d9ca-9502-46a0-a59b-15b050bb539c",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0088#AN0240",
+                    "external_id": "AN0240"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0240",
+            "description": "Defender observes execution of commands like `tasklist`, `sc query`, `reg query`, or PowerShell WMI/Registry queries targeting known backup products (e.g., Veeam, Acronis, CrashPlan). Behavior often includes parent-child lineage involving PowerShell or cmd.exe with discovery syntax, and enumeration of services, directories, or registry paths tied to backup software.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "KnownBackupVendors",
+                    "description": "List of software vendors to match in command-line or registry queries"
+                },
+                {
+                    "field": "UserContextScope",
+                    "description": "Focus on low-privilege or interactive user contexts rather than service accounts"
+                },
+                {
+                    "field": "SuspiciousParentProcesses",
+                    "description": "Flag execution from scripting tools, interpreters, or LOLBins"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

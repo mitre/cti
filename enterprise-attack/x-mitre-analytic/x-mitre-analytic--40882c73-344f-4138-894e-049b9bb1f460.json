@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--7168b518-3e04-4e58-b4ec-02b47ad79be3",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--40882c73-344f-4138-894e-049b9bb1f460",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0271#AN0757",
+                    "external_id": "AN0757"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0757",
+            "description": "Detects anomalous process access to LSASS on domain controllers, suspicious module loads of authentication DLLs, and registry or file modifications indicative of Skeleton Key\u2013style patching. Correlates LSASS access attempts with subsequent abnormal logon activity patterns.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4624"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "WinEventLog:System",
+                    "channel": "Unexpected modification to lsass.exe or cryptdll.dll"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "MonitoredDLLs",
+                    "description": "Specific authentication DLLs such as cryptdll.dll and samsrv.dll monitored for tampering."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window between LSASS memory access, module load, and suspicious logons."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Baseline expected accounts performing domain controller logon operations."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

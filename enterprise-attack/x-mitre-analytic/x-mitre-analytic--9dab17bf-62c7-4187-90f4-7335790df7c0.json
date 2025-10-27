@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--8e47a515-e9a7-4b42-a2b4-898503581257",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--9dab17bf-62c7-4187-90f4-7335790df7c0",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0477#AN1313",
+                    "external_id": "AN1313"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1313",
+            "description": "Adversaries using WinRM to remotely execute commands, launch child processes, or access WMI. The detection chain includes service use, network activity, remote session logon, and process creation within a short temporal window.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4624"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--74fa567d-bc90-425c-8a41-3c703abb221c",
+                    "name": "WinEventLog:WinRM",
+                    "channel": "EventCode=6"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Connections",
+                    "channel": "Inbound on ports 5985/5986"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Defines max time between remote shell creation and child process execution (e.g., 60 seconds)"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Scope to unexpected remote user logons (non-admins, service accounts)"
+                },
+                {
+                    "field": "CommandLineAnomalyScore",
+                    "description": "Score for suspicious command usage via WinRM (e.g., encoded PowerShell)"
+                },
+                {
+                    "field": "KnownAdminHosts",
+                    "description": "List of trusted systems allowed to use WinRM legitimately"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--3819fcdd-1ccb-4725-ad7e-500a7e5fabdb",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--86dbac4c-1cba-4056-84a1-604eefbb11ac",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0154#AN0441",
+                    "external_id": "AN0441"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0441",
+            "description": "Unusual screensaver (.scr) executions correlated with recent registry modifications to HKCU\\Control Panel\\Desktop values such as SCRNSAVE.exe, ScreenSaveTimeout, and ScreenSaveActive. Detection focuses on PE image paths not consistent with known legitimate screensavers and triggered after user inactivity timeout.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Adjust the user inactivity threshold that defines 'screensaver trigger window'; shorter timeouts may increase sensitivity."
+                },
+                {
+                    "field": "SuspiciousPathRegex",
+                    "description": "Allow tuning based on expected paths for legitimate .scr files vs suspicious locations (e.g., user temp directories)."
+                },
+                {
+                    "field": "ParentProcessAllowList",
+                    "description": "Allowlisting known legitimate initiators of .scr files (e.g., user32.dll context) to reduce false positives."
+                },
+                {
+                    "field": "RegistryEditorProcessName",
+                    "description": "Monitor for registry modification performed by unusual processes (e.g., powershell.exe, reg.exe)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

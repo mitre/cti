@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--f6aa4262-164e-4624-9663-dfe38ef35f65",
+    "id": "bundle--39e58430-5135-4a22-82af-dffdeb54b097",
     "spec_version": "2.0",
     "objects": [
         {
@@ -54,7 +54,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:23.309Z",
+            "modified": "2025-10-24T17:48:39.884Z",
             "name": "AS-REP Roasting",
             "description": "Adversaries may reveal credentials of accounts that have disabled Kerberos preauthentication by [Password Cracking](https://attack.mitre.org/techniques/T1110/002) Kerberos messages.(Citation: Harmj0y Roasting AS-REPs Jan 2017) \n\nPreauthentication offers protection against offline [Password Cracking](https://attack.mitre.org/techniques/T1110/002). When enabled, a user requesting access to a resource initiates communication with the Domain Controller (DC) by sending an Authentication Server Request (AS-REQ) message with a timestamp that is encrypted with the hash of their password. If and only if the DC is able to successfully decrypt the timestamp with the hash of the user\u2019s password, it will then send an Authentication Server Response (AS-REP) message that contains the Ticket Granting Ticket (TGT) to the user. Part of the AS-REP message is signed with the user\u2019s password.(Citation: Microsoft Kerberos Preauth 2014)\n\nFor each account found without preauthentication, an adversary may send an AS-REQ message without the encrypted timestamp and receive an AS-REP message with TGT data which may be encrypted with an insecure algorithm such as RC4. The recovered encrypted data may be vulnerable to offline [Password Cracking](https://attack.mitre.org/techniques/T1110/002) attacks similarly to [Kerberoasting](https://attack.mitre.org/techniques/T1558/003) and expose plaintext credentials. (Citation: Harmj0y Roasting AS-REPs Jan 2017)(Citation: Stealthbits Cracking AS-REP Roasting Jun 2019) \n\nAn account registered to a domain, with or without special privileges, can be abused to list all domain accounts that have preauthentication disabled by utilizing Windows tools like [PowerShell](https://attack.mitre.org/techniques/T1059/001) with an LDAP filter. Alternatively, the adversary may send an AS-REQ message for each user. If the DC responds without errors, the account does not require preauthentication and the AS-REP message will already contain the encrypted data. (Citation: Harmj0y Roasting AS-REPs Jan 2017)(Citation: Stealthbits Cracking AS-REP Roasting Jun 2019)\n\nCracked hashes may enable [Persistence](https://attack.mitre.org/tactics/TA0003), [Privilege Escalation](https://attack.mitre.org/tactics/TA0004), and [Lateral Movement](https://attack.mitre.org/tactics/TA0008) via access to [Valid Accounts](https://attack.mitre.org/techniques/T1078).(Citation: SANS Attacking Kerberos Nov 2014)",
             "kill_chain_phases": [
@@ -72,7 +72,7 @@
                 "Dan Nutting, @KerberToast"
             ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Enable Audit Kerberos Service Ticket Operations to log Kerberos TGS service ticket requests. Particularly investigate irregular patterns of activity (ex: accounts making numerous requests, Event ID 4768 and 4769, within a small time frame, especially if they also request RC4 encryption [Type 0x17], pre-authentication not required [Type: 0x0]).(Citation: AdSecurity Cracking Kerberos Dec 2015)(Citation: Microsoft Detecting Kerberoasting Feb 2018)(Citation: Microsoft 4768 TGT 2017)",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -81,10 +81,7 @@
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_version": "1.2",
-            "x_mitre_data_sources": [
-                "Active Directory: Active Directory Credential Request"
-            ]
+            "x_mitre_version": "1.2"
         }
     ]
 }

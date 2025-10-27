@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--e6531f4e-29d8-4fb8-92e7-a87fb7763f62",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c8a50f3f-105a-4107-9781-a3d75479e93d",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0291#AN0808",
+                    "external_id": "AN0808"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0808",
+            "description": "Detects web console login events followed by read-only or metadata retrieval activity from GUI sources (e.g., browser session, mobile client) rather than API/CLI sources. Correlates across CloudTrail, IAM identity logs, and user-agent context.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "AWS:CloudTrail",
+                    "channel": "ConsoleLogin"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--e214eb6d-de8f-4154-9015-6d47915fbed1",
+                    "name": "AWS:CloudTrail",
+                    "channel": "Post-authentication metadata enumeration from GUI session"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserAgentFilter",
+                    "description": "Allowlist/denylist of user agents to distinguish browser-based vs. CLI/API sessions"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Maximum time delta between login and suspicious GUI activity"
+                },
+                {
+                    "field": "PrivilegedSessionThreshold",
+                    "description": "Login attempts to dashboard using elevated IAM roles"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

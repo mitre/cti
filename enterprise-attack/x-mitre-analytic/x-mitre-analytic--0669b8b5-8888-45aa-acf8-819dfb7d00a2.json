@@ -1,0 +1,81 @@
+{
+    "type": "bundle",
+    "id": "bundle--70537fbb-01a7-47c7-ba15-9f48de3912aa",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--0669b8b5-8888-45aa-acf8-819dfb7d00a2",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0299#AN0834",
+                    "external_id": "AN0834"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0834",
+            "description": "Sequential behavioral chain of privilege escalation through permission modification: (1) Process creation of permission-modifying utilities (icacls, takeown, attrib, cacls), (2) Correlation with unusual user context or timing, (3) DACL modification events targeting sensitive files/directories, (4) Subsequent file access or modification attempts indicating successful privilege bypass",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4670"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5b8b466b-2c81-4fe7-946f-d677a74ae3db",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4663"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4103,4104"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Temporal correlation window for linking permission modification with subsequent access attempts (default: 300 seconds)"
+                },
+                {
+                    "field": "SensitivePathList",
+                    "description": "Environment-specific critical file and directory paths requiring permission change monitoring"
+                },
+                {
+                    "field": "TrustedUserContext",
+                    "description": "Administrative accounts authorized to perform legitimate permission modifications"
+                },
+                {
+                    "field": "BusinessHoursThreshold",
+                    "description": "Time-based threshold for elevated alerting on permission changes outside business hours"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--bd4bcdfa-28b6-4ad2-9b6b-fb2400b8a5c1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--8d75d4b3-6748-4d1c-936c-129ee56a12a5",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0067#AN0181",
+                    "external_id": "AN0181"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0181",
+            "description": "Execution of processes using nohup or shell redirection to ignore SIGHUP and continue running after session termination. Defender perspective: correlation between commands including nohup, disowned jobs, or `&` suffix with continued process execution after parent terminal exit.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve call including 'nohup' or trailing '&'"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "process persists beyond parent shell termination"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "IgnoredSignals",
+                    "description": "Specific signals to monitor (e.g., SIGHUP, SIGINT) depending on environment baseline."
+                },
+                {
+                    "field": "ProcessLifetimeThreshold",
+                    "description": "Duration a process continues running after session logout, adjustable to reduce noise from benign long-lived jobs."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

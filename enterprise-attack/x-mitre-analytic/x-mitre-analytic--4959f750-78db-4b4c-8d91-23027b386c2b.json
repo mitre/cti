@@ -1,0 +1,81 @@
+{
+    "type": "bundle",
+    "id": "bundle--8d9d3d6d-3e50-4270-a501-9fb783ff9408",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--4959f750-78db-4b4c-8d91-23027b386c2b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0441#AN1221",
+                    "external_id": "AN1221"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1221",
+            "description": "Detects the creation, modification, or deletion of scheduled tasks through Task Scheduler, WMI, PowerShell, or API-based methods followed by execution from svchost.exe or taskeng.exe. Includes detection of hidden or anomalous scheduled tasks, especially those created under SYSTEM or suspicious user contexts.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f42df6f0-6395-4f0c-9376-525a031f00c3",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4698"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--faa34cf6-cf32-4dc9-bd6a-8f7a606ff65b",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4702"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Defines threshold for grouping task creation and associated execution within suspicious time proximity."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Filters based on non-standard user accounts or execution under SYSTEM when not typical for the environment."
+                },
+                {
+                    "field": "TaskNamePattern",
+                    "description": "Allows defenders to flag obfuscated, randomized, or suspicious task names outside normal conventions."
+                },
+                {
+                    "field": "CommandLineEntropyThreshold",
+                    "description": "Flags tasks executing heavily obfuscated PowerShell or binary blobs via base64 or encoding."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

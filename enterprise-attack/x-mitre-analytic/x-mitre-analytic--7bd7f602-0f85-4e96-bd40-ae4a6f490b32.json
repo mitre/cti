@@ -1,0 +1,85 @@
+{
+    "type": "bundle",
+    "id": "bundle--4af90553-6e15-4e94-ac1b-e4a07e6efb2a",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--7bd7f602-0f85-4e96-bd40-ae4a6f490b32",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0390#AN1096",
+                    "external_id": "AN1096"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1096",
+            "description": "Correlation of file creation/modification of `.desktop` files within XDG autostart directories, followed by execution of processes at user login initiated by the desktop environment. Malicious entries typically include suspicious Exec paths or anomalous names and are not associated with installed packages.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "auditd:SYSCALL",
+                    "channel": "creat"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:EXECVE",
+                    "channel": "Process execution via .desktop Exec path from /etc/xdg/autostart or ~/.config/autostart"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "linux:osquery",
+                    "channel": "Write or modify .desktop file in XDG autostart path"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "linux:auth",
+                    "channel": "User login event followed by unexpected process tree"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ExecCommandPattern",
+                    "description": "Regex or allowlist of expected Exec paths within .desktop files. Deviations may be suspicious."
+                },
+                {
+                    "field": "AutostartDirectory",
+                    "description": "May vary by user config (e.g., $XDG_CONFIG_HOME). Must enumerate actual values per system."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate file creation/mod + exec within login window (e.g., 0\u20135 min of user logon)."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Should filter to non-system users, as XDG persistence typically targets interactive sessions."
+                },
+                {
+                    "field": "PackageOriginBaseline",
+                    "description": "Compare .desktop entries to known package sources (e.g., `dpkg -S`). Unexpected origins may be suspicious."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

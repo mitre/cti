@@ -1,0 +1,70 @@
+{
+    "type": "bundle",
+    "id": "bundle--b99b79b9-ddd8-479b-bdc4-8f54607da36d",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--5beb62fd-7dac-485f-828c-72cf151124a8",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0156#AN0443",
+                    "external_id": "AN0443"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0443",
+            "description": "Automated and repetitive triggering of SMS messages through OTP/account verification fields on SaaS platforms, leveraging background messaging APIs such as Twilio, AWS SNS, or Amazon Cognito to generate traffic toward attacker-controlled numbers.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "SaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "saas:application",
+                    "channel": "High-frequency invocation of SMS-related API endpoints from publicly accessible OTP or verification forms (e.g., Twilio: SendMessage, Cognito: AdminCreateUser) with irregular destination patterns."
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a953ca55-921a-44f7-9b8d-3d40141aa17e",
+                    "name": "saas:audit",
+                    "channel": "Repeated requests to SMS-generating endpoints using anomalous or new user agents, IP ranges, or geographies."
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Defines the rolling window over which SMS API invocation frequency is measured. Tunable based on average platform traffic."
+                },
+                {
+                    "field": "SMSFrequencyThreshold",
+                    "description": "Number of SMS requests per endpoint or per user that should trigger investigation. Should align with business logic and user behavior."
+                },
+                {
+                    "field": "DestinationCountryCodeFilter",
+                    "description": "Monitors if requests target known high-risk, revenue-sharing regions. Tunable to reflect SMS tariff rates or abuse history."
+                },
+                {
+                    "field": "UserAgentAnomalyThreshold",
+                    "description": "Defines outlier score or list of unknown/automated user agents submitting forms."
+                },
+                {
+                    "field": "IPGeoVarianceScore",
+                    "description": "Tracks abnormal geographic spread of traffic sourcing OTP triggers."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

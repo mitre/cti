@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--038ab9e8-46e3-41c6-aded-d52b37f32d40",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--9e95639e-633f-47cf-b343-3ea771c19192",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0009#AN0022",
+                    "external_id": "AN0022"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0022",
+            "description": "Developer or CI invokes package managers/compilers (apt/yum + build-essential, npm/yarn/pnpm, pip/pip3, gem, cargo, go, maven/gradle). These write executable or script files into PATH or project dirs and immediately execute embedded lifecycle hooks (preinstall/postinstall, setup.py, npm scripts) that spawn shells or curl/wget, followed by egress to unfamiliar registries or domains.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d5fca4e4-e47a-487b-873f-3d22f8865e96",
+                    "name": "auditd:SYSCALL",
+                    "channel": "rename, chmod"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "journald:package",
+                    "channel": "dpkg/apt or yum/dnf transaction logs (install/update of build tools)"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "First-time egress to new registries/CDNs post-install/build"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ApprovedRepos",
+                    "description": "Allowed APT/YUM repos and GPG keys for build tools."
+                },
+                {
+                    "field": "PathScope",
+                    "description": "Monitor /usr/local/bin, /usr/bin, /opt/*/bin, ~/.local/bin, node_modules/.bin, .venv/bin, .cargo/bin, .gradle, .m2."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Default 90 minutes for write\u2192exec\u2192egress linkage."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

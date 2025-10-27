@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--7012515e-b065-4713-837b-0a226ab4051f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--670462e3-6c3e-4779-af75-2a0424a5d221",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0379#AN1069",
+                    "external_id": "AN1069"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1069",
+            "description": "Detects rogue Wi-Fi access points broadcasting the same SSID as legitimate APs with stronger signal strength, unexpected MAC/BSSID values, or inconsistent encryption settings. Correlates authentication attempts, captive portal redirections, and anomalous traffic flows through unauthorized APs.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Network Devices"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "WLANLogs:Association",
+                    "channel": "Multiple APs advertising the same SSID but with different BSSID/MAC or encryption type"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Probe responses from unauthorized APs responding to client probe requests"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "networkdevice:syslog",
+                    "channel": "Failed authentication requests redirected to non-standard portals"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "KnownSSIDs",
+                    "description": "Baseline of authorized SSIDs; deviations may indicate rogue AP."
+                },
+                {
+                    "field": "AllowedBSSIDs",
+                    "description": "Whitelist of BSSID/MAC addresses mapped to corporate SSIDs."
+                },
+                {
+                    "field": "SignalStrengthThreshold",
+                    "description": "Used to flag unusually strong signals from unexpected APs."
+                },
+                {
+                    "field": "CaptivePortalDomains",
+                    "description": "Trusted login domains; unrecognized portals may be malicious."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

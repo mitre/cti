@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--7b6193b4-d60f-4aaa-af14-9eeaa1dd9ad1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--90a8d89c-f54a-49dd-8734-6f85e5e3a2a5",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0345#AN0976",
+                    "external_id": "AN0976"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0976",
+            "description": "Monitor audit logs for setuid/setgid bit changes, executions where UID \u2260 EUID (indicative of sudo or privilege escalation), and high-integrity binaries launched by unprivileged users.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "auditd:SYSCALL",
+                    "channel": "setuid or setgid bit changes"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--ee575f4a-2d4f-48f6-b18b-89067760adc1",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve with UID \u2260 EUID"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "auditd:SYSCALL",
+                    "channel": "sudo or pkexec invocation"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "WatchedDirectories",
+                    "description": "Paths where unauthorized setuid binaries may be dropped"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Which users are allowed to run sudo/pkexec or modify binaries"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Duration between file permission change and elevated command execution"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

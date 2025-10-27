@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--a909caf4-be56-4d49-8815-0c135866c853",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--e6037bea-ba25-40bf-b681-361d4f901adb",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0506#AN1397",
+                    "external_id": "AN1397"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1397",
+            "description": "Detection of mshta.exe execution where command-line arguments reference remote or local HTA/script content (VBScript/JScript) followed by subsequent file creation, network retrieval, or process spawning that indicates payload execution outside standard Internet Explorer security context. Correlation includes parent process lineage, command-line inspection, and network connection creation to untrusted or anomalous endpoints.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "CommandLinePattern",
+                    "description": "Regex patterns for mshta.exe arguments referencing remote HTA/script content; may need tuning to exclude known-good internal scripts."
+                },
+                {
+                    "field": "SuspiciousParentProcesses",
+                    "description": "List of parent processes considered suspicious when spawning mshta.exe (e.g., Office applications, script interpreters)."
+                },
+                {
+                    "field": "AllowedHTASources",
+                    "description": "Whitelist of domains/paths from which legitimate HTAs are executed."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Time threshold for correlating mshta.exe execution with subsequent network connections or file creations."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

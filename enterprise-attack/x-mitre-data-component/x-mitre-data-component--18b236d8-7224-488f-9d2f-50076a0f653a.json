@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--24c15992-5d1e-4991-8006-4e7978a0c45c",
+    "id": "bundle--00bebf96-ca2a-4ce5-a711-ce68ee4709a1",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,44 @@
             "created": "2021-10-20T15:05:19.274Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0087",
+                    "external_id": "DC0087"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:14:20.946Z",
+            "modified": "2025-10-21T15:14:36.803Z",
             "name": "Active Directory Object Creation",
             "description": "Creating new objects in AD, such as user accounts, groups, organizational units (OUs), or trust relationships. Logged as Event ID 5137. Examples:\n\n- User Account Creation: New user account.\n- Group Creation: New security/distribution group.\n- OU Creation: New organizational unit.\n- Service Account Creation: New service account for automation or malicious tasks.\n- Trust Object Creation: Trust relationship with another domain.\n\n*Data Collection Measures:*\n\n- Audit Policy:\n    - Enable \"Audit Directory Service Changes\" (Success and Failure).\n    - Path: `Computer Configuration > Policies > Windows Settings > Security Settings > Advanced Audit Policy Configuration > Audit Policies > Directory Service Changes`.\n    - Key Event: Event ID 5137 (object creation).\n- Log Forwarding: Use WEF to centralize logs for SIEM tools (e.g., Splunk).\n- Enable EDR Monitoring:\n    - Track processes that create new accounts or modify AD objects.\n    - Correlate object creation with suspicious commands (e.g., net user /add).",
-            "x_mitre_data_source_ref": "x-mitre-data-source--d6188aac-17db-4861-845f-57c369f9b4c8",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "azure:audit",
+                    "channel": "New device object creation"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "Device Object Creation"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4928"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "CreateAccessKey, ImportKeyPair, CreateLoginProfile, CreateKeyPair"
+                }
+            ]
         }
     ]
 }

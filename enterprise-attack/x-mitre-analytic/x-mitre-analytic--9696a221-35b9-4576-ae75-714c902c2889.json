@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--240c2f43-13f9-4903-b9c3-1e8317302eb4",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--9696a221-35b9-4576-ae75-714c902c2889",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0535#AN1475",
+                    "external_id": "AN1475"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1475",
+            "description": "Malicious VIB installation for persistence via `esxcli software vib install` using `--force` or `--no-sig-check`, enabling custom startup scripts or firewall rules. Behavior chain: (1) unsigned/suspicious VIB installation \u2192 (2) startup script or binary placed in persistent boot path \u2192 (3) persistence across reboot via /etc/rc.local.d or other boot hook).",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "ESXi"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "esxi:esxupdate",
+                    "channel": "/var/log/esxupdate.log contains VIB installed with `--force` or `--no-sig-check` and non-standard acceptance levels"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "esxi:shell",
+                    "channel": "`esxcli software vib install` with `--force` or `--no-sig-check` from shell history or `shell.log`"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "linux:fim",
+                    "channel": "Changes to /etc/rc.local.d/local.sh or creation of unexpected startup files in persistent partitions (/etc/init.d, /store, /locker)"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AcceptanceLevel",
+                    "description": "Some environments may intentionally permit CommunitySupported or unsigned VIBs\u2014filter by known allowed publishers."
+                },
+                {
+                    "field": "InstallCommandThreshold",
+                    "description": "Set alerting thresholds for frequency of VIB install attempts per host/user/time window."
+                },
+                {
+                    "field": "StartupPathRegex",
+                    "description": "Tune regex for monitoring startup file locations based on ESXi image customization."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--ec57ada0-ea35-4b60-a664-49d4d58c9ab6",
+    "id": "bundle--9bb137c9-6740-4615-b155-5c8b1463bda0",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,36 @@
             "created": "2021-10-20T15:05:19.272Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0031",
+                    "external_id": "DC0031"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:16:44.099Z",
+            "modified": "2025-10-21T15:14:39.179Z",
             "name": "Kernel Module Load",
             "description": "The process of loading a kernel module into the operating system kernel. Kernel modules are object files that extend the kernel\u2019s functionality, such as adding support for device drivers, new filesystems, or additional system calls. This action can be legitimate (e.g., loading a driver) or malicious (e.g., adding a rootkit). \n\n*Data Collection Measures:*\n\n- Linux:\n    - Auditd: Enable auditing of kernel module loading. Example rule: `-a always,exit -F arch=b64 -S init_module,delete_module`.\n    - Syslog: Monitor `/var/log/syslog` or `/var/log/messages` for entries related to kernel module loads.\n    - Systemd Journal: Use `journalctl` to query logs for module loading events: `journalctl -k | grep \"Loading kernel module\"`\n- macOS:\n    - Unified Logs: Use the `log` command to query kernel module events: `log show --predicate 'eventMessage contains \"kextload\"' --info`\n    - Endpoint Security Framework (ESF): Monitor for `ES_EVENT_TYPE_AUTH_KEXTLOAD` (kernel extension loading events).\n- Kernel-Specific Tools:\n    - Lsmod: Use `lsmod` to list loaded kernel modules in real-time.\n    - Kprobe/eBPF: Use extended Berkeley Packet Filter (eBPF) or Kernel Probes (kprobes) to monitor kernel events, including module loading. Example using eBPF tools like BCC:\n`sudo python /path/to/bcc/tools/kprobe -v do_init_module`\n- Enable EDR Monitoring:\n    - Configure alerts for: Suspicious kernel module loads from non-standard paths (e.g., /tmp). Unexpected or unsigned kernel modules.\n    - Review detailed telemetry data provided by the EDR for insight into who initiated the module load, the file path, and whether the module was signed.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--8765a845-dea1-4cd1-a56f-f54939b7ab9e",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "VM exit/entry anomalies, unexpected hypercalls, or kernel module loading"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "New kext entries not signed by Apple or outside standard identifier prefix"
+                }
+            ]
         }
     ]
 }

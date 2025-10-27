@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--62e6d307-367b-4bef-9126-73ed228cc476",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--e564e2b8-542b-4003-a8b7-df9d3396f5b9",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0299#AN0836",
+                    "external_id": "AN0836"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0836",
+            "description": "macOS-specific permission modification behavioral chain: (1) chmod/chown/chflags process execution, (2) System Integrity Protection (SIP) bypass attempts, (3) Extended attribute (xattr) modifications, (4) Unified log correlation with file system events, (5) Subsequent access to previously restricted resources",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "process execution events for chmod, chown, chflags with unusual parameters or targets"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "fs:fsevents",
+                    "channel": "file system events indicating permission or attribute changes"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "SIPProtectedPaths",
+                    "description": "macOS system paths protected by SIP that should never have permission modifications"
+                },
+                {
+                    "field": "SuspiciousFlagCombinations",
+                    "description": "chflags parameter combinations indicating evasive behavior (uchg, schg, hidden)"
+                },
+                {
+                    "field": "XattrMonitoringScope",
+                    "description": "Extended attributes to monitor for unauthorized modifications"
+                },
+                {
+                    "field": "UnifiedLogRetention",
+                    "description": "Log retention period for correlating permission changes with subsequent access"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

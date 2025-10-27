@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--210ce06e-0911-4106-b32f-30cd639d4793",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--66107cd1-c123-4ad5-bb0b-62d8a9a451a6",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0478#AN1316",
+                    "external_id": "AN1316"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1316",
+            "description": "Cause\u2192effect chain: (1) unified logs show application open/click or crash for Safari/Chrome/Office/Preview/archiver, (2) file write/extraction into ~/Downloads, /private/var/folders/* or ~/Library, (3) parent app spawns osascript/bash/zsh/curl/python or opens a quarantined app with Gatekeeper prompts, (4) network egress from child.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "macos:unifiedlog",
+                    "channel": "opened document|clicked link|EXC_BAD_ACCESS|abort|LSQuarantine"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "fs:fileevents",
+                    "channel": "create/write/rename in user-writable paths"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:osquery",
+                    "channel": "exec"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "NSM:Flow",
+                    "channel": "new outbound connection from exploited lineage"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "10\u201330 minute correlation window."
+                },
+                {
+                    "field": "HighRiskChildren",
+                    "description": "osascript, bash, zsh, curl, python, open -a Terminal, installer, tccutil misuse."
+                },
+                {
+                    "field": "QuarantineSignals",
+                    "description": "Flag new apps lacking com.apple.quarantine or with quarantine='0081' (downloaded then auto-opened)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

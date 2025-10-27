@@ -1,0 +1,81 @@
+{
+    "type": "bundle",
+    "id": "bundle--47e21d16-630d-4597-9d13-bc78f968aee7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--e4dd4100-2387-4029-a478-35aefd37c288",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0083#AN0233",
+                    "external_id": "AN0233"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0233",
+            "description": "Execution of container orchestration commands (e.g., `docker exec`, `kubectl exec`) or API-driven interactions with running containers from unauthorized hosts or non-standard user contexts. Defender sees programmatic or interactive command execution within containers outside expected CI/CD tools or automation frameworks, often followed by file writes, privilege escalation, or lateral discovery.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of container management CLIs (docker, crictl, kubectl) or interpreted shells (sh, bash, python) within container context"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5fe82895-28e5-4aac-845e-dc886b63be2e",
+                    "name": "docker:events",
+                    "channel": "exec_create: docker exec events targeting running containers from non-CI sources"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a5ae90ca-0c4b-481c-959f-0eb18a7ff953",
+                    "name": "kubernetes:apiserver",
+                    "channel": "create/exec: Kubernetes API calls to exec into containers or create pods from curl, kubectl, or SDK clients"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5263cb33-08cc-4a68-820f-004e1e400d76",
+                    "name": "AWS:CloudTrail",
+                    "channel": "CreatePod: Programmatic creation of new pod resources using container images not seen before in the environment"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "kubernetes:audit",
+                    "channel": "Shell process (e.g., /bin/sh, /bin/bash) spawned in a container without an interactive session attached (i.e., automation anomaly)"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AuthorizedUserAgents",
+                    "description": "List of CI/CD pipeline runners, SRE tools, or cluster mgmt agents allowed to invoke API/CLI commands in containers."
+                },
+                {
+                    "field": "NewImageThreshold",
+                    "description": "Threshold for alerting on unseen container images pulled and executed. Adjust to reduce noise from frequent deploys."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Temporal window to correlate container exec with shell spawn and network activity (default: 2 minutes)."
+                },
+                {
+                    "field": "InteractiveSessionExpectation",
+                    "description": "Set whether shell spawns without TTY or PTY should be flagged \u2014 based on org deployment model."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

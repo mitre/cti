@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--3c3695a4-a7c1-46c6-962c-d1df8a90f665",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--b4a380ed-cc16-47cd-8fe1-44ccf4cad097",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0542#AN1495",
+                    "external_id": "AN1495"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1495",
+            "description": "Monitor registry modifications to `HKLM\\SYSTEM\\CurrentControlSet\\Control\\Lsa\\Security Packages` or `...\\OSConfig\\Security Packages`, especially insertions of new DLL entries. Correlate this with subsequent DLL module loads into `lsass.exe`. Track unsigned or anomalous DLLs loading into LSASS using image load auditing. LSASS loads unsigned DLL due to AuditLevel=8 registry configuration or System reboot followed by DLL load into lsass.exe",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4657"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Controls how long after registry modification to expect a DLL load into LSASS (e.g., after reboot)"
+                },
+                {
+                    "field": "DLLSignatureValidation",
+                    "description": "Use to detect unsigned DLLs or those not matching known trusted publisher certificates"
+                },
+                {
+                    "field": "CustomSSPNameList",
+                    "description": "Define allowed SSP values for your org to reduce false positives"
+                },
+                {
+                    "field": "BootContextCorrelation",
+                    "description": "Whether detection should correlate boot-time registry and process events"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

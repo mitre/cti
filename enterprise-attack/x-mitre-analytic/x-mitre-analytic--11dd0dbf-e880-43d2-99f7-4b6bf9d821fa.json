@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--8c39eb77-ec58-4c31-89fd-ed2f9ecb216b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--11dd0dbf-e880-43d2-99f7-4b6bf9d821fa",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0405#AN1134",
+                    "external_id": "AN1134"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1134",
+            "description": "Correlates LNK file execution with embedded resource extraction or suspicious network activity following initial launch, often leading to payload delivery via disguised icons.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=15"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ParentProcessName",
+                    "description": "Can be tuned to focus on common launcher processes like explorer.exe or winword.exe."
+                },
+                {
+                    "field": "DestinationIP",
+                    "description": "Filtered to exclude known good domains and internal IPs to reduce false positives."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Time between LNK execution and subsequent suspicious activity may vary based on adversary delay."
+                },
+                {
+                    "field": "FileExtension",
+                    "description": "Could be used to focus on .lnk files only or track associated dropped payloads like .dat, .exe, etc."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

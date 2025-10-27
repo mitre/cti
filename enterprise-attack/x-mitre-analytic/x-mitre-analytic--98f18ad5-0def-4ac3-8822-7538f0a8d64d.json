@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--58d8aad7-4574-4a16-989d-049a9c0915a1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--98f18ad5-0def-4ac3-8822-7538f0a8d64d",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0252#AN0700",
+                    "external_id": "AN0700"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0700",
+            "description": "Execution of Homebrew, pip3, npm, or manually downloaded PKGs from Terminal or shell, followed by the creation of startup agents, interpreter spawns, or outbound connections to unfamiliar domains. Defender links Terminal commands to plist creation, unsigned binary launches, and `python3` or `node` processes connecting to remote endpoints.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "Command line invocation of pip3, brew install, npm install from interactive Terminal"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of new LaunchAgent or LoginItem plist files in ~/Library/LaunchAgents/"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "NSM:Flow",
+                    "channel": "Outbound HTTP/S initiated by newly installed interpreter process"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "StartupAgentPaths",
+                    "description": "Filter user persistence plist directories like ~/Library/LaunchAgents"
+                },
+                {
+                    "field": "UnsignedBinaryAlerting",
+                    "description": "Enable alerting for new binaries lacking Apple or organization signature"
+                },
+                {
+                    "field": "InstallToNetWindow",
+                    "description": "Correlate install action to interpreter-based network behavior"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

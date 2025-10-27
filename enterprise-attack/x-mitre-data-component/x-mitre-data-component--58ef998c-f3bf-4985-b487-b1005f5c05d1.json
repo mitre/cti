@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--75726ea6-2959-48f7-a99a-20306e23e138",
+    "id": "bundle--fab255b6-e114-49fa-8b94-79d4b0ebc678",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,68 @@
             "created": "2021-10-20T15:05:19.272Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0025",
+                    "external_id": "DC0025"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:13:49.144Z",
+            "modified": "2025-10-21T15:14:36.111Z",
             "name": "Cloud Storage Access",
             "description": "Cloud storage access refers to the retrieval or interaction with data stored in cloud infrastructure. This data component includes activities such as reading, downloading, or accessing files and objects within cloud storage systems. Common examples include API calls like GetObject in AWS S3, which retrieves objects from cloud buckets. Examples: \n\n- AWS S3 Access: An adversary uses the `GetObject` API to retrieve sensitive data from an AWS S3 bucket.\n- Azure Blob Storage Access: A user accesses a blob in Azure Storage using `Get Blob` or `Get Blob Properties`.\n- Google Cloud Storage Access: An adversary uses `storage.objects.get` to download objects from - OpenStack Swift Storage Access: A user retrieves an object from OpenStack Swift using the `GET` method.\n\nThis data component can be collected through the following measures:\n\nEnable Logging for Cloud Storage Services\n\n- AWS S3: Enable Server Access Logging to capture API calls like `GetObject` and store them in a designated S3 bucket.\n- Azure Storage: Enable Azure Storage Logging to capture operations like `GetBlob` and log metadata.\n- Google Cloud Storage: Enable Data Access audit logs for `storage.objects.get` API calls.\n- OpenStack Swift: Configure middleware for object logging to capture GET requests.\n\nCentralize and Aggregate Logs\n\n- Use a centralized logging solution (e.g., Splunk, ELK, or a cloud-native SIEM) to ingest and analyze logs from different cloud providers.\n    - AWS Example: Use AWS CloudTrail to collect API activity logs and forward them to your SIEM.\n    - Azure Example: Use Azure Monitor and Log Analytics to analyze storage access logs.\n\nCorrelate with IAM Logs\n\n- Combine storage access logs with IAM activity logs to correlate user actions with specific permissions and identities.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--2ce537a2-3b30-4374-9397-31d6460ec0bc",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "PutObject, CopyObject"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "PutObject, GetObject, CopyObject, DeleteObject"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "GetObject"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "PutObject: S3 writes with .sql/.csv extension by same identity or within 5 min of DB access"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Accessed SharePoint files or pages"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "FileAccessed, FileDownloaded, ConsentGranted"
+                },
+                {
+                    "name": "gcp:workspaceaudit",
+                    "channel": "download, authorization_grant"
+                },
+                {
+                    "name": "m365:sharepoint",
+                    "channel": "AnonymousLinkCreated, FileDownloaded"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "App-only or delegated access patterns where client_id != known enterprise apps"
+                },
+                {
+                    "name": "saas:github",
+                    "channel": "Artifact generated includes base64/encoded exfil payload or URL"
+                }
+            ]
         }
     ]
 }

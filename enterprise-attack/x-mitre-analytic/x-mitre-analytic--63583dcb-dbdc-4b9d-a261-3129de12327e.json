@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--a4adc555-0b7d-4e35-82bd-bc926b2945e7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--63583dcb-dbdc-4b9d-a261-3129de12327e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0354#AN1004",
+                    "external_id": "AN1004"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1004",
+            "description": "Unusual or unauthorized external remote access attempts (e.g., RDP, VPN, Citrix) \u2192 repeated failed logins followed by a successful session from uncommon geolocations or outside business hours \u2192 subsequent internal lateral movement or data exfiltration activities.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a953ca55-921a-44f7-9b8d-3d40141aa17e",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4624, 4625"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "WinEventLog:Application",
+                    "channel": "VPN, Citrix, or remote access gateway logs showing external IP addresses"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "BusinessHours",
+                    "description": "Normal business hours for logon activity."
+                },
+                {
+                    "field": "KnownRemoteIPs",
+                    "description": "List of approved external IPs or VPN endpoints."
+                },
+                {
+                    "field": "FailedLogonThreshold",
+                    "description": "Number of failed logons before raising suspicion (e.g., >5)."
+                },
+                {
+                    "field": "GeoIPWhitelist",
+                    "description": "Geographic regions allowed for remote access."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Time window to correlate failed attempts and success (e.g., 15m)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

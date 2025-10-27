@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--881698d2-ff83-4f1e-a0ec-0cf158a17834",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--6927a2ad-c56f-4e87-9392-6e3eef07e57e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0127#AN0358",
+                    "external_id": "AN0358"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0358",
+            "description": "Adversary uses renamed container images, injects files into containers with misleading names or metadata (e.g., renamed system binaries), and executes them during startup or scheduled jobs.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "containerd:runtime",
+                    "channel": "/var/log/containers/*.log"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b597a220-6510-4397-b0d8-342cd2c58827",
+                    "name": "docker:events",
+                    "channel": "docker.events.json"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "ebpf:syscalls",
+                    "channel": "file_write"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ImageLabelMismatch",
+                    "description": "Tune detection based on mismatch between image name and labels"
+                },
+                {
+                    "field": "StartupScriptLocation",
+                    "description": "Detect binaries added or modified in startup path (e.g., /entrypoint.sh)"
+                },
+                {
+                    "field": "ProcessNamePattern",
+                    "description": "Allow tuning based on suspicious binary naming inside containers"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

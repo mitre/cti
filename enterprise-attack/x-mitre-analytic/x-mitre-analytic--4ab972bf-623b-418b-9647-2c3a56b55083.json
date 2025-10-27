@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--513d95fc-e824-4544-9cc4-e5fac1be732f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--4ab972bf-623b-418b-9647-2c3a56b55083",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0157#AN0444",
+                    "external_id": "AN0444"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0444",
+            "description": "Detects Kerberoasting attempts by monitoring for anomalous Kerberos TGS requests (Event ID 4769) with RC4 encryption (etype 0x17), accounts requesting an unusual number of service tickets in a short period, or service accounts targeted outside normal usage baselines. Also correlates suspicious process activity (e.g., Mimikatz invoking LSASS access) with Kerberos ticket anomalies.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--02d090b6-8157-48da-98a2-517f7edd49fc",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4769"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4624"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--39b9db72-8b48-4595-a18d-db5bbba3091b",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4672"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TGSRequestThreshold",
+                    "description": "Number of TGS requests per account within a defined window; higher than baseline may indicate Kerberoasting."
+                },
+                {
+                    "field": "AllowedEncryptionTypes",
+                    "description": "Permitted Kerberos encryption algorithms; RC4 (etype 0x17) usage in modern environments is suspicious."
+                },
+                {
+                    "field": "ServiceAccountBaselines",
+                    "description": "Expected SPNs requested by specific accounts; anomalies may indicate adversarial targeting."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window for bursts of TGS requests; adjustable to reduce false positives."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

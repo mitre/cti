@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--25cfc012-f519-4dbe-a448-ae85ff7505eb",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--328d639e-6b8d-400c-9cdd-3c255d343e47",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0294#AN0819",
+                    "external_id": "AN0819"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0819",
+            "description": "User opens a file delivered by email, web, chat, or share. The handler application (Word/PDF reader/archiver) creates a file in user-controlled paths (Downloads, Temp, Desktop) and then spawns a new or unusual child process (e.g., powershell.exe, wscript.exe, cmd.exe, regsvr32.exe, rundll32.exe, msiexec.exe). Optional precursors include FileStreamCreated (URL/UNC) and Office \u2192 system32 batch writes.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=15"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Seconds/minutes to correlate file write to child spawn (e.g., 0\u20135m)."
+                },
+                {
+                    "field": "SuspiciousExtensions",
+                    "description": "Extensions and double-extension patterns to flag (exe,scr,lnk,pif,cpl,js,vbs,bat,cmd,ps1,hta,iso,lnk->cmd,docm,xlsm,pdf->exe, etc.)."
+                },
+                {
+                    "field": "UserPaths",
+                    "description": "Paths considered user-controlled (Downloads, Temp, Desktop, profile AppData staging)."
+                },
+                {
+                    "field": "ParentApps",
+                    "description": "List of user-facing apps that commonly open attachments for your org (reduce FPs or add weight)."
+                },
+                {
+                    "field": "SignerAllowList",
+                    "description": "Trusted code signers/publishers to suppress benign admin tools."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

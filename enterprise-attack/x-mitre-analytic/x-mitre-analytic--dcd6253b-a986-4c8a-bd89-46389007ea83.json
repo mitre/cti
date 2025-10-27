@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--7877be83-1df2-4a4d-9dfa-5651ba047b93",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--dcd6253b-a986-4c8a-bd89-46389007ea83",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0478#AN1314",
+                    "external_id": "AN1314"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1314",
+            "description": "Cause\u2192effect chain: (1) User-facing app (Office/PDF/archiver/browser) records an open/click or abnormal event, then (2) a downloaded file is created in a user-writable path and/or decompressed, (3) the parent user app spawns a living-off-the-land binary (e.g., powershell/cmd/mshta/rundll32/msiexec/wscript/expand/zip) or installer, and (4) immediate outbound HTTP(S)/DNS/SMB from the same lineage.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "WinEventLog:Application",
+                    "channel": "EventCode=1000,1001"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window (e.g., 15 minutes) from document open to child/egress."
+                },
+                {
+                    "field": "HighRiskParents",
+                    "description": "Apps that should rarely spawn OS utilities (winword.exe, excel.exe, powerpnt.exe, acrord32.exe, chrome/msedge/firefox, 7zFM.exe, winrar.exe, explorer.exe)."
+                },
+                {
+                    "field": "HighRiskChildren",
+                    "description": "LOLBIN list: powershell.exe, cmd.exe, wscript.exe, cscript.exe, mshta.exe, rundll32.exe, regsvr32.exe, msiexec.exe, curl.exe, bitsadmin.exe, pcalua.exe, expand.exe, tar.exe."
+                },
+                {
+                    "field": "UserPaths",
+                    "description": "Writable paths to watch: %USERPROFILE%\\Downloads, %TEMP%, %APPDATA%\\*, OneDrive/Teams cache, Office startup folders."
+                },
+                {
+                    "field": "EgressAllowList",
+                    "description": "Corporate update/CDN domains and proxy egress CIDRs to suppress benign updater traffic."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

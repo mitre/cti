@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--382d8cdb-3e38-4654-a2b1-2993c065f928",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--12c748a0-3ce9-4fd2-8a65-f4362b69cafd",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0301#AN0841",
+                    "external_id": "AN0841"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0841",
+            "description": "Execution of files originating from removable media after drive mount, with correlation to file write activity, autorun usage, or lateral spread via staged tools.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d6e6b3b-4aa8-40e1-8c47-91db0f313d9f",
+                    "name": "WinEventLog:Microsoft-Windows-Partition/Diagnostic",
+                    "channel": "EventCode=1006"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "WinEventLog:Microsoft-Windows-Windows Defender/Operational",
+                    "channel": "Suspicious file execution on removable media path"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "DriveLetterMatch",
+                    "description": "Detect activity on mounted drives typically used by USB (e.g., E:, F:, G:). Tune based on enterprise usage."
+                },
+                {
+                    "field": "FileExecutionWindow",
+                    "description": "Set timing threshold for execution shortly after drive mount (e.g., < 5 minutes)."
+                },
+                {
+                    "field": "ParentProcess",
+                    "description": "Restrict detection to suspicious process lineage like explorer.exe, powershell.exe, or unsigned binaries."
+                },
+                {
+                    "field": "FileEntropy",
+                    "description": "Use entropy thresholding to detect packed/obfuscated payloads dropped to removable media."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

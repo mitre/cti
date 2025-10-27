@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--9c4b0b79-dbc1-4a06-ae71-b0ea37cbb630",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--da853af7-f2e4-45c2-b78f-3d960fff638e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0577#AN1593",
+                    "external_id": "AN1593"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1593",
+            "description": "Unexpected modification of the KernelCallbackTable in a process\u2019s PEB followed by invocation of modified callback functions (e.g., fnCOPYDATA) through Windows messages. Defender observes suspicious API call chains such as NtQueryInformationProcess \u2192 WriteProcessMemory \u2192 abnormal GUI callback execution, often correlating to anomalous process behavior such as network activity or code injection.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "etw:Microsoft-Windows-Kernel-Process",
+                    "channel": "WriteProcessMemory: WriteProcessMemory targeting regions containing KernelCallbackTable addresses"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "MonitoredProcesses",
+                    "description": "GUI applications (e.g., explorer.exe, notepad.exe) where KernelCallbackTable abuse is more likely."
+                },
+                {
+                    "field": "CallbackFunctions",
+                    "description": "Specific callback functions (e.g., fnCOPYDATA, fnDWORD) expected to remain stable."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation interval between WriteProcessMemory calls and execution of modified callback functions."
+                },
+                {
+                    "field": "AccessMaskThresholds",
+                    "description": "Access rights values that should be flagged when targeting GUI processes."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

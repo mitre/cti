@@ -1,0 +1,85 @@
+{
+    "type": "bundle",
+    "id": "bundle--1efbcf2e-7ed7-4516-8b89-5cd89463487f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--2b0dd3b6-6949-4dd5-b0dd-7b0b6f431dbe",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0363#AN1030",
+                    "external_id": "AN1030"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1030",
+            "description": "A non-privileged or abnormal process attempts to open a handle with full access (0x1F0FFF) to lsass.exe and subsequently invokes memory dump, file creation, or registry modification indicative of credential scraping. This behavior chain reflects staged credential theft activity.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5d0492b-cda4-421c-8e51-ed2b8d85c5d0",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4673"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AccessMask",
+                    "description": "Set to 0x1F0FFF to detect full memory access attempts; can be scoped down to reduce noise."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Defines time between LSASS access and dump file creation or registry modification (e.g., 5 minutes)."
+                },
+                {
+                    "field": "ParentProcessName",
+                    "description": "Allowlist known legitimate tools (e.g., AV/EDR) accessing lsass.exe."
+                },
+                {
+                    "field": "DumpFilePath",
+                    "description": "Paths where memory dumps are written, e.g., %TEMP%, C:\\Windows\\Temp."
+                },
+                {
+                    "field": "CommandLinePattern",
+                    "description": "Common dumping syntax like rundll32, procdump, comsvcs.dll, Invoke-Mimikatz."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

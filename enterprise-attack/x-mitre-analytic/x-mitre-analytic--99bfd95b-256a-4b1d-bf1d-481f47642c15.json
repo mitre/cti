@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--81eb5381-c2ee-4dc4-b4cb-c76b26ddfba2",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--99bfd95b-256a-4b1d-bf1d-481f47642c15",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0510#AN1408",
+                    "external_id": "AN1408"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1408",
+            "description": "Detects downloaded SVG files followed by execution of browser processes or tools like xdg-open, and rapid follow-on network connections or process spawns to interpreters like python or bash.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open, write"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Outbound HTTP/S"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TargetPaths",
+                    "description": "Suspicious write locations such as /tmp/, ~/Downloads/"
+                },
+                {
+                    "field": "ExecutionContext",
+                    "description": "Processes spawned by browsers or svg-viewing apps that invoke interpreters"
+                },
+                {
+                    "field": "NetworkDestinations",
+                    "description": "URLs/IPs contacted post-SVG access \u2013 may reflect initial C2"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

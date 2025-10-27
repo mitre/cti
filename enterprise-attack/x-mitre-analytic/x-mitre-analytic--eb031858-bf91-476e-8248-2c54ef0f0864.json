@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--859d684a-6543-4d84-b18b-391ed2059e41",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--eb031858-bf91-476e-8248-2c54ef0f0864",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0462#AN1274",
+                    "external_id": "AN1274"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1274",
+            "description": "Detects anomalous network traffic on UDP 5355 (LLMNR) and UDP 137 (NBT-NS) combined with unauthorized SMB relay attempts, registry modifications re-enabling multicast name resolution, or suspicious service creation indicative of adversary-in-the-middle credential interception.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5297a638-1382-4f0c-8472-0d21830bf705",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4697"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Security",
+                    "channel": "Registry key modification HKLM\\Software\\Policies\\Microsoft\\Windows NT\\DNSClient\\EnableMulticast"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Unusual responses to LLMNR (UDP 5355) or NBT-NS (UDP 137) queries from unauthorized hosts"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "Abnormal SMB authentication attempts correlated with poisoned LLMNR/NBT-NS sessions"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TrustedResponderList",
+                    "description": "Defines expected LLMNR/NBT-NS responders to tune out legitimate services."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation period for linking poisoned name resolution with SMB relay attempts."
+                },
+                {
+                    "field": "SMBServiceBaseline",
+                    "description": "Normal services and SMB relay patterns in the enterprise environment."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

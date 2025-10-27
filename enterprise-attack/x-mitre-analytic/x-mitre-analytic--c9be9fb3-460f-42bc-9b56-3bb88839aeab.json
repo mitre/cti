@@ -1,0 +1,101 @@
+{
+    "type": "bundle",
+    "id": "bundle--bfcd66b2-5de7-46d2-b837-5c3d7583cd65",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c9be9fb3-460f-42bc-9b56-3bb88839aeab",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0308#AN0861",
+                    "external_id": "AN0861"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0861",
+            "description": "Detection focuses on identifying unauthorized or anomalous changes to compute infrastructure components. Defender perspective: monitor for creation, deletion, or modification of instances, volumes, and snapshots outside of approved change management windows; correlate abnormal activity such as rapid snapshot creation followed by new instance mounts, or repeated infrastructure changes by rarely used accounts. Flagging activity linked to unusual geolocation, API client, or automation script is suspicious.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f8213cde-6b3a-420d-9ab7-41c9af1a919f",
+                    "name": "AWS:CloudTrail",
+                    "channel": "RunInstances"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1361e324-b594-4c0e-a517-20cee32b8d7f",
+                    "name": "AWS:CloudTrail",
+                    "channel": "TerminateInstances"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d46272ce-a0fe-4256-855e-738de7bb63ee",
+                    "name": "AWS:CloudTrail",
+                    "channel": "ModifyVolume"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3acecdde-c327-4498-9bb8-33a2e63c6c57",
+                    "name": "AWS:CloudTrail",
+                    "channel": "DeleteVolume, ModifyVolume"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--dad75cc7-5bae-4175-adb4-ca1962d8650e",
+                    "name": "AWS:CloudTrail",
+                    "channel": "CreateVolume"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3da222e6-53f3-451c-a239-0b405c009432",
+                    "name": "AWS:CloudTrail",
+                    "channel": "CreateSnapshot"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--16e07530-764b-4d83-bae0-cdbfc31bf21d",
+                    "name": "AWS:CloudTrail",
+                    "channel": "DeleteSnapshot"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f1eb6ea9-f3ab-414f-af35-2d5427199984",
+                    "name": "AWS:CloudTrail",
+                    "channel": "ModifySnapshotAttribute"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b33d36e3-d7ea-4895-8eed-19a08a8f7c4f",
+                    "name": "AWS:CloudWatch",
+                    "channel": "unexpected IAM user or role assuming privileges for instance/snapshot operations"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ChangeWindow",
+                    "description": "Approved maintenance or deployment windows. Helps reduce false positives by distinguishing scheduled activity."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "IAM user, role, or service account performing the operation. Tunable to allowlist known automation services."
+                },
+                {
+                    "field": "RateThreshold",
+                    "description": "Number of infrastructure changes (e.g., snapshot creations) in a defined period. Adjusted based on workload scale."
+                },
+                {
+                    "field": "GeoLocation",
+                    "description": "Region or source IP where changes originate. Useful for tuning alerts to account for multi-region deployments."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

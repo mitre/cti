@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--b3d45de0-dd39-41d3-b211-710415fb6ce5",
+    "id": "bundle--4a7cb95e-e65f-4583-b2b9-ee482380a892",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,60 @@
             "created": "2021-10-20T15:05:19.274Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0072",
+                    "external_id": "DC0072"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:14:30.196Z",
+            "modified": "2025-10-21T15:14:37.681Z",
             "name": "Container Creation",
             "description": "\"Container Creation\" data component captures details about the initial construction of a container in a containerized environment. This includes events where a new container is instantiated, such as through Docker, Kubernetes, or other container orchestration platforms. Monitoring these events helps detect unauthorized or potentially malicious container creation. Examples:\n\n- Docker Example: `docker create my-container`, `docker run --name=my-container nginx:latest`\n- Kubernetes Example: `kubectl run my-pod --image=nginx`, `kubectl create deployment my-deployment --image=nginx`\n- Cloud Container Services Example\n    - AWS ECS: Task or service creation (`RunTask` or `CreateService`).\n    - Azure Container Instances: Deployment of a container group.\n    - Google Kubernetes Engine (GKE): Creation of new pods via GCP APIs.\n\nThis data component can be collected through the following measures:\n\n- Docker Audit Logging: Enable Docker daemon logging to capture `create` commands. Configure the Docker daemon to use a log driver such as `syslog` or `json-file`.\n- Kubernetes Audit Logs: Enable Kubernetes API server audit logging:\n- Cloud Provider Logs\n    - AWS CloudTrail: Enable logging for ECS `RunTask` or `CreateService` events.\n    - Azure Monitor: Enable activity logging for container group creation.\n    - GCP Cloud Logging: Monitor API calls such as `container.projects.zones.clusters.create`.\n- SIEM Integration: Use a SIEM to collect logs from Docker, Kubernetes, or cloud platforms.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--072ec5a7-00ba-466f-9057-69751a22a967",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "kubernetes:apiserver",
+                    "channel": "create/exec: Kubernetes API calls to exec into containers or create pods from curl, kubectl, or SDK clients"
+                },
+                {
+                    "name": "kubernetes:events",
+                    "channel": "container start/stop activity via Docker, containerd, or CRI-O"
+                },
+                {
+                    "name": "docker:daemon",
+                    "channel": "container create/start with privileged flag or host volume mount"
+                },
+                {
+                    "name": "kubernetes:audit",
+                    "channel": "create: Pod/Container created with image tag 'latest' or mutable tag; imagePullPolicy=Always; noDigest=true"
+                },
+                {
+                    "name": "systemd:unit",
+                    "channel": "container run with restart policy set to 'always' or 'unless-stopped'"
+                },
+                {
+                    "name": "docker:events",
+                    "channel": "created,started: new container from untrusted registry or unexpected entrypoint"
+                },
+                {
+                    "name": "containerd:events",
+                    "channel": "create"
+                },
+                {
+                    "name": "docker:events",
+                    "channel": "docker run with restart=always or modifying init"
+                }
+            ]
         }
     ]
 }

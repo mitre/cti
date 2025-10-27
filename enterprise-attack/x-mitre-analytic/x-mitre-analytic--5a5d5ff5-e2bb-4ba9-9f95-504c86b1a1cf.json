@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--a724e443-ea25-4db0-a86d-3be11fb79661",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--5a5d5ff5-e2bb-4ba9-9f95-504c86b1a1cf",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0234#AN0648",
+                    "external_id": "AN0648"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0648",
+            "description": "Processes accessing LSASS memory or SAM registry hives outside of trusted security tools, often followed by file creation or lateral movement. Detects unauthorized access to sensitive OS subsystems for credential extraction.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4663"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5c6de881-bc70-4070-855a-7a9631a407f7",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4662"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AccessMask",
+                    "description": "Set to detect full access rights (0x1F0FFF) or modify based on tool behavior."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Define how soon access to LSASS is followed by suspicious file or registry activity."
+                },
+                {
+                    "field": "ParentProcessFilter",
+                    "description": "Allowlist known security tools or system processes accessing LSASS."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

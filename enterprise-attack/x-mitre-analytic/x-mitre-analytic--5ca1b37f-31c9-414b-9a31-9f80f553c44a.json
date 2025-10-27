@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--98e21464-a85a-4f61-ab22-fd4a78722565",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--5ca1b37f-31c9-414b-9a31-9f80f553c44a",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0575#AN1588",
+                    "external_id": "AN1588"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1588",
+            "description": "Detection focuses on monitoring registry modifications under HKLM\\SOFTWARE\\Microsoft\\Netsh that indicate the addition of helper DLLs, followed by anomalous child process activity or module load behavior initiated by netsh.exe. These behaviors are rarely legitimate and may represent an adversary establishing persistence.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4657"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Defines the time window in which correlated registry and execution events are considered suspicious (e.g., within 10 minutes)"
+                },
+                {
+                    "field": "NetshChildProcessWhitelist",
+                    "description": "List of expected or approved child processes spawned by netsh.exe in the enterprise environment"
+                },
+                {
+                    "field": "DLLLoadPath",
+                    "description": "Directory or filename heuristics to distinguish benign DLLs from malicious helper DLLs"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--58dfba58-1180-4adc-8e75-b06bdfea5b55",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--d9bcfaee-d2d1-4673-b834-5c219f8dba9b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0203#AN0579",
+                    "external_id": "AN0579"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0579",
+            "description": "Detects ptrace-based process injection by correlating audit logs of ptrace syscalls, memory modifications (e.g., poketext, pokedata), and suspicious register manipulation on a target process not normally debugged by the originator. Alerts on processes attempting to ptrace non-child or privileged processes, especially those followed by abnormal memory or execution behavior.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "auditd:SYSCALL",
+                    "channel": "mmap, ptrace, process_vm_writev or direct memory ops"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--ee575f4a-2d4f-48f6-b18b-89067760adc1",
+                    "name": "linux:osquery",
+                    "channel": "state=attached/debugged"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TargetProcessNameFilter",
+                    "description": "List of sensitive or rarely-debugged processes (e.g., sshd, systemd, container daemons) to alert on if ptraced"
+                },
+                {
+                    "field": "TimeWindowBetweenPtraceAndMemoryWrite",
+                    "description": "Threshold time (e.g., <10 seconds) between ptrace attach and pokedata syscall"
+                },
+                {
+                    "field": "UserContextMismatch",
+                    "description": "Flag when UID of tracer differs from UID of target process (e.g., privilege escalation or container breakout)"
+                },
+                {
+                    "field": "ProcessRelationshipConstraint",
+                    "description": "Allowlist relationships (e.g., parent-child) under which ptrace is considered benign"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

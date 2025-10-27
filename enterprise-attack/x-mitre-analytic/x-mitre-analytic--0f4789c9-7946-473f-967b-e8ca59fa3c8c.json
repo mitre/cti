@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--f5cc2a76-2b3f-435c-bbef-103677666ea6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--0f4789c9-7946-473f-967b-e8ca59fa3c8c",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0526#AN1460",
+                    "external_id": "AN1460"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1460",
+            "description": "Detects use of macOS-native archiving or encryption tools (zip, ditto, hdiutil) for staging collected data. Identifies unexpected invocation of archive utilities by Office apps, browsers, or background daemons. Correlates file creation of .zip/.dmg containers with process lineage anomalies.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of zip, ditto, hdiutil, or openssl by non-terminal parent processes"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of .zip or .dmg files in user-accessible or temporary directories"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedArchiveUtilities",
+                    "description": "Business-approved applications (e.g., Time Machine, backup agents) that generate archives."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Threshold for flagging archive creation under privileged or service accounts."
+                },
+                {
+                    "field": "PayloadEntropyThreshold",
+                    "description": "Entropy threshold for detecting encrypted archives versus standard compressed files."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

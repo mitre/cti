@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--bb701f80-5016-475d-a67d-ff289de9d288",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--4ecd8727-bcf3-4fce-8c04-e8d0bad1267e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0268#AN0749",
+                    "external_id": "AN0749"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0749",
+            "description": "Detects malicious archiving via system or third-party libraries (libz, libarchive) invoked by Python, Swift, or Objective-C binaries. Correlates unified logs of library loads with creation of compressed or encrypted archives (.zip, .gz, .bz2, .dmg).",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of Python, Swift, or other binaries invoking archiving libraries"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "macos:unifiedlog",
+                    "channel": "Loading of libz.dylib, libarchive.dylib by non-standard applications"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of .zip, .gz, .dmg archives in /Users, /tmp, or application directories"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedProcesses",
+                    "description": "Applications allowed to load compression libraries (e.g., backup agents)."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Flag archiving under privileged or system accounts as suspicious."
+                },
+                {
+                    "field": "FileExtensionFilter",
+                    "description": "Targeted monitoring of sensitive file formats or compressed containers."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

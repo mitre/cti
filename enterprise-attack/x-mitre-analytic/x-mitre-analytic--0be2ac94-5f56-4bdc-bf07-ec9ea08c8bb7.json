@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--3d4b77c5-2251-4031-bb20-e2352f312fd8",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--0be2ac94-5f56-4bdc-bf07-ec9ea08c8bb7",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0312#AN0871",
+                    "external_id": "AN0871"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0871",
+            "description": "Multi-event correlation of Registry creation under Active Setup with anomalous execution of processes at user logon. Behavioral patterns include creation/modification of HKLM Active Setup keys with non-standard StubPath values, followed by process execution from uncommon paths, unsigned binaries, or unusual parent-child lineage post-user login.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--39b9db72-8b48-4595-a18d-db5bbba3091b",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4672"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Microsoft-Windows-Security-Auditing",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--7f70fae7-a68d-4730-a83a-f260b9606129",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=12"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate registry change and process execution within a specific user logon session (e.g., 5\u201310 minutes)"
+                },
+                {
+                    "field": "ParentProcessName",
+                    "description": "Expected parent processes for Active Setup launched binaries (e.g., explorer.exe). Deviations may indicate abuse."
+                },
+                {
+                    "field": "StubPathValueEntropy",
+                    "description": "Degree of randomness/uncommonness in StubPath values. High entropy may indicate obfuscation."
+                },
+                {
+                    "field": "SignedBinaryStatus",
+                    "description": "Flag if launched binary in StubPath is unsigned or uncommon for baseline"
+                },
+                {
+                    "field": "RegistryKeyOwner",
+                    "description": "Check which user/context added the Active Setup key to detect privilege abuse"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--82ea37d4-48d0-4025-9803-2d5c7a8cccf2",
+    "id": "bundle--c142e4d5-47e9-424b-b46c-2027df5aca22",
     "spec_version": "2.0",
     "objects": [
         {
@@ -54,7 +54,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:55.648Z",
+            "modified": "2025-10-24T17:49:11.261Z",
             "name": "Systemd Timers",
             "description": "Adversaries may abuse systemd timers to perform task scheduling for initial or recurring execution of malicious code. Systemd timers are unit files with file extension <code>.timer</code> that control services. Timers can be set to run on a calendar event or after a time span relative to a starting point. They can be used as an alternative to [Cron](https://attack.mitre.org/techniques/T1053/003) in Linux environments.(Citation: archlinux Systemd Timers Aug 2020) Systemd timers may be activated remotely via the <code>systemctl</code> command line utility, which operates over [SSH](https://attack.mitre.org/techniques/T1021/004).(Citation: Systemd Remote Control)\n\nEach <code>.timer</code> file must have a corresponding <code>.service</code> file with the same name, e.g., <code>example.timer</code> and <code>example.service</code>. <code>.service</code> files are [Systemd Service](https://attack.mitre.org/techniques/T1543/002) unit files that are managed by the systemd system and service manager.(Citation: Linux man-pages: systemd January 2014) Privileged timers are written to <code>/etc/systemd/system/</code> and <code>/usr/lib/systemd/system</code> while user level are written to <code>~/.config/systemd/user/</code>.\n\nAn adversary may use systemd timers to execute malicious code at system startup or on a scheduled basis for persistence.(Citation: Arch Linux Package Systemd Compromise BleepingComputer 10JUL2018)(Citation: gist Arch package compromise 10JUL2018)(Citation: acroread package compromised Arch Linux Mail 8JUL2018) Timers installed using privileged paths may be used to maintain root level persistence. Adversaries may also install user level timers to achieve user level persistence.(Citation: Falcon Sandbox smp: 28553b3a9d)",
             "kill_chain_phases": [
@@ -76,7 +76,7 @@
                 "SarathKumar Rajendran, Trimble Inc"
             ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Systemd timer unit files may be detected by auditing file creation and modification events within the <code>/etc/systemd/system</code>, <code>/usr/lib/systemd/system/</code>, and <code>~/.config/systemd/user/</code> directories, as well as associated symbolic links. Suspicious processes or scripts spawned in this manner will have a parent process of \u2018systemd\u2019, a parent process ID of 1, and will usually execute as the \u2018root\u2019 user.\n\nSuspicious systemd timers can also be identified by comparing results against a trusted system baseline. Malicious systemd timers may be detected by using the systemctl utility to examine system wide timers: <code>systemctl list-timers \u2013all</code>. Analyze the contents of corresponding <code>.service</code> files present on the file system and ensure that they refer to legitimate, expected executables.\n\nAudit the execution and command-line arguments of the 'systemd-run' utility as it may be used to create timers.(Citation: archlinux Systemd Timers Aug 2020)",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -85,13 +85,7 @@
             "x_mitre_platforms": [
                 "Linux"
             ],
-            "x_mitre_version": "1.3",
-            "x_mitre_data_sources": [
-                "File: File Modification",
-                "Process: Process Creation",
-                "Command: Command Execution",
-                "Scheduled Job: Scheduled Job Creation"
-            ]
+            "x_mitre_version": "1.3"
         }
     ]
 }

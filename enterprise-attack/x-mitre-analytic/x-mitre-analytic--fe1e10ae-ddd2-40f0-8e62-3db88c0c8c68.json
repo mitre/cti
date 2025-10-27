@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--bebcba9c-a703-467f-a87a-8bf16fec3cf1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--fe1e10ae-ddd2-40f0-8e62-3db88c0c8c68",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0259#AN0714",
+                    "external_id": "AN0714"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0714",
+            "description": "Adversary installation or use of RMM software (e.g., TeamViewer, AnyDesk, ScreenConnect) followed by outbound beaconing or remote session establishment",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d2ff4b56-8351-4ed8-b0fb-d8605366005f",
+                    "name": "WinEventLog:Microsoft-Windows-Windows Firewall With Advanced Security/Firewall",
+                    "channel": "new rule allowing inbound or outbound connections for remote desktop software"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "Image",
+                    "description": "RMM software can vary; defenders should update rules to account for additional binaries (e.g., ConnectWise, Zoho Assist)"
+                },
+                {
+                    "field": "DestinationPort",
+                    "description": "RMM software may use configurable or random high ports outside of standard (e.g., 7070, 5650)"
+                },
+                {
+                    "field": "ParentImage",
+                    "description": "Expected parent process may vary in different enterprise contexts"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window for install-to-beacon or process-to-network event should match operational environment"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

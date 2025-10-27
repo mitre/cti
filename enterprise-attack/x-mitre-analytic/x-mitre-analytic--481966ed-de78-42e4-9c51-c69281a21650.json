@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--5999512e-e441-4314-84cc-4dc17e4569f7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--481966ed-de78-42e4-9c51-c69281a21650",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0109#AN0306",
+                    "external_id": "AN0306"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0306",
+            "description": "Monitor for unexpected modifications of plist files in persistence or configuration directories (e.g., ~/Library/LaunchAgents, ~/Library/Preferences, /Library/LaunchDaemons). Detect when modifications are followed by execution of new or unexpected binaries. Track use of utilities such as defaults, plutil, or text editors making changes to Info.plist files. Correlate file modifications with subsequent process launches or service starts that reference the altered plist.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "macos:unifiedlog",
+                    "channel": "write: File modifications to *.plist within LaunchAgents, LaunchDaemons, Application Support, or Preferences directories"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "exec: Execution of defaults, plutil, or common editors (vim/nano) targeting plist files"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:unifiedlog",
+                    "channel": "exec: Invocation of /usr/bin/defaults write or /usr/bin/plutil modifying plist keys"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "MonitoredDirectories",
+                    "description": "Set of directories where plist modifications are considered suspicious (e.g., ~/Library/LaunchAgents, /Library/LaunchDaemons)"
+                },
+                {
+                    "field": "SuspiciousKeys",
+                    "description": "List of plist keys associated with evasion or persistence (e.g., LSUIElement, LSEnvironment, ProgramArguments)"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Temporal correlation window to link plist file modifications with subsequent suspicious process launches"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

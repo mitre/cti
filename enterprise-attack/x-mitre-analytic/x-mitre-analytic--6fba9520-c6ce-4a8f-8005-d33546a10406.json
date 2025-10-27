@@ -1,0 +1,88 @@
+{
+    "type": "bundle",
+    "id": "bundle--312a892b-b96e-4d61-83b8-7187a31514c4",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--6fba9520-c6ce-4a8f-8005-d33546a10406",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0098#AN0274",
+                    "external_id": "AN0274"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0274",
+            "description": "Behavioral chain: (1) An actor creates or modifies a BITS job via bitsadmin.exe, PowerShell BITS cmdlets, or COM; (2) the job performs HTTP(S)/SMB network transfers while the owning user is logged on; (3) upon job completion/error, BITS launches a notify command (SetNotifyCmdLine) from svchost.exe -k netsvcs -s BITS, often establishing persistence by keeping long-lived jobs. The strategy correlates process creation, command/script telemetry, BITS-Client operational events, and network connections initiated by BITS.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4103,4104"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5297a638-1382-4f0c-8472-0d21830bf705",
+                    "name": "WinEventLog:System",
+                    "channel": "EventCode=7036"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window linking job creation, transfer, and notify execution (e.g., 30m\u201324h depending on environment and BITS retry behavior)."
+                },
+                {
+                    "field": "ExpectedUpdateHosts",
+                    "description": "Allow-list of corporate update/CDN endpoints that legitimately use BITS (WSUS, MEMCM, vendor updaters)."
+                },
+                {
+                    "field": "SuspiciousCliSwitches",
+                    "description": "BITSAdmin flags of interest (/transfer, /addfile, /SetNotifyCmdLine, /resume, /setcustomheaders, /setminretrydelay)."
+                },
+                {
+                    "field": "NotifyCmdBlockList",
+                    "description": "Known risky binaries or folders (e.g., %TEMP%\\*.exe, powershell.exe, cmd.exe) used as BITS notify commands."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Scope by interactive users, service accounts, or high-value targets (admins/servers) to reduce benign noise."
+                },
+                {
+                    "field": "ExternalNetCIDRs",
+                    "description": "Definition of external/non-corp destinations for network correlation."
+                },
+                {
+                    "field": "JobLifetimeThreshold",
+                    "description": "Maximum age or retry count for benign jobs before flagging persistence (e.g., >3 days or retry>20)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

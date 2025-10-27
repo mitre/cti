@@ -1,0 +1,57 @@
+{
+    "type": "bundle",
+    "id": "bundle--79feda69-c4f4-4ca1-b267-e69e05f5dcbd",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--b88f87d2-4a64-44a2-937e-85a929203843",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0030#AN0087",
+                    "external_id": "AN0087"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0087",
+            "description": "Detects modifications to IAM conditions or policies that alter authentication behavior, such as adding permissive trusted IPs, removing MFA requirements, or changing regional access restrictions. Behavioral detection focuses on anomalous policy updates tied to privileged accounts and subsequent suspicious logon activity from previously blocked regions or devices.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--e52d89f9-1710-4708-88a5-cbef77c4cd5e",
+                    "name": "AWS:CloudTrail",
+                    "channel": "PutUserPolicy, PutGroupPolicy, PutRolePolicy, CreatePolicyVersion"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "MonitoredIAMConditions",
+                    "description": "Specific condition keys (SourceIp, RequestedRegion, MFAAuthenticated) tuned per environment."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlates policy modification with follow-on logins from newly permitted sources."
+                },
+                {
+                    "field": "PrivilegedAccounts",
+                    "description": "List of administrative accounts to prioritize when monitoring for conditional access changes."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

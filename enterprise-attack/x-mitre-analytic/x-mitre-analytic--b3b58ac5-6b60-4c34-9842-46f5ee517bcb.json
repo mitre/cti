@@ -1,0 +1,86 @@
+{
+    "type": "bundle",
+    "id": "bundle--5a311cb1-e138-43cf-b284-f51fac19db76",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--b3b58ac5-6b60-4c34-9842-46f5ee517bcb",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0287#AN0798",
+                    "external_id": "AN0798"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0798",
+            "description": "Cause\u2192effect chain: (1) Browser/Office/reader process logs crash/segfault or abnormal sandbox message, (2) new executable/script/write occurs in $HOME (Downloads, ~/.cache, /tmp), (3) unexpected child like curl/wget/bash/python opens network connections soon after.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "linux:syslog",
+                    "channel": "browser/office crash, segfault, abnormal termination"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "auditd:SYSCALL",
+                    "channel": "creat"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:SYSCALL",
+                    "channel": "rename,chmod"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NetFlow:Flow",
+                    "channel": "new outbound connections from exploited process tree"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "5\u201320m correlation window."
+                },
+                {
+                    "field": "UserPaths",
+                    "description": "HOME write targets: ~/Downloads, ~/.config/autostart, ~/.local/share, /tmp."
+                },
+                {
+                    "field": "HighRiskChildren",
+                    "description": "bash, sh, python, perl, node, curl, wget, socat, openssl, xxd."
+                },
+                {
+                    "field": "PackageUpdaters",
+                    "description": "Allow-list common updaters (snap, flatpak, packagekit) to reduce FP."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

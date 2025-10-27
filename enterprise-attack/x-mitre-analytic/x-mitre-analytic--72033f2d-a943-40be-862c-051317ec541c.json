@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--da084ad0-c282-46af-adf7-4311415761c8",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--72033f2d-a943-40be-862c-051317ec541c",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0163#AN0465",
+                    "external_id": "AN0465"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0465",
+            "description": "Defenders may observe unauthorized or anomalous changes to NAT configurations, including the addition of new translation rules or modifications to existing ones. Suspicious behaviors include sudden introduction of NAT mappings bridging segmented networks, new port address translation rules that obscure true source IPs, or traffic flows inconsistent with expected network design. Multi-event correlation includes detecting configuration changes on routers/firewalls, followed by traffic traversing unexpected internal/external address pairs.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Network Devices"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "networkdevice:config",
+                    "channel": "NAT table modification (add/update/delete rule)"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "Source/destination IP translation inconsistent with intended policy"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Time correlation window between NAT rule change and unexpected traffic; adjustable to align with change management practices."
+                },
+                {
+                    "field": "AuthorizedNATRules",
+                    "description": "Whitelist of approved NAT policies and rules; prevents false positives from legitimate operations."
+                },
+                {
+                    "field": "TrafficVolumeThreshold",
+                    "description": "Threshold for abnormal traffic across NAT; tuned to differentiate testing from large-scale exfiltration or bridging."
+                },
+                {
+                    "field": "InterfaceScope",
+                    "description": "Specific interfaces or zones monitored for NAT translation; allows tuning for internal vs. external-facing boundaries."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

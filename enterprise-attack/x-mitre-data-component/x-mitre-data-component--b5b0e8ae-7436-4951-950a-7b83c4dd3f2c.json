@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--33fdbb7e-ace5-417e-b94e-d8fd2bb00637",
+    "id": "bundle--1e336929-a75d-4a76-a38e-fcc0269bd756",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,48 @@
             "created": "2021-10-20T15:05:19.274Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0076",
+                    "external_id": "DC0076"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:13:20.734Z",
+            "modified": "2025-10-21T15:14:39.434Z",
             "name": "Instance Creation",
             "description": "The initial provisioning and construction of a virtual machine (VM) or compute instance within a cloud infrastructure environment. This activity involves defining and allocating resources such as CPU, memory, storage, and networking to spin up a new compute instance. Examples:\n\n- AWS: creating an EC2 instance using RunInstances API calls.\n- Azure, creating a VM through the Azure Resource Manager (ARM).\n- GCP, an `instance.insert` action recorded.\n\n*Data Collection Measures:*\n\n- AWS CloudTrail: CloudTrail logs stored in S3 or accessible via CloudWatch.\n- Azure Activity Logs: Accessible in Azure Monitor or exported to a storage account.\n- GCP Audit Logs: Logs Explorer or BigQuery.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--45232bc0-e858-440d-aa93-d48c6cf167f0",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "azure:activity",
+                    "channel": "Microsoft.Compute/virtualMachines/write: imageReference publisher NOT IN allowlist OR plan is new/unknown"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "compute.instances.insert: sourceImage not in approved projects OR has external image link"
+                },
+                {
+                    "name": "azure:activity",
+                    "channel": "MICROSOFT.COMPUTE/VIRTUALMACHINES/WRITE"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "compute.instances.insert"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "RunInstances,CreateImage"
+                }
+            ]
         }
     ]
 }

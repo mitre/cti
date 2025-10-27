@@ -1,0 +1,85 @@
+{
+    "type": "bundle",
+    "id": "bundle--f5dbe1db-f678-49d4-af40-6aa55c81b758",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--ec6e1f3c-e9ff-4944-a426-863eaf9979ea",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0305#AN0854",
+                    "external_id": "AN0854"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0854",
+            "description": "Adversary modifies GPO containers or files under SYSVOL using LDAP, ADSI, PowerShell (e.g., New-GPOImmediateTask) or GUI tools. This includes directory object changes (e.g., gPCFileSysPath), delegation assignments (SeEnableDelegationPrivilege), and SYSVOL file writes (ScheduledTasks.xml, GptTmpl.inf).",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5b8b466b-2c81-4fe7-946f-d677a74ae3db",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=5136,5137,5138,5139,5141"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4670"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d27b0089-2c39-4b6c-84ff-303e48657e77",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4704"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ObjectDN",
+                    "description": "Focus detection on AD paths like CN=Policies,CN=System,DC=domain,DC=com."
+                },
+                {
+                    "field": "TargetFilename",
+                    "description": "Target specific files like ScheduledTasks.xml or GptTmpl.inf in SYSVOL."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate GPO object change and SYSVOL file modification within N seconds."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Alert on unexpected modification by non-admins or uncommon accounts."
+                },
+                {
+                    "field": "CommandLine",
+                    "description": "Flag usage of GPO manipulation tools like Set-GPRegistryValue, New-GPOImmediateTask."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

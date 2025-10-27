@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--6f72964a-0a4c-43c1-8591-986cc6bc7579",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c1167779-9df4-4387-b777-4da097c6b033",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0375#AN1056",
+                    "external_id": "AN1056"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1056",
+            "description": "Monitor for creation or modification of udev rules files in key directories (/etc/udev/rules.d/, /lib/udev/rules.d/, /usr/lib/udev/rules.d/). Look for RUN+= or IMPORT keys invoking suspicious binaries or scripts. Correlate this with process execution from systemd-udevd context, and file writes near udev reload/restart events. Combine this with unexpected background process spawning from udevd-related forks.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:SYSCALL",
+                    "channel": "chmod, write, create, open"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:CONFIG_CHANGE",
+                    "channel": "udev rule reload or trigger command executed"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UdevRulePath",
+                    "description": "Path to udev rules (may vary by distro or user configuration)"
+                },
+                {
+                    "field": "SuspiciousRunPattern",
+                    "description": "Regex or string pattern to flag suspicious command executions in RUN+="
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Max interval between rule change and execution to correlate activity"
+                },
+                {
+                    "field": "ParentProcess",
+                    "description": "Expected parent of RUN-invoked commands (e.g., systemd-udevd)"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

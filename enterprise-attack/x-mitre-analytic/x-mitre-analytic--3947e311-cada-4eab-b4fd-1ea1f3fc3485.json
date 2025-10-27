@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--e8a32a7f-e052-48be-9741-4524149ca2d9",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--3947e311-cada-4eab-b4fd-1ea1f3fc3485",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0490#AN1352",
+                    "external_id": "AN1352"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1352",
+            "description": "Detection of adversary attempts to enumerate containers, pods, nodes, and related resources within containerized environments. Defenders may observe anomalous API calls to Docker or Kubernetes (e.g., 'docker ps', 'kubectl get pods', 'kubectl get nodes'), unusual account activity against the Kubernetes dashboard, or unexpected queries against container metadata endpoints. These events should be correlated with user context and network activity to reveal resource discovery attempts.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--07688e40-a7fa-4436-937f-1216674341a0",
+                    "name": "kubernetes:apiserver",
+                    "channel": "list or get requests against pods, deployments, or nodes"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--91b3ed33-d1b5-4c4b-a896-76c55eb3cfd8",
+                    "name": "docker:daemon",
+                    "channel": "docker ps, docker inspect, or docker images commands"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserAllowList",
+                    "description": "Defines which service accounts and admin roles are expected to perform discovery actions. Activity by non-allowlisted identities may indicate adversary discovery."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Specifies correlation period (e.g., 10m) for linking multiple discovery attempts across API and daemon logs."
+                },
+                {
+                    "field": "PodQueryThreshold",
+                    "description": "Defines threshold for number of pod/node enumeration requests by a single user. Excessive queries may indicate scanning activity."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

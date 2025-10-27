@@ -1,0 +1,84 @@
+{
+    "type": "bundle",
+    "id": "bundle--d3a1012d-4142-4877-b1af-e0480f392ca5",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "attack-pattern",
+            "id": "attack-pattern--7655ac3b-dfde-49c5-a967-242856174434",
+            "created": "2025-05-22T20:01:16.611Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/techniques/T1677",
+                    "external_id": "T1677"
+                },
+                {
+                    "source_name": "Synactiv Hijacking GitHub Runners",
+                    "description": "Hugo Vincent. (2024, May 22). Hijacking GitHub runners to compromise the organization. Retrieved May 22, 2025.",
+                    "url": "https://www.synacktiv.com/en/publications/hijacking-github-runners-to-compromise-the-organization"
+                },
+                {
+                    "source_name": "GitHub Security Lab GitHub Actions Security 2021",
+                    "description": "Jaroslav Loba\u010devski. (2021, August 3). Keeping your GitHub Actions and workflows secure Part 1: Preventing pwn requests. Retrieved May 22, 2025.",
+                    "url": "https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/"
+                },
+                {
+                    "source_name": "GitHub Security Labs GitHub Actions Security Part 2 2021",
+                    "description": "Jaroslav Loba\u010devski. (2021, August 4). Keeping your GitHub Actions and workflows secure Part 2: Untrusted input. Retrieved May 22, 2025.",
+                    "url": "https://securitylab.github.com/resources/github-actions-untrusted-input/"
+                },
+                {
+                    "source_name": "John Stawinski PyTorch Supply Chain Attack 2024",
+                    "description": "John Stawinski IV. (2024, January 11). Playing with Fire \u2013 How We Executed a Critical Supply Chain Attack on PyTorch. Retrieved May 22, 2025.",
+                    "url": "https://johnstawinski.com/2024/01/11/playing-with-fire-how-we-executed-a-critical-supply-chain-attack-on-pytorch/"
+                },
+                {
+                    "source_name": "Unit 42 Palo Alto GitHub Actions Supply Chain Attack 2025",
+                    "description": "Omer Gilm Aviad Hahami, Asi Greenholts, and Yaron Avital. (2025, March 20). GitHub Actions Supply Chain Attack: A Targeted Attack on Coinbase Expanded to the Widespread tj-actions/changed-files Incident: Threat Assessment . Retrieved May 22, 2025.",
+                    "url": "https://unit42.paloaltonetworks.com/github-actions-supply-chain-attack"
+                },
+                {
+                    "source_name": "OWASP CICD-SEC-4",
+                    "description": "OWASP. (n.d.). CICD-SEC-4: Poisoned Pipeline Execution (PPE). Retrieved May 22, 2025.",
+                    "url": "https://owasp.org/www-project-top-10-ci-cd-security-risks/CICD-SEC-04-Poisoned-Pipeline-Execution"
+                },
+                {
+                    "source_name": "Wiz Ultralytics AI Library Hijack 2024",
+                    "description": "Wiz Threat Research. (2024, December 9). Ultralytics AI Library Hacked via GitHub for Cryptomining. Retrieved May 22, 2025.",
+                    "url": "https://www.wiz.io/blog/ultralytics-ai-library-hacked-via-github-for-cryptomining"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T02:38:29.636Z",
+            "name": "Poisoned Pipeline Execution",
+            "description": "Adversaries may manipulate continuous integration / continuous development (CI/CD) processes by injecting malicious code into the build process. There are several mechanisms for poisoning pipelines: \n\n* In a <b>Direct Pipeline Execution</b> scenario, the threat actor directly modifies the CI configuration file (e.g., `gitlab-ci.yml` in GitLab). They may include a command to exfiltrate credentials leveraged in the build process to a remote server, or to export them as a workflow artifact.(Citation: Unit 42 Palo Alto GitHub Actions Supply Chain Attack 2025)(Citation: OWASP CICD-SEC-4)\n* In an <b>Indirect Pipeline Execution</b> scenario, the threat actor injects malicious code into files referenced by the CI configuration file. These may include makefiles, scripts, unit tests, and linters.(Citation: OWASP CICD-SEC-4)\n* In a <b>Public Pipeline Execution</b> scenario, the threat actor does not have direct access to the repository but instead creates a malicious pull request from a fork that triggers a part of the CI/CD pipeline. For example, in GitHub Actions, the `pull_request_target` trigger allows workflows running from forked repositories to access secrets.  If this trigger is combined with an explicit pull request checkout and a location for a threat actor to insert malicious code (e.g., an `npm build` command), a threat actor may be able to leak pipeline credentials.(Citation: Unit 42 Palo Alto GitHub Actions Supply Chain Attack 2025)(Citation: GitHub Security Lab GitHub Actions Security 2021) Similarly, threat actors may craft pull requests with malicious inputs (such as branch names) if the build pipeline treats those inputs as trusted.(Citation: Wiz Ultralytics AI Library Hijack 2024)(Citation: Synactiv Hijacking GitHub Runners)(Citation: GitHub Security Labs GitHub Actions Security Part 2 2021) Finally, if a pipeline leverages a self-hosted runner, a threat actor may be able to execute arbitrary code on a host inside the organization\u2019s network.(Citation: John Stawinski PyTorch Supply Chain Attack 2024)\n\nBy poisoning CI/CD pipelines, threat actors may be able to gain access to credentials, laterally move to additional hosts, or input malicious components to be shipped further down the pipeline (i.e., [Supply Chain Compromise](https://attack.mitre.org/techniques/T1195)). ",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "mitre-attack",
+                    "phase_name": "execution"
+                }
+            ],
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_contributors": [
+                "Arun Seelagan, CISA"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_detection": "",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_is_subtechnique": false,
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "SaaS"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_remote_support": false
+        }
+    ]
+}

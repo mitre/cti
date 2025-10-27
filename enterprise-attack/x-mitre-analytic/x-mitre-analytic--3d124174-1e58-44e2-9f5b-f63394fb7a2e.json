@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--28ee4d5e-ee62-4038-8d05-9fe92414b3f7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--3d124174-1e58-44e2-9f5b-f63394fb7a2e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0386#AN1088",
+                    "external_id": "AN1088"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1088",
+            "description": "Use of AWS CLI (`aws iam list-users`, `list-roles`), Azure CLI (`az ad user list`), or GCP CLI (`gcloud iam service-accounts list`) from endpoints or cloud shells where such activity is unexpected.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a953ca55-921a-44f7-9b8d-3d40141aa17e",
+                    "name": "AWS:CloudTrail",
+                    "channel": "AWS IAM: ListUsers, ListRoles"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5d0492b-cda4-421c-8e51-ed2b8d85c5d0",
+                    "name": "azure:activity",
+                    "channel": "Azure CLI Operation: Microsoft.Graph/users/read"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "CallerType",
+                    "description": "Suppress known admin accounts and alert on developer/test/service identities."
+                },
+                {
+                    "field": "CLIUserAgent",
+                    "description": "Correlate unexpected CLI user-agents and geolocation anomalies."
+                },
+                {
+                    "field": "CloudRegion",
+                    "description": "Suppress noise from known IP ranges or whitelisted accounts per region."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

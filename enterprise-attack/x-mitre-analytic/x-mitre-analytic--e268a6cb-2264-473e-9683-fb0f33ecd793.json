@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--d057f301-474a-4731-911b-3d9330e4652c",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--e268a6cb-2264-473e-9683-fb0f33ecd793",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0299#AN0835",
+                    "external_id": "AN0835"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0835",
+            "description": "Behavioral sequence of unauthorized privilege escalation via permission modification: (1) chmod/chown/setfacl process execution with suspicious parameters, (2) Targeting of critical system files or unusual permission values, (3) Correlation with non-privileged user context or unusual timing patterns, (4) Follow-on file access indicating successful permission bypass",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "auditd:SYSCALL",
+                    "channel": "syscall in (chmod, fchmod, fchmodat, chown, fchown, fchownat, setxattr, lsetxattr, fsetxattr)"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:PROCTITLE",
+                    "channel": "proctitle contains chmod, chown, setfacl, or attr commands with suspicious parameters"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "SuspiciousPermissionValues",
+                    "description": "Octal permission values that indicate potential malicious intent (default: 777, 755, 4755)"
+                },
+                {
+                    "field": "CriticalPathPatterns",
+                    "description": "Linux filesystem paths requiring enhanced monitoring (/etc/, /usr/bin/, /home/)"
+                },
+                {
+                    "field": "AuthorizedAdminUsers",
+                    "description": "User accounts permitted to perform system-level permission modifications"
+                },
+                {
+                    "field": "AnomalyThreshold",
+                    "description": "Statistical threshold for detecting unusual permission modification frequency"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

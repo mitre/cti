@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--38e97585-e565-4702-a2fd-9264369872da",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--44500eb7-01f2-4cab-8b76-1227bb48e13e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0467#AN1289",
+                    "external_id": "AN1289"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1289",
+            "description": "Detects thread local storage (TLS) callback injection by monitoring memory modifications to PE headers and TLS directory structures during or after process hollowing events, followed by anomalous thread behavior prior to main entry point execution.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d5fca4e4-e47a-487b-873f-3d22f8865e96",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=8"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "EDR:memory",
+                    "channel": "MemoryWriteToExecutable"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TargetProcessFilter",
+                    "description": "Subset of processes whose TLS callbacks should not change post-load (e.g., explorer.exe, lsass.exe)"
+                },
+                {
+                    "field": "TimeWindowBetweenLoadAndTLSModification",
+                    "description": "Acceptable delay between image load and memory tampering in .tls or .data sections"
+                },
+                {
+                    "field": "AnomalousThreadStartThreshold",
+                    "description": "Number of threads executing prior to main entry point that is considered suspicious"
+                },
+                {
+                    "field": "PayloadEntropyThreshold",
+                    "description": "Optional threshold to distinguish injected shellcode from benign memory writes"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

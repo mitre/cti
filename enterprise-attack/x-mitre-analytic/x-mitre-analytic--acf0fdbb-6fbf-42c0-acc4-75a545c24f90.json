@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--60b5c171-b4c7-4836-bba2-1f5005a47b5a",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--acf0fdbb-6fbf-42c0-acc4-75a545c24f90",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0340#AN0964",
+                    "external_id": "AN0964"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0964",
+            "description": "User pastes an obfuscated command into Terminal.app/iTerm2 that decodes or downloads code and executes. Detects Terminal/iTerm2 spawning bash/zsh/python with suspicious pipeline/base64 patterns followed by file writes in ~/Library or /tmp and outbound network connections.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "exec: ParentImage in (Terminal, iTerm2) AND Image in (/bin/zsh,/bin/bash,/usr/bin/python*) AND CommandLine matches '(curl|wget).*(\\||\\|\\s*sh|bash)|base64 -D|python -c'"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:osquery",
+                    "channel": "Interpreter exec with suspicious arguments as above"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "macos:unifiedlog",
+                    "channel": "create: New files in /tmp or ~/Library/Application Support/* with executable or script extensions"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Egress to non-approved networks from host after terminal exec"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ParentAppScope",
+                    "description": "Terminal apps to treat as user-paste origins (Terminal, iTerm2, VSCode integrated terminal)."
+                },
+                {
+                    "field": "CommandPatternList",
+                    "description": "macOS-specific one-liner traits (pbpaste|base64 -D|curl ... | sh)."
+                },
+                {
+                    "field": "AllowListedDevUsers",
+                    "description": "Developers/automation accounts expected to run such commands."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

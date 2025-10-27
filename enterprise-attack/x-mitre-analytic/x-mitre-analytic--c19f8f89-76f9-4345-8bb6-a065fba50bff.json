@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--2c0791cc-850c-4aaa-abe7-30f992d13bc1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c19f8f89-76f9-4345-8bb6-a065fba50bff",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0162#AN0463",
+                    "external_id": "AN0463"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0463",
+            "description": "Process creates a raw/packet socket and attaches a (e)BPF filter (setsockopt SO_ATTACH_FILTER/ATTACH_BPF or bpf(BPF_PROG_LOAD)). Immediately after a matching inbound packet, the same process binds/connects outward to a remote host (reverse shell or beacon).",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "socket(AF_PACKET|AF_INET, SOCK_RAW, *), setsockopt(\u2026 SO_ATTACH_FILTER|SO_ATTACH_BPF \u2026), bpf(cmd=BPF_PROG_LOAD), open/openat path=\"/dev/bpf*\" (BSD/macOS-like) or setcap cap_net_raw."
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "linux:osquery",
+                    "channel": "family=AF_PACKET or protocol raw; process name not in allowlist."
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Rare inbound packet characteristics (ICMP/UDP/TCP to uncommon port) from src_ip followed \u2264TimeWindow by outbound SF from same host to src_ip."
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "Flag raw-socket activity outside privileged daemons (root-only by default)."
+                },
+                {
+                    "field": "MinPayloadEntropy",
+                    "description": "If using packet content (Zeek), treat high-entropy single-packet triggers as suspicious."
+                },
+                {
+                    "field": "AFPacketAllowList",
+                    "description": "System services allowed to open AF_PACKET (dhclient, keepalived, LLDP, monitoring agents)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

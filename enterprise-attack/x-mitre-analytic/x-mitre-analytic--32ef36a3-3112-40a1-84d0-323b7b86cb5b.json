@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--5471af59-a855-4f4d-936a-d79917ec95ff",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--32ef36a3-3112-40a1-84d0-323b7b86cb5b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0118#AN0330",
+                    "external_id": "AN0330"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0330",
+            "description": "Ties inbound access to exposed services (ARD/VNC 5900, SSH 22, ScreenSharing, web services) with process crashes in unified logs and abnormal child processes spawned under those services (e.g., bash, curl) to indicate exploitation.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "macos:unifiedlog",
+                    "channel": "process 'crashed'|'EXC_BAD_ACCESS' for sshd, screensharingd, httpd; launchd restarts of these daemons."
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:osquery",
+                    "channel": "parent_name in ('sshd','httpd','screensharingd') spawning shells or scripting runtimes."
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Inbound to 22/5900/8080 and follow-on internal connections."
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ServicePortSet",
+                    "description": "22, 5900, 8080/8443 by default."
+                },
+                {
+                    "field": "AllowedAdmins",
+                    "description": "MDM/jump-host IPs allowed to manage endpoints."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Default: 10 minutes."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

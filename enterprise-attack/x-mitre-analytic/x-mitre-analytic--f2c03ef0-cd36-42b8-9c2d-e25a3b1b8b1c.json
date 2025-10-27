@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--62989f1f-0285-436a-9404-fdfec64be537",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--f2c03ef0-cd36-42b8-9c2d-e25a3b1b8b1c",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0206#AN0582",
+                    "external_id": "AN0582"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0582",
+            "description": "Detects abuse of container orchestration platforms (e.g., Kubernetes) where adversaries create CronJobs to maintain persistence or execute malicious Jobs across the cluster.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f42df6f0-6395-4f0c-9376-525a031f00c3",
+                    "name": "kubernetes:apiserver",
+                    "channel": "verb=create, resource=cronjobs, group=batch"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a5ae90ca-0c4b-481c-959f-0eb18a7ff953",
+                    "name": "kubernetes:events",
+                    "channel": "container start/stop activity via Docker, containerd, or CRI-O"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "container:proxy",
+                    "channel": "outbound/inbound network activity from spawned pods"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "NamespaceScope",
+                    "description": "Kubernetes namespace the job is deployed to\u2014scoping this to known trusted namespaces may reduce noise."
+                },
+                {
+                    "field": "ImageRepository",
+                    "description": "The container image registry or repository the job pulls from\u2014can be filtered by trusted registries."
+                },
+                {
+                    "field": "ScheduleWindow",
+                    "description": "Time window or frequency of CronJob execution (e.g., \u2018@hourly\u2019)\u2014jobs running at odd hours may be suspicious."
+                },
+                {
+                    "field": "ExecutionCommand",
+                    "description": "The command or entrypoint executed by the Job\u2014unexpected shell commands or interpreters may warrant inspection."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

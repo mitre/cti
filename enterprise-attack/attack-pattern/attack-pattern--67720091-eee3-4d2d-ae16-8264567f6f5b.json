@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a36e2d1b-178f-4d02-9579-d9720a31fd9c",
+    "id": "bundle--1fb987e5-401b-4b5d-a920-77dd53063aef",
     "spec_version": "2.0",
     "objects": [
         {
@@ -39,7 +39,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:37.690Z",
+            "modified": "2025-10-24T17:48:53.277Z",
             "name": "Abuse Elevation Control Mechanism",
             "description": "Adversaries may circumvent mechanisms designed to control elevate privileges to gain higher-level permissions. Most modern systems contain native elevation control mechanisms that are intended to limit privileges that a user can perform on a machine. Authorization has to be granted to specific users in order to perform tasks that can be considered of higher risk.(Citation: TechNet How UAC Works)(Citation: sudo man page 2018) An adversary can perform several methods to take advantage of built-in control mechanisms in order to escalate privileges on a system.(Citation: OSX Keydnap malware)(Citation: Fortinet Fareit)",
             "kill_chain_phases": [
@@ -54,7 +54,7 @@
             ],
             "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor the file system for files that have the setuid or setgid bits set. Also look for any process API calls for behavior that may be indicative of [Process Injection](https://attack.mitre.org/techniques/T1055) and unusual loaded DLLs through [DLL](https://attack.mitre.org/techniques/T1574/001), which indicate attempts to gain access to higher privileged processes. On Linux, auditd can alert every time a user's actual ID and effective ID are different (this is what happens when you sudo).\n\nConsider monitoring for <code>/usr/libexec/security_authtrampoline</code> executions which may indicate that AuthorizationExecuteWithPrivileges is being executed. MacOS system logs may also indicate when AuthorizationExecuteWithPrivileges is being called. Monitoring OS API callbacks for the execution can also be a way to detect this behavior but requires specialized security tooling.\n\nOn Linux, auditd can alert every time a user's actual ID and effective ID are different (this is what happens when you sudo). This technique is abusing normal functionality in macOS and Linux systems, but sudo has the ability to log all input and output based on the <code>LOG_INPUT</code> and <code>LOG_OUTPUT</code> directives in the <code>/etc/sudoers</code> file.\n\nThere are many ways to perform UAC bypasses when a user is in the local administrator group on a system, so it may be difficult to target detection on all variations. Efforts should likely be placed on mitigation and collecting enough information on process launches and actions that could be performed before and after a UAC bypass is performed. Some UAC bypass methods rely on modifying specific, user-accessible Registry settings. Analysts should monitor Registry settings for unauthorized changes.",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -68,17 +68,7 @@
                 "Office Suite",
                 "Identity Provider"
             ],
-            "x_mitre_version": "1.5",
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "User Account: User Account Modification",
-                "Command: Command Execution",
-                "Process: OS API Execution",
-                "File: File Modification",
-                "Process: Process Metadata",
-                "File: File Metadata",
-                "Windows Registry: Windows Registry Key Modification"
-            ]
+            "x_mitre_version": "1.5"
         }
     ]
 }

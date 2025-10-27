@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--21cb61f7-2606-4541-b9c8-0af3891c0f9e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--e14e67af-6f6e-47d6-aa19-4012ea99284c",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0381#AN1075",
+                    "external_id": "AN1075"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1075",
+            "description": "Correlates file enumeration of XML files in the SYSVOL share with suspicious process execution that decodes or reads encrypted credentials embedded in Group Policy Preference files (e.g., Get-GPPPassword.ps1, gpprefdecrypt.py, Metasploit). Detects abnormal access to \\DOMAIN\\SYSVOL combined with XML file parsing or decryption logic.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f5468e67-51c7-4756-9b4f-65707708e7fa",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=5145"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9f387817-df83-432a-b56b-a8fb7f71eedd",
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "Scripts with references to XML parsing, AES decryption, or gpprefdecrypt logic"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "Tune to exclude authorized admin users or domain controllers accessing SYSVOL"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Adjust for correlation timing between file access and script execution"
+                },
+                {
+                    "field": "KnownToolsSignature",
+                    "description": "Extend to include known GPP parsing tool names or script hashes"
+                },
+                {
+                    "field": "HostType",
+                    "description": "Distinguish between expected access from DCs vs. lateral movement from workstations"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

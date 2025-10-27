@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--cf842ad9-e394-4e12-956d-04aeea142328",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--48cc1694-568f-4602-96e4-cbbe099c6dae",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0029#AN0085",
+                    "external_id": "AN0085"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0085",
+            "description": "Adversary uses a tool like Ruler to insert a malicious custom form into the user's Outlook mailbox. The form is designed to auto-execute on Outlook startup or on receipt of a specially crafted email. This results in child processes launched from outlook.exe and possibly network connections or payload loading.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "WinEventLog:Application",
+                    "channel": "Outlook errors loading or processing custom form templates"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "Execution of Microsoft script to enumerate custom forms in Outlook mailbox"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "FormStorageLocation",
+                    "description": "Malicious forms may be stored in various user-specific locations in the Outlook mailbox (e.g., IPM.Note class)"
+                },
+                {
+                    "field": "ChildProcessName",
+                    "description": "Child process spawned by outlook.exe may vary (e.g., powershell.exe, rundll32.exe, mshta.exe)"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Form-triggered execution may happen immediately upon Outlook startup or with delay after crafted message arrival"
+                },
+                {
+                    "field": "OutlookVersion",
+                    "description": "Form behavior and error logs may vary across Outlook 2013, 2016, and M365 builds"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Attack may target only specific users; contextual correlation needed for account baselining"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

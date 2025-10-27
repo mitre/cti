@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--16929122-00d6-49f2-8901-a4fb4a042150",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--52ee5593-7db2-4ad0-b5f4-630ebcf2ce0f",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0571#AN1578",
+                    "external_id": "AN1578"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1578",
+            "description": "Detects creation of new container system processes via `docker run --restart`, `kubectl exec` to init containers, or modification of container init specs. Flags container images that override entrypoints to embed persistence behaviors.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a5ae90ca-0c4b-481c-959f-0eb18a7ff953",
+                    "name": "docker:events",
+                    "channel": "docker run with restart=always or modifying init"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:SYSCALL",
+                    "channel": "modification of entrypoint scripts or init containers"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "EntrypointOverridePattern",
+                    "description": "Patterns used to detect modified container start scripts"
+                },
+                {
+                    "field": "RestartPolicyMatch",
+                    "description": "Policy values triggering alert (e.g., always, on-failure)"
+                },
+                {
+                    "field": "KubeInitModPath",
+                    "description": "Path filters for `/etc/init.d/`-like behaviors inside containers"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--71f80d36-6617-433b-880c-cca6e8be0302",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--bcb01d01-66f6-47bb-9ca1-46b4ce686ad4",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0382#AN1076",
+                    "external_id": "AN1076"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1076",
+            "description": "Detects adversary use of suspended process creation, using the CREATE_SUSPENDED flag via CreateProcess, followed by unmapping the memory of the child process (NtUnmapViewOfSection) and replacing it with malicious code via VirtualAllocEx/WriteProcessMemory, then SetThreadContext and ResumeThread to begin execution within the hollowed process.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d5fca4e4-e47a-487b-873f-3d22f8865e96",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=8"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "etw:Microsoft-Windows-Kernel-Process",
+                    "channel": "NtUnmapViewOfSection, VirtualAllocEx, WriteProcessMemory, SetThreadContext, ResumeThread"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "HollowedImageNamePattern",
+                    "description": "Regex to match common decoy executables used for hollowing (e.g., 'svchost.exe', 'notepad.exe')"
+                },
+                {
+                    "field": "TimeWindow_ProcessCreateToResume",
+                    "description": "Temporal threshold for unmap/write/execute sequence (e.g., within 5\u201310 seconds)"
+                },
+                {
+                    "field": "SuspendedProcessStartFlag",
+                    "description": "CreateProcess flag used to identify suspended thread creation"
+                },
+                {
+                    "field": "MemoryWriteSizeThreshold",
+                    "description": "Minimum byte size to flag suspicious memory overwrite in hollowed process"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

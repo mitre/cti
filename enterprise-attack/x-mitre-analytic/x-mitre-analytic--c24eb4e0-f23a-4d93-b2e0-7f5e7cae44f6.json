@@ -1,0 +1,83 @@
+{
+    "type": "bundle",
+    "id": "bundle--4cf44f6e-1068-4d49-ab3e-3c586830fb5a",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c24eb4e0-f23a-4d93-b2e0-7f5e7cae44f6",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0474#AN1306",
+                    "external_id": "AN1306"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1306",
+            "description": "Linux environmental keying behavioral chain: (1) System information gathering through native commands (uname, hostname, id, whoami, ifconfig/ip) and file system enumeration, (2) Network configuration discovery (route tables, DNS settings, network interfaces), (3) Filesystem and mount point analysis for target-specific directories or devices, (4) Process and service enumeration to identify target-specific software, (5) Cryptographic library usage correlation with collected environmental data, (6) Payload execution following successful environmental validation",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve syscalls for discovery commands (uname, hostname, id, whoami, ps, netstat, mount) with command-line parameter analysis"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "linux:syslog",
+                    "channel": "kernel messages related to cryptographic operations, module loading, and filesystem access patterns"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "linux:osquery",
+                    "channel": "process_events"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "DiscoveryCommandSequenceThreshold",
+                    "description": "Number of distinct discovery commands within time window to trigger detection - adjust based on normal system administration patterns in environment"
+                },
+                {
+                    "field": "ProcessAncestryDepth",
+                    "description": "Depth of process parent-child relationships to analyze for discovery activity clustering - balance between detection efficacy and performance"
+                },
+                {
+                    "field": "CryptographicLibraryIndicators",
+                    "description": "Shared libraries and system calls indicating cryptographic operations (libcrypto, libssl, openssl) - customize based on environment-specific crypto tools"
+                },
+                {
+                    "field": "TargetSpecificFilesystems",
+                    "description": "Organization-specific mount points, network filesystems, or device paths that adversaries might validate against"
+                },
+                {
+                    "field": "AuthorizedDiscoveryUsers",
+                    "description": "User accounts and service accounts authorized for extensive system discovery operations - maintain for false positive reduction"
+                },
+                {
+                    "field": "NetworkConfigurationBaseline",
+                    "description": "Normal network interface configurations and routing tables to identify anomalous network discovery patterns"
+                },
+                {
+                    "field": "ContainerContextIdentifiers",
+                    "description": "Container runtime identifiers and namespace patterns to detect environmental assessment targeting container environments"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

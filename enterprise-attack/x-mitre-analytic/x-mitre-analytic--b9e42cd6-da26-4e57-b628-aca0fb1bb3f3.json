@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--0775b495-bfec-47a3-b5cf-42b56a9ac9fe",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--b9e42cd6-da26-4e57-b628-aca0fb1bb3f3",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0243#AN0681",
+                    "external_id": "AN0681"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0681",
+            "description": "Defenders may observe attempts to alter cryptographic settings on network devices that reduce key strength or allowable cipher suites. Suspicious indicators include configuration changes that downgrade encryption algorithms, key length parameters, or the disabling of strong encryption in favor of legacy ciphers. These activities often appear as CLI commands modifying crypto policies, firmware changes affecting crypto libraries, or unexpected updates to key management files. Correlation across device config logs and traffic analysis showing weaker ciphers provides higher confidence of malicious key space reduction.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Network Devices"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "networkdevice:config",
+                    "channel": "Configuration changes referencing 'crypto', 'key length', 'cipher', or downgrade of encryption settings"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "networkdevice:cli",
+                    "channel": "Execution of CLI commands altering crypto parameters (e.g., 'crypto key generate rsa modulus 512')"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Observed downgrade in negotiated cipher suites or TLS/SSH versions across sessions"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedKeyLengths",
+                    "description": "Defines the minimum acceptable encryption key sizes; tunable to organizational policy."
+                },
+                {
+                    "field": "CipherSuiteBaseline",
+                    "description": "Baseline list of approved cipher suites for network sessions; deviations may indicate tampering."
+                },
+                {
+                    "field": "AuthorizedAdminAccounts",
+                    "description": "Whitelisted accounts for executing crypto configuration changes; ensures alerts only trigger on unauthorized actions."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Time correlation period between configuration change and anomalous traffic downgrade; adjustable to reduce noise."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

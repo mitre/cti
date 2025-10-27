@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--632dc67d-cae8-4ce2-ad3b-49088cf10945",
+    "id": "bundle--af825fc3-1917-473b-a691-f9621848708a",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,36 @@
             "created": "2021-10-20T15:05:19.272Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0019",
+                    "external_id": "DC0019"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:17:38.124Z",
+            "modified": "2025-10-21T15:14:37.749Z",
             "name": "Pod Creation",
             "description": "The initial deployment or instantiation of a new pod in a containerized environment. This includes creating a pod manually, through orchestration tools (Kubernetes), or via Infrastructure-as-Code (IaC) configurations. A Pod is the smallest deployable unit in Kubernetes, typically containing one or more containers. Creation methods include:\n- Direct pod deployment (`kubectl run`, `kubectl apply`)\n- Automated deployment via CI/CD pipelines (e.g., ArgoCD, Jenkins, GitOps)\n- Infrastructure-as-Code (IaC) templates (e.g., Terraform, Helm Charts)\n- API-based deployments via Kubernetes control plane (create_pod API calls)\n- Pods can be ephemeral (short-lived) or persistent (part of a StatefulSet or Deployment).\n\n*Data Collection Measures:*\n\n- Kubernetes Audit Logs\n    - Captures all API requests, including pod `create` events.\n- Kube-api server Logs\t\n    - Monitors API calls related to pod deployments and modifications. Related Events: `PodSandboxChanged`, `SyncLoop`, `Created pod`\n- Container Runtime Logs\t\n    - Logs from CRI-O, containerd, or Docker capture pod creation events. Related Events: `container start`, `container create`\n- Cloud Provider Logs\t\n    - GKE, EKS, AKS logs provide insights into Kubernetes API interactions.\n- SIEM & Log Aggregation\t\n    - Integrates Kubernetes logs into SIEM solutions.\n- EDR/XDR Solutions\t\n    - Monitors container-based activity for anomalous pod creations.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--06bb1e05-533b-4de3-ae87-9b99910465cf",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "CreatePod: Programmatic creation of new pod resources using container images not seen before in the environment"
+                },
+                {
+                    "name": "kubernetes:audit",
+                    "channel": "create"
+                }
+            ]
         }
     ]
 }

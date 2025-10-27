@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--213e4047-9735-49fc-8a07-53c0e476898b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--d9383849-c91c-4eef-88a0-97c2454ca1af",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0504#AN1393",
+                    "external_id": "AN1393"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1393",
+            "description": "Detects anomalous use of Dynamic Data Exchange (DDE) for code execution, such as Office applications (WINWORD.EXE, EXCEL.EXE) spawning command interpreters, or loading unusual modules through DDEAUTO/DDE formulas. Correlates suspicious parent-child process relationships, registry keys enabling DDE, and module loads inconsistent with normal Office usage.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--ed0dd8aa-1677-4551-bb7d-8da767617e1b",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4656"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedParentChildPairs",
+                    "description": "Define legitimate parent-child relationships for Office processes to reduce false positives."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Threshold for correlating Office process creation with subsequent command execution via DDE."
+                },
+                {
+                    "field": "SuspiciousDLLList",
+                    "description": "Maintain allow/block list of DLLs that Office is expected to load."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

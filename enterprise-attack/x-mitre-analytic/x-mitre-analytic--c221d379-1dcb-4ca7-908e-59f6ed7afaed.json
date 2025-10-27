@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--74f79ce7-6aec-4772-9726-3bca8338bc53",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c221d379-1dcb-4ca7-908e-59f6ed7afaed",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0450#AN1243",
+                    "external_id": "AN1243"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1243",
+            "description": "Monitor kernel module load/unload activity via modprobe, insmod, rmmod, or direct manipulation of /lib/modules. Correlate with installation of kernel headers, compilation commands, or downloads of .ko files. Detect anomalies in unsigned module loading or repeated module load attempts under non-root users.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:SYSCALL",
+                    "channel": "Execution of insmod, modprobe, or rmmod commands by non-standard users or outside expected timeframes"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "auditd:SYSCALL",
+                    "channel": "Access or modification to /lib/modules or creation of .ko files"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "linux:osquery",
+                    "channel": "New or modified kernel object files (.ko) within /lib/modules directory"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "Scope detection to non-root or unexpected users performing module-related activity"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Limit alerts to module activity outside approved change windows"
+                },
+                {
+                    "field": "FilePathRegex",
+                    "description": "Adjust regex pattern for directories to monitor depending on kernel version or distro"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

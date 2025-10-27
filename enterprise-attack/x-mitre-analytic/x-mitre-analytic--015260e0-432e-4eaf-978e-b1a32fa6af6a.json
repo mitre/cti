@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--bcbb430d-7b15-4774-9d4b-fbfa62806030",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--015260e0-432e-4eaf-978e-b1a32fa6af6a",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0396#AN1112",
+                    "external_id": "AN1112"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1112",
+            "description": "Detects suspicious access to macOS Keychain files and APIs. Observes processes invoking the 'security' utility or accessing Keychain databases directly, correlates these with abnormal parent process lineage or unexpected user context. Monitors attempts to dump, unlock, or read credential storage beyond normal application workflows.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of security or osascript"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "macos:unifiedlog",
+                    "channel": "access or unlock attempt to keychain database"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "macos:unifiedlog",
+                    "channel": "read access to ~/Library/Keychains/login.keychain-db"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedApplications",
+                    "description": "Whitelist of applications (e.g., Safari, Mail) normally permitted to access Keychain"
+                },
+                {
+                    "field": "AlertThreshold",
+                    "description": "Number of failed keychain unlock attempts before raising an alert"
+                },
+                {
+                    "field": "ParentProcessContext",
+                    "description": "Legitimate parent-child process relationships for security tool invocations"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

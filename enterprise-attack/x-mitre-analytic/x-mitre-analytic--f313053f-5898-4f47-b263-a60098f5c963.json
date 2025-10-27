@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--a874dcb9-3082-40d6-ad11-7a13d3e21dc4",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--f313053f-5898-4f47-b263-a60098f5c963",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0205#AN0581",
+                    "external_id": "AN0581"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0581",
+            "description": "Execution of XSL scripts via msxsl.exe or wmic.exe using embedded JScript or VBScript for proxy execution. Detection correlates process creation, command-line patterns, and module load behavior of scripting components (e.g., jscript.dll).",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "CommandLinePattern",
+                    "description": "May need to tune based on encoded input or custom extensions (e.g., .jpeg instead of .xsl)."
+                },
+                {
+                    "field": "ParentProcess",
+                    "description": "Legitimate administrative or developer tools may use msxsl; validate the parent process chain."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Temporal correlation window between script engine DLL load and suspicious process spawn."
+                },
+                {
+                    "field": "RemoteXSLDomainWhitelist",
+                    "description": "Filter known safe URLs used by enterprise for XSL transformations."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

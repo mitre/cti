@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--0691bf3f-2768-493e-8ea4-120b8718ef8f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c42179a8-71c5-41ba-bbfa-d6c1a93e729b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0048#AN0131",
+                    "external_id": "AN0131"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0131",
+            "description": "Detects adversaries accessing remote mail systems (e.g., Exchange Online, O365) using stolen credentials or OAuth tokens, followed by scripted access to mailbox contents via PowerShell, AADInternals, or unattended API queries. Detection focuses on abnormal logon sessions, user agents, IP locations, and scripted or tool-based email data access.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "azure:signinlogs",
+                    "channel": "Abnormal sign-in from scripting tools (PowerShell, AADInternals)"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "m365:purview",
+                    "channel": "MailItemsAccessed & Exchange Audit"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4104"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserAgentPattern",
+                    "description": "Filters user agents like 'PowerShell', 'AADInternals', 'python-requests' which can vary depending on script/tool."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Defines the temporal correlation window between login, command execution, and outbound email access."
+                },
+                {
+                    "field": "KnownIPLocations",
+                    "description": "Defines baseline geo/IP address ranges to suppress known corporate access."
+                },
+                {
+                    "field": "PrivilegedUserList",
+                    "description": "Defines the accounts considered privileged (admin, execs) and worthy of tighter thresholds."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

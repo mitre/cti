@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--7ee7566d-dc0b-4aab-9cee-428676fc01d2",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--9c8ba5cd-40db-4214-8db1-b03b2d7b1690",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0596#AN1639",
+                    "external_id": "AN1639"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1639",
+            "description": "SSH login detected via Unified Logs, followed by unusual process execution, especially outside normal user behavior patterns.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--39b9db72-8b48-4595-a18d-db5bbba3091b",
+                    "name": "macos:unifiedlog",
+                    "channel": "process = 'sshd'"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "macos:unifiedlog",
+                    "channel": "process = 'ssh' OR eventMessage CONTAINS 'ssh'"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:osquery",
+                    "channel": "process_events"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Time range to correlate post-SSH activities (e.g., 45s)"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Define authorized users to reduce false positives"
+                },
+                {
+                    "field": "CommandLineKeywords",
+                    "description": "Suspicious terms like reverse shells, base64, curl"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--e89dcdf7-e086-40a4-b6ef-68dfec5fac7e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--e518b7e5-6e98-43f6-86c2-f45f684c650f",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0326#AN0930",
+                    "external_id": "AN0930"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0930",
+            "description": "ESXi shell or scripts produce long, high-entropy tokens (non-standard alphabets) in shell.log/hostd, followed by outbound flows (NSX/Zeek) with asymmetric ratios or protocol mismatches to non-management endpoints.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "ESXi"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "esxi:shell",
+                    "channel": "commands containing long non-standard tokens or custom lookup tables"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "esxi:hostd",
+                    "channel": "unexpected script invocations producing long encoded strings"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "network_flow: bytes_out >> bytes_in, fixed packet sizes/intervals to non-approved CIDRs"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "http: HTTP bodies from ESXi host IPs containing long, non-standard tokens"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "MgmtCIDRs",
+                    "description": "CIDRs allowed for normal ESXi mgmt/backup."
+                },
+                {
+                    "field": "BytesOutToInRatio",
+                    "description": "Asymmetry cutoff (e.g., \u22653)."
+                },
+                {
+                    "field": "TokenLengthThreshold",
+                    "description": "Minimum token length."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

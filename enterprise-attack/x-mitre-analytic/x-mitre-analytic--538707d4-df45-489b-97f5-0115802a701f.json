@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--765114d1-3568-443a-ad21-6aedf3d53711",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--538707d4-df45-489b-97f5-0115802a701f",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0297#AN0828",
+                    "external_id": "AN0828"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0828",
+            "description": "Execution of utilities (dd, hdparm, sgdisk) or custom binaries attempting to overwrite disk boot structures (/dev/sda MBR sector or partition tables). Detection correlates shell execution with syscalls writing to sector 0 or disk metadata blocks.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--73ff2dcc-24b1-4368-b9dc-706dd9e68354",
+                    "name": "auditd:SYSCALL",
+                    "channel": "write syscalls to /dev/sd* targeting offset 0"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of dd/sgdisk with arguments writing to sector 0 or partition table"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TargetDevices",
+                    "description": "Define specific device paths to monitor (e.g., /dev/sda, /dev/nvme0n1)."
+                },
+                {
+                    "field": "OffsetThreshold",
+                    "description": "Focus on suspicious writes at disk offsets corresponding to MBR/partition structures."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

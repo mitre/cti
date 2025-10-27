@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--7d5bc1d6-b3fd-4e8e-b32e-f048bd61853c",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--7e3c05c9-5e49-416c-a0c9-eb7631ea5e7e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0117#AN0326",
+                    "external_id": "AN0326"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0326",
+            "description": "Creation of LaunchAgents or LaunchDaemons with names resembling known system services but executing non-Apple signed code or scripts.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--7b375092-3a61-448d-900a-77c9a4bde4dc",
+                    "name": "fs:fileevents",
+                    "channel": "/Library/LaunchDaemons/*.plist, ~/Library/LaunchAgents/*.plist"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:endpointsecurity",
+                    "channel": "ES_EVENT_TYPE_NOTIFY_EXEC"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--74fa567d-bc90-425c-8a41-3c703abb221c",
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem=com.apple.launchservices"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "PlistLabelSimilarity",
+                    "description": "Detect plists with labels that closely resemble legitimate ones (e.g., `com.apple.updates.plist`)"
+                },
+                {
+                    "field": "UnsignedBinaryExecution",
+                    "description": "Toggle sensitivity for unsigned binaries or scripts launched by daemons"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Scope detection based on whether LaunchAgent ran in user or system context"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

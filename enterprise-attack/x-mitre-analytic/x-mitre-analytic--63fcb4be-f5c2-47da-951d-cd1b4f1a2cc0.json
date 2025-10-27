@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--b1e8a106-06d0-4796-a39c-41226b2d3fa7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--63fcb4be-f5c2-47da-951d-cd1b4f1a2cc0",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0327#AN0931",
+                    "external_id": "AN0931"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0931",
+            "description": "Remote Desktop (RDP) logon by a user followed by unusual process execution, file access, or lateral movement activity within a short timeframe.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4624 (LogonType=10), EventCode=4648"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--39b9db72-8b48-4595-a18d-db5bbba3091b",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4778, EventCode=4779"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Temporal threshold to correlate login with post-login activity (e.g., 5 minutes)"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Tune for non-admin users or service accounts expected to use RDP"
+                },
+                {
+                    "field": "ProcessList",
+                    "description": "Define suspicious post-login processes such as cmd.exe, powershell.exe, certutil.exe"
+                },
+                {
+                    "field": "HostAccessPatterns",
+                    "description": "Scope detection to uncommon or first-time access between source and destination hosts"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

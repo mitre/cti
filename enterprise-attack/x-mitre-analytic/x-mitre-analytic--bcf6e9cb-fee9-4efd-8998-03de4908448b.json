@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--e9500a4a-c7c7-4188-bc80-a5566783f3a7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--bcf6e9cb-fee9-4efd-8998-03de4908448b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0161#AN0456",
+                    "external_id": "AN0456"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0456",
+            "description": "Chain: (1) interactive/non-interactive `chage -l`, `grep`/`cat` of PAM config (e.g., `/etc/pam.d/common-password`, `/etc/security/pwquality.conf`); (2) optional reads of `/etc/login.defs`; (3) same user performs account enumeration or password change attempts shortly after. Use auditd `execve` and file read events plus shell history collection.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5d0492b-cda4-421c-8e51-ed2b8d85c5d0",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open,openat,read"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "linux:syslog",
+                    "channel": "sudo chage|grep pam_pwquality|cat /etc/login.defs"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "MonitoredPaths",
+                    "description": "Exact PAM/QoP config files used by your distro (Debian vs. RHEL paths differ)."
+                },
+                {
+                    "field": "ServiceAccountsExclude",
+                    "description": "System daemons that legitimately parse policies on boot."
+                },
+                {
+                    "field": "TerminalType",
+                    "description": "TTY vs. non-interactive\u2014raise risk for non-interactive remote execution."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

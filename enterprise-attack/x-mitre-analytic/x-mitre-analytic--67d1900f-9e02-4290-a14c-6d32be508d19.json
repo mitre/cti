@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--cbd99a7d-8c68-4e79-959a-08febac26f98",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--67d1900f-9e02-4290-a14c-6d32be508d19",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0125#AN0349",
+                    "external_id": "AN0349"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0349",
+            "description": "Unusual modification or creation of loginwindow-related plist files in '~/Library/Preferences/ByHost' correlated with unauthorized application paths and execution upon login.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of process launched via loginwindow session restore"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "fs:filesystem",
+                    "channel": "Modification or creation of files matching 'com.apple.loginwindow.*.plist' in ~/Library/Preferences/ByHost"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--39b9db72-8b48-4595-a18d-db5bbba3091b",
+                    "name": "macos:unifiedlog",
+                    "channel": "LoginWindow context with associated PID linked to reopened plist paths"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "macos:endpointsecurity",
+                    "channel": "es_event_file_rename_t or es_event_file_write_t"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "Restrict to targeted users or unexpected users writing to plist"
+                },
+                {
+                    "field": "FilePathPattern",
+                    "description": "Allow tuning for alternative persistence paths or directory redirection"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate plist write and process execution within logon window"
+                },
+                {
+                    "field": "BinaryAnomalyScore",
+                    "description": "Optional scoring of launched binary based on code signing, entropy, and known safe apps"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--fccb23b0-4549-46e5-9597-8674fade45d0",
+    "id": "bundle--456fa2ef-37dc-43b4-ab56-80d23abd02ef",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,36 @@
             "created": "2021-10-20T15:05:19.273Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0043",
+                    "external_id": "DC0043"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:16:59.931Z",
+            "modified": "2025-10-21T15:14:40.022Z",
             "name": "Firewall Disable",
             "description": "The deactivation, misconfiguration, or complete stoppage of firewall services, either on a host or in a cloud control plane. Such activity may involve turning off firewalls, modifying rules to disable protection, or deleting firewall-related configurations and activity logs. Examples: \n\n- Disabling Host-Based Firewalls: Stopping the Windows Defender Firewall service or using `iptables -F` to flush all rules on a Linux system.\n- Cloud Firewall Modification or Deactivation: Modifying or deleting security group rules in AWS or disabling a network firewall in Azure.\n- Activity Log Deletion: Writing or deleting entries in Azure Firewall Activity Logs to hide unauthorized firewall changes.\n- Temporary Disable for Malicious Operations: Temporarily disabling a firewall to allow malicious files or traffic, then re-enabling it to avoid detection.\n- Using Command-Line Tools to Stop Firewalls: Running commands like `Set-NetFirewallProfile -Enabled False on Windows or systemctl stop ufw` on Linux.\n\nThis data component can be collected through the following measures:\n\nCloud Control Plane\n\n- Azure Activity Logs:\n    - Enable logging of administrative actions, such as stopping or modifying Azure Firewall configurations.\n    - Use Azure Monitor to track specific firewall-related actions, including disabling or rule deletion.\n- AWS CloudTrail Logs:\n    - Monitor `RevokeSecurityGroupIngress` or `RevokeSecurityGroupEgress` events to detect rule changes in AWS Security Groups.\n- Google Cloud Platform Logs:\n    - Collect logs from the Firewall Rules resource in Google Cloud Operations Suite to detect rule deletions or modifications.\n\nHost-Level Firewalls\n\n- Windows Firewall Event Logs:\n    - Enable logging of firewall state changes:\n        - Security Event ID 2004: Firewall service stopped.\n        - Security Event ID 2005: Firewall service started.\n    - Use Sysmon for process creation events tied to firewall commands or scripts (Sysmon Event ID 1).\n- Linux Firewall Logs: Use auditd to track commands like iptables, firewalld, or ufw: `auditctl -a always,exit -F arch=b64 -S execve -k firewall_disable`\n- macOS Firewall: Monitor changes to the macOS Application Firewall using the log show command.\n\nNetwork-Level Monitoring\n\n- IDS/IPS Alerts: Deploy IDS/IPS systems to monitor abnormal traffic flows that could indicate firewall disablement.\n- NetFlow Data: Analyze NetFlow or packet capture data for traffic patterns inconsistent with firewall enforcement.\n\nSIEM and CSPM Tools\n\n- SIEM Integration: Use tools like Splunk or QRadar to centralize and analyze firewall disablement events from both hosts and cloud platforms.\n- Cloud Security Posture Management (CSPM): Use CSPM solutions to monitor misconfigurations and track deactivation of critical cloud services like firewalls.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--f2f4f4bd-3455-400f-b2ee-104004df0f5b",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Disabling or modifying firewall rules"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "Removal of restrictive egress rules from a security group"
+                }
+            ]
         }
     ]
 }

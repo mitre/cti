@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--06e67a48-7614-4fd2-a1eb-116db489ce6e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--602def5b-49e4-4c64-afe6-1476eac13e67",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0084#AN0234",
+                    "external_id": "AN0234"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0234",
+            "description": "Defenders can detect suspicious cloud instance deletions by correlating events across authentication, instance lifecycle, and account activity. From a defender\u2019s perspective, behaviors of interest include instances deleted shortly after creation, deletions initiated by new or rarely used accounts, deletions following snapshot creation, and deletions originating from anomalous geolocations or access keys. These may indicate adversarial attempts to destroy forensic evidence or evade detection.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1361e324-b594-4c0e-a517-20cee32b8d7f",
+                    "name": "AWS:CloudTrail",
+                    "channel": "TerminateInstances"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--45fd904d-6eb0-4b50-8478-a961f09f898b",
+                    "name": "AWS:CloudTrail",
+                    "channel": "DescribeInstances"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--7561ed50-16cb-4826-82c7-c1ddca61785e",
+                    "name": "azure:activity",
+                    "channel": "MICROSOFT.COMPUTE/VIRTUALMACHINES/DELETE"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "Identity of the user/service account performing deletions; tuned to exclude automation or known administrative workflows."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Threshold for detecting rapid instance lifecycle events (e.g., creation and deletion within minutes)."
+                },
+                {
+                    "field": "GeoLocation",
+                    "description": "Region or source IP where the delete request originated; can be tuned to align with enterprise cloud geography."
+                },
+                {
+                    "field": "RateThreshold",
+                    "description": "Number of deletions per user/account in a defined window; tuned for organizations with high elasticity."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

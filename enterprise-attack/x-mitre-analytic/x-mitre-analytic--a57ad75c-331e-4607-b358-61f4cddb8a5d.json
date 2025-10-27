@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--72931fe2-77a7-421d-97a2-d38d5eada3ce",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--a57ad75c-331e-4607-b358-61f4cddb8a5d",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0080#AN0222",
+                    "external_id": "AN0222"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0222",
+            "description": "Adversary exploits containerized app via ingress or service. Chain: (1) suspicious request in ingress/app logs \u2192 (2) container process spawns a shell/exec/sidecar (kubectl exec/docker exec) \u2192 (3) egress to Internet or metadata service (169.254.169.254).",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "ApplicationLog:Ingress",
+                    "channel": "Kubernetes NGINX/Envoy ingress controller logs with anomalous payloads and 5xx spikes"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "docker:events",
+                    "channel": "Docker/Kubernetes audit of exec/attach (kubectl exec) or unexpected child processes inside container"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Requests towards cloud metadata or command & control from pod IPs"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "IngressNamespaces",
+                    "description": "Namespaces that are Internet-facing."
+                },
+                {
+                    "field": "MetadataEndpoints",
+                    "description": "Cloud metadata IPs/hostnames for exfil of credentials."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Join period between ingress request and pod exec/egress."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

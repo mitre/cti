@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--c4a84b1a-3590-4a38-a2a8-c41fc0a5830f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--fb933fd5-5dd8-4879-b2bb-e68bc26ff60d",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0078#AN0215",
+                    "external_id": "AN0215"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0215",
+            "description": "Detects adversarial use of cloud APIs for command execution, resource control, or reconnaissance. Focuses on CLI/SDK/scripting language abuse via stolen credentials or in-browser Cloud Shells. Monitors for anomalous API calls chained with authentication context shifts (e.g., stolen token -> privileged action) and cross-service impacts.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "AWS:CloudTrail",
+                    "channel": "eventName: RunInstances, CreateUser, PutRolePolicy, InvokeCommand"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--e52d89f9-1710-4708-88a5-cbef77c4cd5e",
+                    "name": "azure:activity",
+                    "channel": "operationName: Write, Access Review, RoleAssignment"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a953ca55-921a-44f7-9b8d-3d40141aa17e",
+                    "name": "Okta:SystemLog",
+                    "channel": "eventType: user.authentication.sso, app.oauth2.token.grant"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Off-hours API usage or configuration changes are more suspicious outside business context."
+                },
+                {
+                    "field": "UserAgent",
+                    "description": "Unexpected SDK usage (e.g., `boto3`, `azcopy`, unknown User-Agent strings)."
+                },
+                {
+                    "field": "CredentialType",
+                    "description": "High-risk if access token or API key used outside expected geographic/IP behavior."
+                },
+                {
+                    "field": "APISequence",
+                    "description": "Unusual or rapid chaining of provisioning, IAM, and execution APIs."
+                },
+                {
+                    "field": "ConsoleContext",
+                    "description": "Browser-based Cloud Shell vs local CLI may indicate insider vs external use case."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

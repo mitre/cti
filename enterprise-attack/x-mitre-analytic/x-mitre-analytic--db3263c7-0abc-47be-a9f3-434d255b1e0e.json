@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--35e2bd67-4186-4bda-9c79-de66705e3810",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--db3263c7-0abc-47be-a9f3-434d255b1e0e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0197#AN0570",
+                    "external_id": "AN0570"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0570",
+            "description": "A non-whitelisted process receives TCC camera entitlement (kTCCServiceCamera), opens AppleCamera/AVFoundation device handles, writes .mov/.mp4 artifacts to unusual locations, and/or beacons/exfiltrates soon after.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "macos:unifiedlog",
+                    "channel": "Access decisions to kTCCServiceCamera for unexpected binaries"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "macos:endpointsecurity",
+                    "channel": "open: Process opens AppleCamera/IOUSB device nodes or AVFoundation frameworks"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:endpointsecurity",
+                    "channel": "exec: Exec of ffmpeg, avfoundation-based binaries, or custom signed apps accessing camera"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "macos:unifiedlog",
+                    "channel": "Process wrote large .mov/.mp4 in user temp/hidden dirs"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TCCAllowList",
+                    "description": "Legitimate apps (Zoom, Teams, FaceTime) that are permitted to camera."
+                },
+                {
+                    "field": "VideoExtensions",
+                    "description": "Mov/mp4/mkv/yuv etc., tuned to environment workloads."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation between TCC grant \u2192 file write \u2192 network egress."
+                },
+                {
+                    "field": "MinFileSizeMB",
+                    "description": "Reduce FP from thumbnails/snapshots."
+                },
+                {
+                    "field": "LaunchAgentPaths",
+                    "description": "Allowed persistence paths to reduce false positives when correlating with persistence."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

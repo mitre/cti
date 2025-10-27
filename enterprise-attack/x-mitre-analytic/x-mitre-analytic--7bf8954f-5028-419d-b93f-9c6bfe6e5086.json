@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--ae59b85a-0c92-4877-ac55-d5c0f89f207b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--7bf8954f-5028-419d-b93f-9c6bfe6e5086",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0302#AN0843",
+                    "external_id": "AN0843"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0843",
+            "description": "A source performs a short closed-port sequence; the host then modifies iptables/nftables/ufw rules or starts a daemon binding a new socket, followed by a successful connection from the same source.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Commands that alter firewall or start listeners: iptables|nft|ufw|firewall-cmd|pfctl|systemctl start sshd/telnet/dropbear; raw-socket/libpcap tools (tcpdump, tshark, nmap --raw)."
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "auditd:SYSCALL",
+                    "channel": "socket/bind: New bind() to a previously closed port shortly after the sequence."
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "Knock pattern: repeated REJ/S0 across \u2265MinSequenceLen ports from same src_ip then SF success."
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ServicePort",
+                    "description": "Candidate port expected to open after knock (e.g., 22/2323)."
+                },
+                {
+                    "field": "KnockTolerance",
+                    "description": "Max seconds between hits inside the sequence."
+                },
+                {
+                    "field": "MgmtAllowList",
+                    "description": "Automation allowed to change firewall/daemon state (config mgmt, orchestration)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

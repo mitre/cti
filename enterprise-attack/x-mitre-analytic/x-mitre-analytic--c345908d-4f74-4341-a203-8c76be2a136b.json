@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--c9144816-6119-4ed2-8dd2-acafa285bfb0",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c345908d-4f74-4341-a203-8c76be2a136b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0249#AN0693",
+                    "external_id": "AN0693"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0693",
+            "description": "Remote/API driven creation **and** start of a container whose image is not on an allow\u2011list (or is tagged `latest`), executed by a non-admin principal, and/or started with risky runtime attributes (e.g., `--privileged`, host PID/NET namespaces, sensitive host path mounts, capability adds). Correlates *create* \u279c *start* \u279c first network/process actions from that container within a short time window.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "docker:daemon",
+                    "channel": "container_create,container_start"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5fe82895-28e5-4aac-845e-dc886b63be2e",
+                    "name": "containerd:runtime",
+                    "channel": "CRI CreateContainer/StartContainer with privileged=true OR added capabilities OR host* namespaces"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "ebpf:syscalls",
+                    "channel": "process execution or network connect from just-created container PID namespace"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "docker:events",
+                    "channel": "remote API calls to /containers/create or /containers/{id}/start"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "known_images",
+                    "description": "Environment-specific allow-list of approved images (with digests)."
+                },
+                {
+                    "field": "known_admins",
+                    "description": "Service accounts or CI/CD users permitted to deploy containers."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Max time between create, start, and first activity to consider events causally linked (default 5m)."
+                },
+                {
+                    "field": "RiskThreshold",
+                    "description": "Minimum number of risky attributes (e.g., unknown image + privileged) to alert."
+                },
+                {
+                    "field": "PrivilegedFlags",
+                    "description": "Set of runtime flags considered high risk (e.g., --privileged, --cap-add=SYS_ADMIN, hostPID, hostNetwork, /var/run/docker.sock mount)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

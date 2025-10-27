@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--8baf585e-896b-4d62-820e-e4e1566a5e25",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--a8284241-0d8e-42da-b86d-48f0d660df6c",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0335#AN0948",
+                    "external_id": "AN0948"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0948",
+            "description": "Detects anomalous use of macOS XPC services for code execution. Monitors for processes invoking privileged XPC daemons with abnormal parameters, unexpected binaries communicating over NSXPCConnection, or helper tools executing code outside of their expected parent process lineage. Correlates process access attempts to system-level daemons, privilege escalations via XPC misconfigurations, and injection of malicious payloads through inter-process communication.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "macos:unifiedlog",
+                    "channel": "Unexpected NSXPCConnection calls by non-Apple-signed or abnormal binaries"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "execve: Helper tools invoked through XPC executing unexpected binaries"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b9a1578e-8653-4103-be23-cb52e0b1816e",
+                    "name": "macos:unifiedlog",
+                    "channel": "XPC messages requesting privileged actions from untrusted or unsigned clients"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedXPCClients",
+                    "description": "Maintain allowlist of binaries permitted to invoke specific XPC services to minimize false positives."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Threshold for correlating abnormal XPC requests with subsequent privilege escalation or process creation."
+                },
+                {
+                    "field": "UnsignedBinaryAlertLevel",
+                    "description": "Adjust sensitivity of alerts for unsigned or non-Apple-signed clients initiating XPC communication."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

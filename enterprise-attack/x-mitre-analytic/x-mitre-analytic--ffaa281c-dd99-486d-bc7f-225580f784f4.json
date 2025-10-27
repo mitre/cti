@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--d1ff78d9-478d-4c8a-a501-626c79fe834b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--ffaa281c-dd99-486d-bc7f-225580f784f4",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0552#AN1527",
+                    "external_id": "AN1527"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1527",
+            "description": "Detects creation or modification of Windows Services through command-line tools (e.g., `sc.exe`, `powershell.exe`), Registry key changes under `HKLM\\System\\CurrentControlSet\\Services`, and service execution under SYSTEM with unsigned or anomalous binary paths. Detects privilege escalation via driver installation or `CreateServiceW` usage. Correlates parent-child lineage, startup behavior, and rare service names.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5297a638-1382-4f0c-8472-0d21830bf705",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4697"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3551476e-14f5-4e48-a518-e82135329e03",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=6"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ServiceNamePattern",
+                    "description": "Regex for suspicious or uncommon service names (e.g., `svhostx`, `winhelp`, etc.)"
+                },
+                {
+                    "field": "ImagePathFilter",
+                    "description": "Flag services whose image path resides in uncommon directories (e.g., `C:\\Users\\`, `C:\\Temp\\`)"
+                },
+                {
+                    "field": "DriverExtensionList",
+                    "description": "Watch for `.sys` files loaded by `sc`, Registry, or `ZwLoadDriver` APIs"
+                },
+                {
+                    "field": "StartupTypeChangeWindow",
+                    "description": "Temporal window to correlate Registry `Start` key changes with service creation"
+                },
+                {
+                    "field": "UnsignedBinaryAlert",
+                    "description": "Raise alerts for unsigned binaries registered as services"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

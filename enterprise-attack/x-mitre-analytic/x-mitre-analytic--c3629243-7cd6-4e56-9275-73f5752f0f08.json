@@ -1,0 +1,103 @@
+{
+    "type": "bundle",
+    "id": "bundle--53f6fa7b-a3e5-42f9-8fed-2a537e7520df",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c3629243-7cd6-4e56-9275-73f5752f0f08",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0507#AN1398",
+                    "external_id": "AN1398"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1398",
+            "description": "Adversary gains high integrity or special privileges (e.g., SeDebugPrivilege), locates a running browser process, opens it with write/inject rights, and modifies it (e.g., CreateRemoteThread / DLL load) to inherit cookies/tokens or establish a browser pivot. Optional step: create a new logon session or use explicit credentials, then drive the victim browser to intranet resources.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--39b9db72-8b48-4595-a18d-db5bbba3091b",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4672"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5d0492b-cda4-421c-8e51-ed2b8d85c5d0",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4673"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4624"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d5fca4e4-e47a-487b-873f-3d22f8865e96",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=8"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "BrowserList",
+                    "description": "Set of monitored browsers (chrome.exe, msedge.exe, firefox.exe, iexplore.exe). Adjust per fleet."
+                },
+                {
+                    "field": "AccessMaskSet",
+                    "description": "Access rights implying injection (e.g., 0x1FFFFF, 0x1F3FF, VM_WRITE, VM_OPERATION, CREATE_THREAD). Tune by EDR mapping."
+                },
+                {
+                    "field": "SignerAllowList",
+                    "description": "Allowed module signers within browser processes (e.g., Microsoft, Google). Helps flag unsigned/unknown ImageLoad into browsers."
+                },
+                {
+                    "field": "InternalCIDR",
+                    "description": "Enterprise internal ranges or DNS suffixes to identify intranet pivoting via the browser."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation interval (e.g., 10\u201320 minutes) linking privilege gain \u2192 access \u2192 modification \u2192 network usage."
+                },
+                {
+                    "field": "ParentAllowList",
+                    "description": "Legitimate tools that may automate browsers (e.g., Selenium drivers). Reduce FPs by allowlisting."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Scope analytics to high-value users, admin workstations, or servers where browsers shouldn\u2019t be automated."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

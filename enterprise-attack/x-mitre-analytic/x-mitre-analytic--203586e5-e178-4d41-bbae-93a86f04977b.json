@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--db4d73a4-7284-4d61-ad13-0087e3f87f9f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--203586e5-e178-4d41-bbae-93a86f04977b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0215#AN0605",
+                    "external_id": "AN0605"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0605",
+            "description": "Ransomware encrypts .vmdk, .vmx, .log, or VM config files in VMFS datastores. May rename to .locked or delete/overwrite with encrypted versions. Often correlates with shell commands run through `dcui`, SSH, or vSphere.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "ESXi"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "esxi:vmkernel",
+                    "channel": "rename .vmdk to .*.locked|datastore write spike"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "esxi:shell",
+                    "channel": "openssl|tar|dd"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "FileType",
+                    "description": "Detect renames or write patterns involving .vmdk, .vmx, .nvram."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Identify shell sessions opened by root or unexpected users outside maintenance window."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

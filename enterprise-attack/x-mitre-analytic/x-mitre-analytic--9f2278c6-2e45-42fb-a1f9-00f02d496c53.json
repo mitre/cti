@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--c1806699-9001-4a0a-9c9c-1d8c1b4225cc",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--9f2278c6-2e45-42fb-a1f9-00f02d496c53",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0151#AN0431",
+                    "external_id": "AN0431"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0431",
+            "description": "A process (often spawned by a shell, interpreter, or malware implant) executes time discovery via commands (date, timedatectl, hwclock, cat /etc/timezone, /proc/uptime) or direct syscalls (time(), clock_gettime) and is (optionally) followed by scheduled task creation/modification (crontab, at) or conditional sleep logic.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "type=EXECVE or SYSCALL for /bin/date, /usr/bin/timedatectl, /sbin/hwclock, /bin/cat /etc/timezone, /bin/cat /proc/uptime"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "auditd:SYSCALL",
+                    "channel": "Rules capturing clock_gettime, time, gettimeofday syscalls when enabled"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a953ca55-921a-44f7-9b8d-3d40141aa17e",
+                    "name": "linux:syslog",
+                    "channel": "sudo/date/timedatectl execution by non-standard users"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--7b375092-3a61-448d-900a-77c9a4bde4dc",
+                    "name": "linux::cron",
+                    "channel": "crontab or at job created within TimeWindow post time discovery"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AuditRulesSyscalls",
+                    "description": "Scope of syscalls (time, clock_gettime, gettimeofday) monitored; may be performance-sensitive."
+                },
+                {
+                    "field": "AllowedBinaries",
+                    "description": "List of legitimate automation/orchestration tools frequently querying time."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window (e.g., 5\u201320 minutes) to link time discovery to follow-on cron/at changes."
+                },
+                {
+                    "field": "UserContextScope",
+                    "description": "Ignore root-owned maintenance agents if desired; focus on interactive or newly created users."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

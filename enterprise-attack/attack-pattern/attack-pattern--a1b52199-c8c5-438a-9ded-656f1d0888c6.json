@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--75dec6d1-eb45-4127-b010-0248fc00ae1f",
+    "id": "bundle--c242f6fe-9b6e-42ac-b7d9-de21e5b7b0d6",
     "spec_version": "2.0",
     "objects": [
         {
@@ -109,7 +109,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:54.982Z",
+            "modified": "2025-10-24T17:49:10.550Z",
             "name": "Kernel Modules and Extensions",
             "description": "Adversaries may modify the kernel to automatically execute programs on system boot. Loadable Kernel Modules (LKMs) are pieces of code that can be loaded and unloaded into the kernel upon demand. They extend the functionality of the kernel without the need to reboot the system. For example, one type of module is the device driver, which allows the kernel to access hardware connected to the system.(Citation: Linux Kernel Programming)\u00a0\n\nWhen used maliciously, LKMs can be a type of kernel-mode [Rootkit](https://attack.mitre.org/techniques/T1014) that run with the highest operating system privilege (Ring 0).(Citation: Linux Kernel Module Programming Guide)\u00a0Common features of LKM based rootkits include: hiding itself, selective hiding of files, processes and network activity, as well as log tampering, providing authenticated backdoors, and enabling root access to non-privileged users.(Citation: iDefense Rootkit Overview)\n\nKernel extensions, also called kext, are used in macOS to load functionality onto a system similar to LKMs for Linux. Since the kernel is responsible for enforcing security and the kernel extensions run as apart of the kernel, kexts are not governed by macOS security policies. Kexts are loaded and unloaded through <code>kextload</code> and <code>kextunload</code> commands. Kexts need to be signed with a developer ID that is granted privileges by Apple allowing it to sign Kernel extensions. Developers without these privileges may still sign kexts but they will not load unless SIP is disabled. If SIP is enabled, the kext signature is verified before being added to the AuxKC.(Citation: System and kernel extensions in macOS)\n\nSince macOS Catalina 10.15, kernel extensions have been deprecated in favor of System Extensions. However, kexts are still allowed as \"Legacy System Extensions\" since there is no System Extension for Kernel Programming Interfaces.(Citation: Apple Kernel Extension Deprecation)\n\nAdversaries can use LKMs and kexts to conduct [Persistence](https://attack.mitre.org/tactics/TA0003) and/or [Privilege Escalation](https://attack.mitre.org/tactics/TA0004) on a system. Examples have been found in the wild, and there are some relevant open source projects as well.(Citation: Volatility Phalanx2)(Citation: CrowdStrike Linux Rootkit)(Citation: GitHub Reptile)(Citation: GitHub Diamorphine)(Citation: RSAC 2015 San Francisco Patrick Wardle)(Citation: Synack Secure Kernel Extension Broken)(Citation: Securelist Ventir)(Citation: Trend Micro Skidmap)",
             "kill_chain_phases": [
@@ -131,7 +131,7 @@
                 "Eric Kaiser @ideologysec"
             ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Loading, unloading, and manipulating modules on Linux systems can be detected by monitoring for the following commands: <code>modprobe</code>, <code>insmod</code>, <code>lsmod</code>, <code>rmmod</code>, or <code>modinfo</code> (Citation: Linux Loadable Kernel Module Insert and Remove LKMs) LKMs are typically loaded into <code>/lib/modules</code> and have had the extension .ko (\"kernel object\") since version 2.6 of the Linux kernel. (Citation: Wikipedia Loadable Kernel Module)\n\nAdversaries may run commands on the target system before loading a malicious module in order to ensure that it is properly compiled. (Citation: iDefense Rootkit Overview) Adversaries may also execute commands to identify the exact version of the running Linux kernel and/or download multiple versions of the same .ko (kernel object) files to use the one appropriate for the running system.(Citation: Trend Micro Skidmap) Many LKMs require Linux headers (specific to the target kernel) in order to compile properly.\u00a0These are typically obtained through the operating systems package manager and installed like a normal package. On Ubuntu and Debian based systems this can be accomplished by running: <code>apt-get install linux-headers-$(uname -r)</code> On RHEL and CentOS based systems this can be accomplished by running: <code>yum install kernel-devel-$(uname -r)</code>\n\nOn macOS, monitor for execution of <code>kextload</code> commands and user installed kernel extensions performing abnormal and/or potentially malicious activity (such as creating network connections). Monitor for new rows added in the <code>kext_policy</code> table. KextPolicy stores a list of user approved (non Apple) kernel extensions and a partial history of loaded kernel modules in a SQLite database, <code>/var/db/SystemPolicyConfiguration/KextPolicy</code>.(Citation: User Approved Kernel Extension Pike\u2019s)(Citation: Purves Kextpocalypse 2)(Citation: Apple Developer Configuration Profile)\n",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -141,14 +141,7 @@
                 "macOS",
                 "Linux"
             ],
-            "x_mitre_version": "1.4",
-            "x_mitre_data_sources": [
-                "Command: Command Execution",
-                "File: File Creation",
-                "File: File Modification",
-                "Kernel: Kernel Module Load",
-                "Process: Process Creation"
-            ]
+            "x_mitre_version": "1.4"
         }
     ]
 }

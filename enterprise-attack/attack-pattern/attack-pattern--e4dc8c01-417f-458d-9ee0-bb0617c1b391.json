@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--aa1d08de-2400-464e-b35b-60b2ea98cb01",
+    "id": "bundle--5cbfe897-72e5-4982-9e22-fa033a4d768d",
     "spec_version": "2.0",
     "objects": [
         {
@@ -64,7 +64,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:59:16.468Z",
+            "modified": "2025-10-24T17:49:32.196Z",
             "name": "Debugger Evasion",
             "description": "Adversaries may employ various means to detect and avoid debuggers. Debuggers are typically used by defenders to trace and/or analyze the execution of potential malware payloads.(Citation: ProcessHacker Github)\n\nDebugger evasion may include changing behaviors based on the results of the checks for the presence of artifacts indicative of a debugged environment. Similar to [Virtualization/Sandbox Evasion](https://attack.mitre.org/techniques/T1497), if the adversary detects a debugger, they may alter their malware to disengage from the victim or conceal the core functions of the implant. They may also search for debugger artifacts before dropping secondary or additional payloads.\n\nSpecific checks will vary based on the target and/or adversary. On Windows, this may involve [Native API](https://attack.mitre.org/techniques/T1106) function calls such as <code>IsDebuggerPresent()</code> and <code> NtQueryInformationProcess()</code>, or manually checking the <code>BeingDebugged</code> flag of the Process Environment Block (PEB). On Linux, this may involve querying `/proc/self/status` for the `TracerPID` field, which indicates whether or not the process is being traced by dynamic analysis tools.(Citation: Cado Security P2PInfect 2023)(Citation: Positive Technologies Hellhounds 2023) Other checks for debugging artifacts may also seek to enumerate hardware breakpoints, interrupt assembly opcodes, time checks, or measurements if exceptions are raised in the current process (assuming a present debugger would \u201cswallow\u201d or handle the potential error).(Citation: hasherezade debug)(Citation: AlKhaser Debug)(Citation: vxunderground debug)\n\nMalware may also leverage Structured Exception Handling (SEH) to detect debuggers by throwing an exception and detecting whether the process is suspended. SEH handles both hardware and software expectations, providing control over the exceptions including support for debugging. If a debugger is present, the program\u2019s control will be transferred to the debugger, and the execution of the code will be suspended. If the debugger is not present, control will be transferred to the SEH handler, which will automatically handle the exception and allow the program\u2019s execution to continue.(Citation: Apriorit)\n\nAdversaries may use the information learned from these debugger checks during automated discovery to shape follow-on behaviors. Debuggers can also be evaded by detaching the process or flooding debug logs with meaningless data via messages produced by looping [Native API](https://attack.mitre.org/techniques/T1106) function calls such as <code>OutputDebugStringW()</code>.(Citation: wardle evilquest partii)(Citation: Checkpoint Dridex Jan 2021)",
             "kill_chain_phases": [
@@ -83,24 +83,18 @@
                 "Joas Antonio dos Santos, @C0d3Cr4zy"
             ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Debugger related system checks will likely occur in the first steps of an operation but may also occur throughout as an adversary learns the environment. Data and events should not be viewed in isolation, but as part of a chain of behavior that could lead to other activities, such as lateral movement, based on the information obtained. Detecting actions related to debugger identification may be difficult depending on the adversary's implementation and monitoring required. Monitoring for suspicious [Native API](https://attack.mitre.org/techniques/T1106) function calls as well as processes being spawned that gather a variety of system information or perform other forms of Discovery, especially in a short period of time, may aid in detection.\n\nMonitor debugger logs for signs of abnormal and potentially malicious activity.",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
             "x_mitre_is_subtechnique": false,
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
-                "Windows",
                 "Linux",
-                "macOS"
+                "macOS",
+                "Windows"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_data_sources": [
-                "Process: Process Creation",
-                "Process: OS API Execution",
-                "Application Log: Application Log Content",
-                "Command: Command Execution"
-            ]
+            "x_mitre_version": "1.1"
         }
     ]
 }

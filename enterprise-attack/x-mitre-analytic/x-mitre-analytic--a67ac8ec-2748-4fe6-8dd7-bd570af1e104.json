@@ -1,0 +1,65 @@
+{
+    "type": "bundle",
+    "id": "bundle--dbfec8ef-21d4-4a94-a082-5f126e6de1ed",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--a67ac8ec-2748-4fe6-8dd7-bd570af1e104",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0414#AN1164",
+                    "external_id": "AN1164"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1164",
+            "description": "Detects AppleScript execution via 'osascript', NSAppleScript/OSAScript APIs, and abnormal application control events across user sessions. Focuses on causal chains such as osascript spawning child processes, script-induced keystrokes, or API-backed dialog spoofing.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "process: spawn, exec"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ScriptInvocationParent",
+                    "description": "Identify rare or suspicious parent processes launching AppleScript (e.g., Safari, Mail, msedge)."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Flag AppleScript execution during user-inactive hours, especially for automation frameworks."
+                },
+                {
+                    "field": "AppleEventActionType",
+                    "description": "Filter AppleEvent-based automation involving UI interaction, keystrokes, or remote control."
+                },
+                {
+                    "field": "TargetApplicationSet",
+                    "description": "Scope AppleScript use toward security-sensitive apps (e.g., Terminal, ssh, Keychain Access)."
+                },
+                {
+                    "field": "ExecutionPathRegex",
+                    "description": "Restrict to unusual paths like /tmp/, ~/Library/, or embedded in Automator workflows."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

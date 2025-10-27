@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--47e250a8-24fd-48ef-aa49-8db136008561",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--7853421f-8eb4-49c3-9943-077430b97037",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0523#AN1447",
+                    "external_id": "AN1447"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1447",
+            "description": "Detects modification of System Integrity Protection (SIP) or code signing enforcement policies through csrutil or kernel variable tampering. Correlates execution of csrutil disable commands with subsequent policy state changes and anomalous unsigned process executions.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:unifiedlog",
+                    "channel": "csrutil disable"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "macos:unifiedlog",
+                    "channel": "g_CiOptions modification or SIP state change"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "Unsigned binary execution following SIP change"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "PolicyPaths",
+                    "description": "Track configuration files and kernel extensions tied to SIP enforcement"
+                },
+                {
+                    "field": "AllowedUsers",
+                    "description": "Restrict or expand which privileged accounts are monitored for SIP/CSRUTIL changes"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Define correlation between csrutil execution and unsigned process activity"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

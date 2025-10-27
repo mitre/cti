@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--3c450100-9ced-48ee-aa43-d703c72463b7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--d442d480-cfb9-43cc-b959-2f81513b432d",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0137#AN0385",
+                    "external_id": "AN0385"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0385",
+            "description": "Processes invoking destructive commands (dd, shred, wipe) with raw device targets (e.g., /dev/sda, /dev/nvme0n1). Detect direct writes to disk partitions and abnormal superblock or bootloader modifications. Correlate shell execution with subsequent block device I/O.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--73ff2dcc-24b1-4368-b9dc-706dd9e68354",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open/write syscalls on /dev/sd* or /dev/nvme*"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of dd, shred, wipe targeting block devices"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TargetDevices",
+                    "description": "Tune to exclude removable drives or test partitions commonly written by administrators."
+                },
+                {
+                    "field": "EntropyThreshold",
+                    "description": "Detects large blocks of pseudorandom data being written; may need tuning for backup/crypto workloads."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

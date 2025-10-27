@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--cea39fb3-fffa-4098-968d-3313a00adf84",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--4bb5b68e-1a01-498e-ae39-94f951e01cd9",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0401#AN1126",
+                    "external_id": "AN1126"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1126",
+            "description": "Creation or modification of `.plist` files in /Library/LaunchDaemons/, especially those with suspicious Program or ProgramArguments paths, combined with execution activity under launchd with elevated privileges. Detectable through correlated Unified Logs, file monitoring, and process telemetry.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "launchd spawning processes tied to new or modified LaunchDaemon .plist entries"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "fs:launchdaemons",
+                    "channel": "file_create"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "fs:launchdaemons",
+                    "channel": "file_modify"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5297a638-1382-4f0c-8472-0d21830bf705",
+                    "name": "macos:unifiedlog",
+                    "channel": "launchd loading new LaunchDaemon or changes to existing daemon configuration"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ProgramPathRegex",
+                    "description": "Regex patterns to match anomalous executable paths or names in .plist files"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window between file modification and launchd process execution"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Admin or root context used during daemon installation"
+                },
+                {
+                    "field": "UnsignedBinaryFlag",
+                    "description": "Whether the binary associated with the LaunchDaemon is signed or trusted"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

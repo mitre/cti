@@ -1,0 +1,63 @@
+{
+    "type": "bundle",
+    "id": "bundle--d070e6b2-f09a-4078-bb4d-5e852d75a760",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--ea793457-89e6-47d2-8ae1-7fd2bd814f82",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0021#AN0062",
+                    "external_id": "AN0062"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0062",
+            "description": "Adversary executes systemctl or service stop targeting high-value services (e.g., mysql, sshd), possibly followed by rm or shred against data stores. Behavioral chain: sudo/su usage + stop command + /var/log/messages or syslog entries + file access/delete.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of systemctl or service stop"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--e905dad2-00d6-477c-97e8-800427abd0e8",
+                    "name": "auditd:SYSCALL",
+                    "channel": "unlink/unlinkat on service binaries or data targets"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--74fa567d-bc90-425c-8a41-3c703abb221c",
+                    "name": "linux:syslog",
+                    "channel": "service stopped messages"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Window between service stop and suspicious file deletion"
+                },
+                {
+                    "field": "ExecUser",
+                    "description": "Username or UID executing service stop command"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

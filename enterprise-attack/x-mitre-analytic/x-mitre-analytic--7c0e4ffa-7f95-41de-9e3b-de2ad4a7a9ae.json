@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--9b631e21-6356-4696-84f1-9ea229ef2d12",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--7c0e4ffa-7f95-41de-9e3b-de2ad4a7a9ae",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0132#AN0373",
+                    "external_id": "AN0373"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0373",
+            "description": "File lock acquired via open() + flock() or lockf() on predictable path (e.g., /tmp/.lock123) followed by conditional early exit or divergent process behavior.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open, flock, fcntl, unlink"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--61f1d40e-f3d0-4cc6-aa2d-937b6204194f",
+                    "name": "auditd:SYSCALL",
+                    "channel": "exit_group"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "lockfile_path_regex",
+                    "description": "Detect patterns like /tmp/.lock*, /var/run/*lock used by malware."
+                },
+                {
+                    "field": "exit_code",
+                    "description": "Track specific exit codes (e.g., 1, 2) that signal lock acquisition failure."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate lockfile access + early process termination within N seconds."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

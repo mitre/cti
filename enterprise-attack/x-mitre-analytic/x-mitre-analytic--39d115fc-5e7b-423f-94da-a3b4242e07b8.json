@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--8a397cac-ccf7-4c3f-8197-14d4b9a860d4",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--39d115fc-5e7b-423f-94da-a3b4242e07b8",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0479#AN1319",
+                    "external_id": "AN1319"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1319",
+            "description": "Modification of COR_PROFILER-related environment variables or Registry keys (COR_ENABLE_PROFILING, COR_PROFILER, COR_PROFILER_PATH), combined with anomalous .NET process creation or unmanaged DLL loads. Defender observes registry modifications, suspicious process creation with altered environment variables, and profiler DLLs loaded unexpectedly into .NET CLR processes.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4657"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedProfilers",
+                    "description": "List of known good COR_PROFILER CLSIDs and DLLs expected in developer or monitoring environments."
+                },
+                {
+                    "field": "ProcessScope",
+                    "description": "Processes expected to load COR_PROFILER (e.g., Visual Studio) for baseline comparison."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Interval between registry modification or file creation and profiler DLL load into .NET processes."
+                },
+                {
+                    "field": "ProfilerDllPaths",
+                    "description": "Directories considered legitimate for profiler DLLs; deviations should raise alerts."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

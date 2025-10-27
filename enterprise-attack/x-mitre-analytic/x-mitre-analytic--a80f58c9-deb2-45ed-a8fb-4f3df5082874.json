@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--2a21a2f7-3af9-4557-ac60-9353665ac90c",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--a80f58c9-deb2-45ed-a8fb-4f3df5082874",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0231#AN0645",
+                    "external_id": "AN0645"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0645",
+            "description": "Detects adversarial abuse of systemd timers by correlating file creation/modification of .timer and .service units in system directories with the execution of abnormal child processes launched by 'systemd' (PID 1), especially as root.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "auditd:SYSCALL",
+                    "channel": "creat, open, write on /etc/systemd/system and /usr/lib/systemd/system"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve logging for /usr/bin/systemctl and systemd-run"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f42df6f0-6395-4f0c-9376-525a031f00c3",
+                    "name": "linux:osquery",
+                    "channel": "file_events"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimerIntervalThreshold",
+                    "description": "The interval threshold used to determine if a newly created timer is unusually frequent or immediate (e.g., < 5 minutes)."
+                },
+                {
+                    "field": "ParentProcessID",
+                    "description": "Whether the child process has a parent PID of 1, indicating systemd as the invoker. Can be tuned to include known benign cases."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "User under which the timer/service is created or executed (e.g., root vs. non-root)."
+                },
+                {
+                    "field": "TimerCreationPath",
+                    "description": "The path where the timer or service file is created; system-wide vs. user space can be scoped."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

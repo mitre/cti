@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--031de5b9-221d-45e7-8c6a-f9230458a8a1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--7687688c-f91c-4487-948e-1d5b372fcdac",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0113#AN0316",
+                    "external_id": "AN0316"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0316",
+            "description": "Detects AS-REP roasting attempts by monitoring for Kerberos AS-REQ/AS-REP authentication patterns where preauthentication is disabled (Event ID 4768 with Pre-Auth Type 0). Correlates these requests with subsequent service ticket activity (Event ID 4769) and anomalies such as requests using weak RC4 encryption (etype 0x17). Excessive enumeration of accounts with 'Do not require Kerberos preauthentication' set in Active Directory is another key detection point.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--02d090b6-8157-48da-98a2-517f7edd49fc",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4768"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "PreAuthDisabledAccountsBaseline",
+                    "description": "Baseline of accounts legitimately configured without Kerberos preauthentication; deviations may indicate adversary enumeration."
+                },
+                {
+                    "field": "TGTRequestThreshold",
+                    "description": "Number of AS-REQ/AS-REP exchanges per account within a short timeframe; higher counts may indicate AS-REP roasting."
+                },
+                {
+                    "field": "AllowedEncryptionTypes",
+                    "description": "Permitted Kerberos encryption algorithms; RC4 usage (etype 0x17) should be closely monitored."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window for linking AS-REQs, AS-REPs, and subsequent service ticket requests."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

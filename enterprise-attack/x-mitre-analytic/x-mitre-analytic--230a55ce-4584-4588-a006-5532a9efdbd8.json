@@ -1,0 +1,73 @@
+{
+    "type": "bundle",
+    "id": "bundle--4e6f7fd0-c167-4a60-a7aa-e83f3bac99bd",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--230a55ce-4584-4588-a006-5532a9efdbd8",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0176#AN0500",
+                    "external_id": "AN0500"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0500",
+            "description": "Correlated evidence where Safari/Chrome/WebKit-based processes issue network requests for uncommon or obfuscated JS resources followed by spawning of script interpreters, launchd or ad-hoc binaries, unusual child processes, or dynamic library loads into browser processes. Defender sees: proxy/HTTP logs with suspicious resource content + unifiedlogs/ASL showing browser/plugin crashes or extension loads + process events indicating child process creation and file writes to /var/folders or /tmp shortly after the fetch.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "macos:unifiedlog",
+                    "channel": "Logs from unifiedlogging that show browser crashes, plugin enumerations, extension installs or errors around the same time as suspicious network fetches"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "process_create: Process creation where parent is Safari/Google Chrome and child is script interpreter or signed-but-unusual helper binary"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "macos:unifiedlog",
+                    "channel": "New files written to /var/folders, /tmp, ~/Library/Caches, or ~/Downloads by browser context or its children"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "HTTP/HTTPS requests for script resources flagged by content inspection (excessive obfuscation, eval usage, unusual redirects)"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d5fca4e4-e47a-487b-873f-3d22f8865e96",
+                    "name": "macos:unifiedlog",
+                    "channel": "Anomalous dyld dynamic library loads or RWX memory mappings in browser process"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "SleepyUserThreshold",
+                    "description": "Volume thresholds for interactive user browsing vs. automated systems (e.g., shared kiosks) \u2014 tune to reduce FP in heavy-browsing employees."
+                },
+                {
+                    "field": "ExtensionInstallPolicy",
+                    "description": "Policy setting that influences how extension installs are treated: strict policy reduces FP from known extension behavior."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

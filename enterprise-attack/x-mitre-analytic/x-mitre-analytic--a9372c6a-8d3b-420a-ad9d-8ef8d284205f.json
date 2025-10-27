@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--3b1c665b-355e-4d77-bf4f-ae15d75e720f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--a9372c6a-8d3b-420a-ad9d-8ef8d284205f",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0169#AN0481",
+                    "external_id": "AN0481"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0481",
+            "description": "Defenders should monitor for suspicious enumeration of cloud infrastructure components via APIs or CLI tools. Observable behaviors include repeated listing or description operations for compute instances, snapshots, storage buckets, and volumes. From a defender\u2019s perspective, risky activity is often identified by new or untrusted identities making discovery calls (e.g., DescribeInstances, ListBuckets, az vm list, gcloud compute instances list), enumeration from unusual geolocations or IPs, or rapid multi-service discovery in sequence. Correlating discovery API usage with later snapshot creation or instance modification provides further context of adversary behavior.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--45fd904d-6eb0-4b50-8478-a961f09f898b",
+                    "name": "AWS:CloudTrail",
+                    "channel": "DescribeInstances"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--fcc4811f-9cc8-4db5-8097-4d8242a380de",
+                    "name": "AWS:CloudTrail",
+                    "channel": "ListBuckets"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2a80d95f-08c4-48e3-833e-151ef19d90f5",
+                    "name": "AWS:CloudTrail",
+                    "channel": "DescribeDBInstances"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "Identity performing the discovery operation; tuned to filter known administrative or inventory accounts."
+                },
+                {
+                    "field": "GeoLocation",
+                    "description": "Source region or IP of discovery requests; tuned to expected operational regions to detect unusual access."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation period to link enumeration calls with subsequent provisioning or exfiltration activity."
+                },
+                {
+                    "field": "APIThreshold",
+                    "description": "Rate or volume of discovery calls; tuned to suppress noise from inventory management tools."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

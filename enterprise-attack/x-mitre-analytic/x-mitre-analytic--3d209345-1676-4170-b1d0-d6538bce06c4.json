@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--aa4c2e66-7432-4c04-ade5-6c168b449019",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--3d209345-1676-4170-b1d0-d6538bce06c4",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0150#AN0429",
+                    "external_id": "AN0429"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0429",
+            "description": "Detection of suspicious write operations to block devices, modifications of bootloader files (GRUB, initrd, vmlinuz), and unexpected changes within the EFI System Partition. Monitors privileged execution of utilities like dd, grub-install, or efibootmgr that modify boot sectors or loader entries.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open, write: Write operations targeting /dev/sda, /dev/nvme0n1, or EFI partition mounts"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--4dcd8ba3-2075-4f8b-941e-39884ffaac08",
+                    "name": "linux:syslog",
+                    "channel": "Block device write errors or unusual bootloader activity"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "BootloaderHashBaseline",
+                    "description": "Baseline checksums of GRUB, kernel, and initramfs images"
+                },
+                {
+                    "field": "EFIFileAllowlist",
+                    "description": "Trusted EFI executables for Linux environments"
+                },
+                {
+                    "field": "AlertThresholds",
+                    "description": "Tunable thresholds for triggering alerts on repeated EFI/bootloader writes"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

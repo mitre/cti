@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--b5db6685-3710-42fd-b146-91e3261584a2",
+    "id": "bundle--0e17a5bf-ed28-4b23-9375-20530bbe515f",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,21 +9,157 @@
             "created": "2021-10-20T15:05:19.272Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0029",
+                    "external_id": "DC0029"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:12:46.164Z",
+            "modified": "2025-10-21T15:14:36.018Z",
             "name": "Script Execution",
             "description": "The execution of a text file that contains code via the interpreter.\n\n*Data Collection Measures:*\n\n- Windows Event Logs:\n    - Event ID 4104 (PowerShell Script Block Logging) \u2013 Captures full command-line execution of PowerShell scripts.\n    - Event ID 4688 (Process Creation) \u2013 Detects script execution by tracking process launches (`powershell.exe`, `wscript.exe`, `cscript.exe`).\n    - Event ID 5861 (Script Execution) \u2013 Captures script execution via Windows Defender AMSI logging.\n- Sysmon (Windows):\n    - Event ID 1 (Process Creation) \u2013 Monitors script execution initiated by scripting engines.\n    - Event ID 11 (File Creation) \u2013 Detects new script files written to disk before execution.\n- Endpoint Detection and Response (EDR) Tools:\n    - Track script execution behavior, detect obfuscated commands, and prevent malicious scripts.\n- PowerShell Logging:\n    - Enable Module Logging: Logs all loaded modules and cmdlets.\n    - Enable Script Block Logging: Captures complete PowerShell script execution history.\n- SIEM Detection Rules:\n    - Detect script execution with obfuscated, encoded, or remote URLs.\n    - Alert on script executions using `-EncodedCommand` or `iex(iwr)`.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--12c1e727-7fa4-49b6-af81-366ed2ce231e",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "ics-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.2",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "Script",
+                    "channel": "None"
+                },
+                {
+                    "name": "m365:office",
+                    "channel": "VBA auto_open, auto_close, or document_open events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream --predicate 'eventMessage contains \"python\"'"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "/var/log/syslog"
+                },
+                {
+                    "name": "WinEventLog:System",
+                    "channel": "EventCode=1502, 1503"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream --predicate 'eventMessage contains \"wscript\" OR \"vbs\"'"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "osascript or AppleScript invocation modifying UI"
+                },
+                {
+                    "name": "networkdevice:runtime",
+                    "channel": "runtime"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "boot"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "AppleScript creating login item via 'System Events' dictionary"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4103, 4104"
+                },
+                {
+                    "name": "WinEventLog:Application",
+                    "channel": "Stored procedure creation, modification, or xp_cmdshell invocation via SQL logs or SQL Server auditing"
+                },
+                {
+                    "name": "ApplicationLogs:SQL",
+                    "channel": "Stored procedure creation or modification with shell invocation (e.g., system(), exec())"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem=launchservices"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "Set-ADUser or Set-ADAuthenticationPolicy with MFA attributes disabled"
+                },
+                {
+                    "name": "EDR:scriptblock",
+                    "channel": "Process Tree + Script Block Logging"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "boot logs"
+                },
+                {
+                    "name": "m365:defender",
+                    "channel": "ScriptBlockLogging + AMSI"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream with predicate 'eventMessage CONTAINS \"osascript\"'"
+                },
+                {
+                    "name": "etw:Microsoft-Antimalware-Scan-Interface",
+                    "channel": "Amsi/Script content + API verdicts during in-memory staging"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "None"
+                },
+                {
+                    "name": "WinEventLog:System",
+                    "channel": "EventCode=4016,5312"
+                },
+                {
+                    "name": "auditd:PROCTITLE",
+                    "channel": "scripting loop invoking sleep/ping"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "Scripts with references to XML parsing, AES decryption, or gpprefdecrypt logic"
+                },
+                {
+                    "name": "macos:syslog",
+                    "channel": "system.log, asl.log"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "exec: Unexpected execution of osascript or AppleScript targeting sensitive apps"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem=com.apple.Security or com.apple.applescript"
+                },
+                {
+                    "name": "azure:activity",
+                    "channel": "Microsoft.Compute/virtualMachines/runCommand/action: Abnormal initiation of Azure RunCommand jobs or PowerShell/Bash payloads"
+                },
+                {
+                    "name": "EDR:AMSI",
+                    "channel": "Malicious inline C#/script blobs embedded in MSBuild projects if intercepted by AMSI-aware loaders (rare but possible via chained LOLBins)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "osascript, AppleScript, or Python execution triggered immediately after HID connection"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Scripted Activity"
+                }
+            ]
         }
     ]
 }

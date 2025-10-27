@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--ce470ec4-4bcf-4242-bb36-427aeab72f33",
+    "id": "bundle--999b2cd3-45f6-4cd3-860d-b847267fe114",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,21 +9,57 @@
             "created": "2021-10-20T15:05:19.275Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0102",
+                    "external_id": "DC0102"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:10:01.621Z",
+            "modified": "2025-10-21T15:14:37.412Z",
             "name": "Network Share Access",
             "description": "Opening a network share, which makes the contents available to the requestor (ex: Windows EID 5140 or 5145)\n\n*Data Collection Measures:*\n\n- Windows:\n    - Event ID 5140 \u2013 Network Share Object Access Logs every access attempt to a network share.\n    - Event ID 5145 \u2013 Detailed Network Share Object Access Captures granular access control information, including the requesting user, source IP, and access permissions.\n    - Sysmon Event ID 3 \u2013 Network Connection Initiated Helps track SMB connections to suspicious or unauthorized network shares.\n    - Enable Audit Policy for Network Share Access: `auditpol /set /subcategory:\"File Share\" /success:enable /failure:enable`\n    - Enable PowerShell Logging to Detect Unauthorized SMB Access: `Set-ExecutionPolicy RemoteSigned`\n    - Restrict Network Share Access with Group Policy (GPO): `Computer Configuration \u2192 Windows Settings \u2192 Security Settings \u2192 Local Policies \u2192 User Rights Assignment` Set \"Access this computer from the network\" to restrict unauthorized accounts.\n- Linux/macOS:\n    - AuditD (`open`, `read`, `write`, `connect` syscalls) Detects access to NFS, CIFS, and SMB network shares.\n    - Lsof (`lsof | grep nfs` or `lsof | grep smb`) Identifies active network share connections.\n    - Mount (`mount | grep nfs` or `mount | grep cifs`) Lists currently mounted network shares.\n    - Enable AuditD for SMB/NFS Access: `auditctl -a always,exit -F arch=b64 -S open -F path=/mnt/share -k network_share_access`\n    - Monitor Active Network Shares Using Netstat: `netstat -an | grep :445`\n- Endpoint Detection & Response (EDR):\n    - Detects abnormal network share access behavior, such as unusual account usage, large file transfers, or encrypted file activity.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--ba27545a-9c32-47ea-ba6a-cce50f1b326e",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "ics-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "Network Share",
+                    "channel": "None"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-SMBClient/Security",
+                    "channel": "EventID=31001"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=5140"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=5145"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-SMBServer",
+                    "channel": "Access to SYSVOL share from non-admin user or unusual endpoints"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "smb_files.log"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "FileUploaded, FileAccessed"
+                }
+            ]
         }
     ]
 }

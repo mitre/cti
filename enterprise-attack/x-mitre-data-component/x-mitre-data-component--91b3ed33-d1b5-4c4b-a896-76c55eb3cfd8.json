@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--b43ffe74-04d2-456b-b2d0-cf1faa51b807",
+    "id": "bundle--e16e90ed-5ec7-4158-b4bd-57a4c4afdbde",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,40 @@
             "created": "2021-10-20T15:05:19.274Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0091",
+                    "external_id": "DC0091"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:14:36.677Z",
+            "modified": "2025-10-21T15:14:40.609Z",
             "name": "Container Enumeration",
             "description": "\"Container Enumeration\" data component captures events and actions related to listing and identifying active or available containers within a containerized environment. This includes information about running, stopped, or configured containers, such as their names, IDs, statuses, or associated images. Monitoring this activity is crucial for detecting unauthorized discovery or reconnaissance efforts. Examples: \n\n- Docker Example: `docker ps`, `docker ps -a`\n- Kubernetes Example: `kubectl get pods`, `kubectl get deployments`\n- Cloud Container Services Example\n    - AWS ECS: API Call: ListTasks or ListContainers\n    - Azure Kubernetes Service: API Call: List pod or container instances.\n    - Google Kubernetes Engine (GKE): API Call: Retrieve deployments and their associated containers.\n\nThis data component can be collected through the following measures:\n\n- Docker Audit Logging: Enable Docker daemon logging to capture enumeration commands. Use tools like auditd to monitor terminal activity involving docker ps or similar commands.\n- Kubernetes Audit Logs: Enable Kubernetes API server audit logging. Capture events where users query resources such as pods, deployments, or services.\n- Cloud Provider Logs\n    - AWS CloudTrail: Enable logging for API calls like ListTasks or DescribeTasks.\n    - Azure Monitor: Enable activity logging to track container-related queries.\n    - GCP Cloud Logging: Track API events involving container enumerations or deployments.\n- SIEM Integration: Collect logs from Docker, Kubernetes, and cloud services for centralized analysis.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--072ec5a7-00ba-466f-9057-69751a22a967",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "docker:daemon",
+                    "channel": "docker ps, docker inspect, or docker images commands"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "DescribeCluster, ListClusters, ListNodegroups"
+                },
+                {
+                    "name": "containerd:runtime",
+                    "channel": "e.g., containerd, Docker events"
+                }
+            ]
         }
     ]
 }

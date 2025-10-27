@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--c4168989-260a-4a43-935d-be88952c001b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--cecfe3bc-525a-431e-8ee1-5133ab8ce79c",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0356#AN1012",
+                    "external_id": "AN1012"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1012",
+            "description": "Burst of incomplete TCP handshakes (e.g., SYN floods) or uncorrelated ACK packets targeting the state table resulting in OS resource exhaustion.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--85a533a4-5fa4-4dba-b45d-f0717bedd6e6",
+                    "name": "WinEventLog:Microsoft-Windows-TCPIP",
+                    "channel": "Connection queue overflow or failure to allocate TCP state object"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Firewall",
+                    "channel": "High rate of inbound TCP SYN or ACK packets with missing 3-way handshake completion"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Threshold for burst traffic over short period (e.g., 30s - 2min)"
+                },
+                {
+                    "field": "ConnectionRateThreshold",
+                    "description": "SYN/ACK packet rate threshold that triggers investigation"
+                },
+                {
+                    "field": "ProcessParentCheck",
+                    "description": "Whether parent process of flooding tool is a known admin shell or unexpected context"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

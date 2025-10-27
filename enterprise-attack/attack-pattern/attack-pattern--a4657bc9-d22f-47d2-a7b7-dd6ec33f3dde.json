@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--cd3970eb-43ed-4b3b-ad3e-88f222767b5a",
+    "id": "bundle--be49912d-eeff-41ec-8fe6-23fb005ac1a4",
     "spec_version": "2.0",
     "objects": [
         {
@@ -39,7 +39,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T22:43:44.231Z",
+            "modified": "2025-10-24T17:49:11.077Z",
             "name": "KernelCallbackTable",
             "description": "Adversaries may abuse the <code>KernelCallbackTable</code> of a process to hijack its execution flow in order to run their own payloads.(Citation: Lazarus APT January 2022)(Citation: FinFisher exposed ) The <code>KernelCallbackTable</code> can be found in the Process Environment Block (PEB) and is initialized to an array of graphic functions available to a GUI process once <code>user32.dll</code> is loaded.(Citation: Windows Process Injection KernelCallbackTable)\n\nAn adversary may hijack the execution flow of a process using the <code>KernelCallbackTable</code> by replacing an original callback function with a malicious payload. Modifying callback functions can be achieved in various ways involving related behaviors such as [Reflective Code Loading](https://attack.mitre.org/techniques/T1620) or [Process Injection](https://attack.mitre.org/techniques/T1055) into another process.\n\nA pointer to the memory address of the <code>KernelCallbackTable</code> can be obtained by locating the PEB (ex: via a call to the <code>NtQueryInformationProcess()</code> [Native API](https://attack.mitre.org/techniques/T1106) function).(Citation: NtQueryInformationProcess) Once the pointer is located, the <code>KernelCallbackTable</code> can be duplicated, and a function in the table (e.g., <code>fnCOPYDATA</code>) set to the address of a malicious payload (ex: via <code>WriteProcessMemory()</code>). The PEB is then updated with the new address of the table. Once the tampered function is invoked, the malicious payload will be triggered.(Citation: Lazarus APT January 2022)\n\nThe tampered function is typically invoked using a Windows message. After the process is hijacked and malicious code is executed, the <code>KernelCallbackTable</code> may also be restored to its original state by the rest of the malicious payload.(Citation: Lazarus APT January 2022) Use of the <code>KernelCallbackTable</code> to hijack execution flow may evade detection from security products since the execution can be masked under a legitimate process.",
             "kill_chain_phases": [
@@ -58,7 +58,7 @@
             ],
             "x_mitre_attack_spec_version": "3.2.0",
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Analyze process behavior to determine if a process is performing actions it usually does not, such as opening network connections, reading files, or other suspicious behaviors that could relate to post-compromise behavior.\n\nMonitoring Windows API calls indicative of the various types of code injection may generate a significant amount of data and may not be directly useful for defense unless collected under specific circumstances. for known bad sequence of calls, since benign use of API functions may be common and difficult to distinguish from malicious behavior. Windows API calls such as <code>WriteProcessMemory()</code> and <code>NtQueryInformationProcess()</code> with the parameter set to <code>ProcessBasicInformation</code> may be used for this technique.(Citation: Lazarus APT January 2022)",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -67,10 +67,7 @@
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_version": "1.0",
-            "x_mitre_data_sources": [
-                "Process: OS API Execution"
-            ]
+            "x_mitre_version": "1.0"
         }
     ]
 }

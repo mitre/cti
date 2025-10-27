@@ -1,0 +1,83 @@
+{
+    "type": "bundle",
+    "id": "bundle--a0a162b8-d2e7-4e88-a28c-49d09649ecf6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--2d21fb1f-f9c3-4e72-a6dd-3d7872be3294",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0351#AN0999",
+                    "external_id": "AN0999"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0999",
+            "description": "macOS permission and attribute manipulation behavioral chain: (1) Process execution of permission utilities (chmod, chown, chgrp) or macOS-specific tools (chflags) with suspicious parameters, (2) System Integrity Protection (SIP) bypass attempts through permission modifications, (3) File flags manipulation (uchg, schg, hidden) for evasion or persistence, (4) Extended attribute (xattr) modifications affecting security metadata, (5) Unified log correlation with file system events and subsequent access patterns, (6) Gatekeeper and code signing bypass through permission/attribute manipulation",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "process execution events for chmod, chown, chflags with parameter analysis and target path examination"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "fs:fsevents",
+                    "channel": "file system events indicating permission, ownership, or extended attribute changes on critical paths. File system modification events with kFSEventStreamEventFlagItemChangeOwner, kFSEventStreamEventFlagItemXattrMod flags"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "OpenBSM:AuditTrail",
+                    "channel": "BSM audit events for file permission, ownership, and attribute modifications with user context"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "SIPProtectedPaths",
+                    "description": "macOS system paths protected by SIP that should never have permission modifications - maintain current list based on macOS version (/System, /usr, /bin, /sbin)"
+                },
+                {
+                    "field": "SuspiciousFileFlags",
+                    "description": "chflags parameter combinations indicating potential evasive behavior - customize based on security requirements (uchg, schg, hidden, archived)"
+                },
+                {
+                    "field": "CriticalExtendedAttributes",
+                    "description": "Extended attributes requiring monitoring for unauthorized removal or modification (com.apple.quarantine, com.apple.metadata, com.apple.FinderInfo)"
+                },
+                {
+                    "field": "GatekeeperBypassIndicators",
+                    "description": "Patterns in permission/attribute changes that may indicate Gatekeeper bypass attempts"
+                },
+                {
+                    "field": "ApplicationBundleMonitoring",
+                    "description": "Scope of .app directory monitoring for internal permission modifications indicating bundle tampering"
+                },
+                {
+                    "field": "UnifiedLogRetentionPeriod",
+                    "description": "Log retention period for correlating permission changes with subsequent access patterns - balance storage with detection capability"
+                },
+                {
+                    "field": "FSEventsFilteringThreshold",
+                    "description": "File system event filtering threshold to manage high-volume environments while maintaining detection coverage"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

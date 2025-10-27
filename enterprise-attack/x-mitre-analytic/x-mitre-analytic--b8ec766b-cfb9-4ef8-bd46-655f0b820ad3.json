@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--a8b3d47a-4017-492e-9fb6-b0961289536b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--b8ec766b-cfb9-4ef8-bd46-655f0b820ad3",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0449#AN1242",
+                    "external_id": "AN1242"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1242",
+            "description": "Detection focuses on abnormal or unauthorized cloud instance creation events. From a defender\u2019s perspective, suspicious behavior includes VM/instance creation by rarely used or newly created accounts, creation events from unusual geolocations, or rapid sequences of snapshot creation followed by instance creation and mounting. Unexpected network or IAM policy changes applied to new instances can indicate adversarial use rather than legitimate provisioning.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f8213cde-6b3a-420d-9ab7-41c9af1a919f",
+                    "name": "CloudTrail:EC2",
+                    "channel": "RunInstances"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--45fd904d-6eb0-4b50-8478-a961f09f898b",
+                    "name": "CloudTrail:EC2",
+                    "channel": "DescribeInstances"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5b0e8ae-7436-4951-950a-7b83c4dd3f2c",
+                    "name": "azure:activity",
+                    "channel": "MICROSOFT.COMPUTE/VIRTUALMACHINES/WRITE"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "IAM user, service account, or role creating the instance. Tuned to allowlist known automation services."
+                },
+                {
+                    "field": "GeoLocation",
+                    "description": "Region or source IP where the creation request originates. Helps detect cross-region or unusual location abuse."
+                },
+                {
+                    "field": "RateThreshold",
+                    "description": "Number of instances created per user or account in a time window. Tuned for environments with elastic scaling."
+                },
+                {
+                    "field": "TaggingPolicy",
+                    "description": "Expected tags (e.g., owner, purpose, cost center) for new instances. Deviations may indicate adversarial creation."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

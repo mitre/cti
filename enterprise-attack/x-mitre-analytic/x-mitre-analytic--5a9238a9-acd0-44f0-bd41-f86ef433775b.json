@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--ffab33a2-34cc-418b-9a09-2a56a59d797c",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--5a9238a9-acd0-44f0-bd41-f86ef433775b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0182#AN0515",
+                    "external_id": "AN0515"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0515",
+            "description": "Use of native/mac tools (sharing -l, smbutil view, mount_smbfs) or scripts to enumerate SMB shares across many hosts, followed by outbound SMB connections observed in PF/Zeek logs.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:endpointsecurity",
+                    "channel": "ES_EVENT_TYPE_NOTIFY_EXEC: Process execution of \"sharing -l\", \"smbutil view\", \"mount_smbfs\""
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:unifiedlog",
+                    "channel": "Command line contains smbutil view //, mount_smbfs //"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Firewall",
+                    "channel": "Outbound connections to 139/445 to multiple destinations"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "NSM:Flow",
+                    "channel": "connection: SMB connections to multiple internal hosts"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "BurstHostThreshold",
+                    "description": "Minimum unique SMB destinations (e.g., \u22653\u20135 in smaller mac fleets)."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window between exec and SMB connections (default 10m)."
+                },
+                {
+                    "field": "AllowedMgmtTools",
+                    "description": "Jamf/IT scripts legitimately running smbutil/mount_smbfs."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

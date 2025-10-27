@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--f7593e94-f38e-4856-bda6-430933bb8122",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--ee7c904b-144f-4dc4-87af-7eee4655899c",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0424#AN1188",
+                    "external_id": "AN1188"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1188",
+            "description": "Creation, deletion, or modification of security groups and firewall rules in cloud control plane logs that expand access to cloud resources beyond expected baselines. Defender view: unexpected ingress/egress rules permitting 0.0.0.0/0 or opening atypical ports, often correlated with privileged role or API key activity.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d2ff4b56-8351-4ed8-b0fb-d8605366005f",
+                    "name": "AWS:CloudTrail",
+                    "channel": "Ingress rule creation or modification for security group"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c97d0171-f6e0-4415-85ff-4082fdb8c72a",
+                    "name": "AWS:CloudTrail",
+                    "channel": "Removal of restrictive egress rules from a security group"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedIPRanges",
+                    "description": "Whitelist approved IP ranges; detect unexpected addition of 0.0.0.0/0 or untrusted CIDRs."
+                },
+                {
+                    "field": "PortScope",
+                    "description": "Define expected ports for services; flag additions outside this range (e.g., SSH/RDP open to all)."
+                },
+                {
+                    "field": "RoleContext",
+                    "description": "Tune alerts based on whether changes are made by break-glass or admin roles versus automation accounts."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate rule changes with subsequent suspicious network activity to reduce false positives."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

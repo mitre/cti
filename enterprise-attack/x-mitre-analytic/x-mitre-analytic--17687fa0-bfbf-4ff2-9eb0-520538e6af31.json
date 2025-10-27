@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--a0a8cc8b-3c63-4afa-bd55-802e822297ae",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--17687fa0-bfbf-4ff2-9eb0-520538e6af31",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0364#AN1031",
+                    "external_id": "AN1031"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1031",
+            "description": "Detects adversarial abuse of WMI to execute local or remote commands via WMIC, PowerShell, or COM API through a multi-event chain: process creation, command execution, and corresponding network connection if remote.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--05645013-2fed-4066-8bdc-626b2e201dd4",
+                    "name": "WinEventLog:WMI",
+                    "channel": "EventCode=5857, 5858"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "WMIQueryScope",
+                    "description": "Restrict detection scope to suspicious WMI namespaces like `\\root\\cimv2`, `\\root\\subscription`."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Set maximum allowable time window to correlate WMI process creation and remote connections."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Tune based on interactive vs. system-level execution (e.g., via SYSTEM or low-privileged users)."
+                },
+                {
+                    "field": "RemoteDestinationThreshold",
+                    "description": "Number of unique remote hosts contacted using WMI within a time window."
+                },
+                {
+                    "field": "SuspiciousCommandPatterns",
+                    "description": "Regex patterns to identify adversary-like usage (e.g., `wmic process call`, `powershell Invoke-WmiMethod`)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--05c13403-be30-454e-8a65-ae896d5ab516",
+    "id": "bundle--f83f5152-2112-45a8-80eb-1a82cd8f0fc8",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,120 @@
             "created": "2021-10-20T15:05:19.272Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0035",
+                    "external_id": "DC0035"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:10:47.199Z",
+            "modified": "2025-10-21T15:14:35.539Z",
             "name": "Process Access",
             "description": "Refers to an event where one process attempts to open another process, typically to inspect or manipulate its memory, access handles, or modify execution flow. Monitoring these access attempts can provide valuable insight into both benign and malicious behaviors, such as debugging, inter-process communication (IPC), or process injection.\n\n*Data Collection Measures:*\n\n- Endpoint Detection and Response (EDR) Tools:\n    -  EDR solutions that provide telemetry on inter-process access and memory manipulation.\n- Sysmon (Windows):\n    - Event ID 10: Captures process access attempts, including:\n        - Source process (initiator)\n        - Target process (victim)\n        - Access rights requested\n        - Process ID correlation\n- Windows Event Logs:\n    - Event ID 4656 (Audit Handle to an Object): Logs access attempts to system objects.\n    - Event ID 4690 (Attempted Process Modification): Can help identify unauthorized process changes.\n- Linux/macOS Monitoring:\n    - AuditD: Monitors process access through syscall tracing (e.g., `ptrace`, `open`, `read`, `write`).\n    - eBPF/XDP: Used for low-level monitoring of kernel process access.\n    - OSQuery: Query process access behavior via structured SQL-like logging.\n- Procmon (Process Monitor) and Debugging Tools:\n    - Windows Procmon: Captures real-time process interactions.\n    - Linux strace / ptrace: Useful for tracking process behavior at the system call level.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--e8b8ede7-337b-4c0c-8c32-5c7872c1ee22",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "Process State"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "ptrace attach"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "ptrace or task_for_pid"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "process_open"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "High frequency of accept(), read(), or SSL_read() syscalls tied to nginx/apache processes"
+                },
+                {
+                    "name": "Apple TCC Logs",
+                    "channel": "Microphone Access Events"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "ptrace"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10, 7"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "syscalls (open, read, ioctl) on /dev/input or /proc/*/fd/*"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=25"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "ES_EVENT_TYPE_NOTIFY_OPEN"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unexpected NSXPCConnection calls by non-Apple-signed or abnormal binaries"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4656"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unusual Mach port registration or access attempts between unrelated processes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem=com.apple.security, library=libsystem_kernel.dylib"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "ptrace syscall or access to /proc/*/mem"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "vm_read, task_for_pid, or file open to cookie databases"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "process_events"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "ACCESS"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve, fork, mmap, ptrace"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "ptrace or process_vm_readv"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "unexpected memory inspection"
+                }
+            ]
         }
     ]
 }

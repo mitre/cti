@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--e7ccb4b0-a71a-4fb1-a22a-0bdaa64deec3",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--9a68f1a7-65f0-4eef-a711-888bccbeb0d5",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0594#AN1632",
+                    "external_id": "AN1632"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1632",
+            "description": "Detects unauthorized invocation of replication operations (DCSync) via Directory Replication Service (DRS), often executed by threat actors using Mimikatz or similar tools from non-DC endpoints.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5c6de881-bc70-4070-855a-7a9631a407f7",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4662"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9085a576-636a-455b-91d2-c2921bbe6d1d",
+                    "name": "WinEventLog:DirectoryService",
+                    "channel": "EventCode=4929"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Content",
+                    "channel": "Traffic on RPC DRSUAPI"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Defines the correlation window for unusual account access followed by DRSUAPI traffic."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Allows tuning for specific accounts known to legitimately request replication."
+                },
+                {
+                    "field": "SourceIP",
+                    "description": "Expected replication should only come from known DCs; this field allows excluding trusted DCs."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

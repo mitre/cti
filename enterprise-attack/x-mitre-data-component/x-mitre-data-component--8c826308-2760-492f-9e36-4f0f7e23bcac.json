@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--e3e1b487-c85a-40e2-8a11-01cc8b421031",
+    "id": "bundle--f2ad5be7-a63b-4178-8dd3-2ad88a68e51d",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,72 @@
             "created": "2021-10-20T15:05:19.274Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0083",
+                    "external_id": "DC0083"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:15:34.195Z",
+            "modified": "2025-10-21T15:14:38.498Z",
             "name": "Cloud Service Enumeration",
             "description": "Cloud service enumeration involves listing or querying available cloud services in a cloud control plane. This activity is often performed to identify resources such as virtual machines, storage buckets, compute clusters, or other services within a cloud environment. Examples include API calls like `AWS ECS ListServices`, `Azure ListAllResources`, or `Google Cloud ListInstances`. Examples: \n\nAWS Cloud Service Enumeration: The adversary gathers details about existing ECS services to identify opportunities for privilege escalation or exfiltration.\n- Azure Resource Enumeration: The adversary collects information about virtual machines, resource groups, and other Azure assets for reconnaissance purposes.\n- Google Cloud Resource Enumeration: The attacker seeks to map the environment and find misconfigured or underutilized resources for exploitation.\n- Office 365 Service Enumeration: The attacker may look for data repositories or collaboration tools to exfiltrate sensitive information.\n\nThis data component can be collected through the following measures: \n\nEnable Cloud Activity Logging\n\n- Ensure cloud service logs are enabled for API calls and resource usage.\n- Example: Enable AWS CloudTrail, Azure Monitor, or Google Cloud Logging to track resource queries.\n\nCentralize Logs in a SIEM\n\n- Aggregate logs from cloud control planes into a centralized SIEM (e.g., Splunk, Azure Sentinel).\n- Example: Collect AWS CloudTrail logs and set up alerts for API calls related to service enumeration.\n\nUse Native Cloud Security Tools\n\n- Leverage cloud-native security solutions like AWS GuardDuty, Azure Defender, or Google Security Command Center.\n- Example: Use GuardDuty to detect anomalous API activity, such as ListServices being executed by an unknown user.\n\nImplement Network Flow Logging\n\n- Monitor and analyze VPC flow logs to identify lateral movement or enumeration activity.\n- Example: Inspect flow logs for unexpected traffic between compute instances and the cloud control plane.\n\nAPI Access Monitoring\n\n- Monitor API keys and tokens used for enumeration to identify misuse or compromise.\n- Example: Use AWS Secrets Manager or Azure Key Vault to manage and rotate keys securely.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--b1ddede4-cafe-4955-ac4c-14b33ac3f647",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "GetSecretValue"
+                },
+                {
+                    "name": "gcp:secrets",
+                    "channel": "accessSecretVersion"
+                },
+                {
+                    "name": "azure:ad",
+                    "channel": "SecretGet"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "ssm:ListInventoryEntries"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "DescribeInstances, DescribeServices, ListFunctions: High frequency enumeration calls or unusual user agents performing discovery"
+                },
+                {
+                    "name": "azure:audit",
+                    "channel": "ListApplications, ListServicePrincipals: Large-scale queries against identity or application objects"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Get-MsolServicePrincipal, ListAppRoles: Service discovery operations executed by accounts not normally performing administrative tasks"
+                },
+                {
+                    "name": "saas:adminapi",
+                    "channel": "ListIntegrations, ListServices: Repeated service discovery requests from accounts without administrative responsibilities"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "GetInstanceIdentityDocument or IMDSv2 token requests"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "DescribeUsers / ListUsers / GetUser"
+                },
+                {
+                    "name": "azure:signinlogs",
+                    "channel": "Graph API Query"
+                }
+            ]
         }
     ]
 }

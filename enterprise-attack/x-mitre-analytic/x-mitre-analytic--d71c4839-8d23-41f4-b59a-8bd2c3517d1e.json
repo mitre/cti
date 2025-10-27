@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--e224cace-4126-4cdb-8605-752a030c1a46",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--d71c4839-8d23-41f4-b59a-8bd2c3517d1e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0049#AN0133",
+                    "external_id": "AN0133"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0133",
+            "description": "Detects attempts to clear RDP/network history and modify network configuration artifacts through command execution, registry key deletion, firewall rule changes, and suspicious file deletions (e.g., Default.rdp, registry edits to Terminal Server Client keys).",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4663"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "EDR:cli",
+                    "channel": "Command Line Telemetry"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d2ff4b56-8351-4ed8-b0fb-d8605366005f",
+                    "name": "WinEventLog:Security",
+                    "channel": "Firewall Rule Modification"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TargetPathRegex",
+                    "description": "Filter file/registry paths like *\\Terminal Server Client\\* or *Default.rdp*"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate command/registry edits within close proximity to suspicious connection activity"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Detect cleanup behavior from non-interactive or SYSTEM accounts"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

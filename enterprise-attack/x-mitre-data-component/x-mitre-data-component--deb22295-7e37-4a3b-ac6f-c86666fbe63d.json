@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--aa2c9ee3-4d3c-452a-9f58-bb1a42a1fe37",
+    "id": "bundle--acbb2513-1154-47ed-a4f2-40a4803dd8b1",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,76 @@
             "created": "2021-10-20T15:05:19.271Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0014",
+                    "external_id": "DC0014"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:09:54.515Z",
+            "modified": "2025-10-21T15:14:34.784Z",
             "name": "User Account Creation",
             "description": "The initial establishment of a new user, service, or machine account within an operating system, cloud environment, or identity management system.\n\n*Data Collection Measures:*\n\n- Host-Based Logging\n    - Windows Event Logs\n        - Event ID 4720 \u2013 A new user account was created.\n        - Event ID 4732/4735 \u2013 A user was added to a privileged group.\n        - Event ID 4798 \u2013 Enumeration of user accounts.\n    - Linux/macOS Authentication Logs\n        - `/var/log/auth.log`, `/var/log/secure` \u2013 Logs `useradd`, `adduser`, `passwd`, and `groupmod` activities.\n        - AuditD \u2013 Detects new account creation via PAM (`useradd`, `usermod`).\n        - OSQuery \u2013 The `users` table tracks newly created accounts.\n- Cloud-Based Logging\n    - Azure AD Logs\n        - Azure AD Audit Logs \u2013 Tracks new user and service account creation.\n        - Azure Graph API \u2013 Provides logs on new account provisioning.\n    - AWS IAM & CloudTrail Logs\n        - CreateUser, CreateRole \u2013 Tracks new IAM user creation.\n        - AttachRolePolicy \u2013 Identifies privilege escalation via account creation.\n    - Google Workspace & Office 365 Logs\n        - Google Admin Console \u2013 Logs user creation in User Accounts API.\n        - Microsoft 365 Unified Audit Log \u2013 Tracks new account provisioning.\n- Container & Network Account Creation Logs\n    - Kubernetes Account Creation Logs\n        - kubectl audit logs \u2013 Detects new service account provisioning.\n        - GKE/Azure AKS Logs \u2013 Track new container service accounts.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--0b4f86ed-f4ab-46a3-8ed1-175be1974da6",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4720"
+                },
+                {
+                    "name": "azure:audit",
+                    "channel": "Add user"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "CreateUser"
+                },
+                {
+                    "name": "saas:zoom",
+                    "channel": "New user created"
+                },
+                {
+                    "name": "saas:slack",
+                    "channel": "admin.user.create"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Add user"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4720, EventCode=4781"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "adduser"
+                },
+                {
+                    "name": "docker:daemon",
+                    "channel": "ExecCreate + usermod or useradd"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "useradd or adduser executed"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "username <user> privilege <level>"
+                },
+                {
+                    "name": "saas:okta",
+                    "channel": "user.lifecycle.create"
+                }
+            ]
         }
     ]
 }

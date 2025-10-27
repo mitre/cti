@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--24565476-2d3f-4198-8ec1-06787bb2ab36",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--62afd8a1-550d-43a6-a56a-7d5ae5abbcf6",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0281#AN0784",
+                    "external_id": "AN0784"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0784",
+            "description": "Identifies archive utilities (e.g., ditto, unzip, xar, pkgutil) used to extract payloads to non-standard paths, then correlates with execution or file permission changes (e.g., `chmod +x`) and process spawns from decompressed location.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "Process launch"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "macos:unifiedlog",
+                    "channel": "filesystem events"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "fs:fsusage",
+                    "channel": "file open/write"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "DecompressionPathMatch",
+                    "description": "Target unusual extraction paths (~/Library/, /tmp/, /private/tmp/)"
+                },
+                {
+                    "field": "ToolBinaryNames",
+                    "description": "List of decompression utilities used in the environment"
+                },
+                {
+                    "field": "FollowOnExecutionDelta",
+                    "description": "Time between decompression and first binary execution"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

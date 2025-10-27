@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--c07f7b11-a839-4318-bdac-cbfb993e0836",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--08314a8b-becd-4853-8a6c-dd5a947b36c0",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0110#AN0308",
+                    "external_id": "AN0308"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0308",
+            "description": "Observation of chmod commands setting setuid/setgid bits, paired with launch of binaries under elevated execution context (e.g., root-owned binaries launched by unprivileged users).",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:unifiedlog",
+                    "channel": "chmod command with arguments including '+s', 'u+s', or numeric values 4000\u20136777"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--ee575f4a-2d4f-48f6-b18b-89067760adc1",
+                    "name": "macos:unifiedlog",
+                    "channel": "exec of binary with setuid/setgid and EUID != UID"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "Monitor execution chains where UID != EUID or child process inherits root without known sudo context"
+                },
+                {
+                    "field": "ExecutionPath",
+                    "description": "Focus on binaries in user-writable locations or abnormal directories"
+                },
+                {
+                    "field": "ChmodPattern",
+                    "description": "Tailor detection to chmod commands that imply privilege elevation via numeric mode or symbolic mode"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

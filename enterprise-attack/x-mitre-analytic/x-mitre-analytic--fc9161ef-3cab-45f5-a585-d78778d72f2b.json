@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--a4aa9b42-9228-4d86-9de9-0776ec15dcc7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--fc9161ef-3cab-45f5-a585-d78778d72f2b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0219#AN0612",
+                    "external_id": "AN0612"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0612",
+            "description": "Detection of container escape attempts via bind mounts, privileged containers, or abuse of docker.sock. Defenders may observe anomalous volume mount configurations (e.g., hostPath to / or /proc), unexpected privileged container launches, or use of container administration commands to access host resources. These events typically correlate with subsequent process execution on the host outside of normal container isolation.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a5ae90ca-0c4b-481c-959f-0eb18a7ff953",
+                    "name": "docker:daemon",
+                    "channel": "container create/start with privileged flag or host volume mount"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d46272ce-a0fe-4256-855e-738de7bb63ee",
+                    "name": "kubernetes:apiserver",
+                    "channel": "Pod spec with hostPath or privileged securityContext"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedHostPaths",
+                    "description": "List of directories permitted for hostPath volumes. Any access beyond these paths may be suspicious."
+                },
+                {
+                    "field": "PrivilegedContainerThreshold",
+                    "description": "Number of privileged container launches expected in the environment. Exceeding this may indicate adversary behavior."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

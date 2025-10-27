@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--5f2b5b47-2d72-4ab1-b124-3f3954aa75bf",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--0e9add05-93bd-47b2-acf5-1817f03e804a",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0445#AN1229",
+                    "external_id": "AN1229"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1229",
+            "description": "Suspicious process spawning (e.g., `rundll32`, `svchost`, `powershell`, or `netsh`) followed by network connection creation to internal hosts or uncommon external endpoints on high or non-standard ports.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Connections",
+                    "channel": "Outbound Connection"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ParentProcessName",
+                    "description": "Legitimate system processes that may rarely spawn network-capable child processes (e.g., `rundll32`, `svchost`)."
+                },
+                {
+                    "field": "DestinationPort",
+                    "description": "Watch for high-numbered ports or well-known proxy ports like 1080, 8080, 4444."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Capture unusual spikes in outbound connections over a short period."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

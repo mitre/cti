@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--67791ca3-ddc2-4dc7-a008-2ba7784c2988",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--de64bfbd-a6ed-4674-b0c5-dd485cba943b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0473#AN1304",
+                    "external_id": "AN1304"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1304",
+            "description": "Correlate the creation or modification of containers using restart policies (e.g., 'always') or DaemonSets with elevated host access, service account misuse, or privileged container contexts. Watch for manipulation of systemd units involving containers or pod scheduling targeting specific nodes or namespaces.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a5ae90ca-0c4b-481c-959f-0eb18a7ff953",
+                    "name": "systemd:unit",
+                    "channel": "container run with restart policy set to 'always' or 'unless-stopped'"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5263cb33-08cc-4a68-820f-004e1e400d76",
+                    "name": "kubernetes:audit",
+                    "channel": "create"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5297a638-1382-4f0c-8472-0d21830bf705",
+                    "name": "kubernetes:audit",
+                    "channel": "create"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "restartPolicy",
+                    "description": "Tune for environments that legitimately use 'always' or 'unless-stopped' in trusted containers"
+                },
+                {
+                    "field": "targetNamespace",
+                    "description": "Scope detection to high-risk namespaces (e.g., kube-system)"
+                },
+                {
+                    "field": "nodeSelector|nodeName",
+                    "description": "Adjust if targeting known cluster configurations or test environments"
+                },
+                {
+                    "field": "unitFilePath",
+                    "description": "Adapt to your OS/systemd hierarchy and container binary references"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Adjust temporal correlation (e.g., container launch \u2192 privilege escalation)"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

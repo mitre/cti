@@ -1,0 +1,85 @@
+{
+    "type": "bundle",
+    "id": "bundle--1d1f00f0-d414-479f-9610-a167af2188a9",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--80be1bd7-b4e8-4d1b-b294-56b1c073bbe0",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0315#AN0880",
+                    "external_id": "AN0880"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0880",
+            "description": "Adversaries create the 'Office Test\\Special\\Perf' registry key and specify a malicious DLL path that is auto-loaded when an Office application starts. This DLL is injected into the Office process memory space and can provide persistent execution without requiring macro enablement.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "WinEventLog:Microsoft-Office-Alerts",
+                    "channel": "Unexpected DLL or component loaded at Office startup"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "RegistryPath",
+                    "description": "Path to 'Office test\\Special\\Perf' may vary by Office version, 32/64-bit, or architecture (HKCU vs HKLM)"
+                },
+                {
+                    "field": "DLLPath",
+                    "description": "Injected DLL may reside in different user-writable locations (e.g., %APPDATA%, %TEMP%, or network shares)"
+                },
+                {
+                    "field": "OfficeProcessName",
+                    "description": "Process name (e.g., winword.exe, excel.exe) may vary by Office deployment and usage"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Time between DLL registry creation and first Office execution may vary depending on user activity"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Malicious DLL may target only specific users, necessitating correlation with interactive logon sessions"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

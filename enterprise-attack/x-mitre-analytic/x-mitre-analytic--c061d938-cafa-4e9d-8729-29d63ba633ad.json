@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--3936b315-df78-4ec5-8176-78fb60c8ced9",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--c061d938-cafa-4e9d-8729-29d63ba633ad",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0136#AN0383",
+                    "external_id": "AN0383"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0383",
+            "description": "Detection of unauthorized modification of Active Directory SID-History attributes to escalate privileges. This chain involves: (1) privileged operations or API calls to DsAddSidHistory or related AD modification functions, (2) observed attribute changes in SID-History (Event ID 5136), (3) new logon sessions where the token includes unexpected or privileged SID-History values, and (4) follow-on resource access using elevated privileges derived from SID-History injection.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5b8b466b-2c81-4fe7-946f-d677a74ae3db",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=5136"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5d0492b-cda4-421c-8e51-ed2b8d85c5d0",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4720, 4738"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "etw:Microsoft-Windows-Directory-Services-SAM",
+                    "channel": "api_call: Calls to DsAddSidHistory or related RPC operations"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedSIDHistoryChanges",
+                    "description": "Approved migration windows or known SID-History population events."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window between attribute change and suspicious logon activity (default 15\u201330 minutes)."
+                },
+                {
+                    "field": "PrivilegedSIDList",
+                    "description": "List of sensitive SIDs (e.g., Enterprise Admins, Domain Admins) that should never appear in SID-History."
+                },
+                {
+                    "field": "UserContextFilter",
+                    "description": "Exclude trusted migration service accounts or pre-approved administrative tasks."
+                },
+                {
+                    "field": "AnomalousSIDCountThreshold",
+                    "description": "Raise alerts when a token contains more than X SID-History entries (default X=2)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--d2758862-5569-478c-aff3-9ebe31280b69",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--17290910-5b25-477a-a0c0-c2661ff2585e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0080#AN0219",
+                    "external_id": "AN0219"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0219",
+            "description": "Adversary sends crafted HTTP/S (or other service) input to an Internet-facing app (IIS/ASP.NET, API, device portal). Chain: (1) abnormal request patterns to public endpoint \u2192 (2) elevated 4xx/5xx or unusual methods/paths \u2192 (3) server process (w3wp.exe/other service) spawns shell/LOLbins or loads non-standard modules \u2192 (4) optional outbound callback from the host/container.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "ApplicationLog:IIS",
+                    "channel": "IIS W3C logs in C:\\inetpub\\logs\\LogFiles\\W3SVC* (spikes in 5xx, RCE/SQLi/path traversal/JNDI patterns)"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "PublicVIPs",
+                    "description": "List of public IPs/hostnames that front apps; used to scope web log and Zeek/proxy data."
+                },
+                {
+                    "field": "SuspiciousPatterns",
+                    "description": "Regex set for exploit-like inputs (../, union select, cmd=, ${jndi:, rO0AB (Java serialization), %00, ${env:}, ${${::-j}ndi})."
+                },
+                {
+                    "field": "ErrorRateThreshold",
+                    "description": "Spike threshold for HTTP status 5xx/4xx per client or URI (e.g., >5 in 5m)."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation horizon between request, error, process spawn, and egress (e.g., 15 minutes)."
+                },
+                {
+                    "field": "AllowedChildList",
+                    "description": "Known child processes of app pools (e.g., msbuild.exe in CI) to reduce false positives."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

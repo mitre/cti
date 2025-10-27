@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--e87e1ce5-6106-42c9-b9fa-fcf0f8db03b4",
+    "id": "bundle--6e7810dd-97f8-487c-9cb3-cf5b44c5a25b",
     "spec_version": "2.0",
     "objects": [
         {
@@ -59,7 +59,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:39.342Z",
+            "modified": "2025-10-24T17:48:55.005Z",
             "name": "SSH Authorized Keys",
             "description": "Adversaries may modify the SSH <code>authorized_keys</code> file to maintain persistence on a victim host. Linux distributions, macOS, and ESXi hypervisors commonly use key-based authentication to secure the authentication process of SSH sessions for remote management. The <code>authorized_keys</code> file in SSH specifies the SSH keys that can be used for logging into the user account for which the file is configured. This file is usually found in the user's home directory under <code>&lt;user-home&gt;/.ssh/authorized_keys</code> (or, on ESXi, `/etc/ssh/keys-<username>/authorized_keys`).(Citation: SSH Authorized Keys) Users may edit the system\u2019s SSH config file to modify the directives `PubkeyAuthentication` and `RSAAuthentication` to the value `yes` to ensure public key and RSA authentication are enabled, as well as modify the directive `PermitRootLogin` to the value `yes` to enable root authentication via SSH.(Citation: Broadcom ESXi SSH) The SSH config file is usually located under <code>/etc/ssh/sshd_config</code>.\n\nAdversaries may modify SSH <code>authorized_keys</code> files directly with scripts or shell commands to add their own adversary-supplied public keys. In cloud environments, adversaries may be able to modify the SSH authorized_keys file of a particular virtual machine via the command line interface or rest API. For example, by using the Google Cloud CLI\u2019s \u201cadd-metadata\u201d command an adversary may add SSH keys to a user account.(Citation: Google Cloud Add Metadata)(Citation: Google Cloud Privilege Escalation) Similarly, in Azure, an adversary may update the authorized_keys file of a virtual machine via a PATCH request to the API.(Citation: Azure Update Virtual Machines) This ensures that an adversary possessing the corresponding private key may log in as an existing user via SSH.(Citation: Venafi SSH Key Abuse)(Citation: Cybereason Linux Exim Worm) It may also lead to privilege escalation where the virtual machine or instance has distinct permissions from the requesting user.\n\nWhere authorized_keys files are modified via cloud APIs or command line interfaces, an adversary may achieve privilege escalation on the target virtual machine if they add a key to a higher-privileged user. \n\nSSH keys can also be added to accounts on network devices, such as with the `ip ssh pubkey-chain` [Network Device CLI](https://attack.mitre.org/techniques/T1059/008) command.(Citation: cisco_ip_ssh_pubkey_ch_cmd)",
             "kill_chain_phases": [
@@ -81,7 +81,7 @@
                 "Arad Inbar, Fidelis Security"
             ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Use file integrity monitoring to detect changes made to the <code>authorized_keys</code> file for each user on a system. Monitor for suspicious processes modifying the <code>authorized_keys</code> file. In cloud environments, monitor instances for modification of metadata and configurations.\n\nMonitor for changes to and suspicious processes modifiying <code>/etc/ssh/sshd_config</code>.\n\nFor network infrastructure devices, collect AAA logging to monitor for rogue SSH keys being added to accounts.",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -94,12 +94,7 @@
                 "Network Devices",
                 "ESXi"
             ],
-            "x_mitre_version": "1.4",
-            "x_mitre_data_sources": [
-                "Command: Command Execution",
-                "Process: Process Creation",
-                "File: File Modification"
-            ]
+            "x_mitre_version": "1.4"
         }
     ]
 }

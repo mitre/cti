@@ -1,0 +1,84 @@
+{
+    "type": "bundle",
+    "id": "bundle--ded2e30b-c416-4996-a699-22f1888d6dcf",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--dc0bf4ca-1d65-46ee-b4b1-d8f73a6e0cda",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0025#AN0071",
+                    "external_id": "AN0071"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0071",
+            "description": "Abuse of trusted Electron apps (Teams, Slack, Chrome) to spawn child processes or execute payloads via malicious command-line arguments (e.g., --gpu-launcher) and modified app resources (.asar). Behavior chain: suspicious parent process (Electron app) \u2192 unusual command-line args \u2192 child process creation \u2192 optional DLL/network artifacts.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window tying app launch, file tampering, child process, and network events (5\u201310 minutes typical)."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Flag admin/service accounts versus standard users executing Electron apps."
+                },
+                {
+                    "field": "AllowedElectronApps",
+                    "description": "Baseline of Electron-based executables expected in the enterprise."
+                },
+                {
+                    "field": "AllowedChildProcesses",
+                    "description": "Whitelist normal child processes (chrome.exe \u2192 crashpad_handler.exe) versus anomalies (powershell.exe)."
+                },
+                {
+                    "field": "ElectronAppDomainAllowlist",
+                    "description": "Approved service domains for Teams, Slack, etc. to suppress benign traffic."
+                },
+                {
+                    "field": "AsarIntegrityHash",
+                    "description": "Expected hash/signature of app.asar resources to detect tampering."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

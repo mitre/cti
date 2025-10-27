@@ -1,0 +1,102 @@
+{
+    "type": "bundle",
+    "id": "bundle--3b4cc272-bc23-4578-b578-397dec621ecd",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--7e4ac594-c46c-4c7e-ba6d-9a457ab1e767",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0418#AN1177",
+                    "external_id": "AN1177"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1177",
+            "description": "Multi-stage Windows DACL manipulation behavioral chain: (1) Process creation of permission-modifying utilities (icacls.exe, takeown.exe, attrib.exe, cacls.exe) or PowerShell ACL cmdlets, (2) Command-line analysis revealing privilege escalation intent through suspicious parameters (/grant, /takeown, /T, Set-Acl), (3) DACL modification events (4670) correlating with process execution, (4) Subsequent file access attempts (4663) indicating successful permission bypass, (5) Potential follow-on persistence or lateral movement activities",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5b8b466b-2c81-4fe7-946f-d677a74ae3db",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4670"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4663, 4656, 4658"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4103,4104,4105, 4106"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--05645013-2fed-4066-8bdc-626b2e201dd4",
+                    "name": "WinEventLog:Microsoft-Windows-WMI-Activity/Operational",
+                    "channel": "EventCode=5857, 5860, 5861"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TemporalCorrelationWindow",
+                    "description": "Time window for correlating process creation (4688/sysmon 1) with DACL changes (4670) and subsequent access (4663) - default 300 seconds, adjust based on system performance and network latency"
+                },
+                {
+                    "field": "SensitivePathWhitelist",
+                    "description": "Environment-specific critical directories requiring enhanced monitoring (e.g., C:\\Windows\\System32, C:\\Program Files, %USERPROFILE%\\AppData) - customize per organizational security requirements"
+                },
+                {
+                    "field": "AuthorizedAdministratorAccounts",
+                    "description": "User accounts and service accounts authorized to perform legitimate DACL modifications - update to reflect current administrative staff and automated processes"
+                },
+                {
+                    "field": "SuspiciousCommandLinePatterns",
+                    "description": "Regex patterns for detecting malicious intent in permission modification commands - tune to reduce false positives while maintaining detection efficacy"
+                },
+                {
+                    "field": "BusinessHoursThreshold",
+                    "description": "Time-based risk scoring modifier for permission changes occurring outside standard business hours - adjust based on organizational work patterns"
+                },
+                {
+                    "field": "PowerShellScriptBlockSizeThreshold",
+                    "description": "Minimum PowerShell script block size for ACL-related content analysis - balance between detection coverage and log volume"
+                },
+                {
+                    "field": "FileAccessFrequencyBaseline",
+                    "description": "Statistical baseline for normal file access patterns post-permission change - establish through historical analysis and update periodically"
+                },
+                {
+                    "field": "WMIMethodInvocationWhitelist",
+                    "description": "Approved WMI classes and methods for legitimate permission operations (e.g., Win32_SecurityDescriptor) - maintain based on authorized management tools"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

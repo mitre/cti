@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--31081eff-5e4e-4b4a-81d8-ad134407b559",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--5a9c1860-23ae-455e-bcab-0e0f91af5548",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0117#AN0325",
+                    "external_id": "AN0325"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0325",
+            "description": "Creation or modification of `systemd` service units or cron jobs using deceptive naming and untrusted command paths, often followed by lateral network activity or privilege escalation.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--faa34cf6-cf32-4dc9-bd6a-8f7a606ff65b",
+                    "name": "auditd:CONFIG_CHANGE",
+                    "channel": "/var/log/audit/audit.log"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--74fa567d-bc90-425c-8a41-3c703abb221c",
+                    "name": "linux:osquery",
+                    "channel": "scheduled/real-time"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--7b375092-3a61-448d-900a-77c9a4bde4dc",
+                    "name": "linux:cron",
+                    "channel": "/var/log/syslog or journalctl"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UnitFilePath",
+                    "description": "Unusual or user-space paths for systemd unit files"
+                },
+                {
+                    "field": "ServiceNameDeviation",
+                    "description": "Detect units with names similar to legitimate ones (e.g., `networks.service` instead of `network.service`)"
+                },
+                {
+                    "field": "ExecStartPath",
+                    "description": "Track uncommon or suspicious binaries in `ExecStart=` directives"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

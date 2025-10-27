@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--a91edc20-3404-439c-87c4-54f7c919cd41",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--e5cb92b6-75b0-4eed-aa1e-4ea529f50fbb",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0196#AN0564",
+                    "external_id": "AN0564"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0564",
+            "description": "Suspicious outbound HTTPS connections where the TLS Server Name Indication (SNI) does not match the HTTP Host header, indicating potential use of domain fronting to mask C2 traffic via CDNs.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Connections",
+                    "channel": "TLS handshake + HTTP headers"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "SNIHostMismatch",
+                    "description": "Define acceptable mismatch ratio between SNI and HTTP Host fields based on legitimate domain usage patterns."
+                },
+                {
+                    "field": "CDNAllowList",
+                    "description": "Whitelist of known safe CDN front-end domains (e.g., `cdn.company.com`)."
+                },
+                {
+                    "field": "ProcessInitiator",
+                    "description": "Filter for suspicious initiators of domain fronting, e.g., scripting engines, lolbins, unknown binaries."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

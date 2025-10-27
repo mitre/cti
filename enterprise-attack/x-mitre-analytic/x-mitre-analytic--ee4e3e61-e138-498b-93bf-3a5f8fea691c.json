@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--553f3056-4145-403e-8356-4b8d8ed62801",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--ee4e3e61-e138-498b-93bf-3a5f8fea691c",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0002#AN0002",
+                    "external_id": "AN0002"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0002",
+            "description": "Detects non-standard processes (e.g., PowerShell, python.exe, rundll32.exe) making outbound connections using publish/subscribe protocols (e.g., MQTT, AMQP) over non-browser, encrypted channels, often beaconing to message brokers.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "mqtt.log / xmpp.log (custom log feeds)"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UnusualProcessList",
+                    "description": "Detect suspicious processes initiating outbound pub/sub connections"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Define beaconing interval used for temporal correlation"
+                },
+                {
+                    "field": "ProtocolPortList",
+                    "description": "Custom MQTT/XMPP port use in non-standard ranges (e.g., 1883, 5222, 5672)"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

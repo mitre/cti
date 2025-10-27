@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--c1087503-8f2b-4467-90c2-00a6d92110d8",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--86103b48-cd6d-447d-aef4-807e10355506",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0003#AN0006",
+                    "external_id": "AN0006"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0006",
+            "description": "Adversary uses built-in tools such as 'net user /add /domain' or PowerShell to create a domain user account. The behavior chain includes: (1) suspicious process execution on a domain controller followed by (2) user account creation event (Event ID 4720) on the same host.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--deb22295-7e37-4a3b-ac6f-c86666fbe63d",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4720"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Detection triggers when Event ID 4720 follows a suspicious process within 2 minutes."
+                },
+                {
+                    "field": "ParentProcessName",
+                    "description": "Allow filtering of known admin tools vs adversarial misuse (e.g., net.exe, powershell.exe)."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Filter accounts with domain admin privileges creating new users vs standard helpdesk roles."
+                },
+                {
+                    "field": "HostRole",
+                    "description": "Restrict to only domain controller hosts to reduce noise from workstations."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

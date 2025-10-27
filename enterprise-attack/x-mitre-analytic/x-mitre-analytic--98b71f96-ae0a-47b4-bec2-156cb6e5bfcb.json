@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--3bef86e8-327b-469f-8b83-7477986b96e4",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--98b71f96-ae0a-47b4-bec2-156cb6e5bfcb",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0593#AN1631",
+                    "external_id": "AN1631"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1631",
+            "description": "Monitoring adversary access to sensitive process memory via the /proc filesystem to extract credential material, often involving multi-step access to /proc/[pid]/mem or /proc/[pid]/maps combined with privilege escalation or credential scraping binaries.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open, read"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:SYSCALL",
+                    "channel": "write"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "auditd:SYSCALL",
+                    "channel": "ptrace or process_vm_readv"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "linux:Sysmon",
+                    "channel": "EventCode=1"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AccessedFilePath",
+                    "description": "Monitored paths such as /proc/[pid]/mem or /proc/[pid]/maps may need to be scoped based on environment"
+                },
+                {
+                    "field": "ProcessName",
+                    "description": "Command-line or binary names associated with credential scraping tools may vary"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Elevated user or unexpected user context accessing other process memory may indicate malicious activity"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlating memory access with process creation or ptrace activity within a specific time range"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

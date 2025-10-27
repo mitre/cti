@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--b421b483-8825-4367-87cd-d983b04975c6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--e32ce63a-7c82-4115-8c50-e43113562132",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0258#AN0713",
+                    "external_id": "AN0713"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0713",
+            "description": "Defender observes unauthorized modification or creation of Python hook files such as `.pth`, `sitecustomize.py`, or `usercustomize.py` in Python `site-packages`, `dist-packages`, or user paths. This is often correlated with subsequent unexpected interpreter execution (e.g., python3 running without user interaction), changes in interpreter behavior (e.g., malicious imports), and outbound connections initiated from Python. Defender links write/modify actions on hook files with execve of python process and/or anomalous child process or network activity.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: execve where exe=/usr/bin/python3 or similar interpreter"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:PATH",
+                    "channel": "write or create events on *.pth, sitecustomize.py, usercustomize.py in site-packages or dist-packages"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "auditd:CONFIG_CHANGE",
+                    "channel": "chmod or chown of hook files indicating privilege escalation or execution permission change"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "http::request: Outbound HTTP initiated by Python interpreter"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "HookFilePathPatterns",
+                    "description": "Absolute or regex paths to Python startup files (.pth, customize.py); vary by distro or virtual environment location"
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Restrict alerts to non-root users, service accounts, or interactive shell sessions"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate file modification and Python execution within short time span (default: 2\u20135 minutes)"
+                },
+                {
+                    "field": "InterpreterWhitelist",
+                    "description": "Filter out known legitimate Python executions tied to expected cron jobs or automation"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

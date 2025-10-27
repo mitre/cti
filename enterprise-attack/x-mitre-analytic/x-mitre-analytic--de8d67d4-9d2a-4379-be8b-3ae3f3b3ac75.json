@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--03636f9b-589d-4841-97bf-18381a94e752",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--de8d67d4-9d2a-4379-be8b-3ae3f3b3ac75",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0280#AN0781",
+                    "external_id": "AN0781"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-22T18:39:47.271Z",
+            "name": "Analytic 0781",
+            "description": "Behavior chain involving abnormal registry modifications via CLI, PowerShell, WMI, or direct API calls, especially targeting persistence, privilege escalation, or defense evasion keys, potentially followed by service restart or process execution. Such as editing Notify/Userinit/Startup keys, or disabling SafeDllSearchMode.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13, 14"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "RegistryKeyPathPatterns",
+                    "description": "Environment-specific list of monitored or critical registry keys, e.g., Run, Services, Security Settings, LSASS"
+                },
+                {
+                    "field": "ParentProcessAllowList",
+                    "description": "Allowlist of legitimate registry tools (e.g., regedit.exe, msiexec.exe); used to filter known safe writes"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate registry change with nearby process/service execution within a defined timeframe"
+                },
+                {
+                    "field": "SignatureCheck",
+                    "description": "Flag unsigned executables or abnormal parent-child lineage performing registry modification"
+                }
+            ]
+        }
+    ]
+}

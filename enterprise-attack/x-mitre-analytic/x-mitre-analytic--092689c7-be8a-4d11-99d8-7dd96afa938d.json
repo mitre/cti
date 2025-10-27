@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--4dc4a34a-89b1-47b5-b0df-57651a881533",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--092689c7-be8a-4d11-99d8-7dd96afa938d",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0450#AN1244",
+                    "external_id": "AN1244"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1244",
+            "description": "Detect user-initiated kextload commands or modifications to /Library/Extensions. Correlate with changes to KextPolicy database or unauthorized developer signing identities. Alert on attempts to disable SIP or load legacy extensions from unsigned sources.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:unifiedlog",
+                    "channel": "kextload execution from Terminal or suspicious paths"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:osquery",
+                    "channel": "Processes executing kextload, spctl, or modifying kernel extension directories"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--23e4ee78-26f3-4fcf-ba43-ab953962f96c",
+                    "name": "macos:osquery",
+                    "channel": "New kext entries not signed by Apple or outside standard identifier prefix"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "macos:osquery",
+                    "channel": "Modifications to /var/db/SystemPolicyConfiguration/KextPolicy or kext_policy table"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "DeveloperIDAllowlist",
+                    "description": "Approved developer IDs whose kexts should not trigger alerts"
+                },
+                {
+                    "field": "KextLoadTimeWindow",
+                    "description": "Threshold for detecting kext loads outside standard install/update operations"
+                },
+                {
+                    "field": "SignatureCheckFlag",
+                    "description": "Flag to enforce strict signing checks depending on SIP status"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

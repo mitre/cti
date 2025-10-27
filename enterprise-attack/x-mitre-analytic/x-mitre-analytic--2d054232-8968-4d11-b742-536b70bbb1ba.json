@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--2d097eb4-b0c2-4cb7-83d8-42282dd9df33",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--2d054232-8968-4d11-b742-536b70bbb1ba",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0198#AN0571",
+                    "external_id": "AN0571"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0571",
+            "description": "Detection correlates anomalous Docker or Kubernetes API requests with access to logs, secrets, or service accounts. Observes unauthorized use of `docker logs`, `kubectl get secrets`, or direct API calls to Kubernetes API server endpoints. Identifies behavioral patterns where adversaries escalate from basic pod/container interaction to privileged API calls exposing sensitive credential material.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Containers"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "docker:api",
+                    "channel": "docker logs access or container inspect commands from non-administrative users"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a953ca55-921a-44f7-9b8d-3d40141aa17e",
+                    "name": "kubernetes:apiserver",
+                    "channel": "get/list requests to /api/v1/secrets or /api/v1/namespaces/*/serviceaccounts"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "kubernetes:apiserver",
+                    "channel": "exec into pod followed by secret retrieval via API"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "kubernetes:orchestrator",
+                    "channel": "Access to orchestrator logs containing credentials (Docker/Kubernetes logs)"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "Tune to exclude known orchestrator admin service accounts or CI/CD pipelines that legitimately access secrets"
+                },
+                {
+                    "field": "NamespaceScope",
+                    "description": "Restrict detection to sensitive namespaces (e.g., kube-system, production apps)"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Adjust correlation timing between pod execution and subsequent API secret retrieval"
+                },
+                {
+                    "field": "SourceIP",
+                    "description": "Filter based on allowed internal API calls vs anomalous external or cross-cluster access"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--c05bedbf-693c-4e87-b9d3-bf641039f74b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--223a39c8-d194-456e-be99-2db9e97ab7da",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0252#AN0698",
+                    "external_id": "AN0698"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0698",
+            "description": "User-initiated installation of Python (pip), NodeJS (npm), or other language libraries, followed by unexpected network connections, credential access, or startup file modifications. Defender sees `pip install` or `npm install` commands run by a non-root user, followed shortly by new `.py`, `.sh`, or `.js` files in hidden directories, or interpreter-based execution during boot/login.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of pip, npm, gem, or similar package managers"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "auditd:PATH",
+                    "channel": "New .py/.js/.sh files written to ~/.local/, ~/.cache/, or /tmp/ within 5 min of package install"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "http::request: Network connection to package registry or C2 from interpreter shortly after install"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "PackageManagerList",
+                    "description": "Monitored package managers (e.g., pip, npm, gem, poetry, conda)"
+                },
+                {
+                    "field": "InstallWritePaths",
+                    "description": "Directories to watch for post-install execution artifacts (e.g., ~/.local/, /usr/lib/python3.8/site-packages/)"
+                },
+                {
+                    "field": "UserContextScope",
+                    "description": "Filter to focus on non-system accounts (e.g., interactive shell users)"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate install command to subsequent network/file activity (default: 5 min)"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

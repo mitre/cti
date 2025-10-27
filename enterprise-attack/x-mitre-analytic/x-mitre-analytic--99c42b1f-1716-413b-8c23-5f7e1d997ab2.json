@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--7bc8b991-fc3f-4bec-bfc2-65248a09eaa1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--99c42b1f-1716-413b-8c23-5f7e1d997ab2",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0369#AN1039",
+                    "external_id": "AN1039"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1039",
+            "description": "Detect unauthorized `trap` command registrations in shell startup files (e.g., .zprofile, .bash_profile, .zshrc) followed by execution chains during user terminal interaction. Use Unified Logs and EDR telemetry to correlate shell command parsing and process tree anomalies.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "Command line containing `trap` or `echo 'trap` written to login shell files"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "macos:unifiedlog",
+                    "channel": "File write or append to .zshrc, .bash_profile, .zprofile, etc."
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "LoginShellConfigPaths",
+                    "description": "Startup files vary by shell (.bash_profile, .zshrc, etc.)"
+                },
+                {
+                    "field": "TrapCommandLengthThreshold",
+                    "description": "Short benign traps may differ from longer/multi-command malicious traps"
+                },
+                {
+                    "field": "ParentProcessAnomalyThreshold",
+                    "description": "Score or detect if new child process deviates from shell\u2019s typical behavior"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

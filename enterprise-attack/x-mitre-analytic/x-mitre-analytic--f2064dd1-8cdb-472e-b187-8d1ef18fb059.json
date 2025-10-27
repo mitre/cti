@@ -1,0 +1,84 @@
+{
+    "type": "bundle",
+    "id": "bundle--034a15fc-f546-4965-a581-009a37eb0f10",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--f2064dd1-8cdb-472e-b187-8d1ef18fb059",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0022#AN0065",
+                    "external_id": "AN0065"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0065",
+            "description": "Adversary stages a lure that references a remote resource (e.g., LNK/SCF/Office template). When the user opens/renders the file or a shell enumerates icons, the host automatically attempts SMB or WebDAV authentication to the attacker host. The chain is: (1) lure file is created or modified in a user-exposed location \u2192 (2) user or system accesses the lure \u2192 (3) host makes outbound NTLM (SMB 139/445 or WebDAV over 80/443) to an untrusted destination \u2192 (4) repeated attempts from multiple users/hosts or from privileged workstations.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4663"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "HTTP/WebDAV requests that contain NTLMSSP or PROPFIND/MOVE/OPTIONS with Authorization: NTLM"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSM:Flow",
+                    "channel": "Outbound connections to TCP 139,445 and HTTP/HTTPS to WebDAV endpoints from workstation subnets"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserLocations",
+                    "description": "Folders where lures are most effective (Desktop, Public, Downloads, Temp, Cache, Start Menu, Startup). Adjust to enterprise layout."
+                },
+                {
+                    "field": "LureExtensions",
+                    "description": "File types commonly abused (.lnk, .scf, .url, .doc/.xls/.ppt/.pdf/.html). Extend for your tooling and languages."
+                },
+                {
+                    "field": "UntrustedCIDR/DNS",
+                    "description": "Org-specific list of external/unknown networks or domains; used to suppress sanctioned file servers and WebDAV gateways."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation horizon (e.g., 15\u201330 minutes) between file access and outbound NTLM attempt."
+                },
+                {
+                    "field": "WorkstationZones",
+                    "description": "Asset/zone tags that distinguish workstations from servers; helps flag workstation\u2192workstation SMB, which is often abnormal."
+                },
+                {
+                    "field": "OfficeTemplatePaths",
+                    "description": "Paths to Office templates to catch template injection references and abnormal loads."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

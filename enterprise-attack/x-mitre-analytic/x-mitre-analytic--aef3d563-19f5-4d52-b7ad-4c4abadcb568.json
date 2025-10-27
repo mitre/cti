@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--91bc9eaa-2a05-4308-a2a9-909a55230fca",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--aef3d563-19f5-4d52-b7ad-4c4abadcb568",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0135#AN0379",
+                    "external_id": "AN0379"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0379",
+            "description": "Detects unauthorized use of SMTP/IMAP/POP3 by suspicious binaries (e.g., PowerShell, rundll32) to exfiltrate data or beacon via email, often bypassing proxy or content filters.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "smtp.log"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ProcessImageName",
+                    "description": "Limit to uncommon clients (e.g., scripts or CLI tools using .NET SMTP libraries)"
+                },
+                {
+                    "field": "DestPortFilter",
+                    "description": "Typically 25, 587, 993, 995, or 465 \u2013 flag anomalies"
+                },
+                {
+                    "field": "AttachmentType",
+                    "description": "Flag suspicious attachments (e.g., .zip, .7z, .bin)"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,0 +1,97 @@
+{
+    "type": "bundle",
+    "id": "bundle--203b1526-24e1-4288-b2ff-73315dfb78e5",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--d69c9d97-17d6-4dad-a4d4-ec41e7fb34fb",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0172#AN0488",
+                    "external_id": "AN0488"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0488",
+            "description": "A trusted/signed developer utility (parent) is executed in a non-developer context and (a) spawns suspicious children (e.g., powershell.exe, cmd.exe, rundll32.exe, regsvr32.exe, wscript.exe), (b) loads unsigned/user-writable DLLs, (c) writes and then runs a new PE from user-writable paths, and/or (d) immediately makes outbound network connections.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3, 22"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--ee575f4a-2d4f-48f6-b18b-89067760adc1",
+                    "name": "WinEventLog:AppLocker",
+                    "channel": "AppLocker audit/blocks showing developer utilities executing scripts/binaries outside policy"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window between developer utility execution, payload write, and network egress (e.g., 0\u201330 minutes)."
+                },
+                {
+                    "field": "AllowedUtilitiesList",
+                    "description": "Org-specific list of dev utilities legitimately used on build/dev hosts to suppress noise."
+                },
+                {
+                    "field": "DeveloperHosts",
+                    "description": "List of known developer/build systems where these tools are expected; raise severity off-host."
+                },
+                {
+                    "field": "SuspiciousChildList",
+                    "description": "Child processes considered high-risk when spawned by dev utilities (powershell.exe, rundll32.exe, regsvr32.exe, cmd.exe, wscript.exe, mshta.exe)."
+                },
+                {
+                    "field": "RarePathRegex",
+                    "description": "Regex of user-writable or atypical paths (e.g., %TEMP%, %APPDATA%, recycle bin, public profile) for payload drops."
+                },
+                {
+                    "field": "UnsignedOrInvalidSignatureOnly",
+                    "description": "Toggle to alert only when child/payload is unsigned or signature invalid to reduce noise."
+                },
+                {
+                    "field": "ParentProcessAllowList",
+                    "description": "Known orchestrators (e.g., CI/CD agents) that often run these utilities legitimately."
+                },
+                {
+                    "field": "NetworkReputationThreshold",
+                    "description": "Heuristic for rare/unknown destination (no DNS reputation, new domain, geo outside region)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

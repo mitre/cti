@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--8cb4ea69-ac4e-424c-9138-4cef8d9f6e0e",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--6ec034ac-289d-48d1-b310-021dfbf7087b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0217#AN0608",
+                    "external_id": "AN0608"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0608",
+            "description": "Detects adversary manipulation of Extra Window Memory (EWM) in a GUI process, where the attacker uses SetWindowLong or SetClassLong to redirect function pointers to injected shellcode stored in shared memory, then triggers execution via a window message like SendNotifyMessage.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "etw:Microsoft-Windows-Win32k",
+                    "channel": "SetWindowLong, SetClassLong, NtUserMessageCall, SendNotifyMessage, PostMessage"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TargetWindowClassRegex",
+                    "description": "Regex to scope suspicious or uncommon GUI class names registered by user-created processes"
+                },
+                {
+                    "field": "ExecutionTriggerWindowMessage",
+                    "description": "API calls like SendNotifyMessage or PostMessage that deliver execution to the shellcode location"
+                },
+                {
+                    "field": "SharedSectionWriteThreshold",
+                    "description": "Set byte count thresholds on suspicious memory writes to known shared sections"
+                },
+                {
+                    "field": "TimeWindowSetWindowLongToMessageTrigger",
+                    "description": "Define max time (e.g., <10s) between API call to set window memory and the message call to trigger it"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

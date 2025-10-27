@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--ca39b0a2-2518-4c52-8883-078b967878e9",
+    "id": "bundle--47db8765-48f2-4c6c-b49d-6bda61f1c067",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,36 @@
             "created": "2021-10-20T15:05:19.273Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0048",
+                    "external_id": "DC0048"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:14:42.887Z",
+            "modified": "2025-10-21T15:14:39.039Z",
             "name": "Named Pipe Metadata",
             "description": "Contextual data about a named pipe on a system, including pipe name and creating process (ex: Sysmon EIDs 17-18)\n\n*Data Collection Measures:*\n\n- Windows:\n    - Sysmon Event ID 17: Logs the creation of a named pipe.\n    - Sysmon Event ID 18: Logs connection attempts to a named pipe.\n    - Windows Security Event ID 5145: Logs access attempts to named pipes via SMB shares.\n    - ETW (Event Tracing for Windows): Provides deep telemetry into named pipe interactions.\n- Linux/macOS:\n    - AuditD (`mkfifo`, `open`, `read`, `write` syscalls): Tracks FIFO (named pipe) creation and usage.\n    - Lsof (`lsof -p <PID>` or `lsof | grep PIPE`): Lists active named pipes and associated processes.\n    - Strace (`strace -e open <process>`): Monitors named pipe interactions.\n- Endpoint Detection & Response (EDR):\n    - Capture named pipe events as part of process tracking.\n- Memory Forensics:\n    - Volatility Plugin (`pipescan`): Enumerates named pipes in system memory.\n    - Rekall Framework: Identifies active named pipes and associated processes.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--221adcd5-cccf-44df-9be6-ef607a6e1c3c",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=17"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "XPC messages requesting privileged actions from untrusted or unsigned clients"
+                }
+            ]
         }
     ]
 }

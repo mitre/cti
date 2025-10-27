@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--e8758b15-0d0a-43fb-8640-51da99dd54ae",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--6b5b9cd2-f6ba-4ed5-bea2-30edbf85501e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0033#AN0094",
+                    "external_id": "AN0094"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0094",
+            "description": "Defenders can observe suspicious replacement or tampering of system accessibility binaries (e.g., utilman.exe, sethc.exe, osk.exe) and anomalous modifications to registry keys used to redirect accessibility programs (such as IFEO keys). Additionally, execution of cmd.exe or other suspicious binaries triggered from the login screen by SYSTEM can be correlated as part of a behavior chain.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=15"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Time between registry modification and suspicious binary execution (e.g., < 1 hour) can be tuned."
+                },
+                {
+                    "field": "TargetBinaryNames",
+                    "description": "Specific binaries monitored (e.g., utilman.exe, sethc.exe) can be adjusted per OS version and risk tolerance."
+                },
+                {
+                    "field": "ParentProcess",
+                    "description": "Parent process of cmd.exe (e.g., winlogon.exe) may vary across legitimate and adversarial cases."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Context of SYSTEM account execution vs. administrative sessions may influence tuning."
+                },
+                {
+                    "field": "CommandLineContains",
+                    "description": "Tunable patterns such as launching cmd.exe, powershell, or LOLBins from accessibility binaries."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

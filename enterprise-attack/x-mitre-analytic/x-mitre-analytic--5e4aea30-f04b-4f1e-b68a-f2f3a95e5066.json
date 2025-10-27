@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--fb51c445-341d-41b5-84e7-7f13766b56a6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--5e4aea30-f04b-4f1e-b68a-f2f3a95e5066",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0555#AN1534",
+                    "external_id": "AN1534"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1534",
+            "description": "Detection focuses on identifying unauthorized file creation or modification within `/etc/emond.d/rules/` or `/private/var/db/emondClients`, which indicate attempts to register a malicious emond rule. Correlate with process execution of `/sbin/emond` and any launched commands it invokes, especially during boot or login events. Anomalies may include rules created by non-root users or unexpected shell commands executed by emond.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "macos:unifiedlog",
+                    "channel": "file create or modify in /etc/emond.d/rules or /private/var/db/emondClients"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of /sbin/emond with child processes launched"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "macos:unifiedlog",
+                    "channel": "rule definitions written to emond rule plists"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:unifiedlog",
+                    "channel": "command execution triggered by emond (e.g., shell, curl, python)"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "PathPrefix",
+                    "description": "Paths such as `/etc/emond.d/rules/` and `/private/var/db/emondClients` may vary slightly or be symlinked in some setups"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "The time range for correlating rule file creation to emond execution may be tuned based on system performance and usage"
+                },
+                {
+                    "field": "ParentProcessFilter",
+                    "description": "Defenders may wish to restrict alerts to emond processes not spawned from trusted system update or provisioning tools"
+                },
+                {
+                    "field": "CommandPatternList",
+                    "description": "List of known suspicious commands or binaries used by adversaries (e.g., reverse shells, persistence scripts)"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

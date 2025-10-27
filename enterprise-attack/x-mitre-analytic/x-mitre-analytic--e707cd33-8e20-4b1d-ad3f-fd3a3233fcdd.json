@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--8600b383-21a4-4728-9f7a-fa3c7e0cf575",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--e707cd33-8e20-4b1d-ad3f-fd3a3233fcdd",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0478#AN1318",
+                    "external_id": "AN1318"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1318",
+            "description": "Cause\u2192effect chain in cloud consoles: (1) user clicks link then invokes instance/image creation via API, (2) instance/image originates from external AMI or unknown image, (3) instance immediately egresses or retrieves payloads.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5b0e8ae-7436-4951-950a-7b83c4dd3f2c",
+                    "name": "AWS:CloudTrail",
+                    "channel": "RunInstances,CreateImage"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f8213cde-6b3a-420d-9ab7-41c9af1a919f",
+                    "name": "AWS:CloudTrail",
+                    "channel": "StartInstances"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "gcp:vpcflow",
+                    "channel": "first 5m egress to unknown ASNs"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ApprovedImages",
+                    "description": "AMI/image allow-list with owners."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "High-risk identities (federated, external IdP)."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "5\u201330 minutes from console/API action to network egress."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

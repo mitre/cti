@@ -1,0 +1,103 @@
+{
+    "type": "bundle",
+    "id": "bundle--652e4071-3fb4-43b6-b498-c2fa998ddd1f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--a5e9fb06-ab75-415d-beff-206aa059e096",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0361#AN1028",
+                    "external_id": "AN1028"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1028",
+            "description": "Abuse of Regsvcs.exe or Regasm.exe to execute arbitrary code embedded in .NET assemblies via [ComRegisterFunction]/[ComUnregisterFunction]. Behavioral chain: (1) Process creation of regsvcs/regasm with suspicious assembly paths/flags \u2192 (2) Assembly/DLL load inside regsvcs/regasm \u2192 (3) Registry writes to HKCR\\CLSID/ProgID during COM registration \u2192 (4) Optional child process or network activity spawned by installer/registration code.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--7f70fae7-a68d-4730-a83a-f260b9606129",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=12"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4104"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AssemblyPathRegex",
+                    "description": "Environment-specific paths to flag (e.g., %TEMP%, Downloads, OneDrive, SMB shares). Helps suppress known-good installers."
+                },
+                {
+                    "field": "SuspiciousFlags",
+                    "description": "Arguments like /unregister (/u), /codebase, /regfile which may indicate abuse. Tune per enterprise use of regasm/regsvcs."
+                },
+                {
+                    "field": "ParentProcessAllowList",
+                    "description": "Legitimate parents (e.g., setup.exe, msiexec.exe). Analyst can prune false positives from Office or script hosts."
+                },
+                {
+                    "field": "KnownGoodAssemblies",
+                    "description": "Hashes or publisher info for approved assemblies commonly registered in the environment."
+                },
+                {
+                    "field": "RegistryKeyAllowList",
+                    "description": "Approved CLSIDs/ProgIDs written during sanctioned software installs."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window (e.g., 5\u201310 min) between file drop \u2192 regasm/regsvcs exec \u2192 registry writes \u2192 child activity."
+                },
+                {
+                    "field": "SignedToUnsignedTransition",
+                    "description": "Alert if Microsoft-signed regasm/regsvcs loads or triggers unsigned assemblies/children."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

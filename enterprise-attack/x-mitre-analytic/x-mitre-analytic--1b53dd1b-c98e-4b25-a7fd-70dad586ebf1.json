@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--0ecc9177-2ac4-448f-aebf-53e4a92e1135",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--1b53dd1b-c98e-4b25-a7fd-70dad586ebf1",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0124#AN0348",
+                    "external_id": "AN0348"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0348",
+            "description": "ESXi shell (BusyBox) or VMware utilities (openssl, python if present) used to Base64/hex encode data from datastore or config files \u2192 followed by abnormal egress from the host (NSX/flow logs) with asymmetric bytes_out or HTTPS posts to non-management endpoints.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "ESXi"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "esxi:shell",
+                    "channel": "commands containing base64, openssl enc -base64, xxd -p"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "esxi:hostd",
+                    "channel": "unexpected script/command invocations via hostd"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "NSX:FlowLogs",
+                    "channel": "network_flow: bytes_out >> bytes_in to external"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "http: Base64/MIME looking payloads from ESXi host IP"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "MgmtCIDRs",
+                    "description": "CIDRs for legitimate vCenter/NSX/backup endpoints."
+                },
+                {
+                    "field": "BytesRatio",
+                    "description": "Out:In ratio deemed suspicious (e.g., \u22653 on ESXi)."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window between shell command and egress."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

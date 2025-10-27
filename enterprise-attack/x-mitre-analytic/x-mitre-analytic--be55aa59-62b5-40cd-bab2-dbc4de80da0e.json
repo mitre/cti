@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--a462c4fd-7a22-412f-a878-d2f148a944a6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--be55aa59-62b5-40cd-bab2-dbc4de80da0e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0578#AN1594",
+                    "external_id": "AN1594"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1594",
+            "description": "Detection of suspicious enumeration of cloud storage objects via API calls such as AWS S3 ListObjectsV2, Azure List Blobs, or GCP ListObjects. Correlate access with account role, user context, and prior authentication activity to identify anomalous usage patterns (e.g., unusual account, unexpected regions, or large-scale enumeration in short time windows).",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--fcc4811f-9cc8-4db5-8097-4d8242a380de",
+                    "name": "AWS:CloudTrail",
+                    "channel": "ListObjectsV2"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--58ef998c-f3bf-4985-b487-b1005f5c05d1",
+                    "name": "AWS:CloudTrail",
+                    "channel": "GetObject"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window (e.g., multiple enumeration calls within 5 minutes) may indicate automated discovery versus normal user activity."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Expected service accounts and IAM roles that regularly enumerate storage; deviations may indicate suspicious activity."
+                },
+                {
+                    "field": "RegionScope",
+                    "description": "Unusual enumeration of buckets across multiple geographic regions in short succession may indicate adversary reconnaissance."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

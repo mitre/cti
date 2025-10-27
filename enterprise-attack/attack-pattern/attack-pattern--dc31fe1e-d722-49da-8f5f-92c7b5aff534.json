@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--179688b8-09eb-4d42-82af-0d96eb1f2fe7",
+    "id": "bundle--99ee3e1c-d104-4f00-9d6d-739f38504737",
     "spec_version": "2.0",
     "objects": [
         {
@@ -63,7 +63,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-25T15:16:15.516Z",
+            "modified": "2025-10-24T17:49:28.862Z",
             "name": "Template Injection",
             "description": "Adversaries may create or modify references in user document templates to conceal malicious code or force authentication attempts. For example, Microsoft\u2019s Office Open XML (OOXML) specification defines an XML-based format for Office documents (.docx, xlsx, .pptx) to replace older binary formats (.doc, .xls, .ppt). OOXML files are packed together ZIP archives compromised of various XML files, referred to as parts, containing properties that collectively define how a document is rendered.(Citation: Microsoft Open XML July 2017)\n\nProperties within parts may reference shared public resources accessed via online URLs. For example, template properties may reference a file, serving as a pre-formatted document blueprint, that is fetched when the document is loaded.\n\nAdversaries may abuse these templates to initially conceal malicious code to be executed via user documents. Template references injected into a document may enable malicious payloads to be fetched and executed when the document is loaded.(Citation: SANS Brian Wiltse Template Injection) These documents can be delivered via other techniques such as [Phishing](https://attack.mitre.org/techniques/T1566) and/or [Taint Shared Content](https://attack.mitre.org/techniques/T1080) and may evade static detections since no typical indicators (VBA macro, script, etc.) are present until after the malicious payload is fetched.(Citation: Redxorblue Remote Template Injection) Examples have been seen in the wild where template injection was used to load malicious code containing an exploit.(Citation: MalwareBytes Template Injection OCT 2017)\n\nAdversaries may also modify the <code>*\\template</code> control word within an .rtf file to similarly conceal then download malicious code. This legitimate control word value is intended to be a file destination of a template file resource that is retrieved and loaded when an .rtf file is opened. However, adversaries may alter the bytes of an existing .rtf file to insert a template control word field to include a URL resource of a malicious payload.(Citation: Proofpoint RTF Injection)(Citation: Ciberseguridad Decoding malicious RTF files)\n\nThis technique may also enable [Forced Authentication](https://attack.mitre.org/techniques/T1187) by injecting a SMB/HTTPS (or other credential prompting) URL and triggering an authentication attempt.(Citation: Anomali Template Injection MAR 2018)(Citation: Talos Template Injection July 2017)(Citation: ryhanson phishery SEPT 2016)",
             "kill_chain_phases": [
@@ -79,7 +79,7 @@
                 "Patrick Campbell, @pjcampbe11"
             ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Analyze process behavior to determine if user document applications (such as Office) are performing actions, such as opening network connections, reading files, spawning abnormal child processes (ex: [PowerShell](https://attack.mitre.org/techniques/T1059/001)), or other suspicious actions that could relate to post-compromise behavior.\n\nMonitor .rtf files for strings indicating the <code>&#42;\\template</code> control word has been modified to retrieve a URL resource, such as <code>&#42;\\template http</code> or <code>&#42;\\template \\u-</code>.",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -88,12 +88,7 @@
             "x_mitre_platforms": [
                 "Windows"
             ],
-            "x_mitre_version": "1.4",
-            "x_mitre_data_sources": [
-                "Network Traffic: Network Connection Creation",
-                "Process: Process Creation",
-                "Network Traffic: Network Traffic Content"
-            ]
+            "x_mitre_version": "1.4"
         }
     ]
 }

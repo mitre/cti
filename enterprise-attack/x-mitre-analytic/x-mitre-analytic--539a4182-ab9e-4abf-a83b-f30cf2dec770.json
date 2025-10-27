@@ -1,0 +1,75 @@
+{
+    "type": "bundle",
+    "id": "bundle--41572853-23dd-44eb-8995-defb07340c8c",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--539a4182-ab9e-4abf-a83b-f30cf2dec770",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0561#AN1548",
+                    "external_id": "AN1548"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1548",
+            "description": "Adversary installs or side-loads an IDE extension (VS Code, IntelliJ/JetBrains, Eclipse) or enables IDE tunneling. Chain: (1) IDE binary starts on a non-developer endpoint or server, often with install/force/tunnel flags \u2192 (2) extension files/registrations appear under user profile \u2192 (3) browser/IDE initiates outbound connections to extension marketplaces, update endpoints, or IDE remote/tunnel services \u2192 (4) optional child tools (ssh, node, powershell) execute under the IDE context.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4688"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "IDEList",
+                    "description": "Executable names/paths (e.g., code.exe, idea64.exe, eclipse.exe, jetbrains-gateway.exe) vary by version and packaging."
+                },
+                {
+                    "field": "SuspiciousCLI",
+                    "description": "Flags such as --install-extension, --force, --disable-extensions, --user-data-dir, --uninstall-extension, tunnel/remote flags are tunable."
+                },
+                {
+                    "field": "ServerZones",
+                    "description": "List of hosts where IDEs should never run (prod servers, DCs)."
+                },
+                {
+                    "field": "AllowedHosts",
+                    "description": "Approved extension marketplaces/ide services; use to suppress benign traffic."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation horizon (e.g., 15\u201330m) between process start, file writes, and outbound IDE/tunnel connections."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

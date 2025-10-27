@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--6489ff71-ede8-4423-82b7-a585f32a05c6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--0021ecae-778a-4726-aa66-1cf4ca01943e",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0219#AN0613",
+                    "external_id": "AN0613"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0613",
+            "description": "Detection of Linux container escape attempts via syscalls (`unshare`, `keyctl`, `mount`) or process execution outside container namespaces. Defenders may correlate unusual system calls from containerized processes with subsequent process creation on the host or modification of host resources.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "auditd:SYSCALL",
+                    "channel": "unshare, mount, keyctl, setns syscalls executed by containerized processes"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "linux:Sysmon",
+                    "channel": "process creation events linked to container namespaces executing host-level binaries"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "SyscallWhitelist",
+                    "description": "Expected syscalls by containerized workloads. Deviations may signal an escape attempt."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Defines correlation window (e.g., 60s) between suspicious syscalls and follow-on host process activity."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

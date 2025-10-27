@@ -1,0 +1,103 @@
+{
+    "type": "bundle",
+    "id": "bundle--d62554ef-84ed-4942-8766-7ef828e6e0d3",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--1fd68bec-86cb-4457-b0cd-56fc724fd578",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0474#AN1305",
+                    "external_id": "AN1305"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1305",
+            "description": "Windows-specific environmental keying behavioral chain: (1) Rapid system information discovery through multiple techniques (WMI queries, registry enumeration, network share discovery, hostname/domain checks), (2) Target validation through specific environmental artifact collection (AD domain membership, network topology, installed software versions), (3) Cryptographic operation correlation indicating payload decryption based on collected environmental values, (4) Subsequent malicious code execution following successful environmental validation, (5) Temporal clustering of discovery activities suggesting automated environmental assessment",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4624,4648, 4672"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--1887a270-576a-4049-84de-ef746b2572d6",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=25"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--05645013-2fed-4066-8bdc-626b2e201dd4",
+                    "name": "WinEventLog:WMI",
+                    "channel": "EventCode=5857, 5860, 5861"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4103"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "DiscoveryTimeWindow",
+                    "description": "Time window for correlating multiple discovery activities as part of environmental assessment - adjust based on observed attack patterns and system performance (default: 300 seconds)"
+                },
+                {
+                    "field": "CriticalDiscoveryThreshold",
+                    "description": "Minimum number of distinct discovery techniques within time window to trigger detection - tune based on environment's normal administrative activity levels"
+                },
+                {
+                    "field": "TargetSpecificArtifacts",
+                    "description": "Organization-specific environmental elements that adversaries might target (domain names, network shares, specific hostnames, software versions)"
+                },
+                {
+                    "field": "CryptographicIndicatorPatterns",
+                    "description": "Process names, command lines, and API calls indicating potential decryption operations - customize based on observed cryptographic tool usage in environment"
+                },
+                {
+                    "field": "LegitimateAdminAccounts",
+                    "description": "User accounts authorized to perform extensive system discovery - maintain current list to reduce false positives from legitimate administrative activities"
+                },
+                {
+                    "field": "BusinessHoursBaseline",
+                    "description": "Normal business hours for risk scoring adjustment - discovery activities outside these hours receive higher risk scores"
+                },
+                {
+                    "field": "WMIQueryComplexityThreshold",
+                    "description": "Complexity metric for WMI queries to identify sophisticated environmental assessment versus simple system checks"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

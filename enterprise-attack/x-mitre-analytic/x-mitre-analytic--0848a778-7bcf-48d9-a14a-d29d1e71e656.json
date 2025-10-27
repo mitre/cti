@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--a2d32efa-ebcc-4cbc-8dca-0a217df0857f",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--0848a778-7bcf-48d9-a14a-d29d1e71e656",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0524#AN1448",
+                    "external_id": "AN1448"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1448",
+            "description": "A remote host sends a short sequence of failed connection attempts (RST/ICMP unreachable) to a set of closed ports. Within a brief window the endpoint (a) adds/enables a firewall rule or (b) a sniffer-backed process begins listening or opens a new socket, after which a successful connection occurs. Also detects Wake-on-LAN magic packets seen on local segment.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a7f22107-02e5-4982-9067-6625d4a1765a",
+                    "name": "WinEventLog:Microsoft-Windows-Windows Firewall With Advanced Security/Firewall",
+                    "channel": "EventCode=2004,2005,2006"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4104"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindowKnock",
+                    "description": "Window to correlate knock sequence \u2192 rule change \u2192 successful connect (e.g., 120s)."
+                },
+                {
+                    "field": "PortSequenceMinLen",
+                    "description": "Minimum number of distinct closed ports hit before success (e.g., 3)."
+                },
+                {
+                    "field": "SuspiciousProcesses",
+                    "description": "List of binaries that commonly toggle firewall/sniff (netsh.exe, powershell.exe, npcapservice.exe, windivert, rawsock tools)."
+                },
+                {
+                    "field": "AllowedFirewallChangers",
+                    "description": "Service accounts or software update agents allowed to change firewall."
+                },
+                {
+                    "field": "WoLAllowedWindows",
+                    "description": "Maintenance windows when magic packets are expected."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--3f86fb07-5ddb-4f4a-a5d1-4f3d7157b079",
+    "id": "bundle--ad97b944-86b4-4fa4-a0c0-58611f175427",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,48 @@
             "created": "2021-10-20T15:05:19.275Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0099",
+                    "external_id": "DC0099"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:15:40.457Z",
+            "modified": "2025-10-21T15:14:39.499Z",
             "name": "Group Enumeration",
             "description": "Extracting group lists from identity systems identifies permissions, roles, or configurations. Adversaries may exploit high-privilege groups or misconfigurations. Examples:\n\n- AWS CLI: `aws iam list-groups`\n- PowerShell: `Get-ADGroup -Filter *`\n- (Saas) Google Workspace: Admin SDK Directory API\n- Azure: `Get-AzureADGroup`\n- Microsoft 365:  Graph API `GET https://graph.microsoft.com/v1.0/groups`\n\n*Data Collection Measures:*\n\n- Cloud Logging: Enable AWS CloudTrail, Azure Activity Logs, and Google Workspace Admin Logs for group-related actions.\n- Directory Monitoring: Track logs like AD Event ID 4662 (object operations).\n- API Monitoring: Log API activity like AWS IAM queries.\n- SaaS Monitoring: Use platform logs (e.g., Office 365 Unified Audit Logs).\n- SIEM Integration: Centralize group query tracking.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--3c07684f-3794-4536-8f70-21efe700c0ec",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "ListGroups, ListAttachedRolePolicies"
+                },
+                {
+                    "name": "azure:audit",
+                    "channel": "az ad user get-member-groups, Get-AzRoleAssignment"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "cloudidentity.groups.list"
+                },
+                {
+                    "name": "saas:salesforce",
+                    "channel": "GET /services/data/vXX.X/groups"
+                },
+                {
+                    "name": "saas:github",
+                    "channel": "GET /orgs/:org/teams, GET /teams/:team/members"
+                }
+            ]
         }
     ]
 }

@@ -1,0 +1,98 @@
+{
+    "type": "bundle",
+    "id": "bundle--f0d17cee-6ee3-4e9c-86c7-8c9fcf5c4fe2",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--ba2056ee-77d7-49d4-a993-5806506964df",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0496#AN1366",
+                    "external_id": "AN1366"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1366",
+            "description": "Chain of remote access tool behavior: (1) initial execution of remote-control/assist agent or GUI under user context; (2) persistence via service or autorun; (3) long-lived outbound connection/tunnel to external infrastructure; (4) interactive control signals such as shell or file-manager child processes spawned by the RAT parent.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5297a638-1382-4f0c-8472-0d21830bf705",
+                    "name": "WinEventLog:System",
+                    "channel": "EventCode=7045"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--7f70fae7-a68d-4730-a83a-f260b9606129",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=12"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=13"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation period binding start\u2192persistence\u2192egress\u2192child (default 15m, adjust per environment)."
+                },
+                {
+                    "field": "UserContext",
+                    "description": "Differentiate help-desk/jump hosts and admin accounts from standard endpoints."
+                },
+                {
+                    "field": "ProcessAllowlist",
+                    "description": "Known-good remote support tools; suppress expected events while still correlating anomalous sequences."
+                },
+                {
+                    "field": "InstallPathRegex",
+                    "description": "Alert when services/agents execute from user-writable or temp paths."
+                },
+                {
+                    "field": "ExternalIPAllowlist",
+                    "description": "Vendors\u2019 support clouds/CDNs to reduce false positives on egress detection."
+                },
+                {
+                    "field": "ShellSpawnRegex",
+                    "description": "Define which child shells from GUI parents are acceptable versus suspicious."
+                },
+                {
+                    "field": "EgressHeuristics",
+                    "description": "Thresholds for session duration, connection counts, and bytes_out/bytes_in ratio."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

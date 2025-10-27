@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--14d12b38-bcf7-4ca2-a490-d83021048c19",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--05af7b9b-ec1a-4d6c-a944-64a7ad0eb2f5",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0423#AN1187",
+                    "external_id": "AN1187"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1187",
+            "description": "Detection focuses on correlating snapshot creation events with subsequent instance creation and mounting activities. From a defender perspective, suspicious sequences include snapshot creation by unexpected or newly created IAM users, snapshots created from sensitive volumes without preceding change-control activity, or snapshots immediately followed by mounting to unauthorized instances. Cross-referencing with user behavior, IP geolocation, and automation context helps distinguish benign backup operations from adversary-driven snapshot exploitation.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3da222e6-53f3-451c-a239-0b405c009432",
+                    "name": "AWS:CloudTrail",
+                    "channel": "CreateSnapshot"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--8bc66f94-54a9-4be4-bdd1-fe90df643774",
+                    "name": "AWS:CloudTrail",
+                    "channel": "DescribeSnapshots"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "UserContext",
+                    "description": "IAM user, service account, or role performing snapshot creation. Tuned to allowlist known backup automation services."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Frequency of snapshot creation in a defined period. Adjusted for environments with frequent automated backups."
+                },
+                {
+                    "field": "GeoLocation",
+                    "description": "Unusual regions or IPs from which snapshot creation API calls originate. Helps identify cross-region snapshot abuse."
+                },
+                {
+                    "field": "VolumeSensitivity",
+                    "description": "Tagging or classification of volumes being snapshotted. Tuned to prioritize alerts when sensitive volumes are copied."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

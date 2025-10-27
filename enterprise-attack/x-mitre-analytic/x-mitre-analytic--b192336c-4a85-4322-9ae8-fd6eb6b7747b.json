@@ -1,0 +1,71 @@
+{
+    "type": "bundle",
+    "id": "bundle--307a5961-d31d-44da-9347-7d1778c49c2c",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--b192336c-4a85-4322-9ae8-fd6eb6b7747b",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0339#AN0961",
+                    "external_id": "AN0961"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0961",
+            "description": "Defenders may observe unauthorized modifications to encryption-related configuration files, firmware, or crypto modules on network devices. Suspicious patterns include changes to cipher suite configurations, unexpected firmware updates affecting crypto libraries, disabling of hardware cryptographic accelerators, or reductions in key length policies. Correlating configuration changes with anomalies in encrypted traffic characteristics (e.g., weaker ciphers or sudden plaintext transmission) strengthens detection.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Network Devices"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "networkdevice:config",
+                    "channel": "Configuration change events referencing encryption, TLS/SSL, or IPSec settings"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Traffic patterns showing downgrade from strong encryption (AES-256) to weaker or plaintext protocols"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "snmp:status",
+                    "channel": "Status change in cryptographic hardware modules (enabled -> disabled)"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "CipherSuiteWhitelist",
+                    "description": "List of approved encryption algorithms and key lengths; customizable to organizational policy."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation period between configuration changes and abnormal traffic; adjustable to reduce false positives."
+                },
+                {
+                    "field": "AuthorizedFirmwareSources",
+                    "description": "Known trusted sources of firmware updates; deviations indicate possible compromise."
+                },
+                {
+                    "field": "TrafficEntropyThreshold",
+                    "description": "Baseline entropy measurements of encrypted traffic; deviations may reveal weakening of encryption."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

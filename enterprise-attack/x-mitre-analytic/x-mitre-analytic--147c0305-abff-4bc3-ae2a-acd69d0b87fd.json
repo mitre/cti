@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--d9fc3069-770b-4014-ae1f-4f0f43218e1b",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--147c0305-abff-4bc3-ae2a-acd69d0b87fd",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0242#AN0676",
+                    "external_id": "AN0676"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0676",
+            "description": "Unusual database command-line access (e.g., `psql`, `mysql`, `mongo`) from non-admin users, occurring outside typical automation windows or without known service context. Often followed by data dumps to .sql/.csv files or outbound data transfers. Defender sees CLI tools launched interactively or by unusual parent processes, file writes to dump-like filenames, and external connections shortly after.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of CLI tools like psql, mysql, mongo, sqlite3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "auditd:PATH",
+                    "channel": "Creation of files with extensions .sql, .csv, .sqlite, especially in user directories"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "http::post: Outbound HTTP POST from host shortly after DB export activity"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "AllowedDBClients",
+                    "description": "List of user or automation accounts expected to use database clients"
+                },
+                {
+                    "field": "DumpFilePattern",
+                    "description": "Filename patterns used to identify data dumps (e.g., *.sql, backup_*.csv)"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Time threshold for correlating execution, file write, and outbound transfer"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

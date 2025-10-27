@@ -1,0 +1,80 @@
+{
+    "type": "bundle",
+    "id": "bundle--1bb539e1-5a08-48f3-89d4-462c6f68c246",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--441bfb28-3fe5-410b-93a5-2280a7f19dad",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0434#AN1208",
+                    "external_id": "AN1208"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1208",
+            "description": "Detects creation or modification of user-level Launch Agents in monitored directories using `.plist` files with suspicious `ProgramArguments` or `RunAtLoad` keys. Correlates file write activity with execution of `launchctl` or unsigned binaries invoked at login.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "macos:unifiedlog",
+                    "channel": "launchctl load or boot-time plist registration"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "fs:fsusage",
+                    "channel": "write or chmod to ~/Library/LaunchAgents/*.plist"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "fs:fsusage",
+                    "channel": "modification of existing LaunchAgents plist"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5297a638-1382-4f0c-8472-0d21830bf705",
+                    "name": "macos:osquery",
+                    "channel": "detection of new launch agents with suspicious paths or unsigned binaries"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "PlistDirectoryList",
+                    "description": "Monitored directories (e.g., `/Library/LaunchAgents`, `~/Library/LaunchAgents`) for plist drops"
+                },
+                {
+                    "field": "PlistKeyMonitor",
+                    "description": "Monitored keys such as `RunAtLoad`, `KeepAlive`, or `ProgramArguments` for policy alignment"
+                },
+                {
+                    "field": "ExecutablePathPattern",
+                    "description": "Patterns used to detect execution from non-standard or suspicious locations like `/tmp`, `/var`, or `/Users/Shared`"
+                },
+                {
+                    "field": "UnsignedBinaryAlert",
+                    "description": "Raise alerts if the binary referenced in the Launch Agent is unsigned or unverified"
+                },
+                {
+                    "field": "UserContextScope",
+                    "description": "List of users whose LaunchAgents are considered high-sensitivity (e.g., admins)"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

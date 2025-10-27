@@ -1,0 +1,63 @@
+{
+    "type": "bundle",
+    "id": "bundle--d72f3655-c339-4795-bae9-488b73749f2d",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--61282e0a-3eae-4358-8821-6c8318961e24",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0508#AN1400",
+                    "external_id": "AN1400"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1400",
+            "description": "Detects ptrace- or memfd-based process injection through audit logs capturing system calls (e.g., ptrace, mmap) targeting running processes along with suspicious file descriptors or memory writes.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "auditd:SYSCALL",
+                    "channel": "ptrace, mmap, process_vm_writev"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d5fca4e4-e47a-487b-873f-3d22f8865e96",
+                    "name": "linux:procfs",
+                    "channel": "/proc/[pid]/maps, /proc/[pid]/mem"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TargetPIDThreshold",
+                    "description": "Limit to sensitive or unexpected processes being targeted (e.g., sshd, init)"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlate mmap or writev usage to process access within a short timeframe"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

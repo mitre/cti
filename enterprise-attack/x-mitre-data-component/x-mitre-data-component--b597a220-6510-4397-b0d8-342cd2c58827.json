@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--742af455-e089-49ee-81a7-d77ae4efbb04",
+    "id": "bundle--1296e6d3-c278-4e41-8858-8ee21805e2a1",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,40 @@
             "created": "2021-10-20T15:05:19.272Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0028",
+                    "external_id": "DC0028"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:15:56.417Z",
+            "modified": "2025-10-21T15:14:38.423Z",
             "name": "Image Metadata",
             "description": "contextual information associated with a virtual machine image, such as its name, resource group, status (active or inactive), type (custom or prebuilt), size, creation date, and permissions. This metadata is critical for understanding the state and configuration of virtual machine images in cloud environments. Examples: \n\n- Azure Compute Service Image Metadata Example:\n    - Name: MyCustomImage\n    - Resource Group: MyResourceGroup\n    - State: Available\n    - Type: Managed Image\n- AWS EC2 AMI Metadata Example:\n    - Image ID: ami-1234567890abcdef0\n    - Name: ProdImage\n    - State: Available\n    - Platform: Windows\n- Google Cloud Compute Engine Image Metadata Example:\n    - Image Name: webserver-image\n    - Project: my-project-id\n    - Family: webserver\n    - Source Disk: my-disk-id\n- VMware vSphere Template Metadata Example:\n    - Name: LinuxTemplate\n    - Disk Size: 40GB\n    - Network Adapter: VM Network\n\nThis data component can be collected through the following measures:\n\nCloud Platform-Specific Tools\n\n- Azure:\n    - Use Azure CLI to query metadata: `az image show --name MyCustomImage --resource-group MyResourceGroup`\n- AWS:\n    - Use AWS CLI to describe AMI metadata: `aws ec2 describe-images --image-ids ami-1234567890abcdef0`\n- Google Cloud:\n    - Use Google Cloud SDK to retrieve image metadata: `gcloud compute images describe webserver-image` \n\nAPIs\n\n- Azure: `GET /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/images/{imageName}`\n- AWS: `DescribeImages` API.\n- Google Cloud: `GET https://compute.googleapis.com/compute/v1/projects/{project}/global/images/{image}.`\n\nCloud Management Portals\n\n- View metadata directly from the cloud provider's management console or dashboard.\n\nSIEM Integration\n\n- Aggregate metadata into SIEM platforms for centralized monitoring:\n",
-            "x_mitre_data_source_ref": "x-mitre-data-source--1ac0ca69-e07e-4b34-9061-e4588e146c52",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "docker:events",
+                    "channel": "docker.events.json"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "VMX startup messages without associated vCenter inventory records"
+                },
+                {
+                    "name": "kubernetes:apiserver",
+                    "channel": "Resource creation and update logs"
+                }
+            ]
         }
     ]
 }

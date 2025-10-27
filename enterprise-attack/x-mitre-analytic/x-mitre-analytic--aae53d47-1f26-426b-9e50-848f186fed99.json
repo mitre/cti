@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--527143a0-afcb-4ff8-afe5-a4e60bd49314",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--aae53d47-1f26-426b-9e50-848f186fed99",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0395#AN1111",
+                    "external_id": "AN1111"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1111",
+            "description": "Detects abuse of AuthorizationExecuteWithPrivileges API to gain elevated privileges via user credential prompts, typically through invocation of /usr/libexec/security_authtrampoline. Detection involves correlation of API usage, binary reputation, and prompt context.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "macOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of /usr/libexec/security_authtrampoline or child processes originating from non-trusted binaries triggering credential prompts"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "macos:unifiedlog",
+                    "channel": "Calls to AuthorizationExecuteWithPrivileges() observed via Apple System Logger or security_auditing tools"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--a953ca55-921a-44f7-9b8d-3d40141aa17e",
+                    "name": "macos:unifiedlog",
+                    "channel": "User credential prompt events without associated trusted installer package"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "BinaryReputationList",
+                    "description": "Allow list of trusted binaries invoking elevation prompts"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Temporal correlation threshold between API call and credential prompt"
+                },
+                {
+                    "field": "PromptContextValidation",
+                    "description": "Heuristic filters to determine whether a prompt context matches known legitimate installers"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

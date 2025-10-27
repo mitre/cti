@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--c4eff90f-2063-4f23-9893-3c07b997b152",
+    "id": "bundle--b75a4b14-eb4f-4cfd-ac81-e55193690908",
     "spec_version": "2.0",
     "objects": [
         {
@@ -64,7 +64,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:25.352Z",
+            "modified": "2025-10-24T17:48:41.885Z",
             "name": "Steal or Forge Kerberos Tickets",
             "description": "Adversaries may attempt to subvert Kerberos authentication by stealing or forging Kerberos tickets to enable [Pass the Ticket](https://attack.mitre.org/techniques/T1550/003). Kerberos is an authentication protocol widely used in modern Windows domain environments. In Kerberos environments, referred to as \u201crealms\u201d, there are three basic participants: client, service, and Key Distribution Center (KDC).(Citation: ADSecurity Kerberos Ring Decoder) Clients request access to a service and through the exchange of Kerberos tickets, originating from KDC, they are granted access after having successfully authenticated. The KDC is responsible for both authentication and ticket granting.  Adversaries may attempt to abuse Kerberos by stealing tickets or forging tickets to enable unauthorized access.\n\nOn Windows, the built-in <code>klist</code> utility can be used to list and analyze cached Kerberos tickets.(Citation: Microsoft Klist)\n",
             "kill_chain_phases": [
@@ -79,7 +79,7 @@
                 "Cody Thomas, SpecterOps"
             ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor for anomalous Kerberos activity, such as malformed or blank fields in Windows logon/logoff events (Event ID 4624, 4672, 4634), RC4 encryption within ticket granting tickets (TGTs), and ticket granting service (TGS) requests without preceding TGT requests.(Citation: ADSecurity Detecting Forged Tickets)(Citation: Stealthbits Detect PtT 2019)(Citation: CERT-EU Golden Ticket Protection)\n\nMonitor the lifetime of TGT tickets for values that differ from the default domain duration.(Citation: Microsoft Kerberos Golden Ticket)\n\nMonitor for indications of [Pass the Ticket](https://attack.mitre.org/techniques/T1550/003) being used to move laterally. \n\nEnable Audit Kerberos Service Ticket Operations to log Kerberos TGS service ticket requests. Particularly investigate irregular patterns of activity (ex: accounts making numerous requests, Event ID 4769, within a small time frame, especially if they also request RC4 encryption [Type 0x17]).(Citation: Microsoft Detecting Kerberoasting Feb 2018) (Citation: AdSecurity Cracking Kerberos Dec 2015)\n\nMonitor for unexpected processes interacting with lsass.exe.(Citation: Medium Detecting Attempts to Steal Passwords from Memory) Common credential dumpers such as [Mimikatz](https://attack.mitre.org/software/S0002) access the LSA Subsystem Service (LSASS) process by opening the process, locating the LSA secrets key, and decrypting the sections in memory where credential details, including Kerberos tickets, are stored.\n\nMonitor for unusual processes accessing\u00a0<code>secrets.ldb</code> and <code>.secrets.mkey</code> located in <code>/var/lib/sss/secrets/</code>.",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
@@ -90,13 +90,7 @@
                 "Linux",
                 "macOS"
             ],
-            "x_mitre_version": "1.7",
-            "x_mitre_data_sources": [
-                "Command: Command Execution",
-                "Logon Session: Logon Session Metadata",
-                "Active Directory: Active Directory Credential Request",
-                "File: File Access"
-            ]
+            "x_mitre_version": "1.7"
         }
     ]
 }

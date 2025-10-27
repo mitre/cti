@@ -1,0 +1,86 @@
+{
+    "type": "bundle",
+    "id": "bundle--69becce3-efe8-4d5c-84b7-2aba31b5e1a1",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--98d733c2-370b-4cd0-8ec6-226a1ca19604",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0162#AN0462",
+                    "external_id": "AN0462"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0462",
+            "description": "Adversary installs/uses packet-capture or raw-socket capability (WinPcap/Npcap, wpcap/packet DLLs or raw socket attach) and sets a filter. A crafted inbound packet is observed; within a short window the host process that loaded capture libraries initiates an outbound connection (e.g., reverse shell) to the packet origin.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--5297a638-1382-4f0c-8472-0d21830bf705",
+                    "name": "WinEventLog:System",
+                    "channel": "EventCode=7045"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3551476e-14f5-4e48-a518-e82135329e03",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=6"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--c0a4a086-cc20-4e1e-b7cb-29d99dfa3fb1",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=7"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "Single, low-volume inbound packet (REJ/S0/OTH or uncommon dport/protocol) from src_ip followed by outbound SF connection to src_ip."
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TimeWindow",
+                    "description": "Seconds to correlate inbound trigger \u2192 process library load/driver start \u2192 outbound connect (default 120s)."
+                },
+                {
+                    "field": "CaptureLibIndicators",
+                    "description": "DLL/driver names to match (wpcap.dll, packet.dll, npcap.sys, npf.sys) \u2013 extend for EDR drivers in your fleet."
+                },
+                {
+                    "field": "AllowedInstallers",
+                    "description": "Signed/expected processes allowed to install/start Npcap (software distribution tools)."
+                },
+                {
+                    "field": "ReversePorts",
+                    "description": "Likely egress ports to watch after trigger (4444, 53, 80/443, 8080, high ephemeral)."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

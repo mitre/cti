@@ -1,0 +1,67 @@
+{
+    "type": "bundle",
+    "id": "bundle--0e46f500-7910-40e6-8403-b8d5e88c84e9",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--041812fa-5446-47cc-8ca0-1106f4874c10",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0242#AN0679",
+                    "external_id": "AN0679"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0679",
+            "description": "Database enumeration and export activity (e.g., `SELECT * FROM`, `SHOW DATABASES`) issued via ephemeral VMs, admin APIs, or cloud shell from non-monitoring accounts. Defender correlates audit logs (CloudTrail, GCP Admin, AzureDiagnostics), storage write ops, and cross-region transfers by identities not tied to DB operations.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "IaaS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b33d36e3-d7ea-4895-8eed-19a08a8f7c4f",
+                    "name": "AWS:CloudTrail",
+                    "channel": "rds:ExecuteStatement: Large data access via RDS or Aurora with unknown session context"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--58ef998c-f3bf-4985-b487-b1005f5c05d1",
+                    "name": "AWS:CloudTrail",
+                    "channel": "PutObject: S3 writes with .sql/.csv extension by same identity or within 5 min of DB access"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "AWS:VPCFlowLogs",
+                    "channel": "Large transfer volume (>20MB) from RDS IP range to external public IPs"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "IAMAccessPatterns",
+                    "description": "Define which IAM roles/accounts are allowed DB operations"
+                },
+                {
+                    "field": "S3ExportThreshold",
+                    "description": "Size threshold (MB) or file pattern for S3-based exfil monitoring"
+                },
+                {
+                    "field": "DBQueryVerbosityThreshold",
+                    "description": "Number of rows/columns or duration to flag long-running queries"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

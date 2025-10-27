@@ -1,0 +1,62 @@
+{
+    "type": "bundle",
+    "id": "bundle--b6b2e9df-05f1-4b56-9999-4dccc8360fbf",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--f398e8ff-8c61-4672-8ace-118b11a38515",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0406#AN1135",
+                    "external_id": "AN1135"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1135",
+            "description": "Abuse of extended attributes (xattrs) to embed hidden payloads into legitimate files. Defender perspective: detect anomalous use of setfattr or getfattr commands, or direct syscalls (setxattr, getxattr) where attributes are unusually large or contain encoded data. Behavior chain includes: (1) execution of setfattr with suspicious namespaces (user., trusted.), (2) file metadata modification inconsistent with file size/hash, and (3) subsequent process execution reading attributes followed by decoding activity.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "auditd:SYSCALL",
+                    "channel": "setxattr or getxattr system call"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:EXECVE",
+                    "channel": "execution of setfattr or getfattr commands"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "XattrNamespaces",
+                    "description": "Namespaces monitored for suspicious activity (user., trusted., security.). Organizations may tune to reduce noise from benign use."
+                },
+                {
+                    "field": "PayloadSizeThreshold",
+                    "description": "Size of xattr values above which they should be considered anomalous (e.g., >1KB)."
+                },
+                {
+                    "field": "CorrelationWindow",
+                    "description": "Time window to correlate xattr modification with process execution from the same file."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

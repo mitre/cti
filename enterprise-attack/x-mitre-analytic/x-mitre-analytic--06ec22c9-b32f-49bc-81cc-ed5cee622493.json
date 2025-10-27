@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--2718257b-135f-4990-8768-3d1e18fb72c5",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--06ec22c9-b32f-49bc-81cc-ed5cee622493",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0452#AN1247",
+                    "external_id": "AN1247"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1247",
+            "description": "Detection monitors extended attribute manipulation (xattr) to strip quarantine or trust metadata, anomalous installation of root certificates in /etc/ssl or /usr/local/share/ca-certificates, and unauthorized modification of system trust stores. Correlates with unexpected process execution involving package managers or custom certificate utilities.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "auditd:SYSCALL",
+                    "channel": "chmod, chown, setxattr, or file writes to /etc/ssl/* or /usr/local/share/ca-certificates/*"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:EXECVE",
+                    "channel": "Process execution of update-ca-certificates or openssl with suspicious arguments"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "CertificatePathList",
+                    "description": "Paths to monitor for changes depending on distro-specific trust locations"
+                },
+                {
+                    "field": "RegexPatterns",
+                    "description": "Regex patterns for suspicious use of xattr or openssl parameters"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

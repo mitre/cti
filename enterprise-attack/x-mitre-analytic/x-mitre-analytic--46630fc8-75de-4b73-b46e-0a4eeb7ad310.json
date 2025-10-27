@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--0e471c90-59dd-468b-8786-3b41695ff60a",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--46630fc8-75de-4b73-b46e-0a4eeb7ad310",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0488#AN1344",
+                    "external_id": "AN1344"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1344",
+            "description": "Behavioral chain: (1) a login from a third-party account or untrusted source network establishes an interactive/remote session; (2) the session acquires elevated privileges or accesses sensitive resources atypical for that account; (3) subsequent lateral movement or data access occurs from the same session/device. Correlate Windows logon events, token elevation/privileged use, and resource access with third-party context.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9ce98c86-8d30-4043-ba54-0784d478d0b5",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4624,4648,4672,4769"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--39b9db72-8b48-4595-a18d-db5bbba3091b",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4776,4771,4770"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--181a9f8c-c780-4f1f-91a8-edb770e904ba",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=3"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9c2fa0ae-7abc-485a-97f6-699e3b6cf9fa",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4663"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ThirdPartyCIDRs",
+                    "description": "Ranges used by MSPs/contractors/VPN egress; used to enrich logons and network flows."
+                },
+                {
+                    "field": "ExpectedAdminHosts",
+                    "description": "Servers where third-party admins are allowed; deviations raise risk."
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Correlation window linking logon \u2192 elevation \u2192 access (e.g., 30\u2013120 minutes)."
+                },
+                {
+                    "field": "HighValueResources",
+                    "description": "File shares/AD objects/servers that should never be touched by third-party sessions."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

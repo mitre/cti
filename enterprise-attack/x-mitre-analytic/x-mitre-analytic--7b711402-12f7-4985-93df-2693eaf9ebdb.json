@@ -1,0 +1,76 @@
+{
+    "type": "bundle",
+    "id": "bundle--6b02067e-507d-4527-a80a-9d7999ac7ea7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--7b711402-12f7-4985-93df-2693eaf9ebdb",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0248#AN0692",
+                    "external_id": "AN0692"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0692",
+            "description": "IAAS (Cloud images/VMs): A new VM/instance is launched from a non-approved or newly-seen image (AMI/GCP Image/Azure Image). On first boot, cloud-init/user-data or embedded agents download code, spawn system utilities, or open outbound C2/mining traffic. The analytic correlates Instance/Image Creation \u2192 Instance Start \u2192 in-guest Process/Command Execution and/or anomalous network traffic.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f8213cde-6b3a-420d-9ab7-41c9af1a919f",
+                    "name": "CloudTrail:RunInstances",
+                    "channel": "RunInstances: AMI not in allowlist OR AMI owner != enterprise owner/account"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--b5b0e8ae-7436-4951-950a-7b83c4dd3f2c",
+                    "name": "azure:activity",
+                    "channel": "Microsoft.Compute/virtualMachines/write: imageReference publisher NOT IN allowlist OR plan is new/unknown"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "NSM:Flow",
+                    "channel": "New VM egress to crypto-mining pools or non-approved Internet ranges within minutes of boot"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ApprovedImageCatalog",
+                    "description": "Set of golden images/owners and digest/IDs allowed to launch."
+                },
+                {
+                    "field": "UserDataInspection",
+                    "description": "Whether to alert when userData/cloud-init contains exec or download directives."
+                },
+                {
+                    "field": "FirstBootWindow",
+                    "description": "Time after start considered first-boot (e.g., \u226430m) for correlation."
+                },
+                {
+                    "field": "VMTagScope",
+                    "description": "Restrict detection to prod or internet-facing subnets to reduce noise."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

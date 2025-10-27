@@ -1,0 +1,66 @@
+{
+    "type": "bundle",
+    "id": "bundle--1038f762-7a9a-41d4-8001-49b2527b5acd",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--d6166e3d-2e29-4097-9fb4-c66ce0616897",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0446#AN1234",
+                    "external_id": "AN1234"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1234",
+            "description": "Adversaries attempt to read sensitive files such as /etc/passwd and /etc/shadow for credential dumping. This may involve access to the files directly via command-line utilities (e.g., cat, less), creation of backup copies, or parsing through post-exploitation frameworks. Multi-event correlation includes elevated process execution, file access/read on sensitive paths, and anomalous read behaviors tied to non-root or unusual users.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--235b7491-2d2b-4617-9a52-3c0783680f71",
+                    "name": "auditd:SYSCALL",
+                    "channel": "open, read"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "exe",
+                    "description": "Executable name used to access credentials (e.g., cat, cp, awk); can vary across environments"
+                },
+                {
+                    "field": "user",
+                    "description": "User context under which the access occurs; typically root, but can be non-standard in attacks"
+                },
+                {
+                    "field": "path",
+                    "description": "Target file paths (e.g., /etc/passwd, /etc/shadow); may vary in containerized or customized systems"
+                },
+                {
+                    "field": "TimeWindow",
+                    "description": "Time correlation threshold for chaining access and execution events"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

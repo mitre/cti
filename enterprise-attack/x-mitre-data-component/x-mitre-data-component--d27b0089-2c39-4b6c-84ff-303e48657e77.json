@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--be8f2d8e-ae1b-4fe2-a028-15ccd6bc2061",
+    "id": "bundle--7a2352ee-4c68-46cb-aa83-e1ff0e722534",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,196 @@
             "created": "2021-10-20T15:05:19.271Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0010",
+                    "external_id": "DC0010"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:09:51.231Z",
+            "modified": "2025-10-21T15:14:36.735Z",
             "name": "User Account Modification",
             "description": "Changes made to an existing user, service, or machine account, including alterations to attributes, permissions, roles, authentication methods, or group memberships.\n\n*Data Collection Measures:*\n\n- Host-Based Logging\n    - Windows Event Logs\n        - Event ID 4738 \u2013 A user account was changed.\n        - Event ID 4725 \u2013 A user account was disabled.\n        - Event ID 4724 \u2013 An attempt was made to reset an account's password.\n        - Event ID 4767 \u2013 A user account was unlocked.\n    - Linux/macOS Authentication Logs\n        - `/var/log/auth.log`, `/var/log/secure` \u2013 Tracks account modifications (`usermod`, `chage`, `passwd`).\n        - AuditD \u2013 Monitors account changes (`useradd`, `usermod`, `gpasswd`).\n        - OSQuery \u2013 Queries the `users` table for recent modifications.\n- Cloud-Based Logging\n    - Azure AD Logs\n        - Azure AD Audit Logs \u2013 Tracks modifications to users and security groups.\n        - Azure Graph API \u2013 Captures changes to authentication policies and MFA settings.\n    - AWS IAM & CloudTrail Logs\n        - `ModifyUser`, `UpdateLoginProfile` \u2013 Captures changes to IAM user attributes.\n        - `AttachUserPolicy`, `AddUserToGroup` \u2013 Detects policy and group modifications.\n    - Google Workspace & Office 365 Logs\n        - Google Admin Console \u2013 Logs account changes, role modifications, and group membership updates.\n        - Microsoft 365 Unified Audit Log \u2013 Captures modifications to security settings and privileged account changes.\n- Container & Network Account Modification Logs\n    - Kubernetes Service Account Changes\n        - kubectl audit logs \u2013 Detects service account modifications in Kubernetes clusters.\n        - GKE/Azure AKS Logs \u2013 Monitors role and permission changes.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--0b4f86ed-f4ab-46a3-8ed1-175be1974da6",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "azure:audit",
+                    "channel": "Operation IN (\"Add device\", \"Add registered users to device\", \"Add registered owner to device\")"
+                },
+                {
+                    "name": "WinEventLog:DirectoryService",
+                    "channel": "EventID 5136"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "sudo or su access prior to content change"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4738, 4728, 4670"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "usermod, groupmod, passwd"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "com.apple.accountsd, com.apple.opendirectoryd"
+                },
+                {
+                    "name": "saas:okta",
+                    "channel": "User Attribute Modified / Role Assignment Changed"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Admin Activity > Role Change or Sharing Change"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "Admin Activity > Role Change or Sharing Change"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Set-ADUser OR Set-ADAccountControl"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "UpdateLoginProfile"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4723, 4724, 4726, 4740"
+                },
+                {
+                    "name": "saas:okta",
+                    "channel": "user.lifecycle.delete, user.account.lock"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "User excluded from MFA or MFA method registered"
+                },
+                {
+                    "name": "saas:zoom",
+                    "channel": "DisableMFA or RegisterNewFactor"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "AttachUserPolicy, CreatePolicyVersion, PutRolePolicy"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "google.iam.admin.v1.RoleAssignment"
+                },
+                {
+                    "name": "m365:audit",
+                    "channel": "Add member to role, Add app role assignment"
+                },
+                {
+                    "name": "Okta:SystemLog",
+                    "channel": "user.account.privilege.grant"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Add member to role, Set-Mailbox"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Set-MailboxAuditBypassAssociation or disabling Advanced Auditing"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "New agent registration by non-admin user"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4704"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4728, 4729, 4732, 4733, 4756, 4757"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "SYSCALL for usermod or /etc/group file modification"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Process execution or directory service changes"
+                },
+                {
+                    "name": "azure:policy",
+                    "channel": "DisableMfaPolicy or change to ConditionalAccess rules"
+                },
+                {
+                    "name": "azure:audit",
+                    "channel": "Add member to role"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "AttachUserPolicy"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "CreateAccessKey"
+                },
+                {
+                    "name": "azure:signinLogs",
+                    "channel": "unusual role assumption or elevation path"
+                },
+                {
+                    "name": "saas:okta",
+                    "channel": "admin role granted outside approved workflows"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "role privilege expansion detected"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Add-MailboxPermission, UpdateFolderPermissions"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "Set Gmail Delegation"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "usermod, or account rename system calls"
+                },
+                {
+                    "name": "azure:audit",
+                    "channel": "Rename user"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Set-Mailbox, Set-InboxRule, Set-MailboxFolderPermission"
+                },
+                {
+                    "name": "azure:audit",
+                    "channel": "Add service principal credentials, app password added, app role assignment"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "iam.serviceAccounts.keys.create, os-login.sshPublicKeys.add"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "API Key Created, OAuth Client Registered"
+                },
+                {
+                    "name": "kubernetes:audit",
+                    "channel": "create or update events for RoleBinding or ClusterRoleBinding objects"
+                }
+            ]
         }
     ]
 }

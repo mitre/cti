@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--9d8436f8-ceb9-498e-bf77-d25d9036a4f5",
+    "id": "bundle--a34868a4-2475-4f76-b91c-332138823ead",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,20 +9,36 @@
             "created": "2021-10-20T15:05:19.274Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0071",
+                    "external_id": "DC0071"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:14:08.230Z",
+            "modified": "2025-10-21T15:14:35.607Z",
             "name": "Active Directory Object Access",
             "description": "Object access refers to activities where AD objects (e.g., user accounts, groups, policies) are accessed or queried. Example: Windows Event ID 4661 logs object access attempts. Examples:\n\n- Attribute Access: e.g., `userPassword`, `memberOf`, `securityDescriptor`.\n- Group Enumeration: Enumerating critical group members (e.g., Domain Admins).\n- User Attributes: Commonly accessed attributes like `samAccountName`, `lastLogonTimestamp`.\n- Policy Access: Accessing GPOs to understand security settings.\n\n*Data Collection Measures:*\n\n- Audit Policies:\n    - Enable \"Audit Directory Service Access\" under Advanced Audit Policies (Success and Failure).\n    - Path: `Computer Configuration > Policies > Windows Settings > Security Settings > Advanced Audit Policy Configuration > Audit Policies > Object AccessEnable: Audit Directory Service Access` (Success and Failure).\n    - Captured Events: IDs 4661, 4662.\n- Event Forwarding: Use WEF to centralize logs for SIEM analysis.\n- SIEM Integration: Collect and parse logs (e.g., 4661, 4662) using tools like Splunk or Azure Sentinel.\n- Log Filtering:\n- Focus on sensitive objects/attributes like:\n    - `Domain Admins` group.\n    - `userPassword`, `ntSecurityDescriptor`.\n- Enable EDR Monitoring:\n    - Detect processes accessing sensitive AD objects (e.g., samAccountName, securityDescriptor).\n    - Log all attempts to enumerate critical groups (e.g., \"Domain Admins\").",
-            "x_mitre_data_source_ref": "x-mitre-data-source--d6188aac-17db-4861-845f-57c369f9b4c8",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4662"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4661"
+                }
+            ]
         }
     ]
 }

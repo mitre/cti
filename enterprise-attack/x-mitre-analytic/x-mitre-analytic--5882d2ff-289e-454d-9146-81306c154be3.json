@@ -1,0 +1,72 @@
+{
+    "type": "bundle",
+    "id": "bundle--cc3f575c-194b-4c23-b252-7f1a1d9d6af6",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--5882d2ff-289e-454d-9146-81306c154be3",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0040#AN0113",
+                    "external_id": "AN0113"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0113",
+            "description": "Detects adversary activity that removes persistence artifacts such as services, registry keys, scheduled tasks, user accounts, and binaries through commands like `sc delete`, `schtasks /delete`, or `reg delete`.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--d6257b8e-869c-41c0-8731-fdca40858a91",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4726, 4657"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f42df6f0-6395-4f0c-9376-525a031f00c3",
+                    "name": "WinEventLog:TaskScheduler",
+                    "channel": "EventCode=106"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--da85d358-741a-410d-9433-20d6269a6170",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4657"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "TargetRegistryPathRegex",
+                    "description": "Filters known persistence keys like Run/RunOnce, Image File Execution Options"
+                },
+                {
+                    "field": "DeletedScheduledTaskName",
+                    "description": "Monitors known or suspicious task names deleted post-persistence"
+                },
+                {
+                    "field": "DeletedAccountGroupScope",
+                    "description": "Focuses on highly privileged or recently created accounts"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

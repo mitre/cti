@@ -1,0 +1,63 @@
+{
+    "type": "bundle",
+    "id": "bundle--5ff1774a-1e8a-4dcc-8501-c460f35b0b14",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--b8685b0b-f96e-41a4-8e01-eec252756447",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0565#AN1561",
+                    "external_id": "AN1561"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 1561",
+            "description": "Registry access to system language keys (e.g., HKLM\\SYSTEM\\CurrentControlSet\\Control\\Nls\\Language) or suspicious processes invoking locale-related APIs (e.g., GetUserDefaultUILanguage, GetSystemDefaultUILanguage, GetKeyboardLayoutList). Defender visibility focuses on anomalous or non-standard processes issuing these queries, especially when run by unknown binaries or scripts.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Windows"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--ed0dd8aa-1677-4551-bb7d-8da767617e1b",
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4657"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3d20385b-24ef-40e1-9f56-f39750379077",
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=1"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--9bde2f9d-a695-4344-bfac-f2dce13d121e",
+                    "name": "ETW",
+                    "channel": "Calls to GetUserDefaultUILanguage, GetSystemDefaultUILanguage, GetKeyboardLayoutList"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ParentProcessAllowList",
+                    "description": "Defines trusted processes allowed to query registry language keys or APIs. Unexpected parent-child process chains may indicate adversary use."
+                },
+                {
+                    "field": "QueryThreshold",
+                    "description": "Frequency threshold for language registry or API calls within a set time window."
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

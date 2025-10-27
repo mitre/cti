@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--75aebfcd-9cb5-46fb-92b9-4388ce5b9f21",
+    "id": "bundle--871f57e5-4c24-4932-a75d-4047a77f89bd",
     "spec_version": "2.0",
     "objects": [
         {
@@ -59,7 +59,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-15T19:58:14.422Z",
+            "modified": "2025-10-24T17:48:32.244Z",
             "name": "Trust Modification",
             "description": "Adversaries may add new domain trusts, modify the properties of existing domain trusts, or otherwise change the configuration of trust relationships between domains and tenants to evade defenses and/or elevate privileges.Trust details, such as whether or not user identities are federated, allow authentication and authorization properties to apply between domains or tenants for the purpose of accessing shared resources.(Citation: Microsoft - Azure AD Federation) These trust objects may include accounts, credentials, and other authentication material applied to servers, tokens, and domains.\n\nManipulating these trusts may allow an adversary to escalate privileges and/or evade defenses by modifying settings to add objects which they control. For example, in Microsoft Active Directory (AD) environments, this may be used to forge [SAML Tokens](https://attack.mitre.org/techniques/T1606/002) without the need to compromise the signing certificate to forge new credentials. Instead, an adversary can manipulate domain trusts to add their own signing certificate. An adversary may also convert an AD domain to a federated domain using Active Directory Federation Services (AD FS), which may enable malicious trust modifications such as altering the claim issuance rules to log in any valid set of credentials as a specified user.(Citation: AADInternals zure AD Federated Domain) \n\nAn adversary may also add a new federated identity provider to an identity tenant such as Okta or AWS IAM Identity Center, which may enable the adversary to authenticate as any user of the tenant.(Citation: Okta Cross-Tenant Impersonation 2023) This may enable the threat actor to gain broad access into a variety of cloud-based services that leverage the identity tenant. For example, in AWS environments, an adversary that creates a new identity provider for an AWS Organization will be able to federate into all of the AWS Organization member accounts without creating identities for each of the member accounts.(Citation: AWS RE:Inforce Threat Detection 2024)",
             "kill_chain_phases": [
@@ -79,23 +79,17 @@
                 "Obsidian Security"
             ],
             "x_mitre_deprecated": false,
-            "x_mitre_detection": "Monitor for modifications to domain trust settings, such as when a user or application modifies the federation settings on the domain or updates domain authentication from Managed to Federated via ActionTypes <code>Set federation settings on domain</code> and <code>Set domain authentication</code>.(Citation: Microsoft - Azure Sentinel ADFSDomainTrustMods) This may also include monitoring for Event ID 307 which can be correlated to relevant Event ID 510 with the same Instance ID for change details.(Citation: Sygnia Golden SAML)(Citation: CISA SolarWinds Cloud Detection)\n\nMonitor for PowerShell commands such as: <code>Update-MSOLFederatedDomain \u2013DomainName: \"Federated Domain Name\"</code>, or <code>Update-MSOLFederatedDomain \u2013DomainName: \"Federated Domain Name\" \u2013supportmultipledomain</code>.(Citation: Microsoft - Update or Repair Federated domain)",
+            "x_mitre_detection": "",
             "x_mitre_domains": [
                 "enterprise-attack"
             ],
             "x_mitre_is_subtechnique": true,
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_platforms": [
-                "Windows",
-                "Identity Provider"
+                "Identity Provider",
+                "Windows"
             ],
-            "x_mitre_version": "2.2",
-            "x_mitre_data_sources": [
-                "Command: Command Execution",
-                "Application Log: Application Log Content",
-                "Active Directory: Active Directory Object Modification",
-                "Active Directory: Active Directory Object Creation"
-            ]
+            "x_mitre_version": "2.2"
         }
     ]
 }

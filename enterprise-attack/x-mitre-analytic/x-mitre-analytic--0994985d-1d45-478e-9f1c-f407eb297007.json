@@ -1,0 +1,58 @@
+{
+    "type": "bundle",
+    "id": "bundle--881a0dcb-0a30-4fbf-8017-8cade57b729c",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--0994985d-1d45-478e-9f1c-f407eb297007",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0052#AN0142",
+                    "external_id": "AN0142"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0142",
+            "description": "Correlate command executions involving 'sudo' with elevated effective user ID (euid=0), especially when tty_tickets is disabled or timestamp_timeout is actively abused.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--ee575f4a-2d4f-48f6-b18b-89067760adc1",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve call for sudo where euid != uid"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--84572de3-9583-4c73-aabd-06ea88123dd8",
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve call for modification of /etc/sudoers or writing to /var/db/sudo"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "timestamp_timeout_threshold",
+                    "description": "Tune the valid sudo session duration to reduce false positives"
+                },
+                {
+                    "field": "command_allowlist",
+                    "description": "Filter benign sudo usage (e.g., approved admin scripts)"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}

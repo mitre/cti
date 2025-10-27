@@ -1,0 +1,63 @@
+{
+    "type": "bundle",
+    "id": "bundle--71c3138a-b2f2-4320-9c22-a13e4589f1b7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--92d182e9-6723-43e4-9eab-f00aa6d53153",
+            "created": "2025-10-21T15:10:28.402Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0010#AN0025",
+                    "external_id": "AN0025"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2025-10-21T15:10:28.402Z",
+            "name": "Analytic 0025",
+            "description": "Detects inotify or auditd configuration changes that monitor system files coupled with execution of script interpreters or binaries by cron or systemd timers.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "enterprise-attack"
+            ],
+            "x_mitre_platforms": [
+                "Linux"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
+                    "name": "auditd:SYSCALL",
+                    "channel": "Inotify watch creation or auditctl changes on /etc/cron* or /lib/systemd/system/"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--f42df6f0-6395-4f0c-9376-525a031f00c3",
+                    "name": "linux:syslog",
+                    "channel": "Execution of non-standard script or binary by cron"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
+                    "name": "auditd:SYSCALL",
+                    "channel": "Execution of script interpreters by systemd timer (ExecStart)"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ExecutablePathRegex",
+                    "description": "Regex defining suspicious binary/script paths triggered by cron/systemd"
+                },
+                {
+                    "field": "WatchTargetPaths",
+                    "description": "Paths monitored by auditd/inotify for suspicious event registration"
+                }
+            ],
+            "x_mitre_deprecated": false
+        }
+    ]
+}
