@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--6e65c454-bd6a-4846-bce4-ec64a3700f2b",
+    "id": "bundle--c409a4d5-c427-453e-80d0-a77d67709565",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,13 +9,19 @@
             "created": "2021-10-20T15:05:19.273Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0064",
+                    "external_id": "DC0064"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:11:30.145Z",
+            "modified": "2025-10-21T15:14:34.849Z",
             "name": "Command Execution",
             "description": "Command Execution involves monitoring and capturing the execution of textual commands (including shell commands, cmdlets, and scripts) within an operating system or application. These commands may include arguments or parameters and are typically executed through interpreters such as `cmd.exe`, `bash`, `zsh`, `PowerShell`, or programmatic execution. Examples: \n\n- Windows Command Prompt\n    - dir \u2013 Lists directory contents.\n    - net user \u2013 Queries or manipulates user accounts.\n    - tasklist \u2013 Lists running processes.\n- PowerShell\n    - Get-Process \u2013 Retrieves processes running on a system.\n    - Set-ExecutionPolicy \u2013 Changes PowerShell script execution policies.\n    - Invoke-WebRequest \u2013 Downloads remote resources.\n- Linux Shell\n    - ls \u2013 Lists files in a directory.\n    - cat /etc/passwd \u2013 Reads the user accounts file.\n    - curl http://malicious-site.com \u2013 Retrieves content from a malicious URL.\n- Container Environments\n    - docker exec \u2013 Executes a command inside a running container.\n    - kubectl exec \u2013 Runs commands in Kubernetes pods.\n- macOS Terminal\n    - open \u2013 Opens files or URLs.\n    - dscl . -list /Users \u2013 Lists all users on the system.\n    - osascript -e \u2013 Executes AppleScript commands.\n\nThis data component can be collected through the following measures:\n\nEnable Command Logging\n\n- Windows:\n    - Enable PowerShell logging: `Set-ExecutionPolicy Bypass`, `Set-ItemProperty -Path \"HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging\" -Name EnableScriptBlockLogging -Value 1`\n    - Enable Windows Event Logging:\n        - Event ID 4688: Tracks process creation, including command-line arguments.\n        - Event ID 4104: Logs PowerShell script block execution.\n- Linux/macOS:\n    - Enable shell history logging in `.bashrc` or `.zshrc`: `export HISTTIMEFORMAT=\"%d/%m/%y %T \"`, `export PROMPT_COMMAND='history -a; history -w'`\n    - Use audit frameworks (e.g., `auditd`) to log command executions. Example rule to log all `execve` syscalls: `-a always,exit -F arch=b64 -S execve -k cmd_exec`\n- Containers:\n    - Use runtime-specific tools like Docker\u2019s --log-driver or Kubernetes Audit Logs to capture exec commands.\n\nIntegrate with Centralized Logging\n\n- Collect logs using a SIEM (e.g., Splunk) or cloud-based log aggregation tools like AWS CloudWatch or Azure Monitor. Example Splunk Search for Windows Event 4688:\n`index=windows EventID=4688 CommandLine=*`\n\nUse Endpoint Detection and Response (EDR) Tools\n\n- Monitor command executions via EDR solutions \n\nDeploy Sysmon for Advanced Logging (Windows)\n\n- Use Sysmon's Event ID 1 to log process creation with command-line arguments",
-            "x_mitre_data_source_ref": "x-mitre-data-source--73691708-ffb5-4e29-906d-f485f6fa7089",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -23,8 +29,1170 @@
                 "mobile-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.2",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "Command",
+                    "channel": "None"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execution of realmd, samba-tool, or ldapmodify with user-related arguments"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "dsconfigad or dscl with create or append options for AD-bound users"
+                },
+                {
+                    "name": "EDR:AMSI",
+                    "channel": "None"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "/var/log/syslog or journalctl"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "Get-ADTrust|GetAllTrustRelationships"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "None"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Execution of script interpreters by systemd timer (ExecStart)"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "InvokeFunction"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Automated forwarding or file sync initiated by a logic app"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4104"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Suspicious script or command execution targeting browser folders"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "snapshot create/copy, esxcli"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Commands like systemctl stop <service>, service <service> stop, or kill -9 <pid>"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchctl unload, kill, or pkill commands affecting daemons or background services"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of security-agent detection or enumeration commands"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream --predicate"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "Execution of Microsoft script to enumerate custom forms in Outlook mailbox"
+                },
+                {
+                    "name": "m365:messagetrace",
+                    "channel": "Inbound email triggers execution of mailbox-stored custom form"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Use of mv or cp to rename files with '.' prefix"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of chflags hidden or SetFile -a V"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "interactive shell"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "CLI command"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "/var/log/vmkernel.log"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve calls to locale, timedatectl, or cat /etc/timezone"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "defaults read -g AppleLocale, systemsetup -gettimezone"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "profiles install -type=configuration"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "sleep function usage or loops (nanosleep, usleep) in scripts"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Search-Mailbox, Get-MessageTrace, eDiscovery requests"
+                },
+                {
+                    "name": "EDR:cli",
+                    "channel": "Command Line Telemetry"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream --predicate 'eventMessage contains \"loginwindow\" or \"pfctl\"'"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "Command Audit / Configuration Change"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Office/OutlookAddinMonitor",
+                    "channel": "Outlook loading add-in via unexpected load path or non-default profile context"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec or sudo usage with NOPASSWD context or echo modifying sudoers"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4104"
+                },
+                {
+                    "name": "WinEventLog:Powershell",
+                    "channel": "EventCode=4104"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "execve: Execution of update-ca-certificates or trust anchor modification commands"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of /usr/bin/security add-trusted-cert or keychain modifications to System.keychain"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "gcore, gdb, strings, hexdump execution"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "connect, execve, write"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "command execution"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of auditctl, systemctl stop auditd, or kill -9 auditd"
+                },
+                {
+                    "name": "macos:syslog",
+                    "channel": "system.log"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "/var/log/hostd.log"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "/var/log/shell.log"
+                },
+                {
+                    "name": "docker:daemon",
+                    "channel": "docker exec or docker run with unexpected command/entrypoint"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve call including 'nohup' or trailing '&'"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "nohup, disown, or osascript execution patterns"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "CommandLine=copy-item or robocopy from UNC path"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "invoked remote scripts (esxcli)"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "execution of systemctl with subcommands start, stop, enable, disable"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "Policy Update"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "None"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "eventName: RunInstances, CreateUser, PutRolePolicy, InvokeCommand"
+                },
+                {
+                    "name": "gcp:audit",
+                    "channel": "methodName: setIamPolicy, startInstance, createServiceAccount"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Commands executed within an SSH session where no matching logon/authentication event exists"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "modification of config files or shell command execution"
+                },
+                {
+                    "name": "kubernetes:audit",
+                    "channel": "Shell process (e.g., /bin/sh, /bin/bash) spawned in a container without an interactive session attached (i.e., automation anomaly)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of 'profiles install -type=configuration'"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem:com.apple.Terminal"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "eventlog"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "shell access or job registration"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "PowerShell launched from outlook.exe or triggered without user invocation"
+                },
+                {
+                    "name": "m365:messagetrace",
+                    "channel": "Inbound email matches crafted rule trigger pattern tied to persistence logic"
+                },
+                {
+                    "name": "linus:syslog",
+                    "channel": "None"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4103,4104"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Unusual outbound transfers from CLI tools like base64, gzip, or netcat"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "base64 or curl processes chained within short execution window"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "base64 or gzip use within shell session"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec: Invocation of /usr/bin/defaults write or /usr/bin/plutil modifying plist keys"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "chmod, execve"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "chmod command with arguments including '+s', 'u+s', or numeric values 4000\u20136777"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "command includes dscl . delete or sysadminctl --deleteUser"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "file system activity monitor"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "ip ssh pubkey-chain"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "scripts or binaries with misleading names"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of GUI-related binaries with suppressed window/display flags"
+                },
+                {
+                    "name": "linuxsyslog",
+                    "channel": "nslcd or winbind logs"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "DS daemon log entries"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "logline inspection"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "diskutil eraseDisk / asr restore with destructive flags"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "erase flash:, erase startup-config, format disk"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "command_exec"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: iptables, nft, firewall-cmd modifications"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "pfctl -d, socketfilterfw --setglobalstate off, or modifications to com.apple.alf"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "esxcli network firewall set commands"
+                },
+                {
+                    "name": "docker:events",
+                    "channel": "container exec rm|container stop --force"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "event stream"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "CLI command logs"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4103"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "/var/log/shell.log entries containing \"esxcli system clock get\""
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "command-exec: CLI commands containing \"show clock\", \"show clock detail\", \"show timezone\" executed by suspicious user/source"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "cmd: cmd=show clock detail"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "curl -X POST, wget --post-data"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "sudo chage|grep pam_pwquality|cat /etc/login.defs"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "pwpolicy|PasswordPolicy"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "cmd='show aaa*' OR 'show running-config | include password|aaa' OR 'show aaa common-criteria policy all'"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "CLI command audit"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "Execution of commands to load, copy, or replace system images (e.g., 'copy tftp flash', 'boot system')"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "Execution of PowerShell script to enumerate or remove malicious Home Page folder config"
+                },
+                {
+                    "name": "m365:messagetrace",
+                    "channel": "Inbound email triggering Outlook to auto-access folder tied to malicious Home Page"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Command line contains smbutil view //, mount_smbfs //"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Invocation of scp, rsync, curl, or sftp"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "scp/ssh used to move file across hosts"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "command line arguments containing lsblk, fdisk, parted"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log messages related to disk enumeration context or Terminal session"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve calls modifying local mail filter configuration files"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "None"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "None"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "None"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "sudo execution of ffmpeg/gst-launch/v4l2-ctl by non-standard user"
+                },
+                {
+                    "name": "docker:api",
+                    "channel": "docker logs access or container inspect commands from non-administrative users"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "command IN (\"esxcli vm process list\", \"vim-cmd vmsvc/getallvms\")"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: process_name IN (\"virsh\", \"VBoxManage\", \"qemu-img\") AND command IN (\"list\", \"info\")"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "openssl|tar|dd"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "SSM RunCommand"
+                },
+                {
+                    "name": "azure:activity",
+                    "channel": "Intune PowerShell Scripts"
+                },
+                {
+                    "name": "m365:exchange",
+                    "channel": "Cmdlet: Get-GlobalAddressList, Get-Recipient"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "Execution of commands like 'show running-config', 'copy running-config', or 'export config'"
+                },
+                {
+                    "name": "esxi:syslog",
+                    "channel": "boot logs"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "system boot logs"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: service stop syslog, systemctl stop rsyslog, kill -9 syslog"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "defaults write com.apple.system.logging or logd manipulation"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "esxcli system syslog config set or reload"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: openssl pkcs12, certutil, keytool"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process calling security find-certificate, export, or import"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "Execution of CLI commands altering crypto parameters (e.g., 'crypto key generate rsa modulus 512')"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Process in container namespace executes curl|wget|bash|sh|python|nc with outbound args"
+                },
+                {
+                    "name": "m365:exchange",
+                    "channel": "Get-RoleGroup, Get-DistributionGroup"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execution of systemctl or service with enable/start parameters"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of cat, less, grep, journalctl targeting log directories (/var/log/)"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of log show, fs_usage, or cat targeting system.log"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "GetLogEvents: High frequency log exports from CloudWatch or equivalent services"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "Execution of cat, tail, grep targeting /var/log/vmkernel.log or /var/log/hostd.log"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "CLI usage logs"
+                },
+                {
+                    "name": "macos:syslog",
+                    "channel": "/var/log/system.log"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of launchctl load/unload/start commands"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "Exchange Cmdlets"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of python, perl, or custom binaries invoking compression libraries"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve, USER_CMD"
+                },
+                {
+                    "name": "auditd:USER_CMD",
+                    "channel": "USER_CMD"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "Command execution trace"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "bash/zsh of base64, tar, gzip, or openssl immediately after file write"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "Command-line includes base64 -d or openssl enc -d"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "base64 -d or osascript invoked on staged file"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "exec: Execution of dd, efibootmgr, or flashrom modifying firmware/boot partitions"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "curl -d, wget --post-data"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Processes executing sendmail/postfix with forged headers"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "diskutil partitionDisk or eraseVolume with partition scheme modifications"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "format flash:, format disk, reformat commands"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of tar, gzip, bzip2, xz, zip, or openssl with compression/encryption arguments"
+                },
+                {
+                    "name": "auditd:PROCTITLE",
+                    "channel": "proctitle contains chmod, chown, setfacl, or attr commands with suspicious parameters"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "shell command execution for chmod, chown, or file permission modification on VMFS or system files"
+                },
+                {
+                    "name": "networkdevice:Firewall",
+                    "channel": "Audit trail or CLI/API access indicating commands like no access-list, delete rule-set, clear config"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "grep/cat/awk on files with password fields"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "grep/cat on files matching credential patterns"
+                },
+                {
+                    "name": "kubernetes:audit",
+                    "channel": "process execution involving curl, grep, or awk on secrets"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "command-line execution invoking credential enumeration"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "promiscuous mode transitions (ioctl or ifconfig)"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "access to BPF devices or interface IOCTLs"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "exec command='monitor capture'"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Office-Alerts",
+                    "channel": "Unexpected DLL or component loaded at Office startup"
+                },
+                {
+                    "name": "m365:office",
+                    "channel": "Startup execution includes non-default component"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "diskutil eraseDisk/zeroDisk or asr restore with destructive flags"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "erase flash:, erase nvram:, format disk"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "spctl --master-disable, csrutil disable, or defaults write to disable Gatekeeper"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "esxcli system syslog config set --loghost='' or stopping hostd service"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "no logging buffered, no aaa new-model, disable firewall"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "git push, curl -X POST"
+                },
+                {
+                    "name": "linux:cli",
+                    "channel": "command logging"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "command log"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "command logs"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "interactive shell logging"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "Execution of '/bin/vmx' or modifications to '/etc/rc.local.d/local.sh'"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "chattr, rm, shred, dd run on recovery directories or partitions"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "command sequence: erase \u2192 format \u2192 reload"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process: at, job runner"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "Interpreter exec with suspicious arguments as above"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of curl or wget writing files to /tmp/* followed by chmod or execution"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of downgraded interpreters such as python2 or forced fallback commands"
+                },
+                {
+                    "name": "auditd:PROCTITLE",
+                    "channel": "proctitle contains chmod, chown, chgrp, setfacl, or attr with suspicious parameters (777, 755, +x, -R)"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of gsettings set org.gnome.login-screen disable-user-list true"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of dscl . create with IsHidden=1"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "sshd logs"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "Shell Access/Command Execution"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "CLI Command Logging"
+                },
+                {
+                    "name": "auditd:CONFIG_CHANGE",
+                    "channel": "udev rule reload or trigger command executed"
+                },
+                {
+                    "name": "linux:cli",
+                    "channel": "Shell history logs"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log stream --predicate 'processImagePath contains \"zip\" OR \"base64\"'"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "command logging"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "Command Execution"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "launchd + process_events"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "DCUI shell start, BusyBox activity"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "remote CLI + vim-cmd logging"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "CLI Command Audit"
+                },
+                {
+                    "name": "m365:defender",
+                    "channel": "Activity Log: Command Invocation"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "CmdletName: Get-Recipient, Get-User"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "Execution of 'Get-WmiObject Win32_Product' or similar PowerShell cmdlets"
+                },
+                {
+                    "name": "linux:shell",
+                    "channel": "Manual invocation of software enumeration commands via interactive shell"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Command line arguments including SPApplicationsDataType"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "ssm:GetCommandInvocation"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "esxcli software vib list"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "execution of setfattr or getfattr commands"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "xattr utility execution with -w or -p flags"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Execution of spoofing tools (e.g., hping3, nping, scapy) sending UDP packets to known amplifier ports"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execution of tools like cat, grep, or awk on credential files"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "execution of 'security', 'cat', or 'grep' commands accessing credential storage"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "CLI access to 'show running-config', 'show password', or 'cat config.txt'"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve of curl, rsync, wget with internal knowledge base or IPs"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "/root/.ash_history"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of systemctl, loginctl, or systemd-inhibit commands related to sleep/hibernate"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4103,4104,4105, 4106"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Execution of xev, xdotool, or input activity emulators"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchctl load or boot-time plist registration"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of interpreters creating archive-like outputs without calling tar/gzip"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "command audit"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "Interface commands"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "dscl -create"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "esxcli system account add"
+                },
+                {
+                    "name": "ebpf:syscalls",
+                    "channel": "useradd or /etc/passwd modified inside container"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Execution of insmod, modprobe, or rmmod commands by non-standard users or outside expected timeframes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "kextload execution from Terminal or suspicious paths"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "Execution of PowerShell without -NoProfile flag"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Process execution of update-ca-certificates or openssl with suspicious arguments"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "xattr -d com.apple.quarantine or similar removal commands"
+                },
+                {
+                    "name": "azure:signinLogs",
+                    "channel": "OperationName=SetDomainAuthentication OR Update-MsolFederatedDomain"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Sudo or root escalation followed by filesystem mount commands"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4101"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "Execution of privileged commands such as 'copy tftp flash', 'boot system', or 'debug memory'"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4105"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4106"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve syscalls for discovery commands (uname, hostname, id, whoami, ps, netstat, mount) with command-line parameter analysis"
+                },
+                {
+                    "name": "auditd:PROCTITLE",
+                    "channel": "process title records containing discovery command sequences and environmental assessment patterns"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Security framework operations including keychain access, cryptographic operations, and certificate validation"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Set-Mailbox, New-InboxRule"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "None"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "Execution of commands disabling crypto hardware acceleration (e.g., 'no crypto engine enable')"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of curl, wget, or custom scripts accessing financial endpoints"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "Execution of chattr to set +i or +a attributes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of chflags hidden or setfile -a V"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "mv, rename, or chmod commands moving VM files into hidden directories"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "execution + payload hints"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "process_events.command_line"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process:spawn, process:exec"
+                },
+                {
+                    "name": "esxi:vobd",
+                    "channel": "shell session start"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "shell command"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Office-Alerts",
+                    "channel": "Office application warning or alert on macro execution from template"
+                },
+                {
+                    "name": "m365:unified",
+                    "channel": "Set-Mailbox, Set-MailboxPolicy, Set-TrustedLocation"
+                },
+                {
+                    "name": "m365:office",
+                    "channel": "Execution of unsigned macro from template"
+                },
+                {
+                    "name": "linux:cli",
+                    "channel": "Terminal Command History"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "csrutil disable"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "log show --predicate 'process == <utility>'"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "Privilege-level command execution"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of tar, gzip, bzip2, or openssl with output redirection"
+                },
+                {
+                    "name": "saas:PRMetadata",
+                    "channel": "Commit message or branch name contains encoded strings or payload indicators"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of launchctl with setenv or bootout targeting TCC.db or AppleScript under Finder context"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "`esxcli software vib install` with `--force` or `--no-sig-check` from shell history or `shell.log`"
+                },
+                {
+                    "name": "AWS:CloudTrail",
+                    "channel": "SendCommand, StartSession, ExecuteCommand: Unexpected AWS Systems Manager command execution targeting EC2 instances"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Unexpected restarts of management agents or shell access"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "curl or wget with POST/PUT options"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "Detected CLI command to export key material"
+                },
+                {
+                    "name": "networkdevice:config",
+                    "channel": "PKI export or certificate manipulation commands"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "command execution triggered by emond (e.g., shell, curl, python)"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "esxcli, vim-cmd invocation"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "CLI session activity"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve=/sbin/shutdown or /sbin/reboot"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "esxcli system shutdown or reboot invoked"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "reload command issued"
+                },
+                {
+                    "name": "WinEventLog:PowerShell",
+                    "channel": "EventCode=4103, 4104"
+                },
+                {
+                    "name": "auditd:PROCTITLE",
+                    "channel": "command-line execution patterns for system discovery utilities (uname, hostname, ifconfig, netstat, lsof, ps, mount)"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "shell command execution for system discovery (vim-cmd, esxcli, vmware-cmd) targeting VM inventory and host configuration"
+                },
+                {
+                    "name": "vpxd.log",
+                    "channel": "VM inventory queries and configuration enumeration through vCenter API calls"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve calls modifying HISTFILE or HISTCONTROL via unset/export"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Set or unset HIST* variables in shell environment"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "unset HISTFILE or HISTFILESIZE modifications"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "Commands like 'no logging' or equivalents that disable session history"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve calls to /usr/bin/locale or shell execution of $LANG"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "defaults read -g AppleLocale or systemsetup -gettimezone"
+                },
+                {
+                    "name": "networkdevice:cli",
+                    "channel": "Execution of commands such as 'copy tftp flash', 'boot system <image>', 'reload'"
+                },
+                {
+                    "name": "auditd:EXECVE",
+                    "channel": "curl -T, rclone copy"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execution of systemctl or service with enable/start/modify"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "launchctl load/unload or plist file modification"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "syslog facility LOCAL7 or trap messages"
+                },
+                {
+                    "name": "linux:cli",
+                    "channel": "/home/*/.bash_history"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "execve: Execution of lsmod, modinfo, or cat /proc/modules"
+                },
+                {
+                    "name": "networkdevice:config",
+                    "channel": "Configuration changes referencing 'boot system tftp' or modification of startup-config pointing to external TFTP servers"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "dscl . -create"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Execution of commands like `ls -l@`, `xattr -l`, or custom tools interacting with resource forks"
+                },
+                {
+                    "name": "esxi:vpxd",
+                    "channel": "vCenter Management"
+                }
+            ]
         }
     ]
 }

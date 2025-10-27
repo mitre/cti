@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--f1d1bf1d-b1c2-4f74-a6b1-966e2a350374",
+    "id": "bundle--82a77cfa-254b-45f2-91e6-d32bde36e444",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,21 +9,41 @@
             "created": "2021-10-20T15:05:19.273Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0065",
+                    "external_id": "DC0065"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:10:57.700Z",
+            "modified": "2025-10-21T15:14:37.211Z",
             "name": "Service Modification",
             "description": "Changes made to an existing service or daemon, such as modifying the service name, start type, execution parameters, or security configurations.\n\n*Data Collection Measures: *\n\n- Windows Event Logs\n    - Event ID 7040 - Detects modifications to the startup behavior of a service.\n    - Event ID 7045 - Can capture changes made to existing services.\n    - Event ID 7036 - Tracks when services start or stop, potentially indicating malicious tampering.\n    - Event ID 4697 - Can detect when an adversary reinstalls a service with different parameters.\n- Sysmon Logs\n    - Sysmon Event ID 13 - Detects changes to service configurations in the Windows Registry (e.g., `HKLM\\SYSTEM\\CurrentControlSet\\Services\\`).\n    - Sysmon Event ID 1 - Can track execution of `sc.exe` or `PowerShell Set-Service`.\n- PowerShell Logging\n    - Event ID 4104 (Script Block Logging) - Captures execution of commands like `Set-Service`, `New-Service`, or `sc config`.\n    - Command-Line Logging (Event ID 4688) - Tracks usage of service modification commands:\n        - `sc config <service_name> start= auto`  \n        - `sc qc <service_name>`  \n- Linux/macOS Collection Methods\n    - Systemd Journals (`journalctl -u <service_name>`) Tracks modifications to systemd service configurations.\n    - Daemon Logs (`/var/log/syslog`, `/var/log/messages`, `/var/log/daemon.log`) Captures changes to service state and execution parameters.\n    - AuditD Rules for Service Modification \n        - Monitor modifications to `/etc/systemd/system/` for new or altered service unit files: `auditctl -w /etc/systemd/system/ -p wa -k service_modification`\n        - Track execution of `systemctl` or `service` commands: `auditctl -a always,exit -F arch=b64 -S execve -F a0=systemctl -F key=service_mod`\n    - OSQuery for Linux/macOS Monitoring\n        - Query modified services using OSQuery\u2019s `processes` or `system_info` tables: `SELECT * FROM systemd_units WHERE state != 'running';`\n    - macOS Launch Daemon/Agent Modification\n        - Monitor for changes in:\n            - `/Library/LaunchDaemons/`\n            - `/Library/LaunchAgents/`\n        - Track modifications to `.plist` files indicating persistence attempts.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--d710099e-df94-4be4-bf85-cabd30e912bb",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "ics-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "Service",
+                    "channel": "None"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-IIS-Configuration",
+                    "channel": "Module or ISAPI filter registration events"
+                },
+                {
+                    "name": "WinEventLog:System",
+                    "channel": "EventCode=7040"
+                }
+            ]
         }
     ]
 }

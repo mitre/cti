@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--33544edd-3dda-4fec-9763-8fef441e51cd",
+    "id": "bundle--0f019197-65a1-4f58-b0d9-273b7cc2485f",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,21 +9,117 @@
             "created": "2021-10-20T15:05:19.273Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0040",
+                    "external_id": "DC0040"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:10:21.434Z",
+            "modified": "2025-10-21T15:14:36.450Z",
             "name": "File Deletion",
             "description": "Refers to events where files are removed from a system or storage device. These events can indicate legitimate housekeeping activities or malicious actions such as attackers attempting to cover their tracks. Monitoring file deletions helps organizations identify unauthorized or suspicious activities.\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Sysmon: Event ID 23: Logs file deletion events, including details such as file paths and responsible processes.\n- Windows Event Log: Enable \"Object Access\" auditing to monitor file deletions.\n- PowerShell: `Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4663} | Where-Object {$_.Message -like '*DELETE*'}`\n\nLinux\n\n- Auditd: Use audit rules to capture file deletion events: `auditctl -a always,exit -F arch=b64 -S unlink -S rename -S rmdir -k file_deletion`\n- Query logs: `ausearch -k file_deletion`\n- Inotify: Use inotifywait to monitor file deletions: `inotifywait -m /path/to/watch -e delete`\n\nmacOS\n\n- Endpoint Security Framework (ESF): Monitor events like ES_EVENT_TYPE_AUTH_UNLINK to capture file deletion activities.\n- FSEvents: Track file deletion activities in real-time: `fs_usage | grep unlink`\n\nSIEM Integration\n\n- Forward file deletion logs to a SIEM for centralized monitoring and correlation with other events.\n",
-            "x_mitre_data_source_ref": "x-mitre-data-source--509ed41e-ca42-461e-9058-24602256daf9",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "ics-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "File",
+                    "channel": "None"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "unlink/unlinkat on service binaries or data targets"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "file deletion"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "file_events"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "shell history"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=23"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "PATH"
+                },
+                {
+                    "name": "esxi:shell",
+                    "channel": "/var/log/shell.log"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "delete action"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "unlink, unlinkat, openat, write"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "exec rm -rf|dd if=/dev|srm|file unlink"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "unlink, unlinkat, rmdir"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "unlink, rename, open"
+                },
+                {
+                    "name": "linux:Sysmon",
+                    "channel": "EventCode=23"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "unlink, fs_delete"
+                },
+                {
+                    "name": "docker:daemon",
+                    "channel": "container file operations"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "rm, clearlogs, logrotate"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "Datastore file operations"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "CREATE, DELETE, WRITE: Stored data manipulation attempts by unauthorized processes"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "unlink/unlinkat"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-Backup",
+                    "channel": "Windows Backup Catalog deletion or catalog corruption"
+                },
+                {
+                    "name": "auditd:CONFIG_CHANGE",
+                    "channel": "/etc/fstab, /etc/systemd/*"
+                }
+            ]
         }
     ]
 }

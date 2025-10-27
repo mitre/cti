@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--a8ae6704-5677-48dd-b294-ed73877f8b45",
+    "id": "bundle--0e0d9fe5-7e1a-495f-a90e-583e18327809",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,21 +9,393 @@
             "created": "2021-10-20T15:05:19.273Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0059",
+                    "external_id": "DC0059"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:10:14.725Z",
+            "modified": "2025-10-21T15:14:35.397Z",
             "name": "File Metadata",
             "description": "contextual information about a file, including attributes such as the file's name, size, type, content (e.g., signatures, headers, media), user/owner, permissions, timestamps, and other related properties. File metadata provides insights into a file's characteristics and can be used to detect malicious activity, unauthorized modifications, or other anomalies. Examples: \n\n- File Ownership and Permissions: Checking the owner and permissions of a critical configuration file like /etc/passwd on Linux or C:\\Windows\\System32\\config\\SAM on Windows.\n- Timestamps: Analyzing the creation, modification, and access timestamps of a file.\n- File Content and Signatures: Extracting the headers of an executable file to verify its signature or detect packing/obfuscation.\n- File Attributes: Analyzing attributes like hidden, system, or read-only flags in Windows.\n- File Hashes: Generating MD5, SHA-1, or SHA-256 hashes of files to compare against threat intelligence feeds.\n- File Location: Monitoring files located in unusual directories or paths, such as temporary or user folders.\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Sysinternals Tools: Use `AccessEnum` or `PSFile` to retrieve metadata about file access and permissions.\n- Windows Event Logs: Enable object access auditing and monitor events like 4663 (Object Access) and 5140 (A network share object was accessed).\n- PowerShell: Use Get-Item or Get-ChildItem cmdlets: `Get-ChildItem -Path \"C:\\Path\\To\\Directory\" -Recurse | Select-Object Name, Length, LastWriteTime, Attributes`\n\nLinux\n\n- File System Commands: Use `ls -l` or stat to retrieve file metadata: `stat /path/to/file`\n- Auditd: Configure audit rules to log metadata access: `auditctl -w /path/to/file -p wa -k file_metadata`\n- Filesystem Integrity Tools: Tools like tripwire or AIDE (Advanced Intrusion Detection Environment) can monitor file metadata changes.\n\nmacOS\n\n- FSEvents: Use FSEvents to track file metadata changes.\n- Endpoint Security Framework (ESF): Capture metadata-related events via ESF APIs.\n- Command-Line Tools: Use ls -l or xattr for file attributes: `ls -l@ /path/to/file`\n\nSIEM Integration\n\n- Forward file metadata logs from endpoint or network devices to a SIEM for centralized analysis.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--509ed41e-ca42-461e-9058-24602256daf9",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "ics-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "File",
+                    "channel": "None"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "event-based"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-CodeIntegrity/Operational",
+                    "channel": "Invalid/Unsigned image when developer tool launches newly installed binaries"
+                },
+                {
+                    "name": "journald:package",
+                    "channel": "dpkg/apt or yum/dnf transaction logs (install/update of build tools)"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "file_events, hash"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "softwareupdated/homebrew/install logs, pkginstalld events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "AMFI or Gatekeeper signature/notarization failures for newly installed dev components"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Inotify watch creation or auditctl changes on /etc/cron* or /lib/systemd/system/"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Discrepancies in _VBA_PROJECT p-code vs source code extracted with oletools/pcodedmp"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Detection of altered _VBA_PROJECT or PerformanceCache streams"
+                },
+                {
+                    "name": "EDR:file",
+                    "channel": "File Metadata Inspection (Low String Entropy, Missing PDB)"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "hash, elf_info, file_metadata"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "code_signing, file_metadata"
+                },
+                {
+                    "name": "WinEventLog:Windows Defender",
+                    "channel": "Operational log"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem:syspolicyd"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "File metadata updated with UF_HIDDEN flag"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=15"
+                },
+                {
+                    "name": "auditd:PATH",
+                    "channel": "file path matches exclusion directories"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "path"
+                },
+                {
+                    "name": "auditd:PATH",
+                    "channel": "PATH"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "es_event_file_rename_t or es_event_file_write_t"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "file_events"
+                },
+                {
+                    "name": "fs:fileevents",
+                    "channel": "/var/log/install.log"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "file write after sleep delay"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Upload of file to datastore"
+                },
+                {
+                    "name": "ebpf:syscalls",
+                    "channel": "Unexpected container volume unmount + file deletion"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "file_events"
+                },
+                {
+                    "name": "EDR:file",
+                    "channel": "File Metadata Analysis (PE overlays, entropy)"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "elf_info, hash, yara_matches"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "mach_o_info, file_metadata"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Code signature validation fails or is absent post-binary modification"
+                },
+                {
+                    "name": "fs:filesystem",
+                    "channel": "Binary file hash changes outside of update/patch cycles"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "Read headers and detect MIME type mismatch"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Code signing verification failures or bypassed trust decisions"
+                },
+                {
+                    "name": "NSM:Flow",
+                    "channel": "Observed File Transfers"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Storage access and file ops"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Creation of new LaunchAgent or LoginItem plist files in ~/Library/LaunchAgents/"
+                },
+                {
+                    "name": "auditd:CONFIG_CHANGE",
+                    "channel": "chmod or chown of hook files indicating privilege escalation or execution permission change"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "filesystem events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "xattr -d com.apple.quarantine or similar attribute removal commands"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Gatekeeper quarantine policy decision anomalies recorded in com.apple.LaunchServices.QuarantineEventsV2"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "application or system execution logs"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4670"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "syscall in (chmod, fchmod, fchmodat, chown, fchown, fchownat, setxattr, lsetxattr, fsetxattr)"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "file permission modification events in kernel messages"
+                },
+                {
+                    "name": "fs:fsevents",
+                    "channel": "file system events indicating permission or attribute changes"
+                },
+                {
+                    "name": "OpenBSM:AuditTrail",
+                    "channel": "BSM audit events for file permission modifications"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "host daemon events related to file or VM permission changes"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "VMware kernel events for file system permission modifications"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-CodeIntegrity/Operational",
+                    "channel": "Unsigned or invalid image for newly installed/updated binaries"
+                },
+                {
+                    "name": "journald:package",
+                    "channel": "dpkg/apt/yum/dnf transaction logs; vendor updaters in systemd journals"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "pkginstalld/softwareupdated/Homebrew install transactions"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "AMFI/Gatekeeper code signature or notarization failures"
+                },
+                {
+                    "name": "EDR:detection",
+                    "channel": "App reputation telemetry"
+                },
+                {
+                    "name": "gatekeeper/quarantine database",
+                    "channel": "LaunchServices quarantine"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "file_events.path"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "setuid or setgid bit changes"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "Filesystem modifications to trusted paths"
+                },
+                {
+                    "name": "fs:fsusage",
+                    "channel": "filesystem monitoring of exec/open"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "syscall in (chmod, fchmod, fchmodat, chown, fchown, fchownat, lchown, setxattr, lsetxattr, fsetxattr, removexattr, lremovexattr, fremovexattr)"
+                },
+                {
+                    "name": "auditd:PATH",
+                    "channel": "file path modifications on critical system directories (/etc, /usr/bin, /usr/sbin, /var, /opt)"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "kernel messages related to file system permission changes and security violations"
+                },
+                {
+                    "name": "OpenBSM:AuditTrail",
+                    "channel": "BSM audit events for file permission, ownership, and attribute modifications with user context"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "kernel extension and system extension logs related to file system security violations or SIP bypass attempts"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-CodeIntegrity/Operational",
+                    "channel": "Code integrity violations in boot-start drivers or firmware"
+                },
+                {
+                    "name": "fwupd:logs",
+                    "channel": "Firmware updates applied or failed"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "es_event_authentication"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Datastore modification events"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "Write or modify .desktop file in XDG autostart path"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unexpected application binary modifications or altered signing status"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "setxattr or getxattr system call"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "extended attribute write or modification"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4663, 4656, 4658"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4663"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "chmod, chown, setxattr, or file writes to /etc/ssl/* or /usr/local/share/ca-certificates/*"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "New certificate trust settings added by unexpected process"
+                },
+                {
+                    "name": "esxi:syslog",
+                    "channel": "Datastore file hidden or renamed unexpectedly"
+                },
+                {
+                    "name": "WinEventLog:Windows Defender",
+                    "channel": "Operational"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem=com.apple.lsd"
+                },
+                {
+                    "name": "saas:RepoEvents",
+                    "channel": "New file added or modified in PR targeting CI/CD or build config (e.g., `gitlab-ci.yml`, `build.gradle`, `pom.xml`, `.github/workflows/*.yml`)"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-CodeIntegrity/Operational",
+                    "channel": "CodeIntegrity reports 'Invalid image hash' or 'Unsigned image' for new/updated binaries"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-Windows Defender/Operational",
+                    "channel": "SmartScreen or ASR blocks on newly downloaded installer/updater"
+                },
+                {
+                    "name": "WinEventLog:Setup",
+                    "channel": "MSI/Product install, repair or update events"
+                },
+                {
+                    "name": "journald:package",
+                    "channel": "dpkg/apt install, remove, upgrade events"
+                },
+                {
+                    "name": "journald:package",
+                    "channel": "yum/dnf install or update transactions"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "hash, rpm_packages, deb_packages, file_events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "installer or system_installd 'PackageKit: install succeeded/failed' with non-notarized or unknown signer"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Gatekeeper/AMFI 'code signature invalid' / 'not notarized' messages"
+                },
+                {
+                    "name": "networkdevice:syslog",
+                    "channel": "OS version query results inconsistent with expected or approved version list"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "File creation or modification with com.apple.ResourceFork extended attribute"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=15 "
+                }
+            ]
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--3d6e9328-70bd-40c1-a2f9-0021192c7d72",
+    "id": "bundle--6881ce09-1cfc-44ab-9f05-b6aa254c3b52",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,13 +9,19 @@
             "created": "2021-10-20T15:05:19.272Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0033",
+                    "external_id": "DC0033"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:10:34.519Z",
+            "modified": "2025-10-21T15:14:36.181Z",
             "name": "Process Termination",
             "description": "The exit or termination of a running process on a system. This can occur due to normal operations, user-initiated commands, or malicious actions such as process termination by malware to disable security controls.\n\n*Data Collection Measures:*\n\n- Endpoint Detection and Response (EDR) Tools:\n    - Monitor process termination events.\n- Windows Event Logs:\n    - Event ID 4689 (Process Termination) \u2013 Captures when a process exits, including process ID and parent process.\n    - Event ID 7036 (Service Control Manager) \u2013 Monitors system service stops.\n- Sysmon (Windows):\n    - Event ID 5 (Process Termination) \u2013 Detects when a process exits, including parent-child relationships.\n- Linux/macOS Monitoring:\n    - AuditD (`execve`, `exit_group`, `kill` syscalls) \u2013 Captures process termination via command-line interactions.\n    - eBPF/XDP: Monitors low-level system calls related to process termination.\n    - OSQuery: The processes table can be queried for abnormal exits.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--e8b8ede7-337b-4c0c-8c32-5c7872c1ee22",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -23,8 +29,62 @@
                 "mobile-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "Process",
+                    "channel": "None"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=5"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Unexpected termination of daemons or critical services not aligned with admin change tickets"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "process_termination: Unexpected termination of processes tied to vulnerable or high-value services"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "Log entries indicating VM powered off or forcibly terminated"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Terminal process killed (killall Terminal) immediately after sudoers modification"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "exit_group"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process.*exit.*code"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "unexpected termination of syslog or rsyslog processes"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "Process segfault or abnormal termination after invoking vulnerable syscall sequence"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "kill syscalls targeting logging/security processes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Termination of syspolicyd or XProtect processes"
+                },
+                {
+                    "name": "docker:runtime",
+                    "channel": "Termination of monitoring sidecar or security container"
+                }
+            ]
         }
     ]
 }

@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--23aebe20-8be0-4c55-b97b-1c6329da69f2",
+    "id": "bundle--2b0571b0-34e1-48c9-89c2-00bea0c45b6c",
     "spec_version": "2.0",
     "objects": [
         {
@@ -9,21 +9,93 @@
             "created": "2021-10-20T15:05:19.271Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/datacomponents/DC0001",
+                    "external_id": "DC0001"
+                }
+            ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-04-18T15:11:43.635Z",
+            "modified": "2025-10-21T15:14:35.814Z",
             "name": "Scheduled Job Creation",
             "description": "The establishment of a task or job that will execute at a predefined time or based on specific triggers.\n\n*Data Collection Measures: *\n\n- Windows Event Logs:\n    - Event ID 4698 (Scheduled Task Created) \u2013 Detects the creation of new scheduled tasks.\n    - Event ID 4702 (Scheduled Task Updated) \u2013 Identifies modifications to existing scheduled jobs.\n    - Event ID 106 (TaskScheduler Operational Log) \u2013 Provides details about scheduled task execution.\n- Sysmon (Windows):\n    - Event ID 1 (Process Creation) \u2013 Detects the execution of suspicious tasks started by `schtasks.exe`, `at.exe`, or `taskeng.exe`.\n- Linux/macOS Monitoring:\n    - AuditD: Monitor modifications to `/etc/cron*`, `/var/spool/cron/`, and `crontab` files.\n    - Syslog: Capture cron job execution logs from `/var/log/cron`.\n    - OSQuery: Query the `crontab` and `launchd` tables for scheduled job configurations.\n- Endpoint Detection and Response (EDR) Tools:\n    - Track scheduled task creation and modification events.\n- SIEM & XDR Detection Rules:\n    - Monitor for scheduled jobs created by unusual users.\n    - Detect tasks executing scripts from non-standard directories.",
-            "x_mitre_data_source_ref": "x-mitre-data-source--c9ddfb51-eb45-4e22-b614-44ac1caa7883",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "ics-attack",
                 "enterprise-attack"
             ],
-            "x_mitre_version": "1.1",
-            "x_mitre_attack_spec_version": "3.2.0"
+            "x_mitre_version": "2.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_log_sources": [
+                {
+                    "name": "Scheduled Job",
+                    "channel": "None"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4698"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "Execution of non-standard script or binary by cron"
+                },
+                {
+                    "name": "WinEventLog:TaskScheduler",
+                    "channel": "EventCode=106"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "crontab, systemd_timers"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "launchd_jobs"
+                },
+                {
+                    "name": "esxi:vmkernel",
+                    "channel": "Startup script and task execution logs"
+                },
+                {
+                    "name": "kubernetes:apiserver",
+                    "channel": "verb=create, resource=cronjobs, group=batch"
+                },
+                {
+                    "name": "linux:osquery",
+                    "channel": "file_events"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "process: crontab edits, launch of cron job"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "file_events - cron, launchd"
+                },
+                {
+                    "name": "esxi:cron",
+                    "channel": "execution of scheduled job"
+                },
+                {
+                    "name": "esxi:hostd",
+                    "channel": "task creation events"
+                },
+                {
+                    "name": "macos:cron",
+                    "channel": "cron/launchd"
+                },
+                {
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4699"
+                },
+                {
+                    "name": "linux:cron",
+                    "channel": "Scheduled execution of unknown or unusual script/binary"
+                }
+            ]
         }
     ]
 }
