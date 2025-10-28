@@ -1,6 +1,28 @@
 
 # Changes to the ATT&CK/STIX Data Model
 
+## 28 October 2025 - ATT&CK Spec v3.3.0
+
+Changes to ATT&CK in STIX for the October 2025 ATT&CK Content Release (ATT&CK v18.0)
+
+* Added Analytic objects. For detailed information about the representation of Analytics in ATT&CK/STIX, please see the [ATT&CK Data Model schema documentation](https://mitre-attack.github.io/attack-data-model/docs/reference/schemas/sdo/analytic.schema).
+* Added Detection Strategy objects. For detailed information about the representation of Detection Strategies in ATT&CK/STIX, please see the [ATT&CK Data Model schema documentation](https://mitre-attack.github.io/attack-data-model/docs/reference/schemas/sdo/detection-strategy.schema).
+* Deprecated Data Source objects. These objects will be removed in ATT&CK Spec v4.
+* Modified Data Component objects:
+  * Assigned an ATT&CK ID to each Data Component object.
+  * Added the `x_mitre_log_sources` property. See the [ATT&CK Data Model schema documentation](https://mitre-attack.github.io/attack-data-model/docs/reference/schemas/sdo/data-component.schema#xmitrelogsources) for a description of this new property.
+  * Deprecated the `x_mitre_data_source_ref` property. This property will be removed from the spec entirely in ATT&CK Spec v4.
+* Modified Technique objects:
+  * Deprecated the following properties, which will be removed from the spec entirely in ATT&CK Spec v4.
+    * `x_mitre_detection`
+    * `x_mitre_system_requirements`
+    * `x_mitre_permissions_required`
+    * `x_mitre_effective_permissions`
+    * `x_mitre_data_sources`
+    * `x_mitre_defense_bypassed`
+    * `x_mitre_remote_support`
+* Deprecated the `x_mitre_data_component` `--detects-->` `attack-pattern` relationship object. These will be removed in ATT&CK Spec v4. This has been replaced by the `x_mitre_detection_strategy` `--detects-->` `attack-pattern` relationship object.
+
 ## 22 April 2025
 
 There are no changes to the data model in the April 2025 ATT&CK Content Release (ATT&CK v17.0)
