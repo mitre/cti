@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--690b7c8c-c319-4a49-a819-fb203677e5ff",
+    "id": "bundle--da5a1aa2-4f4e-474f-bc36-8e77e80d8c2b",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,9 +19,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.674Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "File Access",
-            "description": "To events where a file is opened or accessed, making its contents available to the requester. This includes reading, executing, or interacting with files by authorized or unauthorized entities. Examples include logging file access events (e.g., Windows Event ID 4663), monitoring file reads, and detecting unusual file access patterns. Examples: \n\n- File Read Operations: A user opens a sensitive document (e.g., financial_report.xlsx) on a shared drive.\n- File Execution: A script or executable file is accessed and executed (e.g., malware.exe is run from a temporary directory).\n- Unauthorized File Access: An unauthorized user attempts to access a protected configuration file (e.g., `/etc/passwd` on Linux or `System32` files on Windows).\n- File Access Patterns: Bulk access to multiple files in a short time (e.g., mass access to documents on a file server).\n- File Access via Network: Files on a network share are accessed remotely (e.g., logs of SMB file access).\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Windows Event Logs: Event ID 4663: Captures file system auditing details, including who accessed the file, access type, and file name.\n- Sysmon:\n    - Event ID 11: Logs file creation time changes.\n    - Event ID 1 (process creation): Can provide insight into files executed.\n- PowerShell: Commands to monitor file access in real-time: `Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4663}`\n\nLinux\n\n- Auditd: Monitor file access events using audit rules: `auditctl -w /path/to/file -p rwxa -k file_access`\n- View logs: `ausearch -k file_access`\n- Inotify: Use inotify to track file access on Linux: `inotifywait -m /path/to/watch -e access`\n\nmacOS\n\n- Unified Logs: Monitor file access using the macOS Unified Logging System.\n- FSEvents: File System Events can track file accesses: `fs_usage | grep open`\n\nNetwork Devices\n\n- SMB/CIFS Logs: Monitor file access over network shares using logs from SMB or CIFS protocol.\n- NAS Logs: Collect logs from network-attached storage systems for file access events.\n\nSIEM Integration\n\n- Collect file access logs from all platforms (Windows, Linux, macOS) and centralize in a SIEM for correlation and analysis.",
+            "description": "To events where a file is opened or accessed, making its contents available to the requester. This includes reading, executing, or interacting with files by authorized or unauthorized entities. Examples include logging file access events (e.g., Windows Event ID 4663), monitoring file reads, and detecting unusual file access patterns. Examples: \n\n- File Read Operations: A user opens a sensitive document (e.g., financial_report.xlsx) on a shared drive.\n- File Execution: A script or executable file is accessed and executed (e.g., malware.exe is run from a temporary directory).\n- Unauthorized File Access: An unauthorized user attempts to access a protected configuration file (e.g., `/etc/passwd` on Linux or `System32` files on Windows).\n- File Access Patterns: Bulk access to multiple files in a short time (e.g., mass access to documents on a file server).\n- File Access via Network: Files on a network share are accessed remotely (e.g., logs of SMB file access).",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -49,7 +49,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4663"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "macos:unifiedlog",
@@ -80,10 +80,6 @@
                     "channel": "openat"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4656, 4663"
-                },
-                {
                     "name": "auditd:FILE",
                     "channel": "/home/*/.mozilla/firefox/*/logins.json OR /home/*/.config/google-chrome/*/Login Data"
                 },
@@ -100,14 +96,6 @@
                     "channel": "/proc/*/mem read attempt"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4656,4663"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4670, 4663"
-                },
-                {
                     "name": "auditd:PATH",
                     "channel": "Read access to known backup software configuration files (e.g., /etc/rsnapshot.conf, /opt/veeam/config.ini)"
                 },
@@ -116,16 +104,8 @@
                     "channel": "Read access to Time Machine plist files or CCC configurations in ~/Library/Preferences/"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4656"
-                },
-                {
                     "name": "auditd:SYSCALL",
                     "channel": "open, read"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=5145, 4663"
                 },
                 {
                     "name": "linux:syslog",
@@ -245,7 +225,7 @@
                 },
                 {
                     "name": "auditd:PATH",
-                    "channel": "path"
+                    "channel": "PATH"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -274,10 +254,6 @@
                 {
                     "name": "esxi:syslog",
                     "channel": "guest OS outbound transfer logs"
-                },
-                {
-                    "name": "auditd:PATH",
-                    "channel": "PATH"
                 },
                 {
                     "name": "fs:fsusage",

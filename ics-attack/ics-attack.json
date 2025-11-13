@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--0852b26c-5275-4c13-abea-8ac7f7111e4c",
+    "id": "bundle--3a9ade1d-5f58-4050-9d66-13dc9d4e17e3",
     "objects": [
         {
             "type": "x-mitre-matrix",
@@ -12112,7 +12112,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:34.190Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Network Connection Creation",
             "description": "The initial establishment of a network session, where a system or process initiates a connection to a local or remote endpoint. This typically involves capturing socket information (source/destination IP, ports, protocol) and tracking session metadata. Monitoring these events helps detect lateral movement, exfiltration, and command-and-control (C2) activities.\n\n*Data Collection Measures:*\n\n- Windows:\n    - Event ID 5156 \u2013 Filtering Platform Connection - Logs network connections permitted by Windows Filtering Platform (WFP).\n    - Sysmon Event ID 3 \u2013 Network Connection Initiated - Captures process, source/destination IP, ports, and parent process.\n- Linux/macOS:\n    - Netfilter (iptables), nftables logs - Tracks incoming and outgoing network connections.\n    - AuditD (`connect` syscall) - Logs TCP, UDP, and ICMP connections.\n    - Zeek (`conn.log`) - Captures protocol, duration, and bytes transferred.\n- Cloud & Network Infrastructure:\n    - AWS VPC Flow Logs / Azure NSG Flow Logs - Logs IP traffic at the network level in cloud environments.\n    - Zeek (conn.log) or Suricata (network events) - Captures packet metadata for detection and correlation.\n- Endpoint Detection & Response (EDR):\n    - Detect anomalous network activity such as new C2 connections or data exfiltration attempts.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -12134,10 +12134,6 @@
                     "channel": "Outbound connection to 169.254.169.254 from EC2 workload"
                 },
                 {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=3"
-                },
-                {
                     "name": "macos:unifiedlog",
                     "channel": "connection attempts"
                 },
@@ -12154,16 +12150,8 @@
                     "channel": "web domain alerts"
                 },
                 {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=22"
-                },
-                {
                     "name": "auditd:SYSCALL",
                     "channel": "connect"
-                },
-                {
-                    "name": "auditd:SYSCALL",
-                    "channel": "netconnect"
                 },
                 {
                     "name": "macos:osquery",
@@ -12194,16 +12182,12 @@
                     "channel": "conn.log"
                 },
                 {
-                    "name": "auditd:SYSCALL",
-                    "channel": "open or connect"
-                },
-                {
                     "name": "macos:osquery",
                     "channel": "execution of trusted tools interacting with external endpoints"
                 },
                 {
                     "name": "linux:Sysmon",
-                    "channel": "EventCode=22"
+                    "channel": "EventCode=3, 22"
                 },
                 {
                     "name": "WinEventLog:Microsoft-Windows-Bits-Client/Operational",
@@ -12235,11 +12219,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=5156"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=5156,5157"
+                    "channel": "EventCode=5156, 5157"
                 },
                 {
                     "name": "linux:osquery",
@@ -12398,10 +12378,6 @@
                     "channel": "Traffic from mirrored interface to mirror target IP"
                 },
                 {
-                    "name": "linux:Sysmon",
-                    "channel": "EventCode=3"
-                },
-                {
                     "name": "macos:osquery",
                     "channel": "process_events, socket_events"
                 },
@@ -12487,7 +12463,7 @@
                 },
                 {
                     "name": "WinEventLog:Microsoft-Windows-WLAN-AutoConfig",
-                    "channel": "8001, 8002, 8003"
+                    "channel": "EventCode=8001, 8002, 8003"
                 },
                 {
                     "name": "linux:syslog",
@@ -12547,9 +12523,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.674Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "File Access",
-            "description": "To events where a file is opened or accessed, making its contents available to the requester. This includes reading, executing, or interacting with files by authorized or unauthorized entities. Examples include logging file access events (e.g., Windows Event ID 4663), monitoring file reads, and detecting unusual file access patterns. Examples: \n\n- File Read Operations: A user opens a sensitive document (e.g., financial_report.xlsx) on a shared drive.\n- File Execution: A script or executable file is accessed and executed (e.g., malware.exe is run from a temporary directory).\n- Unauthorized File Access: An unauthorized user attempts to access a protected configuration file (e.g., `/etc/passwd` on Linux or `System32` files on Windows).\n- File Access Patterns: Bulk access to multiple files in a short time (e.g., mass access to documents on a file server).\n- File Access via Network: Files on a network share are accessed remotely (e.g., logs of SMB file access).\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Windows Event Logs: Event ID 4663: Captures file system auditing details, including who accessed the file, access type, and file name.\n- Sysmon:\n    - Event ID 11: Logs file creation time changes.\n    - Event ID 1 (process creation): Can provide insight into files executed.\n- PowerShell: Commands to monitor file access in real-time: `Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4663}`\n\nLinux\n\n- Auditd: Monitor file access events using audit rules: `auditctl -w /path/to/file -p rwxa -k file_access`\n- View logs: `ausearch -k file_access`\n- Inotify: Use inotify to track file access on Linux: `inotifywait -m /path/to/watch -e access`\n\nmacOS\n\n- Unified Logs: Monitor file access using the macOS Unified Logging System.\n- FSEvents: File System Events can track file accesses: `fs_usage | grep open`\n\nNetwork Devices\n\n- SMB/CIFS Logs: Monitor file access over network shares using logs from SMB or CIFS protocol.\n- NAS Logs: Collect logs from network-attached storage systems for file access events.\n\nSIEM Integration\n\n- Collect file access logs from all platforms (Windows, Linux, macOS) and centralize in a SIEM for correlation and analysis.",
+            "description": "To events where a file is opened or accessed, making its contents available to the requester. This includes reading, executing, or interacting with files by authorized or unauthorized entities. Examples include logging file access events (e.g., Windows Event ID 4663), monitoring file reads, and detecting unusual file access patterns. Examples: \n\n- File Read Operations: A user opens a sensitive document (e.g., financial_report.xlsx) on a shared drive.\n- File Execution: A script or executable file is accessed and executed (e.g., malware.exe is run from a temporary directory).\n- Unauthorized File Access: An unauthorized user attempts to access a protected configuration file (e.g., `/etc/passwd` on Linux or `System32` files on Windows).\n- File Access Patterns: Bulk access to multiple files in a short time (e.g., mass access to documents on a file server).\n- File Access via Network: Files on a network share are accessed remotely (e.g., logs of SMB file access).",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -12577,7 +12553,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4663"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "macos:unifiedlog",
@@ -12608,10 +12584,6 @@
                     "channel": "openat"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4656, 4663"
-                },
-                {
                     "name": "auditd:FILE",
                     "channel": "/home/*/.mozilla/firefox/*/logins.json OR /home/*/.config/google-chrome/*/Login Data"
                 },
@@ -12628,14 +12600,6 @@
                     "channel": "/proc/*/mem read attempt"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4656,4663"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4670, 4663"
-                },
-                {
                     "name": "auditd:PATH",
                     "channel": "Read access to known backup software configuration files (e.g., /etc/rsnapshot.conf, /opt/veeam/config.ini)"
                 },
@@ -12644,16 +12608,8 @@
                     "channel": "Read access to Time Machine plist files or CCC configurations in ~/Library/Preferences/"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4656"
-                },
-                {
                     "name": "auditd:SYSCALL",
                     "channel": "open, read"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=5145, 4663"
                 },
                 {
                     "name": "linux:syslog",
@@ -12773,7 +12729,7 @@
                 },
                 {
                     "name": "auditd:PATH",
-                    "channel": "path"
+                    "channel": "PATH"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -12802,10 +12758,6 @@
                 {
                     "name": "esxi:syslog",
                     "channel": "guest OS outbound transfer logs"
-                },
-                {
-                    "name": "auditd:PATH",
-                    "channel": "PATH"
                 },
                 {
                     "name": "fs:fsusage",
@@ -13002,16 +12954,16 @@
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/data-components/DC0039",
+                    "url": "https://attack.mitre.org/datacomponents/DC0039",
                     "external_id": "DC0039"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T19:32:14.744Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "File Creation",
-            "description": "A new file is created on a system or network storage. This action often signifies an operation such as saving a document, writing data, or deploying a file. Logging these events helps identify legitimate or potentially malicious file creation activities. Examples include logging file creation events (e.g., Sysmon Event ID 11 or Linux auditd logs). \n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Sysmon: Event ID 11: Logs file creation events, capturing details like the file path, hash, and creation time.\n- Windows Event Log: Enable \"Object Access\" auditing in Group Policy to track file creation under Event ID 4663.\n- PowerShell: Real-time monitoring of file creation:`Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4663}`\n\nLinux\n\n- Auditd: Use audit rules to monitor file creation: `auditctl -w /path/to/directory -p w -k file_creation`\n- View logs: `ausearch -k file_creation`\n- Inotify: Monitor file creation with inotifywait: `inotifywait -m /path/to/watch -e create`\n\nmacOS\n\n- Unified Logs: Use the macOS Unified Logging System to capture file creation events.\n- FSEvents: Use File System Events to monitor file creation: `fs_usage | grep create`\n\nNetwork Devices\n\n- NAS Logs: Monitor file creation events on network-attached storage devices.\n- SMB Logs: Collect logs of file creation activities over SMB/CIFS protocols.\n\nSIEM Integration\n\n- Forward logs from all platforms (Windows, Linux, macOS) to a SIEM for central analysis and alerting.",
+            "description": "A new file is created on a system or network storage. This action often signifies an operation such as saving a document, writing data, or deploying a file. Logging these events helps identify legitimate or potentially malicious file creation activities. Examples include logging file creation events (e.g., Sysmon Event ID 11 or Linux auditd logs). ",
             "x_mitre_data_source_ref": "",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
@@ -13037,10 +12989,6 @@
                 {
                     "name": "macos:unifiedlog",
                     "channel": "file write"
-                },
-                {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "Modification of .asar in /opt or ~/.config directories"
                 },
                 {
                     "name": "macos:osquery",
@@ -13171,7 +13119,7 @@
                     "channel": "creat, open, write on /etc/systemd/system and /usr/lib/systemd/system"
                 },
                 {
-                    "name": "macos:unified",
+                    "name": "macos:unifiedlog",
                     "channel": "File creation"
                 },
                 {
@@ -14376,6 +14324,7 @@
             "id": "x-mitre-data-component--39b9db72-8b48-4595-a18d-db5bbba3091b",
             "created": "2021-10-20T15:05:19.274Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
             "external_references": [
                 {
                     "source_name": "mitre-attack",
@@ -14386,7 +14335,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:36.246Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Logon Session Metadata",
             "description": "Contextual data about a logon session, such as username, logon type, access tokens (security context, user SIDs, logon identifiers, and logon SID), and any activity associated within it",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -14412,10 +14361,10 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624, 4634, 4672, 4768, 4769"
+                    "channel": "EventCode=4672, 4634"
                 },
                 {
-                    "name": "azure:signinLogs",
+                    "name": "azure:signinlogs",
                     "channel": "SAML-based login with anomalous issuer or NotOnOrAfter lifetime"
                 },
                 {
@@ -14441,14 +14390,6 @@
                 {
                     "name": "esxi:hostd",
                     "channel": "/var/log/hostd.log"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624, 4634, 4672, 4769"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624, 4672"
                 },
                 {
                     "name": "WinEventLog:Security",
@@ -14480,7 +14421,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4776,4771,4770"
+                    "channel": "EventCode=4776, 4771, 4770"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -14507,14 +14448,6 @@
                     "channel": "ConnectedApp OAuth policy change / Login as user"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624,4672"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624, 4672, 4634, 4768, 4769"
-                },
-                {
                     "name": "macos:unifiedlog",
                     "channel": "Unusual Kerberos TGS-REQ without TGT or anomalous ticket lifetime"
                 },
@@ -14527,7 +14460,7 @@
                     "channel": "FileAccessed, SharingSet"
                 },
                 {
-                    "name": "m365:signin",
+                    "name": "m365:signinlogs",
                     "channel": "UserLogin"
                 },
                 {
@@ -14561,16 +14494,16 @@
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/data-components/DC0032",
+                    "url": "https://attack.mitre.org/datacomponents/DC0032",
                     "external_id": "DC0032"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T19:28:39.339Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Process Creation",
-            "description": "Refers to the event in which a new process (executable) is initialized by an operating system. This can involve parent-child process relationships, process arguments, and environmental variables. Monitoring process creation is crucial for detecting malicious behaviors, such as execution of unauthorized binaries, scripting abuse, or privilege escalation attempts.\n\n*Data Collection Measures:*\n\n- Endpoint Detection and Response (EDR) Tools:\n    - EDRs provide process telemetry, tracking execution flows and arguments.\n- Windows Event Logs:\n    - Event ID 4688 (Audit Process Creation): Captures process creation with associated parent process.\n- Sysmon (Windows):\n    - Event ID 1 (Process Creation): Provides detailed logging\n- Linux/macOS Monitoring:\n    - AuditD (execve syscall): Logs process creation.\n    - eBPF/XDP: Used for low-level monitoring of system calls related to process execution.\n    - OSQuery: Allows SQL-like queries to track process events (process_events table).\n    - Apple Endpoint Security Framework (ESF): Monitors process creation on macOS.\n- Network-Based Monitoring:\n    - Zeek (Bro) Logs: Captures network-based process execution related to remote shells.\n    - Syslog/OSSEC: Tracks execution of processes on distributed systems.\n- Behavioral SIEM Rules:\n    - Monitor process creation for uncommon binaries in user directories.\n    - Detect processes with suspicious command-line arguments. ",
+            "description": "Refers to the event in which a new process (executable) is initialized by an operating system. This can involve parent-child process relationships, process arguments, and environmental variables. Monitoring process creation is crucial for detecting malicious behaviors, such as execution of unauthorized binaries, scripting abuse, or privilege escalation attempts.. ",
             "x_mitre_data_source_ref": "",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
@@ -15143,10 +15076,6 @@
                     "channel": "process creation events linked to container namespaces executing host-level binaries"
                 },
                 {
-                    "name": "WinEventlog:Security",
-                    "channel": "EventCode=4688"
-                },
-                {
                     "name": "macos:unifiedlog",
                     "channel": "process and signing chain events"
                 },
@@ -15371,10 +15300,6 @@
                     "channel": "Execution of processes mimicking Apple Security & Privacy GUIs"
                 },
                 {
-                    "name": "WinEventLog:Microsoft-Windows-Security-Auditing",
-                    "channel": "EventCode=4688"
-                },
-                {
                     "name": "auditd:SYSCALL",
                     "channel": "execve, setifflags"
                 },
@@ -15579,10 +15504,6 @@
                     "channel": "execution of security or osascript"
                 },
                 {
-                    "name": "WinEventLog:security",
-                    "channel": "EventCode=4688"
-                },
-                {
                     "name": "macos:unifiedlog",
                     "channel": "launchd spawning processes tied to new or modified LaunchDaemon .plist entries"
                 },
@@ -15756,7 +15677,7 @@
                 },
                 {
                     "name": "WinEventLog:AppLocker",
-                    "channel": "EventCode=8003,8004"
+                    "channel": "EventCode=8003, 8004"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -15892,9 +15813,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:37.342Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Drive Creation",
-            "description": "The activity of assigning a new drive letter or creating a mount point for a data storage device, such as a USB, network share, or external hard drive, enabling access to its content on a host system. Examples: \n\n- USB Drive Insertion: A USB drive is plugged in and automatically assigned the letter `E:\\` on a Windows machine.\n- Network Drive Mapping: A network share `\\\\server\\share` is mapped to the drive `Z:\\`.\n- Virtual Drive Creation: A virtual disk is mounted on `/mnt/virtualdrive` using an ISO image or a virtual hard disk (VHD).\n- Cloud Storage Mounting: Google Drive is mounted as `G:\\` on a Windows machine using a cloud sync tool.\n- External Storage Integration: An external HDD or SSD is connected and assigned `/mnt/external` on a Linux system.\n\nThis data component can be collected through the following measures:\n\nWindows Event Logs\n\n- Relevant Events:\n    - Event ID 98: Logs the creation of a volume (mount or new drive letter assignment).\n    - Event ID 1006: Logs removable storage device insertions.\n- Configuration: Enable \"Removable Storage Events\" in the Group Policy settings:\n`Computer Configuration > Administrative Templates > System > Removable Storage Access`\n\nLinux System Logs\n\n- Command-Line Monitoring: Use `dmesg` or `journalctl` to monitor mount events.\n\n- Auditd Configuration: Add audit rules to track mount points.\n- Logs can be reviewed in /var/log/audit/audit.log.\n\nmacOS System Logs\n\n- Unified Logs: Monitor system logs for mount activity:\n- Command-Line Tools: Use `diskutil list` to verify newly created or mounted drives.\n\nEndpoint Detection and Response (EDR) Tools\n\n- EDR solutions can log removable drive usage and network-mounted drives. Configure EDR policies to alert on suspicious drive creation events.\n\nSIEM Tools\n\n- Centralize logs from multiple platforms into a SIEM (e.g., Splunk) to correlate and alert on suspicious drive creation activities.",
+            "description": "The activity of assigning a new drive letter or creating a mount point for a data storage device, such as a USB, network share, or external hard drive, enabling access to its content on a host system. Examples: \n\n- USB Drive Insertion: A USB drive is plugged in and automatically assigned the letter `E:\\` on a Windows machine.\n- Network Drive Mapping: A network share `\\\\server\\share` is mapped to the drive `Z:\\`.\n- Virtual Drive Creation: A virtual disk is mounted on `/mnt/virtualdrive` using an ISO image or a virtual hard disk (VHD).\n- Cloud Storage Mounting: Google Drive is mounted as `G:\\` on a Windows machine using a cloud sync tool.\n- External Storage Integration: An external HDD or SSD is connected and assigned `/mnt/external` on a Linux system..",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -15921,7 +15842,7 @@
                     "channel": "mounted|appeared|DA: disk* attached"
                 },
                 {
-                    "name": "WinEventLog:Microsoft-Windows-Partition/Diagnostic",
+                    "name": "WinEventLog:System",
                     "channel": "EventCode=1006"
                 },
                 {
@@ -15934,7 +15855,7 @@
                 },
                 {
                     "name": "WinEventLog:System",
-                    "channel": "EventCode=1006,10001"
+                    "channel": "EventCode=1006, 10001"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -15949,7 +15870,7 @@
                     "channel": "Volume Mount + File Read"
                 },
                 {
-                    "name": "WinEventLog:Microsoft-Windows-DriverFrameworks-UserMode/Operational",
+                    "name": "WinEventLog:System",
                     "channel": "EventCode=2003"
                 },
                 {
@@ -15965,10 +15886,6 @@
                     "channel": "Hardware enumeration events via IOKit or USBMuxd showing TinyPilot or unknown keyboard/mouse"
                 },
                 {
-                    "name": "WinEventLog:System",
-                    "channel": "EventCode=2003"
-                },
-                {
                     "name": "auditd:SYSCALL",
                     "channel": "Kernel Device Events - USB Block Devices"
                 },
@@ -15981,20 +15898,12 @@
                     "channel": "Volume Mount + Process Trace + File Read"
                 },
                 {
-                    "name": "WinEventLog:System",
-                    "channel": "EventCode=20001/20003"
-                },
-                {
                     "name": "journald:systemd",
                     "channel": "udisks2 or udevd logs"
                 },
                 {
                     "name": "macos:unifiedlog",
                     "channel": "log stream --predicate 'eventMessage contains \"USBMSC\"'"
-                },
-                {
-                    "name": "WinEventLog:System",
-                    "channel": "20001-20003"
                 },
                 {
                     "name": "linux:syslog",
@@ -16047,14 +15956,14 @@
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/data-components/DC0046",
+                    "url": "https://attack.mitre.org/datacomponents/DC0046",
                     "external_id": "DC0046"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-22T19:03:17.198Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Drive Modification",
             "description": "The alteration of a drive letter, mount point, or other attributes of a data storage device, which could involve reassignment, renaming, permissions changes, or other modifications. Examples: \n\n- Drive Letter Reassignment: A USB drive previously assigned `E:\\` is reassigned to `D:\\` on a Windows machine.\n- Mount Point Change: On a Linux system, a mounted storage device at `/mnt/external` is moved to `/mnt/storage`.\n- Drive Permission Changes: A shared drive's permissions are modified to allow write access for unauthorized users or processes.\n- Renaming of a Drive: A network drive labeled \"HR_Share\" is renamed to \"Shared_Resources.\"\n- Modification of Cloud-Integrated Drives: A cloud storage mount such as Google Drive is modified to sync only specific folders.\n\nThis data component can be collected through the following measures:\n\nWindows Event Logs\n\n- Relevant Events:\n    - Event ID 98: Indicates changes to a volume (e.g., drive letter reassignment).\n    - Event ID 1006: Logs permission modifications or changes to removable storage.\n- Configuration: Enable \"Storage Operational Logs\" in the Event Viewer:\n`Applications and Services Logs > Microsoft > Windows > Storage-Tiering > Operational`\n\nLinux System Logs\n\n- Auditd Configuration: Add audit rules to track changes to mounted drives: `auditctl -w /mnt/ -p w -k drive_modification`\n- Command-Line Monitoring: Use `dmesg` or `journalctl` to observe drive modifications.\n\nmacOS System Logs\n\n- Unified Logs: Collect mount or drive modification events: `log show --info | grep \"Volume modified\"`\n- Command-Line Monitoring: Use `diskutil` to track changes:\n\nEndpoint Detection and Response (EDR) Tools\n\n- Configure policies in EDR solutions to monitor and log changes to drive configurations or attributes.\n\nSIEM Tools\n\n- Aggregate logs from multiple systems into a centralized platform like Splunk to correlate events and alert on suspicious drive modification activities.\n",
             "x_mitre_data_source_ref": "",
@@ -16125,7 +16034,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:36.315Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Service Creation",
             "description": "The registration of a new service or daemon on an operating system.\n\n*Data Collection Measures:*\n\n- Windows Event Logs\n    - Event ID 4697 - Captures the creation of a new Windows service.\n    - Event ID 7045 - Captures services installed by administrators or adversaries.\n    - Event ID 7034 - Could indicate malicious service modification or exploitation.\n- Sysmon Logs\n    - Sysmon Event ID 1 - Process Creation (captures service executables).\n    - Sysmon Event ID 4 - Service state changes (detects service installation).\n    - Sysmon Event ID 13 - Registry modifications (captures service persistence changes).\n- PowerShell Logging\n    - Monitor `New-Service` and `Set-Service` PowerShell cmdlets in Event ID 4104 (Script Block Logging).\n- Linux/macOS Collection Methods\n    - AuditD & Syslog Daemon Logs (`/var/log/syslog`, `/var/log/messages`, `/var/log/daemon.log`)\n    - AuditD Rules:\n        - `auditctl -w /etc/systemd/system -p wa -k service_creation`\n        - Detects changes to `systemd` service configurations.\n- Systemd Journals (`journalctl -u <service_name>`)\n    - Captures newly created systemd services.\n- LaunchDaemons & LaunchAgents (macOS)\n    - Monitor `/Library/LaunchDaemons/` and `/Library/LaunchAgents/` for new plist files.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -16155,10 +16064,6 @@
                 },
                 {
                     "name": "WinEventLog:System",
-                    "channel": "EventCode=7045"
-                },
-                {
-                    "name": "WinEventLog:Security",
                     "channel": "EventCode=7045"
                 },
                 {
@@ -16219,9 +16124,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:36.181Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Process Termination",
-            "description": "The exit or termination of a running process on a system. This can occur due to normal operations, user-initiated commands, or malicious actions such as process termination by malware to disable security controls.\n\n*Data Collection Measures:*\n\n- Endpoint Detection and Response (EDR) Tools:\n    - Monitor process termination events.\n- Windows Event Logs:\n    - Event ID 4689 (Process Termination) \u2013 Captures when a process exits, including process ID and parent process.\n    - Event ID 7036 (Service Control Manager) \u2013 Monitors system service stops.\n- Sysmon (Windows):\n    - Event ID 5 (Process Termination) \u2013 Detects when a process exits, including parent-child relationships.\n- Linux/macOS Monitoring:\n    - AuditD (`execve`, `exit_group`, `kill` syscalls) \u2013 Captures process termination via command-line interactions.\n    - eBPF/XDP: Monitors low-level system calls related to process termination.\n    - OSQuery: The processes table can be queried for abnormal exits.",
+            "description": "The exit or termination of a running process on a system. This can occur due to normal operations, user-initiated commands, or malicious actions such as process termination by malware to disable security controls.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -16302,9 +16207,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.397Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "File Metadata",
-            "description": "contextual information about a file, including attributes such as the file's name, size, type, content (e.g., signatures, headers, media), user/owner, permissions, timestamps, and other related properties. File metadata provides insights into a file's characteristics and can be used to detect malicious activity, unauthorized modifications, or other anomalies. Examples: \n\n- File Ownership and Permissions: Checking the owner and permissions of a critical configuration file like /etc/passwd on Linux or C:\\Windows\\System32\\config\\SAM on Windows.\n- Timestamps: Analyzing the creation, modification, and access timestamps of a file.\n- File Content and Signatures: Extracting the headers of an executable file to verify its signature or detect packing/obfuscation.\n- File Attributes: Analyzing attributes like hidden, system, or read-only flags in Windows.\n- File Hashes: Generating MD5, SHA-1, or SHA-256 hashes of files to compare against threat intelligence feeds.\n- File Location: Monitoring files located in unusual directories or paths, such as temporary or user folders.\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Sysinternals Tools: Use `AccessEnum` or `PSFile` to retrieve metadata about file access and permissions.\n- Windows Event Logs: Enable object access auditing and monitor events like 4663 (Object Access) and 5140 (A network share object was accessed).\n- PowerShell: Use Get-Item or Get-ChildItem cmdlets: `Get-ChildItem -Path \"C:\\Path\\To\\Directory\" -Recurse | Select-Object Name, Length, LastWriteTime, Attributes`\n\nLinux\n\n- File System Commands: Use `ls -l` or stat to retrieve file metadata: `stat /path/to/file`\n- Auditd: Configure audit rules to log metadata access: `auditctl -w /path/to/file -p wa -k file_metadata`\n- Filesystem Integrity Tools: Tools like tripwire or AIDE (Advanced Intrusion Detection Environment) can monitor file metadata changes.\n\nmacOS\n\n- FSEvents: Use FSEvents to track file metadata changes.\n- Endpoint Security Framework (ESF): Capture metadata-related events via ESF APIs.\n- Command-Line Tools: Use ls -l or xattr for file attributes: `ls -l@ /path/to/file`\n\nSIEM Integration\n\n- Forward file metadata logs from endpoint or network devices to a SIEM for centralized analysis.",
+            "description": "contextual information about a file, including attributes such as the file's name, size, type, content (e.g., signatures, headers, media), user/owner, permissions, timestamps, and other related properties. File metadata provides insights into a file's characteristics and can be used to detect malicious activity, unauthorized modifications, or other anomalies. Examples: \n\n- File Ownership and Permissions: Checking the owner and permissions of a critical configuration file like /etc/passwd on Linux or C:\\Windows\\System32\\config\\SAM on Windows.\n- Timestamps: Analyzing the creation, modification, and access timestamps of a file.\n- File Content and Signatures: Extracting the headers of an executable file to verify its signature or detect packing/obfuscation.\n- File Attributes: Analyzing attributes like hidden, system, or read-only flags in Windows.\n- File Hashes: Generating MD5, SHA-1, or SHA-256 hashes of files to compare against threat intelligence feeds.\n- File Location: Monitoring files located in unusual directories or paths, such as temporary or user folders.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -16388,7 +16293,7 @@
                 },
                 {
                     "name": "auditd:SYSCALL",
-                    "channel": "path"
+                    "channel": "PATH"
                 },
                 {
                     "name": "auditd:PATH",
@@ -16484,7 +16389,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4670"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -16607,10 +16512,6 @@
                     "channel": "EventCode=4663, 4656, 4658"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4663"
-                },
-                {
                     "name": "auditd:SYSCALL",
                     "channel": "chmod, chown, setxattr, or file writes to /etc/ssl/* or /usr/local/share/ca-certificates/*"
                 },
@@ -16673,10 +16574,6 @@
                 {
                     "name": "macos:unifiedlog",
                     "channel": "File creation or modification with com.apple.ResourceFork extended attribute"
-                },
-                {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=15 "
                 }
             ]
         },
@@ -16696,9 +16593,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:37.211Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Service Modification",
-            "description": "Changes made to an existing service or daemon, such as modifying the service name, start type, execution parameters, or security configurations.\n\n*Data Collection Measures: *\n\n- Windows Event Logs\n    - Event ID 7040 - Detects modifications to the startup behavior of a service.\n    - Event ID 7045 - Can capture changes made to existing services.\n    - Event ID 7036 - Tracks when services start or stop, potentially indicating malicious tampering.\n    - Event ID 4697 - Can detect when an adversary reinstalls a service with different parameters.\n- Sysmon Logs\n    - Sysmon Event ID 13 - Detects changes to service configurations in the Windows Registry (e.g., `HKLM\\SYSTEM\\CurrentControlSet\\Services\\`).\n    - Sysmon Event ID 1 - Can track execution of `sc.exe` or `PowerShell Set-Service`.\n- PowerShell Logging\n    - Event ID 4104 (Script Block Logging) - Captures execution of commands like `Set-Service`, `New-Service`, or `sc config`.\n    - Command-Line Logging (Event ID 4688) - Tracks usage of service modification commands:\n        - `sc config <service_name> start= auto`  \n        - `sc qc <service_name>`  \n- Linux/macOS Collection Methods\n    - Systemd Journals (`journalctl -u <service_name>`) Tracks modifications to systemd service configurations.\n    - Daemon Logs (`/var/log/syslog`, `/var/log/messages`, `/var/log/daemon.log`) Captures changes to service state and execution parameters.\n    - AuditD Rules for Service Modification \n        - Monitor modifications to `/etc/systemd/system/` for new or altered service unit files: `auditctl -w /etc/systemd/system/ -p wa -k service_modification`\n        - Track execution of `systemctl` or `service` commands: `auditctl -a always,exit -F arch=b64 -S execve -F a0=systemctl -F key=service_mod`\n    - OSQuery for Linux/macOS Monitoring\n        - Query modified services using OSQuery\u2019s `processes` or `system_info` tables: `SELECT * FROM systemd_units WHERE state != 'running';`\n    - macOS Launch Daemon/Agent Modification\n        - Monitor for changes in:\n            - `/Library/LaunchDaemons/`\n            - `/Library/LaunchAgents/`\n        - Track modifications to `.plist` files indicating persistence attempts.",
+            "description": "Changes made to an existing service or daemon, such as modifying the service name, start type, execution parameters, or security configurations.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -16738,9 +16635,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:34.849Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Command Execution",
-            "description": "Command Execution involves monitoring and capturing the execution of textual commands (including shell commands, cmdlets, and scripts) within an operating system or application. These commands may include arguments or parameters and are typically executed through interpreters such as `cmd.exe`, `bash`, `zsh`, `PowerShell`, or programmatic execution. Examples: \n\n- Windows Command Prompt\n    - dir \u2013 Lists directory contents.\n    - net user \u2013 Queries or manipulates user accounts.\n    - tasklist \u2013 Lists running processes.\n- PowerShell\n    - Get-Process \u2013 Retrieves processes running on a system.\n    - Set-ExecutionPolicy \u2013 Changes PowerShell script execution policies.\n    - Invoke-WebRequest \u2013 Downloads remote resources.\n- Linux Shell\n    - ls \u2013 Lists files in a directory.\n    - cat /etc/passwd \u2013 Reads the user accounts file.\n    - curl http://malicious-site.com \u2013 Retrieves content from a malicious URL.\n- Container Environments\n    - docker exec \u2013 Executes a command inside a running container.\n    - kubectl exec \u2013 Runs commands in Kubernetes pods.\n- macOS Terminal\n    - open \u2013 Opens files or URLs.\n    - dscl . -list /Users \u2013 Lists all users on the system.\n    - osascript -e \u2013 Executes AppleScript commands.\n\nThis data component can be collected through the following measures:\n\nEnable Command Logging\n\n- Windows:\n    - Enable PowerShell logging: `Set-ExecutionPolicy Bypass`, `Set-ItemProperty -Path \"HKLM:\\SOFTWARE\\Policies\\Microsoft\\Windows\\PowerShell\\ScriptBlockLogging\" -Name EnableScriptBlockLogging -Value 1`\n    - Enable Windows Event Logging:\n        - Event ID 4688: Tracks process creation, including command-line arguments.\n        - Event ID 4104: Logs PowerShell script block execution.\n- Linux/macOS:\n    - Enable shell history logging in `.bashrc` or `.zshrc`: `export HISTTIMEFORMAT=\"%d/%m/%y %T \"`, `export PROMPT_COMMAND='history -a; history -w'`\n    - Use audit frameworks (e.g., `auditd`) to log command executions. Example rule to log all `execve` syscalls: `-a always,exit -F arch=b64 -S execve -k cmd_exec`\n- Containers:\n    - Use runtime-specific tools like Docker\u2019s --log-driver or Kubernetes Audit Logs to capture exec commands.\n\nIntegrate with Centralized Logging\n\n- Collect logs using a SIEM (e.g., Splunk) or cloud-based log aggregation tools like AWS CloudWatch or Azure Monitor. Example Splunk Search for Windows Event 4688:\n`index=windows EventID=4688 CommandLine=*`\n\nUse Endpoint Detection and Response (EDR) Tools\n\n- Monitor command executions via EDR solutions \n\nDeploy Sysmon for Advanced Logging (Windows)\n\n- Use Sysmon's Event ID 1 to log process creation with command-line arguments",
+            "description": "Command Execution involves monitoring and capturing the execution of textual commands (including shell commands, cmdlets, and scripts) within an operating system or application. These commands may include arguments or parameters and are typically executed through interpreters such as `cmd.exe`, `bash`, `zsh`, `PowerShell`, or programmatic execution. Examples: \n\n- Windows Command Prompt\n    - dir \u2013 Lists directory contents.\n    - net user \u2013 Queries or manipulates user accounts.\n    - tasklist \u2013 Lists running processes.\n- PowerShell\n    - Get-Process \u2013 Retrieves processes running on a system.\n    - Set-ExecutionPolicy \u2013 Changes PowerShell script execution policies.\n    - Invoke-WebRequest \u2013 Downloads remote resources.\n- Linux Shell\n    - ls \u2013 Lists files in a directory.\n    - cat /etc/passwd \u2013 Reads the user accounts file.\n    - curl http://malicious-site.com \u2013 Retrieves content from a malicious URL.\n- Container Environments\n    - docker exec \u2013 Executes a command inside a running container.\n    - kubectl exec \u2013 Runs commands in Kubernetes pods.\n- macOS Terminal\n    - open \u2013 Opens files or URLs.\n    - dscl . -list /Users \u2013 Lists all users on the system.\n    - osascript -e \u2013 Executes AppleScript commands.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -16769,7 +16666,7 @@
                 },
                 {
                     "name": "linux:syslog",
-                    "channel": "/var/log/syslog or journalctl"
+                    "channel": "cron activity"
                 },
                 {
                     "name": "WinEventLog:PowerShell",
@@ -16793,7 +16690,7 @@
                 },
                 {
                     "name": "WinEventLog:PowerShell",
-                    "channel": "EventCode=4104"
+                    "channel": "EventCode=4103, 4104, 4105, 4106"
                 },
                 {
                     "name": "linux:syslog",
@@ -16893,11 +16790,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4104"
-                },
-                {
-                    "name": "WinEventLog:Powershell",
-                    "channel": "EventCode=4104"
+                    "channel": "EventCode=4103, 4104, 4105, 4106"
                 },
                 {
                     "name": "auditd:EXECVE",
@@ -17016,10 +16909,6 @@
                     "channel": "None"
                 },
                 {
-                    "name": "WinEventLog:PowerShell",
-                    "channel": "EventCode=4103,4104"
-                },
-                {
                     "name": "linux:syslog",
                     "channel": "Unusual outbound transfers from CLI tools like base64, gzip, or netcat"
                 },
@@ -17110,10 +16999,6 @@
                 {
                     "name": "networkdevice:cli",
                     "channel": "CLI command logs"
-                },
-                {
-                    "name": "WinEventLog:PowerShell",
-                    "channel": "EventCode=4103"
                 },
                 {
                     "name": "esxi:shell",
@@ -17600,10 +17485,6 @@
                     "channel": "execve: Execution of systemctl, loginctl, or systemd-inhibit commands related to sleep/hibernate"
                 },
                 {
-                    "name": "WinEventLog:PowerShell",
-                    "channel": "EventCode=4103,4104,4105, 4106"
-                },
-                {
                     "name": "auditd:SYSCALL",
                     "channel": "Execution of xev, xdotool, or input activity emulators"
                 },
@@ -17656,7 +17537,7 @@
                     "channel": "xattr -d com.apple.quarantine or similar removal commands"
                 },
                 {
-                    "name": "azure:signinLogs",
+                    "name": "azure:signinlogs",
                     "channel": "OperationName=SetDomainAuthentication OR Update-MsolFederatedDomain"
                 },
                 {
@@ -17670,14 +17551,6 @@
                 {
                     "name": "networkdevice:cli",
                     "channel": "Execution of privileged commands such as 'copy tftp flash', 'boot system', or 'debug memory'"
-                },
-                {
-                    "name": "WinEventLog:PowerShell",
-                    "channel": "EventCode=4105"
-                },
-                {
-                    "name": "WinEventLog:PowerShell",
-                    "channel": "EventCode=4106"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -17828,10 +17701,6 @@
                     "channel": "reload command issued"
                 },
                 {
-                    "name": "WinEventLog:PowerShell",
-                    "channel": "EventCode=4103, 4104"
-                },
-                {
                     "name": "auditd:PROCTITLE",
                     "channel": "command-line execution patterns for system discovery utilities (uname, hostname, ifconfig, netstat, lsof, ps, mount)"
                 },
@@ -17928,7 +17797,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:36.382Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Service Metadata",
             "description": "Contextual data about a service/daemon, which may include information such as name, service executable, start type, etc.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -17945,7 +17814,7 @@
                     "channel": "None"
                 },
                 {
-                    "name": "WinEventLog:sysmon",
+                    "name": "WinEventLog:Sysmon",
                     "channel": "EventCode=4"
                 },
                 {
@@ -18035,14 +17904,14 @@
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/data-components/DC0005",
+                    "url": "https://attack.mitre.org/datacomponents/DC0005",
                     "external_id": "DC0005"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-22T19:03:38.549Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Scheduled Job Metadata",
             "description": "Contextual data about a scheduled job, which may include information such as name, timing, command(s), etc.",
             "x_mitre_data_source_ref": "",
@@ -18061,7 +17930,7 @@
                 },
                 {
                     "name": "linux:cron",
-                    "channel": "/var/log/syslog or journalctl"
+                    "channel": "cron activity"
                 },
                 {
                     "name": "fs:fileevents",
@@ -18070,10 +17939,6 @@
                 {
                     "name": "WinEventLog:TaskScheduler",
                     "channel": "Task registration/execution shortly after a time discovery event"
-                },
-                {
-                    "name": "linux::cron",
-                    "channel": "crontab or at job created within TimeWindow post time discovery"
                 },
                 {
                     "name": "macos:unifiedlog",
@@ -18086,10 +17951,6 @@
                 {
                     "name": "WinEventLog:System",
                     "channel": "EventCode=106, 200"
-                },
-                {
-                    "name": "linux:cron",
-                    "channel": "cron activity"
                 },
                 {
                     "name": "macos:launchd",
@@ -18113,9 +17974,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.239Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "File Modification",
-            "description": "Changes made to a file, including updates to its contents, metadata, access permissions, or attributes. These modifications may indicate legitimate activity (e.g., software updates) or unauthorized changes (e.g., tampering, ransomware, or adversarial modifications). Examples: \n\n- Content Modifications: Changes to the content of a configuration file, such as modifying `/etc/ssh/sshd_config` on Linux or `C:\\Windows\\System32\\drivers\\etc\\hosts` on Windows.\n- Permission Changes: Altering file permissions to allow broader access, such as changing a file from `644` to `777` on Linux or modifying NTFS permissions on Windows.\n- Attribute Modifications: Changing a file's attributes to hidden, read-only, or system on Windows.\n- Timestamp Manipulation: Adjusting a file's creation or modification timestamp using tools like `touch` in Linux or timestomping tools on Windows.\n- Software or System File Changes: Modifying system files such as `boot.ini`, kernel modules, or application binaries.\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Event Logs: Enable file system auditing to monitor file modifications using Security Event ID 4670 (File System Audit) or Sysmon Event ID 2 (File creation time changed).\n- PowerShell: Use Get-ItemProperty or Get-Acl cmdlets to monitor file properties: `Get-Item -Path \"C:\\path\\to\\file\" | Select-Object Name, Attributes, LastWriteTime`\n\nLinux\n\n- File System Monitoring: Use tools like auditd with rules to monitor file modifications: `auditctl -w /path/to/file -p wa -k file_modification`\n- Inotify: Use inotifywait to watch for real-time changes to files or directories: `inotifywait -m /path/to/file`\n\nmacOS\n\n- Endpoint Security Framework (ESF): Monitor file modification events using ESF APIs.\n- Audit Framework: Configure audit rules to track file changes.\n- Command-Line Tools: Use fs_usage to monitor file activities: `fs_usage -w /path/to/file`\n\nSIEM Tools\n\n- Collect logs from endpoint agents (e.g., Sysmon, Auditd) and file servers to centralize file modification event data.",
+            "description": "Changes made to a file, including updates to its contents, metadata, access permissions, or attributes. These modifications may indicate legitimate activity (e.g., software updates) or unauthorized changes (e.g., tampering, ransomware, or adversarial modifications). Examples: \n\n- Content Modifications: Changes to the content of a configuration file, such as modifying `/etc/ssh/sshd_config` on Linux or `C:\\Windows\\System32\\drivers\\etc\\hosts` on Windows.\n- Permission Changes: Altering file permissions to allow broader access, such as changing a file from `644` to `777` on Linux or modifying NTFS permissions on Windows.\n- Attribute Modifications: Changing a file's attributes to hidden, read-only, or system on Windows.\n- Timestamp Manipulation: Adjusting a file's creation or modification timestamp using tools like `touch` in Linux or timestomping tools on Windows.\n- Software or System File Changes: Modifying system files such as `boot.ini`, kernel modules, or application binaries.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -18156,10 +18017,6 @@
                 {
                     "name": "macos:endpointsecurity",
                     "channel": "ES_EVENT_TYPE_NOTIFY_WRITE, targeting .zshrc, .zlogin, .zprofile"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4663"
                 },
                 {
                     "name": "fs:fileevents",
@@ -18347,7 +18204,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4656,4663"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -18360,10 +18217,6 @@
                 {
                     "name": "macos:unifiedlog",
                     "channel": "Unexpected creation or modification of stored data files in protected directories"
-                },
-                {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EvenCode=2"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -18428,10 +18281,6 @@
                 {
                     "name": "macos:unifiedlog",
                     "channel": "write of plist files in /Library/LaunchAgents or /Library/LaunchDaemons"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4670"
                 },
                 {
                     "name": "WinEventLog:System",
@@ -18574,8 +18423,8 @@
                     "channel": "create/modify dylib in monitored directories"
                 },
                 {
-                    "name": "WinEventLog:Application",
-                    "channel": "81,3033"
+                    "name": "WinEventLog:CodeIntegrity",
+                    "channel": "EventCode=3033"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -18796,9 +18645,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:36.999Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "OS API Execution",
-            "description": "Calls made by a process to operating system-provided Application Programming Interfaces (APIs). These calls are essential for interacting with system resources such as memory, files, and hardware, or for performing system-level tasks. Monitoring these calls can provide insight into a process's intent, especially if the process is malicious.\n\n*Data Collection Measures:*\n\n- Endpoint Detection and Response (EDR) Tools:\n    - Leverage tools to monitor API execution behaviors at the process level.\n    - Example: Sysmon Event ID 10 captures API call traces for process access and memory allocation.\n- Process Monitor (ProcMon):\n    - Use ProcMon to collect detailed logs of process and API activity. ProcMon can provide granular details on API usage and identify malicious behavior during analysis.\n- Windows Event Logs:\n    - Use Event IDs from Windows logs for specific API-related activities:\n        - Event ID 4688: A new process has been created (can indirectly infer API use).\n        - Event ID 4657: A registry value has been modified (to monitor registry-altering APIs).\n- Dynamic Analysis Tools:\n    - Tools like Cuckoo Sandbox, Flare VM, or Hybrid Analysis monitor API execution during malware detonation.\n- Host-Based Logs:\n    - On Linux/macOS systems, leverage audit frameworks (e.g., `auditd`, `strace`) to capture and analyze system call usage that APIs map to.\n- Runtime Monitors:\n    - Runtime security tools like Falco can monitor system-level calls for API execution.\n- Debugging and Tracing:\n    - Use debugging tools like gdb (Linux) or WinDbg (Windows) for deep tracing of API executions in real time.",
+            "description": "Calls made by a process to operating system-provided Application Programming Interfaces (APIs). These calls are essential for interacting with system resources such as memory, files, and hardware, or for performing system-level tasks. Monitoring these calls can provide insight into a process's intent, especially if the process is malicious.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -18887,7 +18736,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4656"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "EDR:memory",
@@ -19103,9 +18952,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:36.580Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Application Log Content",
-            "description": "Application Log Content refers to logs generated by applications or services, providing a record of their activity. These logs may include metrics, errors, performance data, and operational alerts from web, mail, or other applications. These logs are vital for monitoring application behavior and detecting malicious activities or anomalies. Examples: \n\n- Web Application Logs: These logs include information about requests, responses, errors, and security events (e.g., unauthorized access attempts).\n- Email Application Logs: Logs contain metadata about emails sent, received, or blocked (e.g., sender/receiver addresses, message IDs).\n- SaaS Application Logs: Activity logs include user logins, configuration changes, and access to sensitive resources.\n- Cloud Application Logs: Logs detail control plane activities, including API calls, instance modifications, and network changes.\n- System/Application Monitoring Logs: Logs provide insights into application performance, errors, and anomalies.\n\nThis data component can be collected through the following measures:\n\nConfigure Application Logging\n\n- Enable logging within the application or service.\n- Examples:\n    - Web Servers: Enable access and error logs in NGINX or Apache.\n    - Email Systems: Enable audit logging in Microsoft Exchange or Gmail.\n\nCentralized Log Management\n\n- Use log management solutions like Splunk, or a cloud-native logging solution.\n- Configure the application to send logs to a centralized system for analysis.\n\nCloud-Specific Collection\n\n- Use services like AWS CloudWatch, Azure Monitor, or Google Cloud Operations Suite for cloud-based applications.\n- Ensure logging is enabled for all critical resources (e.g., API calls, IAM changes).\n\nSIEM Integration\n\n- Integrate application logs with a SIEM platform (e.g., Splunk, QRadar) for real-time correlation and analysis.\n- Use parsers to standardize log formats and extract key fields like timestamps, user IDs, and error codes.",
+            "description": "Application Log Content refers to logs generated by applications or services, providing a record of their activity. These logs may include metrics, errors, performance data, and operational alerts from web, mail, or other applications. These logs are vital for monitoring application behavior and detecting malicious activities or anomalies. Examples: \n\n- Web Application Logs: These logs include information about requests, responses, errors, and security events (e.g., unauthorized access attempts).\n- Email Application Logs: Logs contain metadata about emails sent, received, or blocked (e.g., sender/receiver addresses, message IDs).\n- SaaS Application Logs: Activity logs include user logins, configuration changes, and access to sensitive resources.\n- Cloud Application Logs: Logs detail control plane activities, including API calls, instance modifications, and network changes.\n- System/Application Monitoring Logs: Logs provide insights into application performance, errors, and anomalies.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -19184,7 +19033,7 @@
                     "channel": "EventCode=6416"
                 },
                 {
-                    "name": "WinEventLog:Microsoft-Windows-DriverFrameworks-UserMode/Operational",
+                    "name": "WinEventLog:System",
                     "channel": "Device started/installed (UMDF) GUIDs"
                 },
                 {
@@ -19264,7 +19113,7 @@
                     "channel": "Received messages with embedded or shortened URLs"
                 },
                 {
-                    "name": "azure:signinLogs",
+                    "name": "azure:signinlogs",
                     "channel": "ConsentGrant: Suspicious consent grants to non-approved or unknown applications"
                 },
                 {
@@ -19293,7 +19142,7 @@
                 },
                 {
                     "name": "WinEventLog:System",
-                    "channel": "EventCode=7031,7034,1000,1001"
+                    "channel": "EventCode=1000"
                 },
                 {
                     "name": "linux:syslog",
@@ -19417,7 +19266,7 @@
                 },
                 {
                     "name": "WinEventLog:Application",
-                    "channel": "EventCode=1000-1026"
+                    "channel": "EventCode=1000"
                 },
                 {
                     "name": "EDR:detection",
@@ -19596,10 +19445,6 @@
                     "channel": "SendOnBehalf/SendAs: Office Suite initiated messages using impersonated identities"
                 },
                 {
-                    "name": "WinEventLog:Application",
-                    "channel": "EventCode=1000"
-                },
-                {
                     "name": "linux:syslog",
                     "channel": "browser/office crash, segfault, abnormal termination"
                 },
@@ -19634,10 +19479,6 @@
                 {
                     "name": "macos:unifiedlog",
                     "channel": "Configuration profile modified or new profile installed"
-                },
-                {
-                    "name": "WinEventLog:Application",
-                    "channel": "EventCode=1000, 1001, 1002"
                 },
                 {
                     "name": "journald:Application",
@@ -19769,7 +19610,7 @@
                 },
                 {
                     "name": "WinEventLog:System",
-                    "channel": "EventCode=1341,1342,1020,1063"
+                    "channel": "EventCode=1341, 1342, 1020, 1063"
                 },
                 {
                     "name": "linux:syslog",
@@ -19792,10 +19633,6 @@
                     "channel": "MessageTrace logs"
                 },
                 {
-                    "name": "WinEventLog:Application",
-                    "channel": "EventCode=1000,1001"
-                },
-                {
                     "name": "linux:syslog",
                     "channel": "opened document|clicked link|segfault|abnormal termination|sandbox"
                 },
@@ -19805,7 +19642,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4663"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "m365:unified",
@@ -19969,9 +19806,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.022Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Logon Session Creation",
-            "description": "The successful establishment of a new user session following a successful authentication attempt. This typically signifies that a user has provided valid credentials or authentication tokens, and the system has initiated a session associated with that user account. This data is crucial for tracking authentication events and identifying potential unauthorized access. Examples: \n\n- Windows Systems\n    - Event ID: 4624\n        - Logon Type: 2 (Interactive) or 10 (Remote Interactive via RDP).\n        - Account Name: JohnDoe\n        - Source Network Address: 192.168.1.100\n        - Authentication Package: NTLM\n- Linux Systems\n    - /var/log/utmp or /var/log/wtmp:\n        - Log format: login user [tty] from [source_ip]\n        - User: jane\n        - IP: 10.0.0.5\n        - Timestamp: 2024-12-28 08:30:00\n- macOS Systems\n    - /var/log/asl.log or unified logging framework:\n        - Log: com.apple.securityd: Authentication succeeded for user 'admin'\n- Cloud Environments\n    - Azure Sign-In Logs:\n        - Activity: Sign-in successful\n        - Client App: Browser\n        - Location: Unknown (Country: X)\n- Google Workspace\n    - Activity: Login\n        - Event Type: successful_login\n        - Source IP: 203.0.113.55\n\nThis data component can be collected through the following measures:\n\n- Windows Systems\n    - Event Logs: Monitor Security Event Logs using Event ID 4624 for successful logons.\n    - PowerShell Example: `Get-EventLog -LogName Security -InstanceId 4624`\n- Linux Systems\n    - Log Files: Monitor `/var/log/utmp`, `/var/log/wtmp`, or `/var/log/auth.log` for logon events.\n    - Tools: Use `last` or `who` commands to parse login records.\n- macOS Systems\n    - Log Sources: Monitor `/var/log/asl.log` or Apple Unified Logs using the `log show` command.\n    - Command Example: `log show --predicate 'eventMessage contains \"Authentication succeeded\"' --info`\n- Cloud Environments\n    - Azure AD: Use Azure Monitor to analyze sign-in logs. Example CLI Query: `az monitor log-analytics query -w <workspace_id> --analytics-query \"AzureActivity | where ActivityStatus == 'Success' and OperationName == 'Sign-in'\"`\n    - Google Workspace: Enable and monitor Login Audit logs from the Admin Console.\n    - Office 365: Use Audit Log Search in Microsoft 365 Security & Compliance Center for login-related events.\n- Network Logs\n    - Sources: Network authentication mechanisms (e.g., RADIUS or TACACS logs).\n- Enable EDR Monitoring: \n    - EDR tools monitor logon session activity, including the creation of new sessions.\n    - Configure alerts for: Suspicious logon types (e.g., Logon Type 10 for RDP or Type 5 for Service). Logons from unusual locations, accounts, or devices.\n    - Leverage EDR telemetry for session attributes like source IP, session duration, and originating process.",
+            "description": "The successful establishment of a new user session following a successful authentication attempt. This typically signifies that a user has provided valid credentials or authentication tokens, and the system has initiated a session associated with that user account. This data is crucial for tracking authentication events and identifying potential unauthorized access. Examples: \n\n- Windows Systems\n    - Event ID: 4624\n        - Logon Type: 2 (Interactive) or 10 (Remote Interactive via RDP).\n        - Account Name: JohnDoe\n        - Source Network Address: 192.168.1.100\n        - Authentication Package: NTLM\n- Linux Systems\n    - /var/log/utmp or /var/log/wtmp:\n        - Log format: login user [tty] from [source_ip]\n        - User: jane\n        - IP: 10.0.0.5\n        - Timestamp: 2024-12-28 08:30:00\n- macOS Systems\n    - /var/log/asl.log or unified logging framework:\n        - Log: com.apple.securityd: Authentication succeeded for user 'admin'\n- Cloud Environments\n    - Azure Sign-In Logs:\n        - Activity: Sign-in successful\n        - Client App: Browser\n        - Location: Unknown (Country: X)\n- Google Workspace\n    - Activity: Login\n        - Event Type: successful_login\n        - Source IP: 203.0.113.55",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -20002,7 +19839,7 @@
                     "channel": "user.authentication.sso, app.oauth.grant"
                 },
                 {
-                    "name": "m365:signin",
+                    "name": "m365:signinlogs",
                     "channel": "SignInSuccess, RoleAssignmentRead"
                 },
                 {
@@ -20024,10 +19861,6 @@
                 {
                     "name": "azure:signinlogs",
                     "channel": "Suspicious login to cloud mailbox system"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624"
                 },
                 {
                     "name": "azure:signinlogs",
@@ -20086,10 +19919,6 @@
                     "channel": "cloud.ssh.publicKey.inserted, compute.instances.osLogin"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624 with LogonType=9 or smartcard logon"
-                },
-                {
                     "name": "NSM:Connections",
                     "channel": "Missing new login event but session activity continues"
                 },
@@ -20106,16 +19935,12 @@
                     "channel": "Access to Keychain items or browser credential stores"
                 },
                 {
-                    "name": "m365:signin",
+                    "name": "m365:signinlogs",
                     "channel": "Token usage events with device/user mismatch"
                 },
                 {
                     "name": "saas:github",
                     "channel": "Login from unusual IP, device fingerprint, or location; access token creation from new client"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624 (LogonType=10 or 3), EventCode=4648"
                 },
                 {
                     "name": "linux:syslog",
@@ -20132,10 +19957,6 @@
                 {
                     "name": "esxi:vmkernel",
                     "channel": "vim.fault.*, DCUI login, SSH shell"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624 (LogonType=3)"
                 },
                 {
                     "name": "AWS:CloudTrail",
@@ -20174,14 +19995,6 @@
                     "channel": "sudden role assumption after credential file access"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624 (LogonType=10), EventCode=4648"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624, 4672, 4648"
-                },
-                {
                     "name": "NSM:Connections",
                     "channel": "Accepted publickey for user from unusual IP or without tty"
                 },
@@ -20214,10 +20027,6 @@
                     "channel": "Login, TokenGranted: Discovery actions tied to anomalous login sessions or tokens"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "4624"
-                },
-                {
                     "name": "NSM:Connections",
                     "channel": "simultaneous or anomalous logon sessions across multiple systems"
                 },
@@ -20226,16 +20035,8 @@
                     "channel": "authentication plugin load or modification events"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624,4648, 4672"
-                },
-                {
                     "name": "azure:ad",
                     "channel": "SignInEvents"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624,4648,4672,4769"
                 },
                 {
                     "name": "linux:syslog",
@@ -20279,11 +20080,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventID=4624"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624, 4634"
+                    "channel": "EventCode=4624"
                 },
                 {
                     "name": "linux:syslog",
@@ -20339,9 +20136,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:36.018Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Script Execution",
-            "description": "The execution of a text file that contains code via the interpreter.\n\n*Data Collection Measures:*\n\n- Windows Event Logs:\n    - Event ID 4104 (PowerShell Script Block Logging) \u2013 Captures full command-line execution of PowerShell scripts.\n    - Event ID 4688 (Process Creation) \u2013 Detects script execution by tracking process launches (`powershell.exe`, `wscript.exe`, `cscript.exe`).\n    - Event ID 5861 (Script Execution) \u2013 Captures script execution via Windows Defender AMSI logging.\n- Sysmon (Windows):\n    - Event ID 1 (Process Creation) \u2013 Monitors script execution initiated by scripting engines.\n    - Event ID 11 (File Creation) \u2013 Detects new script files written to disk before execution.\n- Endpoint Detection and Response (EDR) Tools:\n    - Track script execution behavior, detect obfuscated commands, and prevent malicious scripts.\n- PowerShell Logging:\n    - Enable Module Logging: Logs all loaded modules and cmdlets.\n    - Enable Script Block Logging: Captures complete PowerShell script execution history.\n- SIEM Detection Rules:\n    - Detect script execution with obfuscated, encoded, or remote URLs.\n    - Alert on script executions using `-EncodedCommand` or `iex(iwr)`.",
+            "description": "The execution of a text file that contains code via the interpreter.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -20397,7 +20194,7 @@
                 },
                 {
                     "name": "WinEventLog:PowerShell",
-                    "channel": "EventCode=4103, 4104"
+                    "channel": "EventCode=4103, 4104, 4105, 4106"
                 },
                 {
                     "name": "WinEventLog:Application",
@@ -20441,7 +20238,7 @@
                 },
                 {
                     "name": "WinEventLog:System",
-                    "channel": "EventCode=4016,5312"
+                    "channel": "EventCode=4016, 5312"
                 },
                 {
                     "name": "auditd:PROCTITLE",
@@ -20497,9 +20294,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:34.703Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Network Traffic Flow",
-            "description": "Summarized network packet data that captures session-level details such as source/destination IPs, ports, protocol types, timestamps, and data volume, without storing full packet payloads. This is commonly used for traffic analysis, anomaly detection, and network performance monitoring.\n\n*Data Collection Measures:*\n\n- Network Flow Logs (Metadata Collection)\n    - NetFlow \n        - Summarized metadata for network conversations (no packet payloads).\n    - sFlow (Sampled Flow Logging)\n        - Captures sampled packets from switches and routers.\n        - Used for real-time traffic monitoring and anomaly detection.\n    - Zeek (Bro) Flow Logs\n        - Zeek logs session-level details in logs like conn.log, http.log, dns.log, etc.\n- Host-Based Collection\n    - Sysmon Event ID 3 \u2013 Network Connection Initiated\n        - Logs process-level network activity, useful for detecting malicious outbound connections.\n    - AuditD (Linux) \u2013 syscall=connect\n        - Monitors system calls for network connections. `auditctl -a always,exit -F arch=b64 -S connect -k network_activity`\n- Cloud & SaaS Flow Monitoring\n    - AWS VPC Flow Logs\n        - Captures metadata for traffic between EC2 instances, security groups, and internet gateways.\n    - Azure NSG Flow Logs / Google VPC Flow Logs\n        - Logs ingress/egress traffic for cloud-based resources.",
+            "description": "Summarized network packet data that captures session-level details such as source/destination IPs, ports, protocol types, timestamps, and data volume, without storing full packet payloads. This is commonly used for traffic analysis, anomaly detection, and network performance monitoring.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -20800,7 +20597,7 @@
                 },
                 {
                     "name": "WinEventLog:Microsoft-Windows-Windows Firewall With Advanced Security/Firewall",
-                    "channel": "EventCode=2004,2005,2006"
+                    "channel": "EventCode=2004, 2005, 2006"
                 },
                 {
                     "name": "NSM:Flow",
@@ -21148,9 +20945,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:34.948Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "User Account Authentication",
-            "description": "An attempt (successful and failed login attempts) by a user, service, or application to gain access to a network, system, or cloud-based resource. This typically involves credentials such as passwords, tokens, multi-factor authentication (MFA), or biometric validation.\n\n*Data Collection Measures:*\n\n- Host-Based Authentication Logs\n    - Windows Event Logs\n        - Event ID 4776 \u2013 NTLM authentication attempt.\n        - Event ID 4624 \u2013 Successful user logon.\n        - Event ID 4625 \u2013 Failed authentication attempt.\n        - Event ID 4648 \u2013 Explicit logon with alternate credentials.\n    - Linux/macOS Authentication Logs\n        - `/var/log/auth.log`, `/var/log/secure` \u2013 Logs SSH, sudo, and other authentication attempts.\n        - AuditD \u2013 Tracks authentication events via PAM modules.\n        - macOS Unified Logs \u2013 `/var/db/diagnostics` captures authentication failures.\n- Cloud Authentication Logs\n    - Azure AD Logs\n        - Sign-in Logs \u2013 Tracks authentication attempts, MFA challenges, and conditional access failures.\n        - Audit Logs \u2013 Captures authentication-related configuration changes.\n        - Microsoft Graph API \u2013 Provides real-time sign-in analytics.\n    - Google Workspace & Office 365\n        - Google Admin Console \u2013 `User Login Report` tracks login attempts and failures.\n        - Office 365 Unified Audit Logs \u2013 Captures logins across Exchange, SharePoint, and Teams.\n    - AWS CloudTrail & IAM\n        - Tracks authentication via `AWS IAM AuthenticateUser` and `sts:GetSessionToken`.\n        - Logs failed authentications to AWS Management Console and API requests.\n- Container Authentication Monitoring\n    - Kubernetes Authentication Logs\n        - kubectl audit logs \u2013 Captures authentication attempts for service accounts and admin users.\n        - Azure Kubernetes Service (AKS) and Google Kubernetes Engine (GKE) \u2013 Logs IAM authentication events.",
+            "description": "An attempt (successful and failed login attempts) by a user, service, or application to gain access to a network, system, or cloud-based resource. This typically involves credentials such as passwords, tokens, multi-factor authentication (MFA), or biometric validation.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -21209,7 +21006,7 @@
                     "channel": "user login from unexpected IP or non-admin user role"
                 },
                 {
-                    "name": "m365:signin",
+                    "name": "m365:signinlogs",
                     "channel": "Sign-in from anomalous location or impossible travel condition"
                 },
                 {
@@ -21222,7 +21019,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4769,1200,1202"
+                    "channel": "EventCode=4769, 1200, 1202"
                 },
                 {
                     "name": "linux:syslog",
@@ -21370,7 +21167,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624, 4625"
+                    "channel": "EventCode=4776, 4625"
                 },
                 {
                     "name": "azure:signinlogs",
@@ -21439,10 +21236,6 @@
                 {
                     "name": "AWS:CloudTrail",
                     "channel": "eventName=ConsoleLogin | eventType=AwsConsoleSignIn"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4625, 4624"
                 },
                 {
                     "name": "auditd:USER_LOGIN",
@@ -21525,10 +21318,6 @@
                     "channel": "authentication & authorization"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "4624, 4625"
-                },
-                {
                     "name": "azure:signinlogs",
                     "channel": "Sign-in activity"
                 },
@@ -21563,10 +21352,6 @@
                 {
                     "name": "esxi:auth",
                     "channel": "SSH session/login"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventID=4625"
                 },
                 {
                     "name": "NSM:Connections",
@@ -21753,9 +21538,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.471Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Module Load",
-            "description": "When a process or program dynamically attaches a shared library, module, or plugin into its memory space. This action is typically performed to extend the functionality of an application, access shared system resources, or interact with kernel-mode components.\n\n*Data Collection Measures:*\n\n- Event Logging (Windows):\n    - Sysmon Event ID 7: Logs when a DLL is loaded into a process.\n    - Windows Security Event ID 4688: Captures process creation events, often useful for correlating module loads.\n    - Windows Defender ATP: Can provide visibility into suspicious module loads.\n- Event Logging (Linux/macOS):\n    - AuditD (`execve` and `open` syscalls): Captures when shared libraries (`.so` files) are loaded.\n    - Ltrace/Strace: Monitors process behavior, including library calls (`dlopen`, `execve`).\n    - MacOS Endpoint Security Framework (ESF): Monitors library loads (`ES_EVENT_TYPE_NOTIFY_DYLD_INSERT_LIBRARIES`).\n- Endpoint Detection & Response (EDR): \n    - Provide real-time telemetry on module loads and process injections.\n    - Sysinternals Process Monitor (`procmon`): Captures loaded modules and their execution context.\n- Memory Forensics:\n    - Volatility Framework (`malfind`, `ldrmodules`): Detects injected DLLs and anomalous module loads.\n    - Rekall Framework: Useful for kernel-mode module detection.\n- SIEM and Log Analysis:\n    - Centralized log aggregation to correlate suspicious module loads across the environment.\n    - Detection rules using correlation searches and behavioral analytics.",
+            "description": "When a process or program dynamically attaches a shared library, module, or plugin into its memory space. This action is typically performed to extend the functionality of an application, access shared system resources, or interact with kernel-mode components.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -21932,14 +21717,14 @@
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/data-components/DC0063",
+                    "url": "https://attack.mitre.org/datacomponents/DC0063",
                     "external_id": "DC0063"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-22T18:34:46.572Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Windows Registry Key Modification",
             "description": "Changes made to an existing registry key or its values. These modifications can include altering permissions, modifying stored data, or updating configuration settings.\n\n*Data Collection Measures:*\n\n- Windows Event Logs\n    - Event ID 4657 - Registry Value Modified: Logs changes to registry values, including modifications to startup entries, security settings, or system configurations.\n- Sysmon (System Monitor) for Windows\n    - Sysmon Event ID 13 - Registry Value Set: Captures changes to specific registry values.\n    - Sysmon Event ID 14 - Registry Key & Value Renamed: Logs renaming of registry keys, which may indicate evasion attempts.\n- Endpoint Detection and Response (EDR) Solutions\n    - Monitor registry modifications for suspicious behavior.",
             "x_mitre_data_source_ref": "",
@@ -21957,24 +21742,12 @@
                     "channel": "None"
                 },
                 {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=13"
-                },
-                {
                     "name": "WinEventLog:Security",
                     "channel": "EventCode=4657"
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4663"
-                },
-                {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=14"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4670"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "WinEventLog:Sysmon",
@@ -22022,9 +21795,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:36.450Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "File Deletion",
-            "description": "Refers to events where files are removed from a system or storage device. These events can indicate legitimate housekeeping activities or malicious actions such as attackers attempting to cover their tracks. Monitoring file deletions helps organizations identify unauthorized or suspicious activities.\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Sysmon: Event ID 23: Logs file deletion events, including details such as file paths and responsible processes.\n- Windows Event Log: Enable \"Object Access\" auditing to monitor file deletions.\n- PowerShell: `Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4663} | Where-Object {$_.Message -like '*DELETE*'}`\n\nLinux\n\n- Auditd: Use audit rules to capture file deletion events: `auditctl -a always,exit -F arch=b64 -S unlink -S rename -S rmdir -k file_deletion`\n- Query logs: `ausearch -k file_deletion`\n- Inotify: Use inotifywait to monitor file deletions: `inotifywait -m /path/to/watch -e delete`\n\nmacOS\n\n- Endpoint Security Framework (ESF): Monitor events like ES_EVENT_TYPE_AUTH_UNLINK to capture file deletion activities.\n- FSEvents: Track file deletion activities in real-time: `fs_usage | grep unlink`\n\nSIEM Integration\n\n- Forward file deletion logs to a SIEM for centralized monitoring and correlation with other events.\n",
+            "description": "Refers to events where files are removed from a system or storage device. These events can indicate legitimate housekeeping activities or malicious actions such as attackers attempting to cover their tracks. Monitoring file deletions helps organizations identify unauthorized or suspicious activities.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -22140,7 +21913,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.331Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Process Metadata",
             "description": "Contextual data about a running process, which may include information such as environment variables, image name, user/owner, etc.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -22299,7 +22072,7 @@
                 },
                 {
                     "name": "WinEventLog:PowerShell",
-                    "channel": "EventCode=400,403"
+                    "channel": "EventCode=400, 403"
                 },
                 {
                     "name": "macos:osquery",
@@ -22347,9 +22120,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.814Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Scheduled Job Creation",
-            "description": "The establishment of a task or job that will execute at a predefined time or based on specific triggers.\n\n*Data Collection Measures: *\n\n- Windows Event Logs:\n    - Event ID 4698 (Scheduled Task Created) \u2013 Detects the creation of new scheduled tasks.\n    - Event ID 4702 (Scheduled Task Updated) \u2013 Identifies modifications to existing scheduled jobs.\n    - Event ID 106 (TaskScheduler Operational Log) \u2013 Provides details about scheduled task execution.\n- Sysmon (Windows):\n    - Event ID 1 (Process Creation) \u2013 Detects the execution of suspicious tasks started by `schtasks.exe`, `at.exe`, or `taskeng.exe`.\n- Linux/macOS Monitoring:\n    - AuditD: Monitor modifications to `/etc/cron*`, `/var/spool/cron/`, and `crontab` files.\n    - Syslog: Capture cron job execution logs from `/var/log/cron`.\n    - OSQuery: Query the `crontab` and `launchd` tables for scheduled job configurations.\n- Endpoint Detection and Response (EDR) Tools:\n    - Track scheduled task creation and modification events.\n- SIEM & XDR Detection Rules:\n    - Monitor for scheduled jobs created by unusual users.\n    - Detect tasks executing scripts from non-standard directories.",
+            "description": "The establishment of a task or job that will execute at a predefined time or based on specific triggers.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -22441,9 +22214,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:37.412Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Network Share Access",
-            "description": "Opening a network share, which makes the contents available to the requestor (ex: Windows EID 5140 or 5145)\n\n*Data Collection Measures:*\n\n- Windows:\n    - Event ID 5140 \u2013 Network Share Object Access Logs every access attempt to a network share.\n    - Event ID 5145 \u2013 Detailed Network Share Object Access Captures granular access control information, including the requesting user, source IP, and access permissions.\n    - Sysmon Event ID 3 \u2013 Network Connection Initiated Helps track SMB connections to suspicious or unauthorized network shares.\n    - Enable Audit Policy for Network Share Access: `auditpol /set /subcategory:\"File Share\" /success:enable /failure:enable`\n    - Enable PowerShell Logging to Detect Unauthorized SMB Access: `Set-ExecutionPolicy RemoteSigned`\n    - Restrict Network Share Access with Group Policy (GPO): `Computer Configuration \u2192 Windows Settings \u2192 Security Settings \u2192 Local Policies \u2192 User Rights Assignment` Set \"Access this computer from the network\" to restrict unauthorized accounts.\n- Linux/macOS:\n    - AuditD (`open`, `read`, `write`, `connect` syscalls) Detects access to NFS, CIFS, and SMB network shares.\n    - Lsof (`lsof | grep nfs` or `lsof | grep smb`) Identifies active network share connections.\n    - Mount (`mount | grep nfs` or `mount | grep cifs`) Lists currently mounted network shares.\n    - Enable AuditD for SMB/NFS Access: `auditctl -a always,exit -F arch=b64 -S open -F path=/mnt/share -k network_share_access`\n    - Monitor Active Network Shares Using Netstat: `netstat -an | grep :445`\n- Endpoint Detection & Response (EDR):\n    - Detects abnormal network share access behavior, such as unusual account usage, large file transfers, or encrypted file activity.",
+            "description": "Opening a network share, which makes the contents available to the requestor (ex: Windows EID 5140 or 5145)",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -22459,7 +22232,7 @@
                 },
                 {
                     "name": "WinEventLog:Microsoft-Windows-SMBClient/Security",
-                    "channel": "EventID=31001"
+                    "channel": "EventCode=31001"
                 },
                 {
                     "name": "WinEventLog:Security",

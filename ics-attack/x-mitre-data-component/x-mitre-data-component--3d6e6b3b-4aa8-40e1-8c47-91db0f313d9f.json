@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--7acdd440-0cd3-499b-a537-510c859ef829",
+    "id": "bundle--d7c16bbc-9aec-4fe6-b437-82ed77a5c2df",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,9 +19,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:37.342Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Drive Creation",
-            "description": "The activity of assigning a new drive letter or creating a mount point for a data storage device, such as a USB, network share, or external hard drive, enabling access to its content on a host system. Examples: \n\n- USB Drive Insertion: A USB drive is plugged in and automatically assigned the letter `E:\\` on a Windows machine.\n- Network Drive Mapping: A network share `\\\\server\\share` is mapped to the drive `Z:\\`.\n- Virtual Drive Creation: A virtual disk is mounted on `/mnt/virtualdrive` using an ISO image or a virtual hard disk (VHD).\n- Cloud Storage Mounting: Google Drive is mounted as `G:\\` on a Windows machine using a cloud sync tool.\n- External Storage Integration: An external HDD or SSD is connected and assigned `/mnt/external` on a Linux system.\n\nThis data component can be collected through the following measures:\n\nWindows Event Logs\n\n- Relevant Events:\n    - Event ID 98: Logs the creation of a volume (mount or new drive letter assignment).\n    - Event ID 1006: Logs removable storage device insertions.\n- Configuration: Enable \"Removable Storage Events\" in the Group Policy settings:\n`Computer Configuration > Administrative Templates > System > Removable Storage Access`\n\nLinux System Logs\n\n- Command-Line Monitoring: Use `dmesg` or `journalctl` to monitor mount events.\n\n- Auditd Configuration: Add audit rules to track mount points.\n- Logs can be reviewed in /var/log/audit/audit.log.\n\nmacOS System Logs\n\n- Unified Logs: Monitor system logs for mount activity:\n- Command-Line Tools: Use `diskutil list` to verify newly created or mounted drives.\n\nEndpoint Detection and Response (EDR) Tools\n\n- EDR solutions can log removable drive usage and network-mounted drives. Configure EDR policies to alert on suspicious drive creation events.\n\nSIEM Tools\n\n- Centralize logs from multiple platforms into a SIEM (e.g., Splunk) to correlate and alert on suspicious drive creation activities.",
+            "description": "The activity of assigning a new drive letter or creating a mount point for a data storage device, such as a USB, network share, or external hard drive, enabling access to its content on a host system. Examples: \n\n- USB Drive Insertion: A USB drive is plugged in and automatically assigned the letter `E:\\` on a Windows machine.\n- Network Drive Mapping: A network share `\\\\server\\share` is mapped to the drive `Z:\\`.\n- Virtual Drive Creation: A virtual disk is mounted on `/mnt/virtualdrive` using an ISO image or a virtual hard disk (VHD).\n- Cloud Storage Mounting: Google Drive is mounted as `G:\\` on a Windows machine using a cloud sync tool.\n- External Storage Integration: An external HDD or SSD is connected and assigned `/mnt/external` on a Linux system..",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -48,7 +48,7 @@
                     "channel": "mounted|appeared|DA: disk* attached"
                 },
                 {
-                    "name": "WinEventLog:Microsoft-Windows-Partition/Diagnostic",
+                    "name": "WinEventLog:System",
                     "channel": "EventCode=1006"
                 },
                 {
@@ -61,7 +61,7 @@
                 },
                 {
                     "name": "WinEventLog:System",
-                    "channel": "EventCode=1006,10001"
+                    "channel": "EventCode=1006, 10001"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -76,7 +76,7 @@
                     "channel": "Volume Mount + File Read"
                 },
                 {
-                    "name": "WinEventLog:Microsoft-Windows-DriverFrameworks-UserMode/Operational",
+                    "name": "WinEventLog:System",
                     "channel": "EventCode=2003"
                 },
                 {
@@ -92,10 +92,6 @@
                     "channel": "Hardware enumeration events via IOKit or USBMuxd showing TinyPilot or unknown keyboard/mouse"
                 },
                 {
-                    "name": "WinEventLog:System",
-                    "channel": "EventCode=2003"
-                },
-                {
                     "name": "auditd:SYSCALL",
                     "channel": "Kernel Device Events - USB Block Devices"
                 },
@@ -108,20 +104,12 @@
                     "channel": "Volume Mount + Process Trace + File Read"
                 },
                 {
-                    "name": "WinEventLog:System",
-                    "channel": "EventCode=20001/20003"
-                },
-                {
                     "name": "journald:systemd",
                     "channel": "udisks2 or udevd logs"
                 },
                 {
                     "name": "macos:unifiedlog",
                     "channel": "log stream --predicate 'eventMessage contains \"USBMSC\"'"
-                },
-                {
-                    "name": "WinEventLog:System",
-                    "channel": "20001-20003"
                 },
                 {
                     "name": "linux:syslog",
