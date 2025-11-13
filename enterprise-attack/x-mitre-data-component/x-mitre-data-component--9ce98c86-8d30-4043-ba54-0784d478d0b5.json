@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--d0456649-b7c9-48bd-b378-fed27ad5b230",
+    "id": "bundle--4601bd91-aca1-4b31-b5aa-7f142fda830c",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,9 +19,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.022Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Logon Session Creation",
-            "description": "The successful establishment of a new user session following a successful authentication attempt. This typically signifies that a user has provided valid credentials or authentication tokens, and the system has initiated a session associated with that user account. This data is crucial for tracking authentication events and identifying potential unauthorized access. Examples: \n\n- Windows Systems\n    - Event ID: 4624\n        - Logon Type: 2 (Interactive) or 10 (Remote Interactive via RDP).\n        - Account Name: JohnDoe\n        - Source Network Address: 192.168.1.100\n        - Authentication Package: NTLM\n- Linux Systems\n    - /var/log/utmp or /var/log/wtmp:\n        - Log format: login user [tty] from [source_ip]\n        - User: jane\n        - IP: 10.0.0.5\n        - Timestamp: 2024-12-28 08:30:00\n- macOS Systems\n    - /var/log/asl.log or unified logging framework:\n        - Log: com.apple.securityd: Authentication succeeded for user 'admin'\n- Cloud Environments\n    - Azure Sign-In Logs:\n        - Activity: Sign-in successful\n        - Client App: Browser\n        - Location: Unknown (Country: X)\n- Google Workspace\n    - Activity: Login\n        - Event Type: successful_login\n        - Source IP: 203.0.113.55\n\nThis data component can be collected through the following measures:\n\n- Windows Systems\n    - Event Logs: Monitor Security Event Logs using Event ID 4624 for successful logons.\n    - PowerShell Example: `Get-EventLog -LogName Security -InstanceId 4624`\n- Linux Systems\n    - Log Files: Monitor `/var/log/utmp`, `/var/log/wtmp`, or `/var/log/auth.log` for logon events.\n    - Tools: Use `last` or `who` commands to parse login records.\n- macOS Systems\n    - Log Sources: Monitor `/var/log/asl.log` or Apple Unified Logs using the `log show` command.\n    - Command Example: `log show --predicate 'eventMessage contains \"Authentication succeeded\"' --info`\n- Cloud Environments\n    - Azure AD: Use Azure Monitor to analyze sign-in logs. Example CLI Query: `az monitor log-analytics query -w <workspace_id> --analytics-query \"AzureActivity | where ActivityStatus == 'Success' and OperationName == 'Sign-in'\"`\n    - Google Workspace: Enable and monitor Login Audit logs from the Admin Console.\n    - Office 365: Use Audit Log Search in Microsoft 365 Security & Compliance Center for login-related events.\n- Network Logs\n    - Sources: Network authentication mechanisms (e.g., RADIUS or TACACS logs).\n- Enable EDR Monitoring: \n    - EDR tools monitor logon session activity, including the creation of new sessions.\n    - Configure alerts for: Suspicious logon types (e.g., Logon Type 10 for RDP or Type 5 for Service). Logons from unusual locations, accounts, or devices.\n    - Leverage EDR telemetry for session attributes like source IP, session duration, and originating process.",
+            "description": "The successful establishment of a new user session following a successful authentication attempt. This typically signifies that a user has provided valid credentials or authentication tokens, and the system has initiated a session associated with that user account. This data is crucial for tracking authentication events and identifying potential unauthorized access. Examples: \n\n- Windows Systems\n    - Event ID: 4624\n        - Logon Type: 2 (Interactive) or 10 (Remote Interactive via RDP).\n        - Account Name: JohnDoe\n        - Source Network Address: 192.168.1.100\n        - Authentication Package: NTLM\n- Linux Systems\n    - /var/log/utmp or /var/log/wtmp:\n        - Log format: login user [tty] from [source_ip]\n        - User: jane\n        - IP: 10.0.0.5\n        - Timestamp: 2024-12-28 08:30:00\n- macOS Systems\n    - /var/log/asl.log or unified logging framework:\n        - Log: com.apple.securityd: Authentication succeeded for user 'admin'\n- Cloud Environments\n    - Azure Sign-In Logs:\n        - Activity: Sign-in successful\n        - Client App: Browser\n        - Location: Unknown (Country: X)\n- Google Workspace\n    - Activity: Login\n        - Event Type: successful_login\n        - Source IP: 203.0.113.55",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -52,7 +52,7 @@
                     "channel": "user.authentication.sso, app.oauth.grant"
                 },
                 {
-                    "name": "m365:signin",
+                    "name": "m365:signinlogs",
                     "channel": "SignInSuccess, RoleAssignmentRead"
                 },
                 {
@@ -74,10 +74,6 @@
                 {
                     "name": "azure:signinlogs",
                     "channel": "Suspicious login to cloud mailbox system"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624"
                 },
                 {
                     "name": "azure:signinlogs",
@@ -136,10 +132,6 @@
                     "channel": "cloud.ssh.publicKey.inserted, compute.instances.osLogin"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624 with LogonType=9 or smartcard logon"
-                },
-                {
                     "name": "NSM:Connections",
                     "channel": "Missing new login event but session activity continues"
                 },
@@ -156,16 +148,12 @@
                     "channel": "Access to Keychain items or browser credential stores"
                 },
                 {
-                    "name": "m365:signin",
+                    "name": "m365:signinlogs",
                     "channel": "Token usage events with device/user mismatch"
                 },
                 {
                     "name": "saas:github",
                     "channel": "Login from unusual IP, device fingerprint, or location; access token creation from new client"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624 (LogonType=10 or 3), EventCode=4648"
                 },
                 {
                     "name": "linux:syslog",
@@ -182,10 +170,6 @@
                 {
                     "name": "esxi:vmkernel",
                     "channel": "vim.fault.*, DCUI login, SSH shell"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624 (LogonType=3)"
                 },
                 {
                     "name": "AWS:CloudTrail",
@@ -224,14 +208,6 @@
                     "channel": "sudden role assumption after credential file access"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624 (LogonType=10), EventCode=4648"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624, 4672, 4648"
-                },
-                {
                     "name": "NSM:Connections",
                     "channel": "Accepted publickey for user from unusual IP or without tty"
                 },
@@ -264,10 +240,6 @@
                     "channel": "Login, TokenGranted: Discovery actions tied to anomalous login sessions or tokens"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "4624"
-                },
-                {
                     "name": "NSM:Connections",
                     "channel": "simultaneous or anomalous logon sessions across multiple systems"
                 },
@@ -276,16 +248,8 @@
                     "channel": "authentication plugin load or modification events"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624,4648, 4672"
-                },
-                {
                     "name": "azure:ad",
                     "channel": "SignInEvents"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624,4648,4672,4769"
                 },
                 {
                     "name": "linux:syslog",
@@ -329,11 +293,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventID=4624"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624, 4634"
+                    "channel": "EventCode=4624"
                 },
                 {
                     "name": "linux:syslog",

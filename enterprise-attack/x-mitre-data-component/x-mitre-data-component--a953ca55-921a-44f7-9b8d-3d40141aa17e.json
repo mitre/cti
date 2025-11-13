@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--e8048c6e-13a8-4845-88d4-52afe17ecce3",
+    "id": "bundle--0e6c8fd8-f1e4-4c1d-a38c-a9ec4e705285",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,9 +19,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:34.948Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "User Account Authentication",
-            "description": "An attempt (successful and failed login attempts) by a user, service, or application to gain access to a network, system, or cloud-based resource. This typically involves credentials such as passwords, tokens, multi-factor authentication (MFA), or biometric validation.\n\n*Data Collection Measures:*\n\n- Host-Based Authentication Logs\n    - Windows Event Logs\n        - Event ID 4776 \u2013 NTLM authentication attempt.\n        - Event ID 4624 \u2013 Successful user logon.\n        - Event ID 4625 \u2013 Failed authentication attempt.\n        - Event ID 4648 \u2013 Explicit logon with alternate credentials.\n    - Linux/macOS Authentication Logs\n        - `/var/log/auth.log`, `/var/log/secure` \u2013 Logs SSH, sudo, and other authentication attempts.\n        - AuditD \u2013 Tracks authentication events via PAM modules.\n        - macOS Unified Logs \u2013 `/var/db/diagnostics` captures authentication failures.\n- Cloud Authentication Logs\n    - Azure AD Logs\n        - Sign-in Logs \u2013 Tracks authentication attempts, MFA challenges, and conditional access failures.\n        - Audit Logs \u2013 Captures authentication-related configuration changes.\n        - Microsoft Graph API \u2013 Provides real-time sign-in analytics.\n    - Google Workspace & Office 365\n        - Google Admin Console \u2013 `User Login Report` tracks login attempts and failures.\n        - Office 365 Unified Audit Logs \u2013 Captures logins across Exchange, SharePoint, and Teams.\n    - AWS CloudTrail & IAM\n        - Tracks authentication via `AWS IAM AuthenticateUser` and `sts:GetSessionToken`.\n        - Logs failed authentications to AWS Management Console and API requests.\n- Container Authentication Monitoring\n    - Kubernetes Authentication Logs\n        - kubectl audit logs \u2013 Captures authentication attempts for service accounts and admin users.\n        - Azure Kubernetes Service (AKS) and Google Kubernetes Engine (GKE) \u2013 Logs IAM authentication events.",
+            "description": "An attempt (successful and failed login attempts) by a user, service, or application to gain access to a network, system, or cloud-based resource. This typically involves credentials such as passwords, tokens, multi-factor authentication (MFA), or biometric validation.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -80,7 +80,7 @@
                     "channel": "user login from unexpected IP or non-admin user role"
                 },
                 {
-                    "name": "m365:signin",
+                    "name": "m365:signinlogs",
                     "channel": "Sign-in from anomalous location or impossible travel condition"
                 },
                 {
@@ -93,7 +93,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4769,1200,1202"
+                    "channel": "EventCode=4769, 1200, 1202"
                 },
                 {
                     "name": "linux:syslog",
@@ -241,7 +241,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4624, 4625"
+                    "channel": "EventCode=4776, 4625"
                 },
                 {
                     "name": "azure:signinlogs",
@@ -310,10 +310,6 @@
                 {
                     "name": "AWS:CloudTrail",
                     "channel": "eventName=ConsoleLogin | eventType=AwsConsoleSignIn"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4625, 4624"
                 },
                 {
                     "name": "auditd:USER_LOGIN",
@@ -396,10 +392,6 @@
                     "channel": "authentication & authorization"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "4624, 4625"
-                },
-                {
                     "name": "azure:signinlogs",
                     "channel": "Sign-in activity"
                 },
@@ -434,10 +426,6 @@
                 {
                     "name": "esxi:auth",
                     "channel": "SSH session/login"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventID=4625"
                 },
                 {
                     "name": "NSM:Connections",

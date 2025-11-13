@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--75fa7bb3-cc9c-41f2-b193-ba62af36d206",
+    "id": "bundle--742a906e-a450-4f51-972c-362f4dd09ad7",
     "spec_version": "2.0",
     "objects": [
         {
@@ -12,16 +12,16 @@
             "external_references": [
                 {
                     "source_name": "mitre-attack",
-                    "url": "https://attack.mitre.org/data-components/DC0066",
+                    "url": "https://attack.mitre.org/datacomponents/DC0066",
                     "external_id": "DC0066"
                 }
             ],
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-22T18:42:57.886Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Active Directory Object Modification",
-            "description": "Changes to AD objects (e.g., users, groups, OUs) are logged as Event ID 5136 (Object Modification) or 5163 (Attribute Changes). Examples:\n\n- User Account: Modifying attributes (e.g., group membership, enabling/disabling accounts).\n- Group Membership: Adding/removing members.\n- OU: Changing properties/permissions (e.g., delegation).\n- Service Account: Modifying SPNs or other attributes.\n- Object Attributes: Changes to passwords, logon hours, or control flags.\n\n*Data Collection Measures:*\n\n- Audit Policy:\n    - Enable \"Audit Directory Service Changes\" (Success and Failure).\n    - Path: `Computer Configuration > Policies > Windows Settings > Security Settings > Advanced Audit Policy Configuration > Audit Policies > Directory Service Changes`.\n    - Key Events: 5136 (modifications), 5163 (attribute changes).\n- Log Forwarding:\n    - Use WEF to centralize logs for SIEM.\n    - Parse logs to extract: Object Name, Attribute Changed, Initiator Account Name.\n- Enable EDR Monitoring:\n    - Detect changes to critical attributes (e.g., memberOf, logonHours).\n    - Track processes modifying directory service objects (e.g., Set-ADUser or dsmod).\n- Enable EDR Monitoring:\n    - Detect changes to critical attributes (e.g., memberOf, logonHours).\n    - Track processes modifying directory service objects (e.g., Set-ADUser or dsmod).",
+            "description": "Changes to AD objects (e.g., users, groups, OUs) are logged as Event ID 5136 (Object Modification) or 5163 (Attribute Changes). Examples:\n\n- User Account: Modifying attributes (e.g., group membership, enabling/disabling accounts).\n- Group Membership: Adding/removing members.\n- OU: Changing properties/permissions (e.g., delegation).\n- Service Account: Modifying SPNs or other attributes.\n- Object Attributes: Changes to passwords, logon hours, or control flags.",
             "x_mitre_data_source_ref": "",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
@@ -41,14 +41,14 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=5136"
+                    "channel": "EventCode=5163"
                 },
                 {
                     "name": "WinEventLog:Security",
                     "channel": "EventCode=4739"
                 },
                 {
-                    "name": "azure:SigninLogs",
+                    "name": "azure:signinlogs",
                     "channel": "Add certificate credential, Update certificate credential"
                 },
                 {
@@ -56,20 +56,16 @@
                     "channel": "Replication cookie changes involving Configuration partition with new server/nTDSDSA objects."
                 },
                 {
-                    "name": "WinEventLog:DirectoryService",
+                    "name": "WinEventLog:Security",
                     "channel": "EventCode=5136"
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4663"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "esxi:vpxd",
                     "channel": "permission change operations on datastores or VMs"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4670"
                 },
                 {
                     "name": "m365:unified",

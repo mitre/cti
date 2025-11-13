@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--88ed9b81-79f6-4db8-8ffd-7aa5ca209ad6",
+    "id": "bundle--64d18f9a-1c80-43ae-9a52-a7ec93125ab4",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,9 +19,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.239Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "File Modification",
-            "description": "Changes made to a file, including updates to its contents, metadata, access permissions, or attributes. These modifications may indicate legitimate activity (e.g., software updates) or unauthorized changes (e.g., tampering, ransomware, or adversarial modifications). Examples: \n\n- Content Modifications: Changes to the content of a configuration file, such as modifying `/etc/ssh/sshd_config` on Linux or `C:\\Windows\\System32\\drivers\\etc\\hosts` on Windows.\n- Permission Changes: Altering file permissions to allow broader access, such as changing a file from `644` to `777` on Linux or modifying NTFS permissions on Windows.\n- Attribute Modifications: Changing a file's attributes to hidden, read-only, or system on Windows.\n- Timestamp Manipulation: Adjusting a file's creation or modification timestamp using tools like `touch` in Linux or timestomping tools on Windows.\n- Software or System File Changes: Modifying system files such as `boot.ini`, kernel modules, or application binaries.\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Event Logs: Enable file system auditing to monitor file modifications using Security Event ID 4670 (File System Audit) or Sysmon Event ID 2 (File creation time changed).\n- PowerShell: Use Get-ItemProperty or Get-Acl cmdlets to monitor file properties: `Get-Item -Path \"C:\\path\\to\\file\" | Select-Object Name, Attributes, LastWriteTime`\n\nLinux\n\n- File System Monitoring: Use tools like auditd with rules to monitor file modifications: `auditctl -w /path/to/file -p wa -k file_modification`\n- Inotify: Use inotifywait to watch for real-time changes to files or directories: `inotifywait -m /path/to/file`\n\nmacOS\n\n- Endpoint Security Framework (ESF): Monitor file modification events using ESF APIs.\n- Audit Framework: Configure audit rules to track file changes.\n- Command-Line Tools: Use fs_usage to monitor file activities: `fs_usage -w /path/to/file`\n\nSIEM Tools\n\n- Collect logs from endpoint agents (e.g., Sysmon, Auditd) and file servers to centralize file modification event data.",
+            "description": "Changes made to a file, including updates to its contents, metadata, access permissions, or attributes. These modifications may indicate legitimate activity (e.g., software updates) or unauthorized changes (e.g., tampering, ransomware, or adversarial modifications). Examples: \n\n- Content Modifications: Changes to the content of a configuration file, such as modifying `/etc/ssh/sshd_config` on Linux or `C:\\Windows\\System32\\drivers\\etc\\hosts` on Windows.\n- Permission Changes: Altering file permissions to allow broader access, such as changing a file from `644` to `777` on Linux or modifying NTFS permissions on Windows.\n- Attribute Modifications: Changing a file's attributes to hidden, read-only, or system on Windows.\n- Timestamp Manipulation: Adjusting a file's creation or modification timestamp using tools like `touch` in Linux or timestomping tools on Windows.\n- Software or System File Changes: Modifying system files such as `boot.ini`, kernel modules, or application binaries.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -62,10 +62,6 @@
                 {
                     "name": "macos:endpointsecurity",
                     "channel": "ES_EVENT_TYPE_NOTIFY_WRITE, targeting .zshrc, .zlogin, .zprofile"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4663"
                 },
                 {
                     "name": "fs:fileevents",
@@ -253,7 +249,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4656,4663"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -266,10 +262,6 @@
                 {
                     "name": "macos:unifiedlog",
                     "channel": "Unexpected creation or modification of stored data files in protected directories"
-                },
-                {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EvenCode=2"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -334,10 +326,6 @@
                 {
                     "name": "macos:unifiedlog",
                     "channel": "write of plist files in /Library/LaunchAgents or /Library/LaunchDaemons"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4670"
                 },
                 {
                     "name": "WinEventLog:System",
@@ -480,8 +468,8 @@
                     "channel": "create/modify dylib in monitored directories"
                 },
                 {
-                    "name": "WinEventLog:Application",
-                    "channel": "81,3033"
+                    "name": "WinEventLog:CodeIntegrity",
+                    "channel": "EventCode=3033"
                 },
                 {
                     "name": "auditd:SYSCALL",

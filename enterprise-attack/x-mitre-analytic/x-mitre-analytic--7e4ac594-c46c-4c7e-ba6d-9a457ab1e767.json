@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--3b4cc272-bc23-4578-b578-397dec621ecd",
+    "id": "bundle--533552d2-548e-48d7-922c-3ccf86599d78",
     "spec_version": "2.0",
     "objects": [
         {
@@ -18,10 +18,11 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:10:28.402Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Analytic 1177",
             "description": "Multi-stage Windows DACL manipulation behavioral chain: (1) Process creation of permission-modifying utilities (icacls.exe, takeown.exe, attrib.exe, cacls.exe) or PowerShell ACL cmdlets, (2) Command-line analysis revealing privilege escalation intent through suspicious parameters (/grant, /takeown, /T, Set-Acl), (3) DACL modification events (4670) correlating with process execution, (4) Subsequent file access attempts (4663) indicating successful permission bypass, (5) Potential follow-on persistence or lateral movement activities",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
             "x_mitre_version": "1.0",
             "x_mitre_attack_spec_version": "3.3.0",
             "x_mitre_domains": [
@@ -39,7 +40,7 @@
                 {
                     "x_mitre_data_component_ref": "x-mitre-data-component--5b8b466b-2c81-4fe7-946f-d677a74ae3db",
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4670"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "x_mitre_data_component_ref": "x-mitre-data-component--639e87f3-acb6-448a-9645-258f20da4bc5",
@@ -54,12 +55,12 @@
                 {
                     "x_mitre_data_component_ref": "x-mitre-data-component--685f917a-e95e-4ba0-ade1-c7d354dae6e0",
                     "name": "WinEventLog:PowerShell",
-                    "channel": "EventCode=4103,4104,4105, 4106"
+                    "channel": "EventCode=4103, 4104, 4105, 4106"
                 },
                 {
                     "x_mitre_data_component_ref": "x-mitre-data-component--05645013-2fed-4066-8bdc-626b2e201dd4",
-                    "name": "WinEventLog:Microsoft-Windows-WMI-Activity/Operational",
-                    "channel": "EventCode=5857, 5860, 5861"
+                    "name": "WinEventLog:WMI",
+                    "channel": "EventCode=5857, 5858, 5860, 5861"
                 }
             ],
             "x_mitre_mutable_elements": [
@@ -95,8 +96,7 @@
                     "field": "WMIMethodInvocationWhitelist",
                     "description": "Approved WMI classes and methods for legitimate permission operations (e.g., Win32_SecurityDescriptor) - maintain based on authorized management tools"
                 }
-            ],
-            "x_mitre_deprecated": false
+            ]
         }
     ]
 }

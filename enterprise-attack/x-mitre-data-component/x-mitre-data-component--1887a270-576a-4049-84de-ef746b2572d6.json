@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--f83f5152-2112-45a8-80eb-1a82cd8f0fc8",
+    "id": "bundle--588a8728-da92-4307-ba83-c69266b6d61d",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,7 +19,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.539Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Process Access",
             "description": "Refers to an event where one process attempts to open another process, typically to inspect or manipulate its memory, access handles, or modify execution flow. Monitoring these access attempts can provide valuable insight into both benign and malicious behaviors, such as debugging, inter-process communication (IPC), or process injection.\n\n*Data Collection Measures:*\n\n- Endpoint Detection and Response (EDR) Tools:\n    -  EDR solutions that provide telemetry on inter-process access and memory manipulation.\n- Sysmon (Windows):\n    - Event ID 10: Captures process access attempts, including:\n        - Source process (initiator)\n        - Target process (victim)\n        - Access rights requested\n        - Process ID correlation\n- Windows Event Logs:\n    - Event ID 4656 (Audit Handle to an Object): Logs access attempts to system objects.\n    - Event ID 4690 (Attempted Process Modification): Can help identify unauthorized process changes.\n- Linux/macOS Monitoring:\n    - AuditD: Monitors process access through syscall tracing (e.g., `ptrace`, `open`, `read`, `write`).\n    - eBPF/XDP: Used for low-level monitoring of kernel process access.\n    - OSQuery: Query process access behavior via structured SQL-like logging.\n- Procmon (Process Monitor) and Debugging Tools:\n    - Windows Procmon: Captures real-time process interactions.\n    - Linux strace / ptrace: Useful for tracking process behavior at the system call level.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -63,10 +63,6 @@
                     "channel": "ptrace"
                 },
                 {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=10, 7"
-                },
-                {
                     "name": "linux:syslog",
                     "channel": "syscalls (open, read, ioctl) on /dev/input or /proc/*/fd/*"
                 },
@@ -84,7 +80,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4656"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "macos:unifiedlog",

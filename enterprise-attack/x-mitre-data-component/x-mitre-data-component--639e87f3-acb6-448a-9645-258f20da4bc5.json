@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--546ca595-49e3-4567-9e2a-2ae727c44f52",
+    "id": "bundle--f816f0f8-509c-487b-a377-1f3aea1e27f9",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,9 +19,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:35.397Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "File Metadata",
-            "description": "contextual information about a file, including attributes such as the file's name, size, type, content (e.g., signatures, headers, media), user/owner, permissions, timestamps, and other related properties. File metadata provides insights into a file's characteristics and can be used to detect malicious activity, unauthorized modifications, or other anomalies. Examples: \n\n- File Ownership and Permissions: Checking the owner and permissions of a critical configuration file like /etc/passwd on Linux or C:\\Windows\\System32\\config\\SAM on Windows.\n- Timestamps: Analyzing the creation, modification, and access timestamps of a file.\n- File Content and Signatures: Extracting the headers of an executable file to verify its signature or detect packing/obfuscation.\n- File Attributes: Analyzing attributes like hidden, system, or read-only flags in Windows.\n- File Hashes: Generating MD5, SHA-1, or SHA-256 hashes of files to compare against threat intelligence feeds.\n- File Location: Monitoring files located in unusual directories or paths, such as temporary or user folders.\n\nThis data component can be collected through the following measures:\n\nWindows\n\n- Sysinternals Tools: Use `AccessEnum` or `PSFile` to retrieve metadata about file access and permissions.\n- Windows Event Logs: Enable object access auditing and monitor events like 4663 (Object Access) and 5140 (A network share object was accessed).\n- PowerShell: Use Get-Item or Get-ChildItem cmdlets: `Get-ChildItem -Path \"C:\\Path\\To\\Directory\" -Recurse | Select-Object Name, Length, LastWriteTime, Attributes`\n\nLinux\n\n- File System Commands: Use `ls -l` or stat to retrieve file metadata: `stat /path/to/file`\n- Auditd: Configure audit rules to log metadata access: `auditctl -w /path/to/file -p wa -k file_metadata`\n- Filesystem Integrity Tools: Tools like tripwire or AIDE (Advanced Intrusion Detection Environment) can monitor file metadata changes.\n\nmacOS\n\n- FSEvents: Use FSEvents to track file metadata changes.\n- Endpoint Security Framework (ESF): Capture metadata-related events via ESF APIs.\n- Command-Line Tools: Use ls -l or xattr for file attributes: `ls -l@ /path/to/file`\n\nSIEM Integration\n\n- Forward file metadata logs from endpoint or network devices to a SIEM for centralized analysis.",
+            "description": "contextual information about a file, including attributes such as the file's name, size, type, content (e.g., signatures, headers, media), user/owner, permissions, timestamps, and other related properties. File metadata provides insights into a file's characteristics and can be used to detect malicious activity, unauthorized modifications, or other anomalies. Examples: \n\n- File Ownership and Permissions: Checking the owner and permissions of a critical configuration file like /etc/passwd on Linux or C:\\Windows\\System32\\config\\SAM on Windows.\n- Timestamps: Analyzing the creation, modification, and access timestamps of a file.\n- File Content and Signatures: Extracting the headers of an executable file to verify its signature or detect packing/obfuscation.\n- File Attributes: Analyzing attributes like hidden, system, or read-only flags in Windows.\n- File Hashes: Generating MD5, SHA-1, or SHA-256 hashes of files to compare against threat intelligence feeds.\n- File Location: Monitoring files located in unusual directories or paths, such as temporary or user folders.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -105,7 +105,7 @@
                 },
                 {
                     "name": "auditd:SYSCALL",
-                    "channel": "path"
+                    "channel": "PATH"
                 },
                 {
                     "name": "auditd:PATH",
@@ -201,7 +201,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=4670"
+                    "channel": "EventCode=4663, 4670, 4656"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -324,10 +324,6 @@
                     "channel": "EventCode=4663, 4656, 4658"
                 },
                 {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4663"
-                },
-                {
                     "name": "auditd:SYSCALL",
                     "channel": "chmod, chown, setxattr, or file writes to /etc/ssl/* or /usr/local/share/ca-certificates/*"
                 },
@@ -390,10 +386,6 @@
                 {
                     "name": "macos:unifiedlog",
                     "channel": "File creation or modification with com.apple.ResourceFork extended attribute"
-                },
-                {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=15 "
                 }
             ]
         }
