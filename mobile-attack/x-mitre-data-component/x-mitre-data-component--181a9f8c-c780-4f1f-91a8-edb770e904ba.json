@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--719d2f5a-d8a7-4ce0-b11e-73ce8a047150",
+    "id": "bundle--0c10bc3c-8a23-4c57-8f2d-15c3f6b713be",
     "spec_version": "2.0",
     "objects": [
         {
@@ -19,7 +19,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2025-10-21T15:14:34.190Z",
+            "modified": "2025-11-12T22:03:39.105Z",
             "name": "Network Connection Creation",
             "description": "The initial establishment of a network session, where a system or process initiates a connection to a local or remote endpoint. This typically involves capturing socket information (source/destination IP, ports, protocol) and tracking session metadata. Monitoring these events helps detect lateral movement, exfiltration, and command-and-control (C2) activities.\n\n*Data Collection Measures:*\n\n- Windows:\n    - Event ID 5156 \u2013 Filtering Platform Connection - Logs network connections permitted by Windows Filtering Platform (WFP).\n    - Sysmon Event ID 3 \u2013 Network Connection Initiated - Captures process, source/destination IP, ports, and parent process.\n- Linux/macOS:\n    - Netfilter (iptables), nftables logs - Tracks incoming and outgoing network connections.\n    - AuditD (`connect` syscall) - Logs TCP, UDP, and ICMP connections.\n    - Zeek (`conn.log`) - Captures protocol, duration, and bytes transferred.\n- Cloud & Network Infrastructure:\n    - AWS VPC Flow Logs / Azure NSG Flow Logs - Logs IP traffic at the network level in cloud environments.\n    - Zeek (conn.log) or Suricata (network events) - Captures packet metadata for detection and correlation.\n- Endpoint Detection & Response (EDR):\n    - Detect anomalous network activity such as new C2 connections or data exfiltration attempts.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -41,10 +41,6 @@
                     "channel": "Outbound connection to 169.254.169.254 from EC2 workload"
                 },
                 {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=3"
-                },
-                {
                     "name": "macos:unifiedlog",
                     "channel": "connection attempts"
                 },
@@ -61,16 +57,8 @@
                     "channel": "web domain alerts"
                 },
                 {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=22"
-                },
-                {
                     "name": "auditd:SYSCALL",
                     "channel": "connect"
-                },
-                {
-                    "name": "auditd:SYSCALL",
-                    "channel": "netconnect"
                 },
                 {
                     "name": "macos:osquery",
@@ -101,16 +89,12 @@
                     "channel": "conn.log"
                 },
                 {
-                    "name": "auditd:SYSCALL",
-                    "channel": "open or connect"
-                },
-                {
                     "name": "macos:osquery",
                     "channel": "execution of trusted tools interacting with external endpoints"
                 },
                 {
                     "name": "linux:Sysmon",
-                    "channel": "EventCode=22"
+                    "channel": "EventCode=3, 22"
                 },
                 {
                     "name": "WinEventLog:Microsoft-Windows-Bits-Client/Operational",
@@ -142,11 +126,7 @@
                 },
                 {
                     "name": "WinEventLog:Security",
-                    "channel": "EventCode=5156"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=5156,5157"
+                    "channel": "EventCode=5156, 5157"
                 },
                 {
                     "name": "linux:osquery",
@@ -305,10 +285,6 @@
                     "channel": "Traffic from mirrored interface to mirror target IP"
                 },
                 {
-                    "name": "linux:Sysmon",
-                    "channel": "EventCode=3"
-                },
-                {
                     "name": "macos:osquery",
                     "channel": "process_events, socket_events"
                 },
@@ -394,7 +370,7 @@
                 },
                 {
                     "name": "WinEventLog:Microsoft-Windows-WLAN-AutoConfig",
-                    "channel": "8001, 8002, 8003"
+                    "channel": "EventCode=8001, 8002, 8003"
                 },
                 {
                     "name": "linux:syslog",
