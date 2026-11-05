@@ -19,9 +19,9 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2026-10-13T17:43:41.384Z",
+            "modified": "2026-11-03T00:15:15.935Z",
             "name": "Network Traffic Content",
-            "description": "The full packet capture (PCAP) or session data that logs both protocol headers and payload content. This allows analysts to inspect command and control (C2) traffic, exfiltration, and other suspicious activity within network communications. Unlike metadata-based logs, full content analysis enables deeper protocol inspection, payload decoding, and forensic investigations.\n\n*Data Collection Measures:*\n\n- Network Packet Capture (Full Content Logging)\n    - Wireshark / tcpdump / tshark\n        - Full packet captures (PCAP files) for manual analysis or IDS correlation. `tcpdump -i eth0 -w capture.pcap`\n    - Zeek (formerly Bro)\n        - Extracts protocol headers and payload details into structured logs. `echo \"redef Log::default_store = Log::ASCII;\" > local.zeek | zeek -Cr capture.pcap local.zeek`\n    - Suricata / Snort (IDS/IPS with PCAP Logging)\n        - Deep packet inspection (DPI) with signature-based and behavioral analysis. `suricata -c /etc/suricata/suricata.yaml -i eth0 -l /var/log/suricata`\n- Host-Based Collection\n    - Sysmon Event ID 22 \u2013 DNS Query Logging, Captures DNS requests made by processes, useful for detecting C2 domains.\n    - Sysmon Event ID 3 \u2013 Network Connection Initiated, Logs process-to-network connection relationships.\n    - AuditD (Linux) \u2013 syscall=connect, Monitors outbound network requests from processes. `auditctl -a always,exit -F arch=b64 -S connect -k network_activity`\n- Cloud & SaaS Traffic Collection\n    - AWS VPC Flow Logs / Azure NSG Flow Logs / Google VPC Flow Logs, Captures metadata about inbound/outbound network traffic.\n    - Cloud IDS (AWS GuardDuty, Azure Sentinel, Google Chronicle), Detects malicious activity in cloud environments by analyzing network traffic patterns.",
+            "description": "The full packet capture (PCAP) or session data that logs both protocol headers and payload content. This allows analysts to inspect command and control (C2) traffic, exfiltration, and other suspicious activity within network communications. Unlike metadata-based logs, full content analysis enables deeper protocol inspection, payload decoding, and forensic investigations.\n\n*Data Collection Measures:*\n\n- Network Packet Capture (Full Content Logging)\n    - Wireshark / tcpdump / tshark\n        - Full packet captures (PCAP files) for manual analysis or IDS correlation. `tcpdump -i eth0 -w capture.pcap`\n    - Zeek (formerly Bro)\n        - Extracts protocol headers and payload details into structured logs. `echo \"redef Log::default_store = Log::ASCII;\" > local.zeek | zeek -Cr capture.pcap local.zeek`\n    - Suricata / Snort (IDS/IPS with PCAP Logging)\n        - Deep packet inspection (DPI) with signature-based and behavioral analysis. `suricata -c /etc/suricata/suricata.yaml -i eth0 -l /var/log/suricata`\n- Host-Based Collection\n    - Sysmon Event ID 22 – DNS Query Logging, Captures DNS requests made by processes, useful for detecting C2 domains.\n    - Sysmon Event ID 3 – Network Connection Initiated, Logs process-to-network connection relationships.\n    - AuditD (Linux) – syscall=connect, Monitors outbound network requests from processes. `auditctl -a always,exit -F arch=b64 -S connect -k network_activity`\n- Cloud & SaaS Traffic Collection\n    - AWS VPC Flow Logs / Azure NSG Flow Logs / Google VPC Flow Logs, Captures metadata about inbound/outbound network traffic.\n    - Cloud IDS (AWS GuardDuty, Azure Sentinel, Google Chronicle), Detects malicious activity in cloud environments by analyzing network traffic patterns.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
@@ -33,8 +33,8 @@
             "x_mitre_attack_spec_version": "3.3.0",
             "x_mitre_log_sources": [
                 {
-                    "name": "NSM:Content",
-                    "channel": "Pub/sub protocol, client ID, topic/queue and message metadata when observable"
+                    "name": "VPN:MobileProxy",
+                    "channel": "Inspected application-package retrieval transaction, where authorized content inspection exposes the URL, response, or package type"
                 },
                 {
                     "name": "ALB:HTTPLogs",
@@ -79,6 +79,10 @@
                 {
                     "name": "container:proxy",
                     "channel": "outbound/inbound network activity from spawned pods"
+                },
+                {
+                    "name": "dns:querylog",
+                    "channel": "Domain Name System (DNS) query from Industrial Control Systems (ICS) host to domain not in approved vendor domains, particularly domains exhibiting Domain Generation Algorithm (DGA)-like patterns"
                 },
                 {
                     "name": "docker:events",
@@ -402,6 +406,10 @@
                 },
                 {
                     "name": "NSM:Content",
+                    "channel": "Pub/sub protocol, client ID, topic/queue and message metadata when observable"
+                },
+                {
+                    "name": "NSM:Content",
                     "channel": "Protocol identification; MQTT CONNECT/SUBSCRIBE/PUBLISH, AMQP/DDS metadata where parsable"
                 },
                 {
@@ -427,6 +435,234 @@
                 {
                     "name": "NSM:Content",
                     "channel": "Traffic on RPC DRSUAPI"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "session on firmware-capable port exceeds session size threshold from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "firmware write service targeting specific slot/rack address from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "large session on firmware-capable port from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write/control command traffic from source not in approved Supervisory Control and Data Acquisition (SCADA) servers directed at multiple distinct device IPs within rogue master time window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "task/organization-block modification service from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "S7comm Download Block / Common Industrial Protocol (CIP) Download Program / Distributed Network Protocol (DNP3) program file transfer to device_ip from source not in engineering workstation list within mode change to download window of mode-change event"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write to existing program block address from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "download of block address not previously present in device program inventory, from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "decoded ICS protocol unsolicited response or OPC UA data-change message for a device/address not normally owned by the observed source"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "decoded ICS protocol write/setpoint operation to a control/output address from a client identity or source not in the approved control-application baseline"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "OPC UA Browse/BrowseNext request to namespace or system-information objects from a client identity or source not in the approved monitoring baseline"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "source not in approved Supervisory Control and Data Acquisition (SCADA) servers issuing reads covering sequential address ranges across multiple device Internet Protocol (IP) addresses within auto collection time window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "malformed Protocol Data Unit (PDU) rate to device_ip exceeds threshold within detection window from source not in approved Supervisory Control and Data Acquisition (SCADA) server list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "EtherNet/IP ListIdentity broadcast or sequential Industrial Control System (ICS) protocol connection attempts across Internet Protocol (IP) range from source not in approved Supervisory Control and Data Acqusition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "structurally valid Industrial Control System (ICS) protocol message from source not in approved communication baseline for the destination device_ip"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "read-only function codes from source not in approved Supervisory Control and Data Acquisition (SCADA) servers at rate exceeding baseline poll rate or covering address ranges outside known tag ranges"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Open Platform Communications Unified Architecture (OPC UA) BrowseNamespace or Distributed Network Protocol 3 (DNP3) object 0 all-variation read or Common Industrial Protocol (CIP) Get_Attributes_All from source not in approved Supervisory Control and Data Acquisition (SCADA) servers, covering above namespace coverage threshold percent of device tag space"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Generic Object Oriented Substation Event (GOOSE) dataset stNum value decreases (replay indicator) or test-mode bit asserted on protection relay without scheduled maintenance"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "mode-change service from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write to alarm threshold address range from source not in approved write sources with new value outside safe alarm threshold range"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write/operate command targeting safety-critical output addresses from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "restart/reset service from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "firmware-update-mode activation service from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write function code to same register address at rate exceeding max write rate per point within brute force detection window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write function code (FC 6/16) to setpoint address range with value outside baseline value range, or from source not in approved write sources"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "device authentication session from source Media Access Control (MAC)/Internet Protocol (IP) address not enrolled as authorized engineering workstation, with valid credential"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "authentication success using credential matching default vendor credential list from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "credential/access code change command from source not in approved security admin list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "device authentication success using credential pattern matching known hardcoded credential patterns from source not in approved access list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "authentication success using credential matching default vendor credential list or known hardcoded credential patterns from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "restart/reset service from source not in engineering workstation list, with more than one device receiving the command within bulk restart time window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "GetIdentity/Identity Object response vendor/product string does not match enrolled asset inventory for device_ip"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "CIP Port Object Get_Attribute_All or topology query from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "EtherNet/IP ListIdentity or Modbus broadcast from source Media Access Control (MAC) address not in approved device inventory"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Internet Group Management Protocol (IGMP) join or Generic Object Oriented Substation Event (GOOSE) multicast subscription from source Media Access Control (MAC) address not in approved device inventory"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Hypertext Transfer Protocol (HTTP) request to device management web interface with exploit-pattern payload from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "protocol-level latency inconsistent with direct communication, or Media Access Control (MAC)/Internet Protocol (IP) address binding change for device_ip"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "transaction identifier reuse pattern or function-code distribution deviates from established per-device baseline within Adversary in the Middle (AiTM) correlation window of the Media Access Control (MAC) address binding change"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "single session reads address range covering above full image coverage threshold percent of device total Input/Output (I/O) space, from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write/control method invocation from client identity not in approved application list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "malformed or oversized Industrial Control System (ICS) protocol message from unexpected source followed by device behavioral anomaly (reboot, mode change) within a short window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "malformed or exploit-payload data via built-in communication interface from external source"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "vendor diagnostic function code with payload matching code execution pattern from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "anomalous protocol exchange preceding device behavioral change (reboot, altered configuration)"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "deterministic function code response content diverges from the device's established per-function response baseline without a corresponding firmware update event"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "bulk read of configuration/data dictionary objects from source with no prior session history with this device"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "event buffer clear or log clear service from source not in engineering workstation list, correlated with preceding suspicious activity on the same device"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "reserved or vendor-specific function code accessing device registers directly from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "bulk configuration/program object read from source with no prior configuration-read session history"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Initialize_Memory or MEMORY_RESET service from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "S7comm Upload Block / Common Industrial Protocol (CIP) Read Program session from source not in engineering workstation list with bytes_recv exceeding program upload size threshold"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "S7comm SZL Central Processing Unit (CPU)-state read or Common Industrial Protocol (CIP) Identity Object state attribute read from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "SZL module inventory, Identity Object, or Device Attributes query from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "S7comm Upload ALL or Common Industrial Protocol (CIP) full program upload from source not in engineering workstation list, bytes_recv exceeding full upload size threshold"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "online block edit service from source not in engineering workstation list outside change control window, with device remaining in RUN mode throughout"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Virtual Network Computing (VNC) connection or screen-capture Hypertext Transfer Protocol (HTTP) request to embedded Human-Machine Interface (HMI) panel from source not in approved operator workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Virtual Network Computing (VNC) or remote console session to embedded Human-Machine Interface (HMI) panel from source not in approved management Classless Inter-Domain Routing (CIDR) subnet"
                 },
                 {
                     "name": "NSM:DNS",
@@ -686,11 +922,11 @@
                 },
                 {
                     "name": "NSM:Flow",
-                    "channel": "Rare inbound packet characteristics (ICMP/UDP/TCP to uncommon port) from src_ip followed \u2264TimeWindow by outbound SF from same host to src_ip."
+                    "channel": "Rare inbound packet characteristics (ICMP/UDP/TCP to uncommon port) from src_ip followed ≤TimeWindow by outbound SF from same host to src_ip."
                 },
                 {
                     "name": "NSM:Flow",
-                    "channel": "Inbound one-off packet to uncommon port \u2192 outbound SF to same src_ip within TimeWindow."
+                    "channel": "Inbound one-off packet to uncommon port → outbound SF to same src_ip within TimeWindow."
                 },
                 {
                     "name": "NSM:Flow",
@@ -1002,7 +1238,7 @@
                 },
                 {
                     "name": "NSM:Flow",
-                    "channel": "Packets with unusual flags or payloads outside established flows (e.g., WoL magic FF\u00d76 + 16\u00d7MAC)"
+                    "channel": "Packets with unusual flags or payloads outside established flows (e.g., WoL magic FF×6 + 16×MAC)"
                 },
                 {
                     "name": "NSM:Flow",
@@ -1081,6 +1317,26 @@
                     "channel": "SNI/HTTP host or resolver endpoint identification when observable"
                 },
                 {
+                    "name": "otids:ProtocolDecoder",
+                    "channel": "SNMP request/response decoder: OID, operation type, source/destination; flag access to undocumented/vendor-internal OIDs from non-approved NMS sources"
+                },
+                {
+                    "name": "otids:ProtocolDecoder",
+                    "channel": "Decoded OT/file-transfer transaction: transfer operation, source/destination, object/file identifier where exposed by the protocol, outside approved engineering/change window"
+                },
+                {
+                    "name": "otids:ProtocolDecoder",
+                    "channel": "Decoded DNP3/IEC 61850 file-transfer transaction: source/destination and file/object identifier where exposed; correlate with approved engineering source and change window"
+                },
+                {
+                    "name": "otids:ProtocolDecoder",
+                    "channel": "Protocol decoder/IDS transaction: traffic on an ICS service port fails expected protocol parsing/conformance or decodes as a different application protocol"
+                },
+                {
+                    "name": "otids:ProtocolDecoder",
+                    "channel": "Protocol decoder/IDS transaction/signature: exploit-relevant request against ICS remote service from unexpected source, correlated with subsequent endpoint/device anomaly"
+                },
+                {
                     "name": "saas:box",
                     "channel": "API calls exceeding baseline thresholds"
                 },
@@ -1099,6 +1355,10 @@
                 {
                     "name": "Traffic",
                     "channel": "None"
+                },
+                {
+                    "name": "VPN:MobileProxy",
+                    "channel": "Inspected HTTP transaction showing APK/package retrieval, including URL, response content type, or validated payload type"
                 },
                 {
                     "name": "VPN:MobileProxy",
@@ -1169,6 +1429,10 @@
                     "channel": "SSRF-like patterns accessing metadata endpoint through proxy (e.g., Host: 169.254.169.254)"
                 },
                 {
+                    "name": "webproxy:applog",
+                    "channel": "DNS/HTTP(S) inspection or proxy transaction metadata where enterprise decryption/inspection is deployed"
+                },
+                {
                     "name": "WIDS:AssociationLogs",
                     "channel": "Unauthorized AP or anomalous MAC address connection attempts"
                 },
@@ -1189,268 +1453,12 @@
                     "channel": "EventCode=5005 (WLAN), EventCode=302 (Bluetooth)"
                 },
                 {
-                    "name": "webproxy:applog",
-                    "channel": "DNS/HTTP(S) inspection or proxy transaction metadata where enterprise decryption/inspection is deployed"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "session on firmware-capable port exceeds session size threshold from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "firmware write service targeting specific slot/rack address from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "large session on firmware-capable port from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write/control command traffic from source not in approved Supervisory Control and Data Acquisition (SCADA) servers directed at multiple distinct device IPs within rogue master time window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "task/organization-block modification service from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "S7comm Download Block / Common Industrial Protocol (CIP) Download Program / Distributed Network Protocol (DNP3) program file transfer to device_ip from source not in engineering workstation list within mode change to download window of mode-change event"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write to existing program block address from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "download of block address not previously present in device program inventory, from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "decoded ICS protocol unsolicited response or OPC UA data-change message for a device/address not normally owned by the observed source"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "decoded ICS protocol write/setpoint operation to a control/output address from a client identity or source not in the approved control-application baseline"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "OPC UA Browse/BrowseNext request to namespace or system-information objects from a client identity or source not in the approved monitoring baseline"
-                },
-                {
-                    "name": "dns:querylog",
-                    "channel": "Domain Name System (DNS) query from Industrial Control Systems (ICS) host to domain not in approved vendor domains, particularly domains exhibiting Domain Generation Algorithm (DGA)-like patterns"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "source not in approved Supervisory Control and Data Acquisition (SCADA) servers issuing reads covering sequential address ranges across multiple device Internet Protocol (IP) addresses within auto collection time window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "malformed Protocol Data Unit (PDU) rate to device_ip exceeds threshold within detection window from source not in approved Supervisory Control and Data Acquisition (SCADA) server list"
+                    "name": "zeek:conn",
+                    "channel": "exploit-pattern traffic to Industrial Control Systems (ICS) server/device Internet Protocol (IP) from unexpected source, followed by behavioral anomaly within a short window"
                 },
                 {
                     "name": "zeek:ssl",
                     "channel": "Transport Layer Security (TLS) Server Name Indication (SNI) or certificate issuer does not match approved vendor domains or recognized Content Delivery Network (CDN) serving vendor content"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "EtherNet/IP ListIdentity broadcast or sequential Industrial Control System (ICS) protocol connection attempts across Internet Protocol (IP) range from source not in approved Supervisory Control and Data Acqusition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "structurally valid Industrial Control System (ICS) protocol message from source not in approved communication baseline for the destination device_ip"
-                },
-                {
-                    "name": "otids:ProtocolDecoder",
-                    "channel": "SNMP request/response decoder: OID, operation type, source/destination; flag access to undocumented/vendor-internal OIDs from non-approved NMS sources"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "read-only function codes from source not in approved Supervisory Control and Data Acquisition (SCADA) servers at rate exceeding baseline poll rate or covering address ranges outside known tag ranges"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Open Platform Communications Unified Architecture (OPC UA) BrowseNamespace or Distributed Network Protocol 3 (DNP3) object 0 all-variation read or Common Industrial Protocol (CIP) Get_Attributes_All from source not in approved Supervisory Control and Data Acquisition (SCADA) servers, covering above namespace coverage threshold percent of device tag space"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Generic Object Oriented Substation Event (GOOSE) dataset stNum value decreases (replay indicator) or test-mode bit asserted on protection relay without scheduled maintenance"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "mode-change service from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write to alarm threshold address range from source not in approved write sources with new value outside safe alarm threshold range"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write/operate command targeting safety-critical output addresses from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "restart/reset service from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "firmware-update-mode activation service from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write function code to same register address at rate exceeding max write rate per point within brute force detection window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write function code (FC 6/16) to setpoint address range with value outside baseline value range, or from source not in approved write sources"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "device authentication session from source Media Access Control (MAC)/Internet Protocol (IP) address not enrolled as authorized engineering workstation, with valid credential"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "authentication success using credential matching default vendor credential list from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "credential/access code change command from source not in approved security admin list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "device authentication success using credential pattern matching known hardcoded credential patterns from source not in approved access list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "authentication success using credential matching default vendor credential list or known hardcoded credential patterns from source not in engineering workstation list"
-                },
-                {
-                    "name": "otids:ProtocolDecoder",
-                    "channel": "Decoded OT/file-transfer transaction: transfer operation, source/destination, object/file identifier where exposed by the protocol, outside approved engineering/change window"
-                },
-                {
-                    "name": "otids:ProtocolDecoder",
-                    "channel": "Decoded DNP3/IEC 61850 file-transfer transaction: source/destination and file/object identifier where exposed; correlate with approved engineering source and change window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "restart/reset service from source not in engineering workstation list, with more than one device receiving the command within bulk restart time window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "GetIdentity/Identity Object response vendor/product string does not match enrolled asset inventory for device_ip"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "CIP Port Object Get_Attribute_All or topology query from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "EtherNet/IP ListIdentity or Modbus broadcast from source Media Access Control (MAC) address not in approved device inventory"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Internet Group Management Protocol (IGMP) join or Generic Object Oriented Substation Event (GOOSE) multicast subscription from source Media Access Control (MAC) address not in approved device inventory"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Hypertext Transfer Protocol (HTTP) request to device management web interface with exploit-pattern payload from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "protocol-level latency inconsistent with direct communication, or Media Access Control (MAC)/Internet Protocol (IP) address binding change for device_ip"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "transaction identifier reuse pattern or function-code distribution deviates from established per-device baseline within Adversary in the Middle (AiTM) correlation window of the Media Access Control (MAC) address binding change"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "single session reads address range covering above full image coverage threshold percent of device total Input/Output (I/O) space, from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write/control method invocation from client identity not in approved application list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "malformed or oversized Industrial Control System (ICS) protocol message from unexpected source followed by device behavioral anomaly (reboot, mode change) within a short window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "malformed or exploit-payload data via built-in communication interface from external source"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "vendor diagnostic function code with payload matching code execution pattern from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "anomalous protocol exchange preceding device behavioral change (reboot, altered configuration)"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "deterministic function code response content diverges from the device's established per-function response baseline without a corresponding firmware update event"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "bulk read of configuration/data dictionary objects from source with no prior session history with this device"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "event buffer clear or log clear service from source not in engineering workstation list, correlated with preceding suspicious activity on the same device"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "reserved or vendor-specific function code accessing device registers directly from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "bulk configuration/program object read from source with no prior configuration-read session history"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Initialize_Memory or MEMORY_RESET service from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "S7comm Upload Block / Common Industrial Protocol (CIP) Read Program session from source not in engineering workstation list with bytes_recv exceeding program upload size threshold"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "S7comm SZL Central Processing Unit (CPU)-state read or Common Industrial Protocol (CIP) Identity Object state attribute read from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "SZL module inventory, Identity Object, or Device Attributes query from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "S7comm Upload ALL or Common Industrial Protocol (CIP) full program upload from source not in engineering workstation list, bytes_recv exceeding full upload size threshold"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "online block edit service from source not in engineering workstation list outside change control window, with device remaining in RUN mode throughout"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Virtual Network Computing (VNC) connection or screen-capture Hypertext Transfer Protocol (HTTP) request to embedded Human-Machine Interface (HMI) panel from source not in approved operator workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Virtual Network Computing (VNC) or remote console session to embedded Human-Machine Interface (HMI) panel from source not in approved management Classless Inter-Domain Routing (CIDR) subnet"
-                },
-                {
-                    "name": "otids:ProtocolDecoder",
-                    "channel": "Protocol decoder/IDS transaction: traffic on an ICS service port fails expected protocol parsing/conformance or decodes as a different application protocol"
-                },
-                {
-                    "name": "otids:ProtocolDecoder",
-                    "channel": "Protocol decoder/IDS transaction/signature: exploit-relevant request against ICS remote service from unexpected source, correlated with subsequent endpoint/device anomaly"
-                },
-                {
-                    "name": "zeek:conn",
-                    "channel": "exploit-pattern traffic to Industrial Control Systems (ICS) server/device Internet Protocol (IP) from unexpected source, followed by behavioral anomaly within a short window"
                 }
             ]
         }

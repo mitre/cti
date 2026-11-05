@@ -1,0 +1,114 @@
+{
+    "type": "bundle",
+    "id": "bundle--2302db9a-44ab-49e2-85e3-5a7c89b391f7",
+    "spec_version": "2.0",
+    "objects": [
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--5377aa84-80d9-4256-9943-3cea813a3d5a",
+            "created": "2026-11-03T00:10:02.152Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0940#AN2290",
+                    "external_id": "AN2290"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-11-03T00:21:09.293Z",
+            "name": "Analytic 2290",
+            "description": "On managed Android devices with the necessary network and security telemetry enabled, identify an application package retrieved through a browser, messaging application, third-party store, or another external delivery mechanism. Correlate the package retrieval with a subsequent installation event on the same device, using package identity, delivery source, timing, and installer provenance where available.\n\nPrioritize cases where the delivery source is outside approved distribution channels, the installer is inconsistent with authorized workflows, and the application is not approved for the device or user. Exclude sanctioned enterprise deployments, approved testing, and documented alternative distribution channels.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
+            "x_mitre_platforms": [
+                "Android"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--764ee29e-48d6-4934-8e6b-7a606aaaafc0",
+                    "name": "android:EnterpriseNetworkLog",
+                    "channel": "DevicePolicyManager.retrieveNetworkLogs(): DnsEvent / ConnectEvent; VPN flow metadata"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "VPN:MobileProxy",
+                    "channel": "Inspected HTTP transaction showing APK/package retrieval, including URL, response content type, or validated payload type"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Monitored creation of an APK or application-package staging artifact following external retrieval"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--56c2b384-77f8-461f-a71a-76f7888ebfb6",
+                    "name": "android:DevicePolicyManager",
+                    "channel": "Managed security state and policy information, including supported installation-related settings"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--55c669d9-b42a-4cf6-a38a-07161b228ce9",
+                    "name": "android:EMM",
+                    "channel": "Managed package inventory/status and package metadata"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ApprovedDistributionSources",
+                    "description": "Authorized application stores, enterprise distribution services, and approved third-party application repositories."
+                },
+                {
+                    "field": "ApprovedInstallerPackages",
+                    "description": "Package identifiers of trusted applications permitted to initiate package installation, including approved stores and enterprise deployment agents."
+                },
+                {
+                    "field": "ApprovedApplicationPackages",
+                    "description": "Application package identifiers authorized for installation on managed devices."
+                },
+                {
+                    "field": "ApprovedDeliveryDomains",
+                    "description": "Domains and endpoints permitted to distribute APK files or other supported Android application packages."
+                },
+                {
+                    "field": "DeliveryCorrelationWindow",
+                    "description": "Maximum time between an observed package download or delivery event and a corresponding installation event."
+                },
+                {
+                    "field": "PackageIdentityMatchRequired",
+                    "description": "Whether delivery-to-installation correlation requires matching package identifiers, hashes, or other available package attributes."
+                },
+                {
+                    "field": "AllowedInstallSourceTypes",
+                    "description": "Permitted installation-source classifications, where the Android version and collection mechanism expose them."
+                },
+                {
+                    "field": "ApprovedSigningCertificates",
+                    "description": "Trusted signing-certificate fingerprints used to distinguish authorized application packages from unexpected or modified packages."
+                },
+                {
+                    "field": "AllowedInstallationExceptions",
+                    "description": "Documented exceptions for enterprise sideloading, developer testing, device provisioning, and approved alternative distribution workflows."
+                },
+                {
+                    "field": "MonitoredDeliveryChannels",
+                    "description": "Browser downloads, messaging applications, email attachments, third-party stores, and other delivery mechanisms covered by available telemetry."
+                },
+                {
+                    "field": "MinimumDeliveryEvidence",
+                    "description": "Required evidence to establish package delivery, such as a validated APK retrieval, observed package-file creation, or equivalent artifact."
+                },
+                {
+                    "field": "MinimumCorrelationConfidence",
+                    "description": "Minimum combination of package identity, installer provenance, device identity, and timing required to associate delivery with installation."
+                }
+            ]
+        }
+    ]
+}

@@ -19,7 +19,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2026-10-13T17:43:40.408Z",
+            "modified": "2026-11-03T00:06:23.011Z",
             "name": "File Creation",
             "description": "A new file is created on a system or network storage. This action often signifies an operation such as saving a document, writing data, or deploying a file. Logging these events helps identify legitimate or potentially malicious file creation activities. Examples include logging file creation events (e.g., Sysmon Event ID 11 or Linux auditd logs). ",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -34,7 +34,7 @@
             "x_mitre_log_sources": [
                 {
                     "name": "MobileEDR:telemetry",
-                    "channel": "IPA binary written with signing cert matching user-trusted certificate NOT IN $EnterpriseCertList$ within $ProfileInstallWindow$"
+                    "channel": "Monitored creation of an APK or application-package staging artifact following external retrieval"
                 },
                 {
                     "name": "android:logcat",
@@ -207,6 +207,10 @@
                 {
                     "name": "auditd:SYSCALL",
                     "channel": "open,creat,rename,write"
+                },
+                {
+                    "name": "auditd:SYSCALL+PATH",
+                    "channel": "Linux Audit SYSCALL+PATH records: file transfer (scp, sftp, rsync, etc.) placing executable on Industrial Control Systems (ICS) Linux asset, followed by execve of the transferred file within tool transfer window"
                 },
                 {
                     "name": "AWS:CloudTrail",
@@ -461,6 +465,106 @@
                     "channel": "Writes under ~/Library/Application Support/Code*/extensions or JetBrains plugins"
                 },
                 {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes asymmetric-encrypted blob or encoded ciphertext to local staging path before network transmission — encrypted staging artifact"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: Local file write between inbound retrieval"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: open() with O_CREAT on path LIKE '/data/data/%/files/%' for binary or dex content by app_package NOT IN $LegitDynamicLoaders$"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: open() with O_CREAT on binary-typed path in /data/data/<app>/ within $StegoExecWindow$ of media file download from same session"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: open() with O_CREAT for file with audio MIME type (audio/mp4, audio/aac, audio/3gpp) in /data/data/<app>/files/ within $AudioCaptureWindow$ of recording API start"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: open() with O_CREAT for APK or binary file in /sdcard/ or /data/local/tmp/ by browser process within $DriveByWindow$ — payload drop confirms exploit code execution"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: PackageInstaller.install() with installer_source NOT IN $ApprovedInstallSources$ within $PolicyViolationWindow$ of settings change"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: app binary written to device with signing certificate matching manually-trusted enterprise cert NOT IN $EnterpriseCertAllowList$ within $ProfileInstallWindow$"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: PackageInstaller.install() with signing_cert NOT IN $EnterpriseCertList$ within $PolicyViolationWindow$ of settings change"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: IPA binary written with signing cert matching user-trusted certificate NOT IN $EnterpriseCertList$ within $ProfileInstallWindow$"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: app binary written to device storage as part of install — confirms impersonating app is being persisted"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: PackageInstaller.install() writes binary to device storage for impersonating app — install event is the enrollment of impersonating app"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: open() with O_CREAT for APK file in /sdcard/ or /data/local/tmp/ within $PhishingWindow$ of navigation to flagged URL — APK drop confirms malware delivery phase"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: File with binary signature (.apk, .dex, .so, .sh) written to app storage or /data/local/tmp/ from USB-mounted path or external storage within $USBInstallWindow$"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: Compromised app writes staging, cache, or export artifacts inconsistent with its declared function within $PostInstallWindow$"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App stages or caches content retrieved from web-service platform locally before initiating secondary network connection"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes high-entropy blob (Shannon entropy > $EntropyThreshold$) to local staging path immediately before outbound transmission — encrypted staging artifact confirms app-layer encryption occurred"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes newly retrieved binary, archive, native library (.so), DEX, or script to /data/data/<app>/files/, cache, or shared storage within $IngressWriteWindow$ of network retrieval from non-CDN source"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: Managed app writes newly retrieved container-local file, dylib-like resource, or opaque payload after download from non-CDN source"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: APK, DEX, or native library written to app installation path outside MDM-authorized update mechanism — binary replacement is the persistence artifact"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App reads files across multiple directories or databases in background state (collection phase) then invokes archive or compression routines on collected content — read-then-archive sequence is the staging chain"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes archive-like container, high-entropy packaged blob, or .zip/.gz output to app-private or cache path after bulk data collection — archive artifact in private storage is the staging evidence"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes large container, temp package, or high-entropy blob to container-local storage after clustered data access — staged archive artifact"
+                },
+                {
+                    "name": "mobile:ForensicArtifacts",
+                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes to or modifies protected configuration files or local control structures of deployed security tools"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "IPA binary written with signing cert matching user-trusted certificate NOT IN $EnterpriseCertList$ within $ProfileInstallWindow$"
+                },
+                {
                     "name": "MobileEDR:telemetry",
                     "channel": "PackageInstaller.install() with signing_cert NOT IN $EnterpriseCertList$ within $PolicyViolationWindow$ of settings change"
                 },
@@ -553,108 +657,8 @@
                     "channel": "File creation of suspicious scripts/binaries in temporary directories"
                 },
                 {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes asymmetric-encrypted blob or encoded ciphertext to local staging path before network transmission \u2014 encrypted staging artifact"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: Local file write between inbound retrieval"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: open() with O_CREAT on path LIKE '/data/data/%/files/%' for binary or dex content by app_package NOT IN $LegitDynamicLoaders$"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: open() with O_CREAT on binary-typed path in /data/data/<app>/ within $StegoExecWindow$ of media file download from same session"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: open() with O_CREAT for file with audio MIME type (audio/mp4, audio/aac, audio/3gpp) in /data/data/<app>/files/ within $AudioCaptureWindow$ of recording API start"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: open() with O_CREAT for APK or binary file in /sdcard/ or /data/local/tmp/ by browser process within $DriveByWindow$ \u2014 payload drop confirms exploit code execution"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: PackageInstaller.install() with installer_source NOT IN $ApprovedInstallSources$ within $PolicyViolationWindow$ of settings change"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: app binary written to device with signing certificate matching manually-trusted enterprise cert NOT IN $EnterpriseCertAllowList$ within $ProfileInstallWindow$"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: PackageInstaller.install() with signing_cert NOT IN $EnterpriseCertList$ within $PolicyViolationWindow$ of settings change"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: IPA binary written with signing cert matching user-trusted certificate NOT IN $EnterpriseCertList$ within $ProfileInstallWindow$"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: app binary written to device storage as part of install \u2014 confirms impersonating app is being persisted"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: PackageInstaller.install() writes binary to device storage for impersonating app \u2014 install event is the enrollment of impersonating app"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: open() with O_CREAT for APK file in /sdcard/ or /data/local/tmp/ within $PhishingWindow$ of navigation to flagged URL \u2014 APK drop confirms malware delivery phase"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: File with binary signature (.apk, .dex, .so, .sh) written to app storage or /data/local/tmp/ from USB-mounted path or external storage within $USBInstallWindow$"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: Compromised app writes staging, cache, or export artifacts inconsistent with its declared function within $PostInstallWindow$"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App stages or caches content retrieved from web-service platform locally before initiating secondary network connection"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes high-entropy blob (Shannon entropy > $EntropyThreshold$) to local staging path immediately before outbound transmission \u2014 encrypted staging artifact confirms app-layer encryption occurred"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes newly retrieved binary, archive, native library (.so), DEX, or script to /data/data/<app>/files/, cache, or shared storage within $IngressWriteWindow$ of network retrieval from non-CDN source"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: Managed app writes newly retrieved container-local file, dylib-like resource, or opaque payload after download from non-CDN source"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: APK, DEX, or native library written to app installation path outside MDM-authorized update mechanism \u2014 binary replacement is the persistence artifact"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App reads files across multiple directories or databases in background state (collection phase) then invokes archive or compression routines on collected content \u2014 read-then-archive sequence is the staging chain"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes archive-like container, high-entropy packaged blob, or .zip/.gz output to app-private or cache path after bulk data collection \u2014 archive artifact in private storage is the staging evidence"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes large container, temp package, or high-entropy blob to container-local storage after clustered data access \u2014 staged archive artifact"
-                },
-                {
-                    "name": "mobile:ForensicArtifacts",
-                    "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes to or modifies protected configuration files or local control structures of deployed security tools"
-                },
-                {
                     "name": "WinEventLog:Sysmon",
                     "channel": "EventCode=11 of alarm config paths by image not in Human-Machine Interface (HMI) alarm parent allowlist"
-                },
-                {
-                    "name": "auditd:SYSCALL+PATH",
-                    "channel": "Linux Audit SYSCALL+PATH records: file transfer (scp, sftp, rsync, etc.) placing executable on Industrial Control Systems (ICS) Linux asset, followed by execve of the transferred file within tool transfer window"
                 },
                 {
                     "name": "WinEventLog:Sysmon",

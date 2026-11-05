@@ -1,6 +1,6 @@
 {
     "type": "bundle",
-    "id": "bundle--4f080a08-f1bd-4078-b725-6bdaf4c1314d",
+    "id": "bundle--5c356518-53ac-4943-bb48-eb34f30557d5",
     "spec_version": "2.0",
     "objects": [
         {
@@ -8028,6 +8028,50 @@
             ],
             "x_mitre_aliases": [
                 "NGate"
+            ],
+            "labels": [
+                "malware"
+            ]
+        },
+        {
+            "type": "malware",
+            "id": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "created": "2026-09-02T21:27:55.079Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/software/S9048",
+                    "external_id": "S9048"
+                },
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-10-26T22:25:39.529Z",
+            "name": "KoSpy",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) is Android spyware active since at least March 2022, with the most recent samples acquired in March 2024. KoSpy has been distributed through Google Play and the third-party app store Apkpure and retrieves its configuration, including its C2 address, from Firebase Firestore. [KoSpy](https://attack.mitre.org/software/S9048) has targeted Korean and English-speaking users and leverages infrastructure associated with [APT37](https://attack.mitre.org/groups/G0067) and [Kimsuky](https://attack.mitre.org/groups/G0094); however, it remains unclear whether either group has used [KoSpy](https://attack.mitre.org/software/S9048).(Citation: Lookout_KoSpy_March2025)    ",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_platforms": [
+                "Android"
+            ],
+            "x_mitre_deprecated": false,
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_contributors": [
+                "Kaung Khant Ko"
+            ],
+            "x_mitre_aliases": [
+                "KoSpy"
             ],
             "labels": [
                 "malware"
@@ -32105,41 +32149,42 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2026-10-13T17:43:48.812Z",
+            "modified": "2026-10-13T19:45:58.720Z",
             "name": "Process Access",
             "description": "Refers to an event where one process attempts to open another process, typically to inspect or manipulate its memory, access handles, or modify execution flow. Monitoring these access attempts can provide valuable insight into both benign and malicious behaviors, such as debugging, inter-process communication (IPC), or process injection.\n\n*Data Collection Measures:*\n\n- Endpoint Detection and Response (EDR) Tools:\n    -  EDR solutions that provide telemetry on inter-process access and memory manipulation.\n- Sysmon (Windows):\n    - Event ID 10: Captures process access attempts, including:\n        - Source process (initiator)\n        - Target process (victim)\n        - Access rights requested\n        - Process ID correlation\n- Windows Event Logs:\n    - Event ID 4656 (Audit Handle to an Object): Logs access attempts to system objects.\n    - Event ID 4690 (Attempted Process Modification): Can help identify unauthorized process changes.\n- Linux/macOS Monitoring:\n    - AuditD: Monitors process access through syscall tracing (e.g., `ptrace`, `open`, `read`, `write`).\n    - eBPF/XDP: Used for low-level monitoring of kernel process access.\n    - OSQuery: Query process access behavior via structured SQL-like logging.\n- Procmon (Process Monitor) and Debugging Tools:\n    - Windows Procmon: Captures real-time process interactions.\n    - Linux strace / ptrace: Useful for tracking process behavior at the system call level.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_domains": [
                 "enterprise-attack",
-                "mobile-attack"
+                "mobile-attack",
+                "ics-attack"
             ],
             "x_mitre_version": "3.0",
             "x_mitre_attack_spec_version": "3.3.0",
             "x_mitre_log_sources": [
                 {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=10"
+                    "name": "android:logcat",
+                    "channel": "Runtime grant or manifest presence for MANAGE_EXTERNAL_STORAGE/READ_EXTERNAL_STORAGE/READ_MEDIA_*; legacy external storage mode detection"
                 },
                 {
-                    "name": "linux:osquery",
-                    "channel": "Process State"
+                    "name": "android:logcat",
+                    "channel": "Activity/Process state change (mFocusedApp, onResume/onPause) identifying <pkg> as foreground"
                 },
                 {
-                    "name": "auditd:SYSCALL",
-                    "channel": "ptrace attach"
+                    "name": "android:logcat",
+                    "channel": "Grant/activation of BIND_ACCESSIBILITY_SERVICE, BIND_INPUT_METHOD, SYSTEM_ALERT_WINDOW, POST_NOTIFICATIONS for <pkg>"
                 },
                 {
-                    "name": "macos:unifiedlog",
-                    "channel": "ptrace or task_for_pid"
+                    "name": "android:logcat",
+                    "channel": "Grant/enablement for BIND_ACCESSIBILITY_SERVICE or BIND_INPUT_METHOD for <pkg>"
                 },
                 {
-                    "name": "macos:osquery",
-                    "channel": "process_open"
+                    "name": "android:logcat",
+                    "channel": "Grant/enablement of SYSTEM_ALERT_WINDOW, BIND_ACCESSIBILITY_SERVICE, POST_NOTIFICATIONS for <pkg>"
                 },
                 {
-                    "name": "auditd:SYSCALL",
-                    "channel": "High frequency of accept(), read(), or SSL_read() syscalls tied to nginx/apache processes"
+                    "name": "android:logcat",
+                    "channel": "Reads/queries ops for PACKAGE_USAGE_STATS, QUERY_ALL_PACKAGES, BIND_DEVICE_ADMIN, BIND_VPN_SERVICE"
                 },
                 {
                     "name": "Apple TCC Logs",
@@ -32147,47 +32192,19 @@
                 },
                 {
                     "name": "auditd:SYSCALL",
+                    "channel": "ptrace attach"
+                },
+                {
+                    "name": "auditd:SYSCALL",
+                    "channel": "High frequency of accept(), read(), or SSL_read() syscalls tied to nginx/apache processes"
+                },
+                {
+                    "name": "auditd:SYSCALL",
                     "channel": "ptrace"
-                },
-                {
-                    "name": "linux:syslog",
-                    "channel": "syscalls (open, read, ioctl) on /dev/input or /proc/*/fd/*"
-                },
-                {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=25"
-                },
-                {
-                    "name": "macos:endpointsecurity",
-                    "channel": "ES_EVENT_TYPE_NOTIFY_OPEN"
-                },
-                {
-                    "name": "macos:unifiedlog",
-                    "channel": "Unexpected NSXPCConnection calls by non-Apple-signed or abnormal binaries"
-                },
-                {
-                    "name": "WinEventLog:Security",
-                    "channel": "EventCode=4663, 4670, 4656"
-                },
-                {
-                    "name": "macos:unifiedlog",
-                    "channel": "Unusual Mach port registration or access attempts between unrelated processes"
-                },
-                {
-                    "name": "macos:unifiedlog",
-                    "channel": "subsystem=com.apple.security, library=libsystem_kernel.dylib"
                 },
                 {
                     "name": "auditd:SYSCALL",
                     "channel": "ptrace syscall or access to /proc/*/mem"
-                },
-                {
-                    "name": "macos:unifiedlog",
-                    "channel": "vm_read, task_for_pid, or file open to cookie databases"
-                },
-                {
-                    "name": "linux:osquery",
-                    "channel": "process_events"
                 },
                 {
                     "name": "auditd:SYSCALL",
@@ -32202,60 +32219,80 @@
                     "channel": "ptrace or process_vm_readv"
                 },
                 {
-                    "name": "macos:osquery",
-                    "channel": "unexpected memory inspection"
+                    "name": "auditd:SYSCALL",
+                    "channel": "Linux Audit SYSCALL/EXECVE/SOCKADDR records (configured audit rule): syscall=ptrace/process_vm_readv; process accesses an ICS service process PID from an image or UID not in the debugger/diagnostic allowlist"
+                },
+                {
+                    "name": "EDR:telemetry",
+                    "channel": "Sustained or high-frequency location sensor access, including background location usage"
                 },
                 {
                     "name": "iOS:unifiedlog",
                     "channel": "Code signing validation events referencing newly written local Mach-O/bundle prior to exec or dlopen"
                 },
                 {
-                    "name": "android:logcat",
-                    "channel": "Runtime grant or manifest presence for MANAGE_EXTERNAL_STORAGE/READ_EXTERNAL_STORAGE/READ_MEDIA_*; legacy external storage mode detection"
-                },
-                {
                     "name": "iOS:unifiedlog",
                     "channel": "Privacy (TCC) prompts/grants for Photos/Files or access changes indicating new visibility into user/app data"
-                },
-                {
-                    "name": "android:logcat",
-                    "channel": "Activity/Process state change (mFocusedApp, onResume/onPause) identifying <pkg> as foreground"
                 },
                 {
                     "name": "iOS:unifiedlog",
                     "channel": "Foreground/background transition for <bundle_id> to contextualize access timing"
                 },
                 {
-                    "name": "android:logcat",
-                    "channel": "Grant/activation of BIND_ACCESSIBILITY_SERVICE, BIND_INPUT_METHOD, SYSTEM_ALERT_WINDOW, POST_NOTIFICATIONS for <pkg>"
-                },
-                {
                     "name": "iOS:unifiedlog",
                     "channel": "Keyboard extension Full Access change; privacy grant touching input/keyboard categories for <bundle_id>"
-                },
-                {
-                    "name": "android:logcat",
-                    "channel": "Grant/enablement for BIND_ACCESSIBILITY_SERVICE or BIND_INPUT_METHOD for <pkg>"
                 },
                 {
                     "name": "iOS:unifiedlog",
                     "channel": "Keyboard extension Full Access change or related privacy grant for <bundle_id>"
                 },
                 {
-                    "name": "android:logcat",
-                    "channel": "Grant/enablement of SYSTEM_ALERT_WINDOW, BIND_ACCESSIBILITY_SERVICE, POST_NOTIFICATIONS for <pkg>"
-                },
-                {
                     "name": "iOS:unifiedlog",
                     "channel": "Scene/foreground transitions for <bundle_id> to contextualize timing"
                 },
                 {
-                    "name": "android:logcat",
-                    "channel": "Reads/queries ops for PACKAGE_USAGE_STATS, QUERY_ALL_PACKAGES, BIND_DEVICE_ADMIN, BIND_VPN_SERVICE"
+                    "name": "linux:osquery",
+                    "channel": "Process State"
                 },
                 {
-                    "name": "EDR:telemetry",
-                    "channel": "Sustained or high-frequency location sensor access, including background location usage"
+                    "name": "linux:osquery",
+                    "channel": "process_events"
+                },
+                {
+                    "name": "linux:syslog",
+                    "channel": "syscalls (open, read, ioctl) on /dev/input or /proc/*/fd/*"
+                },
+                {
+                    "name": "macos:endpointsecurity",
+                    "channel": "ES_EVENT_TYPE_NOTIFY_OPEN"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "process_open"
+                },
+                {
+                    "name": "macos:osquery",
+                    "channel": "unexpected memory inspection"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "ptrace or task_for_pid"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unexpected NSXPCConnection calls by non-Apple-signed or abnormal binaries"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "Unusual Mach port registration or access attempts between unrelated processes"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "subsystem=com.apple.security, library=libsystem_kernel.dylib"
+                },
+                {
+                    "name": "macos:unifiedlog",
+                    "channel": "vm_read, task_for_pid, or file open to cookie databases"
                 },
                 {
                     "name": "mobile:DynamicAnalysis",
@@ -32274,8 +32311,16 @@
                     "channel": "Dynamic API/runtime trace: kernel log at level=fault referencing task_for_pid, mach_vm_write, or get-task-allow outside developer build on SUPERVISED device — Apple Unified Log kernel subsystem records these violations at fault level; supervised MDM with Unified Log"
                 },
                 {
-                    "name": "auditd:SYSCALL",
-                    "channel": "Linux Audit SYSCALL/EXECVE/SOCKADDR records (configured audit rule): syscall=ptrace/process_vm_readv; process accesses an ICS service process PID from an image or UID not in the debugger/diagnostic allowlist"
+                    "name": "WinEventLog:Security",
+                    "channel": "EventCode=4663, 4670, 4656"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=10"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=25"
                 },
                 {
                     "name": "WinEventLog:Sysmon",
@@ -32834,7 +32879,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2026-10-13T17:43:40.408Z",
+            "modified": "2026-11-03T00:06:23.011Z",
             "name": "File Creation",
             "description": "A new file is created on a system or network storage. This action often signifies an operation such as saving a document, writing data, or deploying a file. Logging these events helps identify legitimate or potentially malicious file creation activities. Examples include logging file creation events (e.g., Sysmon Event ID 11 or Linux auditd logs). ",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -32849,7 +32894,7 @@
             "x_mitre_log_sources": [
                 {
                     "name": "MobileEDR:telemetry",
-                    "channel": "IPA binary written with signing cert matching user-trusted certificate NOT IN $EnterpriseCertList$ within $ProfileInstallWindow$"
+                    "channel": "Monitored creation of an APK or application-package staging artifact following external retrieval"
                 },
                 {
                     "name": "android:logcat",
@@ -33022,6 +33067,10 @@
                 {
                     "name": "auditd:SYSCALL",
                     "channel": "open,creat,rename,write"
+                },
+                {
+                    "name": "auditd:SYSCALL+PATH",
+                    "channel": "Linux Audit SYSCALL+PATH records: file transfer (scp, sftp, rsync, etc.) placing executable on Industrial Control Systems (ICS) Linux asset, followed by execve of the transferred file within tool transfer window"
                 },
                 {
                     "name": "AWS:CloudTrail",
@@ -33276,98 +33325,6 @@
                     "channel": "Writes under ~/Library/Application Support/Code*/extensions or JetBrains plugins"
                 },
                 {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "PackageInstaller.install() with signing_cert NOT IN $EnterpriseCertList$ within $PolicyViolationWindow$ of settings change"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Browser/WebView process creates downloaded payloads, temporary files, dropped archives, or unusual cached web artifacts shortly after visiting external content"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "File writes from removable-media or USB-associated paths into download, package staging, temp, or application-accessible storage shortly after USB connection"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "large file write originating from /mnt/usb or external mounted storage"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Recently installed or updated trusted app writes staging, cache, buffer, or export artifacts inconsistent with its approved function, especially when temporally adjacent to sensitive resource access or outbound transfer"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "App stages, buffers, caches, or exports data locally immediately before communication with legitimate external web-service endpoints in a way inconsistent with normal sync or offline workflow"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Burst write to cache, buffer, temp, staging, or export path occurred between inbound retrieval and outbound write to same public web-service class"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Burst write to media, cache, temp, export, or staging path occurred during or immediately after camera session from same app identity"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "App writes encoded/encrypted blobs (high entropy data) to local storage or memory buffers prior to transmission"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "App writes high-entropy encrypted blobs to local storage or memory buffers prior to transmission"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "App writes asymmetric-encrypted blobs or encoded ciphertext to local buffers or files prior to transmission"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Application reads multiple user-data files, media objects, message stores, or app-private records in burst sequence immediately before packaging or encryption activity"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Application writes archive-like container or high-entropy packaged blob to app storage, cache, temp path, or shared external path after burst collection activity"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Application writes new large container, temp package, or high-entropy blob after clustered local data access and before outbound communication"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Application performs burst reads across local system paths, external storage, media directories, cache locations, or local database files within a short interval as the primary collection phase"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Application writes newly retrieved binary, archive, script-like asset, overlay content, library, or opaque payload to app-private, cache, temp, or shared external path as the primary local effect of transfer"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Managed app writes newly retrieved container-local asset, dylib-like resource, archive, or opaque payload shortly after remote retrieval as the strongest local effect"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "APK, DEX, native library, or package-associated executable content is written, expanded, or swapped in app package paths, staging paths, or installer cache immediately before or during application replacement"
-                },
-                {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "application modifies protected configuration, local control files, security settings, or tool-related data immediately before security service degradation or non-reporting state"
-                },
-                {
-                    "name": "snmp:syslog",
-                    "channel": "firmware write/log event"
-                },
-                {
-                    "name": "WinEventLog:Microsoft-Windows-Shell-Core",
-                    "channel": "New startup folder shortcut or binary placed in Startup directory"
-                },
-                {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=11"
-                },
-                {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "File creation of suspicious scripts/binaries in temporary directories"
-                },
-                {
                     "name": "mobile:ForensicArtifacts",
                     "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes asymmetric-encrypted blob or encoded ciphertext to local staging path before network transmission — encrypted staging artifact"
                 },
@@ -33464,12 +33421,104 @@
                     "channel": "Dynamic filesystem trace or acquired app-container/filesystem artifacts: App writes to or modifies protected configuration files or local control structures of deployed security tools"
                 },
                 {
-                    "name": "WinEventLog:Sysmon",
-                    "channel": "EventCode=11 of alarm config paths by image not in Human-Machine Interface (HMI) alarm parent allowlist"
+                    "name": "MobileEDR:telemetry",
+                    "channel": "IPA binary written with signing cert matching user-trusted certificate NOT IN $EnterpriseCertList$ within $ProfileInstallWindow$"
                 },
                 {
-                    "name": "auditd:SYSCALL+PATH",
-                    "channel": "Linux Audit SYSCALL+PATH records: file transfer (scp, sftp, rsync, etc.) placing executable on Industrial Control Systems (ICS) Linux asset, followed by execve of the transferred file within tool transfer window"
+                    "name": "MobileEDR:telemetry",
+                    "channel": "PackageInstaller.install() with signing_cert NOT IN $EnterpriseCertList$ within $PolicyViolationWindow$ of settings change"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Browser/WebView process creates downloaded payloads, temporary files, dropped archives, or unusual cached web artifacts shortly after visiting external content"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "File writes from removable-media or USB-associated paths into download, package staging, temp, or application-accessible storage shortly after USB connection"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "large file write originating from /mnt/usb or external mounted storage"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Recently installed or updated trusted app writes staging, cache, buffer, or export artifacts inconsistent with its approved function, especially when temporally adjacent to sensitive resource access or outbound transfer"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "App stages, buffers, caches, or exports data locally immediately before communication with legitimate external web-service endpoints in a way inconsistent with normal sync or offline workflow"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Burst write to cache, buffer, temp, staging, or export path occurred between inbound retrieval and outbound write to same public web-service class"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Burst write to media, cache, temp, export, or staging path occurred during or immediately after camera session from same app identity"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "App writes encoded/encrypted blobs (high entropy data) to local storage or memory buffers prior to transmission"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "App writes high-entropy encrypted blobs to local storage or memory buffers prior to transmission"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "App writes asymmetric-encrypted blobs or encoded ciphertext to local buffers or files prior to transmission"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Application reads multiple user-data files, media objects, message stores, or app-private records in burst sequence immediately before packaging or encryption activity"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Application writes archive-like container or high-entropy packaged blob to app storage, cache, temp path, or shared external path after burst collection activity"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Application writes new large container, temp package, or high-entropy blob after clustered local data access and before outbound communication"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Application performs burst reads across local system paths, external storage, media directories, cache locations, or local database files within a short interval as the primary collection phase"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Application writes newly retrieved binary, archive, script-like asset, overlay content, library, or opaque payload to app-private, cache, temp, or shared external path as the primary local effect of transfer"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Managed app writes newly retrieved container-local asset, dylib-like resource, archive, or opaque payload shortly after remote retrieval as the strongest local effect"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "APK, DEX, native library, or package-associated executable content is written, expanded, or swapped in app package paths, staging paths, or installer cache immediately before or during application replacement"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "application modifies protected configuration, local control files, security settings, or tool-related data immediately before security service degradation or non-reporting state"
+                },
+                {
+                    "name": "snmp:syslog",
+                    "channel": "firmware write/log event"
+                },
+                {
+                    "name": "WinEventLog:Microsoft-Windows-Shell-Core",
+                    "channel": "New startup folder shortcut or binary placed in Startup directory"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "File creation of suspicious scripts/binaries in temporary directories"
+                },
+                {
+                    "name": "WinEventLog:Sysmon",
+                    "channel": "EventCode=11 of alarm config paths by image not in Human-Machine Interface (HMI) alarm parent allowlist"
                 },
                 {
                     "name": "WinEventLog:Sysmon",
@@ -33509,7 +33558,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2026-10-13T17:43:41.384Z",
+            "modified": "2026-11-03T00:15:15.935Z",
             "name": "Network Traffic Content",
             "description": "The full packet capture (PCAP) or session data that logs both protocol headers and payload content. This allows analysts to inspect command and control (C2) traffic, exfiltration, and other suspicious activity within network communications. Unlike metadata-based logs, full content analysis enables deeper protocol inspection, payload decoding, and forensic investigations.\n\n*Data Collection Measures:*\n\n- Network Packet Capture (Full Content Logging)\n    - Wireshark / tcpdump / tshark\n        - Full packet captures (PCAP files) for manual analysis or IDS correlation. `tcpdump -i eth0 -w capture.pcap`\n    - Zeek (formerly Bro)\n        - Extracts protocol headers and payload details into structured logs. `echo \"redef Log::default_store = Log::ASCII;\" > local.zeek | zeek -Cr capture.pcap local.zeek`\n    - Suricata / Snort (IDS/IPS with PCAP Logging)\n        - Deep packet inspection (DPI) with signature-based and behavioral analysis. `suricata -c /etc/suricata/suricata.yaml -i eth0 -l /var/log/suricata`\n- Host-Based Collection\n    - Sysmon Event ID 22 – DNS Query Logging, Captures DNS requests made by processes, useful for detecting C2 domains.\n    - Sysmon Event ID 3 – Network Connection Initiated, Logs process-to-network connection relationships.\n    - AuditD (Linux) – syscall=connect, Monitors outbound network requests from processes. `auditctl -a always,exit -F arch=b64 -S connect -k network_activity`\n- Cloud & SaaS Traffic Collection\n    - AWS VPC Flow Logs / Azure NSG Flow Logs / Google VPC Flow Logs, Captures metadata about inbound/outbound network traffic.\n    - Cloud IDS (AWS GuardDuty, Azure Sentinel, Google Chronicle), Detects malicious activity in cloud environments by analyzing network traffic patterns.",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -33523,8 +33572,8 @@
             "x_mitre_attack_spec_version": "3.3.0",
             "x_mitre_log_sources": [
                 {
-                    "name": "NSM:Content",
-                    "channel": "Pub/sub protocol, client ID, topic/queue and message metadata when observable"
+                    "name": "VPN:MobileProxy",
+                    "channel": "Inspected application-package retrieval transaction, where authorized content inspection exposes the URL, response, or package type"
                 },
                 {
                     "name": "ALB:HTTPLogs",
@@ -33569,6 +33618,10 @@
                 {
                     "name": "container:proxy",
                     "channel": "outbound/inbound network activity from spawned pods"
+                },
+                {
+                    "name": "dns:querylog",
+                    "channel": "Domain Name System (DNS) query from Industrial Control Systems (ICS) host to domain not in approved vendor domains, particularly domains exhibiting Domain Generation Algorithm (DGA)-like patterns"
                 },
                 {
                     "name": "docker:events",
@@ -33892,6 +33945,10 @@
                 },
                 {
                     "name": "NSM:Content",
+                    "channel": "Pub/sub protocol, client ID, topic/queue and message metadata when observable"
+                },
+                {
+                    "name": "NSM:Content",
                     "channel": "Protocol identification; MQTT CONNECT/SUBSCRIBE/PUBLISH, AMQP/DDS metadata where parsable"
                 },
                 {
@@ -33917,6 +33974,234 @@
                 {
                     "name": "NSM:Content",
                     "channel": "Traffic on RPC DRSUAPI"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "session on firmware-capable port exceeds session size threshold from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "firmware write service targeting specific slot/rack address from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "large session on firmware-capable port from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write/control command traffic from source not in approved Supervisory Control and Data Acquisition (SCADA) servers directed at multiple distinct device IPs within rogue master time window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "task/organization-block modification service from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "S7comm Download Block / Common Industrial Protocol (CIP) Download Program / Distributed Network Protocol (DNP3) program file transfer to device_ip from source not in engineering workstation list within mode change to download window of mode-change event"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write to existing program block address from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "download of block address not previously present in device program inventory, from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "decoded ICS protocol unsolicited response or OPC UA data-change message for a device/address not normally owned by the observed source"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "decoded ICS protocol write/setpoint operation to a control/output address from a client identity or source not in the approved control-application baseline"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "OPC UA Browse/BrowseNext request to namespace or system-information objects from a client identity or source not in the approved monitoring baseline"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "source not in approved Supervisory Control and Data Acquisition (SCADA) servers issuing reads covering sequential address ranges across multiple device Internet Protocol (IP) addresses within auto collection time window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "malformed Protocol Data Unit (PDU) rate to device_ip exceeds threshold within detection window from source not in approved Supervisory Control and Data Acquisition (SCADA) server list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "EtherNet/IP ListIdentity broadcast or sequential Industrial Control System (ICS) protocol connection attempts across Internet Protocol (IP) range from source not in approved Supervisory Control and Data Acqusition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "structurally valid Industrial Control System (ICS) protocol message from source not in approved communication baseline for the destination device_ip"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "read-only function codes from source not in approved Supervisory Control and Data Acquisition (SCADA) servers at rate exceeding baseline poll rate or covering address ranges outside known tag ranges"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Open Platform Communications Unified Architecture (OPC UA) BrowseNamespace or Distributed Network Protocol 3 (DNP3) object 0 all-variation read or Common Industrial Protocol (CIP) Get_Attributes_All from source not in approved Supervisory Control and Data Acquisition (SCADA) servers, covering above namespace coverage threshold percent of device tag space"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Generic Object Oriented Substation Event (GOOSE) dataset stNum value decreases (replay indicator) or test-mode bit asserted on protection relay without scheduled maintenance"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "mode-change service from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write to alarm threshold address range from source not in approved write sources with new value outside safe alarm threshold range"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write/operate command targeting safety-critical output addresses from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "restart/reset service from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "firmware-update-mode activation service from source not in engineering workstation list outside change control window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write function code to same register address at rate exceeding max write rate per point within brute force detection window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write function code (FC 6/16) to setpoint address range with value outside baseline value range, or from source not in approved write sources"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "device authentication session from source Media Access Control (MAC)/Internet Protocol (IP) address not enrolled as authorized engineering workstation, with valid credential"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "authentication success using credential matching default vendor credential list from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "credential/access code change command from source not in approved security admin list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "device authentication success using credential pattern matching known hardcoded credential patterns from source not in approved access list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "authentication success using credential matching default vendor credential list or known hardcoded credential patterns from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "restart/reset service from source not in engineering workstation list, with more than one device receiving the command within bulk restart time window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "GetIdentity/Identity Object response vendor/product string does not match enrolled asset inventory for device_ip"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "CIP Port Object Get_Attribute_All or topology query from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "EtherNet/IP ListIdentity or Modbus broadcast from source Media Access Control (MAC) address not in approved device inventory"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Internet Group Management Protocol (IGMP) join or Generic Object Oriented Substation Event (GOOSE) multicast subscription from source Media Access Control (MAC) address not in approved device inventory"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Hypertext Transfer Protocol (HTTP) request to device management web interface with exploit-pattern payload from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "protocol-level latency inconsistent with direct communication, or Media Access Control (MAC)/Internet Protocol (IP) address binding change for device_ip"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "transaction identifier reuse pattern or function-code distribution deviates from established per-device baseline within Adversary in the Middle (AiTM) correlation window of the Media Access Control (MAC) address binding change"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "single session reads address range covering above full image coverage threshold percent of device total Input/Output (I/O) space, from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "write/control method invocation from client identity not in approved application list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "malformed or oversized Industrial Control System (ICS) protocol message from unexpected source followed by device behavioral anomaly (reboot, mode change) within a short window"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "malformed or exploit-payload data via built-in communication interface from external source"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "vendor diagnostic function code with payload matching code execution pattern from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "anomalous protocol exchange preceding device behavioral change (reboot, altered configuration)"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "deterministic function code response content diverges from the device's established per-function response baseline without a corresponding firmware update event"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "bulk read of configuration/data dictionary objects from source with no prior session history with this device"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "event buffer clear or log clear service from source not in engineering workstation list, correlated with preceding suspicious activity on the same device"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "reserved or vendor-specific function code accessing device registers directly from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "bulk configuration/program object read from source with no prior configuration-read session history"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Initialize_Memory or MEMORY_RESET service from source not in engineering workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "S7comm Upload Block / Common Industrial Protocol (CIP) Read Program session from source not in engineering workstation list with bytes_recv exceeding program upload size threshold"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "S7comm SZL Central Processing Unit (CPU)-state read or Common Industrial Protocol (CIP) Identity Object state attribute read from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "SZL module inventory, Identity Object, or Device Attributes query from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "S7comm Upload ALL or Common Industrial Protocol (CIP) full program upload from source not in engineering workstation list, bytes_recv exceeding full upload size threshold"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "online block edit service from source not in engineering workstation list outside change control window, with device remaining in RUN mode throughout"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Virtual Network Computing (VNC) connection or screen-capture Hypertext Transfer Protocol (HTTP) request to embedded Human-Machine Interface (HMI) panel from source not in approved operator workstation list"
+                },
+                {
+                    "name": "NSM:Content",
+                    "channel": "Virtual Network Computing (VNC) or remote console session to embedded Human-Machine Interface (HMI) panel from source not in approved management Classless Inter-Domain Routing (CIDR) subnet"
                 },
                 {
                     "name": "NSM:DNS",
@@ -34571,6 +34856,26 @@
                     "channel": "SNI/HTTP host or resolver endpoint identification when observable"
                 },
                 {
+                    "name": "otids:ProtocolDecoder",
+                    "channel": "SNMP request/response decoder: OID, operation type, source/destination; flag access to undocumented/vendor-internal OIDs from non-approved NMS sources"
+                },
+                {
+                    "name": "otids:ProtocolDecoder",
+                    "channel": "Decoded OT/file-transfer transaction: transfer operation, source/destination, object/file identifier where exposed by the protocol, outside approved engineering/change window"
+                },
+                {
+                    "name": "otids:ProtocolDecoder",
+                    "channel": "Decoded DNP3/IEC 61850 file-transfer transaction: source/destination and file/object identifier where exposed; correlate with approved engineering source and change window"
+                },
+                {
+                    "name": "otids:ProtocolDecoder",
+                    "channel": "Protocol decoder/IDS transaction: traffic on an ICS service port fails expected protocol parsing/conformance or decodes as a different application protocol"
+                },
+                {
+                    "name": "otids:ProtocolDecoder",
+                    "channel": "Protocol decoder/IDS transaction/signature: exploit-relevant request against ICS remote service from unexpected source, correlated with subsequent endpoint/device anomaly"
+                },
+                {
                     "name": "saas:box",
                     "channel": "API calls exceeding baseline thresholds"
                 },
@@ -34589,6 +34894,10 @@
                 {
                     "name": "Traffic",
                     "channel": "None"
+                },
+                {
+                    "name": "VPN:MobileProxy",
+                    "channel": "Inspected HTTP transaction showing APK/package retrieval, including URL, response content type, or validated payload type"
                 },
                 {
                     "name": "VPN:MobileProxy",
@@ -34659,6 +34968,10 @@
                     "channel": "SSRF-like patterns accessing metadata endpoint through proxy (e.g., Host: 169.254.169.254)"
                 },
                 {
+                    "name": "webproxy:applog",
+                    "channel": "DNS/HTTP(S) inspection or proxy transaction metadata where enterprise decryption/inspection is deployed"
+                },
+                {
                     "name": "WIDS:AssociationLogs",
                     "channel": "Unauthorized AP or anomalous MAC address connection attempts"
                 },
@@ -34679,268 +34992,12 @@
                     "channel": "EventCode=5005 (WLAN), EventCode=302 (Bluetooth)"
                 },
                 {
-                    "name": "webproxy:applog",
-                    "channel": "DNS/HTTP(S) inspection or proxy transaction metadata where enterprise decryption/inspection is deployed"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "session on firmware-capable port exceeds session size threshold from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "firmware write service targeting specific slot/rack address from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "large session on firmware-capable port from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write/control command traffic from source not in approved Supervisory Control and Data Acquisition (SCADA) servers directed at multiple distinct device IPs within rogue master time window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "task/organization-block modification service from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "S7comm Download Block / Common Industrial Protocol (CIP) Download Program / Distributed Network Protocol (DNP3) program file transfer to device_ip from source not in engineering workstation list within mode change to download window of mode-change event"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write to existing program block address from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "download of block address not previously present in device program inventory, from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "decoded ICS protocol unsolicited response or OPC UA data-change message for a device/address not normally owned by the observed source"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "decoded ICS protocol write/setpoint operation to a control/output address from a client identity or source not in the approved control-application baseline"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "OPC UA Browse/BrowseNext request to namespace or system-information objects from a client identity or source not in the approved monitoring baseline"
-                },
-                {
-                    "name": "dns:querylog",
-                    "channel": "Domain Name System (DNS) query from Industrial Control Systems (ICS) host to domain not in approved vendor domains, particularly domains exhibiting Domain Generation Algorithm (DGA)-like patterns"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "source not in approved Supervisory Control and Data Acquisition (SCADA) servers issuing reads covering sequential address ranges across multiple device Internet Protocol (IP) addresses within auto collection time window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "malformed Protocol Data Unit (PDU) rate to device_ip exceeds threshold within detection window from source not in approved Supervisory Control and Data Acquisition (SCADA) server list"
+                    "name": "zeek:conn",
+                    "channel": "exploit-pattern traffic to Industrial Control Systems (ICS) server/device Internet Protocol (IP) from unexpected source, followed by behavioral anomaly within a short window"
                 },
                 {
                     "name": "zeek:ssl",
                     "channel": "Transport Layer Security (TLS) Server Name Indication (SNI) or certificate issuer does not match approved vendor domains or recognized Content Delivery Network (CDN) serving vendor content"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "EtherNet/IP ListIdentity broadcast or sequential Industrial Control System (ICS) protocol connection attempts across Internet Protocol (IP) range from source not in approved Supervisory Control and Data Acqusition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "structurally valid Industrial Control System (ICS) protocol message from source not in approved communication baseline for the destination device_ip"
-                },
-                {
-                    "name": "otids:ProtocolDecoder",
-                    "channel": "SNMP request/response decoder: OID, operation type, source/destination; flag access to undocumented/vendor-internal OIDs from non-approved NMS sources"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "read-only function codes from source not in approved Supervisory Control and Data Acquisition (SCADA) servers at rate exceeding baseline poll rate or covering address ranges outside known tag ranges"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Open Platform Communications Unified Architecture (OPC UA) BrowseNamespace or Distributed Network Protocol 3 (DNP3) object 0 all-variation read or Common Industrial Protocol (CIP) Get_Attributes_All from source not in approved Supervisory Control and Data Acquisition (SCADA) servers, covering above namespace coverage threshold percent of device tag space"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Generic Object Oriented Substation Event (GOOSE) dataset stNum value decreases (replay indicator) or test-mode bit asserted on protection relay without scheduled maintenance"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "mode-change service from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write to alarm threshold address range from source not in approved write sources with new value outside safe alarm threshold range"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write/operate command targeting safety-critical output addresses from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "restart/reset service from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "firmware-update-mode activation service from source not in engineering workstation list outside change control window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write function code to same register address at rate exceeding max write rate per point within brute force detection window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write function code (FC 6/16) to setpoint address range with value outside baseline value range, or from source not in approved write sources"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "device authentication session from source Media Access Control (MAC)/Internet Protocol (IP) address not enrolled as authorized engineering workstation, with valid credential"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "authentication success using credential matching default vendor credential list from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "credential/access code change command from source not in approved security admin list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "device authentication success using credential pattern matching known hardcoded credential patterns from source not in approved access list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "authentication success using credential matching default vendor credential list or known hardcoded credential patterns from source not in engineering workstation list"
-                },
-                {
-                    "name": "otids:ProtocolDecoder",
-                    "channel": "Decoded OT/file-transfer transaction: transfer operation, source/destination, object/file identifier where exposed by the protocol, outside approved engineering/change window"
-                },
-                {
-                    "name": "otids:ProtocolDecoder",
-                    "channel": "Decoded DNP3/IEC 61850 file-transfer transaction: source/destination and file/object identifier where exposed; correlate with approved engineering source and change window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "restart/reset service from source not in engineering workstation list, with more than one device receiving the command within bulk restart time window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "GetIdentity/Identity Object response vendor/product string does not match enrolled asset inventory for device_ip"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "CIP Port Object Get_Attribute_All or topology query from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "EtherNet/IP ListIdentity or Modbus broadcast from source Media Access Control (MAC) address not in approved device inventory"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Internet Group Management Protocol (IGMP) join or Generic Object Oriented Substation Event (GOOSE) multicast subscription from source Media Access Control (MAC) address not in approved device inventory"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Hypertext Transfer Protocol (HTTP) request to device management web interface with exploit-pattern payload from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "protocol-level latency inconsistent with direct communication, or Media Access Control (MAC)/Internet Protocol (IP) address binding change for device_ip"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "transaction identifier reuse pattern or function-code distribution deviates from established per-device baseline within Adversary in the Middle (AiTM) correlation window of the Media Access Control (MAC) address binding change"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "single session reads address range covering above full image coverage threshold percent of device total Input/Output (I/O) space, from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "write/control method invocation from client identity not in approved application list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "malformed or oversized Industrial Control System (ICS) protocol message from unexpected source followed by device behavioral anomaly (reboot, mode change) within a short window"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "malformed or exploit-payload data via built-in communication interface from external source"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "vendor diagnostic function code with payload matching code execution pattern from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "anomalous protocol exchange preceding device behavioral change (reboot, altered configuration)"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "deterministic function code response content diverges from the device's established per-function response baseline without a corresponding firmware update event"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "bulk read of configuration/data dictionary objects from source with no prior session history with this device"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "event buffer clear or log clear service from source not in engineering workstation list, correlated with preceding suspicious activity on the same device"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "reserved or vendor-specific function code accessing device registers directly from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "bulk configuration/program object read from source with no prior configuration-read session history"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Initialize_Memory or MEMORY_RESET service from source not in engineering workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "S7comm Upload Block / Common Industrial Protocol (CIP) Read Program session from source not in engineering workstation list with bytes_recv exceeding program upload size threshold"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "S7comm SZL Central Processing Unit (CPU)-state read or Common Industrial Protocol (CIP) Identity Object state attribute read from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "SZL module inventory, Identity Object, or Device Attributes query from source not in approved Supervisory Control and Data Acquisition (SCADA) servers"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "S7comm Upload ALL or Common Industrial Protocol (CIP) full program upload from source not in engineering workstation list, bytes_recv exceeding full upload size threshold"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "online block edit service from source not in engineering workstation list outside change control window, with device remaining in RUN mode throughout"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Virtual Network Computing (VNC) connection or screen-capture Hypertext Transfer Protocol (HTTP) request to embedded Human-Machine Interface (HMI) panel from source not in approved operator workstation list"
-                },
-                {
-                    "name": "NSM:Content",
-                    "channel": "Virtual Network Computing (VNC) or remote console session to embedded Human-Machine Interface (HMI) panel from source not in approved management Classless Inter-Domain Routing (CIDR) subnet"
-                },
-                {
-                    "name": "otids:ProtocolDecoder",
-                    "channel": "Protocol decoder/IDS transaction: traffic on an ICS service port fails expected protocol parsing/conformance or decodes as a different application protocol"
-                },
-                {
-                    "name": "otids:ProtocolDecoder",
-                    "channel": "Protocol decoder/IDS transaction/signature: exploit-relevant request against ICS remote service from unexpected source, correlated with subsequent endpoint/device anomaly"
-                },
-                {
-                    "name": "zeek:conn",
-                    "channel": "exploit-pattern traffic to Industrial Control Systems (ICS) server/device Internet Protocol (IP) from unexpected source, followed by behavioral anomaly within a short window"
                 }
             ]
         },
@@ -36571,7 +36628,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2026-10-13T17:40:32.511Z",
+            "modified": "2026-11-03T00:18:15.699Z",
             "name": "Application State",
             "description": "Application State represents the operational status and lifecycle context of a mobile application at a given point in time. This includes whether the application is running in the foreground or background, its activity state, recent user interaction, and transitions between lifecycle states.\n\nMonitoring application state helps defenders identify suspicious behavior where an application performs sensitive actions while inactive, in the background, or without recent user interaction.\n\nApplication state is particularly useful when detecting malicious activity that occurs outside normal user-driven workflows.\n\nExamples\nAndroid\n\n- Application transitions from foreground to background\n- Application running as a background service\n- Application started via broadcast receiver\n- Application launched automatically after device boot\n\niOS\n\n- Application entering active, inactive, or background state\n- Background task execution\n- Background fetch activity\n- Application wake events triggered by push notifications or system services\n\nData Collection Measures\n- Mobile EDR / MTD runtime monitoring\n- OS lifecycle event telemetry\n- Application runtime instrumentation\n- Mobile security platform behavioral monitoring\n",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -36583,16 +36640,28 @@
             "x_mitre_attack_spec_version": "3.3.0",
             "x_mitre_log_sources": [
                 {
+                    "name": "iOS:MDM",
+                    "channel": "Declarative Management app.managed.list status changes, where collected"
+                },
+                {
+                    "name": "android:EMM",
+                    "channel": "Managed package inventory/status and package metadata"
+                },
+                {
+                    "name": "android:MDMLog",
+                    "channel": "Newly installed or updated application launches background service, becomes active without recent user interaction, or executes immediately after update in a pattern inconsistent with baseline"
+                },
+                {
+                    "name": "iOS:MDM",
+                    "channel": "InstalledApplicationList / ManagedApplicationList"
+                },
+                {
                     "name": "MobileEDR:telemetry",
                     "channel": "environment API reads occur before any user interaction at cold launch — precondition check timing"
                 },
                 {
                     "name": "MobileEDR:telemetry",
                     "channel": "environment check API burst occurs at app cold-launch or in background before user interaction — precondition check timing distinguishes guardrail from feature use"
-                },
-                {
-                    "name": "android:MDMLog",
-                    "channel": "Newly installed or updated application launches background service, becomes active without recent user interaction, or executes immediately after update in a pattern inconsistent with baseline"
                 },
                 {
                     "name": "MobileEDR:telemetry",
@@ -36793,14 +36862,6 @@
                 {
                     "name": "MobileEDR:telemetry",
                     "channel": "ecurity or monitoring application transitions to disabled, inactive, or non-reporting state while other applications remain active"
-                },
-                {
-                    "name": "android:EMM",
-                    "channel": "Managed package inventory/status and package metadata"
-                },
-                {
-                    "name": "iOS:MDM",
-                    "channel": "InstalledApplicationList / ManagedApplicationList"
                 }
             ]
         },
@@ -36820,7 +36881,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2026-10-13T17:40:42.444Z",
+            "modified": "2026-11-03T00:07:13.833Z",
             "name": "System Settings",
             "description": "System Settings represent user-visible or OS-level configuration settings that influence device behavior, application permissions, connectivity, or system features.\n\nMonitoring system settings changes allows defenders to detect abnormal modifications that may indicate malicious activity or device compromise.\n\n\nCollection Methods\n\n- MDM device telemetry\n- Mobile EDR monitoring\n- OS configuration monitoring\n",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -36832,8 +36893,12 @@
             "x_mitre_attack_spec_version": "3.3.0",
             "x_mitre_log_sources": [
                 {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "Settings.Secure/Global write to install_unknown_apps=1 by process NOT IN MDMAgentPackageList + PackageInstaller call with unknown cert within TimeWindow where MDM agent is the only authorized settings writer"
+                    "name": "android:DevicePolicyManager",
+                    "channel": "Managed security state and policy information, including supported installation-related settings"
+                },
+                {
+                    "name": "android:DevicePolicyManager",
+                    "channel": "DevicePolicyManager policy/compliance/security-state queries and SecurityLog events where supported"
                 },
                 {
                     "name": "android:MDMLog",
@@ -36848,12 +36913,20 @@
                     "channel": "No user-initiated airplane mode, radio disablement, or managed network setting change occurred during repeated connectivity degradation"
                 },
                 {
+                    "name": "iOS:MDM",
+                    "channel": "DeviceInformation / SecurityInfo / ProfileList / restrictions and compliance queries"
+                },
+                {
                     "name": "iOS:MDMLog",
                     "channel": "Trusted computer / host relationship established or relevant device trust setting changed"
                 },
                 {
                     "name": "iOS:MDMLog",
                     "channel": "No user-initiated airplane mode or radio-related setting change occurred while applications experience repeated network unavailability"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Settings.Secure/Global write to install_unknown_apps=1 by process NOT IN MDMAgentPackageList + PackageInstaller call with unknown cert within TimeWindow where MDM agent is the only authorized settings writer"
                 },
                 {
                     "name": "MobileEDR:telemetry",
@@ -36886,14 +36959,6 @@
                 {
                     "name": "User Interface",
                     "channel": "None"
-                },
-                {
-                    "name": "android:DevicePolicyManager",
-                    "channel": "DevicePolicyManager policy/compliance/security-state queries and SecurityLog events where supported"
-                },
-                {
-                    "name": "iOS:MDM",
-                    "channel": "DeviceInformation / SecurityInfo / ProfileList / restrictions and compliance queries"
                 }
             ]
         },
@@ -39057,7 +39122,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2026-10-13T17:40:41.893Z",
+            "modified": "2026-11-03T00:14:02.475Z",
             "name": "Network Communication",
             "description": "Network Communication captures outbound or inbound communication initiated by an application or mobile device, including the domains contacted, protocols used, and session metadata associated with the communication.\n\nMonitoring network communication enables defenders to identify command-and-control traffic, data exfiltration, or suspicious communication patterns originating from mobile applications.\n\nExamples\n\n- Connections to previously unseen domains\n- Repeated communication with suspicious infrastructure\n- Communication immediately following application installation\n\nCollection Methods\n\n- Mobile VPN telemetry\n- Secure web gateway logs\n- Network detection and response (NDR)\n- Mobile EDR network monitoring\n",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -39069,12 +39134,16 @@
             "x_mitre_attack_spec_version": "3.3.0",
             "x_mitre_log_sources": [
                 {
-                    "name": "Application Vetting",
-                    "channel": "None"
+                    "name": "iOS:NetworkExtension",
+                    "channel": "NEFilterFlow, per-app VPN, or secure web gateway flow metadata"
                 },
                 {
                     "name": "android:EnterpriseNetworkLog",
                     "channel": "DevicePolicyManager.retrieveNetworkLogs(): DnsEvent / ConnectEvent; VPN flow metadata"
+                },
+                {
+                    "name": "Application Vetting",
+                    "channel": "None"
                 },
                 {
                     "name": "iOS:NetworkExtension",
@@ -48901,6 +48970,249 @@
             ]
         },
         {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--a5e4aa0c-effa-4cc6-bd05-41bfe0f57b91",
+            "created": "2026-11-03T00:20:35.086Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0940#AN2291",
+                    "external_id": "AN2291"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-11-03T00:21:09.294Z",
+            "name": "Analytic 2291",
+            "description": "On managed iOS devices, identify observable delivery of an application package or distribution link through an external website, messaging channel, or other non-approved distribution mechanism.\n\nWhere managed network inspection exposes the transaction, identify application-package retrieval or a distribution workflow outside the organization's approved channels. Correlate this with an application newly appearing in device inventory or with a managed-app lifecycle change, using bundle identifier, distribution attributes, and timing where available.\n\nPrioritize cases where the distribution evidence is independently observed and inconsistent with authorized enterprise distribution, alternative marketplaces, or approved testing workflows.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
+            "x_mitre_platforms": [
+                "iOS"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--764ee29e-48d6-4934-8e6b-7a606aaaafc0",
+                    "name": "iOS:NetworkExtension",
+                    "channel": "NEFilterFlow, per-app VPN, or secure web gateway flow metadata"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "VPN:MobileProxy",
+                    "channel": "Inspected application-package retrieval transaction, where authorized content inspection exposes the URL, response, or package type"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--55c669d9-b42a-4cf6-a38a-07161b228ce9",
+                    "name": "iOS:MDM",
+                    "channel": "Declarative Management app.managed.list status changes, where collected"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--55c669d9-b42a-4cf6-a38a-07161b228ce9",
+                    "name": "iOS:MDM",
+                    "channel": "InstalledApplicationList / ManagedApplicationList"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ApprovedDistributionSources",
+                    "description": "Authorized App Store distribution, enterprise application distribution, and permitted alternative distribution mechanisms applicable to the device and region."
+                },
+                {
+                    "field": "ApprovedApplicationBundleIDs",
+                    "description": "Bundle identifiers of applications authorized for the managed device or organizational role."
+                },
+                {
+                    "field": "ApprovedDistributionDomains",
+                    "description": "Domains and endpoints permitted to distribute application packages, installation manifests, or other application-delivery artifacts."
+                },
+                {
+                    "field": "ApprovedEnterpriseDevelopers",
+                    "description": "Authorized enterprise signing identities and development teams, where signing provenance is available to the collection source."
+                },
+                {
+                    "field": "ApprovedAlternativeMarketplaces",
+                    "description": "Authorized alternative application marketplaces, where supported by the device's OS version and jurisdiction."
+                },
+                {
+                    "field": "MonitoredDeliveryChannels",
+                    "description": "Email, messaging, web browsing, managed network inspection, and enterprise distribution workflows with available delivery telemetry."
+                },
+                {
+                    "field": "DistributionArtifactTypes",
+                    "description": "Application packages, installation manifests, marketplace distribution links, and other supported delivery artifacts that the analytic can reliably identify."
+                },
+                {
+                    "field": "DeliveryCorrelationWindow",
+                    "description": "Maximum interval between observed application-delivery activity and a related application-state change."
+                },
+                {
+                    "field": "InventoryObservationInterval",
+                    "description": "Expected interval between managed-device application inventory observations, accounting for polling and reporting delays."
+                },
+                {
+                    "field": "ManagedApplicationStatusTypes",
+                    "description": "Managed-app lifecycle states or status changes used to establish application installation or deployment outcomes."
+                },
+                {
+                    "field": "AllowedDistributionExceptions",
+                    "description": "Approved enterprise deployments, development builds, TestFlight testing, regional alternative distribution, and other sanctioned workflows."
+                },
+                {
+                    "field": "MinimumDeliveryEvidence",
+                    "description": "Required network or distribution evidence to establish that an application was delivered through a particular mechanism."
+                },
+                {
+                    "field": "MinimumCorrelationConfidence",
+                    "description": "Minimum combination of bundle identity, distribution evidence, device identity, and timing required to correlate delivery with an observed application-state change."
+                }
+            ]
+        },
+        {
+            "type": "x-mitre-analytic",
+            "id": "x-mitre-analytic--5377aa84-80d9-4256-9943-3cea813a3d5a",
+            "created": "2026-11-03T00:10:02.152Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0940#AN2290",
+                    "external_id": "AN2290"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-11-03T00:21:09.293Z",
+            "name": "Analytic 2290",
+            "description": "On managed Android devices with the necessary network and security telemetry enabled, identify an application package retrieved through a browser, messaging application, third-party store, or another external delivery mechanism. Correlate the package retrieval with a subsequent installation event on the same device, using package identity, delivery source, timing, and installer provenance where available.\n\nPrioritize cases where the delivery source is outside approved distribution channels, the installer is inconsistent with authorized workflows, and the application is not approved for the device or user. Exclude sanctioned enterprise deployments, approved testing, and documented alternative distribution channels.",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
+            "x_mitre_platforms": [
+                "Android"
+            ],
+            "x_mitre_log_source_references": [
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--764ee29e-48d6-4934-8e6b-7a606aaaafc0",
+                    "name": "android:EnterpriseNetworkLog",
+                    "channel": "DevicePolicyManager.retrieveNetworkLogs(): DnsEvent / ConnectEvent; VPN flow metadata"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--3772e279-27d6-477a-9fe3-c6beb363594c",
+                    "name": "VPN:MobileProxy",
+                    "channel": "Inspected HTTP transaction showing APK/package retrieval, including URL, response content type, or validated payload type"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--2b3bfe19-d59a-460d-93bb-2f546adc2d2c",
+                    "name": "MobileEDR:telemetry",
+                    "channel": "Monitored creation of an APK or application-package staging artifact following external retrieval"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--56c2b384-77f8-461f-a71a-76f7888ebfb6",
+                    "name": "android:DevicePolicyManager",
+                    "channel": "Managed security state and policy information, including supported installation-related settings"
+                },
+                {
+                    "x_mitre_data_component_ref": "x-mitre-data-component--55c669d9-b42a-4cf6-a38a-07161b228ce9",
+                    "name": "android:EMM",
+                    "channel": "Managed package inventory/status and package metadata"
+                }
+            ],
+            "x_mitre_mutable_elements": [
+                {
+                    "field": "ApprovedDistributionSources",
+                    "description": "Authorized application stores, enterprise distribution services, and approved third-party application repositories."
+                },
+                {
+                    "field": "ApprovedInstallerPackages",
+                    "description": "Package identifiers of trusted applications permitted to initiate package installation, including approved stores and enterprise deployment agents."
+                },
+                {
+                    "field": "ApprovedApplicationPackages",
+                    "description": "Application package identifiers authorized for installation on managed devices."
+                },
+                {
+                    "field": "ApprovedDeliveryDomains",
+                    "description": "Domains and endpoints permitted to distribute APK files or other supported Android application packages."
+                },
+                {
+                    "field": "DeliveryCorrelationWindow",
+                    "description": "Maximum time between an observed package download or delivery event and a corresponding installation event."
+                },
+                {
+                    "field": "PackageIdentityMatchRequired",
+                    "description": "Whether delivery-to-installation correlation requires matching package identifiers, hashes, or other available package attributes."
+                },
+                {
+                    "field": "AllowedInstallSourceTypes",
+                    "description": "Permitted installation-source classifications, where the Android version and collection mechanism expose them."
+                },
+                {
+                    "field": "ApprovedSigningCertificates",
+                    "description": "Trusted signing-certificate fingerprints used to distinguish authorized application packages from unexpected or modified packages."
+                },
+                {
+                    "field": "AllowedInstallationExceptions",
+                    "description": "Documented exceptions for enterprise sideloading, developer testing, device provisioning, and approved alternative distribution workflows."
+                },
+                {
+                    "field": "MonitoredDeliveryChannels",
+                    "description": "Browser downloads, messaging applications, email attachments, third-party stores, and other delivery mechanisms covered by available telemetry."
+                },
+                {
+                    "field": "MinimumDeliveryEvidence",
+                    "description": "Required evidence to establish package delivery, such as a validated APK retrieval, observed package-file creation, or equivalent artifact."
+                },
+                {
+                    "field": "MinimumCorrelationConfidence",
+                    "description": "Minimum combination of package identity, installer provenance, device identity, and timing required to associate delivery with installation."
+                }
+            ]
+        },
+        {
+            "type": "x-mitre-detection-strategy",
+            "id": "x-mitre-detection-strategy--a7c7d272-f237-4ff3-a706-bcdc2c8ca484",
+            "created": "2026-11-02T23:59:17.814Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "mitre-attack",
+                    "url": "https://attack.mitre.org/detectionstrategies/DET0940",
+                    "external_id": "DET0940"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-11-03T00:21:10.476Z",
+            "name": "Detection of Mobile Application Delivery Outside Authorized Distribution Channels",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_version": "1.0",
+            "x_mitre_attack_spec_version": "3.3.0",
+            "x_mitre_domains": [
+                "mobile-attack"
+            ],
+            "x_mitre_analytic_refs": [
+                "x-mitre-analytic--5377aa84-80d9-4256-9943-3cea813a3d5a",
+                "x-mitre-analytic--a5e4aa0c-effa-4cc6-bd05-41bfe0f57b91"
+            ]
+        },
+        {
             "type": "relationship",
             "id": "relationship--0008005f-ca51-47c3-8369-55ee5de1c65a",
             "created": "2017-12-14T16:46:06.044Z",
@@ -52365,6 +52677,31 @@
             "relationship_type": "uses",
             "source_ref": "malware--f082d7dd-20a9-4157-93c0-75e7aea09e42",
             "target_ref": "attack-pattern--2aa78dfd-cb6f-4c70-9408-137cfd96be49",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
+            "id": "relationship--11b3e278-ac4b-4f65-b99c-d54e27a02538",
+            "created": "2026-09-02T21:33:41.836Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.120Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has used Firebase Firestore to receive configuration data: an “on”/”off” switch and the C2 server address.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--939808a7-121d-467a-b028-4441ee8b7cee",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_attack_spec_version": "3.3.0"
@@ -56264,6 +56601,31 @@
         },
         {
             "type": "relationship",
+            "id": "relationship--26822d00-6a6b-47ea-a121-04e8ee70edbc",
+            "created": "2026-09-02T21:48:26.407Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.133Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has captured screenshots and recordings of the device screen using dynamically loaded plugins.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--73c26732-6422-4081-8b63-6d0ae93d449e",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
             "id": "relationship--268c12df-d3bc-46fa-99e9-32caab50b175",
             "created": "2022-03-30T15:52:09.759Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -59841,6 +60203,31 @@
         },
         {
             "type": "relationship",
+            "id": "relationship--39d0009c-56c8-4406-ab4a-c96d9b688208",
+            "created": "2026-09-02T21:40:43.196Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.146Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has accessed files and folders in the local storage using dynamically loaded plugins.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--cf28ca46-1fd3-46b4-b1f6-ec0b72361848",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
             "id": "relationship--3a13ea43-f3d7-4b12-93fa-65eb44d02b5e",
             "created": "2025-09-18T14:39:35.445Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -61641,6 +62028,31 @@
         },
         {
             "type": "relationship",
+            "id": "relationship--43194ed3-fde8-488e-a7ad-a42d0f472d47",
+            "created": "2026-09-02T21:36:20.336Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.156Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has collected call logs using dynamically loaded plugins.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--1d1b1558-c833-482e-aabb-d07ef6eae63d",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
             "id": "relationship--433af79b-ce77-4a4c-84f7-6cdc34e70674",
             "created": "2023-01-18T19:56:01.025Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -62888,6 +63300,31 @@
         },
         {
             "type": "relationship",
+            "id": "relationship--4aaf9179-216d-4387-a15a-efd26fc9e352",
+            "created": "2026-09-02T21:49:39.988Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:41.164Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has encrypted collected data with a hardcoded AES key.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--e3b936a4-6321-4172-9114-038a866362ec",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
             "id": "relationship--4ad83f33-c64a-4ad6-ab6f-0548c9dde257",
             "created": "2020-10-29T17:48:27.469Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -63444,6 +63881,31 @@
             "relationship_type": "uses",
             "source_ref": "malware--3a913bac-4fae-4d0e-bca8-cae452f1599b",
             "target_ref": "attack-pattern--d8940e76-f9c1-4912-bea6-e21c251370b6",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
+            "id": "relationship--4d68927d-25ad-4ac3-ba52-21834d1dd5b9",
+            "created": "2026-09-02T21:32:53.066Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-03T14:38:13.079Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has been distributed via the third-party application store Apkpure.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--53263a67-075e-48fa-974b-91c5b5445db7",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_attack_spec_version": "3.3.0"
@@ -66107,6 +66569,31 @@
             "relationship_type": "uses",
             "source_ref": "malware--95811c0a-abe0-4e7f-a0cc-b0662ced5807",
             "target_ref": "attack-pattern--99e6295e-741b-4857-b6e5-64989eb039b4",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
+            "id": "relationship--5a58fbc4-419d-49a9-96f8-3147cf9e564a",
+            "created": "2026-09-02T21:34:29.999Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.187Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has checked if the device is not an emulator and if the current date is past the hardcoded activation date.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--27d18e87-8f32-4be1-b456-39b90454360f",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_attack_spec_version": "3.3.0"
@@ -70364,6 +70851,31 @@
         },
         {
             "type": "relationship",
+            "id": "relationship--738a8443-be37-450a-9c03-2f2051ce0ff6",
+            "created": "2026-09-02T21:36:47.220Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.197Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has collected the device’s location using dynamically loaded plugins.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--99e6295e-741b-4857-b6e5-64989eb039b4",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
             "id": "relationship--73d78f2c-dd3b-469c-a622-e2e89cb521d3",
             "created": "2018-10-17T00:14:20.652Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -70451,6 +70963,31 @@
             "relationship_type": "uses",
             "source_ref": "malware--317a2c10-d489-431e-b6b2-f0251fddc88e",
             "target_ref": "attack-pattern--114fed8b-7eed-4136-8b9c-411c5c7fff4b",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
+            "id": "relationship--7486a67e-920d-4124-b42e-72ac7700782d",
+            "created": "2026-09-02T21:35:13.697Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T22:10:24.899Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has used an HTTP POST request with a payload in JSON format to obtain configuration data.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--2282a98b-5049-4f61-9381-55baca7c1add",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_attack_spec_version": "3.3.0"
@@ -71190,6 +71727,31 @@
             "relationship_type": "uses",
             "source_ref": "malware--037f44f0-0c07-4c7f-b40e-0325b5b228a9",
             "target_ref": "attack-pattern--b327a9c0-e709-495c-aa6e-00b042136e2b",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
+            "id": "relationship--79046a44-0e75-4fcd-af9e-0f615c92e082",
+            "created": "2026-09-02T21:49:03.088Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.219Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has collected Wi-Fi network details using dynamically loaded plugins.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--be63612f-a48f-44f2-a7a6-1763509fcf80",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_attack_spec_version": "3.3.0"
@@ -73461,6 +74023,31 @@
         },
         {
             "type": "relationship",
+            "id": "relationship--857c8932-5f43-4fa2-91ea-454e833b1651",
+            "created": "2026-09-02T21:32:26.458Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.230Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has masqueraded as legitimate applications, such as “File Manager, “Software Update Utility,” and “Kakao Security.”(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--114fed8b-7eed-4136-8b9c-411c5c7fff4b",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
             "id": "relationship--85c7e956-3ce5-4495-b52e-385ae2ee4f9b",
             "created": "2017-12-14T16:46:06.044Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -74077,6 +74664,24 @@
             "relationship_type": "uses",
             "source_ref": "malware--3271c107-92c4-442e-9506-e76d62230ee8",
             "target_ref": "attack-pattern--d8940e76-f9c1-4912-bea6-e21c251370b6",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
+            "id": "relationship--8ac1cc82-9644-4dc9-b880-f7f9e1dd75a7",
+            "created": "2026-09-02T21:35:34.573Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.240Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has encrypted and encoded values with Base64 during C2 communication initialization.  ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--d13fa042-8f26-44e1-a2a8-af0bf8e2ac9a",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_attack_spec_version": "3.3.0"
@@ -80784,6 +81389,31 @@
         },
         {
             "type": "relationship",
+            "id": "relationship--af59f655-58cc-4746-8349-4078df8889a5",
+            "created": "2026-09-02T21:48:43.951Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T22:13:45.532Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has recorded keystrokes by abusing accessibility features.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--b1c95426-2550-4621-8028-ceebf28b3a47",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
             "id": "relationship--afba6b19-7486-4e5a-8fda-e91852b0b354",
             "created": "2021-09-20T13:42:21.104Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -83178,6 +83808,31 @@
             "relationship_type": "mitigates",
             "source_ref": "course-of-action--653492e3-27be-4a0e-b08c-938dd2b7e0e1",
             "target_ref": "attack-pattern--114fed8b-7eed-4136-8b9c-411c5c7fff4b",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
+            "id": "relationship--bc9ec83b-5070-4add-84d8-b46f615655ed",
+            "created": "2026-09-02T21:48:03.388Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.259Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has taken pictures with the device’s cameras using dynamically loaded plugins.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--d8940e76-f9c1-4912-bea6-e21c251370b6",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_attack_spec_version": "3.3.0"
@@ -89187,6 +89842,23 @@
         },
         {
             "type": "relationship",
+            "id": "relationship--db322454-45b8-4932-998c-99e7e852edb7",
+            "created": "2026-11-03T19:17:46.131Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-11-03T19:17:46.131Z",
+            "relationship_type": "detects",
+            "source_ref": "x-mitre-detection-strategy--a7c7d272-f237-4ff3-a706-bcdc2c8ca484",
+            "target_ref": "attack-pattern--53263a67-075e-48fa-974b-91c5b5445db7",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
             "id": "relationship--db34a2c8-01e0-4cd3-a497-0f4bca36812a",
             "created": "2020-01-27T17:05:58.265Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -91480,6 +92152,31 @@
         },
         {
             "type": "relationship",
+            "id": "relationship--e95dd217-1bb3-4b71-a99f-7f405d7bff80",
+            "created": "2026-09-02T21:49:25.218Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.271Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has collected a list of installed applications using dynamically loaded plugins.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--198ce408-1470-45ee-b47f-7056050d4fc2",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
             "id": "relationship--e9607e4f-5743-4bbb-b7d4-5554d66c8be7",
             "created": "2019-08-07T15:57:13.388Z",
             "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -92051,6 +92748,31 @@
             "relationship_type": "uses",
             "source_ref": "malware--52c994fa-b6c8-45a8-9586-a4275cf19307",
             "target_ref": "attack-pattern--e2ea7f6b-8d4f-49c3-819d-660530d12b77",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
+            "id": "relationship--ed1bc878-554d-4264-8223-13cc5abf1534",
+            "created": "2026-09-02T21:35:57.026Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.281Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has collected SMS messages using dynamically loaded plugins.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--c6421411-ae61-42bb-9098-73fddb315002",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_attack_spec_version": "3.3.0"
@@ -94429,6 +95151,31 @@
             "relationship_type": "uses",
             "source_ref": "malware--3d6c4389-3489-40a3-beda-c56e650b6f68",
             "target_ref": "attack-pattern--e2ea7f6b-8d4f-49c3-819d-660530d12b77",
+            "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "x_mitre_deprecated": false,
+            "x_mitre_attack_spec_version": "3.3.0"
+        },
+        {
+            "type": "relationship",
+            "id": "relationship--fa128568-03a3-42b1-8301-048feaafb919",
+            "created": "2026-09-02T21:41:02.319Z",
+            "created_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
+            "revoked": false,
+            "external_references": [
+                {
+                    "source_name": "Lookout_KoSpy_March2025",
+                    "description": "Islamoglu, A. (2025, March 12). Lookout Discovers New Spyware by North Korean APT37. Retrieved December 1, 2025.",
+                    "url": "https://security.lookout.com/threat-intelligence/article/lookout-discovers-new-spyware-by-north-korean-apt37"
+                }
+            ],
+            "object_marking_refs": [
+                "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
+            ],
+            "modified": "2026-09-02T21:49:40.292Z",
+            "description": "[KoSpy](https://attack.mitre.org/software/S9048) has recorded audio using dynamically loaded plugins.(Citation: Lookout_KoSpy_March2025) ",
+            "relationship_type": "uses",
+            "source_ref": "malware--3a647ddb-3867-4a17-a6ae-1f68f586a726",
+            "target_ref": "attack-pattern--6683aa0c-d98a-4f5b-ac57-ca7e9934a760",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
             "x_mitre_deprecated": false,
             "x_mitre_attack_spec_version": "3.3.0"

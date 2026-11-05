@@ -19,7 +19,7 @@
             "object_marking_refs": [
                 "marking-definition--fa42a846-8d90-4e51-bc29-71d5b4802168"
             ],
-            "modified": "2026-10-13T17:40:32.511Z",
+            "modified": "2026-11-03T00:18:15.699Z",
             "name": "Application State",
             "description": "Application State represents the operational status and lifecycle context of a mobile application at a given point in time. This includes whether the application is running in the foreground or background, its activity state, recent user interaction, and transitions between lifecycle states.\n\nMonitoring application state helps defenders identify suspicious behavior where an application performs sensitive actions while inactive, in the background, or without recent user interaction.\n\nApplication state is particularly useful when detecting malicious activity that occurs outside normal user-driven workflows.\n\nExamples\nAndroid\n\n- Application transitions from foreground to background\n- Application running as a background service\n- Application started via broadcast receiver\n- Application launched automatically after device boot\n\niOS\n\n- Application entering active, inactive, or background state\n- Background task execution\n- Background fetch activity\n- Application wake events triggered by push notifications or system services\n\nData Collection Measures\n- Mobile EDR / MTD runtime monitoring\n- OS lifecycle event telemetry\n- Application runtime instrumentation\n- Mobile security platform behavioral monitoring\n",
             "x_mitre_modified_by_ref": "identity--c78cb6e5-0c4b-4611-8297-d1b8b55e40b5",
@@ -31,16 +31,28 @@
             "x_mitre_attack_spec_version": "3.3.0",
             "x_mitre_log_sources": [
                 {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "environment API reads occur before any user interaction at cold launch \u2014 precondition check timing"
+                    "name": "iOS:MDM",
+                    "channel": "Declarative Management app.managed.list status changes, where collected"
                 },
                 {
-                    "name": "MobileEDR:telemetry",
-                    "channel": "environment check API burst occurs at app cold-launch or in background before user interaction \u2014 precondition check timing distinguishes guardrail from feature use"
+                    "name": "android:EMM",
+                    "channel": "Managed package inventory/status and package metadata"
                 },
                 {
                     "name": "android:MDMLog",
                     "channel": "Newly installed or updated application launches background service, becomes active without recent user interaction, or executes immediately after update in a pattern inconsistent with baseline"
+                },
+                {
+                    "name": "iOS:MDM",
+                    "channel": "InstalledApplicationList / ManagedApplicationList"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "environment API reads occur before any user interaction at cold launch — precondition check timing"
+                },
+                {
+                    "name": "MobileEDR:telemetry",
+                    "channel": "environment check API burst occurs at app cold-launch or in background before user interaction — precondition check timing distinguishes guardrail from feature use"
                 },
                 {
                     "name": "MobileEDR:telemetry",
@@ -100,7 +112,7 @@
                 },
                 {
                     "name": "MobileEDR:telemetry",
-                    "channel": "DeviceLockState=locked or BackgroundRefresh active during resolver\u2192pivot sequence"
+                    "channel": "DeviceLockState=locked or BackgroundRefresh active during resolver→pivot sequence"
                 },
                 {
                     "name": "MobileEDR:telemetry",
@@ -241,14 +253,6 @@
                 {
                     "name": "MobileEDR:telemetry",
                     "channel": "ecurity or monitoring application transitions to disabled, inactive, or non-reporting state while other applications remain active"
-                },
-                {
-                    "name": "android:EMM",
-                    "channel": "Managed package inventory/status and package metadata"
-                },
-                {
-                    "name": "iOS:MDM",
-                    "channel": "InstalledApplicationList / ManagedApplicationList"
                 }
             ]
         }
